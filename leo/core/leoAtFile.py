@@ -697,6 +697,7 @@ class AtFile:
         # #4385: Do nothing if the file has not changed.
         try:
             old_mod_time = root.v.u['_mod_time']  # #4385
+            # g.trace(f"{old_mod_time:20} {root.h}")
         except Exception:
             old_mod_time = None
         new_mod_time = g.os_path_getmtime(fileName)
