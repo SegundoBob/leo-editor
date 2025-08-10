@@ -525,7 +525,7 @@ class TestC(BaseTestImporter):
         # The result lines must tile (cover) the original lines.
         result_lines = []
         for block in blocks:
-            result_lines.extend(lines[block.start:block.end])
+            result_lines.extend(lines[block.start : block.end])
         self.assertEqual(lines, result_lines)
     #@+node:ekr.20230511073719.1: *3* TestC.test_codon_file
     def test_codon_file(self):

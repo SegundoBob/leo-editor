@@ -313,7 +313,7 @@ class leoscreen_Controller:
         x = sm.find_longest_match(0, len(self.old_output) - 1, 0, len(self.output) - 1)
         ans = self.output[:]
         del ans[x.b : x.b + x.size]
-        return '\n'.join(ans[:self.first_line])
+        return '\n'.join(ans[: self.first_line])
     #@+node:tbrown.20100502155649.5599: *3* get_note
     def get_note(self, c=None):
         """Get all output from the last command"""

@@ -218,7 +218,7 @@ class Undoer:
         else:
             # Push the bunch.
             u.bead += 1
-            u.beads[u.bead:] = [bunch]
+            u.beads[u.bead :] = [bunch]
             # Recalculate the menu labels.
             u.setUndoTypes()
         if 'undo' in g.app.debug:  # pragma: no cover
@@ -395,6 +395,8 @@ class Undoer:
             if not u.changeGroupWarning:
                 u.changeGroupWarning = True
                 g.trace("Position mismatch", g.callers())
+                print('p:', p)
+                print('c.p', c.p)
         if u.redoing or u.undoing:
             return  # pragma: no cover
         if not u.beads:  # pragma: no cover
@@ -418,7 +420,7 @@ class Undoer:
         if 0:
             # Push the bunch.
             u.bead += 1
-            u.beads[u.bead:] = [bunch]
+            u.beads[u.bead :] = [bunch]
         # Recalculate the menu labels.
         u.setUndoTypes()
     #@+node:ekr.20050315134017.2: *5* u.afterChangeNodeContents
@@ -501,7 +503,7 @@ class Undoer:
         bunch.newMarked = p.isMarked()
         # Push the bunch.
         u.bead += 1
-        u.beads[u.bead:] = [bunch]
+        u.beads[u.bead :] = [bunch]
         # Recalculate the menu labels.
         u.setUndoTypes()
     #@+node:ekr.20231225132413.1: *5* u.afterChangeUA
@@ -622,7 +624,7 @@ class Undoer:
         bunch.followingSibs = followingSibs
         # Push the bunch.
         u.bead += 1
-        u.beads[u.bead:] = [bunch]
+        u.beads[u.bead :] = [bunch]
         # Recalculate the menu labels.
         u.setUndoTypes()
     #@+node:ekr.20050411193627.9: *5* u.afterInsertNode
@@ -677,22 +679,6 @@ class Undoer:
         bunch.newParent_v = p._parentVnode()
         bunch.newP = p.copy()
         u.pushBead(bunch)
-    #@+node:ekr.20230713151537.1: *5* u.afterParseBody
-    def afterParseBody(self, p: Position, command: str, bunch: g.Bunch) -> None:
-        """
-        Create an undo node using d created by u.beforeParseBody
-        """
-        c = self.c
-        u, w = self, c.frame.body.wrapper
-        if u.redoing or u.undoing:
-            return  # pragma: no cover
-        # Set the type & helpers.
-        bunch.kind = 'parse-body'
-        bunch.undoType = command
-        bunch.undoHelper = u.undoParseBody
-        bunch.redoHelper = u.redoParseBody
-        u.pushBead(bunch)
-        u.updateAfterTyping(p, w)
     #@+node:ekr.20080425060424.12: *5* u.afterPromote
     def afterPromote(self, p: Position, children: list[VNode]) -> None:
         """Create an undo node for demote operations."""
@@ -706,7 +692,7 @@ class Undoer:
         bunch.children = children
         # Push the bunch.
         u.bead += 1
-        u.beads[u.bead:] = [bunch]
+        u.beads[u.bead :] = [bunch]
         # Recalculate the menu labels.
         u.setUndoTypes()
     #@+node:ekr.20080425060424.2: *5* u.afterSort
@@ -739,6 +725,8 @@ class Undoer:
             if not u.changeGroupWarning:
                 u.changeGroupWarning = True
                 g.trace("Position mismatch", g.callers())
+                print('p:', p)
+                print('c.p', c.p)
         bunch = u.createCommonBunch(p)
         # Set types.
         bunch.kind = 'beforeGroup'
@@ -751,7 +739,7 @@ class Undoer:
         bunch.items = []
         # Push the bunch.
         u.bead += 1
-        u.beads[u.bead:] = [bunch]
+        u.beads[u.bead :] = [bunch]
     #@+node:ekr.20201107145859.1: *5* u.beforeChangeHeadline
     def beforeChangeHeadline(self, p: Position) -> g.Bunch:
         """
@@ -859,12 +847,6 @@ class Undoer:
         bunch.oldN = p.childIndex()
         bunch.oldParent_v = p._parentVnode()
         return bunch
-    #@+node:ekr.20230713145834.1: *5* u.beforeParseBody
-    def beforeParseBody(self, p: Position) -> g.Bunch:
-        u = self
-        bunch = u.createCommonBunch(p)
-        bunch.oldBody = p.b
-        return bunch
     #@+node:ekr.20080425060424.3: *5* u.beforeSort
     def beforeSort(self,
         p: Position,
@@ -889,7 +871,7 @@ class Undoer:
         bunch.sortChildren = sortChildren  # A bool
         # Push the bunch.
         u.bead += 1
-        u.beads[u.bead:] = [bunch]
+        u.beads[u.bead :] = [bunch]
         return bunch
     #@+node:ekr.20050318085432.2: *5* u.createCommonBunch
     def createCommonBunch(self, p: Position) -> g.Bunch:

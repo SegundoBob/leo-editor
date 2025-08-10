@@ -1667,7 +1667,7 @@ class HistViewWidget(ExtraViewWidget):
         maxLen = self.calcRef.option.intData('MaxHistLength',
                                              self.calcRef.minMaxHist,
                                              self.calcRef.maxMaxHist)
-        for eqn, value in self.calcRef.history[-self.calcRef.histChg:]:
+        for eqn, value in self.calcRef.history[-self.calcRef.histChg :]:
             item = QTreeWidgetItem(self,
                                          [eqn, self.calcRef.formatNum(value)])
             if self.topLevelItemCount() > maxLen:

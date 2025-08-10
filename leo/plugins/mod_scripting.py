@@ -1134,7 +1134,7 @@ class ScriptingController:
             i += 6
         s = s[i:]
         if self.maxButtonSize > 10:
-            s = s[:self.maxButtonSize]
+            s = s[: self.maxButtonSize]
             if s.endswith('-'):
                 s = s[:-1]
         s = s.strip('-')
