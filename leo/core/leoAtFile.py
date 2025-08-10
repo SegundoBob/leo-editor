@@ -697,7 +697,7 @@ class AtFile:
         # #4385: Do nothing if the file has not changed.
         try:
             old_mod_time = root.v.u['_mod_time']  # #4385
-            # g.trace(f"{old_mod_time:20} {root.h}")
+            g.trace(f"{old_mod_time:20} {root.h}")
         except Exception:
             old_mod_time = None
         new_mod_time = g.os_path_getmtime(fileName)
@@ -1672,14 +1672,12 @@ class AtFile:
                 at.addToOrphanList(root)
             else:
                 contents = ''.join(at.outputList)
-
-                # #4385: at.replaceFile always writes @clean roots,
-                #        even if the file hasn't changed.
-                #        This forces the `_mod_time` uA to change.
                 at.replaceFile(contents, at.encoding, fileName, root)
 
                 # #4385: This is the *only* place that sets the `_mod_time` uA.
                 root.v.u['_mod_time'] = g.os_path_getmtime(fileName)
+                g.trace(f"{root.v.u.get('_mod_time')} {root.h}")
+
         except Exception:
             at.writeException(fileName, root)
     #@+node:ekr.20090225080846.5: *6* at.writeOneAtEditNode
@@ -2964,20 +2962,20 @@ class AtFile:
         if not old_contents:
             old_contents = ''
 
-        if not root.isAtCleanNode():  # #4394: Always write @clean nodes!
-            # Compare the old and new contents.
-            unchanged = (
-                contents == old_contents
-                or (not at.explicitLineEnding and at.compareIgnoringLineEndings(old_contents, contents))
-                or ignoreBlankLines and at.compareIgnoringBlankLines(old_contents, contents))
-            if unchanged:
-                at.unchangedFiles += 1
-                if not g.unitTesting and c.config.getBool(
-                    'report-unchanged-files', default=True):
-                    g.es(f"{timestamp}unchanged: {sfn}")  # pragma: no cover
-                # Check unchanged files.
-                at.checkPythonCode(contents, fileName, root)
-                return False  # No change to original file.
+        unchanged = (
+            contents == old_contents
+            or (not at.explicitLineEnding and at.compareIgnoringLineEndings(old_contents, contents))
+            or ignoreBlankLines and at.compareIgnoringBlankLines(old_contents, contents))
+
+        if unchanged:
+            at.unchangedFiles += 1
+            if not g.unitTesting and c.config.getBool(
+                'report-unchanged-files', default=True):
+                g.es(f"{timestamp}unchanged: {sfn}")  # pragma: no cover
+
+            # Check *unchanged* files.
+            at.checkPythonCode(contents, fileName, root)
+            return False  # No change to original file.
 
         # Warn if we are only adjusting the line endings.
         if at.explicitLineEnding:  # pragma: no cover
@@ -3001,6 +2999,7 @@ class AtFile:
             g.error('error writing', sfn)
             g.es('not written:', sfn)
             at.addToOrphanList(root)
+
         # Check *after* writing the file.
         at.checkPythonCode(contents, fileName, root)
         return ok
