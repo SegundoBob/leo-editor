@@ -171,57 +171,71 @@ class Python_Importer(Importer):
             return len(s) - len(s.lstrip())
 
         # i0 = i - 1  # For traces.
-        prev_line = self.guide_lines[i - 1]
+        def_line = self.guide_lines[i - 1]
         kinds = ('class', 'def', '->')  # '->' denotes a coffeescript function.
-        assert any(z in prev_line for z in kinds), (i, repr(prev_line))
+        assert any(z in def_line for z in kinds), (i, repr(def_line))
 
         # Handle multi-line def's. Scan to the line containing a close parenthesis.
-        if prev_line.strip().startswith('def ') and ')' not in prev_line:
-            while i < i2:
-                i += 1
-                if ')' in self.guide_lines[i - 1]:
-                    break
 
-        non_tail_lines = tail_lines = 0
-        curlies, parens = 0, 0
-        if i < i2:
-            lws1 = lws_n(prev_line)
+        if def_line.strip().startswith('def ') and ')' not in def_line:
+            # First, scan for ')'
             while i < i2:
-                s = self.guide_lines[i]
-                if s.strip():
-                    if trace:
-                        dedent_s = lws_n(s) <= lws1
-                        g.trace(f"dedent? {int(dedent_s)} state: {(curlies, parens)} {s!r}")
-                    # A code line. Test the bracket state at the *start* of the line.
-                    if lws_n(s) <= lws1 and (curlies, parens) == (0, 0):
-                        # A code line that ends the block.
-                        return i if non_tail_lines == 0 else i - tail_lines
-                    # Update the bracket state.
-                    curlies = curlies + s.count('{') - s.count('}')
-                    parens = parens + s.count('(') - s.count(')')
-                    # A code line in the block.
-                    non_tail_lines += 1
-                    tail_lines = 0
-                    i += 1
-                    continue
-                # A blank, comment or docstring line.
-                s = self.lines[i]
-                s_strip = s.strip()
-                if not s_strip:
-                    # A blank line.
-                    tail_lines += 1
-                elif s_strip.startswith('#'):
-                    # A comment line.
-                    if s_strip and lws_n(s) < lws1:
-                        if non_tail_lines > 0:
-                            return i - tail_lines
-                    tail_lines += 1
-                else:
-                    # A string/docstring line.
-                    non_tail_lines += 1
-                    tail_lines = 0
+                if ')' in self.guide_lines[i]:
+                    break
                 i += 1
-        # g.printObj(self.guide_lines[i0:i2], tag=f"find_end_of_block: {i0}:{i2}")
+            # Next, scan for ':'
+            while i < i2:
+                if self.guide_lines[i].endswith(':\n'):
+                    break
+                i += 1
+            i += 1
+        if i >= i2:
+            return i2
+
+        # Scan lines, looking for a dedent.
+        non_tail_lines = tail_lines = 0
+        curlies, parens, squares = 0, 0, 0
+        lws1 = lws_n(def_line)
+        while i < i2:
+            s = self.guide_lines[i]
+            if s.strip():
+                if trace:
+                    dedent_s = lws_n(s) <= lws1
+                    g.trace(f"dedent? {int(dedent_s)} state: {(curlies, parens, squares)} {s!r}")
+
+                # A code line. Test the bracket state at the *start* of the line.
+                if lws_n(s) <= lws1 and (curlies, parens, squares) == (0, 0, 0):
+                    # A code line that ends the block.
+                    return i if non_tail_lines == 0 else i - tail_lines
+
+                # Update the bracket state.
+                curlies = curlies + s.count('{') - s.count('}')
+                parens = parens + s.count('(') - s.count(')')
+                squares = squares + s.count('[') - s.count(']')
+
+                # A code line in the block.
+                non_tail_lines += 1
+                tail_lines = 0
+                i += 1
+                continue
+
+            # A blank, comment or docstring line.
+            s = self.lines[i]
+            s_strip = s.strip()
+            if not s_strip:
+                # A blank line.
+                tail_lines += 1
+            elif s_strip.startswith('#'):
+                # A comment line.
+                if s_strip and lws_n(s) < lws1:
+                    if non_tail_lines > 0:
+                        return i - tail_lines
+                tail_lines += 1
+            else:
+                # A string/docstring line.
+                non_tail_lines += 1
+                tail_lines = 0
+            i += 1
         return i2
     #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers
     def postprocess(self, parent: Position, result_blocks: list[Block]) -> None:

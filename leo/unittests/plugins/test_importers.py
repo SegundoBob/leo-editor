@@ -3403,7 +3403,7 @@ class TestPython(BaseTestImporter):
                     '        return self.subapp.start()\n'
             ),
         )
-        self.new_run_test(s, expected_results)
+        self.new_run_test(s, expected_results, trace=True)
     #@+node:ekr.20230612072414.1: *3* TestPython.test_long_declaration
     def test_long_declaration(self):
 
@@ -3751,8 +3751,6 @@ class TestPython(BaseTestImporter):
     #@+node:ekr.20250813150236.1: *3* TestPython.test_long_defs
     def test_long_defs(self):
 
-        # #3803. Adapated from the TracerCore class coverage/types.py.
-        #        Designed to test find_end_of_block.
         s = '''
             def iter_spurious_suppression_messages(
                 self,
@@ -3778,6 +3776,11 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
+            ),
+            (1, 'function: iter_spurious_suppression_messages',
 
                 'def iter_spurious_suppression_messages(\n'
                 '    self,\n'
