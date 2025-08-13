@@ -3683,6 +3683,71 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results)
+    #@+node:ekr.20250813102014.1: *3* TestPython.test_python_reference_test
+    def test_python_reference_test(self):
+
+        # A reference unit test to test experimental test.
+        # This test should contain all edge cases of the Python importer.
+        s = '''
+            class MyClass:
+                """MyClass: docstring"""
+
+                def f1():
+                    pass
+
+                def f2(
+                    self, arg1
+                ):
+                   a = 1
+                   def inner_def():
+                       pass
+
+            # About main
+            def main():
+                pass
+
+            if __name__ == '__main__':
+                main()
+
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+                '@others\n'
+                '\n'
+                "if __name__ == '__main__':\n"
+                '    main()\n'
+                '\n'
+                '@language python\n'
+                '@tabwidth -4\n'
+            ),
+            (1, 'class MyClass',
+                    'class MyClass:\n'
+                    '    ATothers\n'.replace('AT', '@')
+            ),
+            (2, 'MyClass.f1',
+                    'def f1(self):\n'
+                    '    pass\n'
+                    '\n'
+            ),
+            (2, 'MyClass.f2',
+                    'def f2(\n'
+                    '   self, arg1\n'
+                    '):\n'
+                    '    a = 1\n'
+                    '    def inner_def():\n'
+                    '        pass\n'
+                    '\n'
+            ),
+            (1, 'function: main',
+                    '# About main\n'
+                    'def main():\n'
+                    '    pass\n'
+                    '\n'
+            ),
+        )
+        self.new_run_test(s, expected_results,
+            check=False, retain_trailing_ws=True, trace=True)
     #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """
