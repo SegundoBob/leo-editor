@@ -181,23 +181,6 @@ class TestImporterClass(LeoUnitTest):
         finally:
             sys.stdout = sys.__stdout__
 
-    #@+node:ekr.20231011021056.1: *3* TestImporterClass.test_long_repr
-    def test_long_repr(self):
-
-        lines = g.splitLines(
-            """
-            import sys
-            def spam_and_eggs():
-               pass
-            """
-        )
-        block = Block('def', 'spam_and_eggs', start=3, start_body=4, end=5, lines=lines)
-
-        # Test that long_repr doesn't crash.
-        s = block.long_repr()
-
-        # A short test that the results contain an expected line.
-        assert 'def spam_and_eggs' in s, repr(s)
     #@-others
 #@+node:ekr.20211108052633.1: ** class TestAtAuto (BaseTestImporter)
 class TestAtAuto(BaseTestImporter):
