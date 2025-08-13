@@ -3748,6 +3748,60 @@ class TestPython(BaseTestImporter):
         )
         self.new_run_test(s, expected_results,
             check=False, retain_trailing_ws=True, trace=True)
+    #@+node:ekr.20250813150236.1: *3* TestPython.test_long_defs
+    def test_long_defs(self):
+
+        # #3803. Adapated from the TracerCore class coverage/types.py.
+        #        Designed to test find_end_of_block.
+        s = '''
+            def iter_spurious_suppression_messages(
+                self,
+                msgs_store: MessageDefinitionStore,
+            ) -> Iterator[
+                tuple[
+                    Literal["useless-suppression", "suppressed-message"],
+                    int,
+                    tuple[str] | tuple[str, int],
+                ]
+            ]:
+                for warning, lines in self._raw_module_msgs_state.items():
+                    for line, enable in lines.items():
+                        if (
+                            not enable
+                            and (warning, line) not in self._ignored_msgs
+                            and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION
+                        ):
+                            yield "useless-suppression", line, (
+                                msgs_store.get_msg_display_string(warning),
+                            )
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+
+                'def iter_spurious_suppression_messages(\n'
+                '    self,\n'
+                '    msgs_store: MessageDefinitionStore,\n'
+                ') -> Iterator[\n'
+                '    tuple[\n'
+                '        Literal["useless-suppression", "suppressed-message"],\n'
+                '        int,\n'
+                '        tuple[str] | tuple[str, int],\n'
+                '    ]\n'
+                ']:\n'
+                '    for warning, lines in self._raw_module_msgs_state.items():\n'
+                '        for line, enable in lines.items():\n'
+                '            if (\n'
+                '                not enable\n'
+                '                and (warning, line) not in self._ignored_msgs\n'
+                '                and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION\n'
+                '            ):\n'
+                '                yield "useless-suppression", line, (\n'
+                '                    msgs_store.get_msg_display_string(warning),\n'
+                '                )\n'
+            ),
+        )
+        self.new_run_test(s, expected_results, trace=True)
     #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """
