@@ -140,6 +140,8 @@ class BaseTestImporter(LeoUnitTest):
         # Dump the actual results on failure and raise AssertionError.
         if check:
             self.check_outline(parent, expected_results, trace=trace)
+        elif trace:
+            self.dump_tree(p, tag='Actual results...')
     #@+node:ekr.20211127042843.1: *3* BaseTestImporter.run_test
     def run_test(self, s: str) -> Position:
         """
@@ -3118,6 +3120,102 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results)
+    #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
+    def test_class_docstring(self):
+
+        # Test that docstrings contain now whitespace in otherwise blank lines.
+        # To do: Test generation of @others.
+        s = '''
+            class RefactoringChecker(checkers.BaseTokenChecker):
+                """Looks for code which can be refactored.
+
+                This checker also mixes the astroid and the token approaches
+                in order to create knowledge about whether an "else if" node
+                is a true "else if" node, or an "elif" node.
+                """
+
+                name = "refactoring"
+
+                msgs = {
+                    "R1701": (
+                        "Consider merging these isinstance calls to isinstance(%s, (%s))",
+                        "consider-merging-isinstance",
+                        "Used when multiple consecutive isinstance calls can be merged into one.",
+                    ),
+                }
+
+                options = (
+                    (
+                        "max-nested-blocks",
+                        {
+                            "default": 5,
+                            "type": "int",
+                            "metavar": "<int>",
+                            "help": "Maximum number of nested blocks for function / method body",
+                        },
+                    ),
+                )
+
+                def __init__(self, linter: PyLinter) -> None:
+                    super().__init__(linter)
+                    self._return_nodes: dict[str, list[nodes.Return]] = {}
+                    self._consider_using_with_stack = ConsiderUsingWithStack()
+                    self._init()
+                    self._never_returning_functions: set[str] = set()
+                    self._suggest_join_with_non_empty_separator: bool = False
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+                    '@others\n'
+                    '@language python\n'
+                    '@tabwidth -4\n'
+            ),
+            (1, 'class RefactoringChecker',
+                    'class RefactoringChecker(checkers.BaseTokenChecker):\n'
+                    '    """Looks for code which can be refactored.\n'
+                    '\n'  # There should be no leading whitespace in this line.
+                    '    This checker also mixes the astroid and the token approaches\n'
+                    '    in order to create knowledge about whether an "else if" node\n'
+                    '    is a true "else if" node, or an "elif" node.\n'
+                    '    """\n'
+                    '\n'  # This should be the blank line before the 'name = "refactoring"' line.
+                    '    @others\n'
+            ),
+            (2, 'RefactoringChecker.__init__',
+                    # There should be no leading blank line here.
+                    'name = "refactoring"\n'
+                    '\n'
+                    'msgs = {\n'
+                    '    "R1701": (\n'
+                    '        "Consider merging these isinstance calls to isinstance(%s, (%s))",\n'
+                    '        "consider-merging-isinstance",\n'
+                    '        "Used when multiple consecutive isinstance calls can be merged into one.",\n'
+                    '    ),\n'
+                    '}\n'
+                    '\n'
+                    'options = (\n'
+                    '    (\n'
+                    '        "max-nested-blocks",\n'
+                    '        {\n'
+                    '            "default": 5,\n'
+                    '            "type": "int",\n'
+                    '            "metavar": "<int>",\n'
+                    '            "help": "Maximum number of nested blocks for function / method body",\n'
+                    '        },\n'
+                    '    ),\n'
+                    ')\n'
+                    '\n'
+                    'def __init__(self, linter: PyLinter) -> None:\n'
+                    '    super().__init__(linter)\n'
+                    '    self._return_nodes: dict[str, list[nodes.Return]] = {}\n'
+                    '    self._consider_using_with_stack = ConsiderUsingWithStack()\n'
+                    '    self._init()\n'
+                    '    self._never_returning_functions: set[str] = set()\n'
+                    '    self._suggest_join_with_non_empty_separator: bool = False\n'
+            ),
+        )
+        self.new_run_test(s, expected_results, check=True, trace=True)
     #@+node:ekr.20230514195224.1: *3* TestPython.test_delete_comments_and_strings
     def test_delete_comments_and_strings(self):
 
@@ -3443,6 +3541,63 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results)
+    #@+node:ekr.20250813150236.1: *3* TestPython.test_long_defs
+    def test_long_defs(self):
+
+        s = '''
+            def iter_spurious_suppression_messages(
+                self,
+                msgs_store: MessageDefinitionStore,
+            ) -> Iterator[
+                tuple[
+                    Literal["useless-suppression", "suppressed-message"],
+                    int,
+                    tuple[str] | tuple[str, int],
+                ]
+            ]:
+                for warning, lines in self._raw_module_msgs_state.items():
+                    for line, enable in lines.items():
+                        if (
+                            not enable
+                            and (warning, line) not in self._ignored_msgs
+                            and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION
+                        ):
+                            yield "useless-suppression", line, (
+                                msgs_store.get_msg_display_string(warning),
+                            )
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
+            ),
+            (1, 'function: iter_spurious_suppression_messages',
+
+                'def iter_spurious_suppression_messages(\n'
+                '    self,\n'
+                '    msgs_store: MessageDefinitionStore,\n'
+                ') -> Iterator[\n'
+                '    tuple[\n'
+                '        Literal["useless-suppression", "suppressed-message"],\n'
+                '        int,\n'
+                '        tuple[str] | tuple[str, int],\n'
+                '    ]\n'
+                ']:\n'
+                '    for warning, lines in self._raw_module_msgs_state.items():\n'
+                '        for line, enable in lines.items():\n'
+                '            if (\n'
+                '                not enable\n'
+                '                and (warning, line) not in self._ignored_msgs\n'
+                '                and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION\n'
+                '            ):\n'
+                '                yield "useless-suppression", line, (\n'
+                '                    msgs_store.get_msg_display_string(warning),\n'
+                '                )\n'
+            ),
+        )
+        self.new_run_test(s, expected_results, trace=True)
     #@+node:ekr.20211202064822.1: *3* TestPython.test_nested_classes
     def test_nested_classes(self):
         s = """
@@ -3748,63 +3903,6 @@ class TestPython(BaseTestImporter):
         )
         self.new_run_test(s, expected_results,
             check=False, retain_trailing_ws=True, trace=True)
-    #@+node:ekr.20250813150236.1: *3* TestPython.test_long_defs
-    def test_long_defs(self):
-
-        s = '''
-            def iter_spurious_suppression_messages(
-                self,
-                msgs_store: MessageDefinitionStore,
-            ) -> Iterator[
-                tuple[
-                    Literal["useless-suppression", "suppressed-message"],
-                    int,
-                    tuple[str] | tuple[str, int],
-                ]
-            ]:
-                for warning, lines in self._raw_module_msgs_state.items():
-                    for line, enable in lines.items():
-                        if (
-                            not enable
-                            and (warning, line) not in self._ignored_msgs
-                            and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION
-                        ):
-                            yield "useless-suppression", line, (
-                                msgs_store.get_msg_display_string(warning),
-                            )
-            '''
-
-        expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language python\n'
-                '@tabwidth -4\n'
-            ),
-            (1, 'function: iter_spurious_suppression_messages',
-
-                'def iter_spurious_suppression_messages(\n'
-                '    self,\n'
-                '    msgs_store: MessageDefinitionStore,\n'
-                ') -> Iterator[\n'
-                '    tuple[\n'
-                '        Literal["useless-suppression", "suppressed-message"],\n'
-                '        int,\n'
-                '        tuple[str] | tuple[str, int],\n'
-                '    ]\n'
-                ']:\n'
-                '    for warning, lines in self._raw_module_msgs_state.items():\n'
-                '        for line, enable in lines.items():\n'
-                '            if (\n'
-                '                not enable\n'
-                '                and (warning, line) not in self._ignored_msgs\n'
-                '                and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION\n'
-                '            ):\n'
-                '                yield "useless-suppression", line, (\n'
-                '                    msgs_store.get_msg_display_string(warning),\n'
-                '                )\n'
-            ),
-        )
-        self.new_run_test(s, expected_results, trace=True)
     #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """

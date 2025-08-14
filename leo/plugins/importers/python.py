@@ -326,7 +326,10 @@ class Python_Importer(Importer):
                 return
 
             # This isn't perfect in some situations.
-            docstring_list = [f"{' '*4}{z}" for z in g.splitLines(docstring)]
+            docstring_list = [
+                f"{' '*4}{z}" if z.strip() else '\n'
+                for z in g.splitLines(docstring)
+            ]
             class_p.b = ''.join(class_lines[:n] + docstring_list + class_lines[n:])
         #@+node:ekr.20230825111112.1: *4* python_i.function: move_class_docstrings
         def move_class_docstrings(parent: Position) -> None:
