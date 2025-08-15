@@ -1724,6 +1724,7 @@ class TestJavascript(BaseTestImporter):
             (1, 'function c3',
                     'var c3 = (function () {\n'
                     '    @others\n'
+                    '\n'  # Leo 6.8.7
                     '    return c3;\n'
                     '}());\n'
             ),
