@@ -882,12 +882,14 @@ class TestDart(BaseTestImporter):
                     'hello() {\n'
                     "  print('Hello, World!');\n"
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function printNumber',
                     '// Define a function.\n'
                     'printNumber(num aNumber) {\n'
                     "  print('The number is $aNumber.'); // Print to console.\n"
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function void main',
                     '// This is where the app starts executing.\n'
