@@ -256,7 +256,7 @@ class Importer:
                     if level == 0:
                         return i
         return i2
-    #@+node:ekr.20230529075138.14: *4* i.gen_block (iterative) (*** trace)
+    #@+node:ekr.20230529075138.14: *4* i.gen_block (*** trace)
     def gen_block(self, parent: Position) -> None:
         """
         Importer.gen_block.
@@ -315,6 +315,9 @@ class Importer:
             g.trace('result_blocks...')
             for block in result_blocks:
                 print(block)
+
+        if 1:  ### Highly experimental.
+            self.preprocess_blocks(result_blocks)
 
         # Post pass: generate all bodies
         self.generate_all_bodies(parent, outer_block, result_blocks)
@@ -584,6 +587,20 @@ class Importer:
                   adjusts headlines of *all* imported nodes.
         """
 
+    #@+node:ekr.20250810142621.1: *4* i.preprocess_blocks
+    def preprocess_blocks(self, blocks: list[Block]) -> None:
+        """Move blank lines from the start one block to the end of the previous block."""
+        for i, block in enumerate(blocks):
+            try:
+                block2 = blocks[i + 1]
+            except IndexError:
+                break
+            for i in range(block2.start, block2.end):
+                s = block2.lines[i]
+                if s.strip():
+                    break
+                block.end += 1
+                block2.start += 1
     #@+node:ekr.20230529075138.38: *4* i.preprocess_lines
     def preprocess_lines(self, lines: list[str]) -> list[str]:
         """
