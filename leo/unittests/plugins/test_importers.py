@@ -712,6 +712,7 @@ class TestCoffeescript(BaseTestImporter):
               '\n'
               'transform: (args...) ->\n'
               '  @transformer.transform.apply(@transformer, args)\n'
+              '\n'  # Leo 6.8.7
           ),
           (2, 'Builder.body',
               '# `body()`\n'
@@ -721,6 +722,7 @@ class TestCoffeescript(BaseTestImporter):
               '  str = blockTrim(str)\n'
               '  str = unshift(str)\n'
               '  if str.length > 0 then str else ""\n'
+              '\n'  # Leo 6.8.7
           ),
         )
         self.new_run_test(s, expected_results)
