@@ -2600,6 +2600,7 @@ class TestPascal(BaseTestImporter):
                     'implementation\n'
                     '\n'
                     '{$R *.dfm}\n'
+                    '\n'  # Leo 6.8.7
                 ),
             (1, 'procedure TForm1.FormCreate',
                     'procedure TForm1.FormCreate(Sender: TObject);\n'
@@ -2708,6 +2709,7 @@ class TestPascal(BaseTestImporter):
                     'uses gf2obj1;\n'
                     '\n'
                     'implementation\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'procedure statObj.scale',
                     'procedure statObj.scale(factor: float);\n'
@@ -2716,6 +2718,7 @@ class TestPascal(BaseTestImporter):
                     '   for i := 1 to num do\n'
                     '      with data^[i] do y := factor * y;\n'
                     'end;\n'
+                    '\n'  # Leo 6.8.7
 
             ),
             (1, 'procedure statObj.multiplyGraph',
@@ -2727,6 +2730,7 @@ class TestPascal(BaseTestImporter):
                     'for i := 1 to max do\n'
                     '    data^[i].y := data^[i].y * pstatObj(source)^.data^[i].y;\n'
                     'end;\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function statObj.divideGraph',
                     'function statObj.divideGraph(var numerator: pGraphObj): boolean;\n'
@@ -2761,6 +2765,7 @@ class TestPascal(BaseTestImporter):
                     'dispose(pg, byebye);\n'
                     'divideGraph := not zeroData;\n'
                     'end;\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'procedure statObj.addGraph',
                     'procedure statObj.addGraph(var source: pgraphObj);\n'
@@ -2834,6 +2839,7 @@ class TestPerl(BaseTestImporter):
                     '               print "Hello, World!\n'
                     '";\n'
                     '            }\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub Test',
                     '            sub Test{\n'
@@ -2910,6 +2916,7 @@ class TestPerl(BaseTestImporter):
                     '               print "Test!\n'
                     '";\n'
                     '            }\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub World',
                     '            =begin comment\n'
@@ -2962,16 +2969,19 @@ class TestPerl(BaseTestImporter):
                     'sub test1 {\n'
                     '    s = /}/g;\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub test2',
                     'sub test2 {\n'
                     '    s = m//}/;\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub test3',
                     'sub test3 {\n'
                     '    s = s///}/;\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub test4',
                     'sub test4 {\n'
