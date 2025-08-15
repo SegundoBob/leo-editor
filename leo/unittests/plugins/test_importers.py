@@ -3125,7 +3125,7 @@ class TestPython(BaseTestImporter):
     #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
     def test_class_docstring(self):
 
-        # Test that docstrings contain now whitespace in otherwise blank lines.
+        # Test that docstrings contain no whitespace in otherwise blank lines.
         # To do: Test generation of @others.
         s = '''
             class RefactoringChecker(checkers.BaseTokenChecker):
