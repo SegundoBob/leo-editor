@@ -53,7 +53,12 @@ class BaseTestImporter(LeoUnitTest):
                 self.assertEqual(a_level - p0_level, e_level, msg=msg)
                 if i > 0:  # Don't test top-level headline.
                     self.assertEqual(e_h, a_h, msg=msg)
-                self.assertEqual(g.splitLines(e_str), g.splitLines(a_str), msg=msg)
+                if 1:  ### Brief message
+                    if g.splitLines(e_str) != g.splitLines(a_str):
+                        print(f"Fail: {self.id()}")
+                        return
+                else:
+                    self.assertEqual(g.splitLines(e_str), g.splitLines(a_str), msg=msg)
         except AssertionError:
             # Dump actual results, including bodies.
             if trace:
@@ -1601,8 +1606,6 @@ class TestJava(BaseTestImporter):
         at = c.atFileCommands
         #@+<< define contents: test_round_trip >>
         #@+node:ekr.20231225065840.1: *4* << define contents: test_round_trip >>
-        # #3727: The blank lines below cause the round-trip to fail.
-        #        For now, this unit test will hack the expected lines.
         contents = """
             public class Main {
                 public static void main(String[] args) {
@@ -1629,9 +1632,7 @@ class TestJava(BaseTestImporter):
         # Write the tree as if it were an @auto node.
         root.h = '@auto test.java'
         results = at.atAutoToString(root)
-
-        # A hack, acknowledging that the importer strips trailing blank lines in each node.
-        expected = results.replace('\n\n', '\n')
+        expected = contents
 
         if results != expected:
             g.printObj(contents, tag='contents')

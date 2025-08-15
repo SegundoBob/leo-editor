@@ -425,7 +425,7 @@ class Importer:
             ### tail_s = ''.join(tail_lines)
             if tail_s.strip():
                 block.v.b = block.v.b.rstrip() + '\n' + tail_s
-                g.printObj(block.v.b, tag=f"{g.my_name()}: block.v.b")
+                ### g.printObj(block.v.b, tag=f"{g.my_name()}: block.v.b")
 
             # Alter block.end.
             block.end = children_start
@@ -633,10 +633,13 @@ class Importer:
         In most contexts removing leading blank lines is appropriate.
         If not, the caller can insert the desired blank lines.
         """
-        s = ''.join(lines)
-        if self.treeType in ('@auto', '@clean'):
-            return s
-        return s.lstrip('\n').rstrip() + '\n' if s.strip() else ''
+        return ''.join(lines)
+
+        ###
+            # s = ''.join(lines)
+            # if self.treeType in ('@auto', '@clean'):
+                # return s
+            # return s.lstrip('\n').rstrip() + '\n' if s.strip() else ''
     #@+node:ekr.20230529075138.8: *4* i.compute_common_lws
     def compute_common_lws(self, blocks: list[Block]) -> str:
         """
