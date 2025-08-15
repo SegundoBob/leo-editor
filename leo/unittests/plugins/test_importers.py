@@ -53,7 +53,7 @@ class BaseTestImporter(LeoUnitTest):
                 self.assertEqual(a_level - p0_level, e_level, msg=msg)
                 if i > 0:  # Don't test top-level headline.
                     self.assertEqual(e_h, a_h, msg=msg)
-                if 1:  ### Brief message
+                if 0:  ### Brief message
                     if g.splitLines(e_str) != g.splitLines(a_str):
                         print(f"Fail: {self.id()}")
                         return
@@ -61,7 +61,7 @@ class BaseTestImporter(LeoUnitTest):
                     self.assertEqual(g.splitLines(e_str), g.splitLines(a_str), msg=msg)
         except AssertionError:
             # Dump actual results, including bodies.
-            if trace:
+            if True:  ### trace:
                 print('')
                 print(f"Fail: {self.id()}")
                 self.dump_tree(p, tag='Actual results...')
@@ -135,7 +135,7 @@ class BaseTestImporter(LeoUnitTest):
 
         # createOutline calls Importer.gen_lines and Importer.check.
 
-        if retain_trailing_ws:  # A hack for testing.
+        if True:  ### retain_trailing_ws:  # A hack for testing.
             test_s = textwrap.dedent(s).lstrip()
         else:
             test_s = textwrap.dedent(s).strip() + '\n'
@@ -243,6 +243,7 @@ class TestC(BaseTestImporter):
             ),
             (1, 'class cTestClass1',
                 'class cTestClass1 {\n'
+                '\n'  # Leo 6.8.7
                 '    @others\n'
                 '}\n'
             ),
@@ -250,6 +251,7 @@ class TestC(BaseTestImporter):
                 'int foo (int a) {\n'
                 '    a = 2 ;\n'
                 '}\n'
+                '\n'  # Leo 6.8.7
             ),
             (2, 'func bar',
                 'char bar (float c) {\n'
@@ -3904,7 +3906,7 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results,
-            check=False, retain_trailing_ws=True, trace=True)
+            check=False, retain_trailing_ws=True, trace=False)
     #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """
