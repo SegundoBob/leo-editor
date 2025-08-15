@@ -286,6 +286,7 @@ class TestC(BaseTestImporter):
             ),
             (1, 'class cTestClass1',
                 'class cTestClass1 {\n'
+                '\n'  # Leo 6.8.7
                 '@others\n'
                 '}\n'
             ),
@@ -294,6 +295,7 @@ class TestC(BaseTestImporter):
                 '// an underindented line.\n'
                 '        a = 2 ;\n'
                 '    }\n'
+                '\n'  # Leo 6.8.7
             ),
             (2, 'func bar',
                 '    // This should go with the next function.\n'
@@ -332,6 +334,7 @@ class TestC(BaseTestImporter):
                 '{\n'
                 '    assert(false);\n'
                 '}\n'
+                '\n'  # Leo 6.8.7
             ),
             (1, 'func dothat',
                 'bool\n'
