@@ -940,6 +940,7 @@ class TestElisp(BaseTestImporter):
                     '   (assn a "abc")\n'
                     '   (assn b \\x)\n'
                     '   (+ 1 2 3))\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'defun cde',
                     '; comment re cde\n'
