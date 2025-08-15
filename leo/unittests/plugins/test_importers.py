@@ -1049,6 +1049,7 @@ class TestHtml(BaseTestImporter):
             ),
             (1, '<body>',
                     '<body>\n'
+                    '\n'  # Leo 6.8.7
                     '@others\n'
                     '</p> <!-- orphan -->\n'
                     '\n'
