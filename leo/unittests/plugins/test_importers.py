@@ -1909,6 +1909,7 @@ class TestLua(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                     '@others\n'
+                    '\n'  # Leo 6.8.7
                     'print("main", coroutine.resume(co, 1, 10))\n'
                     'print("main", coroutine.resume(co, "r"))\n'
                     'print("main", coroutine.resume(co, "x", "y"))\n'
@@ -1921,6 +1922,7 @@ class TestLua(BaseTestImporter):
                     '  print("foo", a)\n'
                     '  return coroutine.yield(2*a)\n'
                     'end\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function coroutine.create',
                     'co = coroutine.create(function (a,b)\n'
