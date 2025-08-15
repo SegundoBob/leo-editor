@@ -833,6 +833,7 @@ class TestCython(BaseTestImporter):
                     '    a Cython program, but not from Python.\n'
                     '    """\n'
                     '    return pow(x, 2.0) + x\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'cpdef print_result',
                     'cpdef print_result (double x):\n'
