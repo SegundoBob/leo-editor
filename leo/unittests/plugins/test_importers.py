@@ -135,7 +135,8 @@ class BaseTestImporter(LeoUnitTest):
         else:
             test_s = textwrap.dedent(s).strip() + '\n'
 
-        c.importCommands.createOutline(parent.copy(), ext, test_s)
+        # Leo 6.8.7:
+        c.importCommands.createOutline(parent.copy(), ext, test_s, treeType= '@clean')
 
         # Dump the actual results on failure and raise AssertionError.
         if check:

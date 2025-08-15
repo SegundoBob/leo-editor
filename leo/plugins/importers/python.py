@@ -237,14 +237,24 @@ class Python_Importer(Importer):
                 tail_lines = 0
             i += 1
         return i2
-    #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers
+    #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers (*** trace)
     def postprocess(self, parent: Position, result_blocks: list[Block]) -> None:
         """
         Python_Importer.postprocess.
         """
 
+        if 0:  ###
+            g.trace('result_blocks...')
+            for block in result_blocks:
+                print(block)
+
+        if 0:  ###
+            g.trace('Initial bodies...')
+            for p in parent.self_and_subtree():
+                g.printObj(p.b, tag=p.h)
+
         #@+others  # Define helper functions.
-        #@+node:ekr.20230830113521.1: *4* python_i.function: adjust_at_others
+        #@+node:ekr.20230830113521.1: *4* python_i.function: adjust_at_others (*** trace)
         def adjust_at_others(parent: Position) -> None:
             """
             Add a blank line before @others, and remove the leading blank line in the first child.
@@ -253,7 +263,11 @@ class Python_Importer(Importer):
                 if p.h.startswith('class') and p.hasChildren():
                     child = p.firstChild()
                     lines = g.splitLines(p.b)
+                    if 0:  ###
+                        g.printObj(lines, tag=p.h)
+                        g.printObj(g.splitLines(child.b), tag=child.h)
                     for i, line in enumerate(lines):
+                        ### g.trace(i, repr(line))  ###
                         if line.strip().startswith('@others') and child.b.startswith('\n'):
                             p.b = ''.join(lines[:i]) + '\n' + ''.join(lines[i:])
                             child.b = child.b[1:]
@@ -343,7 +357,7 @@ class Python_Importer(Importer):
                         docstring = find_docstring(child1)
                         if docstring:
                             move_class_docstring(docstring, child1, p)
-        #@+node:ekr.20230930181855.1: *4* python_i.function: move_module_preamble
+        #@+node:ekr.20230930181855.1: *4* python_i.function: move_module_preamble (*** trace)
         def move_module_preamble(lines: list[str], parent: Position, result_blocks: list[Block]) -> None:
             """Move the preamble lines from the parent's first child to the start of parent.b."""
             child1 = parent.firstChild()
@@ -356,6 +370,13 @@ class Python_Importer(Importer):
             preamble_s = ''.join(preamble_lines)
             if not preamble_s.strip():
                 return
+
+            if 0:  ###
+                g.trace('ADJUST')
+                g.printObj(preamble_s, tag=f"preamble: {parent.h}")
+                g.printObj(parent.b, tag=f"parent.b: {parent.h}")
+                g.printObj(child1.b, tag="child1.b: {child1.h}")
+
             # Adjust the bodies.
             parent.b = preamble_s + parent.b
             child1.b = child1.b.replace(preamble_s, '')
