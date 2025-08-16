@@ -4743,6 +4743,7 @@ class TestTcl(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                     '@others\n'
+                    '\n'  # Leo 6.8.7
                     ' # Main program\n'
                     '\n'
                     ' if { [info exists argv0] && [string equal $argv0 [info script]] } {\n'
