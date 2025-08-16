@@ -3148,7 +3148,7 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
+    #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring (True Fail)
     def test_class_docstring(self):
 
         # Test that docstrings contain no whitespace in otherwise blank lines.
@@ -3207,11 +3207,10 @@ class TestPython(BaseTestImporter):
                     '    in order to create knowledge about whether an "else if" node\n'
                     '    is a true "else if" node, or an "elif" node.\n'
                     '    """\n'
-                    '\n'  # This should be the blank line before the 'name = "refactoring"' line.
+                    '\n'  # Leo 6.8.7.
                     '    @others\n'
             ),
             (2, 'RefactoringChecker.__init__',
-                    # There should be no leading blank line here.
                     'name = "refactoring"\n'
                     '\n'
                     'msgs = {\n'
@@ -3372,6 +3371,7 @@ class TestPython(BaseTestImporter):
             (1, 'function: f1',
                     'def f1():\n'
                     '    pass\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'class Class1',
                        'class Class1:\n'
