@@ -4027,6 +4027,7 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (0, '',
                 '@others\n'
+                '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
