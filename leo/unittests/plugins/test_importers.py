@@ -3207,7 +3207,7 @@ class TestPython(BaseTestImporter):
                     '    in order to create knowledge about whether an "else if" node\n'
                     '    is a true "else if" node, or an "elif" node.\n'
                     '    """\n'
-                    '\n'  # Leo 6.8.7.
+                    '\n'  # Leo 6.8.7.  ### This is the hard case.
                     '    @others\n'
             ),
             (2, 'RefactoringChecker.__init__',

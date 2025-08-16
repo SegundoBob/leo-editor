@@ -403,10 +403,6 @@ class Importer:
         def handle_block_with_children(block: Block, block_common_lws: str) -> None:
             """A block with children."""
 
-            if False and block.name == 'RefactoringChecker':  ###
-                g.trace(block.name)  ###
-                breakpoint()  ###
-
             # Find all lines that will be covered by @others.
             children_start, children_end = find_all_child_lines(block)
 
@@ -599,7 +595,6 @@ class Importer:
                 s = block2.lines[i]
                 if s.strip():
                     break
-                ### g.trace(block2.name, '=>', block.name)  ###
                 block.end += 1
                 block2.start += 1
     #@+node:ekr.20230529075138.38: *4* i.preprocess_lines
