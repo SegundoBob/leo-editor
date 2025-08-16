@@ -3874,6 +3874,7 @@ class TestPython(BaseTestImporter):
             (1, 'function: f1',
                    'def f1():\n'
                    '    pass\n'
+                   '\n'  # Leo 6.8.7
             ),
         )
         self.new_run_test(s, expected_results)
