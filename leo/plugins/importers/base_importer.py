@@ -599,6 +599,7 @@ class Importer:
                 s = block2.lines[i]
                 if s.strip():
                     break
+                ### g.trace(block2.name, '=>', block.name)  ###
                 block.end += 1
                 block2.start += 1
     #@+node:ekr.20230529075138.38: *4* i.preprocess_lines

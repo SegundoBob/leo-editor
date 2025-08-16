@@ -3101,8 +3101,6 @@ class TestPython(BaseTestImporter):
     #@+node:ekr.20240219045037.1: *3* TestPython.test_almost_empty_defs
     def test_almost_empty_defs(self):
 
-        # #3803. Adapated from the TracerCore class coverage/types.py.
-        #        Designed to test find_end_of_block.
         s = '''
             class TracerCore:
 
@@ -3146,6 +3144,7 @@ class TestPython(BaseTestImporter):
                     '# About main\n'
                     'def main():\n'
                     '    pass\n'
+                    '\n'  # Leo 6.8.7
             ),
         )
         self.new_run_test(s, expected_results)
