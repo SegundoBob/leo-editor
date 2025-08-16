@@ -24,7 +24,6 @@ class BaseTestImporter(LeoUnitTest):
     """The base class for tests of leoImport.py"""
 
     ext = None  # Subclasses must set this to the language's extension.
-    treeType = '@file'  # Fix #352.
 
     def setUp(self):
         super().setUp()

@@ -64,9 +64,9 @@ class Org_Importer(Importer):
 
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for .org files."""
-    Org_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Org_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     '@auto': ['@auto-org', '@auto-org-mode',],

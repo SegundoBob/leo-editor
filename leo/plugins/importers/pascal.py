@@ -45,9 +45,9 @@ class Pascal_Importer(Importer):
     #@-others
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for pascal."""
-    Pascal_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Pascal_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     'extensions': ['.pas'],

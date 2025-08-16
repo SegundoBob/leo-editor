@@ -154,9 +154,9 @@ class Rst_Importer(Importer):
     #@-others
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for reStructureText."""
-    Rst_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Rst_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     '@auto': ['@auto-rst',],  # Fix #392: @auto-rst file.txt: -rst ignored on read

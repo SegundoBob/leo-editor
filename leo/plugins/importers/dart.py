@@ -22,9 +22,9 @@ class Dart_Importer(Importer):
     )
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for dart."""
-    Dart_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Dart_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     'extensions': ['.dart'],
