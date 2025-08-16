@@ -3130,11 +3130,13 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class TracerCore',
                     'class TracerCore:\n'
+                    '\n'  # Leo 6.8.7
                     '    ATothers\n'.replace('AT', '@')
             ),
             (2, 'TracerCore.start',
                     'def start(self):\n'
                     '    """Start this tracer."""\n'
+                    '\n'  # Leo 6.8.7
             ),
             (2, 'TracerCore.stop',
                     'def stop(self):\n'
@@ -3362,6 +3364,7 @@ class TestPython(BaseTestImporter):
             (0, '',  # Ignore the first headline.
                     'import sys\n'
                     '@others\n'
+                    '\n'  # Leo 6.8.7
                     "if __name__ == '__main__':\n"
                     '    main()\n'
                     '@language python\n'
@@ -3390,6 +3393,7 @@ class TestPython(BaseTestImporter):
                        '\n'
                        'def f2():\n'
                        '    pass\n'
+                       '\n'  # Leo 6.8.7
             ),
             (1, 'class Class2',
                        '# An outer comment\n'
@@ -4472,6 +4476,7 @@ class TestRust(BaseTestImporter):
                     '        area(width1, height1)\n'
                     '    );\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'fn area',
                     'fn area(width: u32, height: u32) -> u32 {\n'
@@ -4524,6 +4529,7 @@ class TestRust(BaseTestImporter):
                     '    /// Returns an object that is able to format this object.\n'
                     "    fn format(&self) -> Self::Format<'_>;\n"
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'impl AsFormat for &T',
                     '/// Implement [`AsFormat`] for references to types that implement [`AsFormat`].\n'
