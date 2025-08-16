@@ -134,11 +134,8 @@ class BaseTestImporter(LeoUnitTest):
         parent.h = f"{kind} {self.short_id}"
 
         # createOutline calls Importer.gen_lines and Importer.check.
-
-        if True:  ### retain_trailing_ws:  # A hack for testing.
-            test_s = textwrap.dedent(s).lstrip()
-        else:
-            test_s = textwrap.dedent(s).strip() + '\n'
+        # Leo 6.8.7. Do *not* strip trailing ws!
+        test_s = textwrap.dedent(s).lstrip()
 
         # Leo 6.8.7:
         c.importCommands.createOutline(parent.copy(), ext, test_s, treeType= '@clean')

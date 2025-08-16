@@ -316,8 +316,7 @@ class Importer:
             for block in result_blocks:
                 print(block)
 
-        if 1:  ### Highly experimental.
-            self.preprocess_blocks(result_blocks)
+        self.preprocess_blocks(result_blocks)
 
         # Post pass: generate all bodies
         self.generate_all_bodies(parent, outer_block, result_blocks)
@@ -408,21 +407,18 @@ class Importer:
 
             # Add the head lines to block.v.
             head_lines = self.lines[block.start : children_start]
-            block.v.b = self.compute_body(head_lines)
-            ### block.v.b = ''.join(head_lines)
+            block.v.b = ''.join(head_lines)
 
             # Add an @others directive if necessary.
             if block.v not in at_others_dict:
                 at_others_dict[block.v] = True
-                ### g.printObj(block.v.b, tag=f"{g.my_name()}: block.v.b before adding @others")  ###
-                ### To do: Add leading ws from child nodes (that haven't been created yes!!!
                 block.v.b = block.v.b + f"{block_common_lws}@others\n"
 
             # Add the tail lines to block.v
             tail_lines = self.lines[children_end : block.end]
-            tail_s = self.compute_body(tail_lines)
-            ### tail_s = ''.join(tail_lines)
+            tail_s = ''.join(tail_lines)
             if tail_s.strip():
+                ### BUG ######
                 block.v.b = block.v.b.rstrip() + '\n' + tail_s
                 ### g.printObj(block.v.b, tag=f"{g.my_name()}: block.v.b")
 
@@ -443,9 +439,8 @@ class Importer:
 
         # Note: i.gen_lines adds the @language and @tabwidth directives.
         if not outer_block.child_blocks:
-            # Put everything in parent.b.
-            # Do *not* change parent.h!
-            parent.b = self.compute_body(outer_block.lines)
+            # Put everything in parent.b. Do *not* change parent.h!
+            parent.b = ''.join(outer_block.lines)
             return
 
         outer_block.v = parent.v
@@ -485,7 +480,7 @@ class Importer:
             if block.child_blocks:
                 handle_block_with_children(block, block_common_lws)
             else:
-                block.v.b = self.compute_body(self.lines[block.start : block.end])
+                block.v.b = ''.join(self.lines[block.start : block.end])
 
             # Add all child blocks to the to-do list.
             todo_list.extend(block.child_blocks)
@@ -530,15 +525,8 @@ class Importer:
         if parent.isCloned() and parent.hasChildren():  # pragma: no cover (missing test)
             return
 
-        ###
-            # # Check treeType.
-            # if treeType not in ('@auto', '@clean', '@edit', '@file', '@nosent'):
-                # g.es_print(f"Invalid treeType: {treeType!r}")
-                # return
-
         # Bind ivars.
         self.root = root = parent.copy()
-        ### self.treeType = treeType
 
         # Check for intermixed blanks and tabs.
         self.tab_width = c.getTabWidth(p=root)
@@ -638,21 +626,6 @@ class Importer:
         return result
     #@+node:ekr.20230529075138.7: *3* i: Utils
     # Subclasses are unlikely ever to need to override these methods.
-    #@+node:ekr.20230925112827.1: *4* i.compute_body (to be removed)
-    def compute_body(self, lines: list[str]) -> str:
-        """
-        Return the regularized body text from the given list of lines.
-
-        In most contexts removing leading blank lines is appropriate.
-        If not, the caller can insert the desired blank lines.
-        """
-        return ''.join(lines)
-
-        ###
-            # s = ''.join(lines)
-            # if self.treeType in ('@auto', '@clean'):
-                # return s
-            # return s.lstrip('\n').rstrip() + '\n' if s.strip() else ''
     #@+node:ekr.20230529075138.8: *4* i.compute_common_lws
     def compute_common_lws(self, blocks: list[Block]) -> str:
         """
