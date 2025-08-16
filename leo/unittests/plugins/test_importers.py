@@ -3480,6 +3480,7 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class HistoryTrim',
                     'class HistoryTrim(BaseIPythonApplication):\n'
+                    '\n'  # Leo 6.8.7
                     '    @others\n'
             ),
             (2, 'HistoryTrim.start',
@@ -3495,9 +3496,11 @@ class TestPython(BaseTestImporter):
                     '                    PRIMARY KEY (session, line))""")\n'
                     '    new_db.commit()\n'
                     '    new_hist_file.rename(hist_file)\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'class HistoryClear',
                     'class HistoryClear(HistoryTrim):\n'
+                    '\n'  # Leo 6.8.7
                     '    @others\n'
             ),
             (2, 'HistoryClear.start',
@@ -3507,9 +3510,11 @@ class TestPython(BaseTestImporter):
                     '        "Really delete all ipython history? ", default="no", interrupt="no"\n'
                     '    ):\n'
                     '        HistoryTrim.start(self)\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'class HistoryApp',
                     'class HistoryApp(Application):\n'
+                    '\n'  # Leo 6.8.7
                     '    @others\n'
             ),
             (2, 'HistoryApp.start',
