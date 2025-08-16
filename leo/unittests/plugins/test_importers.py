@@ -76,8 +76,8 @@ class BaseTestImporter(LeoUnitTest):
     def check_round_trip(self, p: Position, s: str) -> None:
         """Assert that p's outline is equivalent to s."""
         c = self.c
-        s = s.rstrip()  # Ignore trailing whitespace.
-        result_s = c.atFileCommands.atAutoToString(p).rstrip()  # Ignore trailing whitespace.
+        result_s = c.atFileCommands.atAutoToString(p)
+
         # Ignore leading whitespace and all blank lines.
         s_lines = [z.lstrip() for z in g.splitLines(s) if z.strip()]
         result_lines = [z.lstrip() for z in g.splitLines(result_s) if z.strip()]
