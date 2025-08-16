@@ -3807,6 +3807,7 @@ class TestPython(BaseTestImporter):
             (0, '',  # Ignore the first headline.
                 'import sys\n'
                 '@others\n'
+                '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
@@ -3815,6 +3816,7 @@ class TestPython(BaseTestImporter):
             (1, 'function: f1',
                     'def f1():\n'
                     '    pass\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'class Class1',
                     'class Class1:pass\n'
@@ -3823,6 +3825,7 @@ class TestPython(BaseTestImporter):
                     'a = 2\n'
                     '@dec_for_f2\n'
                     'def f2(): pass\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function: main',
                     'def main():\n'
