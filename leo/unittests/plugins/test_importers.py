@@ -3633,6 +3633,59 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results, trace=True)
+    #@+node:ekr.20230929051304.1: *3* TestPython.test_long_outer_docstring
+    def test_long_outer_docstring(self):
+
+        s = '''
+            """
+            Multi-line module-level docstring
+
+            Last line.
+            """
+
+            from __future__ import annotations
+
+            class C1:
+                """Class docstring"""
+
+                def __init__(self):
+                    pass
+
+            def f1():
+                pass
+
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+                    '"""\n'
+                    'Multi-line module-level docstring\n'
+                    '\n'
+                    'Last line.\n'
+                    '"""\n'
+                    '\n'
+                    'from __future__ import annotations\n'
+                    '\n'
+                    '@others\n'
+                    '@language python\n'
+                    '@tabwidth -4\n'
+            ),
+            (1, 'class C1',
+                    'class C1:\n'
+                    '    """Class docstring"""\n'
+                    '    @others\n'
+            ),
+            (2, 'C1.__init__',
+                    'def __init__(self):\n'
+                    '    pass\n'
+            ),
+            (1, 'function: f1',
+                   'def f1():\n'
+                   '    pass\n'
+                   '\n'  # Leo 6.8.7
+            ),
+        )
+        self.new_run_test(s, expected_results)
     #@+node:ekr.20211202064822.1: *3* TestPython.test_nested_classes
     def test_nested_classes(self):
         s = """
@@ -3799,58 +3852,6 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                     '"""Module-level docstring"""\n'
-                    '\n'
-                    'from __future__ import annotations\n'
-                    '\n'
-                    '@others\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
-            ),
-            (1, 'class C1',
-                    'class C1:\n'
-                    '    """Class docstring"""\n'
-                    '    @others\n'
-            ),
-            (2, 'C1.__init__',
-                    'def __init__(self):\n'
-                    '    pass\n'
-            ),
-            (1, 'function: f1',
-                   'def f1():\n'
-                   '    pass\n'
-            ),
-        )
-        self.new_run_test(s, expected_results)
-    #@+node:ekr.20230929051304.1: *3* TestPython.test_post_process_long_outer_docstring
-    def test_long_outer_docstring(self):
-
-        s = '''
-            """
-            Multi-line module-level docstring
-
-            Last line.
-            """
-
-            from __future__ import annotations
-
-            class C1:
-                """Class docstring"""
-
-                def __init__(self):
-                    pass
-
-            def f1():
-                pass
-
-            '''
-
-        expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '"""\n'
-                    'Multi-line module-level docstring\n'
-                    '\n'
-                    'Last line.\n'
-                    '"""\n'
                     '\n'
                     'from __future__ import annotations\n'
                     '\n'
