@@ -397,7 +397,7 @@ class Importer:
                 start = min(start, child_block.start)
                 end = max(end, child_block.end)
             return start, end
-        #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children (*** trace)
+        #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children
         def handle_block_with_children(block: Block, block_common_lws: str) -> None:
             """A block with children."""
 
