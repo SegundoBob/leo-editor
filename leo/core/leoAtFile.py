@@ -2961,20 +2961,20 @@ class AtFile:
         if not old_contents:
             old_contents = ''
 
-        if not root.isAtCleanNode():  # #4394: Always write @clean nodes!
-            # Compare the old and new contents.
-            unchanged = (
-                contents == old_contents
-                or (not at.explicitLineEnding and at.compareIgnoringLineEndings(old_contents, contents))
-                or ignoreBlankLines and at.compareIgnoringBlankLines(old_contents, contents))
-            if unchanged:
-                at.unchangedFiles += 1
-                if not g.unitTesting and c.config.getBool(
-                    'report-unchanged-files', default=True):
-                    g.es(f"{timestamp}unchanged: {sfn}")  # pragma: no cover
-                # Check unchanged files.
-                at.checkPythonCode(contents, fileName, root)
-                return False  # No change to original file.
+        unchanged = (
+            contents == old_contents
+            or (not at.explicitLineEnding and at.compareIgnoringLineEndings(old_contents, contents))
+            or ignoreBlankLines and at.compareIgnoringBlankLines(old_contents, contents))
+
+        if unchanged:
+            at.unchangedFiles += 1
+            if not g.unitTesting and c.config.getBool(
+                'report-unchanged-files', default=True):
+                g.es(f"{timestamp}unchanged: {sfn}")  # pragma: no cover
+
+            # Check *unchanged* files.
+            at.checkPythonCode(contents, fileName, root)
+            return False  # No change to original file.
 
         # Warn if we are only adjusting the line endings.
         if at.explicitLineEnding:  # pragma: no cover
@@ -2998,6 +2998,7 @@ class AtFile:
             g.error('error writing', sfn)
             g.es('not written:', sfn)
             at.addToOrphanList(root)
+
         # Check *after* writing the file.
         at.checkPythonCode(contents, fileName, root)
         return ok
