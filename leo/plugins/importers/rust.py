@@ -380,15 +380,13 @@ class Rust_Importer(Importer):
         # g.printObj(results, tag=f"{g.my_name()} {i1}:{i2}")
         return results
     #@+node:ekr.20231031131127.1: *3* rust_i.postprocess
-    def postprocess(self, parent: Position, result_blocks: list[Block]) -> None:
+    def postprocess(self, parent: Position) -> None:
         """
         Rust_Importer.postprocess: Post-process the result.blocks.
 
         **Note**: The RecursiveImportController class contains a postpass that
                   adjusts headlines of *all* imported nodes.
         """
-        if len(result_blocks) < 2:
-            return
 
         #@+others  # Define helper functions.
         #@+node:ekr.20231031162249.1: *4* rust_i.function: convert_docstring (not used)
@@ -421,22 +419,24 @@ class Rust_Importer(Importer):
             results.append('@c\n')
             p.b = ''.join(results) + ''.join(tail)
         #@+node:ekr.20231031162142.1: *4* rust_i.function: move_module_preamble
-        def move_module_preamble(lines: list[str], parent: Position, result_blocks: list[Block]) -> None:
+        def move_module_preamble(lines: list[str], parent: Position) -> None:
             """
             Move the preamble lines from the parent's first child to the start of parent.b.
 
             For Rust, this consists of leading 'use' statements and any comments that precede them.
             """
+
             child1 = parent.firstChild()
             if not child1:
                 return
+
             # Compute the potential preamble are all the leading lines.
-            potential_preamble_start = max(0, result_blocks[1].start_body - 1)
-            potential_preamble_lines = lines[:potential_preamble_start]
+            preamble_start = max(0, len(g.splitLines(child1.b)) - 1)
+            preamble_lines = lines[:preamble_start]
 
             # Include only comment, blank and 'use' lines.
             found_use = False
-            for i, line in enumerate(potential_preamble_lines):
+            for i, line in enumerate(preamble_lines):
                 stripped_line = line.strip()
                 if stripped_line.startswith('use'):
                     found_use = True
@@ -467,7 +467,8 @@ class Rust_Importer(Importer):
                 child1.b = child1.b[1:]
         #@-others
 
-        move_module_preamble(self.lines, parent, result_blocks)
+        move_module_preamble(self.lines, parent)
+
         if 0:
             for p in parent.self_and_subtree():
                 convert_docstring(p)

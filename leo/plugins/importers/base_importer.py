@@ -495,7 +495,7 @@ class Importer:
         #@-<< i.generate_all_bodies: final checks >>
 
         # A hook for language-specific processing.
-        self.postprocess(parent, result_blocks)
+        self.postprocess(parent)
 
         # Note: i.gen_lines appends @language and @tabwidth directives to parent.b.
     #@+node:ekr.20230529075138.37: *4* i.import_from_string (driver)
@@ -553,7 +553,7 @@ class Importer:
         """
         return self.delete_comments_and_strings(lines[:])
     #@+node:ekr.20230825095756.1: *4* i.postprocess
-    def postprocess(self, parent: Position, result_blocks: list[Block]) -> None:
+    def postprocess(self, parent: Position) -> None:
         """
         Importer.postprocess.  A hook for language-specific post-processing.
 

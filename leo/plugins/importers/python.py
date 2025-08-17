@@ -238,15 +238,10 @@ class Python_Importer(Importer):
             i += 1
         return i2
     #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers (*** trace)
-    def postprocess(self, parent: Position, result_blocks: list[Block]) -> None:
+    def postprocess(self, parent: Position) -> None:
         """
         Python_Importer.postprocess.
         """
-
-        if 0:  ###
-            g.trace('Initial result blocks...')
-            for block in result_blocks:
-                print(block)
 
         if 0:  ###
             g.trace('Initial bodies...')
@@ -311,13 +306,12 @@ class Python_Importer(Importer):
             while i < len(lines):
                 if delim in lines[i]:
                     ### Experimental.  Add trailing blank lines.
-                    if 1:
+                    i += 1
+                    while i < len(lines) and not lines[i].strip():
                         i += 1
-                        while i < len(lines) and not lines[i].strip():
-                            i += 1
-                        return ''.join(lines[:i])
-                    else:
-                        return ''.join(lines[: i + 1])
+                    return ''.join(lines[:i])
+                    ###
+                        # return ''.join(lines[: i + 1])
                 i += 1
             return None
 
@@ -363,14 +357,21 @@ class Python_Importer(Importer):
                         if docstring:
                             move_class_docstring(docstring, child1, p)
         #@+node:ekr.20230930181855.1: *4* python_i.function: move_module_preamble
-        def move_module_preamble(lines: list[str], parent: Position, result_blocks: list[Block]) -> None:
+        def move_module_preamble(lines: list[str], parent: Position) -> None:
             """Move the preamble lines from the parent's first child to the start of parent.b."""
+
+            if 0:  ###
+                g.trace(parent.h)
+                for p in parent.self_and_subtree():
+                    g.printObj(p.b, tag=f"{p.level()} {p.h}")
+
             child1 = parent.firstChild()
             if not child1:
                 return
 
             # Compute the preamble.
-            preamble_start = max(0, result_blocks[1].start_body - 1)
+            ### preamble_start = max(0, result_blocks[1].start_body - 1)  ###
+            preamble_start = max(0, len(g.splitLines(child1.b)) - 1)
             preamble_lines = lines[:preamble_start]
             preamble_s = ''.join(preamble_lines)
             if not preamble_s.strip():
@@ -383,7 +384,7 @@ class Python_Importer(Importer):
         #@-others
 
         adjust_headlines(parent)
-        move_module_preamble(self.lines, parent, result_blocks)
+        move_module_preamble(self.lines, parent)
         move_class_docstrings(parent)
         adjust_at_others(parent)
     #@-others
