@@ -111,11 +111,7 @@ class BaseTestImporter(LeoUnitTest):
         self.check_round_trip(p, expected_s or s)
     #@+node:ekr.20230526124600.1: *3* BaseTestImporter.new_run_test
     def new_run_test(self, s: str, expected_results: tuple,
-        *,
-        check: bool = True,
-        retain_trailing_ws=False,
-        trace: bool = False,
-    ) -> None:
+        *, check: bool = True, trace: bool = False) -> None:
         """
         Run a unit test of an import scanner,
         i.e., create a tree from string s at location p.
@@ -3937,8 +3933,7 @@ class TestPython(BaseTestImporter):
                     '\n'
             ),
         )
-        self.new_run_test(s, expected_results,
-            check=False, retain_trailing_ws=True, trace=False)
+        self.new_run_test(s, expected_results, check=False, trace=False)
     #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """
