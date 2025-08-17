@@ -73,14 +73,18 @@ class BaseTestImporter(LeoUnitTest):
                         g.printObj(g.splitLines(body))
             raise
     #@+node:ekr.20220809054555.1: *3* BaseTestImporter.check_round_trip
-    def check_round_trip(self, p: Position, s: str) -> None:
+    def check_round_trip(self, p: Position, s: str, strict: bool = True) -> None:
         """Assert that p's outline is equivalent to s."""
         c = self.c
         result_s = c.atFileCommands.atAutoToString(p)
 
-        # Ignore leading whitespace and all blank lines.
-        s_lines = [z.lstrip() for z in g.splitLines(s) if z.strip()]
-        result_lines = [z.lstrip() for z in g.splitLines(result_s) if z.strip()]
+        if strict:
+            s_lines = g.splitLines(s)
+            result_lines = g.splitLines(result_s)
+        else:
+            # Ignore leading whitespace and all blank lines.
+            s_lines = [z.lstrip() for z in g.splitLines(s) if z.strip()]
+            result_lines = [z.lstrip() for z in g.splitLines(result_s) if z.strip()]
         if s_lines != result_lines:
             g.trace('FAIL', g.caller(2))
             g.printObj([f"{i:<4} {z}" for i, z in enumerate(s_lines)], tag=f"expected: {p.h}")
@@ -106,9 +110,13 @@ class BaseTestImporter(LeoUnitTest):
                     return z  # pragma: no cover
         return '@file'
     #@+node:ekr.20230527075112.1: *3* BaseTestImporter.new_round_trip_test
-    def new_round_trip_test(self, s: str, expected_s: str = None) -> None:
+    def new_round_trip_test(self, s: str, expected_s: str = None, strict: bool = True) -> None:
+
+        if not expected_s:  # Leo 6.8.7.
+            # Define the *strict* expected results.
+            expected_s = textwrap.dedent(s).strip() + '\n'
         p = self.run_test(s)
-        self.check_round_trip(p, expected_s or s)
+        self.check_round_trip(p, expected_s, strict=strict)
     #@+node:ekr.20230526124600.1: *3* BaseTestImporter.new_run_test
     def new_run_test(self, s: str, expected_results: tuple,
         *, check: bool = True, trace: bool = False) -> None:
@@ -1210,7 +1218,8 @@ class TestHtml(BaseTestImporter):
             .replace('<td class="blutopgrabot"><a', '<td class="blutopgrabot">\n<a')
             .replace('<noscript><img', '<noscript>\n<img')
         )
-        self.new_round_trip_test(s, expected_s)
+        self.new_round_trip_test(s, expected_s, strict=False)
+
     #@+node:ekr.20210904065459.21: *3* TestHtml.test_multple_node_completed_on_a_line
     def test_multple_node_completed_on_a_line(self):
 
@@ -3140,7 +3149,7 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring (True Fail)
+    #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
     def test_class_docstring(self):
 
         # Test that docstrings contain no whitespace in otherwise blank lines.
@@ -3199,7 +3208,7 @@ class TestPython(BaseTestImporter):
                     '    in order to create knowledge about whether an "else if" node\n'
                     '    is a true "else if" node, or an "elif" node.\n'
                     '    """\n'
-                    '\n'  # Leo 6.8.7.  ### This is the hard case.
+                    '\n'  # Leo 6.8.7.
                     '    @others\n'
             ),
             (2, 'RefactoringChecker.__init__',
