@@ -3234,7 +3234,7 @@ class TestPython(BaseTestImporter):
                     '    self._suggest_join_with_non_empty_separator: bool = False\n'
             ),
         )
-        self.new_run_test(s, expected_results, check=True, trace=True)
+        self.new_run_test(s, expected_results, check=True, trace=False)
     #@+node:ekr.20230514195224.1: *3* TestPython.test_delete_comments_and_strings
     def test_delete_comments_and_strings(self):
 

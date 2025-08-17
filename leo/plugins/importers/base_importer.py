@@ -255,7 +255,7 @@ class Importer:
                     if level == 0:
                         return i
         return i2
-    #@+node:ekr.20230529075138.14: *4* i.gen_block (*** trace)
+    #@+node:ekr.20230529075138.14: *4* i.gen_block
     def gen_block(self, parent: Position) -> None:
         """
         Importer.gen_block.
@@ -310,11 +310,6 @@ class Importer:
                 inner_block.parent_v = child_v
                 todo_list.append(inner_block)
 
-        if 0:  ###
-            g.trace('result_blocks...')
-            for block in result_blocks:
-                print(block)
-
         self.preprocess_blocks(result_blocks)
 
         # Post pass: generate all bodies
@@ -354,7 +349,7 @@ class Importer:
         # Add trailing lines.
         if self.root.isAnyAtFileNode():  # #4385.
             parent.b += f"@language {self.language}\n@tabwidth {self.tab_width}\n"
-    #@+node:ekr.20230920165923.1: *4* i.generate_all_bodies (*** traces)
+    #@+node:ekr.20230920165923.1: *4* i.generate_all_bodies
     def generate_all_bodies(self, parent: Position, outer_block: Block, result_blocks: list[Block]) -> None:
         """Carefully generate bodies from the given blocks."""
         c = self.c
@@ -380,10 +375,6 @@ class Importer:
         #@-<< i.generate_all_bodies: initial checks >>
 
         #@+others  # Define helper functions.
-        #@+node:ekr.20230924170708.1: *5* function: dump_lines
-        def dump_lines(lines: list[str], tag: str) -> None:
-            """For debugging."""
-            g.printObj(lines, tag=tag)
         #@+node:ekr.20230924155035.1: *5* function: find_all_child_lines
         def find_all_child_lines(block: Block) -> tuple[int, int]:
             """Find all lines that will be covered by @others"""
@@ -396,6 +387,9 @@ class Importer:
             for child_block in block.child_blocks:
                 start = min(start, child_block.start)
                 end = max(end, child_block.end)
+            if False and block.name != 'outer-block':  ###
+                # g.printObj(block0, tag=block0.name)
+                g.printObj(self.lines[start:end], tag=f"{g.my_name()} Returns {start}:{end}")
             return start, end
         #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children
         def handle_block_with_children(block: Block, block_common_lws: str) -> None:
@@ -406,6 +400,13 @@ class Importer:
 
             # Add the head lines to block.v.
             head_lines = self.lines[block.start : children_start]
+
+            if False and block.name != 'outer-block':  ###
+                # g.trace(len(head_lines), block.name)
+                g.printObj(head_lines, tag=f"{g.my_name()} head_lines for {block.name}")
+                child_lines = self.lines[children_start:children_end]
+                g.printObj(child_lines, tag=f"{g.my_name()} child_lines for {block.name}")
+
             block.v.b = ''.join(head_lines)
 
             # Add an @others directive if necessary.
