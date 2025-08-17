@@ -237,16 +237,11 @@ class Python_Importer(Importer):
                 tail_lines = 0
             i += 1
         return i2
-    #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers (*** trace)
+    #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers
     def postprocess(self, parent: Position) -> None:
         """
         Python_Importer.postprocess.
         """
-
-        if 0:  ###
-            g.trace('Initial bodies...')
-            for p in parent.self_and_subtree():
-                g.printObj(p.b, tag=f"{p.level()} {p.h}")
 
         #@+others  # Define helper functions.
         #@+node:ekr.20230830113521.1: *4* python_i.function: adjust_at_others
@@ -305,13 +300,11 @@ class Python_Importer(Importer):
             i = 1
             while i < len(lines):
                 if delim in lines[i]:
-                    ### Experimental.  Add trailing blank lines.
+                    # Add trailing blank lines.
                     i += 1
                     while i < len(lines) and not lines[i].strip():
                         i += 1
                     return ''.join(lines[:i])
-                    ###
-                        # return ''.join(lines[: i + 1])
                 i += 1
             return None
 
@@ -319,14 +312,13 @@ class Python_Importer(Importer):
         def move_class_docstring(docstring: str, child_p: Position, class_p: Position) -> None:
             """Move the docstring from child_p to class_p."""
 
-            ### g.printObj(docstring, tag=child_p.h)
-
             # Remove the docstring from child_p.b.
             child_p.b = child_p.b.replace(docstring, '')
             child_p.b = child_p.b.lstrip('\n')
 
             # Carefully add the docstring to class_p.b.
             class_lines = g.splitLines(class_p.b)
+
             # Count the number of lines before the class line.
             n = 0
             while n < len(class_lines):
@@ -360,27 +352,25 @@ class Python_Importer(Importer):
         def move_module_preamble(lines: list[str], parent: Position) -> None:
             """Move the preamble lines from the parent's first child to the start of parent.b."""
 
-            if 0:  ###
-                g.trace(parent.h)
-                for p in parent.self_and_subtree():
-                    g.printObj(p.b, tag=f"{p.level()} {p.h}")
-
             child1 = parent.firstChild()
             if not child1:
                 return
 
-            # Compute the preamble.
-            ### preamble_start = max(0, result_blocks[1].start_body - 1)  ###
-            preamble_start = max(0, len(g.splitLines(child1.b)) - 1)
-            preamble_lines = lines[:preamble_start]
-            preamble_s = ''.join(preamble_lines)
-            if not preamble_s.strip():
-                return
+            def match(s: str) -> re.Match:
+                for kind, pattern in self.block_patterns:
+                    if m := pattern.match(s):
+                        return m
+                return None
 
-            # Adjust the bodies.
-            parent.b = preamble_s + parent.b
-            child1.b = child1.b.replace(preamble_s, '')
-            child1.b = child1.b.lstrip('\n')
+            # The preamble is everything up to the line that first matches a block
+            for i, line in enumerate(g.splitLines(child1.b)):
+                if match(line):
+                    # Adjust the bodies.
+                    preamble_s = ''.join(lines[:i])
+                    parent.b = preamble_s + parent.b
+                    child1.b = child1.b.replace(preamble_s, '')
+                    child1.b = child1.b.lstrip('\n')
+                    return
         #@-others
 
         adjust_headlines(parent)

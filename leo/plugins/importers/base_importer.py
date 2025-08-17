@@ -40,7 +40,7 @@ class Block:
     def __repr__(self) -> str:
         kind_name_s = f"{self.kind} {self.name}"
         lines = self.lines[self.start : self.end]
-        result = [f"Block {self.start}:{self.end} {kind_name_s!r}\n"]
+        result = [f"Block {self.start}:{self.start_body}:{self.end} {kind_name_s!r}\n"]
         for i, s in enumerate(lines):
             result.append(f"  {i:3} {s!r}\n")
         return ''.join(result)
@@ -387,9 +387,6 @@ class Importer:
             for child_block in block.child_blocks:
                 start = min(start, child_block.start)
                 end = max(end, child_block.end)
-            if False and block.name != 'outer-block':  ###
-                # g.printObj(block0, tag=block0.name)
-                g.printObj(self.lines[start:end], tag=f"{g.my_name()} Returns {start}:{end}")
             return start, end
         #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children
         def handle_block_with_children(block: Block, block_common_lws: str) -> None:
@@ -400,13 +397,6 @@ class Importer:
 
             # Add the head lines to block.v.
             head_lines = self.lines[block.start : children_start]
-
-            if False and block.name != 'outer-block':  ###
-                # g.trace(len(head_lines), block.name)
-                g.printObj(head_lines, tag=f"{g.my_name()} head_lines for {block.name}")
-                child_lines = self.lines[children_start:children_end]
-                g.printObj(child_lines, tag=f"{g.my_name()} child_lines for {block.name}")
-
             block.v.b = ''.join(head_lines)
 
             # Add an @others directive if necessary.
@@ -681,23 +671,6 @@ class Importer:
             else:
                 result.append(line)
         return result
-    #@+node:ekr.20230529075138.17: *4* i.trace_blocks & trace_block
-    def trace_blocks(self, blocks: list[Block]) -> None:
-        """For debugging: trace the list of blocks."""
-        if not blocks:
-            g.trace('No blocks')
-            return
-        print('')
-        print('Blocks...')
-        for block in blocks:
-            self.trace_block(block)
-        print('End of Blocks')
-        print('')
-
-    def trace_block(self, block: Block) -> None:
-        """For debugging: trace one block."""
-        tag = f"  {block.kind:>10} {block.name:<20} {block.start} {block.start_body} {block.end}"
-        g.printObj(block.lines[block.start : block.end], tag=tag)
     #@-others
 #@-others
 #@@language python

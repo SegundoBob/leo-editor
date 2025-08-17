@@ -4,13 +4,11 @@
 import glob
 import importlib
 import os
-import sys
 import textwrap
 from leo.core import leoGlobals as g
 from leo.core.leoJupytext import JupytextManager
 from leo.core.leoNodes import Position
 from leo.core.leoTest2 import LeoUnitTest
-from leo.plugins.importers.base_importer import Block
 from leo.plugins.importers.java import Java_Importer
 from leo.plugins.importers.python import Python_Importer
 from leo.plugins.importers.c import C_Importer
@@ -52,7 +50,7 @@ class BaseTestImporter(LeoUnitTest):
                 self.assertEqual(a_level - p0_level, e_level, msg=msg)
                 if i > 0:  # Don't test top-level headline.
                     self.assertEqual(e_h, a_h, msg=msg)
-                if 0:  ### Brief message
+                if 0:  # Brief message
                     if g.splitLines(e_str) != g.splitLines(a_str):
                         print(f"Fail: {self.id()}")
                         return
@@ -171,34 +169,6 @@ class BaseTestImporter(LeoUnitTest):
         test_s = textwrap.dedent(s).strip() + '\n'
         c.importCommands.createOutline(parent.copy(), ext, test_s)
         return parent
-    #@-others
-#@+node:ekr.20231011020747.1: ** class TestImporterClass(LeoUnitTest)
-class TestImporterClass(LeoUnitTest):
-    """Tests of methods of the Importer class."""
-
-    #@+others
-    #@+node:ekr.20231011021003.1: *3* TestImporterClass.test_trace_block
-    def test_trace_block(self):
-
-        c = self.c
-        importer = Python_Importer(c)
-        lines = g.splitLines(
-            """
-            import sys
-            def spam_and_eggs():
-               pass
-            """
-        )
-
-        # Test that Importer.trace_block doesn't crash.
-        # Comment out the assignment to sys.stdout to see the actual results.
-        try:
-            sys.stdout = open(os.devnull, 'w')
-            block = Block('def', 'spam_and_eggs', start=3, start_body=4, end=5, lines=lines)
-            importer.trace_block(block)
-        finally:
-            sys.stdout = sys.__stdout__
-
     #@-others
 #@+node:ekr.20211108052633.1: ** class TestAtAuto (BaseTestImporter)
 class TestAtAuto(BaseTestImporter):
