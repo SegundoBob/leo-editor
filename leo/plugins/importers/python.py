@@ -356,11 +356,11 @@ class Python_Importer(Importer):
             if not child1:
                 return
 
-            def match(s: str) -> re.Match:
+            def match(s: str) -> bool:
                 for kind, pattern in self.block_patterns:
-                    if m := pattern.match(s):
-                        return m
-                return None
+                    if pattern.match(s):
+                        return True
+                return False
 
             # The preamble is everything up to the line that first matches a block
             for i, line in enumerate(g.splitLines(child1.b)):
