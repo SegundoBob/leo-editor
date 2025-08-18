@@ -237,11 +237,19 @@ class Python_Importer(Importer):
                 tail_lines = 0
             i += 1
         return i2
-    #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers
+    #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers (trace)
     def postprocess(self, parent: Position) -> None:
         """
         Python_Importer.postprocess.
         """
+
+        trace = False
+
+        if 0:  # Keep this trace.
+            print('')
+            g.trace(parent.h)
+            for p in parent.self_and_subtree():
+                g.printObj(p.b, tag=f"{p.level()} {p.h}")
 
         #@+others  # Define helper functions.
         #@+node:ekr.20230830113521.1: *4* python_i.function: adjust_at_others

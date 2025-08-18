@@ -3858,15 +3858,16 @@ class TestPython(BaseTestImporter):
             class MyClass:
                 """MyClass: docstring"""
 
-                def f1():
+                def f1(self):
                     pass
 
                 def f2(
                     self, arg1
                 ):
-                   a = 1
-                   def inner_def():
-                       pass
+                    a = 1
+                    def inner_def():
+                        pass
+
 
             # About main
             def main():
@@ -3875,7 +3876,8 @@ class TestPython(BaseTestImporter):
             if __name__ == '__main__':
                 main()
 
-            '''
+
+            '''  # Leo 6.8.7: Two blank lines: trailing ws is *significant*.
 
         expected_results = (
             (0, '',  # Ignore the first headline.
@@ -3884,12 +3886,14 @@ class TestPython(BaseTestImporter):
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '\n'
+                '\n'
                 '@language python\n'
                 '@tabwidth -4\n'
             ),
             (1, 'class MyClass',
                     'class MyClass:\n'
-                    '    ATothers\n'.replace('AT', '@')
+                    '    """MyClass: docstring"""\n'
+                    '    @others\n'  ### .replace('AT', '@')
             ),
             (2, 'MyClass.f1',
                     'def f1(self):\n'
@@ -3898,21 +3902,21 @@ class TestPython(BaseTestImporter):
             ),
             (2, 'MyClass.f2',
                     'def f2(\n'
-                    '   self, arg1\n'
+                    '    self, arg1\n'
                     '):\n'
                     '    a = 1\n'
                     '    def inner_def():\n'
                     '        pass\n'
-                    '\n'
             ),
             (1, 'function: main',
                     '# About main\n'
                     'def main():\n'
                     '    pass\n'
-                    '\n'
+                    # '\n'  # Leo 6.8.7
+                    # '\n'  # Leo 6.8.7
             ),
         )
-        self.new_run_test(s, expected_results, check=False, trace=False)
+        self.new_run_test(s, expected_results, check=True, trace=False)
     #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """

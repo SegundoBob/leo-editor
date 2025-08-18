@@ -465,7 +465,6 @@ class Importer:
                 assert block.v in seen_vnodes, repr(block.v)
         #@-<< i.generate_all_bodies: final checks >>
 
-
         # A hook for language-specific processing.
         self.postprocess(parent)
 
