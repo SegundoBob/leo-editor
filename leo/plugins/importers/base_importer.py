@@ -428,7 +428,7 @@ class Importer:
         # Note: i.gen_lines adds the @language and @tabwidth directives.
         if not outer_block.child_blocks:
             # Put everything in parent.b. Do *not* change parent.h!
-            parent.b = ''.join(outer_block.lines)
+            parent.b = ''.join(self.lines)
             return
 
         outer_block.v = parent.v
