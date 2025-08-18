@@ -273,7 +273,7 @@ class Importer:
         # Add an outer block to the results list.
 
         outer_block = Block('outer', 'outer-block', 0, 0, len(self.lines), self.lines)
-        result_blocks.append(outer_block)
+        ### result_blocks.append(outer_block)
 
         # Add all outer blocks to the to-do list.
         todo_list = self.find_blocks(0, len(self.lines))
@@ -366,13 +366,14 @@ class Importer:
                 print(z)
             print('End of result blocks')
 
-        #@+<< i.generate_all_bodies: initial checks >>
-        #@+node:ekr.20230925133647.1: *5* << i.generate_all_bodies: initial checks >>
-        # An initial sanity check.
-        if result_blocks:
-            block0 = result_blocks[0]
-            assert outer_block == block0, (repr(outer_block), repr(block0))
-        #@-<< i.generate_all_bodies: initial checks >>
+        if 0:
+            #@+<< i.generate_all_bodies: initial checks >>
+            #@+node:ekr.20230925133647.1: *5* << i.generate_all_bodies: initial checks >>
+            # An initial sanity check.
+            if result_blocks:
+                block0 = result_blocks[0]
+                assert outer_block == block0, (repr(outer_block), repr(block0))
+            #@-<< i.generate_all_bodies: initial checks >>
 
         #@+others  # Define helper functions.
         #@+node:ekr.20230924155035.1: *5* function: find_all_child_lines
@@ -475,7 +476,7 @@ class Importer:
 
         #@+<< i.generate_all_bodies: final checks >>
         #@+node:ekr.20230926105046.1: *5* << i.generate_all_bodies: final checks >>
-        assert result_blocks[0].kind == 'outer', result_blocks[0]
+        ### assert result_blocks[0].kind == 'outer', result_blocks[0]
 
         # Make sure we've seen all blocks and vnodes.
         for block in result_blocks:
