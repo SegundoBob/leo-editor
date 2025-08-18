@@ -270,10 +270,8 @@ class Importer:
         todo_list: list[Block] = []
         result_blocks: list[Block] = []
 
-        # Add an outer block to the results list.
-
+        # Create the outer block.
         outer_block = Block('outer', 'outer-block', 0, 0, len(self.lines), self.lines)
-        ### result_blocks.append(outer_block)
 
         # Add all outer blocks to the to-do list.
         todo_list = self.find_blocks(0, len(self.lines))
@@ -362,7 +360,7 @@ class Importer:
 
         if 0:  # A good trace.
             g.trace('result_blocks...\n')
-            for z in result_blocks[1:]:
+            for z in result_blocks:
                 print(z)
             print('End of result blocks')
 
@@ -451,7 +449,7 @@ class Importer:
             seen_blocks[block] = True
             seen_vnodes[v] = True
 
-            # Note: This method must alter neither self.lines nor block lines.
+            # This method must alter neither self.lines nor block lines.
             if self.lines != block.lines:
                 g.printObj(self.lines, tag='Assert failed: self.lines')
                 g.printObj(block.lines, tag='Assert failed: block.lines')
@@ -476,8 +474,6 @@ class Importer:
 
         #@+<< i.generate_all_bodies: final checks >>
         #@+node:ekr.20230926105046.1: *5* << i.generate_all_bodies: final checks >>
-        ### assert result_blocks[0].kind == 'outer', result_blocks[0]
-
         # Make sure we've seen all blocks and vnodes.
         for block in result_blocks:
             assert block in seen_blocks, block
@@ -488,7 +484,6 @@ class Importer:
         # A hook for language-specific processing.
         self.postprocess(parent)
 
-        # Note: i.gen_lines appends @language and @tabwidth directives to parent.b.
     #@+node:ekr.20230529075138.37: *4* i.import_from_string (driver)
     def import_from_string(self, parent: Position, s: str) -> None:
         """
