@@ -358,21 +358,6 @@ class Importer:
         seen_blocks: dict[Block, bool] = {}
         seen_vnodes: dict[VNode, bool] = {}
 
-        if 0:  # A good trace.
-            g.trace('result_blocks...\n')
-            for z in result_blocks:
-                print(z)
-            print('End of result blocks')
-
-        if 0:
-            #@+<< i.generate_all_bodies: initial checks >>
-            #@+node:ekr.20230925133647.1: *5* << i.generate_all_bodies: initial checks >>
-            # An initial sanity check.
-            if result_blocks:
-                block0 = result_blocks[0]
-                assert outer_block == block0, (repr(outer_block), repr(block0))
-            #@-<< i.generate_all_bodies: initial checks >>
-
         #@+others  # Define helper functions.
         #@+node:ekr.20230924155035.1: *5* function: find_all_child_lines
         def find_all_child_lines(block: Block) -> tuple[int, int]:
@@ -424,16 +409,15 @@ class Importer:
             assert n == len(self.lines)
         #@-others
 
-        # Note: i.gen_lines adds the @language and @tabwidth directives.
         if not outer_block.child_blocks:
             # Put everything in parent.b. Do *not* change parent.h!
+            # i.gen_lines adds the @language and @tabwidth directives.
             parent.b = ''.join(self.lines)
             return
 
+        # The main loop.
         outer_block.v = parent.v
         todo_list: list[Block] = [outer_block]
-
-        # The main loop.
         while todo_list:
             block = todo_list.pop(0)
             v = block.v
@@ -481,8 +465,10 @@ class Importer:
                 assert block.v in seen_vnodes, repr(block.v)
         #@-<< i.generate_all_bodies: final checks >>
 
+
         # A hook for language-specific processing.
         self.postprocess(parent)
+
 
     #@+node:ekr.20230529075138.37: *4* i.import_from_string (driver)
     def import_from_string(self, parent: Position, s: str) -> None:
