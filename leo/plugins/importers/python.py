@@ -310,7 +310,6 @@ class Python_Importer(Importer):
 
             # Remove the docstring from child_p.b.
             child_p.b = child_p.b.replace(docstring, '')
-            child_p.b = child_p.b.lstrip('\n')
 
             # Carefully add the docstring to class_p.b.
             class_lines = g.splitLines(class_p.b)

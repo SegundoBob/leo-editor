@@ -29,7 +29,7 @@ class BaseTestImporter(LeoUnitTest):
 
     #@+others
     #@+node:ekr.20230526135305.1: *3* BaseTestImporter.check_outline
-    def check_outline(self, p: Position, expected: tuple, trace: bool = True) -> None:
+    def check_outline(self, p: Position, expected: tuple) -> None:
         """
         BaseTestImporter.check_outline.
 
@@ -58,17 +58,16 @@ class BaseTestImporter(LeoUnitTest):
                     self.assertEqual(g.splitLines(e_str), g.splitLines(a_str), msg=msg)
         except AssertionError:
             # Dump actual results, including bodies.
-            if trace:
-                print('')
-                print(f"Fail: {self.id()}")
-                self.dump_tree(p, tag='Actual results...')
-                if True:  # Usually a great trace.
-                    # Dump the expected results, as in LeoUnitTest.dump_tree.
-                    print('Expected results')
-                    for (level, headline, body) in expected:
-                        print('')
-                        print('level:', level, headline)
-                        g.printObj(g.splitLines(body))
+            print('')
+            print(f"Fail: {self.id()}")
+            self.dump_tree(p, tag='Actual results...')
+            if True:  # Usually a great trace.
+                # Dump the expected results, as in LeoUnitTest.dump_tree.
+                print('Expected results')
+                for (level, headline, body) in expected:
+                    print('')
+                    print('level:', level, headline)
+                    g.printObj(g.splitLines(body))
             raise
     #@+node:ekr.20220809054555.1: *3* BaseTestImporter.check_round_trip
     def check_round_trip(self, p: Position, s: str, strict: bool = True) -> None:
@@ -116,8 +115,7 @@ class BaseTestImporter(LeoUnitTest):
         p = self.run_test(s)
         self.check_round_trip(p, expected_s, strict=strict)
     #@+node:ekr.20230526124600.1: *3* BaseTestImporter.new_run_test
-    def new_run_test(self, s: str, expected_results: tuple,
-        *, check: bool = True, trace: bool = False) -> None:
+    def new_run_test(self, s: str, expected_results: tuple, *, check: bool = True) -> None:
         """
         Run a unit test of an import scanner,
         i.e., create a tree from string s at location p.
@@ -143,12 +141,12 @@ class BaseTestImporter(LeoUnitTest):
 
         # Dump the actual results on failure and raise AssertionError.
         if check:
-            self.check_outline(parent, expected_results, trace=trace)
-        elif trace:
-            self.dump_tree(p, tag='Actual results...')
+            self.check_outline(parent, expected_results)
         else:
-            short_id = '.'.join(self.id().split('.')[-2:])
-            g.trace('No output expected for', short_id)
+            self.dump_tree(p, tag='Actual results...')
+        # else:
+            # short_id = '.'.join(self.id().split('.')[-2:])
+            # g.trace('No output expected for', short_id)
     #@+node:ekr.20211127042843.1: *3* BaseTestImporter.run_test
     def run_test(self, s: str) -> Position:
         """
@@ -3123,7 +3121,7 @@ class TestPython(BaseTestImporter):
                     '    pass\n'
             ),
         )
-        self.new_run_test(s, expected_results, check=True, trace=False)
+        self.new_run_test(s, expected_results, check=True)
     #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
     def test_class_docstring(self):
 
@@ -3218,7 +3216,7 @@ class TestPython(BaseTestImporter):
                     '    self._suggest_join_with_non_empty_separator: bool = False\n'
             ),
         )
-        self.new_run_test(s, expected_results, check=True, trace=False)
+        self.new_run_test(s, expected_results)
     #@+node:ekr.20230514195224.1: *3* TestPython.test_delete_comments_and_strings
     def test_delete_comments_and_strings(self):
 
@@ -3516,7 +3514,7 @@ class TestPython(BaseTestImporter):
                     '        return self.subapp.start()\n'
             ),
         )
-        self.new_run_test(s, expected_results, trace=False)
+        self.new_run_test(s, expected_results)
     #@+node:ekr.20230612072414.1: *3* TestPython.test_long_declaration
     def test_long_declaration(self):
 
@@ -3612,7 +3610,7 @@ class TestPython(BaseTestImporter):
                 '                )\n'
             ),
         )
-        self.new_run_test(s, expected_results, trace=True)
+        self.new_run_test(s, expected_results)
     #@+node:ekr.20230929051304.1: *3* TestPython.test_long_outer_docstring
     def test_long_outer_docstring(self):
 
@@ -3653,6 +3651,7 @@ class TestPython(BaseTestImporter):
             (1, 'class C1',
                     'class C1:\n'
                     '    """Class docstring"""\n'
+                    '\n'  # Leo 6.8.7
                     '    @others\n'
                     '\n'
             ),
@@ -3846,6 +3845,7 @@ class TestPython(BaseTestImporter):
             (1, 'class C1',
                     'class C1:\n'
                     '    """Class docstring"""\n'
+                    '\n'
                     '    @others\n'
                     '\n'
             ),
@@ -3904,6 +3904,7 @@ class TestPython(BaseTestImporter):
             (1, 'class MyClass',
                     'class MyClass:\n'
                     '    """MyClass: docstring"""\n'
+                    '\n'
                     '    @others\n'
                     '\n'
                     '\n'
@@ -3925,11 +3926,9 @@ class TestPython(BaseTestImporter):
                     '# About main\n'
                     'def main():\n'
                     '    pass\n'
-                    # '\n'  # Leo 6.8.7
-                    # '\n'  # Leo 6.8.7
             ),
         )
-        self.new_run_test(s, expected_results, check=True, trace=False)
+        self.new_run_test(s, expected_results)
     #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """
@@ -4655,7 +4654,7 @@ class TestRust(BaseTestImporter):
                 '@tabwidth -4\n'
             ),
         )
-        self.new_run_test(s, expected_results, trace=True)
+        self.new_run_test(s, expected_results)
     #@-others
 #@+node:ekr.20231012142113.1: ** class TestScheme (BaseTestImporter)
 class TestScheme(BaseTestImporter):
