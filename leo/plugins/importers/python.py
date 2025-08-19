@@ -4,7 +4,7 @@
 from __future__ import annotations
 import re
 import textwrap
-from typing import Generator, Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 import leo.core.leoGlobals as g
 from leo.plugins.importers.base_importer import Block, Importer
 
@@ -310,28 +310,6 @@ class Python_Importer(Importer):
                 i += 1
             return None
 
-        #@+node:ekr.20250818213254.1: *4* python_i.function: move_blank_lines
-        def move_blank_lines(parent: Position) -> None:
-            """Move blank lines from the start of nodes to the end of previous sibling."""
-            move_blank_lines_helper(parent.children())
-
-        def move_blank_lines_helper(children: Generator) -> None:
-            for child in children:
-                move_one_blank_line(child)
-                move_blank_lines_helper(child.children())
-
-        def move_one_blank_line(p: Position) -> None:
-            """Move one blank line from the start of p.b to the end of p.back().b"""
-            ### print(p.level(), p.h)
-            back = p.back()
-            if not back:
-                return
-            while p.b:
-                lines = g.splitLines(p.b)
-                if lines[0].strip():
-                    break
-                back.b = back.b + '\n'
-                p.b = ''.join(lines[1:])
         #@+node:ekr.20230825164234.1: *4* python_i.function: move_class_docstring
         def move_class_docstring(docstring: str, child_p: Position, class_p: Position) -> None:
             """Move the docstring from child_p to class_p."""
@@ -397,7 +375,7 @@ class Python_Importer(Importer):
                     return
         #@-others
 
-        move_blank_lines(parent)
+        self.move_blank_lines(parent)
         adjust_headlines(parent)
         move_module_preamble(parent)
         move_class_docstrings(parent)

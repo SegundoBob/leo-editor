@@ -6,7 +6,7 @@
 #@+node:ekr.20230920091345.1: ** << imports, annotations: base_importer.py >>
 from __future__ import annotations
 import re
-from typing import TYPE_CHECKING
+from typing import Generator, TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 # This import is safe because these imports happen after initing Leo.
@@ -523,6 +523,27 @@ class Importer:
         as comments and strings.
         """
         return self.delete_comments_and_strings(lines[:])
+    #@+node:ekr.20250818213254.1: *4* i.move_blank_lines
+    def move_blank_lines(self, parent: Position) -> None:
+        """Move blank lines from the start of nodes to the end of previous sibling."""
+        self.move_blank_lines_helper(parent.children())
+
+    def move_blank_lines_helper(self, children: Generator) -> None:
+        for child in children:
+            self.move_one_blank_line(child)
+            self.move_blank_lines_helper(child.children())
+
+    def move_one_blank_line(self, p: Position) -> None:
+        """Move one blank line from the start of p.b to the end of p.back().b"""
+        back = p.back()
+        if not back:
+            return
+        while p.b:
+            lines = g.splitLines(p.b)
+            if lines[0].strip():
+                break
+            back.b = back.b + '\n'
+            p.b = ''.join(lines[1:])
     #@+node:ekr.20230825095756.1: *4* i.postprocess
     def postprocess(self, parent: Position) -> None:
         """
@@ -533,6 +554,7 @@ class Importer:
         **Note**: The RecursiveImportController class contains a postpass that
                   adjusts headlines of *all* imported nodes.
         """
+        self.move_blank_lines(parent)  ### Experimental.
 
     #@+node:ekr.20230529075138.38: *4* i.preprocess_lines
     def preprocess_lines(self, lines: list[str]) -> list[str]:
