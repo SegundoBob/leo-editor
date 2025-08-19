@@ -308,8 +308,6 @@ class Importer:
                 inner_block.parent_v = child_v
                 todo_list.append(inner_block)
 
-        self.preprocess_blocks(result_blocks)
-
         # Post pass: generate all bodies
         self.generate_all_bodies(parent, outer_block, result_blocks)
     #@+node:ekr.20230529075138.15: *4* i.gen_lines (top level)
@@ -372,7 +370,7 @@ class Importer:
                 start = min(start, child_block.start)
                 end = max(end, child_block.end)
             return start, end
-        #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children
+        #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children (changed)
         def handle_block_with_children(block: Block, block_common_lws: str) -> None:
             """A block with children."""
 
@@ -391,7 +389,8 @@ class Importer:
             # Add the tail lines to block.v
             tail_lines = self.lines[children_end : block.end]
             tail_s = ''.join(tail_lines)
-            if tail_s.strip():
+            ### if tail_s.strip():
+            if tail_s:
                 block.v.b = block.v.b + tail_s
 
             # Alter block.end.
@@ -440,9 +439,15 @@ class Importer:
             assert self.lines == block.lines
             #@-<< check block and v >>
 
+            if block.name == 'register':  ###
+                g.printObj(block, tag=f"A: {g.my_name()}")
+
             # Remove common_lws from self.lines
             block_common_lws = self.compute_common_lws(block.child_blocks)
             remove_lws_from_blocks(block.child_blocks, block_common_lws)
+
+            if block.name == 'register':  ###
+                g.printObj(block, tag=f"B: {g.my_name()}")
 
             # Handle the block and any child blocks.
             if block != outer_block:
@@ -467,7 +472,6 @@ class Importer:
 
         # A hook for language-specific processing.
         self.postprocess(parent)
-
 
     #@+node:ekr.20230529075138.37: *4* i.import_from_string (driver)
     def import_from_string(self, parent: Position, s: str) -> None:
@@ -534,20 +538,6 @@ class Importer:
                   adjusts headlines of *all* imported nodes.
         """
 
-    #@+node:ekr.20250810142621.1: *4* i.preprocess_blocks
-    def preprocess_blocks(self, blocks: list[Block]) -> None:
-        """Move blank lines from the start one block to the end of the previous block."""
-        for i, block in enumerate(blocks):
-            try:
-                block2 = blocks[i + 1]
-            except IndexError:
-                break
-            for i in range(block2.start, block2.end):
-                s = block2.lines[i]
-                if s.strip():
-                    break
-                block.end += 1
-                block2.start += 1
     #@+node:ekr.20230529075138.38: *4* i.preprocess_lines
     def preprocess_lines(self, lines: list[str]) -> list[str]:
         """

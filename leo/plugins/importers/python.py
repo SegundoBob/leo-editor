@@ -105,7 +105,7 @@ class Python_Importer(Importer):
         assert len(result) == len(lines)  # A crucial invariant.
         assert textwrap.dedent(''.join(result)) == ''.join(result)  # A crucial check.
         return result
-    #@+node:ekr.20230514140918.1: *3* python_i.find_blocks
+    #@+node:ekr.20230514140918.1: *3* python_i.find_blocks (trace)
     def find_blocks(self, i1: int, i2: int) -> list[Block]:
         """
         Python_Importer.find_blocks: override Importer.find_blocks.
@@ -134,10 +134,6 @@ class Python_Importer(Importer):
                 if m := pattern.match(s):
                     # cython may include trailing whitespace.
                     name = m.group(1).strip()
-                    if trace:
-                        print('')
-                        g.trace(name, m)
-                        print('')
                     end = self.find_end_of_block(i, i2)
                     assert i1 + 1 <= end <= i2, (i1, end, i2)
 
@@ -148,10 +144,10 @@ class Python_Importer(Importer):
                     ):
                         i = end
                     else:
-                        if trace:  # Keep this trace.
-                            g.printObj(self.lines[prev_i:end], tag=f"{prev_i}:{end} {name}")
                         block = Block(kind, name,
                             start=prev_i, start_body=i, end=end, lines=self.lines)
+                        if trace:  ### and name == 'register':
+                            g.printObj(block, tag=f"{g.my_name()}")
                         results.append(block)
                         i = prev_i = end
                     break
@@ -243,13 +239,11 @@ class Python_Importer(Importer):
         Python_Importer.postprocess.
         """
 
-        trace = False
-
-        if 0:  # Keep this trace.
+        if 1:  ###
             print('')
             g.trace(parent.h)
             for p in parent.self_and_subtree():
-                g.printObj(p.b, tag=f"{p.level()} {p.h}")
+                g.printObj(p.b, tag=f"{g.my_name()} {p.level()} {p.h}")
 
         #@+others  # Define helper functions.
         #@+node:ekr.20230830113521.1: *4* python_i.function: adjust_at_others
