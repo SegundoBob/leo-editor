@@ -313,12 +313,12 @@ class Python_Importer(Importer):
         #@+node:ekr.20250818213254.1: *4* python_i.function: move_blank_lines
         def move_blank_lines(parent: Position) -> None:
             """Move blank lines from the start of nodes to the end of previous sibling."""
-            move_blank_lines_helper(list(parent.children()))
+            move_blank_lines_helper(parent.children())
 
         def move_blank_lines_helper(children: list[Position]) -> None:
             for child in children:
                 move_one_blank_line(child)
-                move_blank_lines_helper(list(child.children()))
+                move_blank_lines_helper(child.children())
 
         def move_one_blank_line(p: Position) -> None:
             """Move one blank line from the start of p.b to the end of p.back().b"""
