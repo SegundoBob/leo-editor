@@ -326,15 +326,18 @@ class Python_Importer(Importer):
             n += 1
             if line.strip().startswith('class '):
                 break
+
+        # Should not happen.
         if n > len(class_lines):
             g.printObj(g.splitLines(class_p.b), tag=f"No class line: {class_p.h}")
             return
 
-        # This isn't perfect in some situations.
+        # This isn't perfect when the file contains underindented lines.
         docstring_list = [
             f"{' '*4}{z}" if z.strip() else '\n'
             for z in g.splitLines(docstring)
         ]
+        g.printObj(docstring_list, tag=class_p.h)
         class_p.b = ''.join(class_lines[:n] + docstring_list + class_lines[n:])
     #@+node:ekr.20230825111112.1: *4* python_i.move_class_docstrings
     def move_class_docstrings(self, parent: Position) -> None:

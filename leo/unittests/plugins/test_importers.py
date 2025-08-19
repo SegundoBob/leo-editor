@@ -3987,12 +3987,13 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20240219133748.1: *3* TestPython.test_underindented_comment
-    def test_underindented_comment(self):
+    #@+node:ekr.20240219133748.1: *3* TestPython.test_underindented_lines
+    def test_underindented_lines(self):
 
         s = (
-            """
+            '''
                 class Class3:
+                    """Docstring"""
                 # Outer underindented comment
                     def u1():
                     # Underindented comment in u1.
@@ -4005,7 +4006,7 @@ class TestPython(BaseTestImporter):
 
                 if __name__ == '__main__':
                     main()
-            """).replace('AT', '@')
+            ''')  # .replace('AT', '@')
 
         expected_results = (
             (0, '',
@@ -4018,6 +4019,7 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class Class3',
                 'class Class3:\n'
+                 '   """Docstring"""\n'
                 '@others\n'
                 '\n'  # Leo 6.8.7
             ),
