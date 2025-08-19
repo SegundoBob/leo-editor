@@ -4,7 +4,7 @@
 from __future__ import annotations
 import re
 import textwrap
-from typing import Optional, TYPE_CHECKING
+from typing import Generator, Optional, TYPE_CHECKING
 import leo.core.leoGlobals as g
 from leo.plugins.importers.base_importer import Block, Importer
 
@@ -315,7 +315,7 @@ class Python_Importer(Importer):
             """Move blank lines from the start of nodes to the end of previous sibling."""
             move_blank_lines_helper(parent.children())
 
-        def move_blank_lines_helper(children: list[Position]) -> None:
+        def move_blank_lines_helper(children: Generator) -> None:
             for child in children:
                 move_one_blank_line(child)
                 move_blank_lines_helper(child.children())
