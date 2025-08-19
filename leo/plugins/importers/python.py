@@ -105,7 +105,7 @@ class Python_Importer(Importer):
         assert len(result) == len(lines)  # A crucial invariant.
         assert textwrap.dedent(''.join(result)) == ''.join(result)  # A crucial check.
         return result
-    #@+node:ekr.20230514140918.1: *3* python_i.find_blocks (trace)
+    #@+node:ekr.20230514140918.1: *3* python_i.find_blocks
     def find_blocks(self, i1: int, i2: int) -> list[Block]:
         """
         Python_Importer.find_blocks: override Importer.find_blocks.
@@ -235,9 +235,7 @@ class Python_Importer(Importer):
         return i2
     #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers
     def postprocess(self, parent: Position) -> None:
-        """
-        Python_Importer.postprocess.
-        """
+        """Python_Importer.postprocess."""
 
         # Base-class method.
         self.move_blank_lines(parent)

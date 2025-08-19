@@ -144,9 +144,6 @@ class BaseTestImporter(LeoUnitTest):
             self.check_outline(parent, expected_results)
         else:
             self.dump_tree(p, tag='Actual results...')
-        # else:
-            # short_id = '.'.join(self.id().split('.')[-2:])
-            # g.trace('No output expected for', short_id)
     #@+node:ekr.20211127042843.1: *3* BaseTestImporter.run_test
     def run_test(self, s: str) -> Position:
         """
