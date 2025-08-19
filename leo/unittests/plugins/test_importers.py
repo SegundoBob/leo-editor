@@ -58,7 +58,7 @@ class BaseTestImporter(LeoUnitTest):
                     self.assertEqual(g.splitLines(e_str), g.splitLines(a_str), msg=msg)
         except AssertionError:
             # Dump actual results, including bodies.
-            if True:  ### trace:
+            if trace:
                 print('')
                 print(f"Fail: {self.id()}")
                 self.dump_tree(p, tag='Actual results...')
@@ -3105,7 +3105,7 @@ class TestPython(BaseTestImporter):
             (1, 'class TracerCore',
                     'class TracerCore:\n'
                     '\n'  # Leo 6.8.7
-                    '    @others\n'  ### .replace('AT', '@')
+                    '    @others\n'
                     '\n'  # Leo 6.8.7
             ),
             (2, 'TracerCore.start',
@@ -3121,7 +3121,6 @@ class TestPython(BaseTestImporter):
                     '# About main\n'
                     'def main():\n'
                     '    pass\n'
-                    ### '\n'  # Leo 6.8.7
             ),
         )
         self.new_run_test(s, expected_results, check=True, trace=False)

@@ -146,7 +146,7 @@ class Python_Importer(Importer):
                     else:
                         block = Block(kind, name,
                             start=prev_i, start_body=i, end=end, lines=self.lines)
-                        if trace:  ### and name == 'register':
+                        if trace:
                             g.printObj(block, tag=f"{g.my_name()}")
                         results.append(block)
                         i = prev_i = end

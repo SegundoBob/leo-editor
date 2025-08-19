@@ -370,7 +370,7 @@ class Importer:
                 start = min(start, child_block.start)
                 end = max(end, child_block.end)
             return start, end
-        #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children (changed)
+        #@+node:ekr.20230924154050.1: *5* function: handle_block_with_children
         def handle_block_with_children(block: Block, block_common_lws: str) -> None:
             """A block with children."""
 
@@ -389,7 +389,6 @@ class Importer:
             # Add the tail lines to block.v
             tail_lines = self.lines[children_end : block.end]
             tail_s = ''.join(tail_lines)
-            ### if tail_s.strip():
             if tail_s:
                 block.v.b = block.v.b + tail_s
 
@@ -554,7 +553,7 @@ class Importer:
         **Note**: The RecursiveImportController class contains a postpass that
                   adjusts headlines of *all* imported nodes.
         """
-        self.move_blank_lines(parent)  ### Experimental.
+        self.move_blank_lines(parent)
 
     #@+node:ekr.20230529075138.38: *4* i.preprocess_lines
     def preprocess_lines(self, lines: list[str]) -> list[str]:
