@@ -3095,6 +3095,7 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                    '@others\n'
+                   '\n'  # Leo 6.8.7
                    "if __name__ == '__main__':\n"
                     '    main()\n'
                    '@language python\n'
@@ -3103,7 +3104,8 @@ class TestPython(BaseTestImporter):
             (1, 'class TracerCore',
                     'class TracerCore:\n'
                     '\n'  # Leo 6.8.7
-                    '    ATothers\n'.replace('AT', '@')
+                    '    @others\n'  ### .replace('AT', '@')
+                    '\n'  # Leo 6.8.7
             ),
             (2, 'TracerCore.start',
                     'def start(self):\n'
@@ -3118,10 +3120,10 @@ class TestPython(BaseTestImporter):
                     '# About main\n'
                     'def main():\n'
                     '    pass\n'
-                    '\n'  # Leo 6.8.7
+                    ### '\n'  # Leo 6.8.7
             ),
         )
-        self.new_run_test(s, expected_results, check=False, trace=False)
+        self.new_run_test(s, expected_results, check=True, trace=False)
     #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
     def test_class_docstring(self):
 
