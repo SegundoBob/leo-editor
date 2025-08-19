@@ -467,6 +467,8 @@ class Rust_Importer(Importer):
                 child1.b = child1.b[1:]
         #@-others
 
+        self.move_blank_lines(parent)  # Base-class method.
+
         move_module_preamble(self.lines, parent)
 
         if 0:

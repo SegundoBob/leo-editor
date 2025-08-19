@@ -1022,13 +1022,13 @@ class TestHtml(BaseTestImporter):
             ),
             (1, '<body>',
                     '<body>\n'
-                    '\n'  # Leo 6.8.7
                     '@others\n'
                     '</p> <!-- orphan -->\n'
                     '\n'
                     '</body>\n'
             ),
             (2, '<div id="D666">Paragraph</p> <!-- P1 -->',
+                    '\n'  # Leo 6.8.7
                     '<!-- OOPS: the div and p elements not properly nested.-->\n'
                     '<!-- OOPS: this table got generated twice. -->\n'
                     '\n'
@@ -1509,6 +1509,7 @@ class TestJava(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                 '@others\n'
+                '\n'  # Leo 6.8.7
                 '@language java\n'
                 '@tabwidth -4\n'
             ),

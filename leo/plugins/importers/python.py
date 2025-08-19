@@ -239,12 +239,6 @@ class Python_Importer(Importer):
         Python_Importer.postprocess.
         """
 
-        if 0:  ###
-            print('')
-            g.trace(parent.h)
-            for p in parent.subtree():
-                g.printObj(p.b, tag=f"{g.my_name()} {p.level()} {p.h}")
-
         #@+others  # Define helper functions.
         #@+node:ekr.20230830113521.1: *4* python_i.function: adjust_at_others
         def adjust_at_others(parent: Position) -> None:
@@ -375,7 +369,8 @@ class Python_Importer(Importer):
                     return
         #@-others
 
-        self.move_blank_lines(parent)
+        self.move_blank_lines(parent)  # Base-class method.
+
         adjust_headlines(parent)
         move_module_preamble(parent)
         move_class_docstrings(parent)
