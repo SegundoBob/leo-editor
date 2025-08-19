@@ -439,15 +439,11 @@ class Importer:
             assert self.lines == block.lines
             #@-<< check block and v >>
 
-            if block.name == 'register':  ###
-                g.printObj(block, tag=f"A: {g.my_name()}")
-
             # Remove common_lws from self.lines
             block_common_lws = self.compute_common_lws(block.child_blocks)
             remove_lws_from_blocks(block.child_blocks, block_common_lws)
 
-            if block.name == 'register':  ###
-                g.printObj(block, tag=f"B: {g.my_name()}")
+            # g.printObj(block, tag=f"B: {g.my_name()}")
 
             # Handle the block and any child blocks.
             if block != outer_block:
