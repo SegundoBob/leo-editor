@@ -373,7 +373,8 @@ class Python_Importer(Importer):
                         if docstring:
                             move_class_docstring(docstring, child1, p)
         #@+node:ekr.20230930181855.1: *4* python_i.function: move_module_preamble
-        def move_module_preamble(lines: list[str], parent: Position) -> None:
+        ### def move_module_preamble(lines: list[str], parent: Position) -> None:
+        def move_module_preamble(parent: Position) -> None:
             """Move the preamble lines from the parent's first child to the start of parent.b."""
 
             child1 = parent.firstChild()
@@ -387,7 +388,9 @@ class Python_Importer(Importer):
                 return False
 
             # The preamble is everything up to the line that first matches a block
-            for i, line in enumerate(g.splitLines(child1.b)):
+            lines = g.splitLines(child1.b)
+            ### for i, line in enumerate(g.splitLines(child1.b)):
+            for i, line in enumerate(lines):
                 if match(line):
                     # Adjust the bodies.
                     preamble_s = ''.join(lines[:i])
@@ -399,7 +402,7 @@ class Python_Importer(Importer):
 
         move_blank_lines(parent)
         adjust_headlines(parent)
-        move_module_preamble(self.lines, parent)  ### Why use self.lines???
+        move_module_preamble(parent)
         move_class_docstrings(parent)
         adjust_at_others(parent)
     #@-others
