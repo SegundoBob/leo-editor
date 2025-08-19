@@ -120,10 +120,6 @@ class Python_Importer(Importer):
 
         i, prev_i, results = i1, i1, []
 
-        def lws_n(s: str) -> int:
-            """Return the length of the leading whitespace for s."""
-            return len(s) - len(s.lstrip())
-
         # Look behind to see what the previous block was.
         prev_block_line = self.guide_lines[i1 - 1] if i1 > 0 else ''
         while i < i2:
@@ -140,7 +136,7 @@ class Python_Importer(Importer):
                     # #3517: Don't generate nested defs.
                     if (kind == 'def'
                         and prev_block_line.strip().startswith('def ')
-                        and lws_n(prev_block_line) < lws_n(s)
+                        and self.lws_n(prev_block_line) < self.lws_n(s)
                     ):
                         i = end
                     else:
@@ -161,10 +157,6 @@ class Python_Importer(Importer):
         Return the index of the line *following* the entire class/def.
         """
         trace = False  # This would be useful only while running unit tests.
-
-        def lws_n(s: str) -> int:
-            """Return the length of the leading whitespace for s."""
-            return len(s) - len(s.lstrip())
 
         # i0 = i - 1  # For traces.
         def_line = self.guide_lines[i - 1]
@@ -191,16 +183,16 @@ class Python_Importer(Importer):
         # Scan lines, looking for a dedent.
         non_tail_lines = tail_lines = 0
         curlies, parens, squares = 0, 0, 0
-        lws1 = lws_n(def_line)
+        lws1 = self.lws_n(def_line)
         while i < i2:
             s = self.guide_lines[i]
             if s.strip():
                 if trace:
-                    dedent_s = lws_n(s) <= lws1
+                    dedent_s = self.lws_n(s) <= lws1
                     g.trace(f"dedent? {int(dedent_s)} state: {(curlies, parens, squares)} {s!r}")
 
                 # A code line. Test the bracket state at the *start* of the line.
-                if lws_n(s) <= lws1 and (curlies, parens, squares) == (0, 0, 0):
+                if self.lws_n(s) <= lws1 and (curlies, parens, squares) == (0, 0, 0):
                     # A code line that ends the block.
                     return i if non_tail_lines == 0 else i - tail_lines
 
@@ -223,7 +215,7 @@ class Python_Importer(Importer):
                 tail_lines += 1
             elif s_strip.startswith('#'):
                 # A comment line.
-                if s_strip and lws_n(s) < lws1:
+                if s_strip and self.lws_n(s) < lws1:
                     if non_tail_lines > 0:
                         return i - tail_lines
                 tail_lines += 1
@@ -326,19 +318,27 @@ class Python_Importer(Importer):
             n += 1
             if line.strip().startswith('class '):
                 break
-
-        # Should not happen.
-        if n > len(class_lines):
-            g.printObj(g.splitLines(class_p.b), tag=f"No class line: {class_p.h}")
+        else:
+            # Should not happen.
+            g.printObj(class_p.b, tag=f"No class line: {class_p.h}")
             return
 
-        # This isn't perfect when the file contains underindented lines.
-        docstring_list = [
-            f"{' '*4}{z}" if z.strip() else '\n'
+        # Find the @others line in the class body.
+        for line in class_lines:
+            if line.strip().startswith('@others'):
+                at_others_indent = self.lws_n(line)
+                break
+        else:  # pragma: no cover
+            # Should not happen.
+            g.printObj(class_p.b, tag=f"No @others line: {class_p.h}")
+            at_others_indent = 4  # Default
+
+        # Add the indentation of the @others statement in class body.
+        docstring_lines = [
+            f"{' '*at_others_indent}{z}" if z.strip() else '\n'
             for z in g.splitLines(docstring)
         ]
-        g.printObj(docstring_list, tag=class_p.h)
-        class_p.b = ''.join(class_lines[:n] + docstring_list + class_lines[n:])
+        class_p.b = ''.join(class_lines[:n] + docstring_lines + class_lines[n:])
     #@+node:ekr.20230825111112.1: *4* python_i.move_class_docstrings
     def move_class_docstrings(self, parent: Position) -> None:
         """

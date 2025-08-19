@@ -4006,7 +4006,7 @@ class TestPython(BaseTestImporter):
 
                 if __name__ == '__main__':
                     main()
-            ''')  # .replace('AT', '@')
+            ''')
 
         expected_results = (
             (0, '',
@@ -4019,7 +4019,7 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class Class3',
                 'class Class3:\n'
-                 '   """Docstring"""\n'
+                 '    """Docstring"""\n'
                 '@others\n'
                 '\n'  # Leo 6.8.7
             ),

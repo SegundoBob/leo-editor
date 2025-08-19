@@ -638,6 +638,10 @@ class Importer:
             child.h = f"placeholder level {len(parents)}"
             parents.append(child)
             lines_dict[child.v] = []
+    #@+node:ekr.20250819103022.1: *4* i.lws_n
+    def lws_n(self, s: str) -> int:
+        """Return the length of the leading whitespace for s."""
+        return len(s) - len(s.lstrip())
     #@+node:ekr.20230529075138.42: *4* i.get_str_lws
     def get_str_lws(self, s: str) -> str:
         """Return the characters of the lws of s."""
