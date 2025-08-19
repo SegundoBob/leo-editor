@@ -3352,6 +3352,7 @@ class TestPython(BaseTestImporter):
             (1, 'class Class1',
                        'class Class1:\n'
                        '    @others\n'
+                       '\n'  # Leo 6.8.7
             ),
             (2, 'Class1.method11',
                        'def method11():\n'
@@ -3375,6 +3376,7 @@ class TestPython(BaseTestImporter):
                        '@myClassDecorator\n'
                        'class Class2:\n'
                        '    @others\n'
+                       '\n'  # Leo 6.8.7
             ),
             (2, 'Class2.method21',
                        'def method21():\n'

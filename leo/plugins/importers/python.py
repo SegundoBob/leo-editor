@@ -373,7 +373,6 @@ class Python_Importer(Importer):
                         if docstring:
                             move_class_docstring(docstring, child1, p)
         #@+node:ekr.20230930181855.1: *4* python_i.function: move_module_preamble
-        ### def move_module_preamble(lines: list[str], parent: Position) -> None:
         def move_module_preamble(parent: Position) -> None:
             """Move the preamble lines from the parent's first child to the start of parent.b."""
 
@@ -389,14 +388,12 @@ class Python_Importer(Importer):
 
             # The preamble is everything up to the line that first matches a block
             lines = g.splitLines(child1.b)
-            ### for i, line in enumerate(g.splitLines(child1.b)):
             for i, line in enumerate(lines):
                 if match(line):
                     # Adjust the bodies.
                     preamble_s = ''.join(lines[:i])
                     parent.b = preamble_s + parent.b
                     child1.b = child1.b.replace(preamble_s, '')
-                    child1.b = child1.b.lstrip('\n')
                     return
         #@-others
 
