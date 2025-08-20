@@ -562,7 +562,7 @@ class Importer:
         # A hook for language-specific processing.
         self.postprocess(parent)
 
-    #@+node:ekr.20230825095756.1: *4* 4: i.postprocess & helper
+    #@+node:ekr.20230825095756.1: *4* 4: i.postprocess
     def postprocess(self, parent: Position) -> None:
         """
         Importer.postprocess.  A hook for language-specific post-processing.
