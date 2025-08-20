@@ -114,6 +114,7 @@ class Importer:
         try:
             # Bind ivars.
             self.root = root = parent.copy()
+            ### assert self.root == parent, (self.root, parent)
 
             # Check for intermixed blanks and tabs.
             self.tab_width = c.getTabWidth(p=root)
@@ -128,12 +129,30 @@ class Importer:
             lines = self.preprocess_lines(lines)
 
             # Generate all nodes.
-            self.gen_lines(lines, parent)
+            ### self.gen_lines(lines, parent)
+
+            self.lines = lines
+
+            # Delete all children.
+            parent.deleteAllChildren()
+
+            # Create the guide lines.
+            self.guide_lines = self.make_guide_lines(lines)
+            n1, n2 = len(self.lines), len(self.guide_lines)
+            assert n1 == n2, (n1, n2)
+
+            # Generate all blocks.
+            self.gen_block(parent)
+
+            # Add trailing lines.
+            if self.root.isAnyAtFileNode():  # #4385.
+                parent.b += f"@language {self.language}\n@tabwidth {self.tab_width}\n"
 
             # Importers should never dirty the outline.
             # #1451: Do not change the outline's change status.
             for p in root.self_and_subtree():
                 p.clearDirty()
+
         except ImporterError as e:
             g.trace(f"Importer error: {e}")
             parent.deleteAllChildren()
