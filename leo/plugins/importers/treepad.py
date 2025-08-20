@@ -33,7 +33,7 @@ class Treepad_Importer(Importer):
         The Treepad writer adds all structure-related lines,
         so *remove* those lines here.
 
-        i.gen_lines adds the @language and @tabwidth directives.
+        The base Importer class adds the @language and @tabwidth directives.
         """
         header_pat = re.compile(r'<Treepad version.*?>\s*$')
         start1_pat = re.compile(r'^\s*dt\=\w+\s*$')  # type line.

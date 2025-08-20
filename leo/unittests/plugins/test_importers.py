@@ -132,7 +132,6 @@ class BaseTestImporter(LeoUnitTest):
         self.short_id = f"{id_parts[-2]}.{id_parts[-1]}"
         parent.h = f"{kind} {self.short_id}"
 
-        # createOutline calls Importer.gen_lines and Importer.check.
         # Leo 6.8.7. Do *not* strip trailing ws!
         test_s = textwrap.dedent(s).lstrip()
 
@@ -163,7 +162,6 @@ class BaseTestImporter(LeoUnitTest):
         self.short_id = f"{id_parts[-2]}.{id_parts[-1]}"
         parent.h = f"{kind} {self.short_id}"
 
-        # createOutline calls Importer.gen_lines and Importer.check.
         test_s = textwrap.dedent(s).strip() + '\n'
         c.importCommands.createOutline(parent.copy(), ext, test_s)
         return parent
@@ -501,30 +499,6 @@ class TestC(BaseTestImporter):
         for block in blocks:
             result_lines.extend(lines[block.start : block.end])
         self.assertEqual(lines, result_lines)
-    #@+node:ekr.20230511073719.1: *3* TestC.test_codon_file
-    def test_codon_file(self):
-        # Test codon/codon/app/main.cpp.
-        c = self.c
-        importer = C_Importer(c)
-        path = 'C:/Repos/codon/codon/app/main.cpp'
-        if not os.path.exists(path):
-            self.skipTest(f"Not found: {path!r}")
-        with open(path, 'r') as f:
-            source = f.read()
-        lines = g.splitLines(source)
-        if 1:  # Test gen_lines.
-            importer.root = c.p
-            importer.gen_lines(lines, c.p)
-        else:  # Test find_blocks.
-            importer.guide_lines = importer.make_guide_lines(lines)
-            result = importer.find_blocks(0, len(importer.guide_lines))
-
-            # The result lines must tile (cover) the original lines.
-            result_lines = []
-            for z in result:
-                kind, name, start, start_body, end = z
-                result_lines.extend(lines[start:end])
-            self.assertEqual(lines, result_lines)
     #@+node:ekr.20230607164309.1: *3* TestC.test_struct
     def test_struct(self):
         # From codon sources.
