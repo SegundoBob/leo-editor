@@ -323,7 +323,7 @@ class Importer:
 
         Five importers override this method.
 
-        Note:  i.gen_lines adds the @language and @tabwidth directives.
+        Note: i.gen_lines adds the @language and @tabwidth directives.
         """
 
         todo_list: list[Block] = []
