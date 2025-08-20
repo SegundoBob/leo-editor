@@ -96,16 +96,15 @@ class Importer:
     def import_from_string(self, parent: Position, s: str) -> None:
         """
         Importer.import_from_string.
-
-        parent: An @<file> node containing the absolute path to the to-be-imported file.
-
-        s: The contents of the file.
-
         The top-level code for almost all importers.
 
-        Overriding this method gives the subclass completed control.
+        parent: An @<file> node containing the absolute path to the to-be-imported file.
+        s:      The contents of the file.
+
         """
         c = self.c
+        self.root = root = parent.copy()
+        self.tab_width = c.getTabWidth(p=root)
 
         # Fix #449: Cloned @auto nodes duplicates section references.
         if parent.isCloned() and parent.hasChildren():  # pragma: no cover (missing test)
@@ -113,30 +112,19 @@ class Importer:
         parent.deleteAllChildren()
 
         try:
-            # Bind ivars.
-            self.root = root = parent.copy()
-            self.tab_width = c.getTabWidth(p=root)
-            lines = g.splitLinesAtNewline(s)
-
             # Check for intermixed blanks and tabs.
+            lines = g.splitLinesAtNewline(s)
             ws_ok = self.check_blanks_and_tabs(lines)  # Issues warnings.
-
-            # Regularize leading whitespace
             if not ws_ok:
                 lines = self.regularize_whitespace(lines)
 
-            # A hook for xml importer: preprocess lines.
-            lines = self.preprocess_lines(lines)
-
-            # Generate all nodes.
-            ### self.gen_lines(lines, parent)
-
-            self.lines = lines
+            # A hook for importers: preprocess lines.
+            self.lines = lines = self.preprocess_lines(lines)
 
             # Create the guide lines.
             self.guide_lines = self.make_guide_lines(lines)
             n1, n2 = len(self.lines), len(self.guide_lines)
-            assert n1 == n2, (n1, n2)
+            assert n1 == n2, (n1, n2)  # A crucial invariant!
 
             # Generate all blocks.
             self.gen_block(parent)
@@ -145,8 +133,7 @@ class Importer:
             if self.root.isAnyAtFileNode():  # #4385.
                 parent.b += f"@language {self.language}\n@tabwidth {self.tab_width}\n"
 
-            # Importers should never dirty the outline.
-            # #1451: Do not change the outline's change status.
+            # #1451: Importers should never dirty the outline.
             for p in root.self_and_subtree():
                 p.clearDirty()
 
@@ -235,27 +222,6 @@ class Importer:
         Xml_Importer uses this hook to split lines.
         """
         return lines
-    #@+node:ekr.20230529075138.15: *4* 2: i.gen_lines
-    def gen_lines(self, lines: list[str], parent: Position) -> None:
-        """
-        Importer.gen_lines: Allocate lines to the parent and descendant nodes.
-
-        Subclasses may override this method, but none do.
-        """
-        assert self.root == parent, (self.root, parent)
-        self.lines = lines
-        # Delete all children.
-        parent.deleteAllChildren()
-        # Create the guide lines.
-        self.guide_lines = self.make_guide_lines(lines)
-        n1, n2 = len(self.lines), len(self.guide_lines)
-        assert n1 == n2, (n1, n2)
-        # Generate all blocks.
-        self.gen_block(parent)
-
-        # Add trailing lines.
-        if self.root.isAnyAtFileNode():  # #4385.
-            parent.b += f"@language {self.language}\n@tabwidth {self.tab_width}\n"
     #@+node:ekr.20230529075138.12: *5* 2A: i.make_guide_lines
     def make_guide_lines(self, lines: list[str]) -> list[str]:
         """

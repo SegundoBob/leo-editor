@@ -3,7 +3,6 @@
 """Tests of leo/plugins/importers"""
 import glob
 import importlib
-import os
 import textwrap
 from leo.core import leoGlobals as g
 from leo.core.leoJupytext import JupytextManager
