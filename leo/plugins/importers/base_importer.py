@@ -367,8 +367,13 @@ class Importer:
                 inner_block.parent_v = child_v
                 todo_list.append(inner_block)
 
-        # Post pass: generate all bodies
-        self.generate_all_bodies(parent, outer_block, result_blocks)
+        if outer_block.child_blocks:
+            self.generate_all_bodies(parent, outer_block, result_blocks)
+            self.postprocess(parent)
+        else:
+            # Put everything in parent.b. Do *not* change parent.h!
+            # i.gen_lines adds the @language and @tabwidth directives.
+            parent.b = ''.join(self.lines)
     #@+node:ekr.20230529075138.10: *5* 3A: i.find_blocks
     def find_blocks(self, i1: int, i2: int) -> list[Block]:
         """
@@ -501,11 +506,12 @@ class Importer:
             assert n == len(self.lines)
         #@-others
 
-        if not outer_block.child_blocks:
-            # Put everything in parent.b. Do *not* change parent.h!
-            # i.gen_lines adds the @language and @tabwidth directives.
-            parent.b = ''.join(self.lines)
-            return
+        ###
+        # if not outer_block.child_blocks:
+            # # Put everything in parent.b. Do *not* change parent.h!
+            # # i.gen_lines adds the @language and @tabwidth directives.
+            # parent.b = ''.join(self.lines)
+            # return
 
         # The main loop.
         outer_block.v = parent.v
@@ -558,10 +564,6 @@ class Importer:
             if block.v:
                 assert block.v in seen_vnodes, repr(block.v)
         #@-<< i.generate_all_bodies: final checks >>
-
-        # A hook for language-specific processing.
-        self.postprocess(parent)
-
     #@+node:ekr.20230825095756.1: *4* 4: i.postprocess
     def postprocess(self, parent: Position) -> None:
         """
