@@ -92,10 +92,10 @@ class Importer:
         self.tab_width = 0  # Must be set later.
     #@+node:ekr.20230529075640.1: *3* i: Generic methods: may be overridden
     # The pipline.
-    #@+node:ekr.20230529075138.37: *4* 1: i.import_from_string (entry)
+    #@+node:ekr.20230529075138.37: *4* 1: i.import_from_string (entry) & helpers
     def import_from_string(self, parent: Position, s: str) -> None:
         """
-        Importer.import_from_string.
+        Importer.import_from_string: the so-called **Import pipeline**.
         The top-level code for almost all importers.
 
         parent: An @<file> node containing the absolute path to the to-be-imported file.
@@ -222,7 +222,7 @@ class Importer:
         Xml_Importer uses this hook to split lines.
         """
         return lines
-    #@+node:ekr.20230529075138.12: *5* 2A: i.make_guide_lines
+    #@+node:ekr.20230529075138.12: *5* 2D: i.make_guide_lines
     def make_guide_lines(self, lines: list[str]) -> list[str]:
         """
         Importer.make_guide_lines.
@@ -235,7 +235,7 @@ class Importer:
         as comments and strings.
         """
         return self.delete_comments_and_strings(lines[:])
-    #@+node:ekr.20230529075138.9: *5* 2B: i.delete_comments_and_strings
+    #@+node:ekr.20230529075138.9: *5* 2E: i.delete_comments_and_strings
     def delete_comments_and_strings(self, lines: list[str]) -> list[str]:
         """
         Return **guide-lines** from the lines, replacing strings and multi-line
@@ -296,7 +296,7 @@ class Importer:
             result.append(''.join(result_line).rstrip() + end_s)
         assert len(result) == len(lines)  # A crucial invariant.
         return result
-    #@+node:ekr.20230529075138.14: *4* 3: i.gen_block
+    #@+node:ekr.20230529075138.14: *4* 2: i.gen_block & helpers
     def gen_block(self, parent: Position) -> None:
         """
         Importer.gen_block.
@@ -355,7 +355,7 @@ class Importer:
         else:
             # Put everything in parent.b. Do *not* change parent.h!
             parent.b = ''.join(self.lines)
-    #@+node:ekr.20230529075138.10: *5* 3A: i.find_blocks
+    #@+node:ekr.20230529075138.10: *5* 2A: i.find_blocks
     def find_blocks(self, i1: int, i2: int) -> list[Block]:
         """
         Importer.find_blocks: Subclasses may override this method.
@@ -390,7 +390,7 @@ class Importer:
             assert i > progress, g.callers()
         # g.printObj(results, tag=f"{g.my_name()} {i1} {i2}")
         return results
-    #@+node:ekr.20230529075138.11: *5* 3B: i.find_end_of_block
+    #@+node:ekr.20230529075138.11: *5* 2B: i.find_end_of_block
     def find_end_of_block(self, i: int, i2: int) -> int:
         """
         Importer.find_end_of_block.
@@ -414,7 +414,7 @@ class Importer:
                     if level == 0:
                         return i
         return i2
-    #@+node:ekr.20230529075138.13: *5* 3C: i.compute_headline
+    #@+node:ekr.20230529075138.13: *5* 2C: i.compute_headline
     def compute_headline(self, block: Block) -> str:
         """
         Importer.compute_headline.
@@ -425,7 +425,7 @@ class Importer:
         """
         name_s = block.name or f"unnamed {block.kind}"
         return f"{block.kind} {name_s}"
-    #@+node:ekr.20230920165923.1: *5* 3D: i.generate_all_bodies & helpers
+    #@+node:ekr.20230920165923.1: *5* 2D: i.generate_all_bodies & helpers
     def generate_all_bodies(self, parent: Position, outer_block: Block, result_blocks: list[Block]) -> None:
         """Carefully generate bodies from the given blocks."""
         c = self.c
@@ -530,7 +530,7 @@ class Importer:
             lines2 = self.remove_common_lws(common_lws, lines)
             self.lines[block.start : block.end] = lines2
         assert n == len(self.lines)
-    #@+node:ekr.20230825095756.1: *4* 4: i.postprocess
+    #@+node:ekr.20230825095756.1: *4* 3: i.postprocess & helper
     def postprocess(self, parent: Position) -> None:
         """
         Importer.postprocess.  A hook for language-specific post-processing.
@@ -542,7 +542,7 @@ class Importer:
         """
         self.move_blank_lines(parent)
 
-    #@+node:ekr.20250818213254.1: *5* 4A: i.move_blank_lines
+    #@+node:ekr.20250818213254.1: *5* 3A: i.move_blank_lines
     def move_blank_lines(self, parent: Position) -> None:
         """Move blank lines from the start of nodes to the end of previous sibling."""
         self.move_blank_lines_helper(parent.children())
