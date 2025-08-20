@@ -111,28 +111,42 @@ class Importer:
         if parent.isCloned() and parent.hasChildren():  # pragma: no cover (missing test)
             return
 
-        # Bind ivars.
-        self.root = root = parent.copy()
+        try:
+            # Bind ivars.
+            self.root = root = parent.copy()
 
-        # Check for intermixed blanks and tabs.
-        self.tab_width = c.getTabWidth(p=root)
-        lines = g.splitLinesAtNewline(s)
-        ws_ok = self.check_blanks_and_tabs(lines)  # Issues warnings.
+            # Check for intermixed blanks and tabs.
+            self.tab_width = c.getTabWidth(p=root)
+            lines = g.splitLinesAtNewline(s)
+            ws_ok = self.check_blanks_and_tabs(lines)  # Issues warnings.
 
-        # Regularize leading whitespace
-        if not ws_ok:
-            lines = self.regularize_whitespace(lines)
+            # Regularize leading whitespace
+            if not ws_ok:
+                lines = self.regularize_whitespace(lines)
 
-        # A hook for xml importer: preprocess lines.
-        lines = self.preprocess_lines(lines)
+            # A hook for xml importer: preprocess lines.
+            lines = self.preprocess_lines(lines)
 
-        # Generate all nodes.
-        self.gen_lines(lines, parent)
+            # Generate all nodes.
+            self.gen_lines(lines, parent)
 
-        # Importers should never dirty the outline.
-        # #1451: Do not change the outline's change status.
-        for p in root.self_and_subtree():
-            p.clearDirty()
+            # Importers should never dirty the outline.
+            # #1451: Do not change the outline's change status.
+            for p in root.self_and_subtree():
+                p.clearDirty()
+        except ImporterError as e:
+            g.trace(f"Importer error: {e}")
+            parent.deleteAllChildren()
+            parent.b = ''.join(lines)
+            if g.unitTesting:
+                raise
+        except Exception:
+            g.trace('Unexpected exception!')
+            g.es_exception()
+            parent.deleteAllChildren()
+            parent.b = ''.join(lines)
+            if g.unitTesting:
+                raise
     #@+node:ekr.20230529075138.36: *5* 1A: i.check_blanks_and_tabs
     def check_blanks_and_tabs(self, lines: list[str]) -> bool:  # pragma: no cover (missing test)
         """
@@ -212,30 +226,16 @@ class Importer:
 
         Subclasses may override this method, but none do.
         """
-        try:
-            assert self.root == parent, (self.root, parent)
-            self.lines = lines
-            # Delete all children.
-            parent.deleteAllChildren()
-            # Create the guide lines.
-            self.guide_lines = self.make_guide_lines(lines)
-            n1, n2 = len(self.lines), len(self.guide_lines)
-            assert n1 == n2, (n1, n2)
-            # Generate all blocks.
-            self.gen_block(parent)
-        except ImporterError as e:
-            g.trace(f"Importer error: {e}")
-            parent.deleteAllChildren()
-            parent.b = ''.join(lines)
-            if g.unitTesting:
-                raise
-        except Exception:
-            g.trace('Unexpected exception!')
-            g.es_exception()
-            parent.deleteAllChildren()
-            parent.b = ''.join(lines)
-            if g.unitTesting:
-                raise
+        assert self.root == parent, (self.root, parent)
+        self.lines = lines
+        # Delete all children.
+        parent.deleteAllChildren()
+        # Create the guide lines.
+        self.guide_lines = self.make_guide_lines(lines)
+        n1, n2 = len(self.lines), len(self.guide_lines)
+        assert n1 == n2, (n1, n2)
+        # Generate all blocks.
+        self.gen_block(parent)
 
         # Add trailing lines.
         if self.root.isAnyAtFileNode():  # #4385.
