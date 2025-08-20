@@ -372,7 +372,6 @@ class Importer:
             self.postprocess(parent)
         else:
             # Put everything in parent.b. Do *not* change parent.h!
-            # i.gen_lines adds the @language and @tabwidth directives.
             parent.b = ''.join(self.lines)
     #@+node:ekr.20230529075138.10: *5* 3A: i.find_blocks
     def find_blocks(self, i1: int, i2: int) -> list[Block]:
