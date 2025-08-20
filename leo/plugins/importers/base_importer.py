@@ -110,15 +110,15 @@ class Importer:
         # Fix #449: Cloned @auto nodes duplicates section references.
         if parent.isCloned() and parent.hasChildren():  # pragma: no cover (missing test)
             return
+        parent.deleteAllChildren()
 
         try:
             # Bind ivars.
             self.root = root = parent.copy()
-            ### assert self.root == parent, (self.root, parent)
-
-            # Check for intermixed blanks and tabs.
             self.tab_width = c.getTabWidth(p=root)
             lines = g.splitLinesAtNewline(s)
+
+            # Check for intermixed blanks and tabs.
             ws_ok = self.check_blanks_and_tabs(lines)  # Issues warnings.
 
             # Regularize leading whitespace
@@ -132,9 +132,6 @@ class Importer:
             ### self.gen_lines(lines, parent)
 
             self.lines = lines
-
-            # Delete all children.
-            parent.deleteAllChildren()
 
             # Create the guide lines.
             self.guide_lines = self.make_guide_lines(lines)
@@ -342,7 +339,7 @@ class Importer:
 
         Five importers override this method.
 
-        Note: i.gen_lines adds the @language and @tabwidth directives.
+        Note: i.import_from_string adds the @language and @tabwidth directives.
         """
 
         todo_list: list[Block] = []
