@@ -444,74 +444,16 @@ class Importer:
         """
         name_s = block.name or f"unnamed {block.kind}"
         return f"{block.kind} {name_s}"
-    #@+node:ekr.20230920165923.1: *5* 3D: i.generate_all_bodies
+    #@+node:ekr.20230920165923.1: *5* 3D: i.generate_all_bodies & helpers
     def generate_all_bodies(self, parent: Position, outer_block: Block, result_blocks: list[Block]) -> None:
         """Carefully generate bodies from the given blocks."""
         c = self.c
         at = c.atFileCommands
 
         # Keys: VNodes containing @others directives.
-        at_others_dict: dict[VNode, bool] = {}
+        self.at_others_dict: dict[VNode, bool] = {}
         seen_blocks: dict[Block, bool] = {}
         seen_vnodes: dict[VNode, bool] = {}
-
-        #@+others  # Define helper functions.
-        #@+node:ekr.20230924155035.1: *6* function: find_all_child_lines
-        def find_all_child_lines(block: Block) -> tuple[int, int]:
-            """Find all lines that will be covered by @others"""
-            assert block.child_blocks, block
-            # start = block.end + 1
-            # end = block.start - 1
-            block0 = block.child_blocks[0]
-            start = block0.start
-            end = block0.end
-            for child_block in block.child_blocks:
-                start = min(start, child_block.start)
-                end = max(end, child_block.end)
-            return start, end
-        #@+node:ekr.20230924154050.1: *6* function: handle_block_with_children
-        def handle_block_with_children(block: Block, block_common_lws: str) -> None:
-            """A block with children."""
-
-            # Find all lines that will be covered by @others.
-            children_start, children_end = find_all_child_lines(block)
-
-            # Add the head lines to block.v.
-            head_lines = self.lines[block.start : children_start]
-            block.v.b = ''.join(head_lines)
-
-            # Add an @others directive if necessary.
-            if block.v not in at_others_dict:
-                at_others_dict[block.v] = True
-                block.v.b = block.v.b + f"{block_common_lws}@others\n"
-
-            # Add the tail lines to block.v
-            tail_lines = self.lines[children_end : block.end]
-            tail_s = ''.join(tail_lines)
-            if tail_s:
-                block.v.b = block.v.b + tail_s
-
-            # Alter block.end.
-            block.end = children_start
-        #@+node:ekr.20230925071111.1: *6* function: remove_lws_from_blocks
-        def remove_lws_from_blocks(blocks: list[Block], common_lws: str) -> None:
-            """
-            Remove the given lws from all given blocks, replacing self.lines in place.
-            """
-            n = len(self.lines)
-            for block in blocks:
-                lines = self.lines[block.start : block.end]
-                lines2 = self.remove_common_lws(common_lws, lines)
-                self.lines[block.start : block.end] = lines2
-            assert n == len(self.lines)
-        #@-others
-
-        ###
-        # if not outer_block.child_blocks:
-            # # Put everything in parent.b. Do *not* change parent.h!
-            # # i.gen_lines adds the @language and @tabwidth directives.
-            # parent.b = ''.join(self.lines)
-            # return
 
         # The main loop.
         outer_block.v = parent.v
@@ -540,30 +482,73 @@ class Importer:
 
             # Remove common_lws from self.lines
             block_common_lws = self.compute_common_lws(block.child_blocks)
-            remove_lws_from_blocks(block.child_blocks, block_common_lws)
-
-            # g.printObj(block, tag=f"B: {g.my_name()}")
+            self.remove_lws_from_blocks(block.child_blocks, block_common_lws)
 
             # Handle the block and any child blocks.
             if block != outer_block:
                 # Do *not* change parent.h!
                 block.v.h = self.compute_headline(block)
             if block.child_blocks:
-                handle_block_with_children(block, block_common_lws)
+                self.handle_block_with_children(block, block_common_lws)
             else:
                 block.v.b = ''.join(self.lines[block.start : block.end])
 
             # Add all child blocks to the to-do list.
             todo_list.extend(block.child_blocks)
 
-        #@+<< i.generate_all_bodies: final checks >>
-        #@+node:ekr.20230926105046.1: *6* << i.generate_all_bodies: final checks >>
         # Make sure we've seen all blocks and vnodes.
         for block in result_blocks:
             assert block in seen_blocks, block
             if block.v:
                 assert block.v in seen_vnodes, repr(block.v)
-        #@-<< i.generate_all_bodies: final checks >>
+    #@+node:ekr.20230924155035.1: *6* i.find_all_child_lines
+    def find_all_child_lines(self, block: Block) -> tuple[int, int]:
+        """Find all lines that will be covered by @others"""
+        assert block.child_blocks, block
+        # start = block.end + 1
+        # end = block.start - 1
+        block0 = block.child_blocks[0]
+        start = block0.start
+        end = block0.end
+        for child_block in block.child_blocks:
+            start = min(start, child_block.start)
+            end = max(end, child_block.end)
+        return start, end
+    #@+node:ekr.20230924154050.1: *6* i.handle_block_with_children
+    def handle_block_with_children(self, block: Block, block_common_lws: str) -> None:
+        """A block with children."""
+
+        # Find all lines that will be covered by @others.
+        children_start, children_end = self.find_all_child_lines(block)
+
+        # Add the head lines to block.v.
+        head_lines = self.lines[block.start : children_start]
+        block.v.b = ''.join(head_lines)
+
+        # Add an @others directive if necessary.
+        if block.v not in self.at_others_dict:
+            self.at_others_dict[block.v] = True
+            block.v.b = block.v.b + f"{block_common_lws}@others\n"
+
+        # Add the tail lines to block.v
+        tail_lines = self.lines[children_end : block.end]
+        tail_s = ''.join(tail_lines)
+        if tail_s:
+            block.v.b = block.v.b + tail_s
+
+        # Alter block.end.
+        block.end = children_start
+    #@+node:ekr.20230925071111.1: *6* i.remove_lws_from_blocks
+    def remove_lws_from_blocks(self, blocks: list[Block], common_lws: str) -> None:
+        """
+        Remove the given lws from all given blocks, replacing self.lines in place.
+        """
+        n = len(self.lines)
+        for block in blocks:
+            lines = self.lines[block.start : block.end]
+            lines2 = self.remove_common_lws(common_lws, lines)
+            self.lines[block.start : block.end] = lines2
+        assert n == len(self.lines)
     #@+node:ekr.20230825095756.1: *4* 4: i.postprocess
     def postprocess(self, parent: Position) -> None:
         """
