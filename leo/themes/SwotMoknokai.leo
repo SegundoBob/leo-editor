@@ -101,9 +101,9 @@
 <v t="ekr.20180318145515.798"><vh>@string font-family-body =@font-family</vh></v>
 <v t="ekr.20180318145515.799"><vh>@string font-family-log =@font-family</vh></v>
 <v t="ekr.20180318145515.800"><vh>@string font-family-tree =@font-family</vh></v>
-<v t="ekr.20180318145515.801"><vh>@string font-size-body = 18pt</vh></v>
-<v t="ekr.20180318145515.802"><vh>@string font-size-log = 17pt</vh></v>
-<v t="ekr.20180318145515.803"><vh>@string font-size-tree = 18pt</vh></v>
+<v t="ekr.20180318145515.801"><vh>@string font-size-body = 16pt</vh></v>
+<v t="ekr.20180318145515.802"><vh>@string font-size-log = 14pt</vh></v>
+<v t="ekr.20180318145515.803"><vh>@string font-size-tree = 16pt</vh></v>
 </v>
 <v t="ekr.20201221073034.1"><vh>Plugins</vh>
 <v t="ekr.20180318145515.811"><vh>@bool color_theme_is_dark = True</vh></v>
@@ -799,7 +799,7 @@ QMenuBar::item:selected {
   background: @bg-gradient-hover;
 }
 QMenu::item:selected {
-  color: @button-hover-fg;
+  color: @solarized-orange;
   background: @bg-gradient-hover;
 }
 QMenuBar::item {
