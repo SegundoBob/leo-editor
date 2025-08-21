@@ -457,8 +457,9 @@ class MarkupCommands:
         if self.kind == 'pandoc':
             section = '#' * min(level, 6)
         elif self.kind == 'adoc':
-            # level 0 (a single #) should be done by hand.
-            section = '=' * level
+            # Limit to reasonable levels (1-6)
+            limited_level = min(max(level, 1), 6)
+            section = '=' * limited_level
         else:
             g.es_print(f"bad kind: {self.kind!r}")
             return
