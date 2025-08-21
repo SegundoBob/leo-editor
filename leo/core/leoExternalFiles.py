@@ -556,12 +556,12 @@ class ExternalFilesController:
                 pass
     #@+node:ekr.20150407204201.1: *4* efc.get_mtime
     def get_mtime(self, path: str) -> float:
-        """Return the modification time for the path."""
+        """Return the modification time of a file for the given path."""
         return g.os_path_getmtime(g.os_path_realpath(path))
     #@+node:ekr.20150405122428.1: *4* efc.get_time
     def get_time(self, path: str) -> float:
         """
-        return timestamp for path
+        return timestamp stored for the given path
 
         see set_time() for notes
         """
