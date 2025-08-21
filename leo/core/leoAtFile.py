@@ -432,8 +432,14 @@ class AtFile:
         t1 = time.time()
         c.init_error_dialogs()
         files = at.findFilesToRead(root, all=True)
+        efc = g.app.externalFilesController
         for p in files:
             at.readFileAtPosition(p)
+            # An @<file> was read: In case this was a tab opened earlier, for which efc had entries,
+            # we need to update the external files controller's timestamp for those external files
+            # instead of leaving the _time_d empty, which would have defaulted to set_time's default.
+            if efc:
+                efc.set_time(c.fullPath(p))  # #4426 Same effect as leaving efc's _time_d empty.
         for p in files:
             p.v.clearDirty()
         if not g.unitTesting and files:  # pragma: no cover
@@ -696,13 +702,12 @@ class AtFile:
 
         # #4385: Do nothing if the file has not changed.
         try:
-            old_mod_time = root.v.u['_mod_time']  # #4385
-            # g.trace(f"{old_mod_time:20} {root.h}")
+            old_mod_time = root.v.u['_mod_time']  # #4385 The file's *last-seen* mod time.
         except Exception:
             old_mod_time = None
-        new_mod_time = g.os_path_getmtime(fileName)
+        new_mod_time = g.os_path_getmtime(fileName)  # The file's *present* mod time.
 
-        # Don't update if the outline and file are in synch.
+        # Make sure it's newer: Don't update if the outline and file are in synch.
         if old_mod_time and old_mod_time >= new_mod_time:
             return
 
@@ -713,6 +718,10 @@ class AtFile:
         # #4385: *Clear* the mod time until we write the file.
         if '_mod_time' in root.v.u:
             del root.v.u['_mod_time']
+
+        # Until the @clean's content is modified and written: set to file's *present* mod time.
+        # This and writeOneAtCleanNode are the *only* two places that sets the `_mod_time` uA.
+        root.v.u['_mod_time'] = new_mod_time  # #4427
 
         # #4385: Remember all old bodies.
         for p in root.self_and_subtree():
@@ -1671,10 +1680,8 @@ class AtFile:
             else:
                 contents = ''.join(at.outputList)
                 at.replaceFile(contents, at.encoding, fileName, root)
-
-                # #4385: This is the *only* place that sets the `_mod_time` uA.
+                # #4385: This and readOneAtCleanNode are the *only* two places that sets the `_mod_time` uA.
                 root.v.u['_mod_time'] = g.os_path_getmtime(fileName)
-                # g.trace(f"{root.v.u.get('_mod_time')} {root.h}")
 
         except Exception:
             at.writeException(fileName, root)

@@ -503,6 +503,7 @@ class LeoFrame:
             p.v.b = w.getAllText()
             u.afterChangeBody(p, 'Cut', bunch)
         # If it's the headline, the headline has not officially changed yet.
+        c.recolor()  # 4398.
 
     OnCutFromMenu = cutText
     #@+node:ekr.20070130115927.7: *5* LeoFrame.pasteText
@@ -512,16 +513,11 @@ class LeoFrame:
         Paste the clipboard into a widget.
         If middleButton is True, support x-windows middle-mouse-button easter-egg.
         """
-        trace = False and not g.unitTesting
         c, p, u = self.c, self.c.p, self.c.undoer
         w = event and event.widget
         wname = c.widget_name(w)
         if not w or not g.isTextWrapper(w):
-            if trace:
-                g.trace('===== BAD W', repr(w))
             return
-        if trace:
-            g.trace('===== Entry')
         bunch = u.beforeChangeBody(p)
         if self.cursorStay and wname.startswith('body'):
             tCurPosition = w.getInsertPoint()
@@ -571,6 +567,7 @@ class LeoFrame:
         # Never scroll horizontally.
         if hasattr(w, 'getXScrollPosition'):
             w.setXScrollPosition(x_pos)
+        c.recolor()  # 4398.
 
     OnPasteFromMenu = pasteText
     #@+node:ekr.20061016071937: *5* LeoFrame.OnPaste (support middle-button paste)

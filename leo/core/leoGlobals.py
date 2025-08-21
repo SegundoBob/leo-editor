@@ -6189,7 +6189,7 @@ def os_path_exists(path: str) -> bool:
     return os.path.exists(path) if path else False
 #@+node:ekr.20031218072017.2150: *3* g.os_path_getmtime
 def os_path_getmtime(path: str) -> float:
-    """Return the modification time of path."""
+    """Return the modification time of a file for a given path."""
     if not path:
         return 0
     try:
