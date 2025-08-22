@@ -28,7 +28,7 @@ class Markdown_Importer(Importer):
 
         Create all descendant blocks and their nodes from self.lines.
 
-        i.gen_lines adds the @language and @tabwidth directives.
+        The base Importer class adds the @language and @tabwidth directives.
         """
         assert parent == self.root
         lines = self.lines
@@ -130,9 +130,9 @@ class Markdown_Importer(Importer):
     #@-others
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for markdown."""
-    Markdown_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Markdown_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     '@auto': ['@auto-md', '@auto-markdown',],

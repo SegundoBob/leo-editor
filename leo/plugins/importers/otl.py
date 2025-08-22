@@ -44,7 +44,7 @@ class Otl_Importer(Importer):
 
         The otl writer adds section lines, so *remove* those lines here.
 
-        i.gen_lines adds the @language and @tabwidth directives.
+        The base Importer class adds the @language and @tabwidth directives.
         """
         lines = self.lines
         assert parent == self.root
@@ -88,9 +88,9 @@ class Otl_Importer(Importer):
     #@-others
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for .otl files."""
-    Otl_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Otl_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     '@auto': ['@auto-otl', '@auto-vim-outline',],

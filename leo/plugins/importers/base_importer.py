@@ -6,7 +6,7 @@
 #@+node:ekr.20230920091345.1: ** << imports, annotations: base_importer.py >>
 from __future__ import annotations
 import re
-from typing import TYPE_CHECKING
+from typing import Generator, TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 # This import is safe because these imports happen after initing Leo.
@@ -22,7 +22,6 @@ class ImporterError(Exception):
 #@+others
 #@+node:ekr.20230920130003.1: ** class Block
 class Block:
-
     """A class containing data about imported blocks."""
 
     def __init__(self,
@@ -38,35 +37,15 @@ class Block:
         self.start_body = start_body
         self.v: VNode = None
 
-    #@+others
-    #@+node:ekr.20230921061842.1: *3* Block.__repr__
     def __repr__(self) -> str:
         kind_name_s = f"{self.kind} {self.name}"
-        parent_v_s = self.parent_v.h if self.parent_v else '<no parent_v>'
-        v_s = self.v.h if self.v else '<no v>'
-        return (
-            f"Block: kind/name: {kind_name_s!r:20} "
-            f"{self.start:2} {self.start_body:2} {self.end:2} "
-            f"parent_v: {parent_v_s!r} v: {v_s!r}"
-        )
+        lines = self.lines[self.start : self.end]
+        result = [f"Block {self.start}:{self.start_body}:{self.end} {kind_name_s!r}\n"]
+        for i, s in enumerate(lines):
+            result.append(f"  {i:3} {s!r}\n")
+        return ''.join(result)
 
     __str__ = __repr__
-    #@+node:ekr.20230921061937.1: *3* Block.dump_lines
-    def dump_lines(self, tag: str = None) -> None:
-        if not tag:
-            tag = repr(self)
-        g.printObj(self.lines[self.start:self.end], tag=tag)
-    #@+node:ekr.20230921061932.1: *3* Block.long_repr
-    def long_repr(self) -> str:
-        """A longer form of Block.__repr__"""
-        child_blocks = []
-        for child_block in self.child_blocks:
-            child_blocks.append(f"{child_block.kind}:{child_block.name}")
-        child_blocks_s = '\n'.join(child_blocks) if child_blocks else '<no children>'
-        lines_s = g.objToString(self.lines[self.start:self.end], tag='lines')
-        return f"\n{self!r} child_blocks: {child_blocks_s}\n{lines_s}"
-    #@-others
-
 
 #@+node:ekr.20230529075138.4: ** class Importer
 class Importer:
@@ -110,10 +89,68 @@ class Importer:
         self.root: Position = None
         delims = g.set_delims_from_language(self.language)
         self.single_comment, self.block1, self.block2 = delims
-        self.treeType: str = None  # Set by i.import_from_string.
         self.tab_width = 0  # Must be set later.
     #@+node:ekr.20230529075640.1: *3* i: Generic methods: may be overridden
-    #@+node:ekr.20230529075138.36: *4* i.check_blanks_and_tabs
+    # The pipeline.
+    #@+node:ekr.20230529075138.37: *4* 1: i.import_from_string (entry) & helpers
+    def import_from_string(self, parent: Position, s: str) -> None:
+        """
+        Importer.import_from_string: the so-called **Import pipeline**.
+        The top-level code for almost all importers.
+
+        parent: An @<file> node containing the absolute path to the to-be-imported file.
+        s:      The contents of the file.
+
+        """
+        c = self.c
+        self.root = root = parent.copy()
+        self.tab_width = c.getTabWidth(p=root)
+
+        # Fix #449: Cloned @auto nodes duplicates section references.
+        if parent.isCloned() and parent.hasChildren():  # pragma: no cover (missing test)
+            return
+        parent.deleteAllChildren()
+
+        try:
+            # Check for intermixed blanks and tabs.
+            lines = g.splitLinesAtNewline(s)
+            ws_ok = self.check_blanks_and_tabs(lines)  # Issues warnings.
+            if not ws_ok:
+                lines = self.regularize_whitespace(lines)
+
+            # A hook for importers: preprocess lines.
+            self.lines = lines = self.preprocess_lines(lines)
+
+            # Create the guide lines.
+            self.guide_lines = self.make_guide_lines(lines)
+            n1, n2 = len(self.lines), len(self.guide_lines)
+            assert n1 == n2, (n1, n2)  # A crucial invariant!
+
+            # Generate all blocks.
+            self.gen_block(parent)
+
+            # Add trailing lines.
+            if self.root.isAnyAtFileNode():  # #4385.
+                parent.b += f"@language {self.language}\n@tabwidth {self.tab_width}\n"
+
+            # #1451: Importers should never dirty the outline.
+            for p in root.self_and_subtree():
+                p.clearDirty()
+
+        except ImporterError as e:
+            g.trace(f"Importer error: {e}")
+            parent.deleteAllChildren()
+            parent.b = ''.join(lines)
+            if g.unitTesting:
+                raise
+        except Exception:
+            g.trace('Unexpected exception!')
+            g.es_exception()
+            parent.deleteAllChildren()
+            parent.b = ''.join(lines)
+            if g.unitTesting:
+                raise
+    #@+node:ekr.20230529075138.36: *5* 1A: i.check_blanks_and_tabs
     def check_blanks_and_tabs(self, lines: list[str]) -> bool:  # pragma: no cover (missing test)
         """
         Importer.check_blanks_and_tabs.
@@ -146,30 +183,59 @@ class Importer:
             else:
                 g.es(message)
         return ok
-    #@+node:ekr.20230925112827.1: *4* i.compute_body
-    def compute_body(self, lines: list[str]) -> str:
+    #@+node:ekr.20230529075138.39: *5* 1B: i.regularize_whitespace
+    def regularize_whitespace(self, lines: list[str]) -> list[str]:  # pragma: no cover (missing test)
         """
-        Return the regularized body text from the given list of lines.
+        Importer.regularize_whitespace.
 
-        In most contexts removing leading blank lines is appropriate.
-        If not, the caller can insert the desired blank lines.
-        """
-        s = ''.join(lines)
-        if self.treeType in ('@auto', '@clean'):
-            return s
-        return s.lstrip('\n').rstrip() + '\n' if s.strip() else ''
-    #@+node:ekr.20230529075138.13: *4* i.compute_headline
-    def compute_headline(self, block: Block) -> str:
-        """
-        Importer.compute_headline.
+        Regularize leading whitespace in s:
+        Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
 
-        Return the headline for the given block.
-
-        Subclasses may override this method as necessary.
+        Subclasses may override this method to suppress this processing.
         """
-        name_s = block.name or f"unnamed {block.kind}"
-        return f"{block.kind} {name_s}"
-    #@+node:ekr.20230529075138.9: *4* i.delete_comments_and_strings
+        kind = 'tabs' if self.tab_width > 0 else 'blanks'
+        kind2 = 'blanks' if self.tab_width > 0 else 'tabs'
+        count, result, tab_width = 0, [], self.tab_width
+        if tab_width < 0:  # Convert tabs to blanks.
+            for n, line in enumerate(lines):
+                i, w = g.skip_leading_ws_with_indent(line, 0, tab_width)
+                # Use negative width.
+                s = g.computeLeadingWhitespace(w, -abs(tab_width)) + line[i:]
+                if s != line:
+                    count += 1
+                result.append(s)
+        elif tab_width > 0:  # Convert blanks to tabs.
+            for n, line in enumerate(lines):
+                # Use positive width.
+                s = g.optimizeLeadingWhitespace(line, abs(tab_width))
+                if s != line:
+                    count += 1
+                result.append(s)
+        if count and not g.unitTesting:
+            print(f"{self.root.h}:\nchanged leading {kind2} to {kind} in {count} line{g.plural(count)}")
+        return result
+    #@+node:ekr.20230529075138.38: *5* 1C: i.preprocess_lines
+    def preprocess_lines(self, lines: list[str]) -> list[str]:
+        """
+        A hook to enable preprocessing lines before calling x.find_blocks.
+
+        Xml_Importer uses this hook to split lines.
+        """
+        return lines
+    #@+node:ekr.20230529075138.12: *5* 2D: i.make_guide_lines
+    def make_guide_lines(self, lines: list[str]) -> list[str]:
+        """
+        Importer.make_guide_lines.
+
+        Return a list if **guide lines** that simplify the detection of blocks.
+
+        This default method removes all comments and strings from the original lines.
+
+        The perl importer overrides this methods to delete regexes as well
+        as comments and strings.
+        """
+        return self.delete_comments_and_strings(lines[:])
+    #@+node:ekr.20230529075138.9: *5* 2E: i.delete_comments_and_strings
     def delete_comments_and_strings(self, lines: list[str]) -> list[str]:
         """
         Return **guide-lines** from the lines, replacing strings and multi-line
@@ -230,66 +296,7 @@ class Importer:
             result.append(''.join(result_line).rstrip() + end_s)
         assert len(result) == len(lines)  # A crucial invariant.
         return result
-    #@+node:ekr.20230529075138.10: *4* i.find_blocks
-    def find_blocks(self, i1: int, i2: int) -> list[Block]:
-        """
-        Importer.find_blocks: Subclasses may override this method.
-
-        Using self.block_patterns and self.guide_lines, return a list of all
-        blocks in the given range of *guide* lines.
-
-        **Important**: An @others directive will refer to the returned blocks,
-                       so there must be *no gaps* between blocks!
-        """
-        min_size = self.minimum_block_size
-        i, prev_i, results = i1, i1, []
-        while i < i2:
-            progress = i
-            s = self.guide_lines[i]
-            i += 1
-            # Assume that no pattern matches a compound statement.
-            for kind, pattern in self.block_patterns:
-                if m := pattern.match(s):
-                    # cython may include trailing whitespace.
-                    name = m.group(1).strip()
-                    end = self.find_end_of_block(i, i2)
-                    assert i1 + 1 <= end <= i2, (i1, end, i2)
-                    # Don't generate small blocks.
-                    if min_size == 0 or end - prev_i > min_size:
-                        block = Block(kind, name, start=prev_i, start_body=i, end=end, lines=self.lines)
-                        results.append(block)
-                        i = prev_i = end
-                    else:
-                        i = end
-                    break
-            assert i > progress, g.callers()
-        # g.printObj(results, tag=f"{g.my_name()} {i1} {i2}")
-        return results
-    #@+node:ekr.20230529075138.11: *4* i.find_end_of_block
-    def find_end_of_block(self, i: int, i2: int) -> int:
-        """
-        Importer.find_end_of_block.
-
-        Return the index of end of the block.
-        i: The index of the (guide) line *following* the start of the block.
-        i2: The index last (guide) line to be scanned.
-
-        This method assumes that that '{' and '}' delimit blocks.
-        Subclasses may override this method as necessary.
-        """
-        level = 1 if '{' in self.guide_lines[i - 1] else 0
-        while i < i2:
-            line = self.guide_lines[i]
-            i += 1
-            for ch in line:
-                if ch == '{':
-                    level += 1
-                if ch == '}':
-                    level -= 1
-                    if level == 0:
-                        return i
-        return i2
-    #@+node:ekr.20230529075138.14: *4* i.gen_block (iterative)
+    #@+node:ekr.20230529075138.14: *4* 2: i.gen_block & helpers
     def gen_block(self, parent: Position) -> None:
         """
         Importer.gen_block.
@@ -298,16 +305,14 @@ class Importer:
 
         Five importers override this method.
 
-        Note:  i.gen_lines adds the @language and @tabwidth directives.
+        Note: i.import_from_string adds the @language and @tabwidth directives.
         """
 
         todo_list: list[Block] = []
         result_blocks: list[Block] = []
 
-        # Add an outer block to the results list.
-
+        # Create the outer block.
         outer_block = Block('outer', 'outer-block', 0, 0, len(self.lines), self.lines)
-        result_blocks.append(outer_block)
 
         # Add all outer blocks to the to-do list.
         todo_list = self.find_blocks(0, len(self.lines))
@@ -344,102 +349,96 @@ class Importer:
                 inner_block.parent_v = child_v
                 todo_list.append(inner_block)
 
-        # Post pass: generate all bodies
-        self.generate_all_bodies(parent, outer_block, result_blocks)
-    #@+node:ekr.20230920165923.1: *5* i.generate_all_bodies
+        if outer_block.child_blocks:
+            self.generate_all_bodies(parent, outer_block, result_blocks)
+            self.postprocess(parent)
+        else:
+            # Put everything in parent.b. Do *not* change parent.h!
+            parent.b = ''.join(self.lines)
+    #@+node:ekr.20230529075138.10: *5* 2A: i.find_blocks
+    def find_blocks(self, i1: int, i2: int) -> list[Block]:
+        """
+        Importer.find_blocks: Subclasses may override this method.
+
+        Using self.block_patterns and self.guide_lines, return a list of all
+        blocks in the given range of *guide* lines.
+
+        **Important**: An @others directive will refer to the returned blocks,
+                       so there must be *no gaps* between blocks!
+        """
+        min_size = self.minimum_block_size
+        i, prev_i, results = i1, i1, []
+        while i < i2:
+            progress = i
+            s = self.guide_lines[i]
+            i += 1
+            # Assume that no pattern matches a compound statement.
+            for kind, pattern in self.block_patterns:
+                if m := pattern.match(s):
+                    # cython may include trailing whitespace.
+                    name = m.group(1).strip()
+                    end = self.find_end_of_block(i, i2)
+                    assert i1 + 1 <= end <= i2, (i1, end, i2)
+                    # Don't generate small blocks.
+                    if min_size == 0 or end - prev_i > min_size:
+                        block = Block(kind, name, start=prev_i, start_body=i, end=end, lines=self.lines)
+                        results.append(block)
+                        i = prev_i = end
+                    else:
+                        i = end
+                    break
+            assert i > progress, g.callers()
+        # g.printObj(results, tag=f"{g.my_name()} {i1} {i2}")
+        return results
+    #@+node:ekr.20230529075138.11: *5* 2B: i.find_end_of_block
+    def find_end_of_block(self, i: int, i2: int) -> int:
+        """
+        Importer.find_end_of_block.
+
+        Return the index of end of the block.
+        i: The index of the (guide) line *following* the start of the block.
+        i2: The index last (guide) line to be scanned.
+
+        This method assumes that that '{' and '}' delimit blocks.
+        Subclasses may override this method as necessary.
+        """
+        level = 1 if '{' in self.guide_lines[i - 1] else 0
+        while i < i2:
+            line = self.guide_lines[i]
+            i += 1
+            for ch in line:
+                if ch == '{':
+                    level += 1
+                if ch == '}':
+                    level -= 1
+                    if level == 0:
+                        return i
+        return i2
+    #@+node:ekr.20230529075138.13: *5* 2C: i.compute_headline
+    def compute_headline(self, block: Block) -> str:
+        """
+        Importer.compute_headline.
+
+        Return the headline for the given block.
+
+        Subclasses may override this method as necessary.
+        """
+        name_s = block.name or f"unnamed {block.kind}"
+        return f"{block.kind} {name_s}"
+    #@+node:ekr.20230920165923.1: *5* 2D: i.generate_all_bodies & helpers
     def generate_all_bodies(self, parent: Position, outer_block: Block, result_blocks: list[Block]) -> None:
         """Carefully generate bodies from the given blocks."""
         c = self.c
         at = c.atFileCommands
 
         # Keys: VNodes containing @others directives.
-        at_others_dict: dict[VNode, bool] = {}
+        self.at_others_dict: dict[VNode, bool] = {}
         seen_blocks: dict[Block, bool] = {}
         seen_vnodes: dict[VNode, bool] = {}
 
-        if 0:  # An excellent debugging trace.
-            g.printObj(result_blocks, tag=f"{g.my_name()} Initial result_blocks")
-
-        if 0:  # Another good trace.
-            g.trace('Result blocks...\n')
-            for z in result_blocks[1:]:
-                z.dump_lines()
-            print('End of result blocks')
-
-        #@+<< i.generate_all_bodies: initial checks >>
-        #@+node:ekr.20230925133647.1: *6* << i.generate_all_bodies: initial checks >>
-        # An initial sanity check.
-        if result_blocks:
-            block0 = result_blocks[0]
-            assert outer_block == block0, (repr(outer_block), repr(block0))
-        #@-<< i.generate_all_bodies: initial checks >>
-
-        #@+others  # Define helper functions.
-        #@+node:ekr.20230924170708.1: *6* function: dump_lines
-        def dump_lines(lines: list[str], tag: str) -> None:
-            """For debugging."""
-            g.printObj(lines, tag=tag)
-        #@+node:ekr.20230924155035.1: *6* function: find_all_child_lines
-        def find_all_child_lines(block: Block) -> tuple[int, int]:
-            """Find all lines that will be covered by @others"""
-            assert block.child_blocks, block
-            # start = block.end + 1
-            # end = block.start - 1
-            block0 = block.child_blocks[0]
-            start = block0.start
-            end = block0.end
-            for child_block in block.child_blocks:
-                start = min(start, child_block.start)
-                end = max(end, child_block.end)
-            return start, end
-        #@+node:ekr.20230924154050.1: *6* function: handle_block_with_children
-        def handle_block_with_children(block: Block, block_common_lws: str) -> None:
-            """A block with children."""
-
-            # Find all lines that will be covered by @others.
-            children_start, children_end = find_all_child_lines(block)
-
-            # Add the head lines to block.v.
-            head_lines = self.lines[block.start:children_start]
-            block.v.b = self.compute_body(head_lines)
-
-            # Add an @others directive if necessary.
-            if block.v not in at_others_dict:
-                at_others_dict[block.v] = True
-                block.v.b = block.v.b + f"{block_common_lws}@others\n"
-
-            # Add the tail lines to block.v
-            tail_lines = self.lines[children_end:block.end]
-            tail_s = self.compute_body(tail_lines)
-            if tail_s.strip():
-                block.v.b = block.v.b.rstrip() + '\n' + tail_s
-
-            # Alter block.end.
-            block.end = children_start
-        #@+node:ekr.20230925071111.1: *6* function: remove_lws_from_blocks
-        def remove_lws_from_blocks(blocks: list[Block], common_lws: str) -> None:
-            """
-            Remove the given lws from all given blocks, replacing self.lines in place.
-            """
-            n = len(self.lines)
-            for block in blocks:
-                lines = self.lines[block.start:block.end]
-                lines2 = self.remove_common_lws(common_lws, lines)
-                self.lines[block.start:block.end] = lines2
-            assert n == len(self.lines)
-        #@-others
-
-        # Note: i.gen_lines adds the @language and @tabwidth directives.
-        if not outer_block.child_blocks:
-            # Put everything in parent.b.
-            # Do *not* change parent.h!
-            parent.b = self.compute_body(outer_block.lines)
-            return
-
+        # The main loop.
         outer_block.v = parent.v
         todo_list: list[Block] = [outer_block]
-
-        # The main loop.
         while todo_list:
             block = todo_list.pop(0)
             v = block.v
@@ -455,7 +454,7 @@ class Importer:
             seen_blocks[block] = True
             seen_vnodes[v] = True
 
-            # Note: This method must alter neither self.lines nor block lines.
+            # This method must alter neither self.lines nor block lines.
             if self.lines != block.lines:
                 g.printObj(self.lines, tag='Assert failed: self.lines')
                 g.printObj(block.lines, tag='Assert failed: block.lines')
@@ -464,138 +463,75 @@ class Importer:
 
             # Remove common_lws from self.lines
             block_common_lws = self.compute_common_lws(block.child_blocks)
-            remove_lws_from_blocks(block.child_blocks, block_common_lws)
+            self.remove_lws_from_blocks(block.child_blocks, block_common_lws)
 
             # Handle the block and any child blocks.
             if block != outer_block:
                 # Do *not* change parent.h!
                 block.v.h = self.compute_headline(block)
             if block.child_blocks:
-                handle_block_with_children(block, block_common_lws)
+                self.handle_block_with_children(block, block_common_lws)
             else:
-                block.v.b = self.compute_body(self.lines[block.start:block.end])
+                block.v.b = ''.join(self.lines[block.start : block.end])
 
             # Add all child blocks to the to-do list.
             todo_list.extend(block.child_blocks)
-
-        #@+<< i.generate_all_bodies: final checks >>
-        #@+node:ekr.20230926105046.1: *6* << i.generate_all_bodies: final checks >>
-        assert result_blocks[0].kind == 'outer', result_blocks[0]
 
         # Make sure we've seen all blocks and vnodes.
         for block in result_blocks:
             assert block in seen_blocks, block
             if block.v:
                 assert block.v in seen_vnodes, repr(block.v)
-        #@-<< i.generate_all_bodies: final checks >>
+    #@+node:ekr.20230924155035.1: *6* i.find_all_child_lines
+    def find_all_child_lines(self, block: Block) -> tuple[int, int]:
+        """Find all lines that will be covered by @others"""
+        assert block.child_blocks, block
+        # start = block.end + 1
+        # end = block.start - 1
+        block0 = block.child_blocks[0]
+        start = block0.start
+        end = block0.end
+        for child_block in block.child_blocks:
+            start = min(start, child_block.start)
+            end = max(end, child_block.end)
+        return start, end
+    #@+node:ekr.20230924154050.1: *6* i.handle_block_with_children
+    def handle_block_with_children(self, block: Block, block_common_lws: str) -> None:
+        """A block with children."""
 
-        # A hook for language-specific processing.
-        self.postprocess(parent, result_blocks)
+        # Find all lines that will be covered by @others.
+        children_start, children_end = self.find_all_child_lines(block)
 
-        # Note: i.gen_lines appends @language and @tabwidth directives to parent.b.
-    #@+node:ekr.20230529075138.15: *4* i.gen_lines (top level)
-    def gen_lines(self, lines: list[str], parent: Position) -> None:
+        # Add the head lines to block.v.
+        head_lines = self.lines[block.start : children_start]
+        block.v.b = ''.join(head_lines)
+
+        # Add an @others directive if necessary.
+        if block.v not in self.at_others_dict:
+            self.at_others_dict[block.v] = True
+            block.v.b = block.v.b + f"{block_common_lws}@others\n"
+
+        # Add the tail lines to block.v
+        tail_lines = self.lines[children_end : block.end]
+        tail_s = ''.join(tail_lines)
+        if tail_s:
+            block.v.b = block.v.b + tail_s
+
+        # Alter block.end.
+        block.end = children_start
+    #@+node:ekr.20230925071111.1: *6* i.remove_lws_from_blocks
+    def remove_lws_from_blocks(self, blocks: list[Block], common_lws: str) -> None:
         """
-        Importer.gen_lines: Allocate lines to the parent and descendant nodes.
-
-        Subclasses may override this method, but none do.
+        Remove the given lws from all given blocks, replacing self.lines in place.
         """
-        try:
-            assert self.root == parent, (self.root, parent)
-            self.lines = lines
-            # Delete all children.
-            parent.deleteAllChildren()
-            # Create the guide lines.
-            self.guide_lines = self.make_guide_lines(lines)
-            n1, n2 = len(self.lines), len(self.guide_lines)
-            assert n1 == n2, (n1, n2)
-            # Generate all blocks.
-            self.gen_block(parent)
-        except ImporterError as e:
-            g.trace(f"Importer error: {e}")
-            parent.deleteAllChildren()
-            parent.b = ''.join(lines)
-            if g.unitTesting:
-                raise
-        except Exception:
-            g.trace('Unexpected exception!')
-            g.es_exception()
-            parent.deleteAllChildren()
-            parent.b = ''.join(lines)
-            if g.unitTesting:
-                raise
-
-        # Add trailing lines.
-        if self.root.isAnyAtFileNode():  # #4385.
-            parent.b += f"@language {self.language}\n@tabwidth {self.tab_width}\n"
-    #@+node:ekr.20230529075138.37: *4* i.import_from_string (driver)
-    def import_from_string(self,
-        parent: Position,
-        s: str,
-        treeType: str = '@file',
-    ) -> None:
-        """
-        Importer.import_from_string.
-
-        parent: An @<file> node containing the absolute path to the to-be-imported file.
-
-        s: The contents of the file.
-
-        treeType: the desired @<file> node.
-
-        The top-level code for almost all importers.
-
-        Overriding this method gives the subclass completed control.
-        """
-        c = self.c
-
-        # Fix #449: Cloned @auto nodes duplicates section references.
-        if parent.isCloned() and parent.hasChildren():  # pragma: no cover (missing test)
-            return
-
-        # Check treeType.
-        if treeType not in ('@auto', '@clean', '@edit', '@file', '@nosent'):
-            g.es_print(f"Invalid treeType: {treeType!r}")
-            return
-
-        # Bind ivars.
-        self.root = root = parent.copy()
-        self.treeType = treeType
-
-        # Check for intermixed blanks and tabs.
-        self.tab_width = c.getTabWidth(p=root)
-        lines = g.splitLinesAtNewline(s)
-        ws_ok = self.check_blanks_and_tabs(lines)  # Issues warnings.
-
-        # Regularize leading whitespace
-        if not ws_ok:
-            lines = self.regularize_whitespace(lines)
-
-        # A hook for xml importer: preprocess lines.
-        lines = self.preprocess_lines(lines)
-
-        # Generate all nodes.
-        self.gen_lines(lines, parent)
-
-        # Importers should never dirty the outline.
-        # #1451: Do not change the outline's change status.
-        for p in root.self_and_subtree():
-            p.clearDirty()
-    #@+node:ekr.20230529075138.12: *4* i.make_guide_lines
-    def make_guide_lines(self, lines: list[str]) -> list[str]:
-        """
-        Importer.make_guide_lines.
-
-        Return a list if **guide lines** that simplify the detection of blocks.
-
-        This default method removes all comments and strings from the original lines.
-
-        The perl importer overrides this methods to delete regexes as well
-        as comments and strings.
-        """
-        return self.delete_comments_and_strings(lines[:])
-    #@+node:ekr.20230825095756.1: *4* i.postprocess
-    def postprocess(self, parent: Position, result_blocks: list[Block]) -> None:
+        n = len(self.lines)
+        for block in blocks:
+            lines = self.lines[block.start : block.end]
+            lines2 = self.remove_common_lws(common_lws, lines)
+            self.lines[block.start : block.end] = lines2
+        assert n == len(self.lines)
+    #@+node:ekr.20230825095756.1: *4* 3: i.postprocess & helper
+    def postprocess(self, parent: Position) -> None:
         """
         Importer.postprocess.  A hook for language-specific post-processing.
 
@@ -604,46 +540,29 @@ class Importer:
         **Note**: The RecursiveImportController class contains a postpass that
                   adjusts headlines of *all* imported nodes.
         """
+        self.move_blank_lines(parent)
 
-    #@+node:ekr.20230529075138.38: *4* i.preprocess_lines
-    def preprocess_lines(self, lines: list[str]) -> list[str]:
-        """
-        A hook to enable preprocessing lines before calling x.find_blocks.
+    #@+node:ekr.20250818213254.1: *5* 3A: i.move_blank_lines
+    def move_blank_lines(self, parent: Position) -> None:
+        """Move blank lines from the start of nodes to the end of previous sibling."""
+        self.move_blank_lines_helper(parent.children())
 
-        Xml_Importer uses this hook to split lines.
-        """
-        return lines
-    #@+node:ekr.20230529075138.39: *4* i.regularize_whitespace
-    def regularize_whitespace(self, lines: list[str]) -> list[str]:  # pragma: no cover (missing test)
-        """
-        Importer.regularize_whitespace.
+    def move_blank_lines_helper(self, children: Generator) -> None:
+        for child in children:
+            self.move_one_blank_line(child)
+            self.move_blank_lines_helper(child.children())
 
-        Regularize leading whitespace in s:
-        Convert tabs to blanks or vice versa depending on the @tabwidth in effect.
-
-        Subclasses may override this method to suppress this processing.
-        """
-        kind = 'tabs' if self.tab_width > 0 else 'blanks'
-        kind2 = 'blanks' if self.tab_width > 0 else 'tabs'
-        count, result, tab_width = 0, [], self.tab_width
-        if tab_width < 0:  # Convert tabs to blanks.
-            for n, line in enumerate(lines):
-                i, w = g.skip_leading_ws_with_indent(line, 0, tab_width)
-                # Use negative width.
-                s = g.computeLeadingWhitespace(w, -abs(tab_width)) + line[i:]
-                if s != line:
-                    count += 1
-                result.append(s)
-        elif tab_width > 0:  # Convert blanks to tabs.
-            for n, line in enumerate(lines):
-                # Use positive width.
-                s = g.optimizeLeadingWhitespace(line, abs(tab_width))
-                if s != line:
-                    count += 1
-                result.append(s)
-        if count and not g.unitTesting:
-            print(f"{self.root.h}:\nchanged leading {kind2} to {kind} in {count} line{g.plural(count)}")
-        return result
+    def move_one_blank_line(self, p: Position) -> None:
+        """Move one blank line from the start of p.b to the end of p.back().b"""
+        back = p.back()
+        if not back:
+            return
+        while p.b:
+            lines = g.splitLines(p.b)
+            if lines[0].strip():
+                break
+            back.b = back.b + '\n'
+            p.b = ''.join(lines[1:])
     #@+node:ekr.20230529075138.7: *3* i: Utils
     # Subclasses are unlikely ever to need to override these methods.
     #@+node:ekr.20230529075138.8: *4* i.compute_common_lws
@@ -661,7 +580,7 @@ class Importer:
         lws_list: list[int] = []
         for block in blocks:
             assert self.lines == block.lines
-            lines = self.lines[block.start:block.end]
+            lines = self.lines[block.start : block.end]
             for line in lines:
                 stripped_line = line.lstrip()
                 if stripped_line:  # Skip empty lines
@@ -688,6 +607,10 @@ class Importer:
             child.h = f"placeholder level {len(parents)}"
             parents.append(child)
             lines_dict[child.v] = []
+    #@+node:ekr.20250819103022.1: *4* i.lws_n
+    def lws_n(self, s: str) -> int:
+        """Return the length of the leading whitespace for s."""
+        return len(s) - len(s.lstrip())
     #@+node:ekr.20230529075138.42: *4* i.get_str_lws
     def get_str_lws(self, s: str) -> str:
         """Return the characters of the lws of s."""
@@ -709,23 +632,6 @@ class Importer:
             else:
                 result.append(line)
         return result
-    #@+node:ekr.20230529075138.17: *4* i.trace_blocks & trace_block
-    def trace_blocks(self, blocks: list[Block]) -> None:
-        """For debugging: trace the list of blocks."""
-        if not blocks:
-            g.trace('No blocks')
-            return
-        print('')
-        print('Blocks...')
-        for block in blocks:
-            self.trace_block(block)
-        print('End of Blocks')
-        print('')
-
-    def trace_block(self, block: Block) -> None:
-        """For debugging: trace one block."""
-        tag = f"  {block.kind:>10} {block.name:<20} {block.start} {block.start_body} {block.end}"
-        g.printObj(block.lines[block.start:block.end], tag=tag)
     #@-others
 #@-others
 #@@language python

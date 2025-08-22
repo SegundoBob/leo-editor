@@ -591,7 +591,7 @@ class LeoImportCommands:
             s = g.toUnicode(s, encoding=self.encoding)
             s = s.replace('\r', '')
             # func is a factory that instantiates the importer class.
-            func(c, p, s, treeType=self.treeType)
+            func(c, p, s)
         else:
             # Just copy the file to the parent node.
             s = g.toUnicode(s, encoding=self.encoding)

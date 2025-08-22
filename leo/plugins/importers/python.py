@@ -120,10 +120,6 @@ class Python_Importer(Importer):
 
         i, prev_i, results = i1, i1, []
 
-        def lws_n(s: str) -> int:
-            """Return the length of the leading whitespace for s."""
-            return len(s) - len(s.lstrip())
-
         # Look behind to see what the previous block was.
         prev_block_line = self.guide_lines[i1 - 1] if i1 > 0 else ''
         while i < i2:
@@ -134,24 +130,20 @@ class Python_Importer(Importer):
                 if m := pattern.match(s):
                     # cython may include trailing whitespace.
                     name = m.group(1).strip()
-                    if trace:
-                        print('')
-                        g.trace(name, m)
-                        print('')
                     end = self.find_end_of_block(i, i2)
                     assert i1 + 1 <= end <= i2, (i1, end, i2)
 
                     # #3517: Don't generate nested defs.
                     if (kind == 'def'
                         and prev_block_line.strip().startswith('def ')
-                        and lws_n(prev_block_line) < lws_n(s)
+                        and self.lws_n(prev_block_line) < self.lws_n(s)
                     ):
                         i = end
                     else:
-                        if trace:  # Keep this trace.
-                            g.printObj(self.lines[prev_i:end], tag=f"{prev_i}:{end} {name}")
                         block = Block(kind, name,
                             start=prev_i, start_body=i, end=end, lines=self.lines)
+                        if trace:
+                            g.printObj(block, tag=f"{g.my_name()}")
                         results.append(block)
                         i = prev_i = end
                     break
@@ -166,195 +158,228 @@ class Python_Importer(Importer):
         """
         trace = False  # This would be useful only while running unit tests.
 
-        def lws_n(s: str) -> int:
-            """Return the length of the leading whitespace for s."""
-            return len(s) - len(s.lstrip())
-
         # i0 = i - 1  # For traces.
-        prev_line = self.guide_lines[i - 1]
+        def_line = self.guide_lines[i - 1]
         kinds = ('class', 'def', '->')  # '->' denotes a coffeescript function.
-        assert any(z in prev_line for z in kinds), (i, repr(prev_line))
+        assert any(z in def_line for z in kinds), (i, repr(def_line))
 
         # Handle multi-line def's. Scan to the line containing a close parenthesis.
-        if prev_line.strip().startswith('def ') and ')' not in prev_line:
-            while i < i2:
-                i += 1
-                if ')' in self.guide_lines[i - 1]:
-                    break
 
-        non_tail_lines = tail_lines = 0
-        curlies, parens = 0, 0
-        if i < i2:
-            lws1 = lws_n(prev_line)
+        if def_line.strip().startswith('def ') and ')' not in def_line:
+            # First, scan for ')'
             while i < i2:
-                s = self.guide_lines[i]
-                if s.strip():
-                    if trace:
-                        dedent_s = lws_n(s) <= lws1
-                        g.trace(f"dedent? {int(dedent_s)} state: {(curlies, parens)} {s!r}")
-                    # A code line. Test the bracket state at the *start* of the line.
-                    if lws_n(s) <= lws1 and (curlies, parens) == (0, 0):
-                        # A code line that ends the block.
-                        return i if non_tail_lines == 0 else i - tail_lines
-                    # Update the bracket state.
-                    curlies = curlies + s.count('{') - s.count('}')
-                    parens = parens + s.count('(') - s.count(')')
-                    # A code line in the block.
-                    non_tail_lines += 1
-                    tail_lines = 0
-                    i += 1
-                    continue
-                # A blank, comment or docstring line.
-                s = self.lines[i]
-                s_strip = s.strip()
-                if not s_strip:
-                    # A blank line.
-                    tail_lines += 1
-                elif s_strip.startswith('#'):
-                    # A comment line.
-                    if s_strip and lws_n(s) < lws1:
-                        if non_tail_lines > 0:
-                            return i - tail_lines
-                    tail_lines += 1
-                else:
-                    # A string/docstring line.
-                    non_tail_lines += 1
-                    tail_lines = 0
+                if ')' in self.guide_lines[i]:
+                    break
                 i += 1
-        # g.printObj(self.guide_lines[i0:i2], tag=f"find_end_of_block: {i0}:{i2}")
+            # Next, scan for ':'
+            while i < i2:
+                if self.guide_lines[i].endswith(':\n'):
+                    break
+                i += 1
+            i += 1
+        if i >= i2:
+            return i2
+
+        # Scan lines, looking for a dedent.
+        non_tail_lines = tail_lines = 0
+        curlies, parens, squares = 0, 0, 0
+        lws1 = self.lws_n(def_line)
+        while i < i2:
+            s = self.guide_lines[i]
+            if s.strip():
+                if trace:
+                    dedent_s = self.lws_n(s) <= lws1
+                    g.trace(f"dedent? {int(dedent_s)} state: {(curlies, parens, squares)} {s!r}")
+
+                # A code line. Test the bracket state at the *start* of the line.
+                if self.lws_n(s) <= lws1 and (curlies, parens, squares) == (0, 0, 0):
+                    # A code line that ends the block.
+                    return i if non_tail_lines == 0 else i - tail_lines
+
+                # Update the bracket state.
+                curlies = curlies + s.count('{') - s.count('}')
+                parens = parens + s.count('(') - s.count(')')
+                squares = squares + s.count('[') - s.count(']')
+
+                # A code line in the block.
+                non_tail_lines += 1
+                tail_lines = 0
+                i += 1
+                continue
+
+            # A blank, comment or docstring line.
+            s = self.lines[i]
+            s_strip = s.strip()
+            if not s_strip:
+                # A blank line.
+                tail_lines += 1
+            elif s_strip.startswith('#'):
+                # A comment line.
+                if s_strip and self.lws_n(s) < lws1:
+                    if non_tail_lines > 0:
+                        return i - tail_lines
+                tail_lines += 1
+            else:
+                # A string/docstring line.
+                non_tail_lines += 1
+                tail_lines = 0
+            i += 1
         return i2
     #@+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers
-    def postprocess(self, parent: Position, result_blocks: list[Block]) -> None:
+    def postprocess(self, parent: Position) -> None:
+        """Python_Importer.postprocess."""
+
+        # Base-class method.
+        self.move_blank_lines(parent)
+
+        # Subclass methods...
+        self.adjust_headlines(parent)
+        self.move_module_preamble(parent)
+        self.move_class_docstrings(parent)
+        self.adjust_at_others(parent)
+    #@+node:ekr.20230830113521.1: *4* python_i.adjust_at_others
+    def adjust_at_others(self, parent: Position) -> None:
         """
-        Python_Importer.postprocess.
+        Add a blank line before @others, and remove the leading blank line in the first child.
         """
+        for p in parent.subtree():
+            if p.h.startswith('class') and p.hasChildren():
+                child = p.firstChild()
+                lines = g.splitLines(p.b)
+                for i, line in enumerate(lines):
+                    if line.strip().startswith('@others') and child.b.startswith('\n'):
+                        p.b = ''.join(lines[:i]) + '\n' + ''.join(lines[i:])
+                        child.b = child.b[1:]
+                        break
+    #@+node:ekr.20230825100219.1: *4* python_i.adjust_headlines
+    def adjust_headlines(self, parent: Position) -> None:
+        """
+        python_i.adjust_headlines.
 
-        #@+others  # Define helper functions.
-        #@+node:ekr.20230830113521.1: *4* python_i.function: adjust_at_others
-        def adjust_at_others(parent: Position) -> None:
-            """
-            Add a blank line before @others, and remove the leading blank line in the first child.
-            """
-            for p in parent.subtree():
-                if p.h.startswith('class') and p.hasChildren():
-                    child = p.firstChild()
-                    lines = g.splitLines(p.b)
-                    for i, line in enumerate(lines):
-                        if line.strip().startswith('@others') and child.b.startswith('\n'):
-                            p.b = ''.join(lines[:i]) + '\n' + ''.join(lines[i:])
-                            child.b = child.b[1:]
-                            break
-        #@+node:ekr.20230825100219.1: *4* python_i.function: adjust_headlines
-        def adjust_headlines(parent: Position) -> None:
-            """
-            python_i.adjust_headlines.
+        coffee_script_i also uses this method.
 
-            coffee_script_i also uses this method.
+        Add class names for all methods.
 
-            Add class names for all methods.
-
-            Change 'def' to 'python_i.function:' for all non-methods.
-            """
-            for child in parent.subtree():
-                found = False
-                if child.h.startswith('def '):
-                    # Look up the tree for the nearest class.
-                    for ancestor in child.parents():
-                        if ancestor == parent:
-                            break
-                        if m := self.class_pat.match(ancestor.h):
-                            found = True
-                            # Replace 'def ' by the class name + '.'
-                            child.h = f"{m.group(1)}.{child.h[4:].strip()}"
-                            break
-                    if not found:
-                        # Replace 'def ' by 'function'
-                        child.h = f"function: {child.h[4:].strip()}"
-        #@+node:ekr.20230825164231.1: *4* python_i.function: find_docstring
-        def find_docstring(p: Position) -> Optional[str]:
-            """Creating a regex that returns a docstring is too tricky."""
-            delims = ('"""', "'''")
-            s_strip = p.b.strip()
-            if not s_strip:
-                return None
-            if not s_strip.startswith(delims):
-                return None
-            delim = delims[0] if s_strip.startswith(delims[0]) else delims[1]
-            lines = g.splitLines(p.b)
-            if lines[0].count(delim) == 2:
-                return lines[0]
-            i = 1
-            while i < len(lines):
-                if delim in lines[i]:
-                    return ''.join(lines[: i + 1])
-                i += 1
+        Change 'def' to 'python_i.function:' for all non-methods.
+        """
+        for child in parent.subtree():
+            found = False
+            if child.h.startswith('def '):
+                # Look up the tree for the nearest class.
+                for ancestor in child.parents():
+                    if ancestor == parent:
+                        break
+                    if m := self.class_pat.match(ancestor.h):
+                        found = True
+                        # Replace 'def ' by the class name + '.'
+                        child.h = f"{m.group(1)}.{child.h[4:].strip()}"
+                        break
+                if not found:
+                    # Replace 'def ' by 'function'
+                    child.h = f"function: {child.h[4:].strip()}"
+    #@+node:ekr.20230825164231.1: *4* python_i.find_docstring
+    def find_docstring(self, p: Position) -> Optional[str]:
+        """Creating a regex that returns a docstring is too tricky."""
+        delims = ('"""', "'''")
+        s_strip = p.b.strip()
+        if not s_strip:
             return None
+        if not s_strip.startswith(delims):
+            return None
+        delim = delims[0] if s_strip.startswith(delims[0]) else delims[1]
+        lines = g.splitLines(p.b)
+        if lines[0].count(delim) == 2:
+            return lines[0]
+        i = 1
+        while i < len(lines):
+            if delim in lines[i]:
+                # Add trailing blank lines.
+                i += 1
+                while i < len(lines) and not lines[i].strip():
+                    i += 1
+                return ''.join(lines[:i])
+            i += 1
+        return None
 
-        #@+node:ekr.20230825164234.1: *4* python_i.function: move_class_docstring
-        def move_class_docstring(docstring: str, child_p: Position, class_p: Position) -> None:
-            """Move the docstring from child_p to class_p."""
+    #@+node:ekr.20230825164234.1: *4* python_i.move_class_docstring
+    def move_class_docstring(self, docstring: str, child_p: Position, class_p: Position) -> None:
+        """Move the docstring from child_p to class_p."""
 
-            # Remove the docstring from child_p.b.
-            child_p.b = child_p.b.replace(docstring, '')
-            child_p.b = child_p.b.lstrip('\n')
+        # Remove the docstring from child_p.b.
+        child_p.b = child_p.b.replace(docstring, '')
 
-            # Carefully add the docstring to class_p.b.
-            class_lines = g.splitLines(class_p.b)
-            # Count the number of lines before the class line.
-            n = 0
-            while n < len(class_lines):
-                line = class_lines[n]
-                n += 1
-                if line.strip().startswith('class '):
-                    break
-            if n > len(class_lines):
-                g.printObj(g.splitLines(class_p.b), tag=f"No class line: {class_p.h}")
+        # Carefully add the docstring to class_p.b.
+        class_lines = g.splitLines(class_p.b)
+
+        # Count the number of lines before the class line.
+        n = 0
+        while n < len(class_lines):
+            line = class_lines[n]
+            n += 1
+            if line.strip().startswith('class '):
+                break
+        else:
+            # Should not happen.
+            g.printObj(class_p.b, tag=f"No class line: {class_p.h}")
+            return
+
+        # Find the @others line in the class body.
+        for line in class_lines:
+            if line.strip().startswith('@others'):
+                at_others_indent = self.lws_n(line)
+                break
+        else:  # pragma: no cover
+            # Should not happen.
+            g.printObj(class_p.b, tag=f"No @others line: {class_p.h}")
+            at_others_indent = 4  # Default
+
+        # Add the indentation of the @others statement in class body.
+        docstring_lines = [
+            f"{' '*at_others_indent}{z}" if z.strip() else '\n'
+            for z in g.splitLines(docstring)
+        ]
+        class_p.b = ''.join(class_lines[:n] + docstring_lines + class_lines[n:])
+    #@+node:ekr.20230825111112.1: *4* python_i.move_class_docstrings
+    def move_class_docstrings(self, parent: Position) -> None:
+        """
+        Move class docstrings from the class node's first child to the class node.
+        """
+        for p in parent.subtree():
+            if p.h.startswith('class '):
+                child1 = p.firstChild()
+                if child1:
+                    docstring = self.find_docstring(child1)
+                    if docstring:
+                        self.move_class_docstring(docstring, child1, p)
+    #@+node:ekr.20230930181855.1: *4* python_i.move_module_preamble
+    def move_module_preamble(self, parent: Position) -> None:
+        """Move the preamble lines from the parent's first child to the start of parent.b."""
+
+        child1 = parent.firstChild()
+        if not child1:
+            return
+
+        def match(s: str) -> bool:
+            for kind, pattern in self.block_patterns:
+                if pattern.match(s):
+                    return True
+            return False
+
+        # The preamble is everything up to the line that first matches a block
+        lines = g.splitLines(child1.b)
+        for i, line in enumerate(lines):
+            if match(line):
+                # Adjust the bodies.
+                preamble_s = ''.join(lines[:i])
+                parent.b = preamble_s + parent.b
+                child1.b = child1.b.replace(preamble_s, '')
                 return
-
-            # This isn't perfect in some situations.
-            docstring_list = [f"{' '*4}{z}" for z in g.splitLines(docstring)]
-            class_p.b = ''.join(class_lines[:n] + docstring_list + class_lines[n:])
-        #@+node:ekr.20230825111112.1: *4* python_i.function: move_class_docstrings
-        def move_class_docstrings(parent: Position) -> None:
-            """
-            Move class docstrings from the class node's first child to the class node.
-            """
-            for p in parent.subtree():
-                if p.h.startswith('class '):
-                    child1 = p.firstChild()
-                    if child1:
-                        docstring = find_docstring(child1)
-                        if docstring:
-                            move_class_docstring(docstring, child1, p)
-        #@+node:ekr.20230930181855.1: *4* python_i.function: move_module_preamble
-        def move_module_preamble(lines: list[str], parent: Position, result_blocks: list[Block]) -> None:
-            """Move the preamble lines from the parent's first child to the start of parent.b."""
-            child1 = parent.firstChild()
-            if not child1:
-                return
-
-            # Compute the preamble.
-            preamble_start = max(0, result_blocks[1].start_body - 1)
-            preamble_lines = lines[:preamble_start]
-            preamble_s = ''.join(preamble_lines)
-            if not preamble_s.strip():
-                return
-            # Adjust the bodies.
-            parent.b = preamble_s + parent.b
-            child1.b = child1.b.replace(preamble_s, '')
-            child1.b = child1.b.lstrip('\n')
-        #@-others
-
-        adjust_headlines(parent)
-        move_module_preamble(self.lines, parent, result_blocks)
-        move_class_docstrings(parent)
-        adjust_at_others(parent)
     #@-others
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for python."""
-    Python_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Python_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     'extensions': ['.py', '.pyw', '.pyi', '.codon'],  # mypy uses .pyi extension.

@@ -33,7 +33,7 @@ class Treepad_Importer(Importer):
         The Treepad writer adds all structure-related lines,
         so *remove* those lines here.
 
-        i.gen_lines adds the @language and @tabwidth directives.
+        The base Importer class adds the @language and @tabwidth directives.
         """
         header_pat = re.compile(r'<Treepad version.*?>\s*$')
         start1_pat = re.compile(r'^\s*dt\=\w+\s*$')  # type line.
@@ -93,9 +93,9 @@ class Treepad_Importer(Importer):
     #@-others
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for treepad."""
-    Treepad_Importer(c).import_from_string(parent, s, treeType=treeType)
+    Treepad_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     'extensions': ['.hjt',],

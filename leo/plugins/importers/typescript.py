@@ -55,9 +55,9 @@ class TS_Importer(JS_Importer):
     #@-<< define function patterns >>
 #@-others
 
-def do_import(c: Cmdr, parent: Position, s: str, treeType: str = '@file') -> None:
+def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for typescript."""
-    TS_Importer(c).import_from_string(parent, s, treeType=treeType)
+    TS_Importer(c).import_from_string(parent, s)
 
 importer_dict = {
     'extensions': ['.ts',],

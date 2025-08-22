@@ -3,14 +3,11 @@
 """Tests of leo/plugins/importers"""
 import glob
 import importlib
-import os
-import sys
 import textwrap
 from leo.core import leoGlobals as g
 from leo.core.leoJupytext import JupytextManager
 from leo.core.leoNodes import Position
 from leo.core.leoTest2 import LeoUnitTest
-from leo.plugins.importers.base_importer import Block
 from leo.plugins.importers.java import Java_Importer
 from leo.plugins.importers.python import Python_Importer
 from leo.plugins.importers.c import C_Importer
@@ -24,7 +21,6 @@ class BaseTestImporter(LeoUnitTest):
     """The base class for tests of leoImport.py"""
 
     ext = None  # Subclasses must set this to the language's extension.
-    treeType = '@file'  # Fix #352.
 
     def setUp(self):
         super().setUp()
@@ -32,7 +28,7 @@ class BaseTestImporter(LeoUnitTest):
 
     #@+others
     #@+node:ekr.20230526135305.1: *3* BaseTestImporter.check_outline
-    def check_outline(self, p: Position, expected: tuple, trace: bool = True) -> None:
+    def check_outline(self, p: Position, expected: tuple) -> None:
         """
         BaseTestImporter.check_outline.
 
@@ -53,30 +49,38 @@ class BaseTestImporter(LeoUnitTest):
                 self.assertEqual(a_level - p0_level, e_level, msg=msg)
                 if i > 0:  # Don't test top-level headline.
                     self.assertEqual(e_h, a_h, msg=msg)
-                self.assertEqual(g.splitLines(e_str), g.splitLines(a_str), msg=msg)
+                if 0:  # Brief message
+                    if g.splitLines(e_str) != g.splitLines(a_str):
+                        print(f"Fail: {self.id()}")
+                        return
+                else:
+                    self.assertEqual(g.splitLines(e_str), g.splitLines(a_str), msg=msg)
         except AssertionError:
             # Dump actual results, including bodies.
-            if trace:
-                print('')
-                print(f"Fail: {self.id()}")
-                self.dump_tree(p, tag='Actual results...')
-                if True:  # Usually a great trace.
-                    # Dump the expected results, as in LeoUnitTest.dump_tree.
-                    print('Expected results')
-                    for (level, headline, body) in expected:
-                        print('')
-                        print('level:', level, headline)
-                        g.printObj(g.splitLines(body))
+            print('')
+            print(f"Fail: {self.id()}")
+            self.dump_tree(p, tag='Actual results...')
+            if True:  # Usually a great trace.
+                # Dump the expected results, as in LeoUnitTest.dump_tree.
+                print('Expected results')
+                for (level, headline, body) in expected:
+                    print('')
+                    print('level:', level, headline)
+                    g.printObj(g.splitLines(body))
             raise
     #@+node:ekr.20220809054555.1: *3* BaseTestImporter.check_round_trip
-    def check_round_trip(self, p: Position, s: str) -> None:
+    def check_round_trip(self, p: Position, s: str, strict: bool = True) -> None:
         """Assert that p's outline is equivalent to s."""
         c = self.c
-        s = s.rstrip()  # Ignore trailing whitespace.
-        result_s = c.atFileCommands.atAutoToString(p).rstrip()  # Ignore trailing whitespace.
-        # Ignore leading whitespace and all blank lines.
-        s_lines = [z.lstrip() for z in g.splitLines(s) if z.strip()]
-        result_lines = [z.lstrip() for z in g.splitLines(result_s) if z.strip()]
+        result_s = c.atFileCommands.atAutoToString(p)
+
+        if strict:
+            s_lines = g.splitLines(s)
+            result_lines = g.splitLines(result_s)
+        else:
+            # Ignore leading whitespace and all blank lines.
+            s_lines = [z.lstrip() for z in g.splitLines(s) if z.strip()]
+            result_lines = [z.lstrip() for z in g.splitLines(result_s) if z.strip()]
         if s_lines != result_lines:
             g.trace('FAIL', g.caller(2))
             g.printObj([f"{i:<4} {z}" for i, z in enumerate(s_lines)], tag=f"expected: {p.h}")
@@ -102,11 +106,15 @@ class BaseTestImporter(LeoUnitTest):
                     return z  # pragma: no cover
         return '@file'
     #@+node:ekr.20230527075112.1: *3* BaseTestImporter.new_round_trip_test
-    def new_round_trip_test(self, s: str, expected_s: str = None) -> None:
+    def new_round_trip_test(self, s: str, expected_s: str = None, strict: bool = True) -> None:
+
+        if not expected_s:  # Leo 6.8.7.
+            # Define the *strict* expected results.
+            expected_s = textwrap.dedent(s).strip() + '\n'
         p = self.run_test(s)
-        self.check_round_trip(p, expected_s or s)
+        self.check_round_trip(p, expected_s, strict=strict)
     #@+node:ekr.20230526124600.1: *3* BaseTestImporter.new_run_test
-    def new_run_test(self, s: str, expected_results: tuple, *, trace: bool = False) -> None:
+    def new_run_test(self, s: str, expected_results: tuple, *, check: bool = True) -> None:
         """
         Run a unit test of an import scanner,
         i.e., create a tree from string s at location p.
@@ -123,13 +131,17 @@ class BaseTestImporter(LeoUnitTest):
         self.short_id = f"{id_parts[-2]}.{id_parts[-1]}"
         parent.h = f"{kind} {self.short_id}"
 
-        # createOutline calls Importer.gen_lines and Importer.check.
-        test_s = textwrap.dedent(s).strip() + '\n'
+        # Leo 6.8.7. Do *not* strip trailing ws!
+        test_s = textwrap.dedent(s).lstrip()
 
-        c.importCommands.createOutline(parent.copy(), ext, test_s)
+        # Leo 6.8.7:
+        c.importCommands.createOutline(parent.copy(), ext, test_s, treeType= '@clean')
 
         # Dump the actual results on failure and raise AssertionError.
-        self.check_outline(parent, expected_results, trace=trace)
+        if check:
+            self.check_outline(parent, expected_results)
+        else:
+            self.dump_tree(p, tag='Actual results...')
     #@+node:ekr.20211127042843.1: *3* BaseTestImporter.run_test
     def run_test(self, s: str) -> Position:
         """
@@ -149,55 +161,9 @@ class BaseTestImporter(LeoUnitTest):
         self.short_id = f"{id_parts[-2]}.{id_parts[-1]}"
         parent.h = f"{kind} {self.short_id}"
 
-        # createOutline calls Importer.gen_lines and Importer.check.
         test_s = textwrap.dedent(s).strip() + '\n'
         c.importCommands.createOutline(parent.copy(), ext, test_s)
         return parent
-    #@-others
-#@+node:ekr.20231011020747.1: ** class TestImporterClass(LeoUnitTest)
-class TestImporterClass(LeoUnitTest):
-    """Tests of methods of the Importer class."""
-
-    #@+others
-    #@+node:ekr.20231011021003.1: *3* TestImporterClass.test_trace_block
-    def test_trace_block(self):
-
-        c = self.c
-        importer = Python_Importer(c)
-        lines = g.splitLines(
-            """
-            import sys
-            def spam_and_eggs():
-               pass
-            """
-        )
-
-        # Test that Importer.trace_block doesn't crash.
-        # Comment out the assignment to sys.stdout to see the actual results.
-        try:
-            sys.stdout = open(os.devnull, 'w')
-            block = Block('def', 'spam_and_eggs', start=3, start_body=4, end=5, lines=lines)
-            importer.trace_block(block)
-        finally:
-            sys.stdout = sys.__stdout__
-
-    #@+node:ekr.20231011021056.1: *3* TestImporterClass.test_long_repr
-    def test_long_repr(self):
-
-        lines = g.splitLines(
-            """
-            import sys
-            def spam_and_eggs():
-               pass
-            """
-        )
-        block = Block('def', 'spam_and_eggs', start=3, start_body=4, end=5, lines=lines)
-
-        # Test that long_repr doesn't crash.
-        s = block.long_repr()
-
-        # A short test that the results contain an expected line.
-        assert 'def spam_and_eggs' in s, repr(s)
     #@-others
 #@+node:ekr.20211108052633.1: ** class TestAtAuto (BaseTestImporter)
 class TestAtAuto(BaseTestImporter):
@@ -242,6 +208,7 @@ class TestC(BaseTestImporter):
             ),
             (1, 'class cTestClass1',
                 'class cTestClass1 {\n'
+                '\n'  # Leo 6.8.7
                 '    @others\n'
                 '}\n'
             ),
@@ -249,6 +216,7 @@ class TestC(BaseTestImporter):
                 'int foo (int a) {\n'
                 '    a = 2 ;\n'
                 '}\n'
+                '\n'  # Leo 6.8.7
             ),
             (2, 'func bar',
                 'char bar (float c) {\n'
@@ -283,6 +251,7 @@ class TestC(BaseTestImporter):
             ),
             (1, 'class cTestClass1',
                 'class cTestClass1 {\n'
+                '\n'  # Leo 6.8.7
                 '@others\n'
                 '}\n'
             ),
@@ -291,6 +260,7 @@ class TestC(BaseTestImporter):
                 '// an underindented line.\n'
                 '        a = 2 ;\n'
                 '    }\n'
+                '\n'  # Leo 6.8.7
             ),
             (2, 'func bar',
                 '    // This should go with the next function.\n'
@@ -329,6 +299,7 @@ class TestC(BaseTestImporter):
                 '{\n'
                 '    assert(false);\n'
                 '}\n'
+                '\n'  # Leo 6.8.7
             ),
             (1, 'func dothat',
                 'bool\n'
@@ -527,30 +498,6 @@ class TestC(BaseTestImporter):
         for block in blocks:
             result_lines.extend(lines[block.start : block.end])
         self.assertEqual(lines, result_lines)
-    #@+node:ekr.20230511073719.1: *3* TestC.test_codon_file
-    def test_codon_file(self):
-        # Test codon/codon/app/main.cpp.
-        c = self.c
-        importer = C_Importer(c)
-        path = 'C:/Repos/codon/codon/app/main.cpp'
-        if not os.path.exists(path):
-            self.skipTest(f"Not found: {path!r}")
-        with open(path, 'r') as f:
-            source = f.read()
-        lines = g.splitLines(source)
-        if 1:  # Test gen_lines.
-            importer.root = c.p
-            importer.gen_lines(lines, c.p)
-        else:  # Test find_blocks.
-            importer.guide_lines = importer.make_guide_lines(lines)
-            result = importer.find_blocks(0, len(importer.guide_lines))
-
-            # The result lines must tile (cover) the original lines.
-            result_lines = []
-            for z in result:
-                kind, name, start, start_body, end = z
-                result_lines.extend(lines[start:end])
-            self.assertEqual(lines, result_lines)
     #@+node:ekr.20230607164309.1: *3* TestC.test_struct
     def test_struct(self):
         # From codon sources.
@@ -706,6 +653,7 @@ class TestCoffeescript(BaseTestImporter):
               '\n'
               'transform: (args...) ->\n'
               '  @transformer.transform.apply(@transformer, args)\n'
+              '\n'  # Leo 6.8.7
           ),
           (2, 'Builder.body',
               '# `body()`\n'
@@ -715,6 +663,7 @@ class TestCoffeescript(BaseTestImporter):
               '  str = blockTrim(str)\n'
               '  str = unshift(str)\n'
               '  if str.length > 0 then str else ""\n'
+              '\n'  # Leo 6.8.7
           ),
         )
         self.new_run_test(s, expected_results)
@@ -825,6 +774,7 @@ class TestCython(BaseTestImporter):
                     '    a Cython program, but not from Python.\n'
                     '    """\n'
                     '    return pow(x, 2.0) + x\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'cpdef print_result',
                     'cpdef print_result (double x):\n'
@@ -873,12 +823,14 @@ class TestDart(BaseTestImporter):
                     'hello() {\n'
                     "  print('Hello, World!');\n"
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function printNumber',
                     '// Define a function.\n'
                     'printNumber(num aNumber) {\n'
                     "  print('The number is $aNumber.'); // Print to console.\n"
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function void main',
                     '// This is where the app starts executing.\n'
@@ -929,6 +881,7 @@ class TestElisp(BaseTestImporter):
                     '   (assn a "abc")\n'
                     '   (assn b \\x)\n'
                     '   (+ 1 2 3))\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'defun cde',
                     '; comment re cde\n'
@@ -1043,6 +996,7 @@ class TestHtml(BaseTestImporter):
                     '</body>\n'
             ),
             (2, '<div id="D666">Paragraph</p> <!-- P1 -->',
+                    '\n'  # Leo 6.8.7
                     '<!-- OOPS: the div and p elements not properly nested.-->\n'
                     '<!-- OOPS: this table got generated twice. -->\n'
                     '\n'
@@ -1205,7 +1159,8 @@ class TestHtml(BaseTestImporter):
             .replace('<td class="blutopgrabot"><a', '<td class="blutopgrabot">\n<a')
             .replace('<noscript><img', '<noscript>\n<img')
         )
-        self.new_round_trip_test(s, expected_s)
+        self.new_round_trip_test(s, expected_s, strict=False)
+
     #@+node:ekr.20210904065459.21: *3* TestHtml.test_multple_node_completed_on_a_line
     def test_multple_node_completed_on_a_line(self):
 
@@ -1522,6 +1477,7 @@ class TestJava(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                 '@others\n'
+                '\n'  # Leo 6.8.7
                 '@language java\n'
                 '@tabwidth -4\n'
             ),
@@ -1605,8 +1561,6 @@ class TestJava(BaseTestImporter):
         at = c.atFileCommands
         #@+<< define contents: test_round_trip >>
         #@+node:ekr.20231225065840.1: *4* << define contents: test_round_trip >>
-        # #3727: The blank lines below cause the round-trip to fail.
-        #        For now, this unit test will hack the expected lines.
         contents = """
             public class Main {
                 public static void main(String[] args) {
@@ -1633,9 +1587,7 @@ class TestJava(BaseTestImporter):
         # Write the tree as if it were an @auto node.
         root.h = '@auto test.java'
         results = at.atAutoToString(root)
-
-        # A hack, acknowledging that the importer strips trailing blank lines in each node.
-        expected = results.replace('\n\n', '\n')
+        expected = contents
 
         if results != expected:
             g.printObj(contents, tag='contents')
@@ -1715,6 +1667,7 @@ class TestJavascript(BaseTestImporter):
             (1, 'function c3',
                     'var c3 = (function () {\n'
                     '    @others\n'
+                    '\n'  # Leo 6.8.7
                     '    return c3;\n'
                     '}());\n'
             ),
@@ -1899,6 +1852,7 @@ class TestLua(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                     '@others\n'
+                    '\n'  # Leo 6.8.7
                     'print("main", coroutine.resume(co, 1, 10))\n'
                     'print("main", coroutine.resume(co, "r"))\n'
                     'print("main", coroutine.resume(co, "x", "y"))\n'
@@ -1911,6 +1865,7 @@ class TestLua(BaseTestImporter):
                     '  print("foo", a)\n'
                     '  return coroutine.yield(2*a)\n'
                     'end\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function coroutine.create',
                     'co = coroutine.create(function (a,b)\n'
@@ -2588,6 +2543,7 @@ class TestPascal(BaseTestImporter):
                     'implementation\n'
                     '\n'
                     '{$R *.dfm}\n'
+                    '\n'  # Leo 6.8.7
                 ),
             (1, 'procedure TForm1.FormCreate',
                     'procedure TForm1.FormCreate(Sender: TObject);\n'
@@ -2696,6 +2652,7 @@ class TestPascal(BaseTestImporter):
                     'uses gf2obj1;\n'
                     '\n'
                     'implementation\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'procedure statObj.scale',
                     'procedure statObj.scale(factor: float);\n'
@@ -2704,6 +2661,7 @@ class TestPascal(BaseTestImporter):
                     '   for i := 1 to num do\n'
                     '      with data^[i] do y := factor * y;\n'
                     'end;\n'
+                    '\n'  # Leo 6.8.7
 
             ),
             (1, 'procedure statObj.multiplyGraph',
@@ -2715,6 +2673,7 @@ class TestPascal(BaseTestImporter):
                     'for i := 1 to max do\n'
                     '    data^[i].y := data^[i].y * pstatObj(source)^.data^[i].y;\n'
                     'end;\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function statObj.divideGraph',
                     'function statObj.divideGraph(var numerator: pGraphObj): boolean;\n'
@@ -2749,6 +2708,7 @@ class TestPascal(BaseTestImporter):
                     'dispose(pg, byebye);\n'
                     'divideGraph := not zeroData;\n'
                     'end;\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'procedure statObj.addGraph',
                     'procedure statObj.addGraph(var source: pgraphObj);\n'
@@ -2822,6 +2782,7 @@ class TestPerl(BaseTestImporter):
                     '               print "Hello, World!\n'
                     '";\n'
                     '            }\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub Test',
                     '            sub Test{\n'
@@ -2898,6 +2859,7 @@ class TestPerl(BaseTestImporter):
                     '               print "Test!\n'
                     '";\n'
                     '            }\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub World',
                     '            =begin comment\n'
@@ -2950,16 +2912,19 @@ class TestPerl(BaseTestImporter):
                     'sub test1 {\n'
                     '    s = /}/g;\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub test2',
                     'sub test2 {\n'
                     '    s = m//}/;\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub test3',
                     'sub test3 {\n'
                     '    s = s///}/;\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'sub test4',
                     'sub test4 {\n'
@@ -3079,8 +3044,6 @@ class TestPython(BaseTestImporter):
     #@+node:ekr.20240219045037.1: *3* TestPython.test_almost_empty_defs
     def test_almost_empty_defs(self):
 
-        # #3803. Adapated from the TracerCore class coverage/types.py.
-        #        Designed to test find_end_of_block.
         s = '''
             class TracerCore:
 
@@ -3101,6 +3064,7 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                    '@others\n'
+                   '\n'  # Leo 6.8.7
                    "if __name__ == '__main__':\n"
                     '    main()\n'
                    '@language python\n'
@@ -3108,11 +3072,14 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class TracerCore',
                     'class TracerCore:\n'
-                    '    ATothers\n'.replace('AT', '@')
+                    '\n'  # Leo 6.8.7
+                    '    @others\n'
+                    '\n'  # Leo 6.8.7
             ),
             (2, 'TracerCore.start',
                     'def start(self):\n'
                     '    """Start this tracer."""\n'
+                    '\n'  # Leo 6.8.7
             ),
             (2, 'TracerCore.stop',
                     'def stop(self):\n'
@@ -3122,6 +3089,101 @@ class TestPython(BaseTestImporter):
                     '# About main\n'
                     'def main():\n'
                     '    pass\n'
+            ),
+        )
+        self.new_run_test(s, expected_results, check=True)
+    #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
+    def test_class_docstring(self):
+
+        # Test that docstrings contain no whitespace in otherwise blank lines.
+        # To do: Test generation of @others.
+        s = '''
+            class RefactoringChecker(checkers.BaseTokenChecker):
+                """Looks for code which can be refactored.
+
+                This checker also mixes the astroid and the token approaches
+                in order to create knowledge about whether an "else if" node
+                is a true "else if" node, or an "elif" node.
+                """
+
+                name = "refactoring"
+
+                msgs = {
+                    "R1701": (
+                        "Consider merging these isinstance calls to isinstance(%s, (%s))",
+                        "consider-merging-isinstance",
+                        "Used when multiple consecutive isinstance calls can be merged into one.",
+                    ),
+                }
+
+                options = (
+                    (
+                        "max-nested-blocks",
+                        {
+                            "default": 5,
+                            "type": "int",
+                            "metavar": "<int>",
+                            "help": "Maximum number of nested blocks for function / method body",
+                        },
+                    ),
+                )
+
+                def __init__(self, linter: PyLinter) -> None:
+                    super().__init__(linter)
+                    self._return_nodes: dict[str, list[nodes.Return]] = {}
+                    self._consider_using_with_stack = ConsiderUsingWithStack()
+                    self._init()
+                    self._never_returning_functions: set[str] = set()
+                    self._suggest_join_with_non_empty_separator: bool = False
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+                    '@others\n'
+                    '@language python\n'
+                    '@tabwidth -4\n'
+            ),
+            (1, 'class RefactoringChecker',
+                    'class RefactoringChecker(checkers.BaseTokenChecker):\n'
+                    '    """Looks for code which can be refactored.\n'
+                    '\n'  # There should be no leading whitespace in this line.
+                    '    This checker also mixes the astroid and the token approaches\n'
+                    '    in order to create knowledge about whether an "else if" node\n'
+                    '    is a true "else if" node, or an "elif" node.\n'
+                    '    """\n'
+                    '\n'  # Leo 6.8.7.
+                    '    @others\n'
+            ),
+            (2, 'RefactoringChecker.__init__',
+                    'name = "refactoring"\n'
+                    '\n'
+                    'msgs = {\n'
+                    '    "R1701": (\n'
+                    '        "Consider merging these isinstance calls to isinstance(%s, (%s))",\n'
+                    '        "consider-merging-isinstance",\n'
+                    '        "Used when multiple consecutive isinstance calls can be merged into one.",\n'
+                    '    ),\n'
+                    '}\n'
+                    '\n'
+                    'options = (\n'
+                    '    (\n'
+                    '        "max-nested-blocks",\n'
+                    '        {\n'
+                    '            "default": 5,\n'
+                    '            "type": "int",\n'
+                    '            "metavar": "<int>",\n'
+                    '            "help": "Maximum number of nested blocks for function / method body",\n'
+                    '        },\n'
+                    '    ),\n'
+                    ')\n'
+                    '\n'
+                    'def __init__(self, linter: PyLinter) -> None:\n'
+                    '    super().__init__(linter)\n'
+                    '    self._return_nodes: dict[str, list[nodes.Return]] = {}\n'
+                    '    self._consider_using_with_stack = ConsiderUsingWithStack()\n'
+                    '    self._init()\n'
+                    '    self._never_returning_functions: set[str] = set()\n'
+                    '    self._suggest_join_with_non_empty_separator: bool = False\n'
             ),
         )
         self.new_run_test(s, expected_results)
@@ -3244,6 +3306,7 @@ class TestPython(BaseTestImporter):
             (0, '',  # Ignore the first headline.
                     'import sys\n'
                     '@others\n'
+                    '\n'  # Leo 6.8.7
                     "if __name__ == '__main__':\n"
                     '    main()\n'
                     '@language python\n'
@@ -3252,10 +3315,12 @@ class TestPython(BaseTestImporter):
             (1, 'function: f1',
                     'def f1():\n'
                     '    pass\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'class Class1',
                        'class Class1:\n'
                        '    @others\n'
+                       '\n'  # Leo 6.8.7
             ),
             (2, 'Class1.method11',
                        'def method11():\n'
@@ -3272,12 +3337,14 @@ class TestPython(BaseTestImporter):
                        '\n'
                        'def f2():\n'
                        '    pass\n'
+                       '\n'  # Leo 6.8.7
             ),
             (1, 'class Class2',
                        '# An outer comment\n'
                        '@myClassDecorator\n'
                        'class Class2:\n'
                        '    @others\n'
+                       '\n'  # Leo 6.8.7
             ),
             (2, 'Class2.method21',
                        'def method21():\n'
@@ -3327,7 +3394,7 @@ class TestPython(BaseTestImporter):
 
         def start(self):
             if self.force or ask_yes_no(
-                "Really delete all ipython history? ", default="no", interrupt="no"
+                "Really delete all ipython history?", default="no", interrupt="no"
             ):
                 HistoryTrim.start(self)
 
@@ -3359,7 +3426,10 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class HistoryTrim',
                     'class HistoryTrim(BaseIPythonApplication):\n'
+                    '\n'  # Leo 6.8.7
                     '    @others\n'
+                    '\n'  # Leo 6.8.7
+                    '\n'  # Leo 6.8.7
             ),
             (2, 'HistoryTrim.start',
                     'description = trim_hist_help\n'
@@ -3377,18 +3447,22 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class HistoryClear',
                     'class HistoryClear(HistoryTrim):\n'
+                    '\n'  # Leo 6.8.7
                     '    @others\n'
+                    '\n'  # Leo 6.8.7
+                    '\n'  # Leo 6.8.7
             ),
             (2, 'HistoryClear.start',
 
                     'def start(self):\n'
                     '    if self.force or ask_yes_no(\n'
-                    '        "Really delete all ipython history? ", default="no", interrupt="no"\n'
+                    '        "Really delete all ipython history?", default="no", interrupt="no"\n'
                     '    ):\n'
                     '        HistoryTrim.start(self)\n'
             ),
             (1, 'class HistoryApp',
                     'class HistoryApp(Application):\n'
+                    '\n'  # Leo 6.8.7
                     '    @others\n'
             ),
             (2, 'HistoryApp.start',
@@ -3447,6 +3521,118 @@ class TestPython(BaseTestImporter):
                     '    if isinstance(tvar, TypeVarTupleType):\n'
                     '        return type\n'
                     '    return type\n'
+            ),
+        )
+        self.new_run_test(s, expected_results)
+    #@+node:ekr.20250813150236.1: *3* TestPython.test_long_defs
+    def test_long_defs(self):
+
+        s = '''
+            def iter_spurious_suppression_messages(
+                self,
+                msgs_store: MessageDefinitionStore,
+            ) -> Iterator[
+                tuple[
+                    Literal["useless-suppression", "suppressed-message"],
+                    int,
+                    tuple[str] | tuple[str, int],
+                ]
+            ]:
+                for warning, lines in self._raw_module_msgs_state.items():
+                    for line, enable in lines.items():
+                        if (
+                            not enable
+                            and (warning, line) not in self._ignored_msgs
+                            and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION
+                        ):
+                            yield "useless-suppression", line, (
+                                msgs_store.get_msg_display_string(warning),
+                            )
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
+            ),
+            (1, 'function: iter_spurious_suppression_messages',
+
+                'def iter_spurious_suppression_messages(\n'
+                '    self,\n'
+                '    msgs_store: MessageDefinitionStore,\n'
+                ') -> Iterator[\n'
+                '    tuple[\n'
+                '        Literal["useless-suppression", "suppressed-message"],\n'
+                '        int,\n'
+                '        tuple[str] | tuple[str, int],\n'
+                '    ]\n'
+                ']:\n'
+                '    for warning, lines in self._raw_module_msgs_state.items():\n'
+                '        for line, enable in lines.items():\n'
+                '            if (\n'
+                '                not enable\n'
+                '                and (warning, line) not in self._ignored_msgs\n'
+                '                and warning not in INCOMPATIBLE_WITH_USELESS_SUPPRESSION\n'
+                '            ):\n'
+                '                yield "useless-suppression", line, (\n'
+                '                    msgs_store.get_msg_display_string(warning),\n'
+                '                )\n'
+            ),
+        )
+        self.new_run_test(s, expected_results)
+    #@+node:ekr.20230929051304.1: *3* TestPython.test_long_outer_docstring
+    def test_long_outer_docstring(self):
+
+        s = '''
+            """
+            Multi-line module-level docstring
+
+            Last line.
+            """
+
+            from __future__ import annotations
+
+            class C1:
+                """Class docstring"""
+
+                def __init__(self):
+                    pass
+
+            def f1():
+                pass
+
+            '''
+
+        expected_results = (
+            (0, '',  # Ignore the first headline.
+                    '"""\n'
+                    'Multi-line module-level docstring\n'
+                    '\n'
+                    'Last line.\n'
+                    '"""\n'
+                    '\n'
+                    'from __future__ import annotations\n'
+                    '\n'
+                    '@others\n'
+                    '@language python\n'
+                    '@tabwidth -4\n'
+            ),
+            (1, 'class C1',
+                    'class C1:\n'
+                    '    """Class docstring"""\n'
+                    '\n'  # Leo 6.8.7
+                    '    @others\n'
+                    '\n'
+            ),
+            (2, 'C1.__init__',
+                    'def __init__(self):\n'
+                    '    pass\n'
+            ),
+            (1, 'function: f1',
+                   'def f1():\n'
+                   '    pass\n'
+                   '\n'  # Leo 6.8.7
             ),
         )
         self.new_run_test(s, expected_results)
@@ -3571,6 +3757,7 @@ class TestPython(BaseTestImporter):
             (0, '',  # Ignore the first headline.
                 'import sys\n'
                 '@others\n'
+                '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
@@ -3579,6 +3766,7 @@ class TestPython(BaseTestImporter):
             (1, 'function: f1',
                     'def f1():\n'
                     '    pass\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'class Class1',
                     'class Class1:pass\n'
@@ -3587,6 +3775,7 @@ class TestPython(BaseTestImporter):
                     'a = 2\n'
                     '@dec_for_f2\n'
                     'def f2(): pass\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'function: main',
                     'def main():\n'
@@ -3626,7 +3815,9 @@ class TestPython(BaseTestImporter):
             (1, 'class C1',
                     'class C1:\n'
                     '    """Class docstring"""\n'
+                    '\n'
                     '    @others\n'
+                    '\n'
             ),
             (2, 'C1.__init__',
                     'def __init__(self):\n'
@@ -3635,58 +3826,76 @@ class TestPython(BaseTestImporter):
             (1, 'function: f1',
                    'def f1():\n'
                    '    pass\n'
+                   '\n'  # Leo 6.8.7
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230929051304.1: *3* TestPython.test_post_process_long_outer_docstring
-    def test_long_outer_docstring(self):
+    #@+node:ekr.20250813102014.1: *3* TestPython.test_python_reference_test
+    def test_python_reference_test(self):
 
+        # A reference unit test to test experimental test.
+        # This test should contain all edge cases of the Python importer.
         s = '''
-            """
-            Multi-line module-level docstring
+            class MyClass:
+                """MyClass: docstring"""
 
-            Last line.
-            """
-
-            from __future__ import annotations
-
-            class C1:
-                """Class docstring"""
-
-                def __init__(self):
+                def f1(self):
                     pass
 
-            def f1():
+                def f2(
+                    self, arg1
+                ):
+                    a = 1
+                    def inner_def():
+                        pass
+
+
+            # About main
+            def main():
                 pass
 
-            '''
+            if __name__ == '__main__':
+                main()
+
+
+            '''  # Leo 6.8.7: Two blank lines: trailing ws is *significant*.
 
         expected_results = (
             (0, '',  # Ignore the first headline.
-                    '"""\n'
-                    'Multi-line module-level docstring\n'
-                    '\n'
-                    'Last line.\n'
-                    '"""\n'
-                    '\n'
-                    'from __future__ import annotations\n'
-                    '\n'
-                    '@others\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
+                '@others\n'
+                '\n'
+                "if __name__ == '__main__':\n"
+                '    main()\n'
+                '\n'
+                '\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
-            (1, 'class C1',
-                    'class C1:\n'
-                    '    """Class docstring"""\n'
+            (1, 'class MyClass',
+                    'class MyClass:\n'
+                    '    """MyClass: docstring"""\n'
+                    '\n'
                     '    @others\n'
+                    '\n'
+                    '\n'
             ),
-            (2, 'C1.__init__',
-                    'def __init__(self):\n'
+            (2, 'MyClass.f1',
+                    'def f1(self):\n'
                     '    pass\n'
+                    '\n'
             ),
-            (1, 'function: f1',
-                   'def f1():\n'
-                   '    pass\n'
+            (2, 'MyClass.f2',
+                    'def f2(\n'
+                    '    self, arg1\n'
+                    '):\n'
+                    '    a = 1\n'
+                    '    def inner_def():\n'
+                    '        pass\n'
+            ),
+            (1, 'function: main',
+                    '# About main\n'
+                    'def main():\n'
+                    '    pass\n'
             ),
         )
         self.new_run_test(s, expected_results)
@@ -3751,12 +3960,13 @@ class TestPython(BaseTestImporter):
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20240219133748.1: *3* TestPython.test_underindented_comment
-    def test_underindented_comment(self):
+    #@+node:ekr.20240219133748.1: *3* TestPython.test_underindented_lines
+    def test_underindented_lines(self):
 
         s = (
-            """
+            '''
                 class Class3:
+                    """Docstring"""
                 # Outer underindented comment
                     def u1():
                     # Underindented comment in u1.
@@ -3769,11 +3979,12 @@ class TestPython(BaseTestImporter):
 
                 if __name__ == '__main__':
                     main()
-            """).replace('AT', '@')
+            ''')
 
         expected_results = (
             (0, '',
                 '@others\n'
+                '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
@@ -3781,7 +3992,9 @@ class TestPython(BaseTestImporter):
             ),
             (1, 'class Class3',
                 'class Class3:\n'
+                 '    """Docstring"""\n'
                 '@others\n'
+                '\n'  # Leo 6.8.7
             ),
             (2, 'Class3.u1',
                     '# Outer underindented comment\n'
@@ -4232,6 +4445,7 @@ class TestRust(BaseTestImporter):
                     '        area(width1, height1)\n'
                     '    );\n'
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'fn area',
                     'fn area(width: u32, height: u32) -> u32 {\n'
@@ -4284,6 +4498,7 @@ class TestRust(BaseTestImporter):
                     '    /// Returns an object that is able to format this object.\n'
                     "    fn format(&self) -> Self::Format<'_>;\n"
                     '}\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'impl AsFormat for &T',
                     '/// Implement [`AsFormat`] for references to types that implement [`AsFormat`].\n'
@@ -4411,7 +4626,7 @@ class TestRust(BaseTestImporter):
                 '@tabwidth -4\n'
             ),
         )
-        self.new_run_test(s, expected_results, trace=True)
+        self.new_run_test(s, expected_results)
     #@-others
 #@+node:ekr.20231012142113.1: ** class TestScheme (BaseTestImporter)
 class TestScheme(BaseTestImporter):
@@ -4452,6 +4667,7 @@ class TestScheme(BaseTestImporter):
                     '   (assn a "abc")\n'
                     '   (assn b \\x)\n'
                     '   (+ 1 2 3))\n'
+                    '\n'  # Leo 6.8.7
             ),
             (1, 'define cde',
                     '; comment re cde\n'
@@ -4496,6 +4712,7 @@ class TestTcl(BaseTestImporter):
         expected_results = (
             (0, '',  # Ignore the first headline.
                     '@others\n'
+                    '\n'  # Leo 6.8.7
                     ' # Main program\n'
                     '\n'
                     ' if { [info exists argv0] && [string equal $argv0 [info script]] } {\n'
