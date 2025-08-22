@@ -91,7 +91,7 @@ class Importer:
         self.single_comment, self.block1, self.block2 = delims
         self.tab_width = 0  # Must be set later.
     #@+node:ekr.20230529075640.1: *3* i: Generic methods: may be overridden
-    # The pipline.
+    # The pipeline.
     #@+node:ekr.20230529075138.37: *4* 1: i.import_from_string (entry) & helpers
     def import_from_string(self, parent: Position, s: str) -> None:
         """
