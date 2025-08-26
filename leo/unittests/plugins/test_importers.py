@@ -137,10 +137,11 @@ class BaseTestImporter(LeoUnitTest):
         # Leo 6.8.7:
         c.importCommands.createOutline(parent.copy(), ext, test_s, treeType= '@clean')
 
-        # Dump the actual results on failure and raise AssertionError.
         if check:
+            # Dump the actual results on failure and raise AssertionError.
             self.check_outline(parent, expected_results)
         else:
+            # Just dump the tree.
             self.dump_tree(p, tag='Actual results...')
     #@+node:ekr.20211127042843.1: *3* BaseTestImporter.run_test
     def run_test(self, s: str) -> Position:
@@ -3091,7 +3092,7 @@ class TestPython(BaseTestImporter):
                     '    pass\n'
             ),
         )
-        self.new_run_test(s, expected_results, check=True)
+        self.new_run_test(s, expected_results)
     #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
     def test_class_docstring(self):
 
@@ -3230,9 +3231,6 @@ class TestPython(BaseTestImporter):
     #@+node:ekr.20241127163654.1: *3* TestPython.test_delete_comments_and_strings2
     def test_delete_comments_and_strings2(self):
 
-                # "No subcommand specified. Must specify one of: "
-                # + ", ".join(map(repr, self.subcommands))
-            # )
         s = r'''
             """
             An application for managing IPython history.
