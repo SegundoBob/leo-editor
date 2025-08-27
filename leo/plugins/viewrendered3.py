@@ -3363,7 +3363,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 # Process node's entire body text; handle @language directives
                 sproc, codelines = sm.runMachine(lines)
                 result += sproc + '\n'
-                sm.reset(sm.tag, sm.lang)
+                sm.reset()
             if codelines:
                 codelist.extend(codelines)
 
