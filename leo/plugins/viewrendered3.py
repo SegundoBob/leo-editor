@@ -3363,7 +3363,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 # Process node's entire body text; handle @language directives
                 sproc, codelines = sm.runMachine(lines)
                 result += sproc + '\n'
-                sm.reset()
+                sm.reset(sm.base_tag, sm.base_lang)
             if codelines:
                 codelist.extend(codelines)
 
@@ -3802,7 +3802,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 result += sproc
                 if codelines:
                     codelist.extend(codelines)
-                sm.reset()
+                sm.reset(sm.base_tag, sm.base_lang)
 
         # Execute code blocks; capture and insert execution results.
         # This means anything written to stdout or stderr.
