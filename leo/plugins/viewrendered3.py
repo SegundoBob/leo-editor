@@ -3363,7 +3363,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 # Process node's entire body text; handle @language directives
                 sproc, codelines = sm.runMachine(lines)
                 result += sproc + '\n'
-                sm.reset(sm.base_tag, sm.base_lang)
+                sm.reset()
             if codelines:
                 codelist.extend(codelines)
 
@@ -3802,7 +3802,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 result += sproc
                 if codelines:
                     codelist.extend(codelines)
-                sm.reset(sm.base_tag, sm.base_lang)
+                sm.reset()
 
         # Execute code blocks; capture and insert execution results.
         # This means anything written to stdout or stderr.
@@ -5244,13 +5244,13 @@ class StateMachine:
 
         self.inskip = False
 
-    def reset(self, tag=TEXT, lang=RST):
+    def reset(self, tag=None, lang=None):
         self.state = State.BASE
         self.last_state = State.BASE
+        self.lang = lang or self.base_lang
+        self.tag = tag or self.base_tag
         self.chunk_list = []
-        self.current_chunk = Chunk(tag, self.structure, lang)
-        self.lang = lang
-        self.tag = tag
+        self.current_chunk = Chunk(tag, self.structure, self.lang)
         self.inskip = False
         self.codelang = ''
 
