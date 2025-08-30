@@ -16,7 +16,7 @@ and Asciidoc text, images, movies, sounds, rst, html, etc.
 
 #@+others
 #@+node:tom.20240521004125.1: *3* About
-About Viewrendered3 V5.21
+About Viewrendered3 V5.22
 ===========================
 
 The ViewRendered3 plugin (hereafter "VR3") renders Restructured
@@ -85,11 +85,17 @@ the plugin.
 #@+node:tom.20241124124334.1: *3* New With This Version
 New With This Version
 ======================
-Fixed: the freeze state was getting set to "unfreeze" after an
-update.
+
+The state machine used for processing Markdown and
+Asciidoc nodes was changed to reset to its original
+configuration. This fixed an occasional bug when an
+entire subtree was rendered.
 #@+node:tom.20241124124347.1: *3* Previous Recent Changes
 Previous Recent Changes
 ========================
+- Fixed: the freeze state was getting set to "unfreeze" after an
+update.
+
 - VR3 restores the scroll position after an update.  This is especially useful when an entire tree is displayed and changes are made to a node in the tree.
 
 - VR3's "Default Kind" menu now sets the initial checked kind to match the *vr3-default-kind* setting.
@@ -3363,7 +3369,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 # Process node's entire body text; handle @language directives
                 sproc, codelines = sm.runMachine(lines)
                 result += sproc + '\n'
-                sm.reset(sm.tag, sm.lang)
+                sm.reset()
             if codelines:
                 codelist.extend(codelines)
 
@@ -5244,13 +5250,13 @@ class StateMachine:
 
         self.inskip = False
 
-    def reset(self, tag=TEXT, lang=RST):
+    def reset(self, tag=None, lang=None):
         self.state = State.BASE
         self.last_state = State.BASE
+        self.lang = lang or self.base_lang
+        self.tag = tag or self.base_tag
         self.chunk_list = []
-        self.current_chunk = Chunk(tag, self.structure, lang)
-        self.lang = lang
-        self.tag = tag
+        self.current_chunk = Chunk(tag, self.structure, self.lang)
         self.inskip = False
         self.codelang = ''
 
