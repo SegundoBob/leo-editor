@@ -111,6 +111,7 @@ def install_handlers() -> None:
         # Add the rest...
         openwith_rclick,
         refresh_rclick,
+        openatleo_rclick,
         editnode_rclick,
         nextclone_rclick,
         marknodes_rclick,
@@ -337,7 +338,7 @@ def openwith_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     fname = None
     # argh, we need g.getAbsFileName(c,p)
     head, bname = parts
-    fname = p.anyAtFileNodeName()
+    fname = not p.isAtLeoNode() and p.anyAtFileNodeName()
     if not fname and head != "@path":
         return
     path = c.getPath(p)
@@ -358,9 +359,23 @@ def refresh_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
         c.refreshFromDisk(p.copy())
 
     split = p.h.split(None, 1)
-    if len(split) >= 2 and p.anyAtFileNodeName():
+    if len(split) >= 2 and (not p.isAtLeoNode() and p.anyAtFileNodeName()):
         action = menu.addAction("Refresh from disk")
         action.triggered.connect(refresh_rclick_cb)
+#@+node:felix.20250830151921.1: *3* openatleo_rclick
+def openatleo_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
+
+    def openatleo_rclick_cb() -> None:
+        path = c.fullPath(p)
+        if g.os_path_exists(path):
+            g.openWithFileName(path, old_c=c)  # type:ignore
+        else:
+            g.red(f"file not found: {path}")
+
+    split = p.h.split(None, 1)
+    if len(split) >= 2 and p.isAtLeoNode():
+        action = menu.addAction("Open @leo file")
+        action.triggered.connect(openatleo_rclick_cb)
 #@+node:ekr.20140724211116.19258: *3* pylint_rclick
 def pylint_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     """Run pylint on the selected node."""
