@@ -373,7 +373,7 @@ def openatleo_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
             g.red(f"file not found: {path}")
 
     split = p.h.split(None, 1)
-    if len(split) >= 2 and  p.isAtLeoNode():
+    if len(split) >= 2 and p.isAtLeoNode():
         action = menu.addAction("Open @leo file")
         action.triggered.connect(openatleo_rclick_cb)
 #@+node:ekr.20140724211116.19258: *3* pylint_rclick
