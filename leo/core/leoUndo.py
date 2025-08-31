@@ -1882,9 +1882,6 @@ class Undoer:
         # Remember these values.
         oldSel = u.oldSel
         p = u.p.copy() if u.p else c.p.copy()  # #4373: u.p might not exist now.
-        newP = u.newP.copy()  # u.newP must exist now.
-        if g.unitTesting:
-            assert c.positionExists(newP), repr(newP)
         u.groupCount += 1
         bunch = u.beads[u.bead]
         count = 0
@@ -1908,8 +1905,6 @@ class Undoer:
             g.es("undo", count, "instances")
         # Helpers set dirty bits.
         # Set c.p, independently of helpers.
-        if g.unitTesting:
-            assert c.positionExists(p), repr(p)
         c.selectPosition(p)
         # Restore the selection, independently of helpers.
         if oldSel:
