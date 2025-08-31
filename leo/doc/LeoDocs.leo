@@ -33338,7 +33338,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - PR #4423: All of Leo's importers now import `@clean` files perfectly.
 - PR #4412: Greatly improve Leo's `parse-body` command.
 - PR #4418: Fix bugs involving the `_mod_time` attribute in `.leo` files.
-- PRs #4423 and #4430: Fix two minor bugs.
+- Fix severfal other minor bugs. See the `What's new` section for details.
 
 **Links**
 
@@ -33363,6 +33363,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 .. _`PR #4421`: https://github.com/leo-editor/leo-editor/pull/4421
 .. _`PR #4423`: https://github.com/leo-editor/leo-editor/pull/4423
 .. _`PR #4430`: https://github.com/leo-editor/leo-editor/pull/4430
+.. _`PR #4430`: https://github.com/leo-editor/leo-editor/pull/4444
 
 - `PR #4403`: Require python 3.10 or above. Add support for Python 3.14.
 - `PR #4412`: Greatly improve Leo's `parse-body` command.
@@ -33370,6 +33371,8 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - `PR #4421`: Fix several beautifier bugs.
 - `PR #4423`: A milestone: Leo's beautifiers import `@clean` files perfectly.
 - `PR #4430`: Fix bugs in Leo's colorizer.
+- `PR #4444`: Fix a crasher in Leo's undo logic.
+
 </t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
 application state, and synchronize the resulting state across clients, leoserver.py
