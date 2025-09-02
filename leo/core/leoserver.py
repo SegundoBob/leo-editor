@@ -88,7 +88,7 @@ Socket = Any
 #@-<< leoserver annotations >>
 #@+<< leoserver version >>
 #@+node:ekr.20220820160619.1: ** << leoserver version >>
-version_tuple = (1, 0, 14)
+version_tuple = (1, 0, 15)
 # Version History
 # 1.0.1 Initial commit.
 # 1.0.2 July 2022: Adding ui-scroll, undo/redo, chapters, ua's & node_tags info.
@@ -104,6 +104,7 @@ version_tuple = (1, 0, 14)
 # 1.0.12 June 2025: Added goto_line_in_leo_outline and insert_file_node commands.
 # 1.0.13 July 2025: Added support for websockets version 14+.
 # 1.0.14 August 2025: Added support for Python 3.14+.
+# 1.0.15 September 2025: Added support for @leo <path> nodes.
 v1, v2, v3 = version_tuple
 __version__ = f"leoserver.py version {v1}.{v2}.{v3}"
 #@-<< leoserver version >>
@@ -1334,6 +1335,50 @@ class LeoServer:
         filename = self.c.fileName() if total else ""
         result = {"total": total, "filename": filename}
         return self._make_response(result)
+    #@+node:felix.20250901175606.1: *5* server.open_at_leo_file
+    def open_at_leo_file(self, param: Param) -> Response:
+        """
+        Open the outline given by the @leo node at given position, or c.p.
+        If the outline has already been loaded, switch to its tab.
+        """
+        found, tag = False, 'open_at_leo_file'
+        p = self._get_p(param)  # will default to c.p if not present
+        old_c = self._check_c(param)
+
+        if p.isAtLeoNode():
+            filename = old_c.fullPath(p)
+
+            if filename:
+                for c in g.app.commanders():
+                    if c.fileName() == filename:
+                        found = True
+                        break
+                if not found:
+                    if g.os_path_exists(filename):
+                        c = self.bridge.openLeoFile(filename)
+                    else:
+                        c = None
+                if not c:  # pragma: no cover
+                    raise ServerError(f"{tag}: bridge did not open {filename!r}")
+                if not c.frame.body.wrapper:  # pragma: no cover
+                    raise ServerError(f"{tag}: no wrapper")
+            else:
+                c = old_c  # no filename
+        else:
+            c = old_c  # no @leo node
+
+        # Assign self.c
+        self.c = c
+
+        if g.unitTesting and isinstance(g.app.pluginsController, g.NullObject):
+            # REPLACE PLUGIN SYSTEM !
+            self.finishCreate(c)
+
+        if self.log_flag:  # pragma: no cover
+            self._dump_outline(c)
+
+        result = {"total": len(g.app.commanders()), "filename": self.c.fileName()}
+        return self._make_response(result)
     #@+node:felix.20210621233316.15: *5* server.set_opened_file
     def set_opened_file(self, param: Param) -> Response:
         """
@@ -1379,10 +1424,7 @@ class LeoServer:
         if c:
             # First, revert to prevent asking user.
             if forced and c.changed:
-                if c.fileName():
-                    c.revert()
-                else:
-                    c.changed = False  # Needed in g.app.closeLeoWindow
+                c.clearChanged()
             # Then, if still possible, close it.
             if forced or not c.changed:
                 # c.close() # Stops too much if last file closed
