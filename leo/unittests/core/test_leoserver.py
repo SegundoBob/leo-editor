@@ -99,7 +99,7 @@ class TestLeoServer(LeoUnitTest):
             'paste_as_template',  # New exclusion.
             'save_file',  # way too dangerous!
             # 'set_selection',  # Not ready yet.
-            'open_file', 'close_file',  # Done by hand.
+            'open_file', 'close_file', 'open_at_leo_file',  # Done by hand.
             'import_any_file',
             'insert_child_named_node',
             'insert_named_node',
