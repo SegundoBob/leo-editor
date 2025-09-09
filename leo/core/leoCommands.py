@@ -1519,7 +1519,7 @@ class Commands:
             else:
                 p.moveToThreadNext()
     #@+node:felix.20250908230144.1: *5* c.all_root_children
-    def all_root_children(self, copy=True) -> Generator:
+    def all_root_children(self, copy: bool = True) -> Generator:
         """
         A generator that returns all the (hidden-root's) top children Positions.
         """
