@@ -665,7 +665,7 @@ class Position:
         """Yield p and all other unique positions in p's subtree."""
         p = self
         seen = set()
-        for p in p.subtree():
+        for p in p.subtree(copy=copy):
             if p.v not in seen:
                 seen.add(p.v)
                 yield p.copy() if copy else p
