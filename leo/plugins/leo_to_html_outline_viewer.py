@@ -16,10 +16,10 @@ Made by Félix Malboeuf (https://github.com/boltex)
 #@+node:felix.20250921202247.1: ** << imports >>
 import os
 import json
+from tempfile import NamedTemporaryFile
 import time
 import webbrowser
 from leo.core import leoGlobals as g
-from tempfile import NamedTemporaryFile
 #@-<< imports >>
 
 #@+others
@@ -84,9 +84,9 @@ def export_html_outline_viewer(event=None):
     myFilePath = c.fileName()
     filename = os.path.splitext(os.path.basename(myFilePath))[0]
 
-    vnode_dict = {}     # This is 'data'
-    gnx_map = {}       # gnx -> compact id
-    gnx_counter = 0    # counter for compact ids
+    vnode_dict = {}  # This is 'data'
+    gnx_map = {}  # gnx -> compact id
+    gnx_counter = 0  # counter for compact ids
 
     def map_gnx(gnx):
         """Return the compact integer id for a gnx, creating it if missing."""
@@ -108,7 +108,7 @@ def export_html_outline_viewer(event=None):
             if gnx_id not in vnode_dict:
                 vnode_dict[gnx_id] = {
                     "headString": child.headString(),
-                    "bodyString":child.bodyString()
+                    "bodyString": child.bodyString(),
                 }
             # recurse children only if gnx not already seen (dont re-write clones)
             # IMPORTANT: the script using this output will have to handle that!
@@ -123,10 +123,10 @@ def export_html_outline_viewer(event=None):
         "children": buildTree(c.hiddenRootNode.children)
     }
 
-    prefixTitle = f'\n        const title = "{filename}";' 
+    prefixTitle = f'\n        const title = "{filename}";'
     prefixgenTimestamp = f'\n        const genTimestamp = "{unix_timestamp_string}";'
-    prefixTree = f'\n        const tree = '
-    prefixData = f';\n        const data = '  # includes ';' for ending tree.
+    prefixTree = '\n        const tree = '
+    prefixData = ';\n        const data = '  # includes ';' for ending tree.
     suffixData = ';'
 
     # Define a simple wrapper that replaces </script> on-the-fly
@@ -144,14 +144,14 @@ def export_html_outline_viewer(event=None):
         writer = SafeWriter(out)
 
         writer.write(htmlPrefix)
-        
+
         writer.write(prefixTitle)
         writer.write(prefixgenTimestamp)
         writer.write(prefixTree)
 
-        json.dump(tree, writer, ensure_ascii=False, separators=(",", ":")) # to 'writer'
+        json.dump(tree, writer, ensure_ascii=False, separators=(",", ":"))  # to 'writer'
         writer.write(prefixData)
-        json.dump(vnode_dict, writer, ensure_ascii=False, separators=(",", ":")) # to 'writer'
+        json.dump(vnode_dict, writer, ensure_ascii=False, separators=(",", ":"))  # to 'writer'
         writer.write(suffixData)
 
         out.write(htmlSuffix)
