@@ -3,7 +3,8 @@
 #@+<< docstring >>
 #@+node:felix.20250921202236.1: ** << docstring >>
 r""" 
-Outputs a Leo outline as a self-contained HTML interactive outline viewer:
+This plugin adds an "Export HTML Outline Viewer" entry in the File->Export Files menu
+which outputs the Leo outline as a self-contained HTML interactive outline viewer.
 The file is saved in the user's home/.leo folder and also opened with your default viewer.
 
 Made by Félix Malboeuf (https://github.com/boltex)
