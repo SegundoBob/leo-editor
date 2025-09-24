@@ -72,11 +72,6 @@ def export_html_outline_viewer(event=None):
     template_content, encoding = g.readFileIntoString(fileName)
     htmlPrefix = template_content.split("        /* Start of data */")[0]
     htmlSuffix = template_content.split("        /* End of data */")[1]
-    g.es('Loaded HTML template.')
-    g.es('encoding: %s' % (encoding))
-    g.es('template_start length: %s' % (len(htmlPrefix)))
-    g.es('template_end length: %s' % (len(htmlSuffix)))
-    # Create the data to be embedded in the HTML file
 
     TEMPDIR = os.path.expanduser(r'~/.leo')
 
@@ -87,6 +82,7 @@ def export_html_outline_viewer(event=None):
     else:
         filename = "untitled"
 
+    # Create the data to be embedded in the HTML file
     vnode_dict = {}  # This is 'data'
     gnx_map = {}  # gnx -> compact id
     gnx_counter = 0  # counter for compact ids
