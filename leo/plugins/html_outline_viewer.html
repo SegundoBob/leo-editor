@@ -9,6 +9,7 @@
             /* light theme (default) */
             --background-color: #ffffec;
             --body-pane-color: #fff6f5;
+            --body-link-color: #5178ab;
             --find-pane-color: #f9f9f9;
             --resizer-color: #cae1ff;
             --selected-bg: #cae1ff;
@@ -66,6 +67,7 @@
         [data-theme="dark"] {
             --background-color: #1e1e2e;
             --body-pane-color: #2a2536;
+            --body-link-color: #929bda;
             --find-pane-color: #23202e;
             --resizer-color: #454a6e;
             --selected-bg: #454a6e;
@@ -331,6 +333,10 @@
             transition: var(--body-pane-transition);
         }
 
+        #body-pane a {
+            color: var(--body-link-color);
+        }
+
         #outline-pane:focus,
         #body-pane:focus,
         #outline-pane:focus-visible,
@@ -481,12 +487,30 @@
         /* buttons */
         #button-container {
             position: fixed;
-            top: 12px;
+            top: 0px;
             right: 12px;
+            padding-top: 8px;
             display: flex;
             flex-direction: row-reverse;
+            justify-content: flex-start;
             gap: 8px;
             z-index: 1000;
+            transition: opacity 0.4s ease;
+            pointer-events: auto;
+        }
+
+        #button-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #button-trigger-area {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 40px;
+            z-index: 999;
         }
 
         .action-button {
@@ -842,6 +866,34 @@
             margin-bottom: 1rem;
         }
 
+        /* context menu */
+        .context-menu {
+            position: absolute;
+            display: none;
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            background: var(--find-pane-color);
+            border: 1px solid var(--find-border-color);
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            z-index: 1000;
+        }
+
+        .context-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 4px 0;
+        }
+
+        .context-menu li {
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .context-menu li:hover {
+            background: var(--hover-bg);
+        }
+
         /* toast */
         #toast {
             position: fixed;
@@ -963,7 +1015,7 @@
                 <span class="sub-title">Visible Controls</span>
                 <div class="config-col" aria-label="Config options">
                     <label for="show-prev-next-mark">
-                        <input id="show-prev-next-mark" type="checkbox" name="config-option" />
+                        <input id="show-prev-next-mark" type="checkbox" name="config-option" checked />
                         Previous/Next Marked
                     </label>
                     <label for="show-toggle-mark">
@@ -1013,7 +1065,7 @@
                 </ul>
                 <span class="sub-title footer">
                     <a href="https://leo-editor.github.io/leo-editor/" target="_blank">Leo Editor</a>
-                    <span>Outline Viewer - 1.0.1 - Made by</span>
+                    <span>Outline Viewer - 1.0.2 - Made by</span>
                     <a href="https://github.com/boltex" target="_blank">Félix</a>
                 </span>
             </div>
@@ -1021,6 +1073,7 @@
     </div>
     <div id="main-resizer"></div>
     <div id="body-pane" tabindex="0" contenteditable="plaintext-only" spellcheck="false"></div>
+    <div id="button-trigger-area"></div>
     <div id="button-container">
         <button tabindex="-1" id="theme-toggle" class="action-button" aria-label="Toggle dark/light mode"><span
                 id="toggle-icon">🌓</span></button>
@@ -1085,10 +1138,18 @@
             </span>
         </button>
     </div>
+    <div id="menu" class="context-menu">
+        <ul>
+            <li id="action-mark">Mark</li>
+            <li id="action-unmark">Unmark</li>
+            <li id="action-hoist">Hoist</li>
+            <li id="action-dehoist">De-Hoist</li>
+        </ul>
+    </div>
     <div id="toast" role="status" aria-live="polite" hidden></div>
     <script>
         /* Start of data */
-        const title = "Virtual Tree View Demo"; // Also used as key for localstorage save/restore of expanded and marked sets.
+        const title = "Virtual Tree View Demo 2"; // Also used as key for localstorage save/restore of expanded and marked sets.
         const genTimestamp = "1234567890"; // Change this to force reload of saved localstorage data.
         const tree = {
             "gnx": 0,
@@ -1146,15 +1207,15 @@
             },
             "2": {
                 "headString": "second node",
-                "bodyString": "Some body content\nmultiple lines\n\nend of first body"
+                "bodyString": "@nowrap\nSome body content\nmultiple lines\nblabla blabla blabla blabla\nend of first body"
             },
             "3": {
                 "headString": "First child clone",
-                "bodyString": "Some child content"
+                "bodyString": "@wrap\nSome child content\nblabla blabla blabla blablablabla blabla blabla blablablabla blabla blabla blabla"
             },
             "4": {
                 "headString": "Child of clone",
-                "bodyString": "Body of the child of a clone!"
+                "bodyString": "Body of the child of a clone!\nblabla blabla blabla blabla\nblabla blabla blabla blabla blabla blabla"
             },
             "5": {
                 "headString": "Also has child!",
@@ -1178,7 +1239,7 @@
             },
             "10": {
                 "headString": "third top node child 2",
-                "bodyString": "Bla blabla bla,\nbla blablabla bla."
+                "bodyString": "Bla blabla bla,\nbla blablabla bla.\nSample URLs https://example.com and http://example.org for testing links."
             },
             "11": {
                 "headString": "third top node child 3",
@@ -1270,6 +1331,7 @@
         const navigationHistory = [];
         let currentHistoryIndex = -1; // -1 means no history yet
         const hoistStack = []; // Track hoisted nodes
+        const urlRegex = /\bhttps?:\/\/[^\s<]+/gi;
 
         const minWidth = 20;
         const minHeight = 20;
@@ -1314,6 +1376,14 @@
         const TOGGLE_MARK_BTN = document.getElementById('toggle-mark-btn');
         const PREV_MARKED_BTN = document.getElementById('prev-marked-btn');
 
+        const BUTTON_CONTAINER = document.getElementById('button-container');
+        const TRIGGER_AREA = document.getElementById('button-trigger-area');
+
+        const ACTION_MARK = document.getElementById('action-mark');
+        const ACTION_UNMARK = document.getElementById('action-unmark');
+        const ACTION_HOIST = document.getElementById('action-hoist');
+        const ACTION_DEHOIST = document.getElementById('action-dehoist');
+
         const FIND_INPUT = document.getElementById('find-input');
         const OPT_HEADLINE = document.getElementById('opt-headline');
         const OPT_BODY = document.getElementById('opt-body');
@@ -1333,6 +1403,7 @@
         const SHOW_NODE_ICONS = document.getElementById('show-node-icons');
         const SHOW_COLLAPSE_ALL = document.getElementById('show-collapse-all');
 
+        const MENU = document.getElementById('menu');
         const TOAST = document.getElementById('toast');
         const HTML_ELEMENT = document.documentElement;
 
@@ -1592,6 +1663,7 @@
                 selectedNode.toggled = true; // Mark as toggled
             }
             updateHoistButtonStates();
+            updateContextMenuState(); // Node was already selected so no need to reupdate based on hoist
             flatRows = flattenTree(getCurrentRoot(), 0, false);
             renderTree();
         }
@@ -1782,6 +1854,8 @@
                 if (data[gnx]) data[gnx].icon = (data[gnx].icon || 0) | 2; // Set marked bit
             }
             updateMarkedButtonStates();
+            updateButtonVisibility();
+
             // Only need to redraw the affected node if visible, no need to re-flatten because structure didn't change
             if (isVisible(node)) {
                 renderTree();
@@ -1870,6 +1944,15 @@
             NEXT_BTN.disabled = currentHistoryIndex >= navigationHistory.length - 1 || navigationHistory.length === 0;
         }
 
+        function updateContextMenuState() {
+            const hasSelectedNode = !!selectedNode;
+            const isCurrentlyHoisted = hoistStack.length > 0 && hasSelectedNode && hoistStack[hoistStack.length - 1] === selectedNode;
+            toggleButtonVisibility(ACTION_MARK, undefined, hasSelectedNode && !marked.has(selectedNode.gnx));
+            toggleButtonVisibility(ACTION_UNMARK, undefined, hasSelectedNode && marked.has(selectedNode.gnx));
+            toggleButtonVisibility(ACTION_HOIST, undefined, hasSelectedNode && hasChildren(selectedNode) && !isCurrentlyHoisted);
+            toggleButtonVisibility(ACTION_DEHOIST, undefined, hoistStack.length > 0); // only check hoist stack length
+        }
+
         function toggleConfiguration() {
             if (HTML_ELEMENT.getAttribute('data-show-config') === 'true') {
                 HTML_ELEMENT.setAttribute('data-show-config', 'false');
@@ -1890,15 +1973,12 @@
                 navigationHistory[currentHistoryIndex] === node) {
                 return; // Already the current node, do nothing
             }
-
             // If we're not at the end, truncate the forward history
             if (currentHistoryIndex < navigationHistory.length - 1) {
                 navigationHistory.splice(currentHistoryIndex + 1);
             }
-
-            navigationHistory.push(node);
+            navigationHistory.push(node); // Add the new node to history
             currentHistoryIndex = navigationHistory.length - 1;
-
             updateHistoryButtonStates();
         }
 
@@ -1906,9 +1986,7 @@
             if (currentHistoryIndex > 0) {
                 currentHistoryIndex--;
                 const node = navigationHistory[currentHistoryIndex];
-
-                // Navigate to the node without adding to history
-                selectAndOrToggleAndRedraw(node);
+                selectAndOrToggleAndRedraw(node); // Goto node without adding to history
                 updateHistoryButtonStates();
             }
         }
@@ -1917,9 +1995,7 @@
             if (currentHistoryIndex < navigationHistory.length - 1) {
                 currentHistoryIndex++;
                 const node = navigationHistory[currentHistoryIndex];
-
-                // Navigate to the node without adding to history
-                selectAndOrToggleAndRedraw(node);
+                selectAndOrToggleAndRedraw(node); // Goto node without adding to history
                 updateHistoryButtonStates();
             }
         }
@@ -1998,7 +2074,9 @@
 
                 selectedNode = newSelectedNode;
                 addToHistory(newSelectedNode);
+                updateButtonVisibility();
                 updateHoistButtonStates();
+                updateContextMenuState();
             }
 
             // Only rebuild and redraw once
@@ -2013,12 +2091,43 @@
             // Update body pane if selection changed (selectedNode cannot be null here because of isNew check)
             if (isNew) {
                 if (newSelectedNode && data[newSelectedNode.gnx]) {
-                    BODY_PANE.textContent = data[newSelectedNode.gnx].bodyString || "";
+                    setBody(newSelectedNode);
                 } else {
                     BODY_PANE.textContent = "";
                 }
             }
             scrollSelectedNodeIntoView();
+        }
+
+        function setBody(node) {
+            // Look for a line in the text starting with "@wrap" or "@nowrap",
+            // if not found, check the parent of node recursively.
+            // Note: wrap is default so only need to check for nowrap
+            let currentNode = node;
+            let nowrapFound = false;
+            while (currentNode.parent) { // Make sure to stop at the hidden root node
+                const body = data[currentNode.gnx].bodyString || "";
+                const wrapMatch = body.match(/^\s*@wrap\s*$/m);
+                const nowrapMatch = body.match(/^\s*@nowrap\s*$/m);
+                if (wrapMatch) {
+                    break;  // Stop searching if @wrap (default) is found
+                }
+                if (nowrapMatch) {
+                    nowrapFound = true;
+                    break;  // Stop searching if @nowrap is found
+                }
+                currentNode = currentNode.parent;
+            }
+            if (nowrapFound) {
+                BODY_PANE.style.whiteSpace = "pre"; // No wrapping
+            } else {
+                BODY_PANE.style.whiteSpace = "pre-wrap"; // Wrap text
+            }
+            let text = data[node.gnx].bodyString || "";
+            text = text.replace(urlRegex, url => {
+                return `<a href="${url}" target="_blank" contenteditable="false" rel="noopener noreferrer">${url}</a>`;
+            });
+            BODY_PANE.innerHTML = text;
         }
 
         function scrollSelectedNodeIntoView() {
@@ -2279,26 +2388,20 @@
             if (currentLayout === 'vertical') {
                 const containerHeight = OUTLINE_FIND_CONTAINER.offsetHeight;
                 let newHeight = containerHeight * secondaryRatio;
-
-                // Respect minimum heights
                 if (newHeight < minHeight) {
-                    newHeight = minHeight;
+                    newHeight = minHeight; // Respect minimum heights
                 } else if (newHeight > containerHeight - minHeight) {
                     newHeight = containerHeight - minHeight;
                 }
-                // Set flex properties to control the distribution
                 OUTLINE_PANE.style.flex = `0 0 ${newHeight}px`;
             } else {
                 const containerWidth = OUTLINE_FIND_CONTAINER.offsetWidth;
                 let newWidth = containerWidth * secondaryRatio;
-
-                // Respect minimum widths
                 if (newWidth < minHeight) {
-                    newWidth = minHeight;
+                    newWidth = minHeight; // Respect minimum widths
                 } else if (newWidth > containerWidth - minHeight) {
                     newWidth = containerWidth - minHeight;
                 }
-                // Set flex properties to control the distribution
                 OUTLINE_PANE.style.flex = `0 0 ${newWidth}px`;
             }
             FIND_PANE.style.flex = '1 1 auto'; // Let it take the remaining space
@@ -2401,6 +2504,10 @@
             OUTLINE_PANE.addEventListener('dblclick', handleOutlinePaneDblClick);
             OUTLINE_PANE.addEventListener('keydown', handleOutlinePaneKeyDown);
             OUTLINE_PANE.addEventListener("scroll", throttle(renderTree, 33));
+            OUTLINE_PANE.addEventListener("contextmenu", handleContextMenu);
+            document.addEventListener("click", () => {
+                MENU.style.display = "none";
+            });
         }
 
         function setupBodyPaneHandlers() {
@@ -2434,6 +2541,11 @@
             NEXT_MARKED_BTN.addEventListener('click', gotoNextMarkedNode);
             PREV_MARKED_BTN.addEventListener('click', gotoPrevMarkedNode);
             CONFIG_BTN.addEventListener('click', toggleConfiguration);
+
+            ACTION_MARK.addEventListener('click', toggleMarkCurrentNode);
+            ACTION_UNMARK.addEventListener('click', toggleMarkCurrentNode); // Same action
+            ACTION_HOIST.addEventListener('click', hoistNode);
+            ACTION_DEHOIST.addEventListener('click', dehoistNode);
         }
 
         function setupFindPaneHandlers() {
@@ -2480,6 +2592,36 @@
             SHOW_THEME_TOGGLE.addEventListener('change', updateButtonVisibility);
             SHOW_NODE_ICONS.addEventListener('change', updateNodeIcons);
             SHOW_COLLAPSE_ALL.addEventListener('change', updateButtonVisibility);
+        }
+
+        function setupButtonContainerAutoHide() {
+            let hideTimeout, showTimeout;
+            function showButtons() {
+                BUTTON_CONTAINER.classList.remove('hidden');
+                clearTimeout(hideTimeout);
+            }
+
+            function hideButtons() {
+                hideTimeout = setTimeout(() => {
+                    BUTTON_CONTAINER.classList.add('hidden');
+                }, 1500);
+            }
+            TRIGGER_AREA.addEventListener('mouseenter', showButtons);
+            BUTTON_CONTAINER.addEventListener('mouseenter', showButtons);
+            TRIGGER_AREA.addEventListener('mouseleave', (e) => {
+                if (!BUTTON_CONTAINER.contains(e.relatedTarget)) {
+                    hideButtons();
+                }
+            });
+            BUTTON_CONTAINER.addEventListener('mouseleave', (e) => {
+                if (e.relatedTarget !== TRIGGER_AREA) {
+                    hideButtons();
+                }
+            });
+            showButtons();
+            hideTimeout = setTimeout(() => {
+                BUTTON_CONTAINER.classList.add('hidden');
+            }, 2000);
         }
 
         function handleOutlinePaneMouseDown(e) {
@@ -2534,6 +2676,32 @@
             }
         }
 
+        function handleContextMenu(e) {
+            e.preventDefault();
+            const nodeEl = e.target.closest('.node');
+            if (!nodeEl) {
+                // close possible existing right-click menu
+                MENU.style.display = 'none';
+                return;
+            }
+
+            const rowIndex = Math.floor(parseInt(nodeEl.style.top) / ROW_HEIGHT);
+            if (rowIndex < 0 || rowIndex >= flatRows.length) return;
+            const row = flatRows[rowIndex];
+
+            // Select the node if not already selected
+            if (row.node !== selectedNode) {
+                selectAndOrToggleAndRedraw(row.node);
+            }
+
+            console.log('Context menu on node:', row.node);
+
+            // Position and show the custom context menu
+            MENU.style.top = `${e.clientY}px`;
+            MENU.style.left = `${e.clientX}px`;
+            MENU.style.display = 'block';
+        }
+
         function handleOutlinePaneKeyDown(e) {
             const handler = outlinePaneKeyMap[e.key];
             if (handler && !e.ctrlKey && !e.altKey && !e.metaKey) {
@@ -2547,16 +2715,6 @@
                 e.preventDefault();
                 OUTLINE_PANE.focus();
             }
-        }
-
-        function startFind() {
-            initialFindNode = null; // If null, find next will set this, used with "Suboutline Only" find radio option (value: suboutline)
-            if (HTML_ELEMENT.getAttribute('data-show-config') === 'true') {
-                toggleConfiguration(); // // Make find input visible if in settings screen
-            }
-            FIND_INPUT.focus();
-            FIND_INPUT.select();
-            renderTree(); // To show or remove initial-find highlight
         }
 
         // Global key handlers (work anywhere)
@@ -2616,10 +2774,8 @@
                 selectAndOrToggleAndRedraw(tree.children[0]); // sets selectedNode amd flatRows
             } else {
                 selectAndOrToggleAndRedraw(initialSelectedNode); // sets selectedNode amd flatRows
-                if (data[selectedNode.gnx]) {
-                    BODY_PANE.textContent = data[selectedNode.gnx].bodyString || "";
-                }
             }
+            setupButtonContainerAutoHide();
         }
 
         function handleThemeToggleClick() {
@@ -2637,13 +2793,33 @@
         }
 
         function updateButtonVisibility() {
-            toggleButtonVisibility(NEXT_MARKED_BTN, PREV_MARKED_BTN, SHOW_PREV_NEXT_MARK.checked);
+            toggleButtonVisibility(NEXT_MARKED_BTN, PREV_MARKED_BTN, SHOW_PREV_NEXT_MARK.checked && marked.size > 0);
             toggleButtonVisibility(TOGGLE_MARK_BTN, null, SHOW_TOGGLE_MARK.checked);
-            toggleButtonVisibility(NEXT_BTN, PREV_BTN, SHOW_PREV_NEXT_HISTORY.checked);
+            toggleButtonVisibility(NEXT_BTN, PREV_BTN, SHOW_PREV_NEXT_HISTORY.checked && navigationHistory.length > 1);
             toggleButtonVisibility(HOIST_BTN, DEHOIST_BTN, SHOW_HOIST_DEHOIST.checked);
             toggleButtonVisibility(LAYOUT_TOGGLE, null, SHOW_LAYOUT_ORIENTATION.checked);
             toggleButtonVisibility(THEME_TOGGLE, null, SHOW_THEME_TOGGLE.checked);
             toggleButtonVisibility(COLLAPSE_ALL_BTN, null, SHOW_COLLAPSE_ALL.checked);
+            let visibleButtonCount = 0; // Count visible buttons to adjust trigger area width
+            if (SHOW_PREV_NEXT_MARK.checked && marked.size > 0) {
+                visibleButtonCount += 2;
+            }
+            if (SHOW_TOGGLE_MARK.checked) {
+                visibleButtonCount += 1;
+            }
+            if (SHOW_PREV_NEXT_HISTORY.checked && navigationHistory.length > 1) {
+                visibleButtonCount += 2;
+            }
+            if (SHOW_HOIST_DEHOIST.checked) {
+                visibleButtonCount += 2;
+            }
+            if (SHOW_LAYOUT_ORIENTATION.checked) {
+                visibleButtonCount += 1;
+            }
+            if (SHOW_THEME_TOGGLE.checked) {
+                visibleButtonCount += 1;
+            }
+            TRIGGER_AREA.style.width = ((visibleButtonCount * 40) + 10) + 'px';
         }
 
         function updateNodeIcons() {
@@ -2718,7 +2894,6 @@
                         let expandedPositionsIndex = 0;
                         const hoistPositions = parsedData.hoistStack;
                         const selectedPosition = parsedData.selected;
-
                         for (const hoisted of hoistPositions) {
                             if (hoisted >= 0 && hoisted < allNodesInOrder.length) {
                                 hoistStack.push(allNodesInOrder[hoisted]);
@@ -2732,10 +2907,8 @@
                         if (selectedPosition >= 0 && selectedPosition < allNodesInOrder.length) {
                             initialSelectedNode = allNodesInOrder[selectedPosition];
                         }
-
                     }
                     return initialSelectedNode;
-
                 } catch (e) {
                     console.error('Error loading document state from localStorage:', e);
                 }
@@ -2815,7 +2988,6 @@
                     SHOW_THEME_TOGGLE.checked = prefs.showThemeToggle ?? true;
                     SHOW_NODE_ICONS.checked = prefs.showNodeIcons ?? true;
                     SHOW_COLLAPSE_ALL.checked = prefs.showCollapseAll ?? true;
-
                     // Find-pane options
                     OPT_WHOLE.checked = prefs.findWholeWord ?? OPT_WHOLE.checked;
                     OPT_IGNORECASE.checked = prefs.findIgnoreCase ?? OPT_IGNORECASE.checked;
@@ -2823,7 +2995,6 @@
                     OPT_MARK.checked = prefs.findMark ?? OPT_MARK.checked;
                     OPT_HEADLINE.checked = prefs.findHeadline ?? OPT_HEADLINE.checked;
                     OPT_BODY.checked = prefs.findBody ?? OPT_BODY.checked;
-
                     // Set the find scope radio
                     if (prefs.findScope) {
                         const scopeRadio = document.getElementById('scope-' + prefs.findScope);
@@ -2842,6 +3013,16 @@
         }
 
         // Find functionality
+        function startFind() {
+            initialFindNode = null; // If null, find next will set this, used with "Suboutline Only" find radio option (value: suboutline)
+            if (HTML_ELEMENT.getAttribute('data-show-config') === 'true') {
+                toggleConfiguration(); // // Make find input visible if in settings screen
+            }
+            FIND_INPUT.focus();
+            FIND_INPUT.select();
+            renderTree(); // To show or remove initial-find highlight
+        }
+
         function findNext() {
             if (!selectedNode) return; // No selection, nothing to search from
             const searchText = FIND_INPUT.value.trim();

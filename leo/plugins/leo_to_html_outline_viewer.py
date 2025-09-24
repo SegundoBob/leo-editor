@@ -82,7 +82,10 @@ def export_html_outline_viewer(event=None):
 
     unix_timestamp_string = str(int(time.time()))
     myFilePath = c.fileName()
-    filename = os.path.splitext(os.path.basename(myFilePath))[0]
+    if myFilePath:
+        filename = os.path.splitext(os.path.basename(myFilePath))[0]
+    else:
+        filename = "untitled"
 
     vnode_dict = {}  # This is 'data'
     gnx_map = {}  # gnx -> compact id
