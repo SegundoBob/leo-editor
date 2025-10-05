@@ -17713,6 +17713,8 @@ Leo preprocesses all scripts by simulating the writing of a external file to a s
 
 ``export-headlines``
     Exports all headlines to an external file.
+``export-html-outline-viewer``
+    Exports the Leo outline as a self-contained HTML interactive outline viewer. This command requires the "leo_to_html_outline_viewer.py" plugin to be active.
 ``file-insert``
     Prompts for the name of a file and put the selected text into it.
 ``flatten-outline``
@@ -30759,7 +30761,7 @@ any change to one clone inevitably affects all other clones.
 <t tx="ekr.20230121061309.1"></t>
 <t tx="ekr.20230121061335.1"></t>
 <t tx="ekr.20230121061433.1"></t>
-<t tx="ekr.20230121110340.1" _mod_time="4741d993336a2ad5e02e">@language batch
+<t tx="ekr.20230121110340.1" _mod_time="4741da346ccae692f52e">@language batch
 echo off
 echo off
 cd C:\Repos\leo-editor\leo\doc\html
@@ -30767,7 +30769,7 @@ echo make clean
 call make clean
 </t>
 <t tx="ekr.20230121110345.1"></t>
-<t tx="ekr.20230121110533.1" _mod_time="4741d993336a2adb852e">@language batch
+<t tx="ekr.20230121110533.1" _mod_time="4741da346ccae692f52e">@language batch
 echo off
 echo off
 cd C:\Repos\leo-editor\leo\doc\html
