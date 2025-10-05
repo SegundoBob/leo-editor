@@ -508,9 +508,9 @@
 </v>
 </v>
 <v t="matt.20200331213038.1"><vh>PyPi install caveat</vh></v>
-<v t="ekr.20230121110345.1" descendentVnodeUnknownAttributes="7d7100285803000000302e3071017d710258090000005f6d6f645f74696d6571034741d993336a2ad5e0735803000000302e3171047d710558090000005f6d6f645f74696d6571064741d993336a2adb8573752e"><vh>Script files</vh>
-<v t="ekr.20230121110340.1" descendentVnodeUnknownAttributes="7d710058010000003071017d710258090000005f6d6f645f74696d6571034741d993336a2ad5e073732e"><vh>@clean ../scripts/make-clean.cmd</vh></v>
-<v t="ekr.20230121110533.1" descendentVnodeUnknownAttributes="7d710058010000003071017d710258090000005f6d6f645f74696d6571034741d993336a2adb8573732e"><vh>@clean ../scripts/make-html.cmd</vh></v>
+<v t="ekr.20230121110345.1"><vh>Script files</vh>
+<v t="ekr.20230121110340.1"><vh>@clean ../scripts/make-clean.cmd</vh></v>
+<v t="ekr.20230121110533.1"><vh>@clean ../scripts/make-html.cmd</vh></v>
 </v>
 <v t="ekr.20100805171546.4412"><vh>Web pages</vh>
 <v t="ekr.20090428133936.2"><vh>@edit html/conf.py</vh></v>
@@ -758,6 +758,7 @@
 <v t="ekr.20050830115714.113"><vh>How can I create a template .leo file?</vh></v>
 <v t="ekr.20050830115714.18"><vh>How can I create Javascript comments?</vh></v>
 <v t="ekr.20050830115714.19"><vh>How can I disable PHP comments?</vh></v>
+<v t="felix.20251005130847.1"><vh>How can I export as a user-friendly HTML file?</vh></v>
 <v t="ekr.20180212165141.1"><vh>How can I open special .leo files easily?</vh></v>
 <v t="ekr.20141030042423.9"><vh>How can I specify the root directory of a thumb drive?</vh></v>
 <v t="ekr.20050830115714.25"><vh>How can I use Leo with older C compilers</vh></v>
@@ -1062,6 +1063,7 @@
 <v t="ekr.20101113063552.9456"><vh>geotag.py</vh></v>
 <v t="ekr.20101113063552.9457"><vh>leocursor.py</vh></v>
 <v t="ekr.20170314091526.1"><vh>leoOPML.py</vh></v>
+<v t="felix.20251005132812.1"><vh>leo_to_html_outline_viewer.py</vh></v>
 <v t="ekr.20101113063552.9458"><vh>mime.py</vh></v>
 <v t="ekr.20101113063552.9459"><vh>multifile.py</vh></v>
 <v t="ekr.20101113063552.9460"><vh>niceNosent.py</vh></v>
@@ -8630,6 +8632,8 @@ controller(c).run()
     This NOT a Leo plugin: this is a docutils writer for .pdf files.
 ``leo_to_html.py``
     Converts a leo outline to an html web page.
+``leo_to_html_outline_viewer.py``
+    Converts a leo outline to a self-contained HTML interactive outline viewer.
 ``leo_to_rtf.py``
     Outputs a Leo outline as a numbered list to an RTF file. The RTF file can be
     loaded into Microsoft Word and formatted as a proper outline.
@@ -33226,6 +33230,11 @@ This release consists entirely of code cleanups and minor bug fixes:
 A new framework for layouts replaces the free_layout and nested_splitter plugins.
 The gui "Easter Egg" is no more.
 
+Jul 27, 2024: Félix releases LeoJS 1.0, with this
+`announcement &lt;https://groups.google.com/g/leo-editor/c/nNSaJTMAB3s/m/Df1roWA5AgAJ&gt;`_ along with a `scripting samples repository &lt;https://github.com/boltex/scripting-samples-leojs?tab=readme-ov-file#how-to-use-on-the-web-in-your-browser&gt;`_ and a `dedicated website &lt;https://boltex.github.io/leojs/&gt;`_.
+
+LeoJS is a JavaScript implementation of Leo's original Python source packaged as a VSCode extension. It is also usable with VSCode for the web.
+
 Leo 6.8.2 (November 8, 2024):
 
 @jupytext uses the jupytext library https://jupytext.readthedocs.io/en/latest/ to handle Jupyter Notebooks seemlessly.
@@ -33401,6 +33410,21 @@ first draft of the all-important ws_handler function.
 Edward K. Ream made the code more pythonic and provided Leo-specific
 advice.
 </t>
+<t tx="felix.20251005130847.1">**Question**: Is there a way to export an outline in an html format where the format of the html is similar to the desktop version of Leo with the expands and collapses?  I want to send someone a copy of my outline that they can use in a browser to view.
+
+**Answer**: Use the "leo_to_html_outline_viewer" plugin.
+
+(It is enabled by default as of Leo 6.8.7. For existing installs, add "leo_to_html_outline_viewer.py" to the @enabled-plugins node's body in your "myLeoSettings.leo" file.)
+
+This plugin adds an "Export HTML Outline Viewer" entry in the File-&gt;Export Files menu which outputs the Leo outline as a self-contained HTML interactive outline viewer. 
+
+The file is saved in the user's home/.leo folder and also opened with your default viewer.
+</t>
+<t tx="felix.20251005132812.1">This plugin adds an "Export HTML Outline Viewer" entry in the File-&gt;Export Files menu
+which outputs the Leo outline as a self-contained HTML interactive outline viewer.
+The file is saved in the user's home/.leo folder and also opened with your default viewer.
+
+Made by Félix Malboeuf (https://github.com/boltex)</t>
 <t tx="matt.20180826201749.1">**Problem**
 
 When installing Leo from GitHub with
