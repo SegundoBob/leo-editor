@@ -1851,7 +1851,7 @@
 <v t="ekr.20051123100536"><vh>Plugins</vh>
 <v t="ekr.20181018110051.1"><vh>@bool warn_when_plugins_fail_to_load = True</vh></v>
 <v t="ekr.20070224073109.1"><vh>@enabled-plugins</vh>
-<v t="ekr.20220915162805.1"><vh>Alphabetica list of plugins</vh></v>
+<v t="ekr.20220915162805.1"><vh>Alphabetical list of plugins</vh></v>
 </v>
 <v t="tbrown.20091129085043.11789"><vh>active_path plugin</vh>
 <v t="tbrown.20091129085043.11790"><vh>@string active-path-attype = auto</vh></v>
@@ -3725,7 +3725,7 @@ nodetags.py
 quicksearch.py      # Nav pane.
 todo.py             # Task pane.
 viewrendered.py     # (Or viewrendered3.py) Plugins menu support.
-leo_to_html_outline_viewer.py # Self-contained HTML Outline Viewer</t>
+leo_to_html_outline_viewer.py  # Self-contained HTML Outline Viewer</t>
 <t tx="ekr.20070318065601">True:  Chapter commands are functional.
 False: Chapter commands do not exists.
 
@@ -11472,6 +11472,7 @@ False: Use the default stylesheet at leo/plugins/viewrendered3.
 # jinjarender.py
 # leo_interface.py
 # leo_to_html.py
+# leo_to_html_outline_viewer.py
 # leocursor.py
 # leofeeds.py
 # leomail.py

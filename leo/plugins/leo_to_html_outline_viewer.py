@@ -3,7 +3,8 @@
 #@+<< docstring >>
 #@+node:felix.20250921202236.1: ** << docstring >>
 r""" 
-Outputs a Leo outline as a self-contained HTML interactive outline viewer:
+This plugin adds an "Export HTML Outline Viewer" entry in the File->Export Files menu
+which outputs the Leo outline as a self-contained HTML interactive outline viewer.
 The file is saved in the user's home/.leo folder and also opened with your default viewer.
 
 Made by Félix Malboeuf (https://github.com/boltex)
@@ -72,18 +73,17 @@ def export_html_outline_viewer(event=None):
     template_content, encoding = g.readFileIntoString(fileName)
     htmlPrefix = template_content.split("        /* Start of data */")[0]
     htmlSuffix = template_content.split("        /* End of data */")[1]
-    g.es('Loaded HTML template.')
-    g.es('encoding: %s' % (encoding))
-    g.es('template_start length: %s' % (len(htmlPrefix)))
-    g.es('template_end length: %s' % (len(htmlSuffix)))
-    # Create the data to be embedded in the HTML file
 
     TEMPDIR = os.path.expanduser(r'~/.leo')
 
     unix_timestamp_string = str(int(time.time()))
     myFilePath = c.fileName()
-    filename = os.path.splitext(os.path.basename(myFilePath))[0]
+    if myFilePath:
+        filename = os.path.splitext(os.path.basename(myFilePath))[0]
+    else:
+        filename = "untitled"
 
+    # Create the data to be embedded in the HTML file
     vnode_dict = {}  # This is 'data'
     gnx_map = {}  # gnx -> compact id
     gnx_counter = 0  # counter for compact ids
