@@ -1437,7 +1437,7 @@ class Fstringify:
             j += 1
         # Replace the node.
         new_node: ast.AST
-        if g.python_version_tuple < (3, 13, 0):
+        if g.python_version_tuple < (3, 12, 0):
             new_node = ast.Str(s)  # pylint: disable=deprecated-class,no-member
         else:
             new_node = ast.Constant(value=s)
