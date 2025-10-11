@@ -33355,9 +33355,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 
 - [Install Leo](https://leo-editor.github.io/leo-editor/installing.html)
 - [6.8.7 Issues](https://github.com/leo-editor/leo-editor/issues?q=is%3Aissue+milestone%3A6.8.7+)
-- [6.8.7.1 Issues](https://github.com/leo-editor/leo-editor/issues?q=is%3Aissue+milestone%3A6.8.7.1+)
 - [6.8.7 Pull Requests](https://github.com/leo-editor/leo-editor/pulls?q=is%3Apr+milestone%3A6.8.7)
-- [6.8.7.1 Pull Requests](https://github.com/leo-editor/leo-editor/pulls?q=is%3Apr+milestone%3A6.8.7.1)
 - [Documentation](https://leo-editor.github.io/leo-editor/leo_toc.html)
 - [Tutorials](https://leo-editor.github.io/leo-editor/tutorial.html)
 - [Video tutorials](https://leo-editor.github.io/leo-editor/screencasts.html)
