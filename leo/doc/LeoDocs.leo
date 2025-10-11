@@ -33291,12 +33291,12 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 
 - `PR #4386`_ and `PR #4395`_: Major improvements for `@clean`.
    See https://leo-editor.github.io/leo-editor/directives.html#leo-directives
-- `PR 4389`_: Support websockets in Leo's server and LeoInteg.
-- `PR 4391`_: Add a theme file for SwotMoknokai.
+- `PR #4389`_: Support websockets in Leo's server and LeoInteg.
+- `PR #4391`_: Add a theme file for SwotMoknokai.
 
 **Leo 6.8.6.1**
 
-- `PR 4405`_: Fix a critical bug present in Leo 6.8.6.</t>
+- `PR #4405`_: Fix a critical bug present in Leo 6.8.6.</t>
 <t tx="ekr.20250729083112.1">.. _`Rust's compiler repo`: https://github.com/rust-lang/rust/tree/master/compiler
 
 ``@leo`` directives have the form ``@leo &lt;path&gt;`` where ``path`` is a path (absolute
