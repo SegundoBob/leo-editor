@@ -105,12 +105,12 @@
 <v t="EKR.20040519091259.4"><vh>October 2003</vh></v>
 </v>
 </v>
-<v t="EKR.20040519090846" descendentVnodeUnknownAttributes="7d7100285803000000302e3371017d710258090000005f6d6f645f74696d6571034741da2403a88830cf735803000000302e3471047d710558090000005f6d6f645f74696d6571064741da2403a889369d73752e"><vh>Distribution files</vh>
+<v t="EKR.20040519090846"><vh>Distribution files</vh>
 <v t="ekr.20141016105045.2119"><vh>@clean ../../.gitattributes</vh></v>
 <v t="EKR.20040519090846.1"><vh>@clean ../../LICENSE</vh></v>
 <v t="ekr.20210814054641.1"><vh>@clean ../../MANIFEST.in</vh></v>
-<v t="EKR.20040519090846.8" descendentVnodeUnknownAttributes="7d710058010000003071017d710258090000005f6d6f645f74696d6571034741da2403a88830cf73732e"><vh>@clean ../../PKG-INFO.TXT</vh></v>
-<v t="EKR.20040519090846.9" descendentVnodeUnknownAttributes="7d710058010000003071017d710258090000005f6d6f645f74696d6571034741da2403a889369d73732e"><vh>@clean ../../README.md</vh></v>
+<v t="EKR.20040519090846.8"><vh>@clean ../../PKG-INFO.TXT</vh></v>
+<v t="EKR.20040519090846.9"><vh>@clean ../../README.md</vh></v>
 <v t="maphew.20200424174643.1"><vh>Conda</vh>
 <v t="maphew.20200426185115.1"><vh>Outdated Preliminary build recipe</vh></v>
 <v t="maphew.20200424174722.1"><vh>@auto ../dist/conda/leo/meta.yaml</vh></v>
@@ -148,7 +148,7 @@
 <t tx="EKR.20040519090846">@language rest
 @wrap
 </t>
-<t tx="EKR.20040519090846.1">MIT License
+<t tx="EKR.20040519090846.1" _mod_time="4741da1010ee7a4fdf2e">MIT License
 
 Copyright (c) 1997-2025 by Edward K. Ream.
 
@@ -354,7 +354,7 @@ This checklist is obsolete, for the following reasons:
 <t tx="ekr.20101027135430.1493">http://nsis.sourceforge.net/Docs/Chapter4.html#4.5</t>
 <t tx="ekr.20101027160251.1497">http://nsis.sourceforge.net/Docs/nsDialogs/Readme.html</t>
 <t tx="ekr.20101027160251.1500"></t>
-<t tx="ekr.20141016105045.2119"># .gitattributes file for Leo distribution
+<t tx="ekr.20141016105045.2119" _mod_time="4741d958732079955b2e"># .gitattributes file for Leo distribution
 
 # Commit this file after changing it!
 
@@ -1428,7 +1428,7 @@ It's ok to merge devel into release branch
 </t>
 <t tx="ekr.20180405171433.4" __bookmarks="7d7100580700000069735f6475706571014930300a732e">- Make sure Leo looks good without myLeoSettings.leo.
 
-- Make sure Leo runs with Python 3.9.
+- Make sure Leo runs with Python 3.10.
 
 - Run the full-test-leo script. See #2867:
   https://github.com/leo-editor/leo-editor/issues/2867
@@ -1483,7 +1483,7 @@ Public announcements, after creating a package.
 <t tx="ekr.20190802115604.1" __bookmarks="7d7100580700000069735f6475706571014930300a732e">- git checkout master
 - full-test-leo
 </t>
-<t tx="ekr.20210814054641.1">@language unknown_language
+<t tx="ekr.20210814054641.1" _mod_time="4741da264b746fde092e">@language unknown_language
 
 # Order matters!
 
@@ -1975,7 +1975,7 @@ scripts held in Scripts.leo. My current thinking is the scripts should be moved
 to or at least managed from Dist.
 
 -matt  </t>
-<t tx="mhw.20191107064521.1">@language unknown_language
+<t tx="mhw.20191107064521.1" _mod_time="4741d9587320af92dd2e">@language unknown_language
 [Desktop Entry]
 Encoding=UTF-8
 Version=master
