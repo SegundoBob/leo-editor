@@ -33349,7 +33349,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - PR #4423: All of Leo's importers now import `@clean` files perfectly.
 - PR #4412: Greatly improve Leo's `parse-body` command.
 - PR #4418: Fix bugs involving the `_mod_time` attribute in `.leo` files.
-- Fix severfal other minor bugs. See the `What's new` section for details.
+- Fix several other minor bugs. See the `What's new` section for details.
 
 **Links**
 
