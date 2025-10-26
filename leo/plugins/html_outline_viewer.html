@@ -2646,6 +2646,8 @@
             // Handle different click targets
             if (event.target.classList.contains('caret') && row.hasChildren) {
                 event.stopPropagation();
+                this.MENU.style.display = "none"; // Close possible existing right-click menu
+
                 // Both toggle and select in one operation
                 selectAndOrToggleAndRedraw(
                     row.node !== selectedNode ? row.node : null,
@@ -2654,6 +2656,8 @@
             } else {
                 // Rest of the node (including icon and text)
                 event.stopPropagation();
+                this.MENU.style.display = "none"; // Close possible existing right-click menu
+
                 if (row.node !== selectedNode) {
                     selectAndOrToggleAndRedraw(row.node); // Just selection
                 }
