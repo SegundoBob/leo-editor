@@ -33,6 +33,7 @@
             --main-resizer-before-left: -5px;
             --main-resizer-after-right: -5px;
             --main-resizer-after-bottom: unset;
+            --cross-resizer-size: 5px;
             --secondary-direction: column;
             --secondary-height: 100%;
             --secondary-resizer-width: 100%;
@@ -315,6 +316,27 @@
         #secondary-resizer::after {
             bottom: var(--secondary-resizer-after-bottom);
             right: var(--secondary-resizer-after-right);
+        }
+
+        #cross-resizer {
+            position: absolute;
+            top: 200px;
+            left: 200px;
+            width: var(--cross-resizer-size);
+            height: var(--cross-resizer-size);
+            cursor: move;
+            background-color: transparent;
+            flex-shrink: 0;
+        }
+
+        #cross-resizer::after {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 15px;
+            height: 15px;
+            cursor: move;
         }
 
         #outline-pane,
@@ -1072,6 +1094,7 @@
         </div>
     </div>
     <div id="main-resizer"></div>
+    <div id="cross-resizer"></div>
     <div id="body-pane" tabindex="0" contenteditable="plaintext-only" spellcheck="false"></div>
     <div id="button-trigger-area"></div>
     <div id="button-container">
@@ -1326,6 +1349,7 @@
         let isDragging = false;
         let mainRatio = 0.25; // Default proportion between outline-find-container and body-pane widths (defaults to 1/4)
         let secondaryIsDragging = false;
+        let crossIsDragging = false;
         let secondaryRatio = 0.75; // Default proportion between the outline-pane and the find-pane (defaults to 3/4)
         let __toastTimer = null;
         const navigationHistory = [];
@@ -1363,6 +1387,8 @@
         const VERTICAL_RESIZER = document.getElementById('main-resizer');
         const FIND_PANE = document.getElementById("find-pane");
         const HORIZONTAL_RESIZER = document.getElementById('secondary-resizer');
+        const CROSS_RESIZER = document.getElementById('cross-resizer')
+
         const THEME_TOGGLE = document.getElementById('theme-toggle');
         const THEME_ICON = document.getElementById('toggle-icon');
         const LAYOUT_TOGGLE = document.getElementById('layout-toggle');
@@ -2351,6 +2377,7 @@
                 renderTree(); // Resizing vertically, so need to re-render tree
                 CONFIG_BTN.style.inset = `${newHeight - 33}px 7px auto auto`;
             }
+            positionCrossDragger();
             updateCollapseAllPosition();
         }, 33);
 
@@ -2440,6 +2467,7 @@
                     FIND_PANE.style.flex = '1 1 auto'; // Let it take the remaining space
                 }
             }
+            positionCrossDragger();
             updateCollapseAllPosition();
         }, 33);
 
@@ -2466,9 +2494,104 @@
             }
         }
 
+        const handleCrossDrag = throttle((e) => {
+            let clientX = e.clientX;
+            let clientY = e.clientY;
+            if (e.touches) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            }
+
+            if (currentLayout === 'vertical') {
+                // Handle cross drag when in vertical layout
+
+                // do main first as per handleDrag
+                const newWidth = clientX;
+                if (newWidth >= minWidth) {
+                    OUTLINE_FIND_CONTAINER.style.width = (newWidth - 3) + 'px';
+                } else {
+                    OUTLINE_FIND_CONTAINER.style.width = (minWidth - 3) + 'px';
+                }
+                // then secondary as per handleSecondaryDrag
+                const containerRect = OUTLINE_FIND_CONTAINER.getBoundingClientRect();
+                const relativeY = clientY - containerRect.top;
+                const containerHeight = OUTLINE_FIND_CONTAINER.offsetHeight;
+                if (relativeY >= minHeight && relativeY <= containerHeight - minHeight) {
+                    OUTLINE_PANE.style.flex = `0 0 ${relativeY - 8}px`;
+                    FIND_PANE.style.flex = '1 1 auto'; // Let it take the remaining space
+                }
+            } else {
+                // Handle cross drag when in horizontal layout
+
+                // do main first as per handleDrag
+                const newHeight = clientY;
+                if (newHeight >= minWidth) {
+                    OUTLINE_FIND_CONTAINER.style.height = (newHeight - 3) + 'px';
+                } else {
+                    OUTLINE_FIND_CONTAINER.style.height = (minWidth - 3) + 'px';
+                }
+                // then secondary as per handleSecondaryDrag
+                const containerRect = OUTLINE_FIND_CONTAINER.getBoundingClientRect();
+                const relativeX = clientX - containerRect.left;
+                const containerWidth = OUTLINE_FIND_CONTAINER.offsetWidth;
+                if (relativeX >= minHeight && relativeX <= containerWidth - minHeight) {
+                    OUTLINE_PANE.style.flex = `0 0 ${relativeX - 3}px`;
+                    FIND_PANE.style.flex = '1 1 auto'; // Let it take the remaining space
+                }
+            }
+            positionCrossDragger();
+
+            renderTree(); // Render afterward as it would be in each branch of the if/else
+            updateCollapseAllPosition();
+        }, 33);
+
+        const startCrossDrag = (e) => {
+            crossIsDragging = true;
+            document.body.classList.add('dragging-cross');
+            e.preventDefault();
+            document.addEventListener('mousemove', handleCrossDrag);
+            document.addEventListener('mouseup', stopCrossDrag);
+            document.addEventListener('touchmove', handleCrossDrag, { passive: false });
+            document.addEventListener('touchend', stopCrossDrag);
+
+        }
+
+        const stopCrossDrag = () => {
+            if (crossIsDragging) {
+                crossIsDragging = false;
+                document.body.classList.remove('dragging-cross');
+                document.removeEventListener('mousemove', handleCrossDrag);
+                document.removeEventListener('mouseup', stopCrossDrag);
+                document.removeEventListener('touchmove', handleCrossDrag);
+                document.removeEventListener('touchend', stopCrossDrag);
+
+                updateProportion();
+                updateSecondaryProportion();
+
+                renderTree();
+            }
+        }
+
+        function positionCrossDragger() {
+            if (currentLayout === 'vertical') {
+                const outlineWidth = OUTLINE_FIND_CONTAINER.offsetWidth;
+                const paneHeight = OUTLINE_PANE.offsetHeight;
+                CROSS_RESIZER.style.top = (paneHeight) + 'px';
+                CROSS_RESIZER.style.left = (outlineWidth) + 'px';
+            } else {
+                const outlineHeight = OUTLINE_FIND_CONTAINER.offsetHeight;
+                const paneWidth = OUTLINE_PANE.offsetWidth;
+                CROSS_RESIZER.style.left = (paneWidth) + 'px';
+                CROSS_RESIZER.style.top = (outlineHeight) + 'px';
+            }
+
+        }
+
+
         function updatePanelSizes() {
             updateOutlineContainerSize();
             updateOutlinePaneSize();
+            positionCrossDragger();
         }
 
         function applyTheme(theme) {
@@ -2526,6 +2649,8 @@
             VERTICAL_RESIZER.addEventListener('touchstart', startDrag);
             HORIZONTAL_RESIZER.addEventListener('mousedown', startSecondaryDrag);
             HORIZONTAL_RESIZER.addEventListener('touchstart', startSecondaryDrag);
+            CROSS_RESIZER.addEventListener('mousedown', startCrossDrag);
+            CROSS_RESIZER.addEventListener('touchstart', startCrossDrag);
         }
 
         function setupWindowHandlers() {
