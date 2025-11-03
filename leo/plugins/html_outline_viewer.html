@@ -3028,7 +3028,6 @@
                     // If document stated data is found, rebuild hoist stack, expanded set, and selected node
                     if (parsedData && Array.isArray(parsedData.expanded) && Array.isArray(parsedData.hoistStack) && typeof parsedData.selected === 'number') {
                         const expandedPositions = parsedData.expanded;
-                        let expandedPositionsIndex = 0;
                         const hoistPositions = parsedData.hoistStack;
                         const selectedPosition = parsedData.selected;
                         for (const hoisted of hoistPositions) {
