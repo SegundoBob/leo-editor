@@ -3274,8 +3274,8 @@
                             if (selection.rangeCount > 0) {
                                 const range = selection.getRangeAt(0);
                                 if (BODY_PANE.contains(range.commonAncestorContainer)) {
-                                    // Selection is inside the body pane
-                                    startOffset = range.endOffset;
+                                    // Compute global offset across all text nodes in BODY_PANE
+                                    startOffset = getGlobalOffset(BODY_PANE, range.endContainer, range.endOffset);
                                     body = body.substring(startOffset);
                                 }
                             }
@@ -3398,8 +3398,8 @@
                         // Selection is in headline
                         headlineOffset = range.startOffset;
                     } else if (BODY_PANE.contains(range.commonAncestorContainer)) {
-                        // Selection is in body
-                        bodyOffset = range.startOffset;
+                        // Selection is in body — compute global offset across text nodes
+                        bodyOffset = getGlobalOffset(BODY_PANE, range.startContainer, range.startOffset);
                     }
                 }
 
@@ -3540,18 +3540,57 @@
 
         function highlightMatchInBody(startIndex, endIndex) {
             // The body pane content is set directly as textContent, so it's a single text node
-            if (!BODY_PANE.firstChild || BODY_PANE.firstChild.nodeType !== Node.TEXT_NODE) return;
+            if (!BODY_PANE.firstChild) return;
             try {
                 const range = document.createRange();
-                range.setStart(BODY_PANE.firstChild, startIndex);
-                range.setEnd(BODY_PANE.firstChild, endIndex);
+                const start = getTextNodeAtIndex(BODY_PANE, startIndex);
+                const end = getTextNodeAtIndex(BODY_PANE, endIndex);
 
-                const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
+                if (!start || !end) {
+                    console.warn("Invalid range: could not resolve text nodes");
+                    return;
+                }
+
+                range.setStart(start.node, start.offset);
+                range.setEnd(end.node, end.offset);
+
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
             } catch (e) {
                 console.error('Error setting body selection:', e);
             }
+        }
+
+        function getTextNodeAtIndex(root, index) {
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+            let currentNode = walker.nextNode();
+            let remaining = index;
+
+            while (currentNode) {
+                const len = currentNode.nodeValue.length;
+                if (remaining <= len) {
+                    return { node: currentNode, offset: remaining };
+                }
+                remaining -= len;
+                currentNode = walker.nextNode();
+            }
+            return null;
+        }
+
+        function getGlobalOffset(root, container, offset) {
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+            let total = 0;
+            let current = walker.nextNode();
+
+            while (current) {
+                if (current === container) {
+                    return total + offset;
+                }
+                total += current.nodeValue.length;
+                current = walker.nextNode();
+            }
+            return total;
         }
 
         function findFocus() {
