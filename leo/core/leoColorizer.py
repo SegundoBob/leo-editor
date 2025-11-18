@@ -1668,7 +1668,7 @@ class JEditColorizer(BaseColorizer):
             return 0
         # Test for @ or @doc and set j.
         # Careful: g.match_word doesn't test for '@' correctly.
-        if s[0] == '@' and (len(s) < 2 or s[1] in (' ', '\t', '\n')):
+        if s[0] == '@' and (len(s) == 1 or s[1] in ' \t\n'):  # 4476
             j = 1
         elif g.match_word(s, i, '@doc'):
             j = 4
@@ -1702,7 +1702,7 @@ class JEditColorizer(BaseColorizer):
         if g.match_word(s, 0, '@language'):  # 4476
             return self.match_at_language(s, 0)
         # Careful: g.match_word doesn't test for '@' correctly.
-        if s[0] == '@' and (len(s) < 2 or s[1] in (' ', '\t', '\n')):  # 4476
+        if s[0] == '@' and (len(s) == 1 or s[1] in ' \t\n'):  # 4476
             self.colorRangeWithTag(s, 0, 1, 'leokeyword')
             return 1
         for tag in ('@c', '@code'):
