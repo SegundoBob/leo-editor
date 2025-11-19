@@ -1660,18 +1660,20 @@ class JEditColorizer(BaseColorizer):
         Colorize Leo's @ and @ doc constructs.
         Matches only at the start of the line.
         """
+        c = self.c
         if self.language == 'cweb':
             # Let the cweb colorizer handle everything.
             return 0
-        if i != 0:
+        if i != 0 or not s:
             return 0
-        if g.match_word(s, i, '@doc'):
-            j = i + 4
-        elif g.match(s, i, '@') and (i + 1 >= len(s) or s[i + 1] in (' ', '\t', '\n')):
-            j = i + 1
+        # Test for @ or @doc and set j.
+        # Careful: g.match_word doesn't test for '@' correctly.
+        if s[0] == '@' and (len(s) == 1 or s[1] in ' \t\n'):  # 4476
+            j = 1
+        elif g.match_word(s, i, '@doc'):
+            j = 4
         else:
             return 0
-        c = self.c
         self.colorRangeWithTag(s, 0, j, 'leokeyword')
         # #4382: Always set after_doc_language.
         self.after_doc_language = self.language
@@ -1695,13 +1697,17 @@ class JEditColorizer(BaseColorizer):
         Restarter for @ and @ constructs.
         Continue until an @c, @code or @language at the start of the line.
         """
-        for tag in ('@c', '@code', '@language'):
+        if not s:
+            return 0
+        if g.match_word(s, 0, '@language'):  # 4476
+            return self.match_at_language(s, 0)
+        # Careful: g.match_word doesn't test for '@' correctly.
+        if s[0] == '@' and (len(s) == 1 or s[1] in ' \t\n'):  # 4476
+            self.colorRangeWithTag(s, 0, 1, 'leokeyword')
+            return 1
+        for tag in ('@c', '@code'):
             if g.match_word(s, 0, tag):
-                if tag == '@language':
-                    return self.match_at_language(s, 0)
                 j = len(tag)
-                #@verbatim
-                # @c or @code.
                 self.colorRangeWithTag(s, 0, j, 'leokeyword')
                 # Switch languages.
                 self.language = self.after_doc_language
