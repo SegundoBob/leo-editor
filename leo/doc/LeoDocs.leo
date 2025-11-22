@@ -2523,13 +2523,12 @@
 </v>
 <v t="ekr.20250830050946.1"></v>
 <v t="ekr.20250830050853.1"></v>
+<v t="ekr.20131017174814.17479"></v>
 <v t="ekr.20251122055611.1"><vh>=== #4480: Use gemini to improve Leo's docs</vh>
 <v t="ekr.20250317133518.1"></v>
 <v t="ekr.20210402080752.1"></v>
 </v>
-<v t="ekr.20131017174814.17479"></v>
 <v t="ekr.20111019104425.15904"><vh>&lt;&lt; Leo Quotes &gt;&gt;</vh></v>
-<v t="ekr.20251122055950.1"><vh>--- Suggestions for preface</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -11116,7 +11115,7 @@ if changed:
     c.redraw()
 </t>
 <t tx="ekr.20111019104425.15904">&lt;p&gt;&lt;blockquote&gt;
-  "Leo is a revolutionary step in the right direction for programming."&amp;#8213;Brian Takita
+"Leo is a revolutionary step in the right direction for programming."&amp;#8213;Brian Takita
 &lt;/blockquote&gt;
 
 &lt;blockquote&gt; "Leo is the best IDE that I have had the pleasure to use. It
@@ -11130,7 +11129,7 @@ do."&amp;#8213;Ian Mulvany
 never go back. They'll have to pry Leo out of my cold, dead fingers!"&amp;#8213;Travers A. Hough
 &lt;/blockquote&gt;
 &lt;p&gt;
-Leo is a scriptable  outliner that accelerates the work flow of programmers, authors and web designers.
+Leo is a scriptable outliner that accelerates the work flow of programmers, authors and web designers.
 &lt;em&gt;Outline nodes may appear in more than one place&lt;/em&gt;, allowing multidimensional views of data, including computer programs, within a single outline.
 </t>
 <t tx="ekr.20111108052738.5507">run-marked-unit-tests-externally = Alt-4
@@ -15287,33 +15286,24 @@ Technical Overview of Leo
 
 .. _`Clones`: tutorial-pim.html
 .. _`clone find commands`: html/commands.html# clone-find-commands
-.. _`Directed Acyclic Graphs`: https://en.wikipedia.org/wiki/Directed_acyclic_graph
-.. _`Emacs`: https://www.gnu.org/software/emacs/
-.. _`Leo's tutorial`: tutorial.html
+.. _`group of developers and users`: https://groups.google.com/forum/#!forum/leo-editor
 .. _`Leonine`: leonine-world.html
 .. _`new way to refactor computer programs`: appendices.html#the-leonine-way-to-refactor-code
-.. _`Next`: testimonials.html
 .. _`Python API`: tutorial-scripting.html
-.. _`ask for help`:   https://groups.google.com/forum/#!forum/leo-editor
-.. _`group of developers and users`: https://groups.google.com/forum/#!forum/leo-editor
 .. _`outline-oriented directives`: tutorial-basics.html#markup
 
-Leo is a fundamentally different way of using and organizing data, programs and scripts. Leo has been under active development for 45+ years with an active `group of developers and users`_.
-
-**Leo's unique features**
-
-Leo *completely integrates* Python scripting and outlines.
+Leo *completely integrates* Python scripting and outlines, creating a fundamentally different way of using and organizing data, and computer programs. Leo has been under active development for 45+ years with an active `group of developers and users`_.
 
 - Scripts have complete access to outline structure via a simple `Python API`_. Examples:|br|
   `c.p.b` is the body text of the selected outline node. |br|
   `for p in c.all_nodes()` iterates p through all the nodes of the outline.
-- Unlike standard tree-based editors, Leo allows a **cloned** node to appear in multiple places simultaneously. Editing a node in one location updates it everywhere. Clones allow you to create multidimensional views of any data, including source code.
+- Unlike standard tree-based editors, Leo allows a **cloned** node to appear in multiple places simultaneously. Editing a node in one location updates it everywhere. `Clones`_ allow you to create multidimensional views of any data, including source code.
 - Leo's `clone find commands`_ create *organized* clones of all the nodes that match the search criteria. These data create a `new way to refactor computer programs`_.
 - Scripts and programs can be composed from outlines using `outline-oriented directives`_.
 - Importers convert flat text files into outlines.
 - @button scripts apply scripts to outline data.
 
-These features combine to create a new (`Leonine`_) way of organizing complex data, includig computer programs.</t>
+These features combine to create a new (`Leonine`_) way of organizing complex data, including computer programs.</t>
 <t tx="ekr.20131018100353.16706">To start a project, clone nodes related to the project and drag them at or near the top level, where you can get at them easily. When the project is complete, just delete the clones. This workflow is surprisingly effective:
 
 - The original nodes never move, but they change whenever their clones do.
@@ -33407,38 +33397,6 @@ PR: https://github.com/leo-editor/leo-editor/pull/xxx
 
 @language python
 </t>
-<t tx="ekr.20251122055950.1">(Done) 1. Remove the following dated comparison:
-    “Word outlines are very useful. But Leo makes Word look like a clunky toy.”—Joe Orr
-
-Start with a direct definition of the tool's primary differentiator: the integration of outlining with codebase logic.
-
-(Done) 2. Clarify [Remove] the "Directed Acyclic Graph" (DAG) Claim
-
-    Proposed Revision: Unlike standard tree-based editors, Leo allows a single node to appear in multiple places simultaneously (clones). Editing a node in one location updates it everywhere, allowing for multidimensional organization of source code.
-    
-    Actual Revision: Unlike standard tree-based editors, Leo allows a **cloned** node to appear in multiple places simultaneously. Editing a node in one location updates it everywhere. Clones allow you to create multidimensional views of any data, including source code.
-
-(Done) 3. Define "The Leonine Way" or Remove It
-    
-    Actual Revision: Leo's `clone find commands`_ create *organized* clones of all the nodes that match the search criteria. These data create a `new way to refactor computer programs`_.
-
-(Done) 4. Address the "Jack-of-All-Trades" Risk
-
-Recommendation: Define the tool primarily as one thing (likely a Literate Programming Editor or Scriptable Outliner) and list the others as secondary capabilities derived from that core.
-
-(Done) 5. Reframe the "Steep Learning Curve" Warning
-
-(Done) 6. [Remove] the "100% Pure Python" Claim
-
-Summary of Proposed Structural Changes
-
-    (Done) Headline: Change from "A Brief Summary" to "Technical Overview".
-
-    (Done) Lead: Delete the Word quote. State clearly that Leo is a scriptable outline editor for code and data.
-
-    Features: Group features by workflow (e.g., "For Coding," "For Scripting," "For Knowledge Management") rather than a flat list.
-
-    Technical differentiation: explicitly link "Clones" to the DAG structure to explain the mechanism of action.</t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
 application state, and synchronize the resulting state across clients, leoserver.py
 has the ability to listen and interact with more than one concurrent client, and have
