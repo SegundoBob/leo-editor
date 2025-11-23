@@ -2524,11 +2524,11 @@
 <v t="ekr.20250830050946.1"></v>
 <v t="ekr.20250830050853.1"></v>
 <v t="ekr.20131017174814.17479"></v>
-<v t="ekr.20251122055611.1"><vh>=== #4480: Use gemini to improve Leo's docs</vh>
+<v t="ekr.20251122055611.1"><vh>=== PR #4481: Improve Leo's docs</vh>
+<v t="ekr.20111019104425.15904"><vh>&lt;&lt; Leo Quotes &gt;&gt;</vh></v>
 <v t="ekr.20250317133518.1"></v>
 <v t="ekr.20210402080752.1"></v>
 </v>
-<v t="ekr.20111019104425.15904"><vh>&lt;&lt; Leo Quotes &gt;&gt;</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -29552,9 +29552,9 @@ Fixed all known bugs.</t>
 .. _`LaTeX`:    https://www.latex-project.org/
 .. _`Sphinx`:   https://sphinx-doc.org/
 .. _`reStructuredText`: https://docutils.sourceforge.net/rst.html
+.. _`4478`: https://github.com/leo-editor/leo-editor/issues/4478
 
-This section explains how to use **user filters** to alter the output of
-the ``rst3`` command.
+This section explains how to use **user filters** to alter the output of the ``rst3`` command. See Leo info issue `4478`_ and ``leo/plugins/example_rst_filter.py`` and for examples.
 
 **Background**
 
@@ -29568,100 +29568,33 @@ options, ``rst3`` will:
 
 **User filters**
 
-Plugins or scripts may define two functions: a **headline filter** and a
-**body filter**:
+Plugins or scripts may define two functions: a **headline filter** and a **body filter**. The signature of both filters is ``filter-name (c, p)`` where c and p are defined as usual.
 
-- ``rst3`` calls the body filter for all nodes except descendants of
-  ``@rst-ignore`` or ``@rst-ignore-tree`` nodes.
+- ``rst3`` calls the body filter for all nodes except descendants of ``@rst-ignore`` or ``@rst-ignore-tree`` nodes.
 
-- ``rst3`` calls the headline filter for all nodes except:
-
-    .. code-block:: python
-
-        rst-no-head nodes or
-        descendants of @rst-ignore or @rst-ignore-tree nodes.
+- ``rst3`` calls the headline filter for all nodes except ``@rst-no-head nodes`` or descendants of ``@rst-ignore`` or ``@rst-ignore-tree`` nodes.
 
 - plugins or scripts register filters as follows:
 
-    .. code-block:: python
-
-        c.rstCommands.register_body_filter(body_filter)
-        c.rstCommands.register_headline_filter(headline_filter)
-
-- The signature of all filters is ``filter-name (c, p)`` where c and p are
-  defined as usual.
-
-**Example filters**
-
-Do-nothing filters would be defined like this:
-
 .. code-block:: python
 
-    def body_filter(c, p):
-        return p.b
+    c.rstCommands.register_body_filter(body_filter)
+    c.rstCommands.register_headline_filter(headline_filter)
 
-    def headline_filter(c, p):
-        return p.h
+**Filters can do anything**
 
-The following filters would simulate the frequently-requested "half clone" feature.
-That is, within any ``@rst`` tree, the following filters would skip the children of all clones:
+Filters can use the data in p.b, p.h, p.u, or p.gnx, but filters are not *limited* to the data in p. Filters can access:
 
-.. code-block:: python
-
-    def has_cloned_parent(c, p):
-        """Return True if p has a cloned parent within the @rst tree."""
-        root = c.rstCommands.root  # The @rst node.
-        p = p.parent()
-        while p and p != root:
-            if p.isCloned():
-                return True
-            p.moveToParent()
-        return False
-
-    def body_filter(c, p):
-        return '' if has_cloned_parent(c, p) else p.b
-
-    def headline_filter(c, p):
-        return '' if has_cloned_parent(c, p) else p.h
-
-Folks, this might send a shiver down your spine. Both filters ignore all
-descendants of clones in the ``@rst`` tree. We have the effect of half clones,
-with no changes to Leo's core!
-
-Note: ``has_cloned_parent`` stops the scan at the ``@rst`` node itself, ensuring
-that the ``rst3`` command includes "top-level" clones themselves.
-
-See ``leo/plugins/example_rst_filter.py`` for a complete example.
-
-See Leo info issue #4478 for other examples.
-
-**Filters can do practically anything**
-
-Filters can use the data in p.b, p.h, p.u, or p.gnx, but filters are not *limited* to the data in p. The has_cloned_parent filter shows that filters can access:
-
-- Any ancestor or descendant of node p.
+- Any ancestor or descendant of position p.
 - Any data accessible from c, that is, *all* the data in the outline, including cached data!
 
-Indeed, has_cloned_parent gets the current ``@rst`` node using ``root = c.rstCommands.root``.
-
-Moreover, filters can define special conventions, including:
+Filters can define their own conventions, including:
 
 - Special-format comments embedded in p.b,
 - Special-purpose headlines.
 
-**Summary**
-
-Plugins and scripts can define headline and body filters that alter the intermediate string.
-
-The ``leo/plugins/example_rst_filter.py`` plugin shows how to set up plugins that define custom filters.
-
-Filters have easy access to all data within the outline, including:
-
-- ``c.rstCommands.root``, the ``@rst`` node containing p.
-- All ancestors or descendants of p.
-- All data contained *anywhere* in the outline.
-
-The example filters shown above simulate the often-requested "half clone" feature.</t>
+Finally, scripts can choose to ignore some children of clones in one context and process those *same* children in other contexts, thereby simulating the oft-requestd "half clone" feature.
+</t>
 <t tx="ekr.20210405100137.1058">https://github.com/leo-editor/leo-editor/issues/1806</t>
 <t tx="ekr.20210405100137.1061">https://github.com/leo-editor/leo-editor/issues/1808</t>
 <t tx="ekr.20210405100137.1062">https://github.com/leo-editor/leo-editor/issues/1813
@@ -33393,7 +33326,14 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 @nosearch
 
 https://github.com/leo-editor/leo-editor/issues/4480
-PR: https://github.com/leo-editor/leo-editor/pull/xxx
+PR: https://github.com/leo-editor/leo-editor/pull/4481
+Info (half clones): https://github.com/leo-editor/leo-editor/issues/4478
+
+Folks, this might send a shiver down your spine. Both filters ignore all
+descendants of clones in the ``@rst`` tree. We have the effect of half clones,
+with no changes to Leo's core!
+
+
 
 @language python
 </t>
