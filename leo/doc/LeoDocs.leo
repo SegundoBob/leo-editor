@@ -3918,9 +3918,14 @@ See the section &lt;&lt; How Leo implements unlimited undo &gt;&gt; in ``leoUndo
 
 "Wow, wow, and wow...I finally understand how to use clones and I realized that this is exactly how I want to organize my information. Multiple views on my data, fully interlinkable just like my thoughts."---Anon
 
-"Edward... you've come up with perhaps the most powerful new concept in code manipulation since VI and Emacs.---David McNab
+"Edward... you've come up with perhaps the most powerful new concept in code manipulation since VI and Emacs."---David McNab
 
 "Leo is...a revolutionary step in the right direction for programming."---Brian Takita
+
+Leo makes managing long, complex code bases many many times more easy and feasible than anything else I've tried. Leo also makes trying experimental code way easier than anything else (e.g., running a script to test out some programming issue).  So hard to capture the flavor of all that!
+
+"I use Leo every day, all the time, for non-programming things. I don't see how I could replace it if it somehow vanished."---Thomas Passin
+
 </t>
 <t tx="ekr.20050830074815.10">"I am extremely impressed at how stable and useful Leo appears to be."---Marcus
 A. Martin
