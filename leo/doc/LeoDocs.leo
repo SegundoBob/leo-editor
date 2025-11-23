@@ -29593,7 +29593,23 @@ Filters can define their own conventions, including:
 - Special-format comments embedded in p.b,
 - Special-purpose headlines.
 
-Finally, scripts can choose to ignore some children of clones in one context and process those *same* children in other contexts, thereby simulating the oft-requestd "half clone" feature.
+**Changing text depending on context**
+
+.. code-block:: python
+
+    def in_context(p: Position, context: str) -&gt; bool:
+        return any(z.h == context for z in p.parents())
+   
+    def filter_body(c, p) -&gt; str:
+        if in_context('FAQ'):
+            &lt;&lt; return `p.b`, modified for the FAQ &gt;&gt;
+        elif in_context('Reference'):
+            &lt;&lt; return `p.b`, modified for the Reference &gt;&gt;
+        return ''
+        
+**Simulating half clones**
+
+Scripts may simulate half clones by ignoring children of clones in some contexts and processing those same children in other contexts. That's all there is to it!
 </t>
 <t tx="ekr.20210405100137.1058">https://github.com/leo-editor/leo-editor/issues/1806</t>
 <t tx="ekr.20210405100137.1061">https://github.com/leo-editor/leo-editor/issues/1808</t>
@@ -33017,35 +33033,32 @@ However, Leo's users often request a vague enhancement informally known as "half
 
 **Using context in scripts**
 
-Scripts are not limited to just using `p.b`, `p.h`, `p.u`, or `p.gnx`.  Scripts may access:
+Scripts are not limited to using the data in `p.v`, that is, `p.b`, `p.h`, `p.u`, or `p.gnx`.  Scripts may access:
 
-
-- Any ancestor or descendant of position p.
-- Any data accessible from c, that is, *all* the data in the outline, including cached data!
+- Any ancestor or descendant of `p`.
+- Any data accessible from `c`, that is, *all* the data in the outline, including cached data!
 
 Scripts can define their own conventions, including:
 
-- Special-format comments embedded in p.b,
-- Special-purpose headlines.
+- Special-format comments embedded in `p.b`,
+- Special-purpose conventions for headlines.
 
-Finally, scripts can choose to ignore some children of clones in one context and process those *same* children in other contexts, thereby simulating half clones.
-
-**Example**
+**Changing text depending on context**
 
 .. code-block:: python
 
     def in_context(p: Position, context: str) -&gt; bool:
-        for p in p.self.and_parents():
-            if p.h == context:
-                return True
-        else:
-            return False
-            
+        return any(z.h == context for z in p.parents())
+ 
     for p in c.all_positions():
         if in_context('FAQ'):
             handle_faq node(p)
         elif in_context('Reference'):
             handle_ref_node(p)
+
+**Simulating half clones**
+
+Scripts may simulate half clones by ignoring children (of clones) in some contexts and processing those *same* children in other contexts. That's all there is to it!
 </t>
 <t tx="ekr.20250422050813.2">.. Use the link-pr abbreviation to create these links.
 
@@ -33343,12 +33356,6 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 https://github.com/leo-editor/leo-editor/issues/4480
 PR: https://github.com/leo-editor/leo-editor/pull/4481
 Info (half clones): https://github.com/leo-editor/leo-editor/issues/4478
-
-Folks, this might send a shiver down your spine. Both filters ignore all
-descendants of clones in the ``@rst`` tree. We have the effect of half clones,
-with no changes to Leo's core!
-
-
 
 @language python
 </t>
