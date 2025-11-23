@@ -33015,7 +33015,22 @@ All clones of the same node share the same VNode, and thus they all have exactly
 
 However, Leo's users often request a vague enhancement informally known as "half clones." We can make this ill-defined notion precise by saying that we often want to treat clones differently depending on **context**, the **Position** of that clone within the entire outline.
 
-It's easy to use positions to tailor the handling of each node. Something like this:
+**Using context in scripts**
+
+Scripts are not limited to just using `p.b`, `p.h`, `p.u`, or `p.gnx`.  Scripts may access:
+
+
+- Any ancestor or descendant of position p.
+- Any data accessible from c, that is, *all* the data in the outline, including cached data!
+
+Scripts can define their own conventions, including:
+
+- Special-format comments embedded in p.b,
+- Special-purpose headlines.
+
+Finally, scripts can choose to ignore some children of clones in one context and process those *same* children in other contexts, thereby simulating half clones.
+
+**Example**
 
 .. code-block:: python
 
