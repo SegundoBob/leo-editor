@@ -29599,14 +29599,23 @@ Filters can define their own conventions, including:
 
     def in_context(p: Position, context: str) -&gt; bool:
         return any(z.h == context for z in p.parents())
-   
-    def filter_body(c, p) -&gt; str:
+
+    def body_filter(c, p):
+        """Include bodies only in 'FAQ' or 'Ref' context."""
         if in_context('FAQ'):
             &lt;&lt; return `p.b`, modified for the FAQ &gt;&gt;
         elif in_context('Reference'):
             &lt;&lt; return `p.b`, modified for the Reference &gt;&gt;
         return ''
-        
+
+    def headline_filter(c, p):
+        """Include headlines only in 'FAQ' or 'Ref' context."""
+        return (
+            f"FAQ: {p.h}" if in_context(p, 'FAQ')
+            else f"Ref: {p.h}" if in_context(p, 'Ref')
+            else ''
+        )
+     
 **Simulating half clones**
 
 Scripts may simulate half clones by ignoring children of clones in some contexts and processing those same children in other contexts. That's all there is to it!
