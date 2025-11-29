@@ -11,6 +11,7 @@ This script should run about as fast as pyflakes_leo.py.
 #@+<< check_leo: imports >>
 #@+node:ekr.20251129080328.1: ** << check_leo: imports >>
 import ast
+import glob
 import os
 import sys
 import time
@@ -30,6 +31,21 @@ if leo_editor_dir not in sys.path:
 
 from leo.core import leoGlobals as g  # pylint: disable=wrong-import-position
 #@-<< check_leo: imports >>
+g.cls()
+all = True
+seen: set[str] = set()
+#@+<< check_leo: compute files >>
+#@+node:ekr.20251129100138.1: ** << check_leo: compute files >>
+files: list[str]
+if all:
+    files = glob.glob(f"{core_dir}{os.sep}*.py")
+    files = [z for z in files if not z.startswith('_')]
+else:
+    files = 'leoApp.py'
+    files = [os.path.normpath(os.path.join(core_dir, z)) for z in files]
+for z in files:
+    assert os.path.exists(z), repr(z)
+#@-<< check_leo: compute files >>
 stats_attrs = 0
 #@+others
 #@+node:ekr.20251129080858.1: ** create_live_objects
@@ -53,7 +69,7 @@ class Visitor(ast.NodeVisitor):
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
 
-        global stats_attrs
+        global seen, stats_attrs
         stats_attrs += 1
 
         if isinstance(node.value, ast.Name):
@@ -66,25 +82,21 @@ class Visitor(ast.NodeVisitor):
             )
             for obj, bases in table:
                 if base in bases and not hasattr(obj, attr):
-                    g.trace(f"Undefined: {base}.{attr}")
+                    attr_s = f"{base}.{attr}"
+                    if attr_s not in seen:
+                        seen.add(attr_s)
 
         self.generic_visit(node)
     #@-others
 #@+node:ekr.20251129080959.1: ** check
 def check(path: str) -> None:
     assert os.path.exists(path), repr(path)
+    global seen
     contents = g.readFile(path)
     tree = ast.parse(contents, filename=path)
     visitor = Visitor()
     visitor.visit(tree)
 #@-others
-g.cls()
-
-# Compute files.
-files: list[str] = ['leoApp.py']
-files = [os.path.normpath(os.path.join(core_dir, z)) for z in files]
-for z in files:
-    assert os.path.exists(z), repr(z)
 t1 = time.process_time()
 leoC, leoG, leoP = create_live_objects()  # Takes about 0.9 sec.
 t2 = time.process_time()
@@ -97,4 +109,7 @@ print(
     f" Scan: {t3-t2:.2f}\n"
     f"Total: {t3-t1:.2f}"
 )
+for z in sorted(list(seen)):
+    print(f"Undefined: {z}")
+
 #@-leo
