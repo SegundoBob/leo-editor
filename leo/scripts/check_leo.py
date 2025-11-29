@@ -30,6 +30,7 @@ if leo_editor_dir not in sys.path:
 
 from leo.core import leoGlobals as g  # pylint: disable=wrong-import-position
 #@-<< check_leo: imports >>
+stats_attrs = 0
 #@+others
 #@+node:ekr.20251129080858.1: ** create_live_objects
 def create_live_objects():
@@ -46,28 +47,36 @@ def create_live_objects():
     c = controller.openLeoFile('dummy')
     p = c.p
     return c, g, p
-#@+node:ekr.20251129080749.7: ** ATTRIBUTE
-def ATTRIBUTE(self, node) -> None:
+#@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
+class Visitor(ast.NodeVisitor):
+    #@+others
+    #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
+    def visit_Attribute(self, node) -> None:
 
-    if isinstance(node.value, ast.Name):
-        base = node.value.id
-        attr = node.attr
-        table = (
-            (leoC, ('c', 'c1', 'c2')),
-            (leoG, ('g', 'leoGlobals')),
-            (leoP, ('p', 'p1', 'p2')),
-        )
-        for obj, bases in table:
-            if base in bases and not hasattr(obj, attr):
-                # self.report(messages.UndefinedName, node, f"{base}.{attr}")
-                g.trace(f"Undefined: {base}.{attr}")
+        global stats_attrs
+        stats_attrs += 1
 
-    self.handleChildren(node)
+        if isinstance(node.value, ast.Name):
+            base = node.value.id
+            attr = node.attr
+            table = (
+                (leoC, ('c', 'c1', 'c2')),
+                (leoG, ('g', 'leoGlobals')),
+                (leoP, ('p', 'p1', 'p2')),
+            )
+            for obj, bases in table:
+                if base in bases and not hasattr(obj, attr):
+                    g.trace(f"Undefined: {base}.{attr}")
+
+        self.generic_visit(node)
+    #@-others
 #@+node:ekr.20251129080959.1: ** check
 def check(path: str) -> None:
     assert os.path.exists(path), repr(path)
     contents = g.readFile(path)
-    g.trace(len(contents), path)
+    tree = ast.parse(contents, filename=path)
+    visitor = Visitor()
+    visitor.visit(tree)
 #@-others
 g.cls()
 
@@ -78,8 +87,14 @@ for z in files:
     assert os.path.exists(z), repr(z)
 t1 = time.process_time()
 leoC, leoG, leoP = create_live_objects()  # Takes about 0.9 sec.
+t2 = time.process_time()
 for path in files:
     check(path)
-t2 = time.process_time()
-print(f"Done: {len(files)} file{g.plural(files)} in {t2-t1:.2f} sec.")
+t3 = time.process_time()
+print(
+    f"{len(files)} file{g.plural(files)}\n"
+    f"Setup: {t2-t1:.2f}\n"
+    f" Scan: {t3-t2:.2f}\n"
+    f"Total: {t3-t1:.2f}"
+)
 #@-leo
