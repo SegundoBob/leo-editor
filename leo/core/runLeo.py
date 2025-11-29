@@ -83,10 +83,10 @@ def profile_leo():
     name = str(g.os_path_normpath(g.os_path_join(theDir, 'leoProfile')))
     print(f"profiling binary stats to {name}")
     profile.run('import leo ; leo.run()', name)
-    p = pstats.Stats(name)
-    p.strip_dirs()
-    p.sort_stats('tottime')
-    p.print_stats(200)
+    stats = pstats.Stats(name)
+    stats.strip_dirs()
+    stats.sort_stats('tottime')
+    stats.print_stats(200)
 
 prof = profile_leo
 #@+node:ekr.20120219154958.10499: ** run (runLeo.py)
