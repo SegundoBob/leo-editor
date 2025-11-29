@@ -37,13 +37,13 @@ class ControlCommandsClass(BaseEditCommandsClass):
         trace = False
         k = self.c.k
         try:
-            p = subprocess.Popen(
+            proc = subprocess.Popen(
                 shlex.split(command),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL if trace else subprocess.PIPE,
                 shell=sys.platform.startswith('win'),
             )
-            out, err = p.communicate()
+            out, err = proc.communicate()
             for line in g.splitLines(out):  # type:ignore
                 g.es_print(g.toUnicode(line.rstrip()))
         except Exception:

@@ -4164,14 +4164,14 @@ def execGitCommand(command: str, directory: str) -> list[str]:
         # g.trace(f"os.chdir({directory})")
         os.chdir(directory)
     try:
-        p = subprocess.Popen(
+        proc = subprocess.Popen(
             shlex.split(command),
             stdout=subprocess.PIPE,
             stderr=None,  # Shows error traces.
             # stderr=subprocess.PIPE,
             shell=False,
         )
-        out, err = p.communicate()
+        out, err = proc.communicate()
         lines = [g.toUnicode(z) for z in g.splitLines(out or '')]
     finally:
         os.chdir(old_dir)
@@ -6569,11 +6569,11 @@ def executeFile(filename: str, options: str = '') -> None:
 
     def subprocess_wrapper(cmdlst: str) -> tuple:
 
-        p = subprocess.Popen(cmdlst, cwd=fdir,
+        proc = subprocess.Popen(cmdlst, cwd=fdir,
             universal_newlines=True,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdo, stde = p.communicate()
-        return p.wait(), stdo, stde
+        stdo, stde = proc.communicate()
+        return proc.wait(), stdo, stde
 
     rc, so, se = subprocess_wrapper(f"{sys.executable} {fname} {options}")
     if rc:
