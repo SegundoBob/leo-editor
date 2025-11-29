@@ -699,28 +699,28 @@ def flattenOutline(self: Self, event: LeoKeyEvent = None) -> None:
 def flattenOutlineToNode(self: Self, event: LeoKeyEvent = None) -> None:
     """
     Append the body text of all descendants of the selected node to the
-    body text of the selected node.
+    body text of a new (last) top-level node.
     """
     c, root, u = self, self.p, self.undoer
+    undoType = 'flatten-outline-to-node'
     if not root.hasChildren():
         return
-    language = c.getLanguage(root)
-    if language:
-        single, start, end = g.set_delims_from_language(language)
-    else:
-        single, start, end = '#', None, None
-    bunch = u.beforeChangeNodeContents(root)
+    current = c.p
+    u.beforeChangeGroup(current, undoType)
+    bunch = u.beforeInsertNode(current)
     aList = []
-    for p in root.subtree():
-        if single:
-            aList.append(f"\n\n===== {single} {p.h}\n\n")
-        else:
-            aList.append(f"\n\n===== {start} {p.h} {end}\n\n")
+    for p in root.self_and_subtree():
         if p.b.strip():
-            lines = g.splitLines(p.b)
-            aList.extend(lines)
-    root.b = root.b.rstrip() + '\n' + ''.join(aList).rstrip() + '\n'
-    u.afterChangeNodeContents(root, 'flatten-outline-to-node', bunch)
+            aList.append(f"===== {p.h}\n\n")
+            aList.append(f"{p.b.strip()}'\n\n")
+    last = c.lastTopLevel()
+    p = last.insertAfter()
+    p.h = f"Flattened {root.h}"
+    p.b = ''.join(aList).strip().replace('>>', '> >').replace('<<', '< <') + '\n'
+    u.afterInsertNode(p, undoType, bunch)
+    u.afterChangeGroup(current, undoType)
+    c.selectPosition(p)
+    c.redraw()
 #@+node:ekr.20031218072017.2857: *3* c_file.outlineToCWEB
 @g.commander_command('outline-to-cweb')
 def outlineToCWEB(self: Self, event: LeoKeyEvent = None) -> None:
