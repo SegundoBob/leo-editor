@@ -566,7 +566,6 @@ class Commands:
         count = c.idle_focus_count
         if w:
             w_class = w and w.__class__.__name__
-            c.last_no_focus = False
             if self.is_unusual_focus(w):
                 if trace:
                     g.trace(f"{count} unusual focus: {w_class}")
