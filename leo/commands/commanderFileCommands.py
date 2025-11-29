@@ -702,10 +702,10 @@ def flattenOutlineToNode(self: Self, event: LeoKeyEvent = None) -> None:
     body text of a new (last) top-level node.
     """
     c, root, u = self, self.p, self.undoer
+    current = c.p
     undoType = 'flatten-outline-to-node'
     if not root.hasChildren():
         return
-    current = c.p
     u.beforeChangeGroup(current, undoType)
     bunch = u.beforeInsertNode(current)
     aList = []
@@ -713,14 +713,13 @@ def flattenOutlineToNode(self: Self, event: LeoKeyEvent = None) -> None:
         if p.b.strip():
             aList.append(f"===== {p.h}\n\n")
             aList.append(f"{p.b.strip()}'\n\n")
-    last = c.lastTopLevel()
-    p = last.insertAfter()
+    p = c.lastTopLevel().insertAfter()
     p.h = f"Flattened {root.h}"
-    p.b = ''.join(aList).strip().replace('>>', '> >').replace('<<', '< <') + '\n'
+    p.b = ''.join(aList).strip() + '\n'
     u.afterInsertNode(p, undoType, bunch)
     u.afterChangeGroup(current, undoType)
     c.selectPosition(p)
-    c.redraw()
+    c.redraw(p)
 #@+node:ekr.20031218072017.2857: *3* c_file.outlineToCWEB
 @g.commander_command('outline-to-cweb')
 def outlineToCWEB(self: Self, event: LeoKeyEvent = None) -> None:
