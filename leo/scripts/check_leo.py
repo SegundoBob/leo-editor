@@ -15,40 +15,36 @@ import glob
 import os
 import sys
 import time
-# import textwrap
 
-assert ast and time  ###
-
-# Add 'leo-editor' to sys.path
 leo_editor_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
 core_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'core'))
 for z in (leo_editor_dir, core_dir):
     assert os.path.exists(z), repr(z)
-
-if leo_editor_dir not in sys.path:
-    # Caution: path[0] is reserved for script path (or '' in REPL)
-    sys.path.insert(1, leo_editor_dir)
-
-from leo.core import leoGlobals as g  # pylint: disable=wrong-import-position
 #@-<< check_leo: imports >>
-g.cls()
 all = True
 seen: set[str] = set()
 verbose = False
 stats_attrs = 0
-#@+<< check_leo: compute files >>
-#@+node:ekr.20251129100138.1: ** << check_leo: compute files >>
-files: list[str]
-if all:
-    files = glob.glob(f"{core_dir}{os.sep}*.py")
-    files = [z for z in files if not z.startswith('_')]
-else:
-    files = 'leoApp.py'
-    files = [os.path.normpath(os.path.join(core_dir, z)) for z in files]
-for z in files:
-    assert os.path.exists(z), repr(z)
-#@-<< check_leo: compute files >>
 #@+others
+#@+node:ekr.20251129161138.1: ** adjust_sys_path
+def adjust_sys_path() -> None:
+    """Add 'leo-editor' to sys.path"""
+    if leo_editor_dir not in sys.path:
+        # Caution: path[0] is reserved for script path (or '' in REPL)
+        sys.path.insert(1, leo_editor_dir)
+#@+node:ekr.20251129161354.1: ** compute_files
+def compute_files() -> list[str]:
+    files: list[str]
+    if all:
+        files = glob.glob(f"{core_dir}{os.sep}*.py")
+        files = [z for z in files if not z.startswith('_')]
+    else:
+        files = 'leoApp.py'
+        files = [os.path.normpath(os.path.join(core_dir, z)) for z in files]
+    for z in files:
+        assert os.path.exists(z), repr(z)
+    return files
+
 #@+node:ekr.20251129080858.1: ** create_live_objects
 def create_live_objects():
 
@@ -70,8 +66,15 @@ class Visitor(ast.NodeVisitor):
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
 
-        global seen, stats_attrs
+        global stats_attrs
         stats_attrs += 1
+        # Ignore for now?:
+        ignore = (
+            'c.patched_quicksearch_controller',  # Injected by server.finishCreate.
+            'c.screenCastController',  # Injected by screencast plugin.
+            'g.in_leo_server',  # Injected by server.__init__.
+            'g.leoServer',  # Injected by server.__init__.
+        )
 
         if isinstance(node.value, ast.Name):
             base = node.value.id
@@ -84,7 +87,7 @@ class Visitor(ast.NodeVisitor):
             for obj, bases in table:
                 if base in bases and not hasattr(obj, attr):
                     attr_s = f"{base}.{attr}"
-                    if attr_s not in seen:
+                    if attr_s not in seen and attr_s not in ignore:
                         seen.add(attr_s)
 
         self.generic_visit(node)
@@ -92,14 +95,17 @@ class Visitor(ast.NodeVisitor):
 #@+node:ekr.20251129080959.1: ** check
 def check(path: str) -> None:
     assert os.path.exists(path), repr(path)
-    global seen
     contents = g.readFile(path)
     tree = ast.parse(contents, filename=path)
     visitor = Visitor()
     visitor.visit(tree)
 #@-others
 t1 = time.process_time()
-leoC, leoG, leoP = create_live_objects()  # Takes about 0.9 sec.
+adjust_sys_path()
+c, g, p = create_live_objects()  # Takes about 0.9 sec.
+leoC, leoG, leoP = c, g, p
+files = compute_files()
+g.cls()
 t2 = time.process_time()
 for path in files:
     check(path)
