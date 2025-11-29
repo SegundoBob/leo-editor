@@ -34,6 +34,8 @@ from leo.core import leoGlobals as g  # pylint: disable=wrong-import-position
 g.cls()
 all = True
 seen: set[str] = set()
+verbose = False
+stats_attrs = 0
 #@+<< check_leo: compute files >>
 #@+node:ekr.20251129100138.1: ** << check_leo: compute files >>
 files: list[str]
@@ -46,7 +48,6 @@ else:
 for z in files:
     assert os.path.exists(z), repr(z)
 #@-<< check_leo: compute files >>
-stats_attrs = 0
 #@+others
 #@+node:ekr.20251129080858.1: ** create_live_objects
 def create_live_objects():
@@ -103,12 +104,12 @@ t2 = time.process_time()
 for path in files:
     check(path)
 t3 = time.process_time()
-print(
-    f"{len(files)} file{g.plural(files)}\n"
-    f"Setup: {t2-t1:.2f}\n"
-    f" Scan: {t3-t2:.2f}\n"
-    f"Total: {t3-t1:.2f}"
-)
+if verbose:
+    print(
+        f"{len(files)} file{g.plural(files)}\n"
+        f"Setup: {t2-t1:.2f} sec.\n"
+        f" Scan: {t3-t2:.2f} sec.\n"
+        f"Total: {t3-t1:.2f} sec")
 for z in sorted(list(seen)):
     print(f"Undefined: {z}")
 
