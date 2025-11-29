@@ -67,7 +67,8 @@ assert os.path.exists(leo_path), repr(leo_path)
 if leo_path not in sys.path:
     sys.path.insert(0, leo_path)
 del core_dir, leo_path
-# Leo
+# Leo: suppress pyflakes warnings about imports not at top of file.
+from leo.core import leoImport  # noqa
 from leo.core.leoCommands import Commands as Cmdr  # noqa
 from leo.core.leoNodes import Position, VNode  # noqa
 from leo.core.leoGui import StringFindTabManager  # noqa
@@ -1494,8 +1495,7 @@ class LeoServer:
             elif ext in ('nw', 'noweb'):
                 ic.importWebCommand([fn], "noweb")
             elif ext == 'more':
-                # (Félix) leoImport Should be on c?
-                c.leoImport.MORE_Importer(c).import_file(fn)  # #1522.
+                leoImport.MORE_Importer(c).import_file(fn)  # #1522.
             elif ext == 'txt':
                 # (Félix) import_txt_file Should be on c?
                 # #1522: Create an @edit node.
