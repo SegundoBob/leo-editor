@@ -98,7 +98,7 @@ class CheckLeo:
         visitor.visit(tree)
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
-        global g, leoC, leoG, leoP
+        global leoC, leoG, leoP
         t1 = time.process_time()
         self.adjust_sys_path()
         c, g, p = self.create_live_objects()  # Takes about 0.9 sec.
@@ -134,8 +134,8 @@ class Visitor(ast.NodeVisitor):
         stats_attrs += 1
         ignore = (  # Ignore for now:
             # Injected by leoserver.py
-            'g.in_leo_server', 'g.leoServer',
             'c.patched_quicksearch_controller',
+            'g.in_leo_server', 'g.leoServer',
             # Injected by user plugins.
             'c.screenCastController',  # screencast.py
             'c.vr',  # viewrendered.py
@@ -143,40 +143,50 @@ class Visitor(ast.NodeVisitor):
             'c._style_deltas', 'c.active_stylesheet', 'c.ftm', 'c.zoom_delta', 'g.insqh',
         )
 
+        table = (
+            (leoC, ('c', 'c1', 'c2')),
+            (leoG, ('g', 'leoGlobals')),
+            (leoP, ('p', 'p1', 'p2')),
+        )
+
+        def check(base: str, attr: str) -> None:
+            for obj, bases in table:
+                if base in bases and not hasattr(obj, attr):
+                    add(f"{base}.{attr}")
+
         def add(attr_s: str) -> None:
             if attr_s not in attrs_seen and attr_s not in ignore:
                 attrs_seen.add(attr_s)
 
-        def compute_chain(node: ast.Ast) -> str:
-            return ''  ###
-                # if isinstance(node.value.value, ast.Name):
-                    # base1 = node.value.id
-                    # node2 = node.value.value
-                    # base = node2.value.id
-                    # attr = node2.attr
-                    # print(f"{base1}.{base}.{attr}")
-                    # add(f"{base}.{attr}")
-                # else:
-                # print(f"===== Attribute {node}")
+        def is_string(s: str) -> bool:
+            return (
+                s.startswith('\'"') or
+                s.endswith(('format', 'join', 'lower', 'replace', 'strip', 'upper')))
+
+        # Apply various hacks for now...
+        s = ast.unparse(node)
+        parts = s.split('.')
+        if (
+            len(parts) < 2
+            or is_string(s)
+            or s[0].isupper()
+            or any(z.endswith((')', ']')) for z in parts)
+            or any(z.startswith('{') for z in parts)
+        ):
+            self.generic_visit(node)
+            return
 
         match node.value.__class__:
             case ast.Attribute:
-                compute_chain(node)
-            case ast.Name:  ### 'Name':
-                base = node.value.id
-                attr = node.attr
-                table = (
-                    (leoC, ('c', 'c1', 'c2')),
-                    (leoG, ('g', 'leoGlobals')),
-                    (leoP, ('p', 'p1', 'p2')),
-                )
-                for obj, bases in table:
-                    if base in bases and not hasattr(obj, attr):
-                        add(f"{base}.{attr}")
+                check(parts[0], parts[1])
+            case ast.Name:
+                check(node.value.id, node.attr)
             case ast.BinOp | ast.BoolOp | ast.Constant | ast.JoinedStr:
-                pass
-            case ast.Call | ast.Dict | ast.Subscript:
-                pass
+                add(s)
+            case ast.Dict | ast.Subscript:
+                add(s)
+            case ast.Call:
+                check(parts[0], parts[1])
             case _:
                 attr_values_seen.add(node.value.__class__.__name__)
 
