@@ -1497,9 +1497,8 @@ class LeoServer:
             elif ext == 'more':
                 leoImport.MORE_Importer(c).import_file(fn)  # #1522.
             elif ext == 'txt':
-                # (Félix) import_txt_file Should be on c?
                 # #1522: Create an @edit node.
-                c.import_txt_file(c, fn)
+                c.import_txt_file(fn)
             else:
                 # Make *sure* that parent.b is empty.
                 last = c.lastTopLevel()
