@@ -21,15 +21,15 @@ core_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'core'))
 for z in (leo_editor_dir, core_dir):
     assert os.path.exists(z), repr(z)
 #@-<< check_leo: imports >>
+all = True
+attrs_seen: set[str] = set()
+chains_seen: set[str] = set()
+leoC, leoG, leoP = None, None, None
+verbose = True
+stats_attrs = 0
 #@+others
 #@+node:ekr.20251130081222.1: ** class CheckLeo
 class CheckLeo:
-
-    all = True
-    attrs_seen: set[str] = set()
-    chains_seen: set[str] = set()
-    verbose = True
-    stats_attrs = 0
 
     #@+others
     #@+node:ekr.20251129161138.1: *3* CheckLeo.adjust_sys_path
@@ -69,44 +69,46 @@ class CheckLeo:
     #@+node:ekr.20251129080959.1: *3* CheckLeo.check
     def check(self, path: str) -> None:
         assert os.path.exists(path), repr(path)
-        g = self.leoG
+        global leoG
+        g = leoG
         contents = g.readFile(path)
         tree = ast.parse(contents, filename=path)
-        visitor = Visitor(self)
+        visitor = Visitor()
         visitor.visit(tree)
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
+        global leoC, leoG, leoP
         t1 = time.process_time()
         self.adjust_sys_path()
         c, g, p = self.create_live_objects()  # Takes about 0.9 sec.
-        self.leoC, self.leoG, self.leoP = c, g, p
+        leoC, leoG, leoP = c, g, p
         files = self.compute_files()
         g.cls()
         t2 = time.process_time()
         for path in files:
             self.check(path)
         t3 = time.process_time()
-        if self.verbose:
+        if verbose:
             print(
                 f"{len(files)} file{g.plural(files)}\n"
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec")
-        for z in sorted(list(self.attrs_seen)):
+        for z in sorted(list(attrs_seen)):
             print(f"Undefined: {z}")
     #@-others
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
 
-    def __init__(self, checker: CheckLeo) -> None:
-        self.checker = checker
+    # def __init__(self, checker: CheckLeo) -> None:
+        # self.checker = checker
 
     #@+others
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
 
-        checker = self.checker
-        checker.stats_attrs += 1
+        global attrs_seen, stats_attrs
+        stats_attrs += 1
         # Ignore for now:
         ignore = (
             'c.patched_quicksearch_controller',  # Injected by server.finishCreate.
@@ -114,21 +116,19 @@ class Visitor(ast.NodeVisitor):
             'g.in_leo_server',  # Injected by server.__init__.
             'g.leoServer',  # Injected by server.__init__.
         )
-
         if isinstance(node.value, ast.Name):
             base = node.value.id
             attr = node.attr
             table = (
-                (checker.leoC, ('c', 'c1', 'c2')),
-                (checker.leoG, ('g', 'leoGlobals')),
-                (checker.leoP, ('p', 'p1', 'p2')),
+                (leoC, ('c', 'c1', 'c2')),
+                (leoG, ('g', 'leoGlobals')),
+                (leoP, ('p', 'p1', 'p2')),
             )
             for obj, bases in table:
                 if base in bases and not hasattr(obj, attr):
                     attr_s = f"{base}.{attr}"
-                    if attr_s not in checker.attrs_seen and attr_s not in ignore:
-                        checker.attrs_seen.add(attr_s)
-
+                    if attr_s not in attrs_seen and attr_s not in ignore:
+                        attrs_seen.add(attr_s)
         self.generic_visit(node)
     #@-others
 #@-others
