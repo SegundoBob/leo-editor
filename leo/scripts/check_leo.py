@@ -158,9 +158,9 @@ class Visitor(ast.NodeVisitor):
                     add(f"{base}.{attr}")
 
         def is_string(s: str) -> bool:
-            return (
-                s.startswith('\'"') or
-                s.endswith(('format', 'join', 'lower', 'replace', 'strip', 'upper')))
+            if s.startswith('\'"'):
+                return True
+            return not s.startswith('__') and s.endswith(tuple(dir('x')))
 
         # Apply various hacks for now...
         s = ast.unparse(node)
