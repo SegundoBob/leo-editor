@@ -134,8 +134,7 @@ class Visitor(ast.NodeVisitor):
         stats_attrs += 1
         ignore = (  # Ignore for now:
             # Injected by leoserver.py
-            'c.patched_quicksearch_controller',
-            'g.in_leo_server', 'g.leoServer',
+            'c.patched_quicksearch_controller', 'g.in_leo_server', 'g.leoServer',
             # Injected by user plugins.
             'c.screenCastController',  # screencast.py
             'c.vr',  # viewrendered.py
