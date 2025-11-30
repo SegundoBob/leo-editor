@@ -148,14 +148,14 @@ class Visitor(ast.NodeVisitor):
             (leoP, ('p', 'p1', 'p2')),
         )
 
+        def add(attr_s: str) -> None:
+            if attr_s not in attrs_seen and attr_s not in ignore:
+                attrs_seen.add(attr_s)
+
         def check(base: str, attr: str) -> None:
             for obj, bases in table:
                 if base in bases and not hasattr(obj, attr):
                     add(f"{base}.{attr}")
-
-        def add(attr_s: str) -> None:
-            if attr_s not in attrs_seen and attr_s not in ignore:
-                attrs_seen.add(attr_s)
 
         def is_string(s: str) -> bool:
             return (
