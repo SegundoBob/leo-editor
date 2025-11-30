@@ -71,7 +71,6 @@ class CheckLeo:
         for z in files:
             assert os.path.exists(z), repr(z)
         return files
-
     #@+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
     def create_live_objects(self):
 
@@ -140,56 +139,46 @@ class Visitor(ast.NodeVisitor):
             'c.vr',  # viewrendered.py
             # Injected from Qt plugins...
             'c._style_deltas', 'c.active_stylesheet', 'c.ftm', 'c.zoom_delta', 'g.insqh',
+            #### Mysteries: to do.
+            # 'c.config.exists',  # 'p.v.gnx', 'p.v.h',
         )
 
-        table = (
-            (leoC, ('c', 'c1', 'c2')),
-            (leoG, ('g', 'leoGlobals')),
-            (leoP, ('p', 'p1', 'p2')),
-        )
+        d = {
+            'c': leoC, 'c1': leoC, 'c2': leoC,
+            'g': leoG,
+            'p': leoP, 'p1': leoP, 'p2': leoP,
+        }
 
-        def add(attr_s: str) -> None:
-            if attr_s not in attrs_seen and attr_s not in ignore:
-                attrs_seen.add(attr_s)
-
-        def check(base: str, attr: str) -> None:
-            for obj, bases in table:
-                if base in bases and not hasattr(obj, attr):
-                    add(f"{base}.{attr}")
-
-        def is_string(s: str) -> bool:
-            if s.startswith('\'"'):
-                return True
-            return not s.startswith('__') and s.endswith(tuple(dir('x')))
+        def add(s: str, context: str) -> None:
+            if s not in attrs_seen and s not in ignore:
+                if context != s:
+                    print(f"ADD {s} in {context}")
+                attrs_seen.add(s)
 
         # Apply various hacks for now...
         s = ast.unparse(node)
         parts = s.split('.')
-        if (
-            len(parts) < 2
-            or is_string(s)
-            or s[0].isupper()
-            or any(z.endswith((')', ']')) for z in parts)
-            or any(z.startswith('{') for z in parts)
-        ):
-            self.generic_visit(node)
+        if len(parts) < 2:
             return
-
-        match node.value.__class__:
-            case ast.Attribute:
-                check(parts[0], parts[1])
-            case ast.Name:
-                check(node.value.id, node.attr)
-            case ast.BinOp | ast.BoolOp | ast.Constant | ast.JoinedStr:
-                add(s)
-            case ast.Dict | ast.Subscript:
-                add(s)
-            case ast.Call:
-                check(parts[0], parts[1])
-            case _:
-                attr_values_seen.add(node.value.__class__.__name__)
-
-        self.generic_visit(node)
+        i = 0
+        base, attr = parts[i], parts[i + 1]
+        obj = d.get(base)
+        while obj:
+            if obj.__class__.__name__ in ('function', 'method', 'str'):  # Hack, especially str.
+                return
+            if attr[0].isupper() or any(z in attr for z in '()[]{}'):
+                return  # Hack.
+            if not hasattr(obj, attr):
+                head = '.'.join(parts[: i + 1])
+                add(f"{head}.{attr}", s)
+                return
+            # Check the next object.
+            i += 1
+            try:
+                attr = parts[i + 1]
+            except IndexError:
+                return
+            obj = getattr(obj, attr, None)
     #@-others
 #@-others
 CheckLeo().run()
