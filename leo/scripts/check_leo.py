@@ -15,18 +15,30 @@ import glob
 import os
 import sys
 import time
-
-leo_editor_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
-core_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'core'))
-for z in (leo_editor_dir, core_dir):
-    assert os.path.exists(z), repr(z)
 #@-<< check_leo: imports >>
-all = True
-attrs_seen: set[str] = set()
-chains_seen: set[str] = set()
+#@+<< check_leo: globals >>
+#@+node:ekr.20251130105440.1: ** << check_leo: globals >>
+# Global objects.
 leoC, leoG, leoP = None, None, None
-verbose = True
+
+# Global switches.
+all = True
+verbose = False
+
+# Global stats.
+attrs_seen: set[str] = set()
+attr_values_seen: set[str] = set()
+chains_seen: set[str] = set()
 stats_attrs = 0
+
+# Global directories.
+leo_editor_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
+commands_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'commands'))
+core_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'core'))
+for z in (leo_editor_dir, commands_dir, core_dir):
+    assert os.path.exists(z), repr(z)
+#@-<< check_leo: globals >>
+
 #@+others
 #@+node:ekr.20251130081222.1: ** class CheckLeo
 class CheckLeo:
@@ -42,8 +54,9 @@ class CheckLeo:
     def compute_files(self) -> list[str]:
         files: list[str]
         if all:
-            files = glob.glob(f"{core_dir}{os.sep}*.py")
-            files = [z for z in files if not z.startswith('_')]
+            core_files = glob.glob(f"{core_dir}{os.sep}*.py")
+            commands_files = glob.glob(f"{commands_dir}{os.sep}*.py")
+            files = [z for z in core_files + commands_files if not z.startswith('_')]
         else:
             files = 'leoApp.py'
             files = [os.path.normpath(os.path.join(core_dir, z)) for z in files]
@@ -93,9 +106,15 @@ class CheckLeo:
                 f"{len(files)} file{g.plural(files)}\n"
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
-                f"Total: {t3-t1:.2f} sec")
+                f"Total: {t3-t1:.2f} sec.")
+        else:
+            print(f"check_leo.py: {len(files)} file{g.plural(files)} in {t3-t1:.2f} sec.")
         for z in sorted(list(attrs_seen)):
             print(f"Undefined: {z}")
+        if 1:
+            print('attr.values...')
+            for z in sorted(list(attr_values_seen)):
+                print(z)
     #@-others
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
@@ -106,11 +125,9 @@ class Visitor(ast.NodeVisitor):
     #@+others
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
-
-        global attrs_seen, stats_attrs
+        global attrs_seen, attr_values_seen, chains_seen, stats_attrs
         stats_attrs += 1
-        # Ignore for now:
-        ignore = (
+        ignore = (  # Ignore for now:
             'c.patched_quicksearch_controller',  # Injected by server.finishCreate.
             'c.screenCastController',  # Injected by screencast plugin.
             'g.in_leo_server',  # Injected by server.__init__.
@@ -129,9 +146,20 @@ class Visitor(ast.NodeVisitor):
                     attr_s = f"{base}.{attr}"
                     if attr_s not in attrs_seen and attr_s not in ignore:
                         attrs_seen.add(attr_s)
+        else:
+            attr_values_seen.add(node.value.__class__.__name__)
+
+        # elif isinstance(node.value, ast.Contant):
+            # print(node.value)
+        # elif isinstance(node.value, ast.Call):
+            # print(node.value)
+        # elif isinstance(
+        # elif isinstance(node.value, ast.Subscript):
+            # print(node.value)
+        # elif isinstance(node.value, ast.Attribute):
+            # pass
         self.generic_visit(node)
     #@-others
 #@-others
 CheckLeo().run()
-print('Done')
 #@-leo
