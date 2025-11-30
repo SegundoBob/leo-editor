@@ -39,7 +39,6 @@ plugins_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'plugins'))
 for z in (leo_editor_dir, commands_dir, core_dir):
     assert os.path.exists(z), repr(z)
 #@-<< check_leo: globals >>
-
 #@+others
 #@+node:ekr.20251130081222.1: ** class CheckLeo
 class CheckLeo:
@@ -106,21 +105,21 @@ class CheckLeo:
         leoC, leoG, leoP = c, g, p
         files = self.compute_files()
         g.cls()
+        g.cls()  # Appears to be necessary.
         t2 = time.process_time()
         for path in files:
             self.check(path)
         t3 = time.process_time()
-        print(f"check_leo.py: {len(files)} file{g.plural(files)} in {t3-t1:.2f} sec.")
+        print(f"check_leo.py: attrs: {stats_attrs}, {len(files)} file{g.plural(files)} in {t3-t1:.2f} sec.")
         if verbose:
             print(
-                f"{len(files)} file{g.plural(files)}\n"
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec.")
         for z in sorted(list(attrs_seen)):
             print(f"Undefined: {z}")
-        print(f"attr.values: {', '.join(sorted(list(attr_values_seen)))}")
-
+        if attr_values_seen:
+            print(f"attr.values: {', '.join(sorted(list(attr_values_seen)))}")
     #@-others
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
@@ -141,35 +140,46 @@ class Visitor(ast.NodeVisitor):
             'c.screenCastController',  # screencast.py
             'c.vr',  # viewrendered.py
             # Injected from Qt plugins...
-            'c._style_deltas', 'c.active_stylesheet', 'c.ftm', 'c.zoom_delta',
+            'c._style_deltas', 'c.active_stylesheet', 'c.ftm', 'c.zoom_delta', 'g.insqh',
         )
-        if isinstance(node.value, ast.Name):
-            base = node.value.id
-            attr = node.attr
-            table = (
-                (leoC, ('c', 'c1', 'c2')),
-                (leoG, ('g', 'leoGlobals')),
-                (leoP, ('p', 'p1', 'p2')),
-            )
-            for obj, bases in table:
-                if base in bases and not hasattr(obj, attr):
-                    attr_s = f"{base}.{attr}"
-                    if attr_s not in attrs_seen and attr_s not in ignore:
-                        attrs_seen.add(attr_s)
-        else:
-            attr_values_seen.add(node.value.__class__.__name__)
 
-        # Attribute, BinOp, BoolOp, Call, Constant, Dict, JoinedStr, Subscript
+        def add(attr_s: str) -> None:
+            if attr_s not in attrs_seen and attr_s not in ignore:
+                attrs_seen.add(attr_s)
 
-        # elif isinstance(node.value, ast.Contant):
-            # print(node.value)
-        # elif isinstance(node.value, ast.Call):
-            # print(node.value)
-        # elif isinstance(
-        # elif isinstance(node.value, ast.Subscript):
-            # print(node.value)
-        # elif isinstance(node.value, ast.Attribute):
-            # pass
+        def compute_chain(node: ast.Ast) -> str:
+            return ''  ###
+                # if isinstance(node.value.value, ast.Name):
+                    # base1 = node.value.id
+                    # node2 = node.value.value
+                    # base = node2.value.id
+                    # attr = node2.attr
+                    # print(f"{base1}.{base}.{attr}")
+                    # add(f"{base}.{attr}")
+                # else:
+                # print(f"===== Attribute {node}")
+
+        match node.value.__class__:
+            case ast.Attribute:
+                compute_chain(node)
+            case ast.Name:  ### 'Name':
+                base = node.value.id
+                attr = node.attr
+                table = (
+                    (leoC, ('c', 'c1', 'c2')),
+                    (leoG, ('g', 'leoGlobals')),
+                    (leoP, ('p', 'p1', 'p2')),
+                )
+                for obj, bases in table:
+                    if base in bases and not hasattr(obj, attr):
+                        add(f"{base}.{attr}")
+            case ast.BinOp | ast.BoolOp | ast.Constant | ast.JoinedStr:
+                pass
+            case ast.Call | ast.Dict | ast.Subscript:
+                pass
+            case _:
+                attr_values_seen.add(node.value.__class__.__name__)
+
         self.generic_visit(node)
     #@-others
 #@-others
