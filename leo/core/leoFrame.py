@@ -522,13 +522,16 @@ class LeoFrame:
         if self.cursorStay and wname.startswith('body'):
             tCurPosition = w.getInsertPoint()
         i, j = w.getSelectionRange()  # Returns insert point if no selection.
-        if middleButton and c.k.previousSelection is not None:
-            start, end = c.k.previousSelection
-            s = w.getAllText()
-            s = s[start:end]
-            c.k.previousSelection = None
-        else:
-            s = g.app.gui.getTextFromClipboard()
+
+        # 2025/12/01: c.k.previousSelection no longer exists.
+            # if middleButton and c.k.previousSelection is not None:
+                # start, end = c.k.previousSelection
+                # s = w.getAllText()
+                # s = s[start:end]
+                # c.k.previousSelection = None
+            # else:
+                # s = g.app.gui.getTextFromClipboard()
+        s = g.app.gui.getTextFromClipboard()
         s = g.checkUnicode(s)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
         singleLine = wname.startswith('head') or wname.startswith('minibuffer')
@@ -1484,12 +1487,7 @@ class NullIconBarClass:
         """Add a (virtual) button to the (virtual) icon bar."""
         command: Callable = keys.get('command')
         text = keys.get('text')
-        try:
-            g.app.iconWidgetCount += 1
-        except Exception:
-            g.app.iconWidgetCount = 1
-        n = g.app.iconWidgetCount
-        name = f"nullButtonWidget {n}"
+        name = 'nullButtonWidget'
         if not command:
 
             def commandCallback(name: str = name) -> None:
@@ -1513,8 +1511,7 @@ class NullIconBarClass:
         return b
     #@+node:ekr.20140904043623.18574: *3* NullIconBarClass.clear
     def clear(self) -> None:
-        g.app.iconWidgetCount = 0
-        g.app.iconImageRefs = []
+        pass
     #@+node:ekr.20140904043623.18575: *3* NullIconBarClass.setCommandForButton
     def setCommandForButton(self,
         button: Widget,

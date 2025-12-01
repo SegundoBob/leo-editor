@@ -132,7 +132,6 @@ class CheckLeo:
             else:
                 n = len(list(unknown_bases))
                 print(f"{n} unknown base{g.plural(n)}")
-
         if undefined_chains:
             print('Undefined chains...')
             for z in sorted(list(undefined_chains)):
@@ -142,6 +141,8 @@ class CheckLeo:
             print('Unfinished chains...')
             for z in sorted(list(unfinished_chains)):
                 print(f"  {z}")
+        if not any(z for z in (errors, unknown_bases, undefined_chains, unfinished_chains, verbose)):
+            print('Done')
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
         global leoC, leoG, leoP, leoV
@@ -250,6 +251,7 @@ class Visitor(ast.NodeVisitor):
             'g.leoServer',
             # Injected by user plugins.
             'c.screenCastController',  # screencast.py
+            'g.app.xdb',  # leoDebugger.py
             'c.vr',  # viewrendered.py
             # Injected from Qt plugins.
             'c._style_deltas',
@@ -258,6 +260,7 @@ class Visitor(ast.NodeVisitor):
             'c.frame.nav',
             'c.ftm',
             'c.zoom_delta',
+            'g.app.openWithTable',
             'g.insqh',
             # Not always present:
             'g.app.config.context_menus',
@@ -266,6 +269,7 @@ class Visitor(ast.NodeVisitor):
             'g.app.gui.log',
             'g.app.gui.set_minibuffer_label',
             'g.app.gui.show_find_success',
+            'g.app.openWithTable',
             # p/v properties.
             'p.script',
             'p.v.h',
@@ -279,6 +283,7 @@ class Visitor(ast.NodeVisitor):
             'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
             # Mysteries:
             'c.config.exists',
+            's.decode',
             'sys.stdout.getvalue',
         )
         ignore_dict = {z: 1 for z in ignore}

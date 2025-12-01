@@ -3690,7 +3690,6 @@ class QtIconBarClass:
         """Destroy all the widgets in the icon bar"""
         self.w.clear()
         self.actions = []
-        g.app.iconWidgetCount = 0
     #@+node:ekr.20110605121601.18269: *3* QtIconBar.createChaptersIcon
     def createChaptersIcon(self) -> "LeoQtTreeTab":
 

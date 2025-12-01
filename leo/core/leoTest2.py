@@ -78,7 +78,6 @@ def create_app(gui_name: str = 'null') -> Cmdr:
     lm.globalSettingsDict = settings_d
     lm.globalBindingsDict = bindings_d
     c.config.settingsDict = settings_d
-    c.config.bindingsDict = bindings_d
     assert g.unitTesting is True  # Defensive.
     t4 = time.process_time()
     # Trace times. This trace happens only once:
