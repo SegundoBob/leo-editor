@@ -26,10 +26,9 @@ all = True
 verbose = False
 
 # Global stats.
-attrs_seen: set[str] = set()
-attr_values_seen: set[str] = set()
 chains_seen: set[str] = set()
 stats_attrs = 0
+undefined_chains: set[str] = set()
 unfinished_chains: set[str] = set()
 
 # Global directories.
@@ -108,13 +107,15 @@ class CheckLeo:
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec.")
-        for z in sorted(list(attrs_seen)):
-            print(f"Undefined: {z}")
-        if attr_values_seen:
-            print(f"attr.values: {', '.join(sorted(list(attr_values_seen)))}")
-        for z in sorted(list(unfinished_chains)):
-            print(f"Unfinished chains: {z}")
-
+        if undefined_chains:
+            print('Undefined chains...')
+            for z in sorted(list(undefined_chains)):
+                print(f"  {z}")
+        if unfinished_chains:
+            print('')
+            print(f"Unfinished chains...")
+            for z in sorted(list(unfinished_chains)):
+                print(f"  {z}")
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
         global leoC, leoG, leoP
@@ -140,7 +141,7 @@ class Visitor(ast.NodeVisitor):
     #@+others
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
-        global attrs_seen, attr_values_seen, chains_seen, stats_attrs, unfinished_chains
+        global chains_seen, stats_attrs, unfinished_chains, undefined_chains
         stats_attrs += 1
         ignore = (  # Ignore for now:
             # Injected by leoserver.py
@@ -160,40 +161,56 @@ class Visitor(ast.NodeVisitor):
             'p': leoP, 'p1': leoP, 'p2': leoP,
         }
 
-        def add(s: str, context: str) -> None:
-            if s not in attrs_seen and s not in ignore:
+        parts = self.split_Attribute(node)
+        assert len(parts) > 1, repr(parts)
+
+        def add(s: str) -> None:
+            if s not in undefined_chains and s not in ignore:
+                context = '.'.join(parts)
                 if context != s:
                     print(f"ADD {s} in {context}")
-                attrs_seen.add(s)
+                undefined_chains.add(s)
 
-        # Apply various hacks for now...
-        s = ast.unparse(node)
-        parts = s.split('.')
-        if len(parts) < 2:
-            return
         i = 0
         base, attr = parts[i], parts[i + 1]
         obj = d.get(base)
         while obj:
-            if obj.__class__.__name__ in ('function', 'method'):
-                return  # Hack.
-            if isinstance(obj, str):
-                unfinished_chains.add(s)
-                return  # Hack.
             if attr[0].isupper() or any(z in attr for z in '()[]{}'):
-                unfinished_chains.add(s)
-                return  # Hack.
+                unfinished_chains.add('.'.join(parts))
+                return  # To do..
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
-                add(f"{head}.{attr}", s)
+                add(f"{head}.{attr}")
                 return
-            # Check the next object.
+            # Move to the next obj.
             i += 1
             try:
                 attr = parts[i + 1]
             except IndexError:
                 return
             obj = getattr(obj, attr, None)
+    #@+node:ekr.20251201032057.1: *3* visitor.split_Attribute
+    def split_Attribute(self, node: ast.AST) -> list[str]:
+        """
+        Return the components of an Attribute.
+
+        The would be wrong: ast.unparse(node).split('.')
+        """
+
+        result: list[str] = []
+
+        def _helper(node: ast.AST, result: list[str]) -> None:
+            if isinstance(node, ast.Attribute):
+                _helper(node.value, result)
+                tail = node.attr
+            elif isinstance(node, ast.Name):
+                tail = node.id
+            else:
+                tail = ast.unparse(node)
+            result.append(tail)
+
+        _helper(node, result)
+        return result
     #@-others
 #@-others
 CheckLeo().run()
