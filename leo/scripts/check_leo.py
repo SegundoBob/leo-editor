@@ -281,10 +281,11 @@ class Visitor(ast.NodeVisitor):
             'p.v.tempAttributes',
             # Injected into v...
             'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
-            # Mysteries:
+            # Exists only io.StringIO objects.
+            'sys.stdout.getvalue',
+            # Mysteries.
             'c.config.exists',
             's.decode',
-            'sys.stdout.getvalue',
         )
         ignore_dict = {z: 1 for z in ignore}
         #@-<< define ignore dict >>
