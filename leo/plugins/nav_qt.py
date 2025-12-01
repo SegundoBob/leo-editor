@@ -70,7 +70,6 @@ class NavController:
 
     def __init__(self, c: Cmdr) -> None:
         self.c = c
-        c._prev_next = self
         self._buttons: Optional[tuple[Action, Action]] = self.makeButtons()
 
     #@+others

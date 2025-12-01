@@ -60,10 +60,157 @@ class CheckLeo:
         if all:
             core_files = glob.glob(f"{core_dir}{os.sep}*.py")
             commands_files = glob.glob(f"{commands_dir}{os.sep}*.py")
-            plugins_files = [
-                z for z in glob.glob(f"{plugins_dir}{os.sep}*.py")
-                if 'qt_' in z
-            ]
+            plugins_names = (
+                # 'active_path.py',
+                # 'add_directives.py',
+                # 'anki.py',
+                # 'attrib_edit.py',
+                # 'at_folder.py',
+                # 'at_produce.py',
+                # 'at_view.py',
+                # 'auto_colorize2_0.py',
+                'backlink.py',
+                # 'baseNativeTree.py',
+                # 'bibtex.py',
+                # 'bigdash.py',
+                'bookmarks.py',
+                # 'bzr_qcommands.py',
+                # 'chapter_hoist.py',
+                # 'colorize_headlines.py',
+                'contextmenu.py',
+                # 'ctagscompleter.py',
+                # 'cursesGui.py',
+                # 'cursesGui2.py',
+                # 'datenodes.py',
+                # 'debugger_pudb.py',
+                # 'demo.py',
+                # 'dragdropgoodies.py',
+                # 'dtest.py',
+                # 'dump_globals.py',
+                # 'empty_leo_file.py',
+                # 'enable_gc.py',
+                # 'example_rst_filter.py',
+                # 'expfolder.py',
+                # 'FileActions.py',
+                # 'freewin.py',
+                # 'free_layout.py',
+                # 'ftp.py',
+                # 'geotag.py',
+                # 'gitarchive.py',
+                # 'graphcanvas.py',
+                # 'history_tracer.py',
+                # 'import_cisco_config.py',
+                # 'indented_languages.py',
+                # 'initinclass.py',
+                # 'interact.py',
+                # 'leocursor.py',
+                # 'leofeeds.py',
+                # 'leofts.py',
+                # 'leomail.py',
+                # 'leomylyn.py',
+                # 'leoOPML.py',
+                # 'leoremote.py',
+                # 'leoscreen.py',
+                # 'leo_cloud.py',
+                # 'leo_cloud_server.py',
+                # 'leo_interface.py',
+                # 'leo_pdf.py',
+                # 'leo_to_html.py',
+                # 'leo_to_html_outline_viewer.py',
+                # 'leo_to_rtf.py',
+                # 'lineNumbers.py',
+                # 'line_numbering.py',
+                # 'livecode.py',
+                # 'macros.py',
+                # 'markup_inline.py',
+                # 'maximizeNewWindows.py',
+                # 'md_docer.py',
+                # 'mime.py',
+                # 'mnplugins.py',
+                # 'mod_autosave.py',
+                # 'mod_framesize.py',
+                # 'mod_http.py',
+                # 'mod_leo2ascd.py',
+                # 'mod_read_dir_outline.py',
+                'mod_scripting.py',
+                # 'mod_speedups.py',
+                # 'mod_timestamp.py',
+                # 'multifile.py',
+                'nav_qt.py',
+                # 'nested_splitter.py',
+                # 'niceNosent.py',
+                # 'nodeActions.py',
+                # 'nodediff.py',
+                'nodetags.py',
+                # 'nodewatch.py',
+                # 'open_shell.py',
+                # 'outline_export.py',
+                # 'pane_commands.py',
+                # 'paste_as_headlines.py',
+                # 'patch_python_colorizer.py',
+                'plugins_menu.py',
+                # 'projectwizard.py',
+                # 'pyplot_backend.py',
+                # 'python_terminal.py',
+                # 'QNCalendarWidget.py',
+                'qtGui.py',
+                'qt_commands.py',
+                'qt_events.py',
+                'qt_frame.py',
+                'qt_gui.py',
+                'qt_idle_time.py',
+                'qt_layout.py',
+                'qt_main.py',
+                'qt_quickheadlines.py',
+                'qt_quicksearch.py',
+                'qt_quicksearch_sub.py',
+                'qt_text.py',
+                'qt_tree.py',
+                'quickMove.py',
+                'quicksearch.py',
+                # 'quit_leo.py',
+                # 'read_only_nodes.py',
+                # 'redirect_to_log.py',
+                # 'richtext.py',
+                # 'rpcalc.py',
+                # 'rss.py',
+                # 'run_nodes.py',
+                # 'screencast.py',
+                # 'screenshots.py',
+                # 'screen_capture.py',
+                # 'script_io_to_body.py',
+                # 'setHomeDirectory.py',
+                # 'settings_finder.py',
+                # 'sftp.py',
+                'slideshow.py',
+                # 'spydershell.py',
+                # 'startfile.py',
+                # 'stickynotes.py',
+                # 'stickynotes_plus.py',
+                # 'systray.py',
+                # 'tables.py',
+                # 'testRegisterCommand.py',
+                # 'textnode.py',
+                # 'threadutil.py',
+                # 'timestamp.py',
+                'todo.py',
+                # 'tomboy_import.py',
+                # 'trace_gc_plugin.py',
+                # 'trace_tags.py',
+                'viewrendered.py',
+                'viewrendered3.py',
+                # 'vim.py',
+                # 'wikiview.py',
+                # 'word_count.py',
+                # 'word_export.py',
+                # 'xdb_pane.py',
+                # 'xemacs.py',
+                # 'xml_edit.py',
+                # 'xsltWithNodes.py',
+                # 'zenity_file_dialogs.py',
+            )
+            plugins_files = [f"{plugins_dir}{os.sep}{z}" for z in plugins_names]
+                # z for z in glob.glob(f"{plugins_dir}{os.sep}*.py")
             if 0:
                 for z in plugins_files:
                     print(f"plugin: {z}")
@@ -186,13 +333,20 @@ class Visitor(ast.NodeVisitor):
             're': re,
             'sys': sys
         }
+        ignore_prefixes = (
+            'c._bookmarks',
+            'c.cleo',
+            # 'c.opml',
+            'c.quickMove',
+        )
         part0, part1 = parts[0], parts[1]
+
+        # Ignore some prefixes entirely.
+        if f"{part0}.{part1}" in ignore_prefixes:  # Not worth checking.
+            return None
+
         if 1:  # Only test what's in the table.
             return d.get(part0)  # Get the base, the first obj.
-
-        # Less ambitious...
-        if f"{part0}.{part1}" in ('g.app', 'c.frame'):  # For later.
-            return None
 
         # More ambitious...
         if part0.startswith(('"', "'", 's[')):
@@ -249,10 +403,17 @@ class Visitor(ast.NodeVisitor):
             'c.patched_quicksearch_controller',
             'g.in_leo_server',
             'g.leoServer',
-            # Injected by user plugins.
-            'c.screenCastController',  # screencast.py
-            'g.app.xdb',  # leoDebugger.py
+            # Injected by plugins.
+            'c.pluginsMenu',
+            'c.screenCastController',
+            'c.theScriptingController',
+            'c.theTagController',
             'c.vr',  # viewrendered.py
+            'g._bookmarks_target',
+            'g._bookmarks_target_v',
+            'g._quickmove_target_list',
+            'g.app.xdb',  # leoDebugger.py
+            'p.update_asciidoc',
             # Injected from Qt plugins.
             'c._style_deltas',
             'c.active_stylesheet',
@@ -283,7 +444,7 @@ class Visitor(ast.NodeVisitor):
             'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
             # Exists only io.StringIO objects.
             'sys.stdout.getvalue',
-            # Mysteries.
+            # Minor mysteries.
             'c.config.exists',
             's.decode',
         )
