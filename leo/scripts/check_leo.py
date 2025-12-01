@@ -241,12 +241,17 @@ class Visitor(ast.NodeVisitor):
         #@+<< define ignore dict >>
         #@+node:ekr.20251201051957.1: *4* << define ignore dict >>
         ignore = (
-            # Injected by leoserver.py
-            'c.patched_quicksearch_controller', 'g.in_leo_server', 'g.leoServer',
+            # Obsolete ast Nodes in leoAst.py.
+            'ast.Num',
+            'ast.Str',
+            # Injected by leoserver.py.
+            'c.patched_quicksearch_controller',
+            'g.in_leo_server',
+            'g.leoServer',
             # Injected by user plugins.
             'c.screenCastController',  # screencast.py
             'c.vr',  # viewrendered.py
-            # Injected from Qt plugins...
+            # Injected from Qt plugins.
             'c._style_deltas',
             'c.active_stylesheet',
             'c.frame.detached_body_info',
@@ -262,6 +267,7 @@ class Visitor(ast.NodeVisitor):
             'g.app.gui.set_minibuffer_label',
             'g.app.gui.show_find_success',
             # p/v properties.
+            'p.script',
             'p.v.h',
             'p.v.gnx',
             'p.v.script',
@@ -271,8 +277,9 @@ class Visitor(ast.NodeVisitor):
             'p.v.tempAttributes',
             # Injected into v...
             'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
-            # Mystery!
+            # Mysteries:
             'c.config.exists',
+            'sys.stdout.getvalue',
         )
         ignore_dict = {z: 1 for z in ignore}
         #@-<< define ignore dict >>

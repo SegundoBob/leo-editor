@@ -5630,7 +5630,7 @@ def main() -> None:  # pragma: no cover (tested in client)
             # None of these grabs focus from the console window.
             dialog.raise_()
             dialog.setFocus()
-            g.app.processEvents()
+            g.app.gui.qtApp.processEvents()
             # val is the same as the creation order.
             val = dialog.exec()
             if val == 0:
