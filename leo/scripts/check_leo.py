@@ -15,11 +15,12 @@ import glob
 import os
 import sys
 import time
+from typing import Any
 #@-<< check_leo: imports >>
 #@+<< check_leo: globals >>
 #@+node:ekr.20251130105440.1: ** << check_leo: globals >>
 # Global objects.
-leoC, leoG, leoP = None, None, None
+leoC, leoG, leoP, leoV = None, None, None, None
 
 # Global switches.
 all = True
@@ -72,9 +73,10 @@ class CheckLeo:
             assert os.path.exists(z), repr(z)
         return files
     #@+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
-    def create_live_objects(self):
+    def create_live_objects(self) -> Tuple[Any, Any, Any, Any]:
 
         import leo.core.leoBridge as leoBridge
+        from leo.core.leoNodes import VNode
 
         controller = leoBridge.controller(gui='nullGui',
             loadPlugins=False,  # True: attempt to load plugins.
@@ -85,7 +87,8 @@ class CheckLeo:
         g = controller.globals()
         c = controller.openLeoFile('dummy')
         p = c.p
-        return c, g, p
+        v = VNode(c)
+        return c, g, p, v
     #@+node:ekr.20251129080959.1: *3* CheckLeo.check
     def check(self, path: str) -> None:
         assert os.path.exists(path), repr(path)
@@ -118,11 +121,11 @@ class CheckLeo:
                 print(f"  {z}")
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
-        global leoC, leoG, leoP
+        global leoC, leoG, leoP, leoV
         t1 = time.process_time()
         self.adjust_sys_path()
-        c, g, p = self.create_live_objects()  # Takes about 0.9 sec.
-        leoC, leoG, leoP = c, g, p
+        c, g, p, v = self.create_live_objects()  # Takes about 0.9 sec.
+        leoC, leoG, leoP, leoV = c, g, p, v
         self.files = self.compute_files()
         g.cls()
         g.cls()  # Appears to be necessary.
@@ -143,7 +146,7 @@ class Visitor(ast.NodeVisitor):
     def visit_Attribute(self, node) -> None:
         global chains_seen, stats_attrs, unfinished_chains, undefined_chains
         stats_attrs += 1
-        ignore = (  # Ignore for now:
+        ignore = (
             # Injected by leoserver.py
             'c.patched_quicksearch_controller', 'g.in_leo_server', 'g.leoServer',
             # Injected by user plugins.
@@ -151,14 +154,19 @@ class Visitor(ast.NodeVisitor):
             'c.vr',  # viewrendered.py
             # Injected from Qt plugins...
             'c._style_deltas', 'c.active_stylesheet', 'c.ftm', 'c.zoom_delta', 'g.insqh',
-            #### Mysteries: to do.
-            # 'c.config.exists',  # 'p.v.gnx', 'p.v.h',
+            # Properties...
+            'p.v.h', 'p.v.gnx', 'v.h', 'v.gnx',
+            # Injected into v...
+            'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
+            # Mystery!
+            'c.config',
         )
 
         d = {
             'c': leoC, 'c1': leoC, 'c2': leoC,
             'g': leoG,
             'p': leoP, 'p1': leoP, 'p2': leoP,
+            'v': leoV,
         }
 
         parts = self.split_Attribute(node)
@@ -175,11 +183,15 @@ class Visitor(ast.NodeVisitor):
         base, attr = parts[i], parts[i + 1]
         obj = d.get(base)
         while obj:
+            if obj.__class__.__name__ in ('function', 'method'):
+                return  # Hack: we don't know what function/method returns.
             if attr[0].isupper() or any(z in attr for z in '()[]{}'):
                 unfinished_chains.add('.'.join(parts))
                 return  # To do..
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
+                if 'c.config' in head:
+                    print(obj.__class__.__name__, head, attr)
                 add(f"{head}.{attr}")
                 return
             # Move to the next obj.
