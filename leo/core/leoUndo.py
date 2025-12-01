@@ -2015,7 +2015,7 @@ class Undoer:
         assert c.p == pasted
 
         # Delete the old tree. Its position should still exist.
-        c.p.back.doDelete(pasted)
+        c.p.back().doDelete(pasted)  # 2025/12/01
 
         # Finish
         w.setAllText(u.oldBody)
