@@ -13,6 +13,7 @@ This script should run about as fast as pyflakes_leo.py.
 import ast
 import glob
 import os
+import re
 import sys
 import time
 from typing import Any
@@ -30,6 +31,7 @@ verbose = False
 chains_seen: set[str] = set()
 errors: set[str] = set()
 stats_attrs = 0
+unknown_bases: set[str] = set()
 undefined_chains: set[str] = set()
 unfinished_chains: set[str] = set()
 
@@ -101,6 +103,7 @@ class CheckLeo:
         visitor.visit(tree)
     #@+node:ekr.20251201031243.1: *3* CheckLeo.report
     def report(self, t1: float, t2: float, t3: float) -> None:
+        # global leoG.
         g = leoG
         print(
             f"check_leo.py: attrs: {stats_attrs}, "
@@ -114,6 +117,10 @@ class CheckLeo:
         if errors:
             print('Errors...')
             for z in sorted(list(errors)):
+                print(f"  {z}")
+        if unknown_bases:
+            print('Unknown bases...')
+            for z in sorted(list(unknown_bases)):
                 print(f"  {z}")
         if undefined_chains:
             print('Undefined chains...')
@@ -149,11 +156,11 @@ class Visitor(ast.NodeVisitor):
     #@+others
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
-        # global chains_seen, errors, unfinished_chains, undefined_chains
+        # global chains_seen, errors, unfinished_chains, undefined_chains, unknown_bases.
         global stats_attrs
         stats_attrs += 1
-        #@+<< visit_Attributes: define ignore >>
-        #@+node:ekr.20251201051957.1: *4* << visit_Attributes: define ignore >>
+        #@+<< visit_Attributes: define ignore dict >>
+        #@+node:ekr.20251201051957.1: *4* << visit_Attributes: define ignore dict >>
         ignore = (
             # Injected by leoserver.py
             'c.patched_quicksearch_controller', 'g.in_leo_server', 'g.leoServer',
@@ -169,26 +176,61 @@ class Visitor(ast.NodeVisitor):
             # Mystery!
             'c.config.exists',
         )
-        #@-<< visit_Attributes: define ignore >>
+        ignore_dict = {z: 1 for z in ignore}
+        #@-<< visit_Attributes: define ignore dict >>
+        #@+<< visit_Attributes: define d dict >>
+        #@+node:ekr.20251201061917.1: *4* << visit_Attributes: define d dict >>
         d = {
             'c': leoC, 'c1': leoC, 'c2': leoC,
+            'd': {},  # Dummy dict.
             'g': leoG,
             'p': leoP, 'p1': leoP, 'p2': leoP,
+            's': ' ', 's1': ' ', 's2': ' ',  # Dummy strings.
             'v': leoV,
+            # Library modules:
+            'ast': ast,
+            'glob': glob,
+            'os': os,
+            're': re,
+            'sys': sys
         }
-
+        #@-<< visit_Attributes: define d dict >>
         parts = self.split_Attribute(node)
         assert len(parts) > 1, repr(parts)
 
-        def add(s: str) -> None:
-            if s not in undefined_chains and s not in ignore:
+        def undefined(s: str) -> None:
+            if s not in undefined_chains and s not in ignore_dict:
                 context = '.'.join(parts)
                 if context != s:
                     print(f"ADD {s} in {context}")
                 undefined_chains.add(s)
 
         i = 0
-        obj = d.get(parts[0])  # Get the base, the first obj.
+        part0, part1 = parts[0], parts[1]
+        #@+<< visit_Attributes: get obj >>
+        #@+node:ekr.20251201064630.1: *4* << visit_Attributes: get obj >>
+        if f"{part0}.{part1}" in ('g.app', 'c.frame'):  # For later.
+            return
+        if part0.startswith(('"', "'", 's[')):
+            obj = ' '  # A dummy string.
+        elif part0.startswith('{'):
+            obj = {}  # A dummy dict
+        else:
+            obj = d.get(part0)  # Get the base, the first obj.
+        if not obj:
+            if part0[0].isupper():
+                i = part0.find('(')
+                unknown_bases.add(part0 if i == -1 else part0[:i])
+                return
+            if part0 in (
+                'app', 'at', 'k', 'w', 'self', 'super()', 'x', 'xdb', 'z',
+                'wrapper', 'widget', 'window', 'word',
+            ):  # For later.
+                return
+            if 0:  # Not yet: very verbose.
+                unknown_bases.add(f"{part0} in {'.'.join(parts)}")
+            return
+        #@-<< visit_Attributes: get obj >>
         while obj:
             try:
                 attr = parts[i + 1]
@@ -203,12 +245,11 @@ class Visitor(ast.NodeVisitor):
                 return
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
-                add(f"{head}.{attr}")
+                undefined(f"{head}.{attr}")
                 return
             # Move to the next obj.
             obj = getattr(obj, attr, None)
             i += 1
-
     #@+node:ekr.20251201032057.1: *3* visitor.split_Attribute
     def split_Attribute(self, node: ast.AST) -> list[str]:
         """
