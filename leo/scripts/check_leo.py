@@ -95,7 +95,6 @@ class CheckLeo:
     #@+node:ekr.20251129080959.1: *3* CheckLeo.check
     def check(self, path: str) -> None:
         assert os.path.exists(path), repr(path)
-        # global leoG
         g = leoG
         contents = g.readFile(path)
         tree = ast.parse(contents, filename=path)
@@ -103,7 +102,6 @@ class CheckLeo:
         visitor.visit(tree)
     #@+node:ekr.20251201031243.1: *3* CheckLeo.report
     def report(self, t1: float, t2: float, t3: float) -> None:
-        # global leoG.
         g = leoG
         print(
             f"check_leo.py: attrs: {stats_attrs}, "
@@ -155,48 +153,7 @@ class CheckLeo:
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
 
-    # def __init__(self, checker: CheckLeo) -> None:
-        # self.checker = checker
-
     #@+others
-    #@+node:ekr.20251201064630.1: *3* visitor.get_obj
-    def get_obj(self, parts: list[str]) -> Any:
-
-        d = {
-            'c': leoC, 'c1': leoC, 'c2': leoC,
-            'd': {},  # Dummy dict.
-            'g': leoG,
-            'p': leoP, 'p1': leoP, 'p2': leoP,
-            's': ' ', 's1': ' ', 's2': ' ',  # Dummy strings.
-            'v': leoV,
-            # Library modules:
-            'ast': ast,
-            'glob': glob,
-            'os': os,
-            're': re,
-            'sys': sys
-        }
-        part0, part1 = parts[0], parts[1]
-        if f"{part0}.{part1}" in ('g.app', 'c.frame'):  # For later.
-            return None
-        if part0.startswith(('"', "'", 's[')):
-            return ' '  # A dummy string.
-        if part0.startswith('{'):
-            return {}  # A dummy dict
-        obj = d.get(part0)  # Get the base, the first obj.
-        if obj:
-            return obj
-        if part0[0].isupper():
-            i = part0.find('(')
-            unknown_bases.add(part0 if i == -1 else part0[:i])
-        elif part0 in (
-            'app', 'at', 'k', 'w', 'self', 'super()', 'x', 'xdb', 'z',
-            'wrapper', 'widget', 'window', 'word',
-        ):  # For later.
-            pass
-        elif 0:  # Very verbose.
-            unknown_bases.add(f"{part0} in {'.'.join(parts)}")
-        return None
     #@+node:ekr.20251201064630.1: *3* visitor.get_obj
     def get_obj(self, parts: list[str]) -> Any:
 
@@ -259,7 +216,6 @@ class Visitor(ast.NodeVisitor):
         return result
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
-        # global chains_seen, errors, unfinished_chains, undefined_chains, unknown_bases.
         global stats_attrs
         stats_attrs += 1
         #@+<< define ignore dict >>
