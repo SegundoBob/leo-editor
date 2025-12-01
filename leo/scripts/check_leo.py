@@ -6,7 +6,7 @@
 Check Leo's core files for attribute errors not found by mypy, pylint or
 pyflakes.
 
-This script should run about as fast as pyflakes_leo.py.
+This script runs about as fast as pyflakes_leo.py.
 """
 #@+<< check_leo: imports >>
 #@+node:ekr.20251129080328.1: ** << check_leo: imports >>
@@ -80,8 +80,11 @@ class CheckLeo:
 
         import leo.core.leoBridge as leoBridge
         from leo.core.leoNodes import VNode
+        from leo.plugins.qt_gui import LeoQtGui
+        from leo.plugins.qt_frame import LeoQtFrame
 
-        controller = leoBridge.controller(gui='nullGui',
+        controller = leoBridge.controller(
+            gui='nullGui',  # Only 'nullGui' is allowed!
             loadPlugins=False,  # True: attempt to load plugins.
             readSettings=False,  # True: read standard settings files.
             silent=False,  # True: don't print signon messages.
@@ -91,6 +94,11 @@ class CheckLeo:
         c = controller.openLeoFile('dummy')
         p = c.p
         v = VNode(c)
+
+        # Monkey-patch g.app.gui and c.frame.
+        g.app.use_splash_screen = False
+        g.app.gui = LeoQtGui()
+        c.frame = LeoQtFrame(c, 'test-frame', g.app.gui)
         return c, g, p, v
     #@+node:ekr.20251129080959.1: *3* CheckLeo.check
     def check(self, path: str) -> None:
@@ -144,6 +152,12 @@ class CheckLeo:
         self.files = self.compute_files()
         g.cls()
         g.cls()  # Appears to be necessary.
+
+        # Traces visible after here...
+        if 0:
+            print('Live objects...')
+            for obj in (g.app, g.app.gui, c.frame, c.frame.tree):
+                print(obj)
         t2 = time.process_time()
         for path in self.files:
             self.check(path)
@@ -172,8 +186,14 @@ class Visitor(ast.NodeVisitor):
             'sys': sys
         }
         part0, part1 = parts[0], parts[1]
+        if 1:  # Only test what's in the table.
+            return d.get(part0)  # Get the base, the first obj.
+
+        # Less ambitious...
         if f"{part0}.{part1}" in ('g.app', 'c.frame'):  # For later.
             return None
+
+        # More ambitious...
         if part0.startswith(('"', "'", 's[')):
             return ' '  # A dummy string.
         if part0.startswith('{'):
@@ -227,9 +247,28 @@ class Visitor(ast.NodeVisitor):
             'c.screenCastController',  # screencast.py
             'c.vr',  # viewrendered.py
             # Injected from Qt plugins...
-            'c._style_deltas', 'c.active_stylesheet', 'c.ftm', 'c.zoom_delta', 'g.insqh',
-            # Properties...
-            'p.v.h', 'p.v.gnx', 'v.h', 'v.gnx',
+            'c._style_deltas',
+            'c.active_stylesheet',
+            'c.frame.detached_body_info',
+            'c.frame.nav',
+            'c.ftm',
+            'c.zoom_delta',
+            'g.insqh',
+            # Not always present:
+            'g.app.config.context_menus',
+            'g.app.drag_source',
+            'g.app.globalFindTabManager',
+            'g.app.gui.log',
+            'g.app.gui.set_minibuffer_label',
+            'g.app.gui.show_find_success',
+            # p/v properties.
+            'p.v.h',
+            'p.v.gnx',
+            'p.v.script',
+            'v.h',
+            'v.gnx',
+            # p/v injected attributes.
+            'p.v.tempAttributes',
             # Injected into v...
             'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
             # Mystery!
