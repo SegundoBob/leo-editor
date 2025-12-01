@@ -287,13 +287,6 @@ class Visitor(ast.NodeVisitor):
         if not obj:
             return
 
-        def undefined(s: str) -> None:
-            if s not in undefined_chains and s not in ignore_dict:
-                context = '.'.join(parts)
-                if context != s:
-                    print(f"ADD {s} in {context}")
-                undefined_chains.add(s)
-
         i = 0
         while obj:
             try:
@@ -302,7 +295,9 @@ class Visitor(ast.NodeVisitor):
                 return
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
-                undefined(f"{head}.{attr}")
+                s = f"{head}.{attr}"
+                if s not in ignore_dict:
+                    undefined_chains.add('.'.join(parts))
                 return
             # Move to the next obj.
             obj = getattr(obj, attr, None)
