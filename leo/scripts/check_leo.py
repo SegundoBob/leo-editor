@@ -283,10 +283,7 @@ class Visitor(ast.NodeVisitor):
         #@-<< define ignore dict >>
         parts = self.split_Attribute(node)
         assert len(parts) > 1, repr(parts)
-        obj = self.get_obj(parts)
-        if not obj:
-            return
-
+        obj = self.get_obj(parts)  # Reports problems.
         i = 0
         while obj:
             try:
