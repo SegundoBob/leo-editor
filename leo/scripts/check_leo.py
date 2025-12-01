@@ -292,8 +292,7 @@ class Visitor(ast.NodeVisitor):
                 return
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
-                s = f"{head}.{attr}"
-                if s not in ignore_dict:
+                if f"{head}.{attr}" not in ignore_dict:
                     undefined_chains.add('.'.join(parts))
                 return
             # Move to the next obj.
