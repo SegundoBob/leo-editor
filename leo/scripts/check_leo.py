@@ -28,6 +28,7 @@ verbose = False
 
 # Global stats.
 chains_seen: set[str] = set()
+errors: set[str] = set()
 stats_attrs = 0
 undefined_chains: set[str] = set()
 unfinished_chains: set[str] = set()
@@ -73,7 +74,7 @@ class CheckLeo:
             assert os.path.exists(z), repr(z)
         return files
     #@+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
-    def create_live_objects(self) -> Tuple[Any, Any, Any, Any]:
+    def create_live_objects(self) -> tuple[Any, Any, Any, Any]:
 
         import leo.core.leoBridge as leoBridge
         from leo.core.leoNodes import VNode
@@ -92,7 +93,7 @@ class CheckLeo:
     #@+node:ekr.20251129080959.1: *3* CheckLeo.check
     def check(self, path: str) -> None:
         assert os.path.exists(path), repr(path)
-        global leoG
+        # global leoG
         g = leoG
         contents = g.readFile(path)
         tree = ast.parse(contents, filename=path)
@@ -110,13 +111,17 @@ class CheckLeo:
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec.")
+        if errors:
+            print('Errors...')
+            for z in sorted(list(errors)):
+                print(f"  {z}")
         if undefined_chains:
             print('Undefined chains...')
             for z in sorted(list(undefined_chains)):
                 print(f"  {z}")
         if unfinished_chains:
             print('')
-            print(f"Unfinished chains...")
+            print('Unfinished chains...')
             for z in sorted(list(unfinished_chains)):
                 print(f"  {z}")
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
@@ -144,8 +149,11 @@ class Visitor(ast.NodeVisitor):
     #@+others
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
-        global chains_seen, stats_attrs, unfinished_chains, undefined_chains
+        # global chains_seen, errors, unfinished_chains, undefined_chains
+        global stats_attrs
         stats_attrs += 1
+        #@+<< visit_Attributes: define ignore >>
+        #@+node:ekr.20251201051957.1: *4* << visit_Attributes: define ignore >>
         ignore = (
             # Injected by leoserver.py
             'c.patched_quicksearch_controller', 'g.in_leo_server', 'g.leoServer',
@@ -159,9 +167,9 @@ class Visitor(ast.NodeVisitor):
             # Injected into v...
             'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
             # Mystery!
-            'c.config',
+            'c.config.exists',
         )
-
+        #@-<< visit_Attributes: define ignore >>
         d = {
             'c': leoC, 'c1': leoC, 'c2': leoC,
             'g': leoG,
@@ -180,27 +188,27 @@ class Visitor(ast.NodeVisitor):
                 undefined_chains.add(s)
 
         i = 0
-        base, attr = parts[i], parts[i + 1]
-        obj = d.get(base)
+        obj = d.get(parts[0])  # Get the base, the first obj.
         while obj:
-            if obj.__class__.__name__ in ('function', 'method'):
-                return  # Hack: we don't know what function/method returns.
-            if attr[0].isupper() or any(z in attr for z in '()[]{}'):
-                unfinished_chains.add('.'.join(parts))
-                return  # To do..
-            if not hasattr(obj, attr):
-                head = '.'.join(parts[: i + 1])
-                if 'c.config' in head:
-                    print(obj.__class__.__name__, head, attr)
-                add(f"{head}.{attr}")
-                return
-            # Move to the next obj.
-            i += 1
             try:
                 attr = parts[i + 1]
             except IndexError:
                 return
+            if obj.__class__.__name__ in ('function', 'method'):
+                # We can't resolve the type of the function.
+                errors.add(
+                    f"Unknown function: {obj.__name__} "
+                    f"at {'.'.join(parts[:i+1])} in {'.'.join(parts)}")
+                unfinished_chains.add('.'.join(parts))
+                return
+            if not hasattr(obj, attr):
+                head = '.'.join(parts[: i + 1])
+                add(f"{head}.{attr}")
+                return
+            # Move to the next obj.
             obj = getattr(obj, attr, None)
+            i += 1
+
     #@+node:ekr.20251201032057.1: *3* visitor.split_Attribute
     def split_Attribute(self, node: ast.AST) -> list[str]:
         """
