@@ -30,6 +30,7 @@ attrs_seen: set[str] = set()
 attr_values_seen: set[str] = set()
 chains_seen: set[str] = set()
 stats_attrs = 0
+unfinished_chains: set[str] = set()
 
 # Global directories.
 leo_editor_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -95,21 +96,13 @@ class CheckLeo:
         tree = ast.parse(contents, filename=path)
         visitor = Visitor()
         visitor.visit(tree)
-    #@+node:ekr.20251130081419.1: *3* CheckLeo.run
-    def run(self) -> None:
-        global leoC, leoG, leoP
-        t1 = time.process_time()
-        self.adjust_sys_path()
-        c, g, p = self.create_live_objects()  # Takes about 0.9 sec.
-        leoC, leoG, leoP = c, g, p
-        files = self.compute_files()
-        g.cls()
-        g.cls()  # Appears to be necessary.
-        t2 = time.process_time()
-        for path in files:
-            self.check(path)
-        t3 = time.process_time()
-        print(f"check_leo.py: attrs: {stats_attrs}, {len(files)} file{g.plural(files)} in {t3-t1:.2f} sec.")
+    #@+node:ekr.20251201031243.1: *3* CheckLeo.report
+    def report(self, t1: float, t2: float, t3: float) -> None:
+        g = leoG
+        print(
+            f"check_leo.py: attrs: {stats_attrs}, "
+            f"{len(self.files)} file{g.plural(self.files)} "
+            f"in {t3-t1:.2f} sec.")
         if verbose:
             print(
                 f"Setup: {t2-t1:.2f} sec.\n"
@@ -119,6 +112,24 @@ class CheckLeo:
             print(f"Undefined: {z}")
         if attr_values_seen:
             print(f"attr.values: {', '.join(sorted(list(attr_values_seen)))}")
+        for z in sorted(list(unfinished_chains)):
+            print(f"Unfinished chains: {z}")
+
+    #@+node:ekr.20251130081419.1: *3* CheckLeo.run
+    def run(self) -> None:
+        global leoC, leoG, leoP
+        t1 = time.process_time()
+        self.adjust_sys_path()
+        c, g, p = self.create_live_objects()  # Takes about 0.9 sec.
+        leoC, leoG, leoP = c, g, p
+        self.files = self.compute_files()
+        g.cls()
+        g.cls()  # Appears to be necessary.
+        t2 = time.process_time()
+        for path in self.files:
+            self.check(path)
+        t3 = time.process_time()
+        self.report(t1, t2, t3)
     #@-others
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
@@ -129,7 +140,7 @@ class Visitor(ast.NodeVisitor):
     #@+others
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
     def visit_Attribute(self, node) -> None:
-        global attrs_seen, attr_values_seen, chains_seen, stats_attrs
+        global attrs_seen, attr_values_seen, chains_seen, stats_attrs, unfinished_chains
         stats_attrs += 1
         ignore = (  # Ignore for now:
             # Injected by leoserver.py
@@ -164,9 +175,13 @@ class Visitor(ast.NodeVisitor):
         base, attr = parts[i], parts[i + 1]
         obj = d.get(base)
         while obj:
-            if obj.__class__.__name__ in ('function', 'method', 'str'):  # Hack, especially str.
-                return
+            if obj.__class__.__name__ in ('function', 'method'):
+                return  # Hack.
+            if isinstance(obj, str):
+                unfinished_chains.add(s)
+                return  # Hack.
             if attr[0].isupper() or any(z in attr for z in '()[]{}'):
+                unfinished_chains.add(s)
                 return  # Hack.
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
