@@ -119,9 +119,14 @@ class CheckLeo:
             for z in sorted(list(errors)):
                 print(f"  {z}")
         if unknown_bases:
-            print('Unknown bases...')
-            for z in sorted(list(unknown_bases)):
-                print(f"  {z}")
+            if verbose:
+                print('Unknown bases...')
+                for z in sorted(list(unknown_bases)):
+                    print(f"  {z}")
+            else:
+                n = len(list(unknown_bases))
+                print(f"{n} unknown base{g.plural(n)}")
+
         if undefined_chains:
             print('Undefined chains...')
             for z in sorted(list(undefined_chains)):
@@ -235,13 +240,6 @@ class Visitor(ast.NodeVisitor):
             try:
                 attr = parts[i + 1]
             except IndexError:
-                return
-            if obj.__class__.__name__ in ('function', 'method'):
-                # We can't resolve the type of the function.
-                errors.add(
-                    f"Unknown function: {obj.__name__} "
-                    f"at {'.'.join(parts[:i+1])} in {'.'.join(parts)}")
-                unfinished_chains.add('.'.join(parts))
                 return
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
