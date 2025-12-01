@@ -2086,14 +2086,14 @@ class Undoer:
         body = p.b
         body = g.checkUnicode(body)
         body_lines = body.split('\n')
-        s = []
+        aList = []
         if leading > 0:
-            s.extend(body_lines[:leading])
+            aList.extend(body_lines[:leading])
         if oldMidLines:
-            s.extend(oldMidLines)
+            aList.extend(oldMidLines)
         if trailing > 0:
-            s.extend(body_lines[-trailing:])
-        s = '\n'.join(s)
+            aList.extend(body_lines[-trailing:])
+        s = '\n'.join(aList)
         # Remove trailing newlines in s.
         while s and s[-1] == '\n':
             s = s[:-1]
