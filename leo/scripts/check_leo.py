@@ -35,6 +35,7 @@ verbose = True
 chains_seen: set[str] = set()
 errors: set[str] = set()
 module_name: str = None
+report_times = False
 stats_attrs = 0
 stats_contexts = 0
 unknown_bases: set[str] = set()
@@ -280,7 +281,7 @@ class CheckLeo:
             f"contexts: {stats_contexts} "
             f"attrs: {stats_attrs} "
             f"in {t3-t1:.2f} sec.")
-        if verbose:
+        if report_times:
             print(
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
@@ -427,10 +428,14 @@ class Visitor(ast.NodeVisitor):
     #@-<< define Attribute ignore_dict >>
 
     def visit_Attribute(self, node: ast.AST) -> None:
+        """
+        Check the chain of attributes starting with this outer Attribute node.
+        Only check attribute chains whose base (first) attr is known.
+        """
         global stats_attrs
         stats_attrs += 1
         parts = self.split_Attribute(node)
-        obj = self.get_obj(parts)  # Reports problems.
+        obj = self.get_obj(parts)
         i = 0
         while obj:
             try:
@@ -445,6 +450,10 @@ class Visitor(ast.NodeVisitor):
             # Move to the next obj.
             obj = getattr(obj, attr, None)
             i += 1
+
+
+        # Do *not* call self.generic_visit here.
+        # This visitor handles all its children.
     #@+node:ekr.20251201064630.1: *4* visitor.get_obj
     required_prefixes = (
         'c', 'c1', 'c2',
