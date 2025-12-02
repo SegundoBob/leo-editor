@@ -18,6 +18,7 @@ import sys
 import time
 from typing import Any
 #@-<< check_leo: imports >>
+print(os.path.basename(__file__))
 #@+<< check_leo: globals >>
 #@+node:ekr.20251130105440.1: ** << check_leo: globals >>
 # Global objects.
@@ -288,8 +289,11 @@ class CheckLeo:
             print('Unfinished chains...')
             for z in sorted(list(unfinished_chains)):
                 print(f"  {z}")
-        if not any(z for z in (errors, unknown_bases, undefined_chains, unfinished_chains, verbose)):
-            print('Done')
+        if 0:
+            if not any(z for z in (
+                errors, unknown_bases, undefined_chains, unfinished_chains, verbose
+            )):
+                print('Done')
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
         global leoC, leoG, leoP, leoV
@@ -298,10 +302,6 @@ class CheckLeo:
         c, g, p, v = self.create_live_objects()  # Takes about 0.9 sec.
         leoC, leoG, leoP, leoV = c, g, p, v
         self.files = self.compute_files()
-        g.cls()
-        g.cls()  # Appears to be necessary.
-
-        # Traces visible after here...
         if 0:
             print('Live objects...')
             for obj in (g.app, g.app.gui, c.frame, c.frame.tree):

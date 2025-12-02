@@ -9,6 +9,7 @@ full_test_leo.py: Run all these tests scripts in this order:
 - pyflakes_leo.py
 - mypy_leo.py.
 - ruff_leo.py.
+- check_leo.py.
 - pylint_leo.py.
 
 Devs: *please* run this script before pushing!
@@ -22,18 +23,6 @@ EKR's fft.cmd runs all tests:
     cd {path-to-leo-editor}
     call python -m leo.scripts.full_test_leo
     echo fft.cmd: Done!
-
-EKR's ft.cmd runs all tests except pylint:
-    @echo off
-    cls
-    cd {path-to-leo-editor}
-    echo ft.cmd
-    call python -m leo.scripts.beautify_leo
-    call python -m leo.scripts.run_test_leo
-    call python -m leo.scripts.flake8_leo
-    call python -m leo.scripts.mypy_leo
-    call python -m leo.scripts.ruff_leo
-    echo Done!
 """
 
 import os
@@ -57,6 +46,7 @@ for command in [
     fr'{python} -m leo.scripts.run_test_leo',
     fr'{python} -m leo.scripts.mypy_leo',
     fr'{python} -m leo.scripts.ruff_leo',
+    fr'{python} -m leo.scripts.check_leo',
     fr'{python} -m leo.scripts.pylint_leo',
 ]:
     subprocess.Popen(command, shell=True).communicate()
