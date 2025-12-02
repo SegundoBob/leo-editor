@@ -321,12 +321,10 @@ class CheckLeo:
         c, g, p, v = self.create_live_objects()  # Takes about 0.9 sec.
         leoC, leoG, leoP, leoV = c, g, p, v
         self.files = self.compute_files()
-        if 0:
-            print('Live objects...')
-            for obj in (g.app, g.app.gui, c.frame, c.frame.tree):
-                print(obj)
 
         # Init the known objects once, *after* creating the live objects.
+        #@+<< run: create known_objects >>
+        #@+node:ekr.20251202174626.1: *4* << run: create known_objects >>
         self.known_objects = {
             # Python types
             'aList': [], 'aList1': [], 'aList2': [],
@@ -339,7 +337,14 @@ class CheckLeo:
             'p': leoP, 'p1': leoP, 'p2': leoP,
             'v': leoV,
         }
-        # g.printObj(self.known_objects, tag='CheckLeo.known_objects')
+        if 0:
+            g.printObj(self.known_objects, tag='run:known_objects')
+        if 0:
+            print('Live objects...')
+            for obj in (g.app, g.app.gui, c.frame, c.frame.tree):
+                print(obj.__class__.__name__)
+        #@-<< run: create known_objects >>
+
         t2 = time.process_time()
         for path in self.files:
             module_name = self.compute_module_name(path)
@@ -451,7 +456,6 @@ class Visitor(ast.NodeVisitor):
             obj = getattr(obj, attr, None)
             i += 1
 
-
         # Do *not* call self.generic_visit here.
         # This visitor handles all its children.
     #@+node:ekr.20251201064630.1: *4* visitor.get_obj
@@ -459,6 +463,8 @@ class Visitor(ast.NodeVisitor):
         'c', 'c1', 'c2',
         'g',
         'p', 'p1', 'p2',
+        # These produce unknown bases.
+        # 'w', 'widget', 'wrapper',
     )
 
     def get_obj(self, parts: list[str]) -> Any:
