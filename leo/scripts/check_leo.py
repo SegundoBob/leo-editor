@@ -18,8 +18,10 @@ import sys
 import time
 from typing import Any
 #@-<< check_leo: imports >>
+
 # Not needed: we always print a summary line.
 # print(os.path.basename(__file__))
+
 #@+<< check_leo: globals >>
 #@+node:ekr.20251130105440.1: ** << check_leo: globals >>
 # Global objects.
@@ -32,6 +34,7 @@ verbose = False
 # Global stats.
 chains_seen: set[str] = set()
 errors: set[str] = set()
+module_name: str = None
 stats_attrs = 0
 stats_contexts = 0
 unknown_bases: set[str] = set()
@@ -225,6 +228,17 @@ class CheckLeo:
         for z in files:
             assert os.path.exists(z), repr(z)
         return files
+    #@+node:ekr.20251202072018.1: *3* CheckLeo.compute_module_name
+    def compute_module_name(self, file_name) -> str:
+
+        for base in ('commands', 'core', 'plugins'):
+            i = file_name.find(base)
+            if i > -1:
+                s = file_name[i:]
+                break
+        else:
+            s = file_name  # Should not happen.
+        return s.replace('/', '.').replace('\\', '.')
     #@+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
     def create_live_objects(self) -> tuple[Any, Any, Any, Any]:
 
@@ -300,6 +314,7 @@ class CheckLeo:
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
         global leoC, leoG, leoP, leoV
+        global module_name
         t1 = time.process_time()
         self.adjust_sys_path()
         c, g, p, v = self.create_live_objects()  # Takes about 0.9 sec.
@@ -311,12 +326,15 @@ class CheckLeo:
                 print(obj)
         t2 = time.process_time()
         for path in self.files:
+            module_name = self.compute_module_name(path)
             self.check(path)
         t3 = time.process_time()
         self.report(t1, t2, t3)
     #@-others
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
+
+    context_stack: list[str] = []
 
     #@+others
     #@+node:ekr.20251201064630.1: *3* visitor.get_obj
@@ -393,7 +411,7 @@ class Visitor(ast.NodeVisitor):
         _helper(node, result)
         return result
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
-    def visit_Attribute(self, node) -> None:
+    def visit_Attribute(self, node: ast.AST) -> None:
         global stats_attrs
         stats_attrs += 1
         #@+<< define ignore dict >>
@@ -470,6 +488,33 @@ class Visitor(ast.NodeVisitor):
             # Move to the next obj.
             obj = getattr(obj, attr, None)
             i += 1
+    #@+node:ekr.20251202071202.1: *3* visitor: context visitors
+    def visit_ClassDef(self, node: ast.AST) -> None:
+        global stats_contexts
+        stats_contexts += 1
+        try:
+            self.context_stack.append(f"{self.context_stack[-1]}:{node.name}")
+            self.generic_visit(node)
+        finally:
+            self.context_stack.pop()
+
+    def visit_FunctionDef(self, node: ast.AST) -> None:
+        global stats_contexts
+        stats_contexts += 1
+        try:
+            self.context_stack.append(f"{self.context_stack[-1]}:{node.name}")
+            self.generic_visit(node)
+        finally:
+            self.context_stack.pop()
+
+    def visit_Module(self, node: ast.AST) -> None:
+        global stats_contexts
+        stats_contexts += 1
+        try:
+            self.context_stack.append(module_name)
+            self.generic_visit(node)
+        finally:
+            self.context_stack.pop()
     #@-others
 #@-others
 CheckLeo().run()
