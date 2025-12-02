@@ -340,7 +340,7 @@ class Visitor(ast.NodeVisitor):
     #@+node:ekr.20251202084740.1: *3* visitor.context_name
     def context_name(self) -> str:
         """Return the context's name"""
-        node = context_stack[-1]
+        node = self.context_stack[-1]
         return (
             node.name if isinstance(node, ((ast.ClassDef, ast.FunctionDef)))
             else module_name
