@@ -10,10 +10,10 @@ This script runs about as fast as pyflakes_leo.py.
 """
 #@+<< check_leo: imports >>
 #@+node:ekr.20251129080328.1: ** << check_leo: imports >>
+# Required directly by script.
 import ast
 import glob
 import os
-import re
 import sys
 import time
 from typing import Any
@@ -29,7 +29,7 @@ leoC, leoG, leoP, leoV = None, None, None, None
 
 # Global switches.
 all = True
-verbose = False
+verbose = True
 
 # Global stats.
 chains_seen: set[str] = set()
@@ -270,7 +270,7 @@ class CheckLeo:
         g = leoG
         contents = g.readFile(path)
         tree = ast.parse(contents, filename=path)
-        visitor = Visitor()
+        visitor = Visitor(self.known_objects)
         visitor.visit(tree)
     #@+node:ekr.20251201031243.1: *3* CheckLeo.report
     def report(self, t1: float, t2: float, t3: float) -> None:
@@ -291,7 +291,7 @@ class CheckLeo:
                 print(f"  {z}")
         if unknown_bases:
             if verbose:
-                print('Unknown bases...')
+                print(f"{len(list(unknown_bases))} Unknown bases...")
                 for z in sorted(list(unknown_bases)):
                     print(f"  {z}")
             else:
@@ -324,6 +324,21 @@ class CheckLeo:
             print('Live objects...')
             for obj in (g.app, g.app.gui, c.frame, c.frame.tree):
                 print(obj)
+
+        # Init the known objects once, *after* creating the live objects.
+        self.known_objects = {
+            # Python types
+            'aList': [], 'aList1': [], 'aList2': [],
+            's': ' ', 's1': ' ', 's2': ' ',
+
+            # Leo objects.
+            'c': leoC, 'c1': leoC, 'c2': leoC,
+            'd': {},  # Dummy dict.
+            'g': leoG,
+            'p': leoP, 'p1': leoP, 'p2': leoP,
+            'v': leoV,
+        }
+        # g.printObj(self.known_objects, tag='CheckLeo.known_objects')
         t2 = time.process_time()
         for path in self.files:
             module_name = self.compute_module_name(path)
@@ -335,6 +350,9 @@ class CheckLeo:
 class Visitor(ast.NodeVisitor):
 
     context_stack: list[ast.AST] = []
+
+    def __init__(self, known_objects: dict[str, Any]) -> None:
+        self.known_objects = known_objects
 
     #@+others
     #@+node:ekr.20251202084740.1: *3* visitor.context_name
@@ -349,7 +367,7 @@ class Visitor(ast.NodeVisitor):
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute & helpers
     #@+<< define Attribute ignore_dict >>
     #@+node:ekr.20251201051957.1: *4* << define Attribute ignore_dict >>
-    ignore = (
+    ignore_list = (
         # Obsolete ast Nodes in leoAst.py.
         'ast.Num',
         'ast.Str',
@@ -358,6 +376,9 @@ class Visitor(ast.NodeVisitor):
         'g.in_leo_server',
         'g.leoServer',
         # Injected by plugins.
+        'c._bookmarks',
+        'c.cleo',
+        'c.quickMove',
         'c.pluginsMenu',
         'c.screenCastController',
         'c.theScriptingController',
@@ -402,7 +423,7 @@ class Visitor(ast.NodeVisitor):
         'c.config.exists',
         's.decode',
     )
-    ignore_dict = {z: 1 for z in ignore}
+    ignore_dict = {z: 1 for z in ignore_list}
     #@-<< define Attribute ignore_dict >>
 
     def visit_Attribute(self, node: ast.AST) -> None:
@@ -425,56 +446,31 @@ class Visitor(ast.NodeVisitor):
             obj = getattr(obj, attr, None)
             i += 1
     #@+node:ekr.20251201064630.1: *4* visitor.get_obj
-    def get_obj(self, parts: list[str]) -> Any:
+    required_prefixes = (
+        'c', 'c1', 'c2',
+        'g',
+        'p', 'p1', 'p2',
+    )
 
-        d = {
-            'c': leoC, 'c1': leoC, 'c2': leoC,
-            'd': {},  # Dummy dict.
-            'g': leoG,
-            'p': leoP, 'p1': leoP, 'p2': leoP,
-            's': ' ', 's1': ' ', 's2': ' ',  # Dummy strings.
-            'v': leoV,
-            # Library modules:
-            'ast': ast,
-            'glob': glob,
-            'os': os,
-            're': re,
-            'sys': sys
-        }
-        ignore_prefixes = (
-            'c._bookmarks',
-            'c.cleo',
-            # 'c.opml',
-            'c.quickMove',
-        )
+    def get_obj(self, parts: list[str]) -> Any:
+        """Return the live object corresonding to the base of the chain."""
         part0, part1 = parts[0], parts[1]
 
-        # Ignore some prefixes entirely.
-        if f"{part0}.{part1}" in ignore_prefixes:  # Not worth checking.
-            return None
-
-        if 1:  # Only test what's in the table.
-            return d.get(part0)  # Get the base, the first obj.
-
-        # More ambitious...
+        # Return dummy objects.
         if part0.startswith(('"', "'", 's[')):
             return ' '  # A dummy string.
+        if part0.startswith('['):
+            return []
         if part0.startswith('{'):
             return {}  # A dummy dict
-        obj = d.get(part0)  # Get the base, the first obj.
-        if obj:
-            return obj
-        if part0[0].isupper():
-            i = part0.find('(')
-            unknown_bases.add(part0 if i == -1 else part0[:i])
-        elif part0 in (
-            'app', 'at', 'k', 'w', 'self', 'super()', 'x', 'xdb', 'z',
-            'wrapper', 'widget', 'window', 'word',
-        ):  # For later.
-            pass
-        elif 0:  # Very verbose.
+
+        # Is the base a known object?
+        obj = self.known_objects.get(part0)
+        if obj is not None:  # Careful: allow empty strings, lists, dicts.
+            return obj  # Success.
+        if part0 in self.required_prefixes:
             unknown_bases.add(f"{part0} in {'.'.join(parts)}")
-        return None
+        return None  # Failure.
     #@+node:ekr.20251201032057.1: *4* visitor.split_Attribute
     def split_Attribute(self, node: ast.AST) -> list[str]:
         """
