@@ -234,7 +234,7 @@ class CheckLeo:
         for base in ('commands', 'core', 'plugins'):
             i = file_name.find(base)
             if i > -1:
-                s = file_name[i:]
+                s = file_name[i:-3]
                 break
         else:
             s = file_name  # Should not happen.
@@ -334,72 +334,81 @@ class CheckLeo:
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
 
-    context_stack: list[str] = []
+    context_stack: list[ast.AST] = []
 
     #@+others
+    #@+node:ekr.20251202084740.1: *3* visitor.context_name
+    def context_name(self) -> str:
+        """Return the context's name"""
+        node = context_stack[-1]
+        return (
+            node.name if isinstance(node, ((ast.ClassDef, ast.FunctionDef)))
+            else module_name
+        )
+
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute & helpers
+    #@+<< define Attribute ignore_dict >>
+    #@+node:ekr.20251201051957.1: *4* << define Attribute ignore_dict >>
+    ignore = (
+        # Obsolete ast Nodes in leoAst.py.
+        'ast.Num',
+        'ast.Str',
+        # Injected by leoserver.py.
+        'c.patched_quicksearch_controller',
+        'g.in_leo_server',
+        'g.leoServer',
+        # Injected by plugins.
+        'c.pluginsMenu',
+        'c.screenCastController',
+        'c.theScriptingController',
+        'c.theTagController',
+        'c.vr',  # viewrendered.py
+        'g._bookmarks_target',
+        'g._bookmarks_target_v',
+        'g._quickmove_target_list',
+        'g.app.xdb',  # leoDebugger.py
+        'p.update_asciidoc',
+        # Injected from Qt plugins.
+        'c._style_deltas',
+        'c.active_stylesheet',
+        'c.frame.detached_body_info',
+        'c.frame.nav',
+        'c.ftm',
+        'c.zoom_delta',
+        'g.app.openWithTable',
+        'g.insqh',
+        # Not always present:
+        'g.app.config.context_menus',
+        'g.app.drag_source',
+        'g.app.globalFindTabManager',
+        'g.app.gui.log',
+        'g.app.gui.set_minibuffer_label',
+        'g.app.gui.show_find_success',
+        'g.app.openWithTable',
+        # p/v properties.
+        'p.script',
+        'p.v.h',
+        'p.v.gnx',
+        'p.v.script',
+        'v.h',
+        'v.gnx',
+        # p/v injected attributes.
+        'p.v.tempAttributes',
+        # Injected into v...
+        'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
+        # Exists only io.StringIO objects.
+        'sys.stdout.getvalue',
+        # Minor mysteries.
+        'c.config.exists',
+        's.decode',
+    )
+    ignore_dict = {z: 1 for z in ignore}
+    #@-<< define Attribute ignore_dict >>
+
     def visit_Attribute(self, node: ast.AST) -> None:
         global stats_attrs
         stats_attrs += 1
-        #@+<< define ignore dict >>
-        #@+node:ekr.20251201051957.1: *4* << define ignore dict >>
-        ignore = (
-            # Obsolete ast Nodes in leoAst.py.
-            'ast.Num',
-            'ast.Str',
-            # Injected by leoserver.py.
-            'c.patched_quicksearch_controller',
-            'g.in_leo_server',
-            'g.leoServer',
-            # Injected by plugins.
-            'c.pluginsMenu',
-            'c.screenCastController',
-            'c.theScriptingController',
-            'c.theTagController',
-            'c.vr',  # viewrendered.py
-            'g._bookmarks_target',
-            'g._bookmarks_target_v',
-            'g._quickmove_target_list',
-            'g.app.xdb',  # leoDebugger.py
-            'p.update_asciidoc',
-            # Injected from Qt plugins.
-            'c._style_deltas',
-            'c.active_stylesheet',
-            'c.frame.detached_body_info',
-            'c.frame.nav',
-            'c.ftm',
-            'c.zoom_delta',
-            'g.app.openWithTable',
-            'g.insqh',
-            # Not always present:
-            'g.app.config.context_menus',
-            'g.app.drag_source',
-            'g.app.globalFindTabManager',
-            'g.app.gui.log',
-            'g.app.gui.set_minibuffer_label',
-            'g.app.gui.show_find_success',
-            'g.app.openWithTable',
-            # p/v properties.
-            'p.script',
-            'p.v.h',
-            'p.v.gnx',
-            'p.v.script',
-            'v.h',
-            'v.gnx',
-            # p/v injected attributes.
-            'p.v.tempAttributes',
-            # Injected into v...
-            'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
-            # Exists only io.StringIO objects.
-            'sys.stdout.getvalue',
-            # Minor mysteries.
-            'c.config.exists',
-            's.decode',
-        )
-        ignore_dict = {z: 1 for z in ignore}
-        #@-<< define ignore dict >>
         parts = self.split_Attribute(node)
-        assert len(parts) > 1, repr(parts)
         obj = self.get_obj(parts)  # Reports problems.
         i = 0
         while obj:
@@ -409,7 +418,7 @@ class Visitor(ast.NodeVisitor):
                 return
             if not hasattr(obj, attr):
                 head = '.'.join(parts[: i + 1])
-                if f"{head}.{attr}" not in ignore_dict:
+                if f"{head}.{attr}" not in self.ignore_dict:
                     undefined_chains.add('.'.join(parts))
                 return
             # Move to the next obj.
@@ -488,31 +497,30 @@ class Visitor(ast.NodeVisitor):
 
         _helper(node, result)
         return result
-    #@+node:ekr.20251202073718.1: *3* visitor: context visitors
-    #@+node:ekr.20251202073629.1: *4* visitor.visit_ClassDef
+    #@+node:ekr.20251202073629.1: *3* visitor.visit_ClassDef
     def visit_ClassDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
         try:
-            self.context_stack.append(f"{self.context_stack[-1]}:{node.name}")
+            self.context_stack.append(node)
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@+node:ekr.20251202073629.2: *4* visitor.visit_FunctionDef
+    #@+node:ekr.20251202073629.2: *3* visitor.visit_FunctionDef
     def visit_FunctionDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
         try:
-            self.context_stack.append(f"{self.context_stack[-1]}:{node.name}")
+            self.context_stack.append(node)
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@+node:ekr.20251202071202.1: *4* visitor.visit_Module
+    #@+node:ekr.20251202071202.1: *3* visitor.visit_Module
     def visit_Module(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
         try:
-            self.context_stack.append(module_name)
+            self.context_stack.append(node)
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
