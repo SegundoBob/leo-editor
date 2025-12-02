@@ -337,80 +337,7 @@ class Visitor(ast.NodeVisitor):
     context_stack: list[str] = []
 
     #@+others
-    #@+node:ekr.20251201064630.1: *3* visitor.get_obj
-    def get_obj(self, parts: list[str]) -> Any:
-
-        d = {
-            'c': leoC, 'c1': leoC, 'c2': leoC,
-            'd': {},  # Dummy dict.
-            'g': leoG,
-            'p': leoP, 'p1': leoP, 'p2': leoP,
-            's': ' ', 's1': ' ', 's2': ' ',  # Dummy strings.
-            'v': leoV,
-            # Library modules:
-            'ast': ast,
-            'glob': glob,
-            'os': os,
-            're': re,
-            'sys': sys
-        }
-        ignore_prefixes = (
-            'c._bookmarks',
-            'c.cleo',
-            # 'c.opml',
-            'c.quickMove',
-        )
-        part0, part1 = parts[0], parts[1]
-
-        # Ignore some prefixes entirely.
-        if f"{part0}.{part1}" in ignore_prefixes:  # Not worth checking.
-            return None
-
-        if 1:  # Only test what's in the table.
-            return d.get(part0)  # Get the base, the first obj.
-
-        # More ambitious...
-        if part0.startswith(('"', "'", 's[')):
-            return ' '  # A dummy string.
-        if part0.startswith('{'):
-            return {}  # A dummy dict
-        obj = d.get(part0)  # Get the base, the first obj.
-        if obj:
-            return obj
-        if part0[0].isupper():
-            i = part0.find('(')
-            unknown_bases.add(part0 if i == -1 else part0[:i])
-        elif part0 in (
-            'app', 'at', 'k', 'w', 'self', 'super()', 'x', 'xdb', 'z',
-            'wrapper', 'widget', 'window', 'word',
-        ):  # For later.
-            pass
-        elif 0:  # Very verbose.
-            unknown_bases.add(f"{part0} in {'.'.join(parts)}")
-        return None
-    #@+node:ekr.20251201032057.1: *3* visitor.split_Attribute
-    def split_Attribute(self, node: ast.AST) -> list[str]:
-        """
-        Return the components of an Attribute.
-
-        The would be wrong: ast.unparse(node).split('.')
-        """
-
-        result: list[str] = []
-
-        def _helper(node: ast.AST, result: list[str]) -> None:
-            if isinstance(node, ast.Attribute):
-                _helper(node.value, result)
-                tail = node.attr
-            elif isinstance(node, ast.Name):
-                tail = node.id
-            else:
-                tail = ast.unparse(node)
-            result.append(tail)
-
-        _helper(node, result)
-        return result
-    #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute
+    #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute & helpers
     def visit_Attribute(self, node: ast.AST) -> None:
         global stats_attrs
         stats_attrs += 1
@@ -488,7 +415,81 @@ class Visitor(ast.NodeVisitor):
             # Move to the next obj.
             obj = getattr(obj, attr, None)
             i += 1
-    #@+node:ekr.20251202071202.1: *3* visitor: context visitors
+    #@+node:ekr.20251201064630.1: *4* visitor.get_obj
+    def get_obj(self, parts: list[str]) -> Any:
+
+        d = {
+            'c': leoC, 'c1': leoC, 'c2': leoC,
+            'd': {},  # Dummy dict.
+            'g': leoG,
+            'p': leoP, 'p1': leoP, 'p2': leoP,
+            's': ' ', 's1': ' ', 's2': ' ',  # Dummy strings.
+            'v': leoV,
+            # Library modules:
+            'ast': ast,
+            'glob': glob,
+            'os': os,
+            're': re,
+            'sys': sys
+        }
+        ignore_prefixes = (
+            'c._bookmarks',
+            'c.cleo',
+            # 'c.opml',
+            'c.quickMove',
+        )
+        part0, part1 = parts[0], parts[1]
+
+        # Ignore some prefixes entirely.
+        if f"{part0}.{part1}" in ignore_prefixes:  # Not worth checking.
+            return None
+
+        if 1:  # Only test what's in the table.
+            return d.get(part0)  # Get the base, the first obj.
+
+        # More ambitious...
+        if part0.startswith(('"', "'", 's[')):
+            return ' '  # A dummy string.
+        if part0.startswith('{'):
+            return {}  # A dummy dict
+        obj = d.get(part0)  # Get the base, the first obj.
+        if obj:
+            return obj
+        if part0[0].isupper():
+            i = part0.find('(')
+            unknown_bases.add(part0 if i == -1 else part0[:i])
+        elif part0 in (
+            'app', 'at', 'k', 'w', 'self', 'super()', 'x', 'xdb', 'z',
+            'wrapper', 'widget', 'window', 'word',
+        ):  # For later.
+            pass
+        elif 0:  # Very verbose.
+            unknown_bases.add(f"{part0} in {'.'.join(parts)}")
+        return None
+    #@+node:ekr.20251201032057.1: *4* visitor.split_Attribute
+    def split_Attribute(self, node: ast.AST) -> list[str]:
+        """
+        Return the components of an Attribute.
+
+        The would be wrong: ast.unparse(node).split('.')
+        """
+
+        result: list[str] = []
+
+        def _helper(node: ast.AST, result: list[str]) -> None:
+            if isinstance(node, ast.Attribute):
+                _helper(node.value, result)
+                tail = node.attr
+            elif isinstance(node, ast.Name):
+                tail = node.id
+            else:
+                tail = ast.unparse(node)
+            result.append(tail)
+
+        _helper(node, result)
+        return result
+    #@+node:ekr.20251202073718.1: *3* visitor: context visitors
+    #@+node:ekr.20251202073629.1: *4* visitor.visit_ClassDef
     def visit_ClassDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -497,7 +498,7 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-
+    #@+node:ekr.20251202073629.2: *4* visitor.visit_FunctionDef
     def visit_FunctionDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -506,7 +507,7 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-
+    #@+node:ekr.20251202071202.1: *4* visitor.visit_Module
     def visit_Module(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
