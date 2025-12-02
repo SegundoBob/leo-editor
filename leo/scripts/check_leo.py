@@ -18,7 +18,8 @@ import sys
 import time
 from typing import Any
 #@-<< check_leo: imports >>
-print(os.path.basename(__file__))
+# Not needed: we always print a summary line.
+# print(os.path.basename(__file__))
 #@+<< check_leo: globals >>
 #@+node:ekr.20251130105440.1: ** << check_leo: globals >>
 # Global objects.
@@ -32,6 +33,7 @@ verbose = False
 chains_seen: set[str] = set()
 errors: set[str] = set()
 stats_attrs = 0
+stats_contexts = 0
 unknown_bases: set[str] = set()
 undefined_chains: set[str] = set()
 unfinished_chains: set[str] = set()
@@ -260,8 +262,9 @@ class CheckLeo:
     def report(self, t1: float, t2: float, t3: float) -> None:
         g = leoG
         print(
-            f"check_leo.py: attrs: {stats_attrs}, "
-            f"{len(self.files)} file{g.plural(self.files)} "
+            f"check_leo.py: files: {len(self.files)} "
+            f"contexts: {stats_contexts} "
+            f"attrs: {stats_attrs} "
             f"in {t3-t1:.2f} sec.")
         if verbose:
             print(
