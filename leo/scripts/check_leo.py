@@ -259,10 +259,12 @@ class CheckLeo:
 
             # Leo objects.
             'c': leoC, 'c1': leoC, 'c2': leoC,
-            'd': {},  # Dummy dict.
             'g': leoG,
             'p': leoP, 'p1': leoP, 'p2': leoP,
             'v': leoV,
+
+            # 'd' can stand for dialog, dict, etc.
+            # 'd': {},
         }
         if 0:
             leoG.printObj(d, tag='run:known_objects')
