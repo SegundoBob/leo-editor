@@ -28,22 +28,26 @@ from typing import Any
 leoC, leoG, leoP, leoV = None, None, None, None
 
 # Global switches.
-all = True
-verbose = True
+all_files_flag = True
 
 # Global stats.
+all_attrs: set[str] = set()
 chains_seen: set[str] = set()
 errors: set[str] = set()
-full_check = True  # True: report *all* unknown attrs.
+full_check = False  # True: report *all* unknown attrs.
 module_name: str = None
+report_all_attrs = False
+report_all_undefined_chains = True
+report_all_unfinished_chains = True
+report_all_unknown_bases = True
 report_times = False
-show_context_flag = True
-show_first_context_flag = True  # True: report only the first instance of an unknown attr.
+show_context_flag = False
+show_all_context_flag = False
 stats_attrs = 0
 stats_contexts = 0
 unknown_bases: set[str] = set()
 undefined_chains: set[str] = set()
-unfinished_chains: set[str] = set()
+# unfinished_chains: set[str] = set()
 
 # Global directories.
 leo_editor_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -74,7 +78,7 @@ class CheckLeo:
     #@+node:ekr.20251129161354.1: *3* CheckLeo.compute_files
     def compute_files(self) -> list[str]:
         files: list[str]
-        if all:
+        if all_files_flag:
             core_files = glob.glob(f"{core_dir}{os.sep}*.py")
             commands_files = glob.glob(f"{commands_dir}{os.sep}*.py")
             plugins_names = (
@@ -311,30 +315,40 @@ class CheckLeo:
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec.")
+        if report_all_attrs:
+            print('All attrs...')
+            for z in sorted(list(all_attrs)):
+                print(f"  {z}")
+            print('')
         if errors:
             print('Errors...')
             for z in sorted(list(errors)):
                 print(f"  {z}")
+            print('')
         if unknown_bases:
-            if verbose:
+            if report_all_unknown_bases:
                 print(f"{len(list(unknown_bases))} Unknown bases...")
                 for z in sorted(list(unknown_bases)):
                     print(f"  {z}")
+                print('')
             else:
                 n = len(list(unknown_bases))
                 print(f"{n} unknown base{leoG.plural(n)}")
         if undefined_chains:
-            print('Undefined chains...')
-            for z in sorted(list(undefined_chains)):
-                print(f"  {z}")
-        if unfinished_chains:
-            print('')
-            print('Unfinished chains...')
-            for z in sorted(list(unfinished_chains)):
-                print(f"  {z}")
+            print(f"Undefined chains: {len(list(undefined_chains))}")
+            if report_all_undefined_chains:
+                for z in sorted(list(undefined_chains)):
+                    print(f"  {z}")
+                print('')
+        # if unfinished_chains:
+            # print(f"Unfinished chains: {len(list(unfinished_chains))}")
+            # if report_all_unfinished_chains:
+                # for z in sorted(list(unfinished_chains)):
+                    # print(f"  {z}")
+                # print('')
         if 0:
             if not any(z for z in (
-                errors, unknown_bases, undefined_chains, unfinished_chains, verbose
+                all_attrs, errors, unknown_bases, undefined_chains, unfinished_chains
             )):
                 print('Done')
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
@@ -373,20 +387,6 @@ class Visitor(ast.NodeVisitor):
             else module_name
         )
 
-    #@+node:ekr.20251203015013.1: *3* Visitor.show_context
-    def show_context(self, node: ast.AST) -> None:
-        """Print the context of the given node."""
-        context = self.context_stack[-1]
-        if context in self.shown_contexts:
-            return
-        self.shown_contexts.append(context)
-        if module_name not in self.shown_modules:
-            self.shown_modules.append(module_name)
-            print(f"\nmodule {module_name}")
-        if isinstance(context, ast.ClassDef):
-            print(f"class {context.name}")
-        elif isinstance(context, ast.FunctionDef):
-            print(f"\nfunction {context.name}")
     #@+node:ekr.20251129080749.7: *3* Visitor.visit_Attribute & helpers
     def visit_Attribute(self, node: ast.AST) -> None:
         """
@@ -396,6 +396,8 @@ class Visitor(ast.NodeVisitor):
         global stats_attrs
         stats_attrs += 1
         parts = self.split_Attribute(node)
+        chain = '.'.join(parts)
+        all_attrs.add(chain)
         obj = self.get_obj(parts)
         i = 0
         while obj is not None:
@@ -404,16 +406,16 @@ class Visitor(ast.NodeVisitor):
             except IndexError:
                 return
             if not hasattr(obj, attr):
-                chain = '.'.join(parts)
                 head = '.'.join(parts[: i + 1])
                 checked = chain if full_check else f"{head}.{attr}"
+                # Use full_check = True for testing.
                 if not full_check and self.should_ignore(parts):
                     return
-                if show_context_flag:
-                    if not show_first_context_flag or checked not in undefined_chains:
-                        self.show_context(node)
-                        print(checked)
+                if show_all_context_flag or (show_context_flag and checked not in undefined_chains):
+                    self.show_context(node)
+                    print(checked)
                 undefined_chains.add(checked)
+                # undefined_chains.add(chain)
                 return
             # Move to the next obj.
             obj = getattr(obj, attr, None)
@@ -518,6 +520,20 @@ class Visitor(ast.NodeVisitor):
             if '.'.join(prefix) in self.ignore_dict:
                 return True
         return False
+    #@+node:ekr.20251203015013.1: *4* Visitor.show_context
+    def show_context(self, node: ast.AST) -> None:
+        """Print the context of the given node."""
+        context = self.context_stack[-1]
+        if context in self.shown_contexts:
+            return
+        self.shown_contexts.append(context)
+        if module_name not in self.shown_modules:
+            self.shown_modules.append(module_name)
+            print(f"\nmodule {module_name}")
+        if isinstance(context, ast.ClassDef):
+            print(f"class {context.name}")
+        elif isinstance(context, ast.FunctionDef):
+            print(f"\nfunction {context.name}")
     #@+node:ekr.20251201032057.1: *4* Visitor.split_Attribute
     def split_Attribute(self, node: ast.AST) -> list[str]:
         """
