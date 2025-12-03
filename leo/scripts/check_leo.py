@@ -34,10 +34,11 @@ verbose = True
 # Global stats.
 chains_seen: set[str] = set()
 errors: set[str] = set()
-full_check = True  # True: Report the entire chain.
+full_check = True  # True: report *all* unknown attrs.
 module_name: str = None
 report_times = False
 show_context_flag = True
+show_first_context_flag = True  # True: report only the first instance of an unknown attr.
 stats_attrs = 0
 stats_contexts = 0
 unknown_bases: set[str] = set()
@@ -406,12 +407,12 @@ class Visitor(ast.NodeVisitor):
                 chain = '.'.join(parts)
                 head = '.'.join(parts[: i + 1])
                 checked = chain if full_check else f"{head}.{attr}"
-                # if checked in self.ignore_dict:
-                if self.should_ignore(parts):
+                if not full_check and self.should_ignore(parts):
                     return
                 if show_context_flag:
-                    self.show_context(node)
-                    print(checked)
+                    if not show_first_context_flag or checked not in undefined_chains:
+                        self.show_context(node)
+                        print(checked)
                 undefined_chains.add(checked)
                 return
             # Move to the next obj.
