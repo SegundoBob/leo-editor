@@ -574,14 +574,14 @@ class Visitor(ast.NodeVisitor):
         stats_contexts += 1
         try:
             self.context_stack.append(node)
-            try:
-                args = self.get_args(node)
-            except Exception as e:
-                print(e)
-                args = []
+            args = self.get_args(node)
             self.args_stack.append(args)
-            # print(f"{node.name}({', '.join(args)})")
+            if args:
+                print(f"{node.name}({', '.join(args)})")
             self.generic_visit(node)
+        except Exception as e:
+            print(e)
+            args = []
         finally:
             self.context_stack.pop()
             self.args_stack.pop()
