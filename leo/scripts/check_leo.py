@@ -61,6 +61,13 @@ class CheckLeo:
         if leo_editor_dir not in sys.path:
             # Caution: path[0] is reserved for script path (or '' in REPL)
             sys.path.insert(1, leo_editor_dir)
+    #@+node:ekr.20251129080959.1: *3* CheckLeo.check
+    def check(self, path: str) -> None:
+        assert os.path.exists(path), repr(path)
+        contents = leoG.readFile(path)
+        tree = ast.parse(contents, filename=path)
+        visitor = Visitor(self.known_objects)
+        visitor.visit(tree)
     #@+node:ekr.20251129161354.1: *3* CheckLeo.compute_files
     def compute_files(self) -> list[str]:
         files: list[str]
@@ -240,6 +247,28 @@ class CheckLeo:
         else:
             s = file_name  # Should not happen.
         return s.replace('/', '.').replace('\\', '.')
+    #@+node:ekr.20251202174626.1: *3* CheckLeo.create_known_objects
+    def create_known_objects(self) -> dict[str, Any]:
+        assert leoC and leoG and leoP and leoV  # Must be run after create_live_objects.
+        d = {
+            # Python types
+            'aList': [], 'aList1': [], 'aList2': [],
+            's': ' ', 's1': ' ', 's2': ' ',
+
+            # Leo objects.
+            'c': leoC, 'c1': leoC, 'c2': leoC,
+            'd': {},  # Dummy dict.
+            'g': leoG,
+            'p': leoP, 'p1': leoP, 'p2': leoP,
+            'v': leoV,
+        }
+        if 0:
+            leoG.printObj(d, tag='run:known_objects')
+        if 0:
+            print('Live objects...')
+            for obj in (leoG.app, leoG.app.gui, leoC.frame, leoC.frame.tree):
+                print(obj.__class__.__name__)
+        return d
     #@+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
     def create_live_objects(self) -> tuple[Any, Any, Any, Any]:
 
@@ -265,17 +294,8 @@ class CheckLeo:
         g.app.gui = LeoQtGui()
         c.frame = LeoQtFrame(c, 'test-frame', g.app.gui)
         return c, g, p, v
-    #@+node:ekr.20251129080959.1: *3* CheckLeo.check
-    def check(self, path: str) -> None:
-        assert os.path.exists(path), repr(path)
-        g = leoG
-        contents = g.readFile(path)
-        tree = ast.parse(contents, filename=path)
-        visitor = Visitor(self.known_objects)
-        visitor.visit(tree)
     #@+node:ekr.20251201031243.1: *3* CheckLeo.report
     def report(self, t1: float, t2: float, t3: float) -> None:
-        g = leoG
         print(
             f"check_leo.py: files: {len(self.files)} "
             f"contexts: {stats_contexts} "
@@ -297,7 +317,7 @@ class CheckLeo:
                     print(f"  {z}")
             else:
                 n = len(list(unknown_bases))
-                print(f"{n} unknown base{g.plural(n)}")
+                print(f"{n} unknown base{leoG.plural(n)}")
         if undefined_chains:
             print('Undefined chains...')
             for z in sorted(list(undefined_chains)):
@@ -318,33 +338,9 @@ class CheckLeo:
         global module_name
         t1 = time.process_time()
         self.adjust_sys_path()
-        c, g, p, v = self.create_live_objects()  # Takes about 0.9 sec.
-        leoC, leoG, leoP, leoV = c, g, p, v
+        leoC, leoG, leoP, leoV = self.create_live_objects()  # Takes about 0.9 sec.
         self.files = self.compute_files()
-
-        # Init the known objects once, *after* creating the live objects.
-        #@+<< run: create known_objects >>
-        #@+node:ekr.20251202174626.1: *4* << run: create known_objects >>
-        self.known_objects = {
-            # Python types
-            'aList': [], 'aList1': [], 'aList2': [],
-            's': ' ', 's1': ' ', 's2': ' ',
-
-            # Leo objects.
-            'c': leoC, 'c1': leoC, 'c2': leoC,
-            'd': {},  # Dummy dict.
-            'g': leoG,
-            'p': leoP, 'p1': leoP, 'p2': leoP,
-            'v': leoV,
-        }
-        if 0:
-            g.printObj(self.known_objects, tag='run:known_objects')
-        if 0:
-            print('Live objects...')
-            for obj in (g.app, g.app.gui, c.frame, c.frame.tree):
-                print(obj.__class__.__name__)
-        #@-<< run: create known_objects >>
-
+        self.known_objects = self.create_known_objects()
         t2 = time.process_time()
         for path in self.files:
             module_name = self.compute_module_name(path)
