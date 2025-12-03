@@ -37,6 +37,8 @@ errors: set[str] = set()
 full_check = False  # True: report *all* unknown attrs.
 module_name: str = None
 report_all_attrs = False
+report_all_unusual_attrs = False  # True: report only unused attrs containing '{}[]()'
+report_unusual_attrs = True  # True: report only number of unusual attrs.
 report_all_undefined_chains = True
 report_all_unfinished_chains = True
 report_all_unknown_bases = True
@@ -314,8 +316,19 @@ class CheckLeo:
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec.")
-        if report_all_attrs:
-            print('All attrs...')
+        if report_all_unusual_attrs or report_unusual_attrs:
+            unusual_attrs = [
+                z for z in all_attrs
+                if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')
+            ]
+            if report_all_unusual_attrs:
+                print(f"{len(unusual_attrs)} Unusual attrs..")
+                for z in sorted(list(unusual_attrs)):
+                    print(f"  {z}")
+            else:
+                print(f"{len(unusual_attrs)} Unusual attrs")
+        elif report_all_attrs:
+            print(f"{len(list(all_attrs))} attrs...")
             for z in sorted(list(all_attrs)):
                 print(f"  {z}")
             print('')
