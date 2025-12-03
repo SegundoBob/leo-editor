@@ -457,7 +457,7 @@ class Visitor(ast.NodeVisitor):
         parts = self.split_Attribute(node)
         obj = self.get_obj(parts)
         i = 0
-        while obj:
+        while obj is not None:
             try:
                 attr = parts[i + 1]
             except IndexError:
