@@ -47,7 +47,6 @@ stats_attrs = 0
 stats_contexts = 0
 unknown_bases: set[str] = set()
 undefined_chains: set[str] = set()
-# unfinished_chains: set[str] = set()
 
 # Global directories.
 leo_editor_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -340,12 +339,6 @@ class CheckLeo:
                 for z in sorted(list(undefined_chains)):
                     print(f"  {z}")
                 print('')
-        # if unfinished_chains:
-            # print(f"Unfinished chains: {len(list(unfinished_chains))}")
-            # if report_all_unfinished_chains:
-                # for z in sorted(list(unfinished_chains)):
-                    # print(f"  {z}")
-                # print('')
         if 0:
             if not any(z for z in (
                 all_attrs, errors, unknown_bases, undefined_chains, unfinished_chains
