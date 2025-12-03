@@ -34,8 +34,10 @@ verbose = True
 # Global stats.
 chains_seen: set[str] = set()
 errors: set[str] = set()
+full_check = False  # True: Suppressions affect only the first two attrs.
 module_name: str = None
 report_times = False
+show_context_flag = True
 stats_attrs = 0
 stats_contexts = 0
 unknown_bases: set[str] = set()
@@ -352,6 +354,8 @@ class CheckLeo:
 class Visitor(ast.NodeVisitor):
 
     context_stack: list[ast.AST] = []
+    shown_contexts: list[ast.AST] = []  # Cumulative.
+    shown_modules: list[ast.AST] = []  # Cumulative.
 
     def __init__(self, known_objects: dict[str, Any]) -> None:
         self.known_objects = known_objects
@@ -366,6 +370,20 @@ class Visitor(ast.NodeVisitor):
             else module_name
         )
 
+    #@+node:ekr.20251203015013.1: *3* Visitor.show_context
+    def show_context(self, node: ast.AST) -> None:
+        """Print the context of the given node."""
+        context = self.context_stack[-1]
+        if context in self.shown_contexts:
+            return
+        self.shown_contexts.append(context)
+        if module_name not in self.shown_modules:
+            self.shown_modules.append(module_name)
+            print(f"\nmodule {module_name}")
+        if isinstance(context, ast.ClassDef):
+            print(f"class {context.name}")
+        elif isinstance(context, ast.FunctionDef):
+            print(f"\nfunction {context.name}")
     #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute & helpers
     #@+<< define Attribute ignore_dict >>
     #@+node:ekr.20251201051957.1: *4* << define Attribute ignore_dict >>
@@ -417,6 +435,7 @@ class Visitor(ast.NodeVisitor):
         'v.gnx',
         # p/v injected attributes.
         'p.v.tempAttributes',
+        'p.v.tempAttributes.get',
         # Injected into v...
         'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
         # Exists only io.StringIO objects.
@@ -444,9 +463,14 @@ class Visitor(ast.NodeVisitor):
             except IndexError:
                 return
             if not hasattr(obj, attr):
+                chain = '.'.join(parts)
                 head = '.'.join(parts[: i + 1])
-                if f"{head}.{attr}" not in self.ignore_dict:
-                    undefined_chains.add('.'.join(parts))
+                checked = chain if full_check else f"{head}.{attr}"
+                if checked not in self.ignore_dict:
+                    if show_context_flag:
+                        self.show_context(node)
+                        print(checked)
+                    undefined_chains.add(checked)
                 return
             # Move to the next obj.
             obj = getattr(obj, attr, None)
@@ -465,8 +489,7 @@ class Visitor(ast.NodeVisitor):
 
     def get_obj(self, parts: list[str]) -> Any:
         """Return the live object corresonding to the base of the chain."""
-        part0, part1 = parts[0], parts[1]
-
+        part0 = parts[0]
         # Return dummy objects.
         if part0.startswith(('"', "'", 's[')):
             return ' '  # A dummy string.
