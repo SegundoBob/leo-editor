@@ -34,7 +34,7 @@ verbose = True
 # Global stats.
 chains_seen: set[str] = set()
 errors: set[str] = set()
-full_check = False  # True: Suppressions affect only the first two attrs.
+full_check = True  # True: Report the entire chain.
 module_name: str = None
 report_times = False
 show_context_flag = True
@@ -363,7 +363,7 @@ class Visitor(ast.NodeVisitor):
         self.known_objects = known_objects
 
     #@+others
-    #@+node:ekr.20251202084740.1: *3* visitor.context_name
+    #@+node:ekr.20251202084740.1: *3* Visitor.context_name
     def context_name(self) -> str:
         """Return the context's name"""
         node = self.context_stack[-1]
@@ -386,9 +386,70 @@ class Visitor(ast.NodeVisitor):
             print(f"class {context.name}")
         elif isinstance(context, ast.FunctionDef):
             print(f"\nfunction {context.name}")
-    #@+node:ekr.20251129080749.7: *3* visitor.visit_Attribute & helpers
+    #@+node:ekr.20251129080749.7: *3* Visitor.visit_Attribute & helpers
+    def visit_Attribute(self, node: ast.AST) -> None:
+        """
+        Check the chain of attributes starting with this outer Attribute node.
+        Only check attribute chains whose base (first) attr is known.
+        """
+        global stats_attrs
+        stats_attrs += 1
+        parts = self.split_Attribute(node)
+        obj = self.get_obj(parts)
+        i = 0
+        while obj is not None:
+            try:
+                attr = parts[i + 1]
+            except IndexError:
+                return
+            if not hasattr(obj, attr):
+                chain = '.'.join(parts)
+                head = '.'.join(parts[: i + 1])
+                checked = chain if full_check else f"{head}.{attr}"
+                # if checked in self.ignore_dict:
+                if self.should_ignore(parts):
+                    return
+                if show_context_flag:
+                    self.show_context(node)
+                    print(checked)
+                undefined_chains.add(checked)
+                return
+            # Move to the next obj.
+            obj = getattr(obj, attr, None)
+            i += 1
+
+        # Do *not* call self.generic_visit here.
+        # This visitor handles all its children.
+    #@+node:ekr.20251201064630.1: *4* Visitor.get_obj
+    required_prefixes = (
+        'c', 'c1', 'c2',
+        'g',
+        'p', 'p1', 'p2',
+        # These produce unknown bases.
+        # 'w', 'widget', 'wrapper',
+    )
+
+    def get_obj(self, parts: list[str]) -> Any:
+        """Return the live object corresonding to the base of the chain."""
+        part0 = parts[0]
+        # Return dummy objects.
+        if part0.startswith(('"', "'", 's[')):
+            return ' '  # A dummy string.
+        if part0.startswith('['):
+            return []
+        if part0.startswith('{'):
+            return {}  # A dummy dict
+
+        # Is the base a known object?
+        obj = self.known_objects.get(part0)
+        if obj is not None:  # Careful: allow empty strings, lists, dicts.
+            return obj  # Success.
+        if part0 in self.required_prefixes:
+            unknown_bases.add(f"{part0} in {'.'.join(parts)}")
+        return None  # Failure.
+    #@+node:ekr.20251203044755.1: *4* Visitor.should_ignore
     #@+<< define Attribute ignore_dict >>
-    #@+node:ekr.20251201051957.1: *4* << define Attribute ignore_dict >>
+    #@+node:ekr.20251201051957.1: *5* << define Attribute ignore_dict >>
     ignore_list = (
         # Obsolete ast Nodes in leoAst.py.
         'ast.Num',
@@ -449,65 +510,14 @@ class Visitor(ast.NodeVisitor):
     ignore_dict = {z: 1 for z in ignore_list}
     #@-<< define Attribute ignore_dict >>
 
-    def visit_Attribute(self, node: ast.AST) -> None:
-        """
-        Check the chain of attributes starting with this outer Attribute node.
-        Only check attribute chains whose base (first) attr is known.
-        """
-        global stats_attrs
-        stats_attrs += 1
-        parts = self.split_Attribute(node)
-        obj = self.get_obj(parts)
-        i = 0
-        while obj is not None:
-            try:
-                attr = parts[i + 1]
-            except IndexError:
-                return
-            if not hasattr(obj, attr):
-                chain = '.'.join(parts)
-                head = '.'.join(parts[: i + 1])
-                checked = chain if full_check else f"{head}.{attr}"
-                if checked not in self.ignore_dict:
-                    if show_context_flag:
-                        self.show_context(node)
-                        print(checked)
-                    undefined_chains.add(checked)
-                return
-            # Move to the next obj.
-            obj = getattr(obj, attr, None)
-            i += 1
-
-        # Do *not* call self.generic_visit here.
-        # This visitor handles all its children.
-    #@+node:ekr.20251201064630.1: *4* visitor.get_obj
-    required_prefixes = (
-        'c', 'c1', 'c2',
-        'g',
-        'p', 'p1', 'p2',
-        # These produce unknown bases.
-        # 'w', 'widget', 'wrapper',
-    )
-
-    def get_obj(self, parts: list[str]) -> Any:
-        """Return the live object corresonding to the base of the chain."""
-        part0 = parts[0]
-        # Return dummy objects.
-        if part0.startswith(('"', "'", 's[')):
-            return ' '  # A dummy string.
-        if part0.startswith('['):
-            return []
-        if part0.startswith('{'):
-            return {}  # A dummy dict
-
-        # Is the base a known object?
-        obj = self.known_objects.get(part0)
-        if obj is not None:  # Careful: allow empty strings, lists, dicts.
-            return obj  # Success.
-        if part0 in self.required_prefixes:
-            unknown_bases.add(f"{part0} in {'.'.join(parts)}")
-        return None  # Failure.
-    #@+node:ekr.20251201032057.1: *4* visitor.split_Attribute
+    def should_ignore(self, parts: list[str]) -> bool:
+        prefix = []
+        for part in parts:
+            prefix.append(part)
+            if '.'.join(prefix) in self.ignore_dict:
+                return True
+        return False
+    #@+node:ekr.20251201032057.1: *4* Visitor.split_Attribute
     def split_Attribute(self, node: ast.AST) -> list[str]:
         """
         Return the components of an Attribute.
@@ -529,7 +539,7 @@ class Visitor(ast.NodeVisitor):
 
         _helper(node, result)
         return result
-    #@+node:ekr.20251202073629.1: *3* visitor.visit_ClassDef
+    #@+node:ekr.20251202073629.1: *3* Visitor.visit_ClassDef
     def visit_ClassDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -538,7 +548,7 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@+node:ekr.20251202073629.2: *3* visitor.visit_FunctionDef
+    #@+node:ekr.20251202073629.2: *3* Visitor.visit_FunctionDef
     def visit_FunctionDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -547,7 +557,7 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@+node:ekr.20251202071202.1: *3* visitor.visit_Module
+    #@+node:ekr.20251202071202.1: *3* Visitor.visit_Module
     def visit_Module(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
