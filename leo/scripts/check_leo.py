@@ -37,8 +37,7 @@ errors: set[str] = set()
 full_check = False  # True: report *all* unknown attrs.
 module_name: str = None
 report_all_attrs = False
-report_all_unusual_attrs = False  # True: report only unused attrs containing '{}[]()'
-report_unusual_attrs = False  # True: report only number of unusual attrs.
+report_unusual_attrs = False  # True: report only unusual attrs containing '{}[]()'
 report_all_undefined_chains = True
 report_all_unfinished_chains = True
 report_all_unknown_bases = True
@@ -316,17 +315,14 @@ class CheckLeo:
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec.")
-        if report_all_unusual_attrs or report_unusual_attrs:
+        if report_unusual_attrs:
             unusual_attrs = [
                 z for z in all_attrs
                 if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')
             ]
-            if report_all_unusual_attrs:
-                print(f"{len(unusual_attrs)} Unusual attrs..")
-                for z in sorted(list(unusual_attrs)):
-                    print(f"  {z}")
-            else:
-                print(f"{len(unusual_attrs)} Unusual attrs")
+            print(f"{len(unusual_attrs)} Unusual attrs..")
+            for z in sorted(list(unusual_attrs)):
+                print(f"  {z}")
         elif report_all_attrs:
             print(f"{len(list(all_attrs))} attrs...")
             for z in sorted(list(all_attrs)):
@@ -376,11 +372,12 @@ class CheckLeo:
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
 
-    context_stack: list[ast.AST] = []
     shown_contexts: list[ast.AST] = []  # Cumulative.
     shown_modules: list[ast.AST] = []  # Cumulative.
 
     def __init__(self, known_objects: dict[str, Any]) -> None:
+        self.args_stack: list[str] = []
+        self.context_stack: list[ast.AST] = []
         self.known_objects = known_objects
 
     #@+others
@@ -571,15 +568,41 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@+node:ekr.20251202073629.2: *3* Visitor.visit_FunctionDef
+    #@+node:ekr.20251202073629.2: *3* Visitor.visit_FunctionDef & helper
     def visit_FunctionDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
         try:
             self.context_stack.append(node)
+            try:
+                args = self.get_args(node)
+            except Exception as e:
+                print(e)
+                args = []
+            self.args_stack.append(args)
+            # print(f"{node.name}({', '.join(args)})")
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
+            self.args_stack.pop()
+
+    def get_func_args(self) -> list[str]:
+        return self.context_stack[-1]
+    #@+node:ekr.20251203072709.1: *4* Visitor.get_args
+    def get_args(self, node) -> list[str]:
+
+        args = node.args
+        posonlyargs = getattr(args, 'posonlyargs', [])
+        vararg = [args.vararg] if getattr(args, 'vararg', None) else []
+        kwonlyargs = getattr(args, 'kwonlyargs', [])
+        kwarg = [args.kwarg] if getattr(args, 'kwarg', None) else []
+        result: list[str] = []
+        for aList in (posonlyargs, vararg, kwonlyargs, kwarg):
+            for z in aList:
+                if z:
+                    # result.append(ast.unparse(z))
+                    result.append(z.arg)
+        return result
     #@+node:ekr.20251202071202.1: *3* Visitor.visit_Module
     def visit_Module(self, node: ast.AST) -> None:
         global stats_contexts
