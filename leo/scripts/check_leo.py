@@ -32,11 +32,13 @@ all_files_flag = True
 
 # Global stats.
 all_attrs: set[str] = set()
+all_args: set[str] = set()
 chains_seen: set[str] = set()
 errors: set[str] = set()
 full_check = False  # True: report *all* unknown attrs.
 module_name: str = None
 report_all_attrs = False
+report_all_args = False
 report_unusual_attrs = False  # True: report only unusual attrs containing '{}[]()'
 report_all_undefined_chains = True
 report_all_unfinished_chains = True
@@ -60,7 +62,7 @@ for z in (leo_editor_dir, commands_dir, core_dir):
 #@+others
 #@+node:ekr.20251130081222.1: ** class CheckLeo
 class CheckLeo:
-
+    """The controller class of the check_leo.py script."""
     #@+others
     #@+node:ekr.20251129161138.1: *3* CheckLeo.adjust_sys_path
     def adjust_sys_path(self) -> None:
@@ -70,6 +72,7 @@ class CheckLeo:
             sys.path.insert(1, leo_editor_dir)
     #@+node:ekr.20251129080959.1: *3* CheckLeo.check
     def check(self, path: str) -> None:
+        """Check one file, adding cumulative data to the visitor class."""
         assert os.path.exists(path), repr(path)
         contents = leoG.readFile(path)
         tree = ast.parse(contents, filename=path)
@@ -77,6 +80,7 @@ class CheckLeo:
         visitor.visit(tree)
     #@+node:ekr.20251129161354.1: *3* CheckLeo.compute_files
     def compute_files(self) -> list[str]:
+        """Return the list of files to be checked."""
         files: list[str]
         if all_files_flag:
             core_files = glob.glob(f"{core_dir}{os.sep}*.py")
@@ -245,7 +249,11 @@ class CheckLeo:
         return files
     #@+node:ekr.20251202072018.1: *3* CheckLeo.compute_module_name
     def compute_module_name(self, file_name) -> str:
+        """
+        Compute the module corresponding to the given file name.
 
+        Used only to set the global module_name var.
+        """
         for base in ('commands', 'core', 'plugins'):
             i = file_name.find(base)
             if i > -1:
@@ -256,6 +264,7 @@ class CheckLeo:
         return s.replace('/', '.').replace('\\', '.')
     #@+node:ekr.20251202174626.1: *3* CheckLeo.create_known_objects
     def create_known_objects(self) -> dict[str, Any]:
+        """Create a dictionary linking Leo's most important naming conventions to live objects."""
         assert leoC and leoG and leoP and leoV  # Must be run after create_live_objects.
         d = {
             # Python types
@@ -280,6 +289,7 @@ class CheckLeo:
         return d
     #@+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
     def create_live_objects(self) -> tuple[Any, Any, Any, Any]:
+        """Use Leo's bridge to create live objects for Leo's c, g, and p symbols."""
 
         import leo.core.leoBridge as leoBridge
         from leo.core.leoNodes import VNode
@@ -305,6 +315,18 @@ class CheckLeo:
         return c, g, p, v
     #@+node:ekr.20251201031243.1: *3* CheckLeo.report
     def report(self, t1: float, t2: float, t3: float) -> None:
+        """
+        Print a report (controlled by global vars) of the data collected by the
+        Visitor class.
+        """
+
+        def report_set(the_set: set, tag: str = None) -> None:
+            if tag:
+                print(f"\n{len(list(the_set))} {tag}...")
+            for z in sorted(list(the_set)):
+                print(f"  {z}")
+            print('')
+
         print(
             f"check_leo.py: files: {len(self.files)} "
             f"contexts: {stats_contexts} "
@@ -315,6 +337,8 @@ class CheckLeo:
                 f"Setup: {t2-t1:.2f} sec.\n"
                 f" Scan: {t3-t2:.2f} sec.\n"
                 f"Total: {t3-t1:.2f} sec.")
+        if report_all_args:
+            report_set(all_args, 'function/method args')
         if report_unusual_attrs:
             unusual_attrs = [
                 z for z in all_attrs
@@ -324,37 +348,25 @@ class CheckLeo:
             for z in sorted(list(unusual_attrs)):
                 print(f"  {z}")
         elif report_all_attrs:
-            print(f"{len(list(all_attrs))} attrs...")
-            for z in sorted(list(all_attrs)):
-                print(f"  {z}")
-            print('')
+            report_set(all_attrs, 'attrs')
         if errors:
-            print('Errors...')
-            for z in sorted(list(errors)):
-                print(f"  {z}")
-            print('')
+            report_set(errors, 'Errors')
         if unknown_bases:
+            print(f"Unknown bases: {len(list(unknown_bases))}")
             if report_all_unknown_bases:
-                print(f"{len(list(unknown_bases))} Unknown bases...")
-                for z in sorted(list(unknown_bases)):
-                    print(f"  {z}")
-                print('')
-            else:
-                n = len(list(unknown_bases))
-                print(f"{n} unknown base{leoG.plural(n)}")
+                report_set(unknown_bases)
         if undefined_chains:
             print(f"Undefined chains: {len(list(undefined_chains))}")
             if report_all_undefined_chains:
-                for z in sorted(list(undefined_chains)):
-                    print(f"  {z}")
-                print('')
+                report_set(undefined_chains)
         if 0:
             if not any(z for z in (
-                all_attrs, errors, unknown_bases, undefined_chains, unfinished_chains
+                all_attrs, errors, unknown_bases, undefined_chains
             )):
                 print('Done')
     #@+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
+        """The main line of this script."""
         global leoC, leoG, leoP, leoV
         global module_name
         t1 = time.process_time()
@@ -372,10 +384,13 @@ class CheckLeo:
 #@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
 class Visitor(ast.NodeVisitor):
 
-    shown_contexts: list[ast.AST] = []  # Cumulative.
-    shown_modules: list[ast.AST] = []  # Cumulative.
+    # Cumulative tracing date...
+    shown_contexts: list[ast.AST] = []
+    shown_modules: list[ast.AST] = []
 
     def __init__(self, known_objects: dict[str, Any]) -> None:
+
+        # Per-file data.
         self.args_stack: list[str] = []
         self.context_stack: list[ast.AST] = []
         self.known_objects = known_objects
@@ -383,7 +398,7 @@ class Visitor(ast.NodeVisitor):
     #@+others
     #@+node:ekr.20251202084740.1: *3* Visitor.context_name
     def context_name(self) -> str:
-        """Return the context's name"""
+        """Return the name of the present traversal context."""
         node = self.context_stack[-1]
         return (
             node.name if isinstance(node, ((ast.ClassDef, ast.FunctionDef)))
@@ -393,8 +408,21 @@ class Visitor(ast.NodeVisitor):
     #@+node:ekr.20251129080749.7: *3* Visitor.visit_Attribute & helpers
     def visit_Attribute(self, node: ast.AST) -> None:
         """
-        Check the chain of attributes starting with this outer Attribute node.
-        Only check attribute chains whose base (first) attr is known.
+        The heart of the Visitor class.
+
+        This method, and its helpers, check an entire chain of attributes.
+
+        - split_Attribute converts (accurately) an Attribute *tree* to a list
+          of strings (**parts**) corresponding to the outer level attributes of
+          the attribute chain. The **base** is the first string in this list.
+
+        - Use Leo's naming conventions (the known_objects dict) to get a live
+          object for the base. Do nothing if the base is not in the dict.
+
+        - Thereafter, check whether the present (live) object has an attr for
+          the next attr of the chain.
+
+        - Check all parts of the chain until finding an unknown attr.
         """
         global stats_attrs
         stats_attrs += 1
@@ -425,7 +453,7 @@ class Visitor(ast.NodeVisitor):
             i += 1
 
         # Do *not* call self.generic_visit here.
-        # This visitor handles all its children.
+        # split_Attribute handles all this node's children.
     #@+node:ekr.20251201064630.1: *4* Visitor.get_obj
     required_prefixes = (
         'c', 'c1', 'c2',
@@ -436,7 +464,7 @@ class Visitor(ast.NodeVisitor):
     )
 
     def get_obj(self, parts: list[str]) -> Any:
-        """Return the live object corresonding to the base of the chain."""
+        """Return the live object corresponding to the base of the chain."""
         part0 = parts[0]
         # Return dummy objects.
         if part0.startswith(('"', "'", 's[')):
@@ -456,6 +484,7 @@ class Visitor(ast.NodeVisitor):
     #@+node:ekr.20251203044755.1: *4* Visitor.should_ignore
     #@+<< define Attribute ignore_dict >>
     #@+node:ekr.20251201051957.1: *5* << define Attribute ignore_dict >>
+    # A list of (prefixes of) chains to be ignored.
     ignore_list = (
         # Obsolete ast Nodes in leoAst.py.
         'ast.Num',
@@ -517,6 +546,10 @@ class Visitor(ast.NodeVisitor):
     #@-<< define Attribute ignore_dict >>
 
     def should_ignore(self, parts: list[str]) -> bool:
+        """
+        Return True if the ignore_dict contains a key matching any prefix of
+        the parts.
+        """
         prefix = []
         for part in parts:
             prefix.append(part)
@@ -525,7 +558,7 @@ class Visitor(ast.NodeVisitor):
         return False
     #@+node:ekr.20251203015013.1: *4* Visitor.show_context
     def show_context(self, node: ast.AST) -> None:
-        """Print the context of the given node."""
+        """Print the traversal context of the given node."""
         context = self.context_stack[-1]
         if context in self.shown_contexts:
             return
@@ -540,11 +573,10 @@ class Visitor(ast.NodeVisitor):
     #@+node:ekr.20251201032057.1: *4* Visitor.split_Attribute
     def split_Attribute(self, node: ast.AST) -> list[str]:
         """
-        Return the components of an Attribute.
+        Return the (correct!) outer-level components of an attribute chain.
 
-        The would be wrong: ast.unparse(node).split('.')
+        This would be wrong: ast.unparse(node).split('.')
         """
-
         result: list[str] = []
 
         def _helper(node: ast.AST, result: list[str]) -> None:
@@ -568,7 +600,7 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@+node:ekr.20251202073629.2: *3* Visitor.visit_FunctionDef & helper
+    #@+node:ekr.20251202073629.2: *3* Visitor.visit_FunctionDef & get_args
     def visit_FunctionDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -576,12 +608,7 @@ class Visitor(ast.NodeVisitor):
             self.context_stack.append(node)
             args = self.get_args(node)
             self.args_stack.append(args)
-            if args:
-                print(f"{node.name}({', '.join(args)})")
             self.generic_visit(node)
-        except Exception as e:
-            print(e)
-            args = []
         finally:
             self.context_stack.pop()
             self.args_stack.pop()
@@ -590,18 +617,22 @@ class Visitor(ast.NodeVisitor):
         return self.context_stack[-1]
     #@+node:ekr.20251203072709.1: *4* Visitor.get_args
     def get_args(self, node) -> list[str]:
-
-        args = node.args
-        posonlyargs = getattr(args, 'posonlyargs', [])
-        vararg = [args.vararg] if getattr(args, 'vararg', None) else []
-        kwonlyargs = getattr(args, 'kwonlyargs', [])
-        kwarg = [args.kwarg] if getattr(args, 'kwarg', None) else []
         result: list[str] = []
-        for aList in (posonlyargs, vararg, kwonlyargs, kwarg):
-            for z in aList:
-                if z:
-                    # result.append(ast.unparse(z))
-                    result.append(z.arg)
+        try:
+            args = node.args
+            posonlyargs = getattr(args, 'posonlyargs', [])
+            vararg = [args.vararg] if getattr(args, 'vararg', None) else []
+            kwonlyargs = getattr(args, 'kwonlyargs', [])
+            kwarg = [args.kwarg] if getattr(args, 'kwarg', None) else []
+            for aList in (posonlyargs, vararg, kwonlyargs, kwarg):
+                for z in aList:
+                    if z:
+                        # result.append(ast.unparse(z))
+                        result.append(z.arg)
+                        all_args.add(z.arg)
+        except Exception as e:
+            print(e)
+            result = []
         return result
     #@+node:ekr.20251202071202.1: *3* Visitor.visit_Module
     def visit_Module(self, node: ast.AST) -> None:
