@@ -2523,12 +2523,13 @@
 </v>
 <v t="ekr.20250830050946.1"></v>
 <v t="ekr.20250830050853.1"></v>
+<v t="ekr.20251122055611.1"><vh>=== PR #4481: Improve Leo's docs using gemini3</vh>
 <v t="ekr.20131017174814.17479"></v>
-<v t="ekr.20251122055611.1"><vh>=== PR #4481: Improve Leo's docs</vh>
 <v t="ekr.20111019104425.15904"><vh>&lt;&lt; Leo Quotes &gt;&gt;</vh></v>
 <v t="ekr.20250317133518.1"></v>
 <v t="ekr.20210402080752.1"></v>
 </v>
+<v t="ekr.20251204075247.1"><vh>New preface</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -11133,6 +11134,12 @@ do."&amp;#8213;Ian Mulvany
 "When first I opened Leo, it was out of curiosity. But having used it, I'll
 never go back. They'll have to pry Leo out of my cold, dead fingers!"&amp;#8213;Travers A. Hough
 &lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+Leo makes managing long, complex code bases many many times more easy and feasible than anything else I've tried. Leo also makes trying experimental code way easier than anything else (e.g., running a script to test out some programming issue).
+I use Leo every day, all the time,  for non-programming things. I don't see how I could replace it if it somehow vanished."&amp;#8213;Thomas Passin
+&lt;/blockquote&gt;
+
 &lt;p&gt;
 Leo is a scriptable outliner that accelerates the work flow of programmers, authors and web designers.
 &lt;em&gt;Outline nodes may appear in more than one place&lt;/em&gt;, allowing multidimensional views of data, including computer programs, within a single outline.
@@ -15283,9 +15290,9 @@ Each Leo outline contains a hidden vnode, c.hiddenRootNode::
    &lt;br /&gt;
 
 
-#########################
-Technical Overview of Leo
-#########################
+#############################
+Technical introduction to Leo
+#############################
 
 .. Use full links here so links are active in LeoDocs.leo
 
@@ -33370,6 +33377,40 @@ PR: https://github.com/leo-editor/leo-editor/pull/4481
 Info (half clones): https://github.com/leo-editor/leo-editor/issues/4478
 
 @language python
+</t>
+<t tx="ekr.20251204075247.1">@language rest
+
+Leo puts hierarchy (outline structure) at the center of everything. This
+structure helps you create, manage, and revise any kind of document,
+including computer programs, documentation, to-do lists, and novels. Leo
+can write external files automatically from select parts of the outline.
+
+**Multiple views of data**
+
+Writers and programmers often want to view or manipulate the same text in
+different ways, depending on context. Leo's `clones`_ lets you create
+multiple different views of data within the *same* outline. You can
+organize code by functionality in one view and by file in another. You can
+see documentation from as many points of view as you like.
+
+**Integrated Python Scripting**
+
+Leo is fully scriptable in Python. Any outline node can contain a Python
+script that accesses the outline’s data directly. Such **Leonine** scripts
+also have full access to all of Leo's source code.
+
+Leonine scripts and plugins can create new Leo commands. Scripts, including
+`at-button`_ scripts can create new workflows and even new apps.
+
+Leo outlines may contain programs in any programming or markup language,
+including Python, C++, JavaScript, Rust, Markdown, or restructuredText.
+
+**Summary**
+
+Traditional editors *simulate* hierarchy through comments, naming
+conventions, and the hierarchy of external files. In contrast, Leo puts
+hierarchy (outline structure) at the center of everything. As a result, Leo
+excels in managing any kind of complex text, including computer programs.
 </t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
 application state, and synchronize the resulting state across clients, leoserver.py
