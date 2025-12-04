@@ -2523,7 +2523,6 @@
 </v>
 <v t="ekr.20250830050946.1"></v>
 <v t="ekr.20250830050853.1"></v>
-<v t="ekr.20131017174814.17479"></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -33301,6 +33300,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - PR #4412: Greatly improve Leo's `parse-body` command.
 - PR #4418: Fix bugs involving the `_mod_time` attribute in `.leo` files.
 - PR #4456: Added leo_to_html_outline_viewer.py plugin.
+- PR #4456: Add check_leo script.
 - Fix several other minor bugs. See the `What's new` section for details.
 
 **Links**
@@ -33326,6 +33326,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 .. _`PR #4430`: https://github.com/leo-editor/leo-editor/pull/4430
 .. _`PR #4444`: https://github.com/leo-editor/leo-editor/pull/4444
 .. _`PR #4456`: https://github.com/leo-editor/leo-editor/pull/4456
+.. _`PR #4484`: https://github.com/leo-editor/leo-editor/pull/4484
 
 - `PR #4403`_: Require python 3.10 or above. Add support for Python 3.14.
 - `PR #4412`_: Greatly improve Leo's `parse-body` command.
@@ -33335,6 +33336,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - `PR #4430`_: Fix bugs in Leo's colorizer.
 - `PR #4444`_: Fix a crasher in Leo's undo logic.
 - `PR #4456`_: Added leo_to_html_outline_viewer.py plugin.
+- `PR #4456`_: Add check_leo script.
 
 </t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
