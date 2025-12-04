@@ -2523,12 +2523,6 @@
 </v>
 <v t="ekr.20250830050946.1"></v>
 <v t="ekr.20250830050853.1"></v>
-<v t="ekr.20251122055611.1"><vh>=== PR #4481: Improve Leo's docs using gemini3</vh>
-<v t="ekr.20111019104425.15904"><vh>&lt;&lt; Leo Quotes &gt;&gt;</vh></v>
-<v t="ekr.20250317133518.1"></v>
-<v t="ekr.20210402080752.1"></v>
-</v>
-<v t="ekr.20251204114430.1"><vh>COPY: Old html/preface.html</vh></v>
 <v t="ekr.20131017174814.17479"></v>
 </vnodes>
 <tnodes>
@@ -11120,30 +11114,6 @@ if changed:
     c.undoer.afterChangeTree(p,'remove-@url-final-output',b)
     c.redraw()
 </t>
-<t tx="ekr.20111019104425.15904">&lt;p&gt;&lt;blockquote&gt;
-"Leo is a revolutionary step in the right direction for programming."&amp;#8213;Brian Takita
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt; "Leo is the best IDE that I have had the pleasure to use. It
-has totally changed not only the way that I program, but also the way that
-I store and organize all of the information that I need for the job that I
-do."&amp;#8213;Ian Mulvany
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-"When first I opened Leo, it was out of curiosity. But having used it, I'll
-never go back. They'll have to pry Leo out of my cold, dead fingers!"&amp;#8213;Travers A. Hough
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-Leo makes managing long, complex code bases many many times more easy and feasible than anything else I've tried. Leo also makes trying experimental code way easier than anything else (e.g., running a script to test out some programming issue).
-I use Leo every day, all the time,  for non-programming things. I don't see how I could replace it if it somehow vanished."&amp;#8213;Thomas Passin
-&lt;/blockquote&gt;
-
-&lt;p&gt;
-Leo is a scriptable outliner that accelerates the work flow of programmers, authors and web designers.
-&lt;em&gt;Outline nodes may appear in more than one place&lt;/em&gt;, allowing multidimensional views of data, including computer programs, within a single outline.
-</t>
 <t tx="ekr.20111108052738.5507">run-marked-unit-tests-externally = Alt-4
 run-all-unit-tests-externally = Alt-5
 </t>
@@ -14270,7 +14240,7 @@ You will get the following::
    &lt;br /&gt;
 
 ##################
-Leo in 10 Minutes
+Leo in 20 Minutes
 ##################
 
 This chapter introduces Leo's most important features and terminology.
@@ -33367,50 +33337,6 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - `PR #4456`_: Added leo_to_html_outline_viewer.py plugin.
 
 </t>
-<t tx="ekr.20251122055611.1">@language rest
-@wrap
-@nosearch
-
-https://github.com/leo-editor/leo-editor/issues/4480
-PR: https://github.com/leo-editor/leo-editor/pull/4481
-Info (half clones): https://github.com/leo-editor/leo-editor/issues/4478
-
-@language python
-</t>
-<t tx="ekr.20251204114430.1">.. |---| unicode:: U+02015 .. for quotes
-   :trim:
-
-.. |br| raw:: html
-
-   &lt;br /&gt;
-
-
-#############################
-Technical introduction to Leo
-#############################
-
-.. Use full links here so links are active in LeoDocs.leo
-
-.. _`Clones`: tutorial-pim.html
-.. _`clone find commands`: html/commands.html# clone-find-commands
-.. _`group of developers and users`: https://groups.google.com/forum/#!forum/leo-editor
-.. _`Leonine`: leonine-world.html
-.. _`new way to refactor computer programs`: appendices.html#the-leonine-way-to-refactor-code
-.. _`Python API`: tutorial-scripting.html
-.. _`outline-oriented directives`: tutorial-basics.html#markup
-
-Leo *completely integrates* Python scripting and outlines, creating a fundamentally different way of using and organizing data, and computer programs. Leo has been under active development for 45+ years with an active `group of developers and users`_.
-
-- Scripts have complete access to outline structure via a simple `Python API`_. Examples:|br|
-  `c.p.b` is the body text of the selected outline node. |br|
-  `for p in c.all_nodes()` iterates p through all the nodes of the outline.
-- Unlike standard tree-based editors, Leo allows a **cloned** node to appear in multiple places simultaneously. Editing a node in one location updates it everywhere. `Clones`_ allow you to create multidimensional views of any data, including source code.
-- Leo's `clone find commands`_ create *organized* clones of all the nodes that match the search criteria. These data create a `new way to refactor computer programs`_.
-- Scripts and programs can be composed from outlines using `outline-oriented directives`_.
-- Importers convert flat text files into outlines.
-- @button scripts apply scripts to outline data.
-
-These features combine to create a new (`Leonine`_) way of organizing complex data, including computer programs.</t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
 application state, and synchronize the resulting state across clients, leoserver.py
 has the ability to listen and interact with more than one concurrent client, and have
