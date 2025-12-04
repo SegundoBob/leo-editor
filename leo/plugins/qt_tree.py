@@ -229,7 +229,7 @@ class LeoQtTree(leoFrame.LeoTree):
                 try:
                     s = pattern.sub(arg, text)
                 except re.error as e:
-                    g.log(
+                    g.app.log(
                         f'Error in declutter: {e!r}"\n'
                         f'  REPLACE:{arg!r}\n  HEADLINE:{text!r}',
                         color='error'
@@ -401,14 +401,14 @@ class LeoQtTree(leoFrame.LeoTree):
                 try:
                     patterns.append((re.compile(arg), []))
                 except re.error:
-                    g.log('Invalid declutter pattern: %r' % (arg,), color='error')
+                    g.app.log('Invalid declutter pattern: %r' % (arg,), color='error')
                     patterns.append((re.compile('a^'), []))  # create a rule that matches nothing
             else:
                 if patterns:
                     patterns[-1][1].append((cmd, arg))
                 elif not warned:
                     warned = True
-                    g.log('Declutter patterns must start with RULE*',
+                    g.app.log('Declutter patterns must start with RULE*',
                         color='error')
         self.declutter_patterns = patterns
         return patterns

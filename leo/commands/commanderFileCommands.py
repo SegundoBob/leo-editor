@@ -150,7 +150,7 @@ def restartLeo(self: Self, event: LeoKeyEvent = None) -> None:
 def close(self: Self, event: LeoKeyEvent = None, new_c: Cmdr = None) -> None:
     """Close the Leo window, prompting to save it if it has been changed."""
     g.app.closeLeoWindow(self.frame, new_c=new_c)
-#@+node:ekr.20110530124245.18245: *3* c_file.importAnyFile & helper
+#@+node:ekr.20110530124245.18245: *3* c_file.importAnyFile
 @g.commander_command('import-any-file')
 @g.commander_command('import-file')
 def importAnyFile(self: Self, event: LeoKeyEvent = None) -> None:
@@ -232,7 +232,7 @@ def importAnyFile(self: Self, event: LeoKeyEvent = None) -> None:
             leoImport.MORE_Importer(c).import_file(fn)  # #1522.
         elif ext == 'txt':
             # #1522: Create an @edit node.
-            import_txt_file(c, fn)
+            c.import_txt_file(fn)
         else:
             # Make *sure* that parent.b is empty.
             last = c.lastTopLevel()
@@ -254,9 +254,11 @@ g.command_alias('importFlattenedOutline', importAnyFile)
 g.command_alias('importMOREFiles', importAnyFile)
 g.command_alias('importNowebFiles', importAnyFile)
 g.command_alias('importTabFiles', importAnyFile)
-#@+node:ekr.20200306043104.1: *4* function: import_txt_file
-def import_txt_file(c: Cmdr, fn: str) -> None:
+#@+node:ekr.20200306043104.1: *3* c_file.import_txt_file
+@g.commander_command('import-text-file')
+def import_txt_file(self: Self, fn: str) -> None:
     """Import the .txt file into a new node."""
+    c = self
     u = c.undoer
     g.setGlobalOpenDir(fn)
     undoData = u.beforeInsertNode(c.p)
