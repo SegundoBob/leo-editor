@@ -51,6 +51,7 @@
 from __future__ import annotations
 import os
 import sys
+import time
 import traceback
 from typing import Any, Optional, TYPE_CHECKING
 from types import ModuleType
@@ -125,6 +126,7 @@ class BridgeController:
         """
         if not self.isValidPython():
             return
+        t1 = time.process_time()
         #@+<< initLeo imports >>
         #@+node:ekr.20070227093629.1: *4* << initLeo imports >> initLeo (leoBridge)
         try:
@@ -209,6 +211,9 @@ class BridgeController:
         g.app.computeSignon()
         g.app.initing = False
         g.doHook("start2", c=None, p=None, v=None, fileName=None)
+        t2 = time.process_time()
+        if self.verbose:
+            print(f"bridge.initLeo:     {t2-t1:.2f} sec.")
     #@+node:ekr.20070302061713: *4* bridge.adjustSysPath
     def adjustSysPath(self) -> None:
         """Adjust sys.path to enable imports as usual with Leo."""
@@ -289,6 +294,7 @@ class BridgeController:
         useLog = False
         if not self.isOpen():
             return None
+        t1 = time.process_time()
         if self.useCaches:
             self.reopen_cachers()
         else:
@@ -307,6 +313,9 @@ class BridgeController:
             g.app.gui.log = log = c.frame.log
             log.isNull = False
             log.enabled = True
+        t2 = time.process_time()
+        if self.verbose:
+            print(f"bridge.openLeoFile: {t2-t1:.2f} sec.")
         return c
     #@+node:ekr.20070227093629.5: *4* bridge.completeFileName
     def completeFileName(self, fileName: str) -> str:

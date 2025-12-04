@@ -712,7 +712,7 @@ def diff_leo_files_helper(event: LeoKeyEvent, title: str, visible: bool) -> None
         return
     if len(paths) == 1:
         # Prompt for another file.
-        paths2 = g.app.gui.runOpensFileDialog(c,
+        paths2 = g.app.gui.runOpenFileDialog(c,  # 2025/12/01
             title=title, filetypes=filetypes)
         if not paths2:
             return

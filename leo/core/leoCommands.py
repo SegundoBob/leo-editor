@@ -288,7 +288,7 @@ class Commands:
 
         # Break circular import dependencies by doing imports here.
         # All these imports take almost 3/4 sec in the leoBridge.
-
+        t1 = time.process_time()
         from leo.core import leoAtFile
         from leo.core import leoBeautify  # So decorators are executed.
         assert leoBeautify  # for pyflakes.
@@ -335,6 +335,9 @@ class Commands:
         from leo.core import leoShadow
         from leo.core import leoUndo
         from leo.core import leoVim
+        t2 = time.process_time()
+        if 0:
+            g.trace(f"Import time: {t2-t1:.2f}")
         # Define 11 subcommanders.
         self.keyHandler = self.k    = leoKeys.KeyHandlerClass(c)
         self.chapterController      = leoChapters.ChapterController(c)
@@ -563,7 +566,6 @@ class Commands:
         count = c.idle_focus_count
         if w:
             w_class = w and w.__class__.__name__
-            c.last_no_focus = False
             if self.is_unusual_focus(w):
                 if trace:
                     g.trace(f"{count} unusual focus: {w_class}")
