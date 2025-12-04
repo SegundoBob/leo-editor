@@ -2524,12 +2524,12 @@
 <v t="ekr.20250830050946.1"></v>
 <v t="ekr.20250830050853.1"></v>
 <v t="ekr.20251122055611.1"><vh>=== PR #4481: Improve Leo's docs using gemini3</vh>
-<v t="ekr.20131017174814.17479"></v>
 <v t="ekr.20111019104425.15904"><vh>&lt;&lt; Leo Quotes &gt;&gt;</vh></v>
 <v t="ekr.20250317133518.1"></v>
 <v t="ekr.20210402080752.1"></v>
 </v>
-<v t="ekr.20251204075247.1"><vh>New preface</vh></v>
+<v t="ekr.20251204114430.1"><vh>COPY: Old html/preface.html</vh></v>
+<v t="ekr.20131017174814.17479"></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -15289,33 +15289,32 @@ Each Leo outline contains a hidden vnode, c.hiddenRootNode::
 
    &lt;br /&gt;
 
-
 #############################
 Technical introduction to Leo
 #############################
 
 .. Use full links here so links are active in LeoDocs.leo
-
-.. _`Clones`: tutorial-pim.html
-.. _`clone find commands`: html/commands.html# clone-find-commands
-.. _`group of developers and users`: https://groups.google.com/forum/#!forum/leo-editor
-.. _`Leonine`: leonine-world.html
-.. _`new way to refactor computer programs`: appendices.html#the-leonine-way-to-refactor-code
+.. _`clones`: tutorial-pim.html
+.. _`leonine`: leonine-world.html
 .. _`Python API`: tutorial-scripting.html
-.. _`outline-oriented directives`: tutorial-basics.html#markup
+.. _`Scripting basics chapter`: tutorial-basics.html#scripting-basics
 
-Leo *completely integrates* Python scripting and outlines, creating a fundamentally different way of using and organizing data, and computer programs. Leo has been under active development for 45+ years with an active `group of developers and users`_.
+Leo puts hierarchy (outline structure) at the center of everything. This structure helps you create, manage, and revise any kind of document, including computer programs, documentation, to-do lists, and novels. Leo can write external files automatically from select parts of the outline.
 
-- Scripts have complete access to outline structure via a simple `Python API`_. Examples:|br|
-  `c.p.b` is the body text of the selected outline node. |br|
-  `for p in c.all_nodes()` iterates p through all the nodes of the outline.
-- Unlike standard tree-based editors, Leo allows a **cloned** node to appear in multiple places simultaneously. Editing a node in one location updates it everywhere. `Clones`_ allow you to create multidimensional views of any data, including source code.
-- Leo's `clone find commands`_ create *organized* clones of all the nodes that match the search criteria. These data create a `new way to refactor computer programs`_.
-- Scripts and programs can be composed from outlines using `outline-oriented directives`_.
-- Importers convert flat text files into outlines.
-- @button scripts apply scripts to outline data.
+Leo outlines may contain programs in any programming or markup language, including Python, C++, JavaScript, Rust, Markdown, and restructuredText.
 
-These features combine to create a new (`Leonine`_) way of organizing complex data, including computer programs.</t>
+**Multiple views of data**
+
+Writers and programmers often want to view or manipulate the same text in different ways, depending on context. Leo's `clones`_ lets you create multiple different views of data within the *same* outline. You can organize code by functionality in one view and by file in another. You can see documentation from as many points of view as you like.
+
+**Integrated Python Scripting**
+
+Leo is fully scriptable in Python. Any outline node can contain a Python script that accesses the outline’s data directly. Such `leonine`_ scripts also have full access to all of Leo's source code via a straightforward `Python API`_. Leonine scripts and plugins can create new Leo commands. See Leo's `scripting basics chapter`_  for more details.
+
+**Summary**
+
+Traditional editors *simulate* hierarchy through comments, naming conventions, and the hierarchy of external files. In contrast, Leo puts hierarchy (outline structure) at the center of everything. As a result, Leo excels in managing complex text, including computer programs.
+</t>
 <t tx="ekr.20131018100353.16706">To start a project, clone nodes related to the project and drag them at or near the top level, where you can get at them easily. When the project is complete, just delete the clones. This workflow is surprisingly effective:
 
 - The original nodes never move, but they change whenever their clones do.
@@ -33378,40 +33377,40 @@ Info (half clones): https://github.com/leo-editor/leo-editor/issues/4478
 
 @language python
 </t>
-<t tx="ekr.20251204075247.1">@language rest
+<t tx="ekr.20251204114430.1">.. |---| unicode:: U+02015 .. for quotes
+   :trim:
 
-Leo puts hierarchy (outline structure) at the center of everything. This
-structure helps you create, manage, and revise any kind of document,
-including computer programs, documentation, to-do lists, and novels. Leo
-can write external files automatically from select parts of the outline.
+.. |br| raw:: html
 
-**Multiple views of data**
+   &lt;br /&gt;
 
-Writers and programmers often want to view or manipulate the same text in
-different ways, depending on context. Leo's `clones`_ lets you create
-multiple different views of data within the *same* outline. You can
-organize code by functionality in one view and by file in another. You can
-see documentation from as many points of view as you like.
 
-**Integrated Python Scripting**
+#############################
+Technical introduction to Leo
+#############################
 
-Leo is fully scriptable in Python. Any outline node can contain a Python
-script that accesses the outline’s data directly. Such **Leonine** scripts
-also have full access to all of Leo's source code.
+.. Use full links here so links are active in LeoDocs.leo
 
-Leonine scripts and plugins can create new Leo commands. Scripts, including
-`at-button`_ scripts can create new workflows and even new apps.
+.. _`Clones`: tutorial-pim.html
+.. _`clone find commands`: html/commands.html# clone-find-commands
+.. _`group of developers and users`: https://groups.google.com/forum/#!forum/leo-editor
+.. _`Leonine`: leonine-world.html
+.. _`new way to refactor computer programs`: appendices.html#the-leonine-way-to-refactor-code
+.. _`Python API`: tutorial-scripting.html
+.. _`outline-oriented directives`: tutorial-basics.html#markup
 
-Leo outlines may contain programs in any programming or markup language,
-including Python, C++, JavaScript, Rust, Markdown, or restructuredText.
+Leo *completely integrates* Python scripting and outlines, creating a fundamentally different way of using and organizing data, and computer programs. Leo has been under active development for 45+ years with an active `group of developers and users`_.
 
-**Summary**
+- Scripts have complete access to outline structure via a simple `Python API`_. Examples:|br|
+  `c.p.b` is the body text of the selected outline node. |br|
+  `for p in c.all_nodes()` iterates p through all the nodes of the outline.
+- Unlike standard tree-based editors, Leo allows a **cloned** node to appear in multiple places simultaneously. Editing a node in one location updates it everywhere. `Clones`_ allow you to create multidimensional views of any data, including source code.
+- Leo's `clone find commands`_ create *organized* clones of all the nodes that match the search criteria. These data create a `new way to refactor computer programs`_.
+- Scripts and programs can be composed from outlines using `outline-oriented directives`_.
+- Importers convert flat text files into outlines.
+- @button scripts apply scripts to outline data.
 
-Traditional editors *simulate* hierarchy through comments, naming
-conventions, and the hierarchy of external files. In contrast, Leo puts
-hierarchy (outline structure) at the center of everything. As a result, Leo
-excels in managing any kind of complex text, including computer programs.
-</t>
+These features combine to create a new (`Leonine`_) way of organizing complex data, including computer programs.</t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
 application state, and synchronize the resulting state across clients, leoserver.py
 has the ability to listen and interact with more than one concurrent client, and have
