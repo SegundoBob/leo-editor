@@ -1,12 +1,20 @@
 #@+leo-ver=5-thin
 #@+node:ekr.20251129060454.1: * @file ../scripts/check_leo.py
-#@@language python
-
 """
-Check Leo's core files for attribute errors not found by mypy, pylint or
-pyflakes.
+This script checks Leo's most important files for potential attribute
+errors.
 
-This script runs about as fast as pyflakes_leo.py.
+This script discovered bugs that neither mypy, nor pylint, nor pyflakes
+found. For details, see: https://github.com/leo-editor/leo-editor/pull/4484
+
+This script contains many Leo-specific hacks. In particular, Leo's naming
+conventions allow the script to convert names to live objects.
+
+Despite (because of) these hacks, this script does a lot with minimal
+infrastructure. Because of this simplicity, this script may be of interest
+to devs in other projects.
+
+This script is fast: it checks files about as fast as pyflakes.
 """
 #@+<< check_leo: imports >>
 #@+node:ekr.20251129080328.1: ** << check_leo: imports >>
@@ -63,6 +71,7 @@ for z in (leo_editor_dir, commands_dir, core_dir):
 #@+node:ekr.20251130081222.1: ** class CheckLeo
 class CheckLeo:
     """The controller class of the check_leo.py script."""
+
     #@+others
     #@+node:ekr.20251129161138.1: *3* CheckLeo.adjust_sys_path
     def adjust_sys_path(self) -> None:
@@ -646,4 +655,6 @@ class Visitor(ast.NodeVisitor):
     #@-others
 #@-others
 CheckLeo().run()
+
+#@@language python
 #@-leo
