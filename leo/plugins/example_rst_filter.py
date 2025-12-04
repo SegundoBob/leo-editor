@@ -1,6 +1,12 @@
 #@+leo-ver=5-thin
 #@+node:ekr.20210329114352.1: * @file ../plugins/example_rst_filter.py
-"""Filters for the rst3 command."""
+"""
+Filters for the rst3 command.
+
+For full details about these filters, including how to simulate the
+oft-requested 'half clone' feature, see Leo's info issue #4478:
+https://github.com/leo-editor/leo-editor/issues/4478
+"""
 from leo.core import leoGlobals as g
 
 def init():
