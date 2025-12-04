@@ -1628,7 +1628,7 @@
 <v t="ekr.20060620094033" descendentVnodeUnknownAttributes="7d7100580a000000302e302e31322e302e3371017d710258090000007374725f6174696d657103580c000000313337363431323238302e30710473732e"><vh>What's New...</vh>
 <v t="ekr.20101025080245.5791" descendentVnodeUnknownAttributes="7d71005808000000302e31322e302e3371017d710258090000007374725f6174696d657103580c000000313337363431323238302e30710473732e"><vh>@rst html/what-is-new.html</vh>
 <v t="ekr.20071116062917.2"><vh>@rst-no-head links</vh></v>
-<v t="ekr.20251123082836.1"><vh>What's new in Leo 6.8.8</vh></v>
+<v t="ekr.20251204122149.1"><vh>What's new in Leo 6.8.8</vh></v>
 <v t="ekr.20250830050946.1"><vh>What's new in Leo 6.8.7</vh></v>
 <v t="ekr.20250728124612.1"><vh>What's new in Leo 6.8.6</vh></v>
 <v t="ekr.20250626165619.1"><vh>What's new in Leo 6.8.5</vh></v>
@@ -1818,7 +1818,7 @@
 </v>
 <v t="ekr.20180125034510.1" descendentVnodeUnknownAttributes="7d7100285805000000302e322e3971017d7102580b0000005f5f626f6f6b6d61726b7371037d7104580700000069735f6475706571054930300a73735807000000302e322e392e3071067d7107580b0000005f5f626f6f6b6d61726b7371087d7109580700000069735f64757065710a4930300a73735807000000302e322e392e31710b7d710c580b0000005f5f626f6f6b6d61726b73710d7d710e580700000069735f64757065710f4930300a73735807000000302e322e392e3271107d7111580b0000005f5f626f6f6b6d61726b7371127d7113580700000069735f6475706571144930300a73735807000000302e322e392e3371157d7116580b0000005f5f626f6f6b6d61726b7371177d7118580700000069735f6475706571194930300a73735807000000302e322e392e34711a7d711b580b0000005f5f626f6f6b6d61726b73711c7d711d580700000069735f64757065711e4930300a73735805000000302e332e30711f7d7120580b0000005f5f626f6f6b6d61726b7371217d7122580700000069735f6475706571234930300a73735805000000302e332e3171247d7125580b0000005f5f626f6f6b6d61726b7371267d7127580700000069735f6475706571284930300a73735805000000302e332e3271297d712a580b0000005f5f626f6f6b6d61726b73712b7d712c580700000069735f64757065712d4930300a73735805000000302e332e33712e7d712f580b0000005f5f626f6f6b6d61726b7371307d7131580700000069735f6475706571324930300a73735805000000302e332e3471337d7134580b0000005f5f626f6f6b6d61726b7371357d7136580700000069735f6475706571374930300a73735805000000302e332e3571387d7139580b0000005f5f626f6f6b6d61726b73713a7d713b580700000069735f64757065713c4930300a73735805000000302e332e36713d7d713e580b0000005f5f626f6f6b6d61726b73713f7d7140580700000069735f6475706571414930300a73735805000000302e332e3771427d7143580b0000005f5f626f6f6b6d61726b7371447d7145580700000069735f6475706571464930300a7373752e"><vh>Release Notes</vh>
 <v t="ekr.20250422050948.1"><vh>Leo 6.8.x release notes</vh>
-<v t="ekr.20251123082937.2"><vh>Leo 6.8.8 release notes</vh></v>
+<v t="ekr.20251204122305.1"><vh>Leo 6.8.8 release notes</vh></v>
 <v t="ekr.20250830050853.1"><vh>Leo 6.8.7 release notes</vh></v>
 <v t="ekr.20250728123954.1"><vh>Leo 6.8.6 release notes</vh></v>
 <v t="ekr.20250626165415.1"><vh>Leo 6.8.5 release notes</vh></v>
@@ -2523,14 +2523,8 @@
 </v>
 </v>
 </v>
-<v t="ekr.20251122055611.1"><vh>=== PR #4481: Improve Leo's docs</vh>
-<v t="ekr.20131017174814.17479"></v>
-<v t="ekr.20111019104425.15904"><vh>&lt;&lt; Leo Quotes &gt;&gt;</vh></v>
-<v t="ekr.20250317133518.1"></v>
-<v t="ekr.20210402080752.1"></v>
-</v>
-<v t="ekr.20251123082836.1"></v>
-<v t="ekr.20251123082937.2"></v>
+<v t="ekr.20251204122149.1"></v>
+<v t="ekr.20251204122305.1"></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -11121,30 +11115,6 @@ if changed:
     c.undoer.afterChangeTree(p,'remove-@url-final-output',b)
     c.redraw()
 </t>
-<t tx="ekr.20111019104425.15904">&lt;p&gt;&lt;blockquote&gt;
-"Leo is a revolutionary step in the right direction for programming."&amp;#8213;Brian Takita
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt; "Leo is the best IDE that I have had the pleasure to use. It
-has totally changed not only the way that I program, but also the way that
-I store and organize all of the information that I need for the job that I
-do."&amp;#8213;Ian Mulvany
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-"When first I opened Leo, it was out of curiosity. But having used it, I'll
-never go back. They'll have to pry Leo out of my cold, dead fingers!"&amp;#8213;Travers A. Hough
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-Leo makes managing long, complex code bases many many times more easy and feasible than anything else I've tried. Leo also makes trying experimental code way easier than anything else (e.g., running a script to test out some programming issue).
-I use Leo every day, all the time,  for non-programming things. I don't see how I could replace it if it somehow vanished."&amp;#8213;Thomas Passin
-&lt;/blockquote&gt;
-
-&lt;p&gt;
-Leo is a scriptable outliner that accelerates the work flow of programmers, authors and web designers.
-&lt;em&gt;Outline nodes may appear in more than one place&lt;/em&gt;, allowing multidimensional views of data, including computer programs, within a single outline.
-</t>
 <t tx="ekr.20111108052738.5507">run-marked-unit-tests-externally = Alt-4
 run-all-unit-tests-externally = Alt-5
 </t>
@@ -14271,7 +14241,7 @@ You will get the following::
    &lt;br /&gt;
 
 ##################
-Leo in 10 Minutes
+Leo in 20 Minutes
 ##################
 
 This chapter introduces Leo's most important features and terminology.
@@ -15290,33 +15260,32 @@ Each Leo outline contains a hidden vnode, c.hiddenRootNode::
 
    &lt;br /&gt;
 
-
-#########################
-Technical Overview of Leo
-#########################
+#############################
+Technical introduction to Leo
+#############################
 
 .. Use full links here so links are active in LeoDocs.leo
-
-.. _`Clones`: tutorial-pim.html
-.. _`clone find commands`: html/commands.html# clone-find-commands
-.. _`group of developers and users`: https://groups.google.com/forum/#!forum/leo-editor
-.. _`Leonine`: leonine-world.html
-.. _`new way to refactor computer programs`: appendices.html#the-leonine-way-to-refactor-code
+.. _`clones`: tutorial-pim.html
+.. _`leonine`: leonine-world.html
 .. _`Python API`: tutorial-scripting.html
-.. _`outline-oriented directives`: tutorial-basics.html#markup
+.. _`Scripting basics chapter`: tutorial-basics.html#scripting-basics
 
-Leo *completely integrates* Python scripting and outlines, creating a fundamentally different way of using and organizing data, and computer programs. Leo has been under active development for 45+ years with an active `group of developers and users`_.
+Leo puts hierarchy (outline structure) at the center of everything. This structure helps you create, manage, and revise any kind of document, including computer programs, documentation, to-do lists, and novels. Leo can write external files automatically from select parts of the outline.
 
-- Scripts have complete access to outline structure via a simple `Python API`_. Examples:|br|
-  `c.p.b` is the body text of the selected outline node. |br|
-  `for p in c.all_nodes()` iterates p through all the nodes of the outline.
-- Unlike standard tree-based editors, Leo allows a **cloned** node to appear in multiple places simultaneously. Editing a node in one location updates it everywhere. `Clones`_ allow you to create multidimensional views of any data, including source code.
-- Leo's `clone find commands`_ create *organized* clones of all the nodes that match the search criteria. These data create a `new way to refactor computer programs`_.
-- Scripts and programs can be composed from outlines using `outline-oriented directives`_.
-- Importers convert flat text files into outlines.
-- @button scripts apply scripts to outline data.
+Leo outlines may contain programs in any programming or markup language, including Python, C++, JavaScript, Rust, Markdown, and restructuredText.
 
-These features combine to create a new (`Leonine`_) way of organizing complex data, including computer programs.</t>
+**Multiple views of data**
+
+Writers and programmers often want to view or manipulate the same text in different ways, depending on context. Leo's `clones`_ lets you create multiple different views of data within the *same* outline. You can organize code by functionality in one view and by file in another. You can see documentation from as many points of view as you like.
+
+**Integrated Python Scripting**
+
+Leo is fully scriptable in Python. Any outline node can contain a Python script that accesses the outline’s data directly. Such `leonine`_ scripts also have full access to all of Leo's source code via a straightforward `Python API`_. Leonine scripts and plugins can create new Leo commands. See Leo's `scripting basics chapter`_  for more details.
+
+**Summary**
+
+Traditional editors *simulate* hierarchy through comments, naming conventions, and the hierarchy of external files. In contrast, Leo puts hierarchy (outline structure) at the center of everything. As a result, Leo excels in managing complex text, including computer programs.
+</t>
 <t tx="ekr.20131018100353.16706">To start a project, clone nodes related to the project and drag them at or near the top level, where you can get at them easily. When the project is complete, just delete the clones. This workflow is surprisingly effective:
 
 - The original nodes never move, but they change whenever their clones do.
@@ -33333,6 +33302,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - PR #4412: Greatly improve Leo's `parse-body` command.
 - PR #4418: Fix bugs involving the `_mod_time` attribute in `.leo` files.
 - PR #4456: Added leo_to_html_outline_viewer.py plugin.
+- PR #4456: Add check_leo script.
 - Fix several other minor bugs. See the `What's new` section for details.
 
 **Links**
@@ -33358,6 +33328,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 .. _`PR #4430`: https://github.com/leo-editor/leo-editor/pull/4430
 .. _`PR #4444`: https://github.com/leo-editor/leo-editor/pull/4444
 .. _`PR #4456`: https://github.com/leo-editor/leo-editor/pull/4456
+.. _`PR #4484`: https://github.com/leo-editor/leo-editor/pull/4484
 
 - `PR #4403`_: Require python 3.10 or above. Add support for Python 3.14.
 - `PR #4412`_: Greatly improve Leo's `parse-body` command.
@@ -33369,28 +33340,19 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - `PR #4456`_: Added leo_to_html_outline_viewer.py plugin.
 
 </t>
-<t tx="ekr.20251122055611.1">@language rest
-@wrap
-@nosearch
+<t tx="ekr.20251204122149.1">.. Use the link-pr abbreviation to create these links.
 
-https://github.com/leo-editor/leo-editor/issues/4480
-PR: https://github.com/leo-editor/leo-editor/pull/4481
-Info (half clones): https://github.com/leo-editor/leo-editor/issues/4478
+.. _`PR #4484`: https://github.com/leo-editor/leo-editor/pull/4484
 
-@language python
+- `PR #4456`_: Add check_leo script.
 </t>
-<t tx="ekr.20251123082836.1">.. Use the link-pr abbreviation to create these links.
-.. _`PR #4477`: https://github.com/leo-editor/leo-editor/pull/4477
+<t tx="ekr.20251204122305.1">Leo https://leo-editor.github.io/leo-editor/ 6.8.7 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
 
-- `PR #4477`_: Fix adjacent ``@doc`` parts.
-</t>
-<t tx="ekr.20251123082937.2">Leo https://leo-editor.github.io/leo-editor/ 6.8.7 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
-
-Leo *completely integrates* Python scripting and outlines, creating a fundamentally different way of using and organizing data, and computer programs. Leo has been under active development for 45+ years with an [active group of developers and users](https://groups.google.com/forum/#!forum/leo-editor).
+Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor/preface.html).
 
 **The highlights of Leo 6.8.8**
 
-- PR #4477: Fix adjacent ``@doc`` parts.
+- PR #4456: Add check_leo script.
 - Fix several other minor bugs. See the `What's new` section for details.
 
 **Links**
