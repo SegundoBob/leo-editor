@@ -67,7 +67,8 @@ assert os.path.exists(leo_path), repr(leo_path)
 if leo_path not in sys.path:
     sys.path.insert(0, leo_path)
 del core_dir, leo_path
-# Leo
+# Leo: suppress pyflakes warnings about imports not at top of file.
+from leo.core import leoImport  # noqa
 from leo.core.leoCommands import Commands as Cmdr  # noqa
 from leo.core.leoNodes import Position, VNode  # noqa
 from leo.core.leoGui import StringFindTabManager  # noqa
@@ -1494,12 +1495,10 @@ class LeoServer:
             elif ext in ('nw', 'noweb'):
                 ic.importWebCommand([fn], "noweb")
             elif ext == 'more':
-                # (Félix) leoImport Should be on c?
-                c.leoImport.MORE_Importer(c).import_file(fn)  # #1522.
+                leoImport.MORE_Importer(c).import_file(fn)  # #1522.
             elif ext == 'txt':
-                # (Félix) import_txt_file Should be on c?
                 # #1522: Create an @edit node.
-                c.import_txt_file(c, fn)
+                c.import_txt_file(fn)
             else:
                 # Make *sure* that parent.b is empty.
                 last = c.lastTopLevel()
@@ -5631,7 +5630,7 @@ def main() -> None:  # pragma: no cover (tested in client)
             # None of these grabs focus from the console window.
             dialog.raise_()
             dialog.setFocus()
-            g.app.processEvents()
+            g.app.gui.qtApp.processEvents()
             # val is the same as the creation order.
             val = dialog.exec()
             if val == 0:

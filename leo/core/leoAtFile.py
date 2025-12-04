@@ -2577,7 +2577,7 @@ class AtFile:
             g.es_exception()
             return False
         finally:
-            sys.arg_v = old_sys_argv
+            sys.argv = old_sys_argv
             # #4159: This may not restore the outline as it was,
             # but it's much better than doing nothing.
             c.selectPosition(old_p)

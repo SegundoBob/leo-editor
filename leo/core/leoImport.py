@@ -2466,8 +2466,8 @@ class LegacyExternalFileImporter:
     def add(self, line: str, stack: list[LegacyImportNode]) -> None:
         """Add a line to the present node."""
         if stack:
-            p = stack[-1]
-            p.lines.append(line)
+            node = stack[-1]
+            node.lines.append(line)
         else:
             print('orphan line: ', repr(line))
     #@+node:ekr.20200424160847.1: *3* legacy.compute_delim1

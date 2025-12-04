@@ -2015,7 +2015,7 @@ class Undoer:
         assert c.p == pasted
 
         # Delete the old tree. Its position should still exist.
-        c.p.back.doDelete(pasted)
+        c.p.back().doDelete(pasted)  # 2025/12/01
 
         # Finish
         w.setAllText(u.oldBody)
@@ -2086,14 +2086,14 @@ class Undoer:
         body = p.b
         body = g.checkUnicode(body)
         body_lines = body.split('\n')
-        s = []
+        aList = []
         if leading > 0:
-            s.extend(body_lines[:leading])
+            aList.extend(body_lines[:leading])
         if oldMidLines:
-            s.extend(oldMidLines)
+            aList.extend(oldMidLines)
         if trailing > 0:
-            s.extend(body_lines[-trailing:])
-        s = '\n'.join(s)
+            aList.extend(body_lines[-trailing:])
+        s = '\n'.join(aList)
         # Remove trailing newlines in s.
         while s and s[-1] == '\n':
             s = s[:-1]
