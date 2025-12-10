@@ -33041,7 +33041,7 @@ Scripts can define their own conventions, including:
  
     for p in c.all_positions():
         if in_context('FAQ'):
-            handle_faq node(p)
+            handle_faq_node(p)
         elif in_context('Reference'):
             handle_ref_node(p)
 
