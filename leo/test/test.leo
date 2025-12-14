@@ -21,7 +21,7 @@
 </v>
 </v>
 <v t="ekr.20231231164138.1"></v>
-<v t="ekr.20241206101317.1" descendentVnodeUnknownAttributes="7d71002858010000003071017d71025808000000616e6e6f7461746571037d71042858080000007072696f7269747971054d0f27580a000000707269736574646174657106580a000000323032342d30342d3130710775735805000000302e312e3271087d7109580b0000005f5f626f6f6b6d61726b73710a7d710b580700000069735f64757065710c4930300a73735809000000302e312e322e302e30710d7d710e580b0000005f5f626f6f6b6d61726b73710f7d7110580700000069735f6475706571114930300a73735805000000302e322e3071127d7113580b0000005f5f626f6f6b6d61726b7371147d7115580700000069735f6475706571164930300a73735805000000302e322e3171177d7118580b0000005f5f626f6f6b6d61726b7371197d711a580700000069735f64757065711b4930300a73735803000000302e33711c7d711d580b0000005f5f626f6f6b6d61726b73711e7d711f580700000069735f6475706571204930300a7373752e"><vh>EKR Projects</vh>
+<v t="ekr.20241206101317.1" descendentVnodeUnknownAttributes="7d71002858010000003071017d71025808000000616e6e6f7461746571037d71042858080000007072696f7269747971054d0f27580a000000707269736574646174657106580a000000323032342d30342d3130710775735805000000302e312e3271087d7109580b0000005f5f626f6f6b6d61726b73710a7d710b580700000069735f64757065710c4930300a73735809000000302e312e322e302e30710d7d710e580b0000005f5f626f6f6b6d61726b73710f7d7110580700000069735f6475706571114930300a73735805000000302e322e3071127d7113580b0000005f5f626f6f6b6d61726b7371147d7115580700000069735f6475706571164930300a73735805000000302e322e3171177d7118580b0000005f5f626f6f6b6d61726b7371197d711a580700000069735f64757065711b4930300a7373752e"><vh>Projects</vh>
 <v t="ekr.20241206101317.2"><vh>--- demo.py stuff</vh>
 <v t="ekr.20241206101317.3"><vh>@@@button Demo @key=Ctrl-9</vh>
 <v t="ekr.20241206101317.4"><vh>&lt;&lt; imports &gt;&gt;</vh></v>
@@ -116,21 +116,6 @@
 <v t="ekr.20241206101317.73" descendentVnodeUnknownAttributes="7d710058010000003071017d7102580b0000005f5f626f6f6b6d61726b7371037d7104580700000069735f6475706571054930300a7373732e"><vh>md pictures</vh></v>
 <v t="ekr.20241206101317.74"><vh>Render latex in VR (not ready for Python 3)</vh></v>
 </v>
-<v t="ekr.20241206101317.75" descendentVnodeUnknownAttributes="7d710058010000003071017d7102580b0000005f5f626f6f6b6d61726b7371037d7104580700000069735f6475706571054930300a7373732e"><vh>--- Group theory</vh>
-<v t="ekr.20241206101317.76"><vh>Quaternions</vh></v>
-<v t="ekr.20241206101317.77"><vh>@@button show-table</vh>
-<v t="ekr.20241206101317.78"><vh>class Table</vh>
-<v t="ekr.20241206101317.79"><vh>init</vh></v>
-<v t="ekr.20241206101317.80"><vh>print_*</vh></v>
-<v t="ekr.20241206101317.81"><vh>solve</vh></v>
-</v>
-</v>
-<v t="ekr.20241206101317.82"><vh>Alternating group table</vh></v>
-<v t="ekr.20241206101317.83"><vh>Matrix Group</vh>
-<v t="ekr.20241206101317.84"><vh>define group</vh></v>
-<v t="ekr.20241206101317.85"><vh>row1, row2</vh></v>
-</v>
-</v>
 <v t="ekr.20241206101317.86"><vh>--- jinja</vh>
 <v t="ekr.20241206101317.87"><vh>@jinja</vh>
 <v t="ekr.20241206101317.88"><vh>@jinja template</vh></v>
@@ -144,8 +129,6 @@
 </v>
 <v t="ekr.20241206101345.1" descendentVnodeUnknownAttributes="7d710058010000003071017d71025808000000616e6e6f7461746571037d71042858080000007072696f7269747971054d0f27580a000000707269736574646174657106580a000000323032342d30342d313071077573732e"><vh>Tests</vh>
 <v t="ekr.20230622112641.1"><vh>Tests of UNL (do not delete!)</vh>
-<v t="ekr.20140723122936.18139"><vh>@file ../plugins/importers/__init__.py</vh></v>
-<v t="ekr.20230622112535.1"><vh>@clean ../plugins/leo_babel/__init__.py</vh></v>
 <v t="ekr.20230622112649.1"><vh>Error messages (copy to log)</vh></v>
 <v t="ekr.20230625084119.1"><vh>Legacy UNLs: in this file</vh></v>
 <v t="ekr.20230628090119.1"><vh>Legacy UNLs: other files</vh></v>
@@ -678,15 +661,196 @@
 <v t="ekr.20241206101345.493"><vh>function: process_node_with_openai</vh></v>
 <v t="ekr.20241206101345.494"><vh>function: add_openai_command</vh></v>
 </v>
+<v t="ekr.20251214045245.1"><vh>--- Leo test cases</vh>
+<v t="ekr.20251214045245.2"><vh>--- beautify test</vh>
+<v t="ekr.20251214045245.3"><vh>&lt;&lt; section 1 &gt;&gt;</vh></v>
+<v t="ekr.20251214045245.4"><vh>&lt;&lt; test &gt;&gt;</vh></v>
+<v t="ekr.20251214045245.5"><vh>Node 1</vh></v>
+<v t="ekr.20251214045245.6"><vh>Node 2</vh></v>
 </v>
-<v t="ekr.20140723122936.18139"></v>
-<v t="ekr.20230622112535.1"></v>
+<v t="ekr.20251214045245.7"><vh>--- Rust colorizer bug</vh>
+<v t="ekr.20251214045245.8"><vh>bug example: wrong (now works)</vh></v>
+<v t="ekr.20251214045245.9"><vh>bug example: works</vh></v>
+</v>
+<v t="ekr.20251214045245.10"><vh>template strings</vh></v>
+<v t="ekr.20251214045245.11"><vh>Tests: find-var</vh>
+<v t="ekr.20251214045245.12"><vh>find-var test (python)</vh></v>
+<v t="ekr.20251214045245.13"><vh>find-var test (rust)</vh></v>
+</v>
+<v t="ekr.20251214045245.14"><vh>Tests: graphics</vh>
+<v t="ekr.20251214045245.15"><vh>run turtledemo/penrose.py</vh></v>
+<v t="ekr.20251214045245.16"><vh>mathjax rendering (VR3 only)</vh>
+<v t="ekr.20251214045245.17"><vh>markdown example from .ipynb file</vh></v>
+<v t="ekr.20251214045245.18"><vh>mathjax-test2.html (works)</vh></v>
+<v t="ekr.20251214045245.19"><vh>VR3: test TeX markup (works)</vh></v>
+</v>
+<v t="ekr.20251214045245.20"><vh>working VR examples</vh>
+<v t="ekr.20251214045245.21"><vh>at-html tests</vh>
+<v t="ekr.20251214045245.22"><vh>@html sphinx Link</vh></v>
+<v t="ekr.20251214045245.23"><vh>@html display Leo tree (cool)</vh></v>
+<v t="ekr.20251214045245.24"><vh>@html Leo's home page</vh></v>
+</v>
+<v t="ekr.20251214045245.25"><vh>pdf tests</vh>
+<v t="ekr.20251214045245.26"><vh>@pdf temp</vh></v>
+<v t="ekr.20251214045245.27"><vh>@pdf test</vh></v>
+</v>
+<v t="ekr.20251214045245.28"><vh>at-image tests</vh>
+<v t="ekr.20251214045245.29"><vh>@image LeoSplash (works, but very large)</vh></v>
+<v t="ekr.20251214045245.30"><vh>@path C:\Repos\leo-editor\leo\Icons</vh>
+<v t="ekr.20251214045245.31"><vh>@image LeoSplash (test: using @path)</vh></v>
+</v>
+</v>
+<v t="ekr.20251214045245.32"><vh>at-pyplot tests</vh>
+<v t="ekr.20251214045245.33"><vh>@pyplot barchar_demo</vh></v>
+<v t="ekr.20251214045245.34"><vh>@pyplot basic_example 1</vh></v>
+<v t="ekr.20251214045245.35"><vh>@pyplot basic_example 2</vh></v>
+<v t="ekr.20251214045245.36"><vh>@pyplot matplotlib animate_decay</vh>
+<v t="ekr.20251214045245.37"><vh>data_gen</vh></v>
+<v t="ekr.20251214045245.38"><vh>init</vh></v>
+<v t="ekr.20251214045245.39"><vh>run</vh></v>
+</v>
+<v t="ekr.20251214045245.40"><vh>@pyplot two graphs in same window</vh></v>
+</v>
+<v t="ekr.20251214045245.41"><vh>at-svg tests</vh>
+<v t="ekr.20251214045245.42"><vh>@svg bubbles sources</vh></v>
+<v t="ekr.20251214045245.43"><vh>@svg bubbles.svg</vh></v>
+</v>
+<v t="ekr.20251214045245.44"><vh>docstring test</vh></v>
+<v t="ekr.20251214045245.45"><vh>markdown tests</vh>
+<v t="ekr.20251214045245.46"><vh>markdown test (including url)</vh></v>
+<v t="ekr.20251214045245.47"><vh>markdown test (math)</vh></v>
+<v t="ekr.20251214045245.48"><vh>markdown test (link)</vh></v>
+</v>
+<v t="ekr.20251214045245.49"><vh>rst tests</vh>
+<v t="ekr.20251214045245.50"><vh>rst test (including url)</vh></v>
+<v t="ekr.20251214045245.51"><vh>rst example</vh>
+<v t="ekr.20251214045245.52"><vh>python</vh></v>
+</v>
+<v t="ekr.20251214045245.53"><vh>python code block in rst</vh></v>
+</v>
+<v t="ekr.20251214045245.54"><vh>URLs tests</vh>
+<v t="ekr.20251214045245.55"><vh>@url Leo's home page (md)</vh></v>
+<v t="ekr.20251214045245.56"><vh>@url Leo's home page (rST)</vh></v>
+<v t="ekr.20251214045245.57"><vh>@url mail (rst)</vh></v>
+<v t="ekr.20251214045245.58"><vh>@url weather (md)</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20251214045245.59"><vh>Tests: Jupytext</vh>
+<v t="ekr.20251214045245.60"><vh>--- jupytext: files</vh>
+<v t="ekr.20251214045245.61"><vh>##@jupytext c:/test/minimal_test.ipynb</vh></v>
+<v t="ekr.20251214045245.62"><vh>@path C:/Test/</vh>
+<v t="ekr.20251214045245.63"><vh>##@jupytext Notebooks-intro.ipynb</vh></v>
+</v>
+<v t="ekr.20251214045245.64"><vh>##@jupytext c:/test/ekr-small-test.ipynb</vh>
+<v t="ekr.20251214045245.65"><vh>&lt;&lt; preamble &gt;&gt;</vh></v>
+<v t="ekr.20251214045245.66"><vh>python</vh>
+<v t="ekr.20251214045245.67"><vh>node 1</vh></v>
+<v t="ekr.20251214045245.68"><vh>node 2</vh></v>
+</v>
+<v t="ekr.20251214045245.69"><vh>markdown</vh></v>
+</v>
+<v t="ekr.20251214045245.70"><vh>##@jupytext c:/test/example-data-analysis.ipynb</vh>
+<v t="ekr.20251214045245.71"><vh>&lt;&lt; prefix &gt;&gt;</vh></v>
+<v t="ekr.20251214045245.72"><vh># Loading and Analyzing Data</vh>
+<v t="ekr.20251214045245.73"><vh>programmers like shortening names for</vh></v>
+</v>
+<v t="ekr.20251214045245.74"><vh>## Load the air quality data</vh>
+<v t="ekr.20251214045245.75"><vh>Download the data from the EPA website</vh></v>
+<v t="ekr.20251214045245.76"><vh>air_2019_df =</vh></v>
+<v t="ekr.20251214045245.77"><vh>"{} rows for 2019, {} rows for</vh></v>
+</v>
+<v t="ekr.20251214045245.78"><vh>## Aggregate and average MA data by city</vh>
+<v t="ekr.20251214045245.79"><vh>Step 1 - filter the data down by state</vh></v>
+<v t="ekr.20251214045245.80"><vh>now trim down to just the columns we</vh></v>
+<v t="ekr.20251214045245.81"><vh>now group all the records by city and</vh></v>
+</v>
+<v t="ekr.20251214045245.82"><vh>## Visually Inspect the Data</vh>
+<v t="ekr.20251214045245.83"><vh>alt.Chart(ma_city_avg_df,</vh></v>
+</v>
+</v>
+</v>
+<v t="ekr.20251214045245.84"><vh>##@jupytext c:/test/example-data-analysis.ipynb</vh>
+<v t="ekr.20251214045245.85"><vh>&lt;&lt; prefix &gt;&gt;</vh></v>
+<v t="ekr.20251214045245.86"><vh># Loading and Analyzing Data</vh></v>
+<v t="ekr.20251214045245.87"><vh>programmers like shortening names for</vh></v>
+<v t="ekr.20251214045245.88"><vh>## Load the air quality data</vh></v>
+<v t="ekr.20251214045245.89"><vh>Download the data from the EPA website</vh></v>
+<v t="ekr.20251214045245.90"><vh>air_2019_df =</vh></v>
+<v t="ekr.20251214045245.91"><vh>"{} rows for 2019, {} rows for</vh></v>
+<v t="ekr.20251214045245.92"><vh>## Aggregate and average MA data by city</vh></v>
+<v t="ekr.20251214045245.93"><vh>Step 1 - filter the data down by state</vh></v>
+<v t="ekr.20251214045245.94"><vh>now trim down to just the columns we</vh></v>
+<v t="ekr.20251214045245.95"><vh>now group all the records by city and</vh></v>
+<v t="ekr.20251214045245.96"><vh>## Visually Inspect the Data</vh></v>
+<v t="ekr.20251214045245.97"><vh>alt.Chart(ma_city_avg_df,</vh></v>
+</v>
+<v t="ekr.20251214045245.98"><vh>read .ipynb into a node</vh></v>
+<v t="ekr.20251214045245.99"><vh>##@clean C:/Users/Dev/EKR-Study/test</vh></v>
+<v t="ekr.20251214045245.100"><vh>##@jupytext C:/Users/Dev/EKR-Study/test.ipynb</vh>
+<v t="ekr.20251214045245.101"><vh>&lt;&lt; prefix &gt;&gt;</vh></v>
+<v t="ekr.20251214045245.102"><vh>imports</vh></v>
+<v t="ekr.20251214045245.103"><vh>EKR: new</vh></v>
+<v t="ekr.20251214045245.104"><vh>Images</vh></v>
+<v t="ekr.20251214045245.105"><vh>Figures 1 &amp; 2</vh></v>
+</v>
+<v t="ekr.20251214045245.106"><vh>@command test.ipynb</vh></v>
+<v t="ekr.20251214045245.107"><vh>### @jupytext C:/Repos/EKR-Math/python/CH01/CH01_SEC02.ipynb</vh>
+<v t="ekr.20251214045245.108"><vh>&lt;&lt; prefix &gt;&gt;</vh></v>
+<v t="ekr.20251214045245.109"><vh>imports</vh></v>
+<v t="ekr.20251214045245.110"><vh>Graphs</vh></v>
+<v t="ekr.20251214045245.111"><vh>Images</vh></v>
+<v t="ekr.20251214045245.112"><vh>Figures 1 &amp; 2</vh></v>
+</v>
+</v>
+<v t="ekr.20251214045245.113"><vh>Tests: parse-body</vh>
+<v t="ekr.20251214045245.114"><vh>test of python parse-body</vh></v>
+<v t="ekr.20251214045245.115"><vh>test of rust parse-body</vh></v>
+<v t="ekr.20251214045245.116"><vh>test of typescript parse-body</vh></v>
+</v>
+<v t="ekr.20251214045245.117"><vh>Tests: Syntax coloring</vh>
+<v t="ekr.20251214045245.118"><vh> dump colorer.configDict</vh></v>
+<v t="ekr.20251214045245.119"><vh>--- html tests</vh>
+<v t="ekr.20251214045245.120"><vh>test: html</vh></v>
+<v t="ekr.20251214045245.121"><vh>test: html error</vh></v>
+<v t="ekr.20251214045245.122"><vh>test: html test</vh></v>
+<v t="ekr.20251214045245.123"><vh>test: html w/ js</vh></v>
+</v>
+<v t="ekr.20251214045245.124"><vh>--- jupytext tests</vh>
+<v t="ekr.20251214045245.125"><vh>test: jupytext (@others)</vh></v>
+<v t="ekr.20251214045245.126"><vh>test: jupytext: both</vh></v>
+<v t="ekr.20251214045245.127"><vh>test: jupytext: md</vh></v>
+<v t="ekr.20251214045245.128"><vh>test: jupytext: python</vh></v>
+</v>
+<v t="ekr.20251214045245.129"><vh>test: @killcolor</vh></v>
+<v t="ekr.20251214045245.130"><vh>test: @nocolor &amp; @color</vh></v>
+<v t="ekr.20251214045245.131"><vh>test: at-language md/python</vh></v>
+<v t="ekr.20251214045245.132"><vh>test: c</vh></v>
+<v t="ekr.20251214045245.133"><vh>test: csharp colorizer test</vh></v>
+<v t="ekr.20251214045245.134"><vh>test: css</vh></v>
+<v t="ekr.20251214045245.135"><vh>test: cweb</vh></v>
+<v t="ekr.20251214045245.136"><vh>test: docstring &amp; docpart tests</vh></v>
+<v t="ekr.20251214045245.137"><vh>test: elisp (lisp)</vh></v>
+<v t="ekr.20251214045245.138"><vh>test: GLSL</vh></v>
+<v t="ekr.20251214045245.139"><vh>test: js</vh></v>
+<v t="ekr.20251214045245.140"><vh>test: md</vh></v>
+<v t="ekr.20251214045245.141"><vh>test: nim</vh></v>
+<v t="ekr.20251214045245.142"><vh>test: python</vh></v>
+<v t="ekr.20251214045245.143"><vh>test: python &amp; md</vh></v>
+<v t="ekr.20251214045245.144"><vh>test: rest in rust</vh></v>
+<v t="ekr.20251214045245.145"><vh>test: rest/python</vh></v>
+<v t="ekr.20251214045245.146"><vh>test: rust</vh></v>
+<v t="ekr.20251214045245.147"><vh>test: vue.js</vh></v>
+<v t="ekr.20251214045245.148"><vh>test: vue.js (using @language)</vh></v>
+<v t="ekr.20251214045245.149"><vh>test: wikiview test</vh></v>
+</v>
+<v t="ekr.20251214045245.150"><vh>test of two @doc parts</vh></v>
+</v>
+</v>
 </vnodes>
 <tnodes>
 <t tx="ekr.20180311131353.1" str_leo_pos="3,11"></t>
-<t tx="ekr.20180311195905.1">@language python
-
-"""
+<t tx="ekr.20180311195905.1">"""
 Changes LaTeX section definition levels in the subtree of an @clean file node to their subtree level.
 Only one LaTeX section level can therefore be used within a single node body.
 """
@@ -733,7 +897,10 @@ if g.match_word(h, 0, '@clean') and h.endswith('.tex'):
     else:
         g.es('No nodes changed')
 else:
-    g.es('not a LaTeX file node?')</t>
+    g.es('not a LaTeX file node?')
+    
+@language python
+</t>
 <t tx="ekr.20180311200239.1">@language tex
 @others
 </t>
@@ -745,7 +912,6 @@ else:
 
 </t>
 <t tx="ekr.20180311210803.1"></t>
-<t tx="ekr.20230622112535.1"></t>
 <t tx="ekr.20230622112641.1"># Note: Modify @data unl-path-prefixes (in this file)
 # To match the paths on your machine.</t>
 <t tx="ekr.20230622112649.1"># These links will be active only if the @&lt;file&gt; node exists.
@@ -4292,131 +4458,6 @@ https://github.com/leo-editor/leo-editor/issues/1231
   \nabla \cdot \vec{\mathbf{B}} &amp; = 0
 \end{align}
 </t>
-<t tx="ekr.20241206101317.75" __bookmarks="7d7100580700000069735f6475706571014930300a732e"></t>
-<t tx="ekr.20241206101317.76">Quaternions:
-
-1 * x == x (identity)
-x * 1 == x (identity)
--1 * x == -x (math)
-x * -1 == -x (math)
-i**2 = j**2 = j**2 == -1
-
-From the diagram
-red:
-i*i = -1
-j*i = k
-k*i = -j
--j*i = -k
--i*i = 1
--k*i = j
-
-blue:
-i*j = -k
-j*j = -1
-k*j = i
--k*j = -i
--i*j = k
--j*j = 1
-
-i*j = -k = -j*i
-k*i = -j = -(k*i)
-
-In short
-x*y = -y*x
-
-
-    1       i       j       k       -1      -i      -j      -k
-    ==========================================================
-1   1       i       j       k       -1      -i      -j      -k
-i   i*1     -1     -k     i*(j*i) i*-1    i*-i    i*-j    -i*(j*i)
-    i       -1                      -1      1               
-j   j
-k   k
--1  -1
--i  -i
--j  -j
--k  -k</t>
-<t tx="ekr.20241206101317.77">'''Create multiplication table from identities &amp; assoc law.'''
-g.cls()
-names = "e a a2 b b2 c c2 d d2 x y z".split()
-knowns = [
-    # e any any, any e any
-    'a a a2',
-    'a2 a e',
-    'b a c2',
-    'b2 a y',
-    'c a d2',
-    'c2 a x',
-    'd a b2',
-    'd2 a z',
-    'x a b',
-    'y a d',
-    'z a c',
-    #
-    'a x c',
-    'a2 x b2',
-    'b x d',
-    'b2 x a2',
-    'c x a',
-    'c2 x d2',
-    'd x b',
-    'd2 x c2',
-    'x x e',
-    'y x z',
-    'z x y',
-]
-@others
-x = Table(names, knowns)
-</t>
-<t tx="ekr.20241206101317.78">class Table:
-    
-    def __init__(self, names, knowns):
-        
-        self.n = n = len(names)
-        self.max_n = max([len(z) for z in names])
-        assert names[0] in '1e'
-        self.names = names
-        self.cols = {}
-            # Keys are names, values are dicts.
-        self.rows = {}
-            # Keys are names, values are dicts.
-        self.known_cols = []
-        self.init(knowns)
-        self.solve()
-        self.print_rows()
-        
-    @others
-</t>
-<t tx="ekr.20241206101317.79">def init(self, knowns):
-    '''Init the row dicts.'''
-    for row in names:
-        self.rows[row] = d = {}
-        for col in names:
-            if col in '1e':     d[col] = row
-            elif row in '1e':   d[col] = col
-            else:               d[col] = '?'
-    # Add the known values.
-    known_cols, known_rows = set(), set()
-    for z in knowns:
-        row, col, val = z.split()
-        assert row in names, row
-        assert col in names, col
-        assert val in names, val
-        d = self.rows.get(row)
-        d[col] = val
-        known_cols.add(col)
-        known_rows.add(row)
-    # Invert the row dict to create the column dict.
-    for col in names:
-        self.cols[col] = d = {}
-        for row in names:
-            d2 = self.rows[row]
-            d [row] = d2 [col]
-    # g.trace('known_rows',sorted(known_rows))
-    self.known_cols = list(sorted(known_cols))
-    g.trace('know_cols',self.known_cols)
-    self.print_rows()
-</t>
 <t tx="ekr.20241206101317.8">def teardown(self):
     c = self.c
     self.delete_all_widgets()
@@ -4430,154 +4471,6 @@ x = Table(names, knowns)
     p.expand()
     c.selectPosition(p)
     c.redraw()
-</t>
-<t tx="ekr.20241206101317.80">def print_col(self, name):
-    d = self.cols.get(name)
-    aList = ['%2s' % d.get(z) for z in self.names]
-    print(' %2s: %s' % (name, ' '.join(aList)))
-    
-def print_col_header(self):
-    aList = ['%2s' % z for z in self.names]
-    print('cols:%s' % ' '.join(aList))
-    n = 3 * len(self.names)
-    print('     %s' % ('-' * (n-1)))
-
-def print_row(self, name):
-    d = self.rows.get(name)
-    aList = ['%2s' % d.get(z) for z in self.names]
-    print('%2s: %s' % (name, ' '.join(aList)))
-    
-def print_rows(self):
-    aList = ['%2s' % z for z in self.names]
-    print('    %s' % ' '.join(aList))
-    print('    %s' % ('-' * (3*len(self.names)-1)))
-    for row in self.names:
-        self.print_row(row)
-</t>
-<t tx="ekr.20241206101317.81">def solve(self):
-    '''Solve all unknown columns.'''
-    col1 = self.known_cols[0]
-    col2 = self.known_cols[-1]
-    if 0:
-        self.print_col_header()
-        self.print_col(col1)
-        self.print_col(col2)
-    d1 = self.cols.get(col1)
-    d2 = self.cols.get(col2)
-    unsolved = [z for z in self.names if z not in ('1', 'e', col1, col2)]
-    # For every unsolved column x.
-    for x in unsolved:
-        x_d = self.cols.get(x)
-        # Find y such that x = y * col1
-        for y in self.names:
-            val = d1.get(y)
-            if val == x:
-                g.trace('col: %2s = %2s * %s' % (x, y, col1))
-                break
-        else:
-            g.trace('can not happen: no value for', x)
-            return
-        # Compute all other values for column x using y.
-        # w * x = w * (y * col1)
-        
-        
-        
-        # break ### testing
-    print('===== solved =====')
-           
-</t>
-<t tx="ekr.20241206101317.82">::
-
-        e   a   b   b2  c   c2  d   d2  x   y   z
-        e   a   xa  da  za  ba  ya  ca  c2a d2a b2a
-    e   e   a   b   b2  c   c2  d   d2  x   y   z
-    a   a   a2  d2  ?   ?   ?   ?   ?   c   ?   ?
-    a2  a2  e   y   ?   ?   ?   ?   ?   b2  ?   ?
-    b   b   c2  b2  ?   ?   ?   ?   ?   d   ?   ?
-    b2  b2  y   e   ?   ?   ?   ?   ?   a2  ?   ?
-    c   c   d2  a2  ?   ?   ?   ?   ?   a   ?   ?
-    c2  c2  x   z   ?   ?   ?   ?   ?   d2  ?   ?
-    d   d   b2  ?   ?   ?   ?   ?   ?   b   ?   ?
-    d2  d2  z   ?   ?   ?   ?   ?   ?   c2  ?   ?
-    x   x   b   ?   ?   ?   ?   ?   ?   e   ?   ?
-    y   y   d   ?   ?   ?   ?   ?   ?   z   ?   ?
-    z   z   c   ?   ?   ?   ?   ?   ?   y   ?   ?
-    
-    red arrow: a
-    blue arrow: x
-    # b column
-    b = xa
-      # X  * b  = X(xa)  = (Xx)a
-        a  * b  = a(xa)  = (ax)a  = ca  = d2
-        a2 * b = a2(xa)  = (a2x)a = b2a = y
-        b  * b  = b(xa)  = (bx)a  = da  = b2
-        b2 * b = b2(xa)  = (b2x)a = a2a = e
-        c  * b  = c(xa)  = (cx)a  = aa  = a2
-        c2 * b = c2(xa)  = (c2x)a = d2a = z
-        d  * b  = d(xa)  = (dx)a  = ba  = c2
-        
-    # identity:  e  = a2a
-    # a2 column: a2 = aa
-    # b2 column: b2 = da
-    # c  column: c  = za
-    # c2 column: c2 = ba
-    # d  column: d  = ya
-    # d2 column: d2 = ca
-    # x  column: x  = c2a
-    # y  column: y  = b2a
-    # z  column: z  = d2a
-</t>
-<t tx="ekr.20241206101317.83">g.cls()
-import numpy as np
-@others
-i = 0
-while i &lt; len(group):
-    a = group[i]
-    for b in group:
-        b = np.dot(a, b)
-        for c in group:
-            if np.array_equal(b, c):
-                break
-        else:
-            # print('i: %s Added\n%s' % (i, b))
-            group.append(b)
-    i += 1
-assert len(group) == 8, len(group)
-# Print the group table:
-print(' '*8 + '  '.join([row1(m) for m in group]))
-print(' '*8 + '  '.join([row2(m) for m in group]))
-print(' '*8 + '=' * 70)
-for i in range(8):
-    row = group[i]
-    print('%s %s' % (
-        row1(row),
-        '  '.join([row1(np.dot(row,m)) for m in group])))
-    print('%s %s' % (
-        row2(row),
-        '  '.join([row2(np.dot(row,m)) for m in group])))
-    print('')
-        </t>
-<t tx="ekr.20241206101317.84">a0 = np.matrix((
-    (1, 0),
-    (0, 1),
-))
-a1 = np.matrix((
-    (0, 1),
-    (1, 0),
-))
-a2 = np.matrix((
-    (1, 0),
-    (0, -1)
-))
-group = [a0, a1, a2]
-</t>
-<t tx="ekr.20241206101317.85">def row1(matrix):
-
-    return '[%2s %2s]' % (matrix[0,0], matrix[0,1])
-    
-def row2(matrix):
-    
-    return '[%2s %2s]' % (matrix[1,0], matrix[1,1])
 </t>
 <t tx="ekr.20241206101317.86"></t>
 <t tx="ekr.20241206101317.87">Hello World!</t>
@@ -14882,6 +14775,4392 @@ from .pep8 import pep8_lines_between_cells
         code_cell_delimiter += "`"
 
     return code_cell_delimiter
+</t>
+<t tx="ekr.20251214045245.1"></t>
+<t tx="ekr.20251214045245.10">@language python
+# https://peps.python.org/pep-0750/
+try:
+    from string.templatelib import Template
+    name = 'Edward'
+    template: Template = t"Hello {name}"
+except AttributeError:
+    pass
+</t>
+<t tx="ekr.20251214045245.100">&lt;&lt; prefix &gt;&gt;
+@others
+@language jupytext
+@tabwidth -4
+</t>
+<t tx="ekr.20251214045245.101"># ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.4
+#   kernelspec:
+#     display_name: Python 3
+#     language: python
+#     name: python3
+# ---
+
+</t>
+<t tx="ekr.20251214045245.102"># %%
+
+from matplotlib.image import imread
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+</t>
+<t tx="ekr.20251214045245.103"># %% [markdown]
+#
+# Section 1
+# ---------
+#
+# Section 1, line 1.
+
+# %%
+
+plt.rcParams['figure.figsize'] = [16, 8]
+
+A = imread(os.path.join('..','DATA','dog.jpg'))
+X = np.mean(A, -1); # Convert RGB to grayscale
+
+img = plt.imshow(X)
+img.set_cmap('gray')
+plt.axis('off')
+plt.show()
+</t>
+<t tx="ekr.20251214045245.104"># %%
+
+U, S, VT = np.linalg.svd(X,full_matrices=False)
+S = np.diag(S)
+
+j = 0
+for r in (5, 20, 100):
+    # Construct approximate image
+    Xapprox = U[:,:r] @ S[0:r,:r] @ VT[:r,:]
+    plt.figure(j+1)
+    j += 1
+    img = plt.imshow(Xapprox)
+    img.set_cmap('gray')
+    plt.axis('off')
+    plt.title('r = ' + str(r))
+    plt.show()
+
+</t>
+<t tx="ekr.20251214045245.105"># %%
+
+plt.figure(1)
+plt.semilogy(np.diag(S))
+plt.title('Singular Values')
+plt.show()
+
+plt.figure(2)
+plt.plot(np.cumsum(np.diag(S))/np.sum(np.diag(S)))
+plt.title('Singular Values: Cumulative Sum')
+plt.show()
+
+</t>
+<t tx="ekr.20251214045245.106">g.cls()
+g.cls()
+
+h = '@jupytext C:/Users/Dev/EKR-Study/python/CODE_PYTHON/CH01/CH01_SEC02.ipynb'
+root = g.findNodeAnywhere(c, h)
+assert root, h
+
+c.selectPosition(root)
+c.executeScript()
+</t>
+<t tx="ekr.20251214045245.107">&lt;&lt; prefix &gt;&gt;
+@others
+@language jupytext
+@tabwidth -4
+</t>
+<t tx="ekr.20251214045245.108"># ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.4
+#   kernelspec:
+#     display_name: Python 3
+#     language: python
+#     name: python3
+# ---
+
+</t>
+<t tx="ekr.20251214045245.109"># %%
+
+from matplotlib.image import imread
+import matplotlib.pyplot as plt
+import numpy as np
+import os
+
+# c:/Users/Data is the data folder.</t>
+<t tx="ekr.20251214045245.11"></t>
+<t tx="ekr.20251214045245.110"># %%
+
+plt.rcParams['figure.figsize'] = [16, 8]
+A = imread(os.path.join('..', 'DATA', 'dog.jpg'))
+X = np.mean(A, -1); # Convert RGB to grayscale
+
+img = plt.imshow(X)
+img.set_cmap('gray')
+plt.axis('off')
+plt.show()
+
+</t>
+<t tx="ekr.20251214045245.111"># %%
+
+U, S, VT = np.linalg.svd(X,full_matrices=False)
+S = np.diag(S)
+
+j = 0
+for r in (5, 20, 100):
+    # Construct approximate image
+    Xapprox = U[:,:r] @ S[0:r,:r] @ VT[:r,:]
+    plt.figure(j+1)
+    j += 1
+    img = plt.imshow(Xapprox)
+    img.set_cmap('gray')
+    plt.axis('off')
+    plt.title('r = ' + str(r))
+    plt.show()
+
+</t>
+<t tx="ekr.20251214045245.112"># %%
+
+plt.figure(1)
+plt.semilogy(np.diag(S))
+plt.title('Singular Values')
+plt.show()
+
+plt.figure(2)
+plt.plot(np.cumsum(np.diag(S))/np.sum(np.diag(S)))
+plt.title('Singular Values: Cumulative Sum')
+plt.show()
+
+</t>
+<t tx="ekr.20251214045245.113"></t>
+<t tx="ekr.20251214045245.114">@language python
+
+def spam2():
+    """A docstring"""
+    print('a string')
+
+def spam3():
+    pass
+
+class NewClass:
+    def f1(self):
+        pass
+</t>
+<t tx="ekr.20251214045245.115">@language rust
+
+fn spam() {
+    println!("spam");
+}
+
+fn eggs() {
+    println!("eggs");
+}
+</t>
+<t tx="ekr.20251214045245.116">@language typescript
+
+public watch(p_resource: vscode.Uri, p_options: { readonly recursive: boolean; readonly excludes: readonly string[] }): vscode.Disposable {
+    const w_gnx = utils.leoUriToStr(p_resource);
+    if (!this.watchedBodiesGnx.includes(w_gnx)) {
+        this.watchedBodiesGnx.push(w_gnx); // add gnx
+    }
+    // else already in list
+    return new vscode.Disposable(() =&gt; {
+        const w_position = this.watchedBodiesGnx.indexOf(w_gnx); // find and remove it
+        if (w_position &gt; -1) {
+            this.watchedBodiesGnx.splice(w_position, 1);
+        }
+    });
+}
+
+public stat(p_uri: vscode.Uri): vscode.FileStat {
+    if (this._leoUi.leoStates.fileOpenedReady) {
+        const w_gnx = utils.leoUriToStr(p_uri);
+        if (p_uri.fsPath.length === 1) {
+
+            return { type: vscode.FileType.Directory, ctime: 0, mtime: 0, size: 0 };
+            // SPECIAL CASE -----------------------------------------------
+        } else if (w_gnx === this._lastGnx &amp;&amp; this._openedBodiesInfo[this._lastGnx]) {
+            return {
+                type: vscode.FileType.File,
+                ctime: this._openedBodiesInfo[this._lastGnx].ctime,
+                mtime: this._openedBodiesInfo[this._lastGnx].mtime,
+                size: this._lastBodyLength
+            };
+            // ------------------------------------------------------------
+        } else if (this._openedBodiesInfo[w_gnx]) {
+            const c = g.app.windowList[this._leoUi.frameIndex].c;
+            const w_v = c.fileCommands.gnxDict[w_gnx];
+            return {
+                type: vscode.FileType.File,
+                ctime: this._openedBodiesInfo[w_gnx].ctime,
+                mtime: this._openedBodiesInfo[w_gnx].mtime,
+                size: Buffer.byteLength(w_v.b, 'utf8') // w_v.b.length
+            };
+        }
+    }
+    // throw vscode.FileSystemError.FileNotFound();
+    // (Instead of FileNotFound) should be caught by _onActiveEditorChanged or _changedVisibleTextEditors
+    return { type: vscode.FileType.File, ctime: 0, mtime: 0, size: 0 };
+}</t>
+<t tx="ekr.20251214045245.117"></t>
+<t tx="ekr.20251214045245.118">g.cls()
+colorer = c.frame.body.colorizer
+d = colorer.configDict
+keys = [z for z in d if 'literal' in z]
+d2 = {key: d[key] for key in keys}
+g.printObj(d2)
+</t>
+<t tx="ekr.20251214045245.119"></t>
+<t tx="ekr.20251214045245.12">@language python
+
+def spam():
+    pass
+    
+spam</t>
+<t tx="ekr.20251214045245.120">@language html
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;h2&gt;Width and Height Attributes&lt;/h2&gt;
+
+&lt;p&gt;
+The width and height attributes of the img tag, defines the width and
+height of the image:
+&lt;/p&gt;
+
+&lt;img src="img_girl.jpg" width="500" height="600"&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</t>
+<t tx="ekr.20251214045245.121">@language html
+
+&lt;!DOCTYPE html&gt;
+&lt;
+&lt;body&gt;
+
+&lt;/html&gt;
+</t>
+<t tx="ekr.20251214045245.122">@language html
+
+&lt;html&gt;
+
+&lt;style&gt;
+body {background-color: powderblue;}
+h1   {color: blue;}
+p    {color: red;}
+&lt;/style&gt;
+
+&lt;/html&gt;
+
+</t>
+<t tx="ekr.20251214045245.123">@language html
+
+&lt;head&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue'
+const greeting = ref('Hello World!')
+&lt;/script&gt;
+
+&lt;/head&gt;</t>
+<t tx="ekr.20251214045245.124"></t>
+<t tx="ekr.20251214045245.125">@language jupytext
+
+@others  # test.
+
+
+@language python
+
+@others  # test2.</t>
+<t tx="ekr.20251214045245.126">@language jupytext
+
+# %% [markdown]
+# Loading and Analyzing Data
+# ==========================
+
+A **bold** word.
+
+# %%
+import pandas as pd  # A comment
+
+def spam(s: str) -&gt; str:
+    print(s)
+    
+spam('Hi')
+
+    
+# %% [markdown]
+
+*Italics* and **bold**.
+</t>
+<t tx="ekr.20251214045245.127">@language jupytext
+
+# %% [markdown]
+# Loading and Analyzing Data
+# ==========================
+
+A **bold** word.
+</t>
+<t tx="ekr.20251214045245.128">@language jupytext
+
+# %%
+def spam(s: str) -&gt; str:
+    """A docstring a"""
+    return '1234'
+
+</t>
+<t tx="ekr.20251214045245.129">@killcolor
+
+@language jupytext
+
+# %% [markdown]
+# Loading and Analyzing Data
+# ==========================
+
+A **bold** word.
+
+# %%
+import pandas as pd  # A comment
+
+def spam(s: str) -&gt; str:
+    return 'hi123'
+    
+# %% [markdown]
+
+*Italics* and **bold**.
+</t>
+<t tx="ekr.20251214045245.13">@language rust
+
+fn spam {
+
+}
+    
+spam</t>
+<t tx="ekr.20251214045245.130"># @killcolor
+
+@nocolor
+@language python
+
+def spam():
+    pass
+
+@color
+
+def spam2():
+    pass</t>
+<t tx="ekr.20251214045245.131">@language md
+@wrap
+@nosearch
+
+https://github.com/leo-editor/leo-editor/issues/4146
+PR: https://github.com/leo-editor/leo-editor/pull/4147
+
+# Section
+## Section
+
+@language python
+
+def spam():
+    if </t>
+<t tx="ekr.20251214045245.132">@language c
+
+# include abc
+#ifdef
+#else
+    whatever;
+#endif
+
+int foo ();
+
+while 1 {
+    a = @b;
+    goto done;
+done:
+}
+
+/* Comment */
+
+/** Doxygen comment
+*/
+
+/*! Doxygen comment */
+</t>
+<t tx="ekr.20251214045245.133">@language csharp
+
+// Test
+
+if (abc):
+    a = b;</t>
+<t tx="ekr.20251214045245.134">@language css
+
+&lt;style&gt;
+body {background-color: powderblue;}
+h1   {color: blue;}
+p    {color: red;}
+&lt;/style&gt;
+
+</t>
+<t tx="ekr.20251214045245.135">@language cweb
+
+% This is limbo in cweb mode... It should be in \LaTeX mode, not \c mode.
+% The following should not be colorized: class,if,else.
+
+@* this is a _cweb_ comment.  Code is written in \c.
+"strings" should not be colorized.
+It should be colored in \LaTeX mode.
+The following are not keywords in latex mode: if, else, etc.
+Noweb section references are _valid_ in cweb comments!
+&lt; &lt; section ref &gt; &gt;
+&lt; &lt; missing ref &gt; &gt;
+@c
+
+and this is C code. // It is colored in \LaTeX mode by default.
+/* This is a C block comment.  It may also be colored in restricted \LaTeX mode. */
+
+// Section refs are valid in code too, of course.
+&lt; &lt; section ref &gt; &gt;
+&lt; &lt; missing ref &gt; &gt;
+
+\LaTeX and \c should not be colored.
+if else, while, do // C keywords.
+</t>
+<t tx="ekr.20251214045245.136">@language python
+
+# Depends on @bool color-docstrings-as-rest.
+
+# Depends on @bool color-docparts-as-rest.
+
+@
+This is *italic*
+@c 
+
+"""
+Should be *italic*.
+"""
+
+'''
+Should be **bold**.
+'''
+
+# Should be a regular comment.
+
+# Depends on @bool color-docparts-as-rest.
+
+@
+This is *bold*
+@c 
+
+# Should be a regular comment.</t>
+<t tx="ekr.20251214045245.137">@language elisp
+
+; Maybe...
+error princ
+
+; More typical of other lisps...
+and apply
+car cdr cons cond
+defconst defun defvar
+eq equal eval
+gt ge
+if
+let le lt
+mapcar
+ne nil
+or not
+prog progn
+set setq
+t type-of
+unless
+when while</t>
+<t tx="ekr.20251214045245.138">@language glsl
+
+if 1 {
+
+}</t>
+<t tx="ekr.20251214045245.139">@language javascript
+
+&lt;script setup&gt;
+import { ref } from 'vue'
+const greeting = ref('Hello World!')
+&lt;/script&gt;
+</t>
+<t tx="ekr.20251214045245.14"></t>
+<t tx="ekr.20251214045245.140">@language md
+
+# Loading and Analyzing Data
+# ==========================
+
+*Italics* and **bold**.
+More markdown. nxy
+
+Here is come python code::
+
+    print('Hi')
+</t>
+<t tx="ekr.20251214045245.141">@language nim
+
+sub: RootObj = huh #
+n: Natural = range(0..9)
+r: Rune = 'é'
+a: any = none
+b: bool = false
+s: string = "Single string"
+f1: float64 = 0.0d
+f2: float32 = -.0f32
+f3: float = 1f+1
+i: int = 1_000_000
+u'abd = 2u32
+var x = 5'u4
+c = 'abc'
+
+#[ A multi-line comment.
+    #[
+        Blah.
+    ]#
+]#
+
+# GitHub colors all other constants blue, including system constants:
+42
+3.5
+AllocStats
+DivByZeroError
+BiggestUInt
+Slice
+SomeFloat
+
+# GitHub colors system functions purple:
+echo "Hi"
+alloc()
+
+# GitHub does not color modules that "system" imports.
+import exceptions  # Imported by system module.
+import Exception  # Defined in system module.
+</t>
+<t tx="ekr.20251214045245.142">@language python
+def spam(s: str) -&gt; str:
+    """A docstring a"""
+    g.es_print(s)
+
+spam('1234')</t>
+<t tx="ekr.20251214045245.143">@language python
+
+import pandas as pd  # A comment
+
+def spam(s: str) -&gt; str:
+    return 'hi'
+    
+@language md
+
+# Loading and Analyzing Data
+# ==========================
+
+*Italics* and **bold**
+
+More markdown. 
+</t>
+<t tx="ekr.20251214045245.144">@language rust
+
+/// Test `a` *itilic* **bold**</t>
+<t tx="ekr.20251214045245.145">@language rest
+@wrap
+@nosearch
+
+https://github.com/leo-editor/leo-editor/issues/4146
+PR: https://github.com/leo-editor/leo-editor/pull/4147
+
+- Item 1
+- Item 2.
+
+***A label.
+
+.. comment.
+
+@language python
+
+def spam(s: str) -&gt; str:
+    g.es_print(s)
+    
+spam('Hi')</t>
+<t tx="ekr.20251214045245.146">@language rust
+
+/// Triple comment.
+
+// Characters, length 10 and 6.
+char10 = '\u{7fff}'
+char6 = '\x7f'
+
+// Characters, length 4.
+nl = '\n'
+null = '\0'
+tab = '\t'
+ret = '\r'
+bs = '\\'
+
+// Characters, length 3.
+a = 'x' 
+b = 'é'
+
+// Lifetimes.
+pub fn &lt;'a&gt;:
+'a
+'static
+'static&gt;
+
+// Errors.
+other 'xx
+bad_escaple '\y'
+</t>
+<t tx="ekr.20251214045245.147">@language vue
+
+&lt;template&gt;
+  &lt;body&gt;
+    &lt;h2&gt;Width and Height Attributes&lt;/h2&gt;
+    &lt;p class="greeting"&gt;{{ greeting }}&lt;/p&gt;
+    &lt;p&gt;
+    The width and height attributes of the img tag, defines the width and
+    height of the image:
+    &lt;/p&gt;
+    &lt;img src="img_girl.jpg" width="500" height="600"&gt;
+  &lt;/body&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue'
+const greeting = ref('Hello World!')
+&lt;/script&gt;
+
+&lt;style&gt;
+body {background-color: powderblue;}
+h1   {color: blue;}
+p    {color: red;}
+.greeting {
+  color: red;
+  font-weight: bold;
+}
+&lt;/style&gt;
+
+&lt;template&gt;
+  &lt;p class="greeting"&gt;{{ greeting 3 }}&lt;/p&gt;
+&lt;/template&gt;</t>
+<t tx="ekr.20251214045245.148">@language javascript
+
+&lt;script setup&gt;
+import { ref } from 'vue'
+const greeting = ref('Hello World!')
+&lt;/script&gt;
+
+@language vue
+
+&lt;template&gt;
+  &lt;p class="greeting"&gt;{{ greeting }}&lt;/p&gt;
+&lt;/template&gt;
+
+@language css
+
+&lt;style&gt;
+body {background-color: powderblue;}
+h1   {color: blue;}
+p    {color: red;}
+.greeting {
+  color: red;
+  font-weight: bold;
+}
+&lt;/style&gt;</t>
+<t tx="ekr.20251214045245.149">http://www.google.com/search</t>
+<t tx="ekr.20251214045245.15">command = r'python c:\Python\Python3.13\Lib\turtledemo\penrose.py'
+g.execute_shell_commands(command)
+
+</t>
+<t tx="ekr.20251214045245.150">@
+line 1
+@
+another line
+line 2
+@c
+@c
+</t>
+<t tx="ekr.20251214045245.16">@language html
+@wrap
+@tabwidth -2</t>
+<t tx="ekr.20251214045245.17">@language md
+
+&lt;h2&gt;Feed-forward Network Functions&lt;/h2&gt;
+We will consider a basic two layer neural network model, i.e a model that maps inputs to a hidden layer and then to an output layer. We will make **the following assumptions**
+
+1. The final output will be a vector $Y$ with $K$ elements, $y_k$, where $y_k(\mathbf{x},\mathbf{w}) = p(C_1|\mathbf{x})$ is the probability that node $k$ is in class $C_1$ and $p(C_2|\mathbf{x}) = 1-p(C_1|\mathbf{x})$
+2. The activation function at a given layer is an arbitrary nonlinear function of a linear combination of the inputs and parameters for that layer
+3. The network is fully connected, i.e. every node at the input layer is connected to every node in the hidden layer and every node in the hidden layer is connected to every node in the output layer
+4. A bias parameter is included at the hidden and output layers
+
+Working from the input layer toward the output layer, we can build this model as follows:
+
+&lt;h3&gt;Input Layer&lt;/h3&gt;
+Assume we have an input vector $\mathbf{x} \in \Re^D$. Then the input layer consists of $D+1$ nodes where the value of the $i^{th}$ node for $i=0\ldots D$, is 0 if $i=0$ and $x_i$, i.e. the $i^{th}$ value of $\mathbf{x}$, otherwise.
+
+&lt;h3&gt;Hidden Layer&lt;/h3&gt;
+At the hidden layer we construct $M$ nodes where the value of $M$ depends on the specifics of the particular modeling problem. For each node, we define a *unit activation*, $a_m$, for $m=1\ldots M$ as &lt;br/&gt;
+$a_m = \sum_{i=0}^D w_{ji}^{(1)}x_i$ &lt;br/&gt;
+where the $(1)$ superscript indicates this weight is for the hidden layer. The output from each node, $z_m$, is then given by the value of a *fixed nonlinear function*, $h$, known as the *activation function*, acting on the unit activation&lt;br/&gt;
+$z_m = h(a_m) = h \left( \sum_{i=0}^D w_{mi}^{(1)}x_i \right)$&lt;br/&gt;
+Notice that $h$ is the same function for all nodes.
+&lt;h3&gt;Output Layer&lt;/h3&gt;
+The process at the output layer is essentially the same as at the hidden layer. We construct $K$ nodes, where again the value of $K$ depends on the specific modeling problem. For each node, we again define a *unit activation*, $a_k$, for $k=1 \ldots K$ by&lt;br/&gt;
+$a_k = \sum_{m=0}^M w_{km}^{(2)} z_m$ &lt;br/&gt;
+We again apply a nonlinear activation function, say $y$, to produce the output&lt;br/&gt;
+$y_k = y(a_k)$
+
+Thus, the entire model can be summarized as a $K$ dimensional output vector $Y \in \Re^K$ where each element $y_k$ by&lt;br/&gt;
+$y_k(\mathbf{x},\mathbf{w}) = y \left( \sum_{m=0}^M w_{km}^{(2)} h \left( \sum_{i=0}^D w_{mi}^{(1)}x_i \right) \right)$
+
+&lt;h3&gt;Generalizations&lt;/h3&gt;
+There are a wide variety of generalizations possible for this model. Some of the more important ones for practical applications include
+
+* Addition of hidden layers
+* Inclusion of *skip-layer* connections, e.g. a connection from an input node directly to an output node
+* Sparse network, i.e. not a fully connected network</t>
+<t tx="ekr.20251214045245.18">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+
+&lt;script type="text/x-mathjax-config"&gt;
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+&lt;/script&gt;
+
+&lt;script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML"&gt;
+&lt;/script&gt;
+
+
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;p&gt;&lt;mathjax&gt;
+
+&lt;h2&gt;Feed-forward Network Functions&lt;/h2&gt;
+We will consider a basic two layer neural network model, i.e a model that maps inputs to a hidden layer and then to an output layer. We will make &lt;b&gt;the following 
+assumptions&lt;/b&gt;
+
+1. The final output will be a vector $Y$ with $K$ elements, $y_k$, where $y_k(\mathbf{x},\mathbf{w}) = p(C_1|\mathbf{x})$ is the probability that node $k$ is in class $C_1$ and $p(C_2|\mathbf{x}) = 1-p(C_1|\mathbf{x})$
+2. The activation function at a given layer is an arbitrary nonlinear function of a linear combination of the inputs and parameters for that layer
+3. The network is fully connected, i.e. every node at the input layer is connected to every node in the hidden layer and every node in the hidden layer is connected to every node in the output layer
+4. A bias parameter is included at the hidden and output layers
+
+Working from the input layer toward the output layer, we can build this model as follows:
+
+&lt;h3&gt;Input Layer&lt;/h3&gt;
+Assume we have an input vector $\mathbf{x} \in \Re^D$. Then the input layer consists of $D+1$ nodes where the value of the $i^{th}$ node for $i=0\ldots D$, is 0 if $i=0$ and $x_i$, i.e. the $i^{th}$ value of $\mathbf{x}$, otherwise.
+
+&lt;h3&gt;Hidden Layer&lt;/h3&gt;
+At the hidden layer we construct $M$ nodes where the value of $M$ depends on the specifics of the particular modeling problem. For each node, we define a *unit activation*, $a_m$, for $m=1\ldots M$ as &lt;br/&gt;
+$a_m = \sum_{i=0}^D w_{ji}^{(1)}x_i$ &lt;br/&gt;
+where the $(1)$ superscript indicates this weight is for the hidden layer. The output from each node, $z_m$, is then given by the value of a *fixed nonlinear function*, $h$, known as the *activation function*, acting on the unit activation&lt;br/&gt;
+$z_m = h(a_m) = h \left( \sum_{i=0}^D w_{mi}^{(1)}x_i \right)$&lt;br/&gt;
+Notice that $h$ is the same function for all nodes.
+&lt;h3&gt;Output Layer&lt;/h3&gt;
+The process at the output layer is essentially the same as at the hidden layer. We construct $K$ nodes, where again the value of $K$ depends on the specific modeling problem. For each node, we again define a *unit activation*, $a_k$, for $k=1 \ldots K$ by&lt;br/&gt;
+$a_k = \\sum_{m=0}^M w_{km}^{(2)} z_m$ &lt;br/&gt;
+We again apply a nonlinear activation function, say $y$, to produce the output&lt;br/&gt;
+$y_k = y(a_k)$
+
+Thus, the entire model can be summarized as a $K$ dimensional output vector $Y \in \Re^K$ where each element $y_k$ by&lt;br/&gt;
+$y_k(\mathbf{x},\mathbf{w}) = y \left( \sum_{m=0}^M w_{km}^{(2)} h \left( \sum_{i=0}^D w_{mi}^{(1)}x_i \right) \right)$
+
+&lt;h3&gt;Generalizations&lt;/h3&gt;
+There are a wide variety of generalizations possible for this model. Some of the more important ones for practical applications include
+
+* Addition of hidden layers
+* Inclusion of *skip-layer* connections, e.g. a connection from an input node directly to an output node
+* Sparse network, i.e. not a fully connected network
+
+&lt;!-- $$ --&gt;
+&lt;/mathjax&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;
+
+</t>
+<t tx="ekr.20251214045245.19">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;!-- saved from url=(0043)file:///C:/Users/tom/.leo/leo_rst_html.html --&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"&gt;&lt;head&gt;&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+
+&lt;meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/"&gt;
+&lt;title&gt;Formula&lt;/title&gt;
+&lt;script type="text/javascript" src="./vr3-mathjax-sample_files/tex-mml-chtml.js.download"&gt;&lt;/script&gt;&lt;style type="text/css"&gt;.CtxtMenu_InfoClose {  top:.2em; right:.2em;}
+.CtxtMenu_InfoContent {  overflow:auto; text-align:left; font-size:80%;  padding:.4em .6em; border:1px inset; margin:1em 0px;  max-height:20em; max-width:30em; background-color:#EEEEEE;  white-space:normal;}
+.CtxtMenu_Info.CtxtMenu_MousePost {outline:none;}
+.CtxtMenu_Info {  position:fixed; left:50%; width:auto; text-align:center;  border:3px outset; padding:1em 2em; background-color:#DDDDDD;  color:black;  cursor:default; font-family:message-box; font-size:120%;  font-style:normal; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 15px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius:15px;               /* Safari and Chrome */  -moz-border-radius:15px;                  /* Firefox */  -khtml-border-radius:15px;                /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 &amp; Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */  filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color="gray", Positive="true"); /* IE */}
+&lt;/style&gt;&lt;style type="text/css"&gt;.CtxtMenu_MenuClose {  position:absolute;  cursor:pointer;  display:inline-block;  border:2px solid #AAA;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  font-family: "Courier New", Courier;  font-size:24px;  color:#F0F0F0}
+.CtxtMenu_MenuClose span {  display:block; background-color:#AAA; border:1.5px solid;  border-radius:18px;  -webkit-border-radius: 18px;             /* Safari and Chrome */  -moz-border-radius: 18px;                /* Firefox */  -khtml-border-radius: 18px;              /* Konqueror */  line-height:0;  padding:8px 0 6px     /* may need to be browser-specific */}
+.CtxtMenu_MenuClose:hover {  color:white!important;  border:2px solid #CCC!important}
+.CtxtMenu_MenuClose:hover span {  background-color:#CCC!important}
+.CtxtMenu_MenuClose:hover:focus {  outline:none}
+&lt;/style&gt;&lt;style type="text/css"&gt;.CtxtMenu_Menu {  position:absolute;  background-color:white;  color:black;  width:auto; padding:5px 0px;  border:1px solid #CCCCCC; margin:0; cursor:default;  font: menu; text-align:left; text-indent:0; text-transform:none;  line-height:normal; letter-spacing:normal; word-spacing:normal;  word-wrap:normal; white-space:nowrap; float:none; z-index:201;  border-radius: 5px;                     /* Opera 10.5 and IE9 */  -webkit-border-radius: 5px;             /* Safari and Chrome */  -moz-border-radius: 5px;                /* Firefox */  -khtml-border-radius: 5px;              /* Konqueror */  box-shadow:0px 10px 20px #808080;         /* Opera 10.5 and IE9 */  -webkit-box-shadow:0px 10px 20px #808080; /* Safari 3 &amp; Chrome */  -moz-box-shadow:0px 10px 20px #808080;    /* Forefox 3.5 */  -khtml-box-shadow:0px 10px 20px #808080;  /* Konqueror */}
+.CtxtMenu_MenuItem {  padding: 1px 2em;  background:transparent;}
+.CtxtMenu_MenuArrow {  position:absolute; right:.5em; padding-top:.25em; color:#666666;  font-family: null; font-size: .75em}
+.CtxtMenu_MenuActive .CtxtMenu_MenuArrow {color:white}
+.CtxtMenu_MenuArrow.CtxtMenu_RTL {left:.5em; right:auto}
+.CtxtMenu_MenuCheck {  position:absolute; left:.7em;  font-family: null}
+.CtxtMenu_MenuCheck.CtxtMenu_RTL { right:.7em; left:auto }
+.CtxtMenu_MenuRadioCheck {  position:absolute; left: .7em;}
+.CtxtMenu_MenuRadioCheck.CtxtMenu_RTL {  right: .7em; left:auto}
+.CtxtMenu_MenuInputBox {  padding-left: 1em; right:.5em; color:#666666;  font-family: null;}
+.CtxtMenu_MenuInputBox.CtxtMenu_RTL {  left: .1em;}
+.CtxtMenu_MenuComboBox {  left:.1em; padding-bottom:.5em;}
+.CtxtMenu_MenuSlider {  left: .1em;}
+.CtxtMenu_SliderValue {  position:absolute; right:.1em; padding-top:.25em; color:#333333;  font-size: .75em}
+.CtxtMenu_SliderBar {  outline: none; background: #d3d3d3}
+.CtxtMenu_MenuLabel {  padding: 1px 2em 3px 1.33em;  font-style:italic}
+.CtxtMenu_MenuRule {  border-top: 1px solid #DDDDDD;  margin: 4px 3px;}
+.CtxtMenu_MenuDisabled {  color:GrayText}
+.CtxtMenu_MenuActive {  background-color: #606872;  color: white;}
+.CtxtMenu_MenuDisabled:focus {  background-color: #E8E8E8}
+.CtxtMenu_MenuLabel:focus {  background-color: #E8E8E8}
+.CtxtMenu_ContextMenu:focus {  outline:none}
+.CtxtMenu_ContextMenu .CtxtMenu_MenuItem:focus {  outline:none}
+.CtxtMenu_SelectionMenu {  position:relative; float:left;  border-bottom: none; -webkit-box-shadow:none; -webkit-border-radius:0px; }
+.CtxtMenu_SelectionItem {  padding-right: 1em;}
+.CtxtMenu_Selection {  right: 40%; width:50%; }
+.CtxtMenu_SelectionBox {  padding: 0em; max-height:20em; max-width: none;  background-color:#FFFFFF;}
+.CtxtMenu_SelectionDivider {  clear: both; border-top: 2px solid #000000;}
+.CtxtMenu_Menu .CtxtMenu_MenuClose {  top:-10px; left:-10px}
+&lt;/style&gt;
+&lt;style type="text/css"&gt;
+
+/* +---------------+
+/* | normalize.css |
+ * +---------------+
+ */
+
+/**
+ * Sources
+ *1. Docutils solarized-dark theme adapted from
+ *    https://github.com/fladd/docutils-solarized
+ *
+ *2. Pygments additions by T. B. Passin.
+ */
+
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+  font-family: sans-serif; /* 1 */
+  -ms-text-size-adjust: 100%; /* 2 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+/**
+ * Remove default margin.
+ */
+
+body {
+  margin: 0;
+}
+
+/* HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined for any HTML5 element in IE 8/9.
+ * Correct `block` display not defined for `details` or `summary` in IE 10/11
+ * and Firefox.
+ * Correct `block` display not defined for `main` in IE 11.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+/**
+ * 1. Correct `inline-block` display not defined in IE 8/9.
+ * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+ */
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block; /* 1 */
+  vertical-align: baseline; /* 2 */
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+/**
+ * Address `[hidden]` styling not present in IE 8/9/10.
+ * Hide the `template` element in IE 8/9/11, Safari, and Firefox &lt; 22.
+ */
+
+[hidden],
+template {
+  display: none;
+}
+
+/* Links
+   ========================================================================== */
+
+/**
+ * Remove the gray background color from active links in IE 10.
+ */
+
+a {
+  background-color: transparent;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+/* Text-level semantics
+   ========================================================================== */
+
+/**
+ * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+ */
+
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+ */
+
+b,
+strong {
+  font-weight: bold;
+}
+
+/**
+ * Address styling not present in Safari and Chrome.
+ */
+
+dfn {
+  font-style: italic;
+}
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari, and Chrome.
+ */
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+  font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+/* Embedded content
+   ========================================================================== */
+
+/**
+ * Remove border when inside `a` element in IE 8/9/10.
+ */
+
+img {
+  border: 0;
+}
+
+/**
+ * Correct overflow not hidden in IE 9/10/11.
+ */
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+/* Grouping content
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 8/9 and Safari.
+ */
+
+figure {
+  margin: 1em 40px;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+/**
+ * Contain overflow in all browsers.
+ */
+
+pre {
+  overflow: auto;
+}
+
+/**
+ * Address odd `em`-unit font size rendering in all browsers.
+ */
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+/* Forms
+   ========================================================================== */
+
+/**
+ * Known limitation: by default, Chrome and Safari on OS X allow very limited
+ * styling of `select`, unless a `border` property is set.
+ */
+
+/**
+ * 1. Correct color not being inherited.
+ *    Known issue: affects color of disabled elements.
+ * 2. Correct font properties not being inherited.
+ * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+ */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit; /* 1 */
+  font: inherit; /* 2 */
+  margin: 0; /* 3 */
+}
+
+/**
+ * Address `overflow` set to `hidden` in IE 8/9/10/11.
+ */
+
+button {
+  overflow: visible;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+ * Correct `select` style inheritance in Firefox.
+ */
+
+button,
+select {
+  text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button; /* 2 */
+  cursor: pointer; /* 3 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+input {
+  line-height: normal;
+}
+
+/**
+ * It's recommended that you don't attempt to style these elements.
+ * Firefox's implementation doesn't respect box-sizing, padding, or width.
+ *
+ * 1. Address box sizing set to `content-box` in IE 8/9/10.
+ * 2. Remove excess padding in IE 8/9/10.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+ * `font-size` values of the `input`, it causes the cursor style of the
+ * decrement button to change from `default` to `text`.
+ */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box; /* 2 */
+  box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+ * Safari (but not Chrome) clips the cancel button when the search input has
+ * padding (and `textfield` appearance).
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9/10/11.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+
+legend {
+  border: 0; /* 1 */
+  padding: 0; /* 2 */
+}
+
+/**
+ * Remove default vertical scrollbar in IE 8/9/10/11.
+ */
+
+textarea {
+  overflow: auto;
+}
+
+/**
+ * Don't inherit the `font-weight` (applied by a rule above).
+ * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+ */
+
+optgroup {
+  font-weight: bold;
+}
+
+/* Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+
+
+/* +--------------------+
+ * | docutils-solarized |
+ * +--------------------+
+ */
+
+html {
+  transform: scale(.85);
+  transform-origin: 0 0;
+
+}
+
+/* Document Structure
+ * ==================
+ */
+
+/* Document */
+
+body {
+  color: #839496;
+  background: #002b36;
+  /*font-family: Palatino, "Palatino LT STD", "Palatino Linotype", "Book Antiqua", Georgia, serif;*/
+  font-family: Verdana, Arial, "Bitstream Vera Sans", sans-serif;
+  padding: 0 5%;
+  margin: 8px 0;
+}
+
+div.document {
+  font-size: 1em;
+  line-height:1.5;
+  counter-reset: table;
+  max-width: 50em;
+  margin: auto;
+}
+
+.align-left  { text-align: left; }
+.align-right { text-align: right; }
+.align-center {
+  clear: both;
+  text-align: center;
+}
+
+/* Sections */
+
+h1.title, p.subtitle {
+  text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1em;
+  margin-bottom: 0em;
+}
+
+h1.title {
+  font-size: 2em;
+  margin-top: 4rem;  
+}
+h1 + p.subtitle {
+  font-size: 1.5em;
+  margin-top: 1em;
+  margin-bottom: 4rem;
+}
+h1 + p.section-subtitle { font-size: 1.6em; }
+h2 + p.section-subtitle { font-size: 1.28em; }
+
+a.toc-backref {
+  color: #839496;
+  text-decoration: none;
+}
+
+a.toc-backref:visited {
+  color: #839496;
+  text-decoration: none;
+}
+
+/* Stop floating sidebars, images and figures at section level 1,2,3 */
+h1, h2, h3 { clear: both; }
+
+/* Transitions */
+
+hr.docutils {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  clear: both;
+  border: 1px solid;
+}
+
+/* Paragraphs
+ * ==========
+ */
+
+/* vertical space (parskip) */
+p, ol, ul, dl,
+div.line-block,
+table, pre, .figure {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+dl &gt; dd {
+  margin-bottom: 1em;
+}
+
+/* titles */
+p.admonition-title,
+p.topic-title,
+p.sidebar-title,
+p.system-message-title {
+  color: #ededed;
+  font-weight: bold;
+}
+
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+
+p.sidebar-subtitle {
+  color: #ededed;
+}
+
+/* Warnings, Errors */
+div.admonition {
+  background-color: #073642;
+  /*color: #ededed;*/
+}
+
+div.danger p.admonition-title,
+div.error p.admonition-title,
+div.system-messages h1,
+div.error,
+span.problematic,
+p.system-message-title {
+  color: #dc322f;
+}
+
+div.caution p.admonition-title,
+div.attention p.admonition-title,
+div.warning p.admonition-title {
+  color: #cb4b16;
+}
+
+div.hint p.admonition-title,
+div.tip p.admonition-title {
+  color: #859900;
+}
+
+div.important p.admonition-title {
+  color: #d33682;
+}
+
+div.note p.admonition-title {
+  color: #2aa198;
+}
+
+/* Lists
+/* =====
+ */
+
+/* compact and simple lists: no margin between items */
+dl.simple &gt; dd, dl.compact &gt; dd,
+.compact li, .compact ul, .compact ol
+.simple  li, .simple  ul, .simple  ol,
+.simple &gt; li p, .compact &gt; li p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Enumerated Lists */
+
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists */
+
+dl &gt; dd p:first-child { margin-top: 0; }
+
+/* lists nested in definition lists */
+dd &gt; ul, dd &gt; ol { padding-left: 0pt; }
+
+dt span.classifier { font-style: italic }
+dt span.classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+
+/* Field Lists */
+
+/* bold field name, content starts on the same line */
+dl.field-list &gt; dt,
+dl.option-list &gt; dt,
+dl.docinfo &gt; dt,
+dl.footnote &gt; dt,
+dl.citation &gt; dt,
+dl.description &gt; dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.5em;
+}
+
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list &gt; dd,
+dl.option-list &gt; dd,
+dl.docinfo &gt; dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples */
+}
+
+/* start field-body on a new line after long field names */
+dl.field-list &gt; dd &gt; *:first-child,
+dl.option-list &gt; dd &gt; *:first-child,
+dl.docinfo &gt; dd  &gt; *:first-child {
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* field names followed by a colon */
+dl.field-list &gt; dt:after,
+dl.docinfo    &gt; dt:after {
+  content: ":";
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow &gt; dd {
+  margin-left: 5em;
+}
+
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in &gt; dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* use special field-list dl.docinfo */
+
+pre.address {
+  margin-bottom: 0;
+  margin-top: 0;
+  font: inherit;
+}
+
+dd.authors &gt; p { margin: 0; }
+
+div.abstract {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+div.dedication {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  text-align: center;
+  font-style: italic;
+}
+
+div.dedication div.abstract  p.topic-title {
+  font-style: normal;
+}
+
+/* Option Lists */
+
+dl.option-list {
+  margin-left: 1em;
+}
+
+dl.option-list &gt; dt {
+  font-weight: normal;
+}
+
+span.option {
+  color: #ededed;
+  background-color: #073642;
+  border: 1px solid #586e75;
+  white-space: nowrap;
+}
+
+/* Text Blocks
+ * ===========
+ */
+
+/* Line Blocks */
+
+div.line-block {
+  display: block;
+}
+
+div.line-block div.line-block {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 1.5em;
+}
+
+/* Literal Blocks */
+
+pre.doctest-block,
+pre.math, pre.code {
+  /*color: #93a1a1;*/
+  color: #ededed;
+  background: #073642;
+  font-family: Cousine, Courier, Droid Sans Mono, DejaVu Sans Mono, monospace;
+  border: 1px solid #586e75 !important;
+  padding: 1em;
+  border-radius: .7em;
+
+}
+
+pre.literal-block {
+  color: #eee8d5;
+  background: #586e75;
+  font-family: Cousine, Courier, Droid Sans Mono, DejaVu Sans Mono, monospace;
+  border: 1px solid #b0b0b0;
+  padding: 1em;
+  border-radius: .7em;
+}
+
+/* Block Quotes */
+
+blockquote,
+div.topic {
+  margin-left: 2em;
+  margin-right: 2em
+}
+
+blockquote &gt; table,
+div.topic &gt; table {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+blockquote p.attribution,
+div.topic p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables
+ * ======
+ */
+
+/* margins and borders for "normal" tables */
+table {
+  border-collapse: collapse;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+}
+
+td, th {
+  padding: 0.5ex 1ex;
+  text-align: left;
+/* some borders missing at some magnifications
+/* in Firefox 31.5.0 and opera 10.63 */
+  border-width: 1px;
+}
+
+td &gt; p:first-child, th &gt; p:first-child {
+  margin-top: 0;
+}
+
+td &gt; p, th &gt; p {
+  margin-bottom: 0;
+}
+
+th {
+  background: #586e75;
+  color: #eee8d5;
+  vertical-align: top;
+  border-bottom: thin solid #839496;
+  text-align: center;
+}
+
+th.docinfo-name {
+  text-align: right;
+}
+
+
+table &gt; caption {
+  text-align: left;
+}
+
+table.borderless td, table.borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+
+table.booktabs * {
+  border: 0;
+}
+
+table.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered &gt; caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks
+ * ======================
+ */
+
+/* Footnotes and Citations
+ * -----------------------
+ */
+
+/* line on the left */
+dl.footnote {
+  padding-left: 1ex;
+  border-left: solid;
+  border-left-width: 2px;
+  border-color: #839496;
+}
+
+dl &gt; dt.label {
+  font-weight: normal;
+}
+
+dt.label &gt; span.fn-backref {
+  margin: 0.2em;
+}
+
+dt.label &gt; span.fn-backref &gt; a {
+  font-style: italic;
+}
+
+/* Directives
+*  ----------
+*/
+
+/* Admonitions */
+/* System Messages */
+
+div.admonition,
+div.system-message {
+  margin: 2em;
+  border: 2px solid;
+  padding-right: 1em;
+  padding-left: 1em;
+  background-color: #073642;
+  /*color: #ededed;*/
+  border-color: #839496;
+}
+
+/* Body Elements
+*  -------------
+*/
+
+/* Image and Figure */
+
+img {
+  vertical-align: bottom;
+}
+
+div.figure {
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+img.align-left,
+.figure.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em
+}
+
+img.align-right,
+.figure.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em
+}
+
+img.align-center,
+.figure.align-center,
+object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+p.caption {
+  font-style: italic;
+}
+
+object[type="image/svg+xml"], 
+object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Topic */
+
+#table-of-contents {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+/* Sidebar */
+
+/* in a layout with fixed margins,		       */
+/* the sidebar can be moved into the margin completely */
+div.sidebar {
+  border: 2px solid;
+  border-color: #839496;
+  padding-right: 1em;
+  padding-left: 1em;
+  width: 36%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  background-color: #073642;
+  color: #ededed;
+}
+
+p.sidebar-title { font-size: larger; }
+
+/* Code */
+
+pre.code, code {
+  color: #ededed;
+  background-color: #073642
+}
+
+pre.code .ln {color: #586e75}
+pre.code .err { color: #dc322f }                    /* Error */
+
+pre.code .keyword { color: #859900 }                      /* Keyword */
+pre.code .keyword.constant { color: #859900 }                     /* Keyword.Constant */
+pre.code .keyword.declaration { color: #859900 }                     /* Keyword.Declaration */
+pre.code .keyword.namespace { color: #cb4b16 }                     /* Keyword.Namespace */
+pre.code .keyword.pseudo { color: #cb4b16 }                     /* Keyword.Pseudo */
+pre.code .keyword.reversed { color: #859900 }                     /* Keyword.Reserved */
+pre.code .keyword.type { color: #859900 }                     /* Keyword.Type */
+
+pre.code .name { color: #ededed }                      /* Name */
+pre.code .name.attribue { }                                    /* Name.Attribute */
+pre.code .name.bultin { color: #268bd2 }                     /* Name.Builtin */
+pre.code .builtin.class { color: #268bd2 }                     /* Name.Builtin.Pseudo */
+pre.code .name.class { color: #268bd2 }                     /* Name.Class */
+pre.code .name.constant { color: #b58900 }                     /* Name.Constant */
+pre.code .name.decorator { color: #cb4b16 }                     /* Name.Decorator */
+pre.code .name.entity { color: #cb4b16 }                     /* Name.Entity */
+pre.code .name.exception { color: #b58900 }                     /* Name.Exception */
+pre.code .name.function { color: #268bd2 }                     /* Name.Function */
+pre.code .name.label { }                                    /* Name.Label */
+pre.code .name.namespace { }                                    /* Name.Namespace */
+pre.code .name.other { }                                    /* Name.Other */
+pre.code .name.property { color: #268bd2 }                     /* Name.Property */
+pre.code .name.tag { color: #859900 }                     /* Name.Tag */
+pre.code .name.variable { color: #cb4b16 }                     /* Name.Variable */
+pre.code .name.variable.class { color: #268bd2 }                     /* Name.Variable.Class */
+pre.code .name.variable.global { color: #268bd2 }                     /* Name.Variable.Global */
+pre.code .name.variable.instance { color: #268bd2 }                     /* Name.Variable.Instance */
+
+pre.code .literal { }                                     /* Literal */
+pre.code .literal.date { }                                    /* Literal.Date */
+pre.code .literal.string { color: #2aa198 }                      /* Literal.String */
+pre.code .literal.string.backtick { color: #2aa198 }                     /* Literal.String.Backtick */
+pre.code .literal.string.char { color: #2aa198 }                     /* Literal.String.Char */
+pre.code .literal.string.doc { color: #2aa198 }                     /* Literal.String.Doc */
+pre.code .literal.string.double { color: #2aa198 }                     /* Literal.String.Double */
+pre.code .literal.string.escape { color: #cb4b16 }                     /* Literal.String.Escape */
+pre.code .literal.string.heredoc { color: #2aa198 }                     /* Literal.String.Heredoc */
+pre.code .literal.string.interpol { color: #cb4b16 }                     /* Literal.String.Interpol */
+pre.code .literal.string.other { color: #2aa198 }                     /* Literal.String.Other */
+pre.code .literal.string.regex { color: #2aa198 }                     /* Literal.String.Regex */
+pre.code .literal.string.single { color: #2aa198 }                     /* Literal.String.Single */
+pre.code .literal.string.symbol { color: #2aa198 }                     /* Literal.String.Symbol */
+pre.code .literal.number { color: #2aa198 }                      /* Literal.Number */
+pre.code .literal.number.bin { color: #2aa198 }                     /* Literal.Number.Bin */
+pre.code .literal.number.float { color: #2aa198 }                     /* Literal.Number.Float */
+pre.code .literal.number.hex { color: #2aa198 }                     /* Literal.Number.Hex */
+pre.code .literal.number.integer { color: #2aa198 }                     /* Literal.Number.Integer */
+pre.code .literal.number.integer.long { color: #2aa198 }                     /* Literal.Number.Integer.Long */
+pre.code .literal.number.oct { color: #2aa198 }                     /* Literal.Number.Oct */
+
+pre.code .operator { }                                     /* Operator */
+pre.code .operator.word { color: #859900 }                     /* Operator.Word */
+
+pre.code .punctiation { }                                     /* Punctuation */
+
+pre.code .comment { color: #586e75; font-style: italic }  /* Comment */
+pre.code .comment.multiline { color: #586e75; font-style: italic } /* Comment.Multiline */
+pre.code .comment.preproc { color: #586e75; font-style: italic } /* Comment.Preproc */
+pre.code .comment.single { color: #586e75; font-style: italic } /* Comment.Single */
+pre.code .comment.special { color: #586e75; font-style: italic } /* Comment.Special */
+
+pre.code .generic { }                                     /* Generic */
+pre.code .other { }                                     /* Other */
+pre.code .generic.deleted { }                                    /* Generic.Deleted */
+pre.code .generic.emph { }                                    /* Generic.Emph */
+pre.code .generic.error { }                                    /* Generic.Error */
+pre.code .generic.heading { }                                    /* Generic.Heading */
+pre.code .generic.inserted { }                                    /* Generic.Inserted */
+pre.code .generic.output { }                                    /* Generic.Output */
+pre.code .generic.prompt { }                                    /* Generic.Prompt */
+pre.code .generic.strong { }                                    /* Generic.Strong */
+pre.code .generic.subheading { }                                    /* Generic.Subheading */
+pre.code .generic.traceback { }                                    /* Generic.Traceback */
+
+/* Math */
+/* styled separately (see math.css for math-output=HTML) */
+
+/* Rubric */
+
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+  color: #b58900;
+}
+
+/* Epigraph */
+/* Highlights */
+/* Pull-Quote */
+/* Compound Paragraph */
+/* Container */
+
+/* can be styled in a custom stylesheet */
+
+/* Document Header &amp; Footer */
+
+div.footer, div.header {
+  clear: both;
+}
+
+hr.header {
+  border: 1px solid;
+  margin: 0;
+  padding: 0;
+}
+
+hr.footer {
+  border: 1px solid;
+  margin: 0;
+  padding: 0;
+}
+
+div.header {
+  margin-top: 1em;
+  margin-bottom: 4em;
+}
+
+div.footer {
+  margin-top: 4em;
+  margin-bottom: 1em;
+}
+
+/* Contents */
+
+div.topic.contents {
+  margin: 0; /* don't indent like a topic */
+}
+
+ul.auto-toc {
+  list-style-type: none;
+}
+
+/* Inline Markup
+*  =============
+*/
+
+* Emphasis */
+/*   em  */
+/* Strong Emphasis */
+/*   strong  */
+/* Interpreted Text */
+/*   span.interpreted  	*/
+/* Title Reference */
+/*   cite   */
+/* Inline Literals */
+
+tt.literal, span.docutils.literal {
+  font-family: Courier, Droid Sans Mono, DejaVu Sans Mono, monospace;
+  font-size: large;
+  /*color: #ededed;
+  background-color: #073642;
+  border: 1px solid #586e75;*/
+  /* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+  white-space: pre-wrap;
+}
+
+tt.docutils.literal {
+  font-family: Courier, Droid Sans Mono, DejaVu Sans Mono, monospace;
+  font-size: large;
+  /*color: #ededed;
+  background-color: #073642;*/
+  border: none; /*1px solid #586e75;*/
+  /* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+  white-space: pre-wrap;
+}
+
+
+/* do not wraph a hyphens and similar: */
+.literal &gt; span.pre { white-space: nowrap; }
+
+/* Hyperlink References */
+
+a {
+  text-decoration: none;
+  color: #268bd2;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #6c71c4;
+}
+
+/* External Targets */
+/*   span.target.external   */
+/* Internal Targets */
+/*   span.target.internal   */
+/* Footnote References */
+/*   a.footnote-reference   */
+/* Citation References  */
+/*   a.citation-reference   */
+
+
+// ============= Begin pygment-specific additions =====================
+pre { line-height: 125%; }
+td.linenos .normal { color: #586e75; background-color: #073642; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #586e75; background-color: #073642; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hll { background-color: #073642 }
+.c { color: #586e75; font-style: italic } /* Comment */
+.err { color: #839496; background-color: #dc322f } /* Error */
+.esc { color: #839496 } /* Escape */
+.g { color: #839496 } /* Generic */
+.k { color: #859900 } /* Keyword */
+.l { color: #839496 } /* Literal */
+.n { color: #839496 } /* Name */
+.o { color: #586e75 } /* Operator */
+.x { color: #839496 } /* Other */
+.p { color: #839496 } /* Punctuation */
+.ch { color: #586e75; font-style: italic } /* Comment.Hashbang */
+.cm { color: #586e75; font-style: italic } /* Comment.Multiline */
+.cp { color: #d33682 } /* Comment.Preproc */
+.cpf { color: #586e75 } /* Comment.PreprocFile */
+.c1 { color: #586e75; font-style: italic } /* Comment.Single */
+.cs { color: #586e75; font-style: italic } /* Comment.Special */
+.gd { color: #dc322f } /* Generic.Deleted */
+.ge { color: #839496; font-style: italic } /* Generic.Emph */
+.gr { color: #dc322f } /* Generic.Error */
+.gh { color: #839496; font-weight: bold } /* Generic.Heading */
+.gi { color: #859900 } /* Generic.Inserted */
+.go { color: #839496 } /* Generic.Output */
+.gp { color: #268bd2; font-weight: bold } /* Generic.Prompt */
+.gs { color: #839496; font-weight: bold } /* Generic.Strong */
+.gu { color: #839496; text-decoration: underline } /* Generic.Subheading */
+.gt { color: #268bd2 } /* Generic.Traceback */
+.kc { color: #2aa198 } /* Keyword.Constant */
+.kd { color: #2aa198 } /* Keyword.Declaration */
+.kn { color: #cb4b16 } /* Keyword.Namespace */
+.kp { color: #859900 } /* Keyword.Pseudo */
+.kr { color: #859900 } /* Keyword.Reserved */
+.kt { color: #b58900 } /* Keyword.Type */
+.ld { color: #839496 } /* Literal.Date */
+.m { color: #2aa198 } /* Literal.Number */
+.s { color: #2aa198 } /* Literal.String */
+.na { color: #839496 } /* Name.Attribute */
+.nb { color: #268bd2 } /* Name.Builtin */
+.nc { color: #268bd2 } /* Name.Class */
+.no { color: #268bd2 } /* Name.Constant */
+.nd { color: #268bd2 } /* Name.Decorator */
+.ni { color: #268bd2 } /* Name.Entity */
+.ne { color: #268bd2 } /* Name.Exception */
+.nf { color: #268bd2 } /* Name.Function */
+.nl { color: #268bd2 } /* Name.Label */
+.nn { color: #268bd2 } /* Name.Namespace */
+.nx { color: #839496 } /* Name.Other */
+.py { color: #839496 } /* Name.Property */
+.nt { color: #268bd2 } /* Name.Tag */
+.nv { color: #268bd2 } /* Name.Variable */
+.ow { color: #859900 } /* Operator.Word */
+.w { color: #839496 } /* Text.Whitespace */
+.mb { color: #2aa198 } /* Literal.Number.Bin */
+.mf { color: #2aa198 } /* Literal.Number.Float */
+.mh { color: #2aa198 } /* Literal.Number.Hex */
+.mi { color: #2aa198 } /* Literal.Number.Integer */
+.mo { color: #2aa198 } /* Literal.Number.Oct */
+.sa { color: #2aa198 } /* Literal.String.Affix */
+.sb { color: #2aa198 } /* Literal.String.Backtick */
+.sc { color: #2aa198 } /* Literal.String.Char */
+.dl { color: #2aa198 } /* Literal.String.Delimiter */
+.sd { color: #586e75 } /* Literal.String.Doc */
+.s2 { color: #2aa198 } /* Literal.String.Double */
+.se { color: #2aa198 } /* Literal.String.Escape */
+.sh { color: #2aa198 } /* Literal.String.Heredoc */
+.si { color: #2aa198 } /* Literal.String.Interpol */
+.sx { color: #2aa198 } /* Literal.String.Other */
+.sr { color: #cb4b16 } /* Literal.String.Regex */
+.s1 { color: #2aa198 } /* Literal.String.Single */
+.ss { color: #2aa198 } /* Literal.String.Symbol */
+.bp { color: #268bd2 } /* Name.Builtin.Pseudo */
+.fm { color: #268bd2 } /* Name.Function.Magic */
+.vc { color: #268bd2 } /* Name.Variable.Class */
+.vg { color: #268bd2 } /* Name.Variable.Global */
+.vi { color: #268bd2 } /* Name.Variable.Instance */
+.vm { color: #268bd2 } /* Name.Variable.Magic */
+.il { color: #2aa198 } /* Literal.Number.Integer.Long */
+
+@media print {
+  footer {page-break-after: always;}
+}
+
+&lt;/style&gt;
+&lt;style id="MJX-CHTML-styles"&gt;
+mjx-container[jax="CHTML"] {
+  line-height: 0;
+}
+
+mjx-container [space="1"] {
+  margin-left: .111em;
+}
+
+mjx-container [space="2"] {
+  margin-left: .167em;
+}
+
+mjx-container [space="3"] {
+  margin-left: .222em;
+}
+
+mjx-container [space="4"] {
+  margin-left: .278em;
+}
+
+mjx-container [space="5"] {
+  margin-left: .333em;
+}
+
+mjx-container [rspace="1"] {
+  margin-right: .111em;
+}
+
+mjx-container [rspace="2"] {
+  margin-right: .167em;
+}
+
+mjx-container [rspace="3"] {
+  margin-right: .222em;
+}
+
+mjx-container [rspace="4"] {
+  margin-right: .278em;
+}
+
+mjx-container [rspace="5"] {
+  margin-right: .333em;
+}
+
+mjx-container [size="s"] {
+  font-size: 70.7%;
+}
+
+mjx-container [size="ss"] {
+  font-size: 50%;
+}
+
+mjx-container [size="Tn"] {
+  font-size: 60%;
+}
+
+mjx-container [size="sm"] {
+  font-size: 85%;
+}
+
+mjx-container [size="lg"] {
+  font-size: 120%;
+}
+
+mjx-container [size="Lg"] {
+  font-size: 144%;
+}
+
+mjx-container [size="LG"] {
+  font-size: 173%;
+}
+
+mjx-container [size="hg"] {
+  font-size: 207%;
+}
+
+mjx-container [size="HG"] {
+  font-size: 249%;
+}
+
+mjx-container [width="full"] {
+  width: 100%;
+}
+
+mjx-box {
+  display: inline-block;
+}
+
+mjx-block {
+  display: block;
+}
+
+mjx-itable {
+  display: inline-table;
+}
+
+mjx-row {
+  display: table-row;
+}
+
+mjx-row &gt; * {
+  display: table-cell;
+}
+
+mjx-mtext {
+  display: inline-block;
+}
+
+mjx-mstyle {
+  display: inline-block;
+}
+
+mjx-merror {
+  display: inline-block;
+  color: red;
+  background-color: yellow;
+}
+
+mjx-mphantom {
+  visibility: hidden;
+}
+
+_::-webkit-full-page-media, _:future, :root mjx-container {
+  will-change: opacity;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-math {
+  display: inline-block;
+  text-align: left;
+  line-height: 0;
+  text-indent: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 100%;
+  font-size-adjust: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  word-spacing: normal;
+  white-space: nowrap;
+  direction: ltr;
+  padding: 1px 0;
+}
+
+mjx-container[jax="CHTML"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="CHTML"][display="true"][width="full"] {
+  display: flex;
+}
+
+mjx-container[jax="CHTML"][display="true"] mjx-math {
+  padding: 0;
+}
+
+mjx-container[jax="CHTML"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="CHTML"][justify="right"] {
+  text-align: right;
+}
+
+mjx-mi {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-c {
+  display: inline-block;
+}
+
+mjx-utext {
+  display: inline-block;
+  padding: .75em 0 .2em 0;
+}
+
+mjx-mo {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-stretchy-h {
+  display: inline-table;
+  width: 100%;
+}
+
+mjx-stretchy-h &gt; * {
+  display: table-cell;
+  width: 0;
+}
+
+mjx-stretchy-h &gt; * &gt; mjx-c {
+  display: inline-block;
+  transform: scalex(1.0000001);
+}
+
+mjx-stretchy-h &gt; * &gt; mjx-c::before {
+  display: inline-block;
+  width: initial;
+}
+
+mjx-stretchy-h &gt; mjx-ext {
+  /* IE */ overflow: hidden;
+  /* others */ overflow: clip visible;
+  width: 100%;
+}
+
+mjx-stretchy-h &gt; mjx-ext &gt; mjx-c::before {
+  transform: scalex(500);
+}
+
+mjx-stretchy-h &gt; mjx-ext &gt; mjx-c {
+  width: 0;
+}
+
+mjx-stretchy-h &gt; mjx-beg &gt; mjx-c {
+  margin-right: -.1em;
+}
+
+mjx-stretchy-h &gt; mjx-end &gt; mjx-c {
+  margin-left: -.1em;
+}
+
+mjx-stretchy-v {
+  display: inline-block;
+}
+
+mjx-stretchy-v &gt; * {
+  display: block;
+}
+
+mjx-stretchy-v &gt; mjx-beg {
+  height: 0;
+}
+
+mjx-stretchy-v &gt; mjx-end &gt; mjx-c {
+  display: block;
+}
+
+mjx-stretchy-v &gt; * &gt; mjx-c {
+  transform: scaley(1.0000001);
+  transform-origin: left center;
+  overflow: hidden;
+}
+
+mjx-stretchy-v &gt; mjx-ext {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  border: 0px solid transparent;
+  /* IE */ overflow: hidden;
+  /* others */ overflow: visible clip;
+}
+
+mjx-stretchy-v &gt; mjx-ext &gt; mjx-c::before {
+  width: initial;
+  box-sizing: border-box;
+}
+
+mjx-stretchy-v &gt; mjx-ext &gt; mjx-c {
+  transform: scaleY(500) translateY(.075em);
+  overflow: visible;
+}
+
+mjx-mark {
+  display: inline-block;
+  height: 0px;
+}
+
+mjx-mn {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-msup {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-mfrac {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-frac {
+  display: inline-block;
+  vertical-align: 0.17em;
+  padding: 0 .22em;
+}
+
+mjx-frac[type="d"] {
+  vertical-align: .04em;
+}
+
+mjx-frac[delims] {
+  padding: 0 .1em;
+}
+
+mjx-frac[atop] {
+  padding: 0 .12em;
+}
+
+mjx-frac[atop][delims] {
+  padding: 0;
+}
+
+mjx-dtable {
+  display: inline-table;
+  width: 100%;
+}
+
+mjx-dtable &gt; * {
+  font-size: 2000%;
+}
+
+mjx-dbox {
+  display: block;
+  font-size: 5%;
+}
+
+mjx-num {
+  display: block;
+  text-align: center;
+}
+
+mjx-den {
+  display: block;
+  text-align: center;
+}
+
+mjx-mfrac[bevelled] &gt; mjx-num {
+  display: inline-block;
+}
+
+mjx-mfrac[bevelled] &gt; mjx-den {
+  display: inline-block;
+}
+
+mjx-den[align="right"], mjx-num[align="right"] {
+  text-align: right;
+}
+
+mjx-den[align="left"], mjx-num[align="left"] {
+  text-align: left;
+}
+
+mjx-nstrut {
+  display: inline-block;
+  height: .054em;
+  width: 0;
+  vertical-align: -.054em;
+}
+
+mjx-nstrut[type="d"] {
+  height: .217em;
+  vertical-align: -.217em;
+}
+
+mjx-dstrut {
+  display: inline-block;
+  height: .505em;
+  width: 0;
+}
+
+mjx-dstrut[type="d"] {
+  height: .726em;
+}
+
+mjx-line {
+  display: block;
+  box-sizing: border-box;
+  min-height: 1px;
+  height: .06em;
+  border-top: .06em solid;
+  margin: .06em -.1em;
+  overflow: hidden;
+}
+
+mjx-line[type="d"] {
+  margin: .18em -.1em;
+}
+
+mjx-mrow {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-msqrt {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-root {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+mjx-surd {
+  display: inline-block;
+  vertical-align: top;
+}
+
+mjx-sqrt {
+  display: inline-block;
+  padding-top: .07em;
+}
+
+mjx-sqrt &gt; mjx-box {
+  border-top: .07em solid;
+}
+
+mjx-sqrt.mjx-tall &gt; mjx-box {
+  padding-left: .3em;
+  margin-left: -.3em;
+}
+
+mjx-munderover {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-munderover:not([limits="false"]) {
+  padding-top: .1em;
+}
+
+mjx-munderover:not([limits="false"]) &gt; * {
+  display: block;
+}
+
+mjx-msubsup {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-script {
+  display: inline-block;
+  padding-right: .05em;
+  padding-left: .033em;
+}
+
+mjx-script &gt; * {
+  display: block;
+}
+
+mjx-TeXAtom {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-msub {
+  display: inline-block;
+  text-align: left;
+}
+
+mjx-c::before {
+  display: block;
+  width: 0;
+}
+
+.MJX-TEX {
+  font-family: MJXZERO, MJXTEX;
+}
+
+.TEX-B {
+  font-family: MJXZERO, MJXTEX-B;
+}
+
+.TEX-I {
+  font-family: MJXZERO, MJXTEX-I;
+}
+
+.TEX-MI {
+  font-family: MJXZERO, MJXTEX-MI;
+}
+
+.TEX-BI {
+  font-family: MJXZERO, MJXTEX-BI;
+}
+
+.TEX-S1 {
+  font-family: MJXZERO, MJXTEX-S1;
+}
+
+.TEX-S2 {
+  font-family: MJXZERO, MJXTEX-S2;
+}
+
+.TEX-S3 {
+  font-family: MJXZERO, MJXTEX-S3;
+}
+
+.TEX-S4 {
+  font-family: MJXZERO, MJXTEX-S4;
+}
+
+.TEX-A {
+  font-family: MJXZERO, MJXTEX-A;
+}
+
+.TEX-C {
+  font-family: MJXZERO, MJXTEX-C;
+}
+
+.TEX-CB {
+  font-family: MJXZERO, MJXTEX-CB;
+}
+
+.TEX-FR {
+  font-family: MJXZERO, MJXTEX-FR;
+}
+
+.TEX-FRB {
+  font-family: MJXZERO, MJXTEX-FRB;
+}
+
+.TEX-SS {
+  font-family: MJXZERO, MJXTEX-SS;
+}
+
+.TEX-SSB {
+  font-family: MJXZERO, MJXTEX-SSB;
+}
+
+.TEX-SSI {
+  font-family: MJXZERO, MJXTEX-SSI;
+}
+
+.TEX-SC {
+  font-family: MJXZERO, MJXTEX-SC;
+}
+
+.TEX-T {
+  font-family: MJXZERO, MJXTEX-T;
+}
+
+.TEX-V {
+  font-family: MJXZERO, MJXTEX-V;
+}
+
+.TEX-VB {
+  font-family: MJXZERO, MJXTEX-VB;
+}
+
+mjx-stretchy-v mjx-c, mjx-stretchy-h mjx-c {
+  font-family: MJXZERO, MJXTEX-S1, MJXTEX-S4, MJXTEX, MJXTEX-A ! important;
+}
+
+@font-face /* 0 */ {
+  font-family: MJXZERO;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff") format("woff");
+}
+
+@font-face /* 1 */ {
+  font-family: MJXTEX;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff") format("woff");
+}
+
+@font-face /* 2 */ {
+  font-family: MJXTEX-B;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Bold.woff") format("woff");
+}
+
+@font-face /* 3 */ {
+  font-family: MJXTEX-I;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff") format("woff");
+}
+
+@font-face /* 4 */ {
+  font-family: MJXTEX-MI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Main-Italic.woff") format("woff");
+}
+
+@font-face /* 5 */ {
+  font-family: MJXTEX-BI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Math-BoldItalic.woff") format("woff");
+}
+
+@font-face /* 6 */ {
+  font-family: MJXTEX-S1;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size1-Regular.woff") format("woff");
+}
+
+@font-face /* 7 */ {
+  font-family: MJXTEX-S2;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size2-Regular.woff") format("woff");
+}
+
+@font-face /* 8 */ {
+  font-family: MJXTEX-S3;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size3-Regular.woff") format("woff");
+}
+
+@font-face /* 9 */ {
+  font-family: MJXTEX-S4;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Size4-Regular.woff") format("woff");
+}
+
+@font-face /* 10 */ {
+  font-family: MJXTEX-A;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_AMS-Regular.woff") format("woff");
+}
+
+@font-face /* 11 */ {
+  font-family: MJXTEX-C;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Regular.woff") format("woff");
+}
+
+@font-face /* 12 */ {
+  font-family: MJXTEX-CB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Calligraphic-Bold.woff") format("woff");
+}
+
+@font-face /* 13 */ {
+  font-family: MJXTEX-FR;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Regular.woff") format("woff");
+}
+
+@font-face /* 14 */ {
+  font-family: MJXTEX-FRB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Fraktur-Bold.woff") format("woff");
+}
+
+@font-face /* 15 */ {
+  font-family: MJXTEX-SS;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Regular.woff") format("woff");
+}
+
+@font-face /* 16 */ {
+  font-family: MJXTEX-SSB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Bold.woff") format("woff");
+}
+
+@font-face /* 17 */ {
+  font-family: MJXTEX-SSI;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_SansSerif-Italic.woff") format("woff");
+}
+
+@font-face /* 18 */ {
+  font-family: MJXTEX-SC;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Script-Regular.woff") format("woff");
+}
+
+@font-face /* 19 */ {
+  font-family: MJXTEX-T;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Typewriter-Regular.woff") format("woff");
+}
+
+@font-face /* 20 */ {
+  font-family: MJXTEX-V;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Regular.woff") format("woff");
+}
+
+@font-face /* 21 */ {
+  font-family: MJXTEX-VB;
+  src: url("https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2/MathJax_Vector-Bold.woff") format("woff");
+}
+
+mjx-c.mjx-c1D44E.TEX-I::before {
+  padding: 0.441em 0.529em 0.01em 0;
+  content: "a";
+}
+
+mjx-c.mjx-c2212::before {
+  padding: 0.583em 0.778em 0.082em 0;
+  content: "\2212";
+}
+
+mjx-c.mjx-c32::before {
+  padding: 0.666em 0.5em 0 0;
+  content: "2";
+}
+
+mjx-c.mjx-c1D44F.TEX-I::before {
+  padding: 0.694em 0.429em 0.011em 0;
+  content: "b";
+}
+
+mjx-c.mjx-cB1::before {
+  padding: 0.666em 0.778em 0 0;
+  content: "\B1";
+}
+
+mjx-c.mjx-c221A::before {
+  padding: 0.8em 0.853em 0.2em 0;
+  content: "\221A";
+}
+
+mjx-c.mjx-c37::before {
+  padding: 0.676em 0.5em 0.022em 0;
+  content: "7";
+}
+
+mjx-c.mjx-c33::before {
+  padding: 0.665em 0.5em 0.022em 0;
+  content: "3";
+}
+
+mjx-c.mjx-c221E::before {
+  padding: 0.442em 1em 0.011em 0;
+  content: "\221E";
+}
+
+mjx-c.mjx-c2211.TEX-S2::before {
+  padding: 0.95em 1.444em 0.45em 0;
+  content: "\2211";
+}
+
+mjx-c.mjx-c1D45B.TEX-I::before {
+  padding: 0.442em 0.6em 0.011em 0;
+  content: "n";
+}
+
+mjx-c.mjx-c3D::before {
+  padding: 0.583em 0.778em 0.082em 0;
+  content: "=";
+}
+
+mjx-c.mjx-c31::before {
+  padding: 0.666em 0.5em 0 0;
+  content: "1";
+}
+
+mjx-c.mjx-c1D452.TEX-I::before {
+  padding: 0.442em 0.466em 0.011em 0;
+  content: "e";
+}
+
+mjx-c.mjx-c1D456.TEX-I::before {
+  padding: 0.661em 0.345em 0.011em 0;
+  content: "i";
+}
+
+mjx-c.mjx-c1D70B.TEX-I::before {
+  padding: 0.431em 0.57em 0.011em 0;
+  content: "\3C0";
+}
+
+mjx-c.mjx-c2B::before {
+  padding: 0.583em 0.778em 0.082em 0;
+  content: "+";
+}
+
+mjx-c.mjx-c28::before {
+  padding: 0.75em 0.389em 0.25em 0;
+  content: "(";
+}
+
+mjx-c.mjx-c35::before {
+  padding: 0.666em 0.5em 0.022em 0;
+  content: "5";
+}
+
+mjx-c.mjx-c1D465.TEX-I::before {
+  padding: 0.442em 0.572em 0.011em 0;
+  content: "x";
+}
+
+mjx-c.mjx-c34::before {
+  padding: 0.677em 0.5em 0 0;
+  content: "4";
+}
+
+mjx-c.mjx-c29::before {
+  padding: 0.75em 0.389em 0.25em 0;
+  content: ")";
+}
+
+mjx-c.mjx-c1D6FC.TEX-I::before {
+  padding: 0.442em 0.64em 0.011em 0;
+  content: "\3B1";
+}
+
+mjx-c.mjx-c1D461.TEX-I::before {
+  padding: 0.626em 0.361em 0.011em 0;
+  content: "t";
+}
+
+mjx-c.mjx-c1D443.TEX-I::before {
+  padding: 0.683em 0.751em 0 0;
+  content: "P";
+}
+
+mjx-c.mjx-c1D442.TEX-I::before {
+  padding: 0.704em 0.763em 0.022em 0;
+  content: "O";
+}
+
+mjx-c.mjx-c2C::before {
+  padding: 0.121em 0.278em 0.194em 0;
+  content: ",";
+}
+
+mjx-c.mjx-c2026::before {
+  padding: 0.12em 1.172em 0 0;
+  content: "\2026";
+}
+
+mjx-c.mjx-c1D45E.TEX-I::before {
+  padding: 0.442em 0.46em 0.194em 0;
+  content: "q";
+}
+
+mjx-c.mjx-c1D446.TEX-I::before {
+  padding: 0.705em 0.645em 0.022em 0;
+  content: "S";
+}
+
+mjx-c.mjx-c1D706.TEX-I::before {
+  padding: 0.694em 0.583em 0.012em 0;
+  content: "\3BB";
+}
+
+mjx-c.mjx-c1D458.TEX-I::before {
+  padding: 0.694em 0.521em 0.011em 0;
+  content: "k";
+}
+
+mjx-c.mjx-c222B.TEX-S2::before {
+  padding: 1.36em 0.944em 0.862em 0;
+  content: "\222B";
+}
+
+mjx-c.mjx-c30::before {
+  padding: 0.666em 0.5em 0.022em 0;
+  content: "0";
+}
+
+mjx-c.mjx-c1D451.TEX-I::before {
+  padding: 0.694em 0.52em 0.01em 0;
+  content: "d";
+}
+
+mjx-c.mjx-c1D438.TEX-I::before {
+  padding: 0.68em 0.764em 0 0;
+  content: "E";
+}
+
+mjx-c.mjx-c1D45A.TEX-I::before {
+  padding: 0.442em 0.878em 0.011em 0;
+  content: "m";
+}
+
+mjx-c.mjx-c1D450.TEX-I::before {
+  padding: 0.442em 0.433em 0.011em 0;
+  content: "c";
+}
+&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="document" id="formula"&gt;
+&lt;h1 class="title"&gt;Formula&lt;/h1&gt;
+
+&lt;p&gt;These should be some in line math &lt;span class="math"&gt;&lt;mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="0" style="font-size: 123.4%; position: relative;"&gt;&lt;mjx-math class="MJX-TEX" aria-hidden="true"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D44E TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mo class="mjx-n" space="3"&gt;&lt;mjx-c class="mjx-c2212"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mn class="mjx-n" space="3"&gt;&lt;mjx-c class="mjx-c32"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;mjx-msup&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D44F TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: 0.363em;"&gt;&lt;mjx-mn class="mjx-n" size="s"&gt;&lt;mjx-c class="mjx-c32"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-script&gt;&lt;/mjx-msup&gt;&lt;/mjx-math&gt;&lt;mjx-assistive-mml unselectable="on" display="inline"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mo&gt;âˆ’&lt;/mo&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;msup&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;&lt;/span&gt; here.&lt;/p&gt;
+&lt;div class="math"&gt;
+&lt;mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="1" style="font-size: 123.4%; position: relative;"&gt;&lt;mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"&gt;&lt;mjx-mfrac&gt;&lt;mjx-frac type="d"&gt;&lt;mjx-num&gt;&lt;mjx-nstrut type="d"&gt;&lt;/mjx-nstrut&gt;&lt;mjx-mrow&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c32"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;mjx-mo class="mjx-n" space="3"&gt;&lt;mjx-c class="mjx-cB1"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msqrt space="3"&gt;&lt;mjx-sqrt&gt;&lt;mjx-surd&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c221A"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;/mjx-surd&gt;&lt;mjx-box style="padding-top: 0.158em;"&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c37"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-box&gt;&lt;/mjx-sqrt&gt;&lt;/mjx-msqrt&gt;&lt;/mjx-mrow&gt;&lt;/mjx-num&gt;&lt;mjx-dbox&gt;&lt;mjx-dtable&gt;&lt;mjx-line type="d"&gt;&lt;/mjx-line&gt;&lt;mjx-row&gt;&lt;mjx-den&gt;&lt;mjx-dstrut type="d"&gt;&lt;/mjx-dstrut&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c33"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-den&gt;&lt;/mjx-row&gt;&lt;/mjx-dtable&gt;&lt;/mjx-dbox&gt;&lt;/mjx-frac&gt;&lt;/mjx-mfrac&gt;&lt;/mjx-math&gt;&lt;mjx-assistive-mml unselectable="on" display="block"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;mo&gt;Â±&lt;/mo&gt;&lt;msqrt&gt;&lt;mn&gt;7&lt;/mn&gt;&lt;/msqrt&gt;&lt;/mrow&gt;&lt;mn&gt;3&lt;/mn&gt;&lt;/mfrac&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;
+&lt;/div&gt;
+&lt;p&gt;Some text here, and then some more math:&lt;/p&gt;
+&lt;div class="math"&gt;
+&lt;mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="2" style="font-size: 123.1%; position: relative;"&gt;&lt;mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"&gt;&lt;mjx-munderover&gt;&lt;mjx-over style="padding-bottom: 0.192em; padding-left: 0.368em;"&gt;&lt;mjx-mi class="mjx-n" size="s"&gt;&lt;mjx-c class="mjx-c221E"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-over&gt;&lt;mjx-box&gt;&lt;mjx-munder&gt;&lt;mjx-row&gt;&lt;mjx-base&gt;&lt;mjx-mo class="mjx-lop"&gt;&lt;mjx-c class="mjx-c2211 TEX-S2"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;/mjx-base&gt;&lt;/mjx-row&gt;&lt;mjx-row&gt;&lt;mjx-under style="padding-top: 0.167em; padding-left: 0.058em;"&gt;&lt;mjx-texatom size="s" texclass="ORD"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D45B TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c3D"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c31"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-texatom&gt;&lt;/mjx-under&gt;&lt;/mjx-row&gt;&lt;/mjx-munder&gt;&lt;/mjx-box&gt;&lt;/mjx-munderover&gt;&lt;mjx-mfrac space="2"&gt;&lt;mjx-frac type="d"&gt;&lt;mjx-num&gt;&lt;mjx-nstrut type="d"&gt;&lt;/mjx-nstrut&gt;&lt;mjx-mrow&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c2212"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msup&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D452 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: 0.363em;"&gt;&lt;mjx-texatom size="s" texclass="ORD"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D456 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D70B TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-texatom&gt;&lt;/mjx-script&gt;&lt;/mjx-msup&gt;&lt;/mjx-mrow&gt;&lt;/mjx-num&gt;&lt;mjx-dbox&gt;&lt;mjx-dtable&gt;&lt;mjx-line type="d"&gt;&lt;/mjx-line&gt;&lt;mjx-row&gt;&lt;mjx-den&gt;&lt;mjx-dstrut type="d"&gt;&lt;/mjx-dstrut&gt;&lt;mjx-msup&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c32"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;mjx-script style="vertical-align: 0.289em;"&gt;&lt;mjx-mi class="mjx-i" size="s"&gt;&lt;mjx-c class="mjx-c1D45B TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-script&gt;&lt;/mjx-msup&gt;&lt;/mjx-den&gt;&lt;/mjx-row&gt;&lt;/mjx-dtable&gt;&lt;/mjx-dbox&gt;&lt;/mjx-frac&gt;&lt;/mjx-mfrac&gt;&lt;mjx-mo class="mjx-n" space="3"&gt;&lt;mjx-c class="mjx-c2B"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mo class="mjx-n" space="3"&gt;&lt;mjx-c class="mjx-c28"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mfrac&gt;&lt;mjx-frac type="d"&gt;&lt;mjx-num&gt;&lt;mjx-nstrut type="d"&gt;&lt;/mjx-nstrut&gt;&lt;mjx-mrow&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c35"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;mjx-mo class="mjx-n" space="3"&gt;&lt;mjx-c class="mjx-c2212"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mfrac space="3"&gt;&lt;mjx-frac&gt;&lt;mjx-num&gt;&lt;mjx-nstrut&gt;&lt;/mjx-nstrut&gt;&lt;mjx-mn class="mjx-n" size="s"&gt;&lt;mjx-c class="mjx-c31"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-num&gt;&lt;mjx-dbox&gt;&lt;mjx-dtable&gt;&lt;mjx-line&gt;&lt;/mjx-line&gt;&lt;mjx-row&gt;&lt;mjx-den&gt;&lt;mjx-dstrut&gt;&lt;/mjx-dstrut&gt;&lt;mjx-mi class="mjx-i" size="s"&gt;&lt;mjx-c class="mjx-c1D465 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-den&gt;&lt;/mjx-row&gt;&lt;/mjx-dtable&gt;&lt;/mjx-dbox&gt;&lt;/mjx-frac&gt;&lt;/mjx-mfrac&gt;&lt;/mjx-mrow&gt;&lt;/mjx-num&gt;&lt;mjx-dbox&gt;&lt;mjx-dtable&gt;&lt;mjx-line type="d"&gt;&lt;/mjx-line&gt;&lt;mjx-row&gt;&lt;mjx-den&gt;&lt;mjx-dstrut type="d"&gt;&lt;/mjx-dstrut&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c34"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-den&gt;&lt;/mjx-row&gt;&lt;/mjx-dtable&gt;&lt;/mjx-dbox&gt;&lt;/mjx-frac&gt;&lt;/mjx-mfrac&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c29"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;/mjx-math&gt;&lt;mjx-assistive-mml unselectable="on" display="block"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;munderover&gt;&lt;mo data-mjx-texclass="OP"&gt;âˆ‘&lt;/mo&gt;&lt;mrow data-mjx-texclass="ORD"&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;mi mathvariant="normal"&gt;âˆž&lt;/mi&gt;&lt;/munderover&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mo&gt;âˆ’&lt;/mo&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mrow data-mjx-texclass="ORD"&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;Ï€&lt;/mi&gt;&lt;/mrow&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;msup&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/msup&gt;&lt;/mfrac&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mfrac&gt;&lt;mrow&gt;&lt;mn&gt;5&lt;/mn&gt;&lt;mo&gt;âˆ’&lt;/mo&gt;&lt;mfrac&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;/mfrac&gt;&lt;/mrow&gt;&lt;mn&gt;4&lt;/mn&gt;&lt;/mfrac&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;
+&lt;/div&gt;
+&lt;p&gt;To get this to work right with rst2pdf, we need to put a blank line between each line of math.&lt;/p&gt;
+&lt;div class="math"&gt;
+&lt;mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="3" style="font-size: 123.4%; position: relative;"&gt;&lt;mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"&gt;&lt;mjx-msub&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D6FC TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: -0.15em;"&gt;&lt;mjx-mi class="mjx-i" size="s"&gt;&lt;mjx-c class="mjx-c1D461 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-script&gt;&lt;/mjx-msub&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c28"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D456 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c29"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mo class="mjx-n" space="4"&gt;&lt;mjx-c class="mjx-c3D"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mi class="mjx-i" space="4"&gt;&lt;mjx-c class="mjx-c1D443 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c28"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msub&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D442 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: -0.15em;"&gt;&lt;mjx-mn class="mjx-n" size="s"&gt;&lt;mjx-c class="mjx-c31"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-script&gt;&lt;/mjx-msub&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c2C"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msub space="2"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D442 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: -0.15em;"&gt;&lt;mjx-mn class="mjx-n" size="s"&gt;&lt;mjx-c class="mjx-c32"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-script&gt;&lt;/mjx-msub&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c2C"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mo class="mjx-n" space="2"&gt;&lt;mjx-c class="mjx-c2026"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msub space="2"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D442 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: -0.15em;"&gt;&lt;mjx-mi class="mjx-i" size="s"&gt;&lt;mjx-c class="mjx-c1D461 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-script&gt;&lt;/mjx-msub&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c2C"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msub space="2"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D45E TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: -0.15em; margin-left: -0.014em;"&gt;&lt;mjx-mi class="mjx-i" size="s"&gt;&lt;mjx-c class="mjx-c1D461 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-script&gt;&lt;/mjx-msub&gt;&lt;mjx-mo class="mjx-n"&gt;&lt;mjx-c class="mjx-c29"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mo class="mjx-n" space="4"&gt;&lt;mjx-c class="mjx-c3D"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msub space="4"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D446 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: -0.15em; margin-left: -0.032em;"&gt;&lt;mjx-mi class="mjx-i" size="s"&gt;&lt;mjx-c class="mjx-c1D456 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-script&gt;&lt;/mjx-msub&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D706 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-math&gt;&lt;mjx-assistive-mml unselectable="on" display="block"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;msub&gt;&lt;mi&gt;Î±&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;/msub&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;P&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;O&lt;/mi&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/msub&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;O&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msub&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;mo&gt;â€¦&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;O&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;,&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;/msub&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mi&gt;Î»&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;
+&lt;/div&gt;
+&lt;div class="math"&gt;
+&lt;mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="4" style="font-size: 123.4%; position: relative;"&gt;&lt;mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D458 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mo class="mjx-n" space="4"&gt;&lt;mjx-c class="mjx-c3D"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-msubsup space="4"&gt;&lt;mjx-mo class="mjx-lop"&gt;&lt;mjx-c class="mjx-c222B TEX-S2"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-script style="vertical-align: -0.896em; margin-left: -0.388em;"&gt;&lt;mjx-texatom size="s" texclass="ORD" style="margin-left: 0.647em;"&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c31"&gt;&lt;/mjx-c&gt;&lt;mjx-c class="mjx-c30"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-texatom&gt;&lt;mjx-spacer style="margin-top: 1.498em;"&gt;&lt;/mjx-spacer&gt;&lt;mjx-texatom size="s" texclass="ORD"&gt;&lt;mjx-mn class="mjx-n"&gt;&lt;mjx-c class="mjx-c30"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-texatom&gt;&lt;/mjx-script&gt;&lt;/mjx-msubsup&gt;&lt;mjx-mi class="mjx-i" space="2"&gt;&lt;mjx-c class="mjx-c1D465 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D451 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D465 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-math&gt;&lt;mjx-assistive-mml unselectable="on" display="block"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msubsup&gt;&lt;mo data-mjx-texclass="OP"&gt;âˆ«&lt;/mo&gt;&lt;mrow data-mjx-texclass="ORD"&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/mrow&gt;&lt;mrow data-mjx-texclass="ORD"&gt;&lt;mn&gt;10&lt;/mn&gt;&lt;/mrow&gt;&lt;/msubsup&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;
+&lt;/div&gt;
+&lt;div class="math"&gt;
+&lt;mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" display="true" tabindex="0" ctxtmenu_counter="5" style="font-size: 123.4%; position: relative;"&gt;&lt;mjx-math display="true" class="MJX-TEX" aria-hidden="true" style="margin-left: 0px; margin-right: 0px;"&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D438 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-mo class="mjx-n" space="4"&gt;&lt;mjx-c class="mjx-c3D"&gt;&lt;/mjx-c&gt;&lt;/mjx-mo&gt;&lt;mjx-mi class="mjx-i" space="4"&gt;&lt;mjx-c class="mjx-c1D45A TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-msup&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D450 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: 0.413em;"&gt;&lt;mjx-mn class="mjx-n" size="s"&gt;&lt;mjx-c class="mjx-c32"&gt;&lt;/mjx-c&gt;&lt;/mjx-mn&gt;&lt;/mjx-script&gt;&lt;/mjx-msup&gt;&lt;/mjx-math&gt;&lt;mjx-assistive-mml unselectable="on" display="block"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;c&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;
+&lt;/div&gt;
+&lt;p&gt;More inline math: &lt;span class="math"&gt;&lt;mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="6" style="font-size: 123.4%; position: relative;"&gt;&lt;mjx-math class="MJX-TEX" aria-hidden="true"&gt;&lt;mjx-msup&gt;&lt;mjx-mi class="mjx-i"&gt;&lt;mjx-c class="mjx-c1D452 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;mjx-script style="vertical-align: 0.363em;"&gt;&lt;mjx-mi class="mjx-i" size="s"&gt;&lt;mjx-c class="mjx-c1D465 TEX-I"&gt;&lt;/mjx-c&gt;&lt;/mjx-mi&gt;&lt;/mjx-script&gt;&lt;/mjx-msup&gt;&lt;/mjx-math&gt;&lt;mjx-assistive-mml unselectable="on" display="inline"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;/msup&gt;&lt;/math&gt;&lt;/mjx-assistive-mml&gt;&lt;/mjx-container&gt;&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;/body&gt;&lt;span style="--colorFg:#d3d9e3; --colorFgAlpha:#d3d9e31a; --colorFgIntense:#f9ffff; --colorFgFaded:#c9ced8; --colorFgFadedMore:#bec3cd; --colorFgFadedMost:#a6abb3; --colorBg:#2e2f37; --colorBgAlpha:#2e2f37e6; --colorBgAlphaHeavy:#2e2f37a6; --colorBgAlphaHeavier:#2e2f3740; --colorBgAlphaBlur:#2e2f37f2; --colorBgDark:#282931; --colorBgDarker:#23242b; --colorBgLight:#32333b; --colorBgLighter:#42434b; --colorBgLightIntense:#36373f; --colorBgIntense:#23242b; --colorBgIntenser:#1b1c24; --colorBgIntserAlpha:#181920eb; --colorBgInverse:#32333b; --colorBgInverser:#3e3f47; --colorBgFaded:#3a3b43; --backgroundBlur:blur(10px); --colorHighlightBg:#6590fd; --colorHighlightBgUnfocused:#565860; --colorHighlightBgAlpha:#6590fd1a; --colorHighlightBgDark:#4779e3; --colorHighlightFg:#ffffff; --colorHighlightFgAlpha:#ffffff80; --colorHighlightFgAlphaHeavy:#ffffff40; --colorAccentBg:#44454d; --colorAccentBgAlpha:#78798266; --colorAccentBgAlphaHeavy:#78798240; --colorAccentBgDark:#34353d; --colorAccentBgDarker:#1d1e25; --colorAccentBgFaded:#393939; --colorAccentBgFadedMore:#595a62; --colorAccentBgFadedMost:#787982; --colorAccentBorder:#34353d; --colorAccentBorderDark:#2a2b33; --colorAccentFg:#ffffff; --colorAccentFgFaded:#cacacb; --colorAccentFgAlpha:#ffffff40; --colorBorder:#1b1c24; --colorBorderDisabled:#23242b; --colorBorderSubtle:#212229; --colorBorderIntense:#0b0c15; --colorSuccessBg:#06a700; --colorSuccessBgAlpha:#06a7001a; --colorSuccessFg:#ffffff; --colorWarningBg:#efaf00; --colorWarningBgAlpha:#efaf001a; --colorWarningFg:#000000; --colorErrorBg:#c64539; --colorErrorBgAlpha:#c645391a; --colorErrorFg:#ffffff;"&gt;&lt;/span&gt;&lt;/html&gt;</t>
+<t tx="ekr.20251214045245.2">@language python
+g.cls()
+print ('Hi')
+# Trailing ws follows.
+&lt;&lt; section 1 &gt;&gt;   
+if (
+    &lt;&lt; test &gt;&gt;
+):
+    pass
+# Trailing ws follows.
+if 1:  
+    @others   # blah blah
+</t>
+<t tx="ekr.20251214045245.20">@language python
+@nosearch
+# changed
+</t>
+<t tx="ekr.20251214045245.21"></t>
+<t tx="ekr.20251214045245.22">@language html
+&lt;a href="http://127.0.0.1:8000/leo_toc.html"&gt;Link&lt;/a&gt;</t>
+<t tx="ekr.20251214045245.23">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;style&gt;
+ul.leo-tree-example  {
+    background-color: #ffffec;
+    zoom: 150%; # blurs icons a bit.
+}
+ul.leo-tree-example li {
+    background-repeat: no-repeat;
+    background-position: 0px 5px;
+    padding-left: 27px;
+}
+li {
+    background-image:
+url('https://raw.github.com/vivainio/leo/master/leo/Icons/box00.GIF');
+    background-repeat: no-repeat;
+    background-position: 0px 5px;
+    padding-left: 27px;
+}
+li.selected {
+    background-color: lightgrey;
+}
+li.leaf {
+    list-style-type: none;
+}
+li.plus {
+  list-style-image: url('http://leoeditor.com/plusnode.gif')
+}
+li.minus {
+  list-style-image: url('http://leoeditor.com/minusnode.gif')
+}
+li.leaf {
+  background-image: url('http://leoeditor.com/box00.GIF')
+}
+li.body {
+  background-image: url('http://leoeditor.com/box01.GIF')
+}
+li.mark {
+  background-image: url('http://leoeditor.com/box02.GIF')
+}
+li.mark-body {
+  background-image: url('http://leoeditor.com/box03.GIF')
+}
+li.clone {
+  background-image: url('http://leoeditor.com/box04.GIF')
+}
+li.clone-body {
+  background-image: url('http://leoeditor.com/box05.GIF')
+}
+li.clone-mark {
+  background-image: url('http://leoeditor.com/box06.GIF')
+}
+li.clone-mark-body {
+  background-image: url('http://leoeditor.com/box07.GIF')
+}
+li.dirty {
+  background-image: url('http://leoeditor.com/box08.GIF')
+}
+li.dirty-body {
+  background-image: url('http://leoeditor.com/box09.GIF')
+}
+li.dirty-mark {
+  background-image: url('http://leoeditor.com/box10.GIF')
+}
+li.dirty-mark-body {
+  background-image: url('http://leoeditor.com/box11.GIF')
+}
+li.dirty-clone {
+  background-image: url('http://leoeditor.com/box12.GIF')
+}
+li.dirty-clone-body {
+  background-image: url('http://leoeditor.com/box13.GIF')
+}
+li.dirty-clone-mark {
+  background-image: url('http://leoeditor.com/box14.GIF')
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;ul class="leo-tree-example"&gt;
+&lt;li class='plus clone-mark'&gt;
+test
+&lt;/li&gt;
+&lt;ul&gt;
+  &lt;li class='plus clone-body'&gt;
+  child
+  &lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li class='leaf body'&gt;
+    grandchild
+    &lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;li class='plus clone-body'&gt;
+  child
+  &lt;/li&gt;
+  &lt;ul&gt;
+    &lt;li class='leaf body'&gt;
+    grandchild
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ul&gt;
+&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</t>
+<t tx="ekr.20251214045245.24">@language html
+
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;!--@+leo-ver=5-thin--&gt;
+&lt;!--@+node:ekr.20100808060203.4273: * @thin html/front.html--&gt;
+&lt;!--@@first--&gt;
+&lt;!--@@first--&gt;
+
+&lt;!--@@language html--&gt;
+&lt;!--@@tabwidth -2--&gt;
+
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+    &lt;!--@+&lt;&lt; head &gt;&gt;--&gt;
+    &lt;!--@+node:ekr.20100808060203.4274: ** &lt;&lt; head &gt;&gt;--&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8" /&gt;
+
+    &lt;title&gt;Leo's Home Page&lt;/title&gt;
+    &lt;link rel="stylesheet" href="_static/default.css" type="text/css" /&gt;
+    &lt;link rel="stylesheet" href="_static/silver_city.css" type="text/css" /&gt;
+    &lt;!--
+    &lt;script type="text/javascript"&gt;
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '4.7-final',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    &lt;/script&gt;
+    --&gt;
+    &lt;!-- &lt;script type="text/javascript" src="_static/jquery.js"&gt;&lt;/script&gt;--&gt;
+    &lt;!-- &lt;script type="text/javascript" src="_static/doctools.js"&gt;&lt;/script&gt;--&gt;
+    &lt;link rel="top" title="Leo v4.7-final documentation" href="index.html" /&gt;
+    &lt;link rel="Users Guide" title="Leo&amp;#8217;s Users Guide" href="leo_toc.html" /&gt;
+    &lt;!-- &lt;link rel="prev" title="Chapter 5: Using LeoÃ¢â‚¬â„¢s Commands" href="commands.html" /&gt;--&gt; 
+    &lt;!--@-&lt;&lt; head &gt;&gt;--&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!--@+&lt;&lt; div top nav &gt;&gt;--&gt;
+    &lt;!--@+node:ekr.20100808060203.4276: ** &lt;&lt; div top nav &gt;&gt;--&gt;
+    &lt;div class="related"&gt;
+      &lt;h3&gt;Navigation&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li class="right" style="margin-right: 10px"&gt;
+          &lt;a href="genindex.html" title="General Index"
+             accesskey="I"&gt;index&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="right" &gt;
+          &lt;a href="leo_toc.html" title="Leo&amp;#8217;s Users Guide"
+             accesskey="N"&gt;contents&lt;/a&gt; |&lt;/li&gt;
+        &lt;!--
+        &lt;li class="right" &gt;
+          &lt;a href="commands.html" title="Chapter 5: Using Leo&amp;#8217;s Commands"
+             accesskey="P"&gt;previous&lt;/a&gt; |&lt;/li&gt;
+        --&gt;
+        &lt;li&gt;&lt;a href="leo_toc.html"&gt;Leo v4.7-final documentation&lt;/a&gt; &amp;raquo;&lt;/li&gt;
+
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;!--@-&lt;&lt; div top nav &gt;&gt;--&gt;
+    &lt;div class="document"&gt;
+      &lt;div class="documentwrapper"&gt;
+        &lt;div class="bodywrapper"&gt;
+          &lt;div class="body"&gt;
+            &lt;!--@+&lt;&lt; div outer section &gt;&gt;--&gt;
+            &lt;!--@+node:ekr.20100808060203.4286: ** &lt;&lt; div outer section &gt;&gt;--&gt;
+            &lt;div class="section" id="Leo&amp;#8217;s Home page"&gt;
+
+                &lt;h1&gt;Leo&amp;#8217;s Home Page&lt;/h1&gt;
+
+                Leo is...
+
+                &lt;!--@+&lt;&lt; what is Leo list &gt;&gt;--&gt;
+                &lt;!--@+node:ekr.20100808060203.4288: *3* &lt;&lt; what is Leo list &gt;&gt;--&gt;
+                &lt;li&gt;
+                    An outline-oriented &lt;i&gt;browser&lt;/i&gt; and &lt;i&gt;project manager&lt;/i&gt; that organizes&lt;br&gt;
+                    programs, web sites, URL's, pictures, movies or any other kind of data.&lt;br&gt;
+                    You can organize your data in as many ways as you like within a &lt;i&gt;single&lt;/i&gt; outline.&lt;/li&gt;
+                &lt;li&gt;
+                    A &lt;i&gt;programmer's editor&lt;/i&gt; that fully integrates outline structure with programming.
+                    &lt;!--
+                    &lt;a HREF="http://www.eecs.harvard.edu/~nr/noweb/"&gt;noweb&lt;/a&gt; and
+                    &lt;a HREF="http://www-cs-faculty.stanford.edu/~knuth/cweb.html"&gt;CWEB&lt;/a&gt; markup.&lt;/li&gt;
+                    --&gt;
+                &lt;li&gt;
+                    &lt;i&gt;Fully scriptable&lt;/i&gt; using &lt;a HREF="http://www.python.org/"&gt;Python&lt;/a&gt;.
+                    Leo's core is 100% pure Python.&lt;/li&gt;
+                &lt;li&gt;
+                    &lt;i&gt;Portable&lt;/i&gt;. Leo runs on Windows, Linux and MacOS X.&lt;br&gt;
+                    Leo requires either the
+                    &lt;a HREF="http://docs.python.org/library/tkinter.html"&gt;Tkinter&lt;/a&gt; or
+                    &lt;a HREF="http://www.riverbankcomputing.co.uk/software/pyqt/intro"&gt;PyQt&lt;/a&gt; widget set.&lt;br&gt;
+                    Leo's outline files are &lt;a HREF="http://www.w3.org/XML/"&gt;XML&lt;/a&gt; format.&lt;/li&gt;
+                &lt;li&gt;
+                    &lt;a href="http://www.opensource.org/"&gt;&lt;i&gt;Open Software&lt;/i&gt;&lt;/a&gt;,
+                    distributed under the
+                    &lt;a href="http://www.opensource.org/licenses/mit-license.php/"&gt;MIT License&lt;/a&gt;.&lt;/li&gt;
+                &lt;!--@-&lt;&lt; what is Leo list &gt;&gt;--&gt;
+                &lt;!-- div body toc --&gt;
+                &lt;!-- &lt; &lt; inner sections &gt; &gt; --&gt;
+
+                &lt;p&gt;Leo has an active community of helpful users and developers.&lt;br&gt;
+                Please use the &lt;a href="http://groups.google.com/group/leo-editor"&gt;leo-editor&lt;/a&gt;
+                group to ask questions and make suggestions.&lt;/p&gt;
+
+                &lt;p&gt;Leo's author is &lt;a HREF="ekr.html"&gt;Edward K. Ream&lt;/a&gt;&lt;/p&gt;
+
+            &lt;/div&gt;
+            &lt;!--@-&lt;&lt; div outer section &gt;&gt;--&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!--@+&lt;&lt; sidebar &gt;&gt;--&gt;
+      &lt;!--@+node:ekr.20100808060203.4282: ** &lt;&lt; sidebar &gt;&gt;--&gt;
+      &lt;div class="sphinxsidebar"&gt;
+          &lt;div class="sphinxsidebarwrapper"&gt;
+              &lt;!--@+&lt;&lt; sidebar contents &gt;&gt;--&gt;
+              &lt;!--@+node:ekr.20100808060203.4283: *3* &lt;&lt; sidebar contents &gt;&gt;--&gt;
+              &lt;p class="logo"&gt;&lt;a href="leo_toc.html"&gt;
+                &lt;img class="logo" src="_static/Leo4-80-border.jpg" alt="Logo"/&gt;&lt;/a&gt;&lt;/p&gt;
+
+              &lt;a class="reference external" href="intro.html"&gt;
+                Read this tutorial first&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="http://www.3dtree.com/ev/e/sbooks/leo/sbframetoc_ie.htm"&gt;
+                Another tutorial&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="http:screen-shots.html"&gt;
+                Screen shots of Leo&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="testimonials.html"&gt;
+                Quotes from Leo&amp;#8217;s Users&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external"
+                href="http://sourceforge.net/project/showfiles.php?group_id=3458&amp;amp;package_id=29106"&gt;
+                Download Leo&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="http://groups.google.com/group/leo-editor"&gt;
+                leo-editor: Google Groups&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="http://launchpad.net/leo-editor"&gt;
+                leo-editor: Launchpad&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="http://leo.zwiki.org"&gt;
+                Leo&amp;#8217;s Wiki&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="http://www.mind-mapping.org/"&gt;
+                Mind Mapping&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="leoLinks.html"&gt;
+                More links...&lt;/a&gt;&lt;br&gt;
+
+              &lt;!-- &lt;a class="reference external"  href="install.html"&gt;Installing Leo&lt;/a&gt;&lt;br&gt;--&gt; 
+              &lt;!-- &lt;a class="reference external"  href="intro.html"&gt;Beginners Guide&lt;/a&gt;&lt;br&gt;--&gt;
+              &lt;!-- &lt;a class="reference external"  href="leo_toc.html"&gt;Users Guide&lt;/a&gt;&lt;br&gt;--&gt;
+              &lt;!-- &lt;a class="reference external"  href="FAQ.html"&gt;FAQ&lt;/a&gt;&lt;br&gt;--&gt;
+              &lt;!--Leo&amp;#8217;s &lt;a class="reference external" href="http://www.greygreen.org/leo/"&gt;Daily snapshots&lt;/a&gt;&lt;br&gt;--&gt;
+              &lt;!-- 
+              &lt;h5&gt;Edward K. Ream&lt;/h5&gt;
+              &lt;a class="reference external" href="ekr.html"&gt;Home&lt;/a&gt;&lt;br&gt;
+              &lt;a class="reference external" href="mailto:edreamleo@gmail.com"&gt;Contact&lt;/a&gt;&lt;br&gt;
+              --&gt; 
+              &lt;!--@-&lt;&lt; sidebar contents &gt;&gt;--&gt;
+          &lt;!-- &lt; &lt; sidebar links &gt; &gt; --&gt;
+          &lt;!-- &lt; &lt; searchbox &gt; &gt; --&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;!--@-&lt;&lt; sidebar &gt;&gt;--&gt;
+      &lt;div class="clearer"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!--@+&lt;&lt; div bottom nav &gt;&gt;--&gt;
+    &lt;!--@+node:ekr.20100808060203.4277: ** &lt;&lt; div bottom nav &gt;&gt;--&gt;
+    &lt;div class="related"&gt;
+      &lt;h3&gt;Navigation&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li class="right" style="margin-right: 10px"&gt;
+          &lt;a href="genindex.html" title="General Index"
+             &gt;index&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="right" &gt;
+          &lt;a href="leo_toc.html" title="Leo&amp;#8217;s Users Guide"
+             &gt;contents&lt;/a&gt; |&lt;/li&gt;
+        &lt;!--
+        &lt;li class="right" &gt;
+          &lt;a href="commands.html" title="Chapter 5: Using Leo&amp;#8217;s Commands"
+             &gt;previous&lt;/a&gt; |&lt;/li&gt;
+        --&gt;
+        &lt;li&gt;&lt;a href="leo_toc.html"&gt;Leo v4.7-final documentation&lt;/a&gt; &amp;raquo;&lt;/li&gt; 
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;!--@-&lt;&lt; div bottom nav &gt;&gt;--&gt;
+    &lt;!--@+&lt;&lt; div footer &gt;&gt;--&gt;
+    &lt;!--@+node:ekr.20100808060203.4278: ** &lt;&lt; div footer &gt;&gt;--&gt;
+    &lt;div class="footer"&gt;
+      &amp;copy; Copyright 2010, Edward K. Ream.
+      Last updated on Aug 08, 2010.
+      Created using &lt;a href="http://sphinx.pocoo.org/"&gt;Sphinx&lt;/a&gt; 0.6.3.
+    &lt;/div&gt;
+    &lt;!--@-&lt;&lt; div footer &gt;&gt;--&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+&lt;!--@-leo--&gt;
+</t>
+<t tx="ekr.20251214045245.25"></t>
+<t tx="ekr.20251214045245.26">C:\Repos\EKR-Math\temp.pdf
+</t>
+<t tx="ekr.20251214045245.27">temp.pdf</t>
+<t tx="ekr.20251214045245.28"></t>
+<t tx="ekr.20251214045245.29">C:\Repos\leo-editor\leo\Icons\LeoLogo.svg
+
+@language rest
+@wrap
+</t>
+<t tx="ekr.20251214045245.3">print ('section one')
+</t>
+<t tx="ekr.20251214045245.30"></t>
+<t tx="ekr.20251214045245.31">Leosplash.GIF
+</t>
+<t tx="ekr.20251214045245.32"></t>
+<t tx="ekr.20251214045245.33">#
+# a bar plot with errorbars
+N = 5
+menMeans = (20, 35, 30, 35, 27)
+menStd = (2, 3, 4, 1, 2)
+ind = np.arange(N)  # the x locations for the groups
+width = 0.35       # the width of the bars
+fig, ax = plt.subplots()
+rects1 = ax.bar(ind, menMeans, width, color='r', yerr=menStd)
+womenMeans = (25, 32, 34, 20, 25)
+womenStd = (3, 5, 2, 3, 3)
+rects2 = ax.bar(ind + width, womenMeans, width, color='y', yerr=womenStd)
+# add some text for labels, title and axes ticks
+ax.set_ylabel('Scores')
+ax.set_title('Scores by group and gender')
+ax.set_xticks(ind + width)
+ax.set_xticklabels(('G1', 'G2', 'G3', 'G4', 'G5'))
+ax.legend((rects1[0], rects2[0]), ('Men', 'Women'))
+
+def autolabel(rects):
+    # attach some text labels
+    for rect in rects:
+        height = rect.get_height()
+        ax.text(rect.get_x() + rect.get_width()/2., 1.05*height,
+                '%d' % int(height),
+                ha='center', va='bottom')
+
+autolabel(rects1)
+autolabel(rects2)
+</t>
+<t tx="ekr.20251214045245.34"># http://matplotlib.org/1.5.1/examples/animation/basic_example.html
+
+def update_line(num, data, line):
+        line.set_data(data[..., :num])
+        return line, # a tuple.
+
+fig1 = plt.figure()
+data = np.random.rand(2, 100) ### 2, 25)
+# g.printObj(data)
+l, = plt.plot([], [], 'r-')
+plt.xlim(0, 1)
+plt.ylim(0, 1)
+plt.xlabel('x')
+plt.title('test')
+line_ani = animation.FuncAnimation(fig1, update_line, 25,
+    fargs=(data, l), interval=50, blit=True)
+# Retain a reference to animation.
+g.app.permanentScriptDict['pyplot_animations'] = animation
+
+</t>
+<t tx="ekr.20251214045245.35"># http://matplotlib.org/1.5.1/examples/animation/basic_example.html
+
+fig2 = plt.figure()
+x = np.arange(-9, 10)
+y = np.arange(-9, 10).reshape(-1, 1)
+base = np.hypot(x, y)
+images = []
+for add in np.arange(15):
+    images.append((plt.pcolor(x, y, base + add, norm=plt.Normalize(0, 30)),))
+animation = animation.ArtistAnimation(fig2, images,
+    interval=50,
+    repeat_delay=30,
+    blit=True)
+# Retain a reference to animation.
+g.app.permanentScriptDict['pyplot_animations'] = animation
+</t>
+<t tx="ekr.20251214045245.36"># http://matplotlib.org/1.5.1/examples/animation/animate_decay.html
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import matplotlib.animation as animation
+
+@others
+
+# global data.
+fig, ax = plt.subplots()
+line, = ax.plot([], [], lw=2)
+ax.grid()
+xdata, ydata = [], []
+animation = animation.FuncAnimation(
+    fig, run, data_gen, blit=False, interval=10,
+    repeat=False, init_func=init,
+    cache_frame_data=False,
+)
+# Retain a reference to animation.
+g.app.permanentScriptDict['pyplot_animations'] = animation
+</t>
+<t tx="ekr.20251214045245.37">def data_gen(t=0):
+    for n in range(500): # n not used.
+        t += 0.1
+        yield t, np.sin(2*np.pi*t) * np.exp(-t/10.0)
+</t>
+<t tx="ekr.20251214045245.38">def init():
+    ax.set_ylim(-1.1, 1.1)
+    ax.set_xlim(0, 10)
+    del xdata[:]
+    del ydata[:]
+    line.set_data(xdata, ydata)
+    return line,
+</t>
+<t tx="ekr.20251214045245.39">def run(data):
+    # update the data
+    t, y = data
+    xdata.append(t)
+    ydata.append(y)
+    xmin, xmax = ax.get_xlim()
+    if t &gt;= xmax:
+        ax.set_xlim(xmin, 2*xmax)
+        ax.figure.canvas.draw()
+    line.set_data(xdata, ydata)
+    return line,
+</t>
+<t tx="ekr.20251214045245.4">1 == 2
+</t>
+<t tx="ekr.20251214045245.40">x1 = np.linspace(0.0, 5.0)
+x2 = np.linspace(0.0, 2.0)
+y1 = np.cos(2 * np.pi * x1) * np.exp(-x1)
+y2 = np.cos(2 * np.pi * x2)
+# Grpah 1.
+plt.subplot(2, 1, 1)
+plt.plot(x1, y1, 'ko-')
+plt.title('A tale of 2 subplots')
+plt.ylabel('Damped oscillation')
+# Graph 2.
+plt.subplot(2, 1, 2)
+plt.plot(x2, y2, 'r.-')
+plt.xlabel('time (s)')
+plt.ylabel('Undamped')</t>
+<t tx="ekr.20251214045245.41"></t>
+<t tx="ekr.20251214045245.42">@nocolor-node
+&lt;?xml version="1.0" standalone="no"?&gt;
+&lt;!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"&gt;
+&lt;svg width="20cm" height="15cm" viewBox="0 0 800 600"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlik/"
+     baseProfile="tiny" version="1.2"&gt;
+   &lt;title&gt;Spheres&lt;/title&gt;
+   &lt;desc&gt;Semi-transparent bubbles on a colored background.&lt;/desc&gt;
+     &lt;defs&gt;
+       &lt;!-- Create radial gradients for each bubble. --&gt;
+       &lt;radialGradient id="blueBubble" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" stop-opacity="1" /&gt;
+         &lt;stop offset="25%" stop-color="#cdcdff" stop-opacity=".65" /&gt;
+         &lt;stop offset="100%" stop-color="#cdaacd" stop-opacity=".75" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="redBubble" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" stop-opacity="1" /&gt;
+         &lt;stop offset="25%" stop-color="#ffcdcd" stop-opacity=".65" /&gt;
+         &lt;stop offset="100%" stop-color="#bbbb99" stop-opacity=".75" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="greenBubble" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" stop-opacity="1" /&gt;
+         &lt;stop offset="25%" stop-color="#cdffcd" stop-opacity=".65" /&gt;
+         &lt;stop offset="100%" stop-color="#99aaaa" stop-opacity=".75" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="yellowBubble" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" stop-opacity="1" /&gt;
+         &lt;stop offset="25%" stop-color="#ffffcd" stop-opacity=".65" /&gt;
+         &lt;stop offset="100%" stop-color="#bbbbaa" stop-opacity=".75" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="background" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="400" fx="250" fy="250"&gt;
+         &lt;stop offset="0%" stop-color="#ffffee" /&gt;
+         &lt;stop offset="100%" stop-color="#ccccaa" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;linearGradient id="surface" gradientUnits="userSpaceOnUse"
+                       x1="-100" y1="200" x2="400" y2="200"&gt;
+         &lt;stop offset="0%" stop-color="#ffffcc" /&gt;
+         &lt;stop offset="100%" stop-color="#bbbb88" /&gt;
+       &lt;/linearGradient&gt;
+
+       &lt;!-- Create radial gradients for each circle to make them look like
+            spheres. --&gt;
+       &lt;radialGradient id="blueSphere" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" /&gt;
+         &lt;stop offset="75%" stop-color="blue" /&gt;
+         &lt;stop offset="100%" stop-color="#222244" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="redSphere" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" /&gt;
+         &lt;stop offset="75%" stop-color="red" /&gt;
+         &lt;stop offset="100%" stop-color="#442222" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="greenSphere" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" /&gt;
+         &lt;stop offset="75%" stop-color="green" /&gt;
+         &lt;stop offset="100%" stop-color="#113311" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="yellowSphere" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="-50"&gt;
+         &lt;stop offset="0%" stop-color="white" /&gt;
+         &lt;stop offset="75%" stop-color="yellow" /&gt;
+         &lt;stop offset="100%" stop-color="#444422" /&gt;
+       &lt;/radialGradient&gt;
+       &lt;radialGradient id="shadowGrad" gradientUnits="userSpaceOnUse"
+                       cx="0" cy="0" r="100" fx="-50" fy="50"&gt;
+         &lt;stop offset="0%" stop-color="black" stop-opacity="1.0" /&gt;
+         &lt;stop offset="100%" stop-color="black" stop-opacity="0.0" /&gt;
+       &lt;/radialGradient&gt;
+
+       &lt;!-- Define a shadow for each sphere. --&gt;
+       &lt;circle id="shadow" fill="url(#shadowGrad)" cx="0" cy="0" r="100" /&gt;
+       &lt;g id="bubble"&gt;
+         &lt;circle fill="black" cx="0" cy="0" r="50" /&gt;
+         &lt;circle fill="#a6ce39" cx="0" cy="0" r="33" /&gt;
+         &lt;path fill="black" d="M 37,50 L 50,37 L 12,-1 L 22,-11 L 10,-24 L -24,10
+                               L -11,22 L -1,12 Z" /&gt;
+         &lt;circle cx="0" cy="0" r="100" /&gt;
+       &lt;/g&gt;
+     &lt;/defs&gt;
+   &lt;g&gt;
+     &lt;rect fill="url(#background)" x="0" y="0" width="800" height="600" /&gt;
+   &lt;/g&gt;
+
+   &lt;g transform="translate(200,700)"&gt;
+     &lt;use xlink:href="#bubble" fill="url(#blueBubble)" /&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="1s" dur="10s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(315,700)"&gt;
+     &lt;g transform="scale(0.5,0.5)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#redBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="3s" dur="7s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(80,700)"&gt;
+     &lt;g transform="scale(0.65,0.65)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#greenBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="5s" dur="9s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(255,700)"&gt;
+     &lt;g transform="scale(0.3,0.3)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#yellowBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="2s" dur="6s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(565,700)"&gt;
+     &lt;g transform="scale(0.4,0.4)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#blueBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="4s" dur="8s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(715,700)"&gt;
+     &lt;g transform="scale(0.6,0.6)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#redBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="1s" dur="4s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(645,700)"&gt;
+     &lt;g transform="scale(0.375,0.375)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#greenBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="0s" dur="11s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(555,700)"&gt;
+     &lt;g transform="scale(0.9,0.9)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#yellowBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="3s" dur="7.5s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+
+   &lt;g transform="translate(360,700)"&gt;
+     &lt;g transform="scale(0.5,0.5)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#blueBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="3s" dur="6s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(215,700)"&gt;
+     &lt;g transform="scale(0.45,0.45)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#redBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="5.5s" dur="7s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(420,700)"&gt;
+     &lt;g transform="scale(0.75,0.75)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#greenBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="1s" dur="9s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+   &lt;g transform="translate(815,700)"&gt;
+     &lt;g transform="scale(0.6,0.6)"&gt;
+       &lt;use xlink:href="#bubble" fill="url(#yellowBubble)" /&gt;
+     &lt;/g&gt;
+     &lt;animateTransform attributeName="transform" type="translate" additive="sum"
+         values="0,0; 0,-800" begin="2s" dur="9.5s" fill="freeze" repeatCount="indefinite" /&gt;
+   &lt;/g&gt;
+
+   &lt;g transform="translate(225,375)" &gt;
+     &lt;g transform="scale(1.0,0.5)" &gt;
+       &lt;path d="M 0 0 L 350 0 L 450 450 L -100 450 z"
+             fill="url(#surface)" stroke="none" /&gt;
+     &lt;/g&gt;
+   &lt;/g&gt;
+     &lt;g transform="translate(200,0)" &gt;
+     &lt;g transform="translate(200,490) scale(2.0,1.0) rotate(45)" &gt;
+       &lt;rect fill="#a6ce39" x="-69" y="-69" width="138" height="138" /&gt;
+       &lt;circle fill="black" cx="0" cy="0" r="50" /&gt;
+       &lt;circle fill="#a6ce39" cx="0" cy="0" r="33" /&gt;
+       &lt;path fill="black" d="M 37,50 L 50,37 L 12,-1 L 22,-11 L 10,-24 L -24,10
+                             L -11,22 L -1,12 Z" /&gt;
+       &lt;animateTransform attributeName="transform"  type="rotate" additive="sum" values="0; 360"
+                  begin="0s" dur="10s" fill="freeze" repeatCount="indefinite" /&gt;
+     &lt;/g&gt;
+     &lt;g transform="translate(200,375)"&gt;
+       &lt;use xlink:href="#shadow" transform="translate(25,55) scale(1.0,0.5)" /&gt;
+       &lt;circle fill="url(#blueSphere)" cx="0" cy="0" r="100" /&gt;
+     &lt;/g&gt;
+     &lt;g transform="translate(315,440)"&gt;
+       &lt;g transform="scale(0.5,0.5)"&gt;
+         &lt;use xlink:href="#shadow" transform="translate(25,55) scale(1.0,0.5)" /&gt;
+         &lt;circle fill="url(#redSphere)" cx="0" cy="0" r="100" /&gt;
+       &lt;/g&gt;
+     &lt;/g&gt;
+     &lt;g transform="translate(80,475)"&gt;
+       &lt;g transform="scale(0.65,0.65)"&gt;
+         &lt;use xlink:href="#shadow" transform="translate(25,55) scale(1.0,0.5)" /&gt;
+         &lt;circle fill="url(#greenSphere)" cx="0" cy="0" r="100" /&gt;
+       &lt;/g&gt;
+     &lt;/g&gt;
+     &lt;g transform="translate(255,525)"&gt;
+       &lt;g transform="scale(0.3,0.3)"&gt;
+         &lt;use xlink:href="#shadow" transform="translate(25,55) scale(1.0,0.5)" /&gt;
+         &lt;circle fill="url(#yellowSphere)" cx="0" cy="0" r="100" /&gt;
+       &lt;/g&gt;
+     &lt;/g&gt;
+   &lt;/g&gt;
+&lt;/svg&gt;</t>
+<t tx="ekr.20251214045245.43">C:\Repos\leo-editor\leo\Icons\bubbles.svg
+</t>
+<t tx="ekr.20251214045245.44">@language rest
+@wrap
+
+''' Creates a window for *live* rendering of rst, html, etc.  (Qt only).
+
+Commands
+========
+
+viewrendered.py creates the following (``Alt-X``) commands:
+
+``viewrendered``
+    opens a new window where the current body text is rendered as HTML
+    (if it starts with '&lt;'), or otherwise reStructuredText.
+``viewrendered-big``
+    as above, but zoomed in, useful for presentations
+``viewrendered-html``
+    displays the html source generated from reStructuredText, useful for
+    debugging
+
+``viewrendered`` sets the process current directory (os.chdir()) to the path
+to the node being rendered, to allow relative paths to work in
+``.. image::`` directives.
+
+reStructuredText errors and warnings may be shown.  For example, both::
+
+    Heading
+    -------
+
+    `This` is **really** a line of text.
+
+and::
+
+    &lt;h1&gt;Heading&lt;h1&gt;
+
+    &lt;tt&gt;This&lt;/tt&gt; is &lt;b&gt;really&lt;/b&gt; a line of text.
+
+will look something like:
+
+**Heading**
+
+`This` is **really** a line of text.
+
+Settings
+========
+
+@string view-rendered-default-kind = rst
+----------------------------------------
+
+The default kind of rendering.  One of (big,rst,html)
+    
+@bool view-rendered-auto-create = False
+---------------------------------------
+
+When True, the plugin will create a rendering pane automatically.
+
+'''
+</t>
+<t tx="ekr.20251214045245.45"></t>
+<t tx="ekr.20251214045245.46">@language md
+
+# Title
+
+This is **bold** and *italics*.
+
+More info at [Leo's home page](&lt;http://leoeditor.com/).
+
+### Section
+
+- Bullet list
+- Another item
+- Third item.
+</t>
+<t tx="ekr.20251214045245.47">Inline:
+    
+\int_{b^a} \, x^2 \, dx: :math:`\int_{b^a} \, x^2 \, dx`
+
+d/dx \int_{0^x}\,f(u)\,du=f(x): :math:`d/dx \int_{0^x}\,f(u)\,du=f(x)`
+
+\int_{0^x}: :math:`\int_{0^x}`
+
+block:
+
+.. math::
+
+    x + 5 = -3
+
+    \int_{b^a} \, x^2 \, dx
+
+    d / dx \, \left(\int_{0^x} f(u)\,du\right)=f(x)
+
+    d / dx (\int_{0^x} f(u)\,du ) = f(x)
+
+    y_k(\mathbf{x},\mathbf{w}) = p(C_1|\mathbf{x})
+    
+Alignment with \\\\ in \\begin{equation}:
+
+.. math::
+
+    \begin{equation}
+    x + 5 = -3 \\
+    \int_{b^a} \, x^2 \, dx\\
+    d / dx \left(\int_{0^x} f(u)\,du\right)=f(x)\\
+    d / dx (\int_{0^x} f(u)\,du) = f(x)\\
+    y_k(\mathbf{x},\mathbf{w}) = p(C_1|\mathbf{x})
+    \end{equation}
+    
+Inline: :math:`y_k(\mathbf{x},\mathbf{w}) = p(C_1|\mathbf{x})`
+
+Inline: :math:`(\sum_{t=0}^{N}\,f(t,k))/N`
+    
+The final output will be a vector :math:`Y` with :math:`K` elements, :math:`y_k`, where
+:math:`y_k(\mathbf{x},\mathbf{w}) = p(C_1|\mathbf{x})` is the probability that node :math:`k` is in class :math:`C_1` and
+:math:`p(C_2|\mathbf{x}) = 1-p(C_1|\mathbf{x})`
+
+</t>
+<t tx="ekr.20251214045245.48">@language md
+
+- Item
+
+[link](xxx)</t>
+<t tx="ekr.20251214045245.49"></t>
+<t tx="ekr.20251214045245.5">print('Node1: line 1')
+# Blank line with trailing ws
+    
+print('Node1: line 4')
+</t>
+<t tx="ekr.20251214045245.50">@language rest
+
+#####
+Title
+#####
+
+This is **bold** and *italics*.
+
+More info at `Leo's home page &lt;http://leoeditor.com/&gt;`_.
+
+Section
+=======
+
+- Bullet list
+- Another item
+- Third item.</t>
+<t tx="ekr.20251214045245.51">@language rest
+@wrap
+
+- test2
+
+*italic*
+
+**bold**
+
+@language python</t>
+<t tx="ekr.20251214045245.52">@language python
+
+def foo():
+    pass</t>
+<t tx="ekr.20251214045245.53">@language rest
+@wrap
+code::
+
+    print('Hello world')
+    for i in 0,1:
+        print(i)
+    
+</t>
+<t tx="ekr.20251214045245.54"></t>
+<t tx="ekr.20251214045245.55">@language md
+@wrap
+
+[Leo's home page](https://leo-editor.github.io/leo-editor/)
+</t>
+<t tx="ekr.20251214045245.56">@language rest
+@wrap
+
+`Leo's home page &lt;https://leo-editor.github.io/leo-editor/&gt;`_
+
+</t>
+<t tx="ekr.20251214045245.57">@language rest
+@wrap
+
+`EKR mail &lt;http://mail.google.com/mail/#inbox&gt;`_</t>
+<t tx="ekr.20251214045245.58">@language md
+@wrap
+
+[weather.com](http://www.weather.com/weather/today/Madison+WI+53705?from=hp_promolocator&amp;lswe=53705&amp;lwsa=Weather36HourHealthCommand)
+</t>
+<t tx="ekr.20251214045245.59"></t>
+<t tx="ekr.20251214045245.6">@nobeautify
+
+print (
+    'abc'
+)
+</t>
+<t tx="ekr.20251214045245.60"></t>
+<t tx="ekr.20251214045245.61">@language python
+# %%
+# Leo created this prefix from @data jupyter-prefix.
+# Jupyter's 'New Python Text Notebook with Percent Format` created this file.
+
+# ---
+# jupyter:
+#   jupytext:
+#     formats: py:percent
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.4
+#   kernelspec:
+#     display_name: Python 3 (ipykernel)
+#     language: python
+#     name: python3
+# ---
+
+# %%
+
+</t>
+<t tx="ekr.20251214045245.62"></t>
+<t tx="ekr.20251214045245.63">@language python
+# %%
+
+# ---
+# jupyter:
+#   jupytext:
+#     formats: ipynb,py:percent
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.4
+#   kernelspec:
+#     display_name: Python 3 (ipykernel)
+#     language: python
+#     name: python3
+# ---
+
+# %% [markdown] editable=true slideshow={"slide_type": ""}
+# # Creating a new notebook
+
+# %% [markdown]
+# 1. Open the command palette with the shortcut: `Ctrl/Command` + `Shift` + `P`
+# 2. Search for the command `Create New Blank Notebook`
+
+# %% editable=true slideshow={"slide_type": ""}
+# How to get back to the start page
+
+# %% editable=true slideshow={"slide_type": ""}
+1. Open the command palette with the shortcut: `Ctrl/Command` + `Shift` + `P`
+
+2. Search for the command `Python: Open Start Page`
+
+# %% [markdown] editable=true slideshow={"slide_type": ""}
+# # Getting started
+
+# %% [markdown]
+# You are currently viewing what we call our Notebook Editor. It is an interactive document based on Jupyter Notebooks that supports the intermixing of code, outputs and markdown documentation. 
+#
+# This cell is a markdown cell. To edit the text in this cell, simply double click on the cell to change it into edit mode.
+#
+# The next cell below is a code cell. You can switch a cell between code and markdown by clicking on the code ![code icon](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/codeIcon.PNG) /markdown ![markdown icon](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/markdownIcon.PNG) icons or using the keyboard shortcut `M` and `Y` respectively.
+
+# %%
+print("hello world")
+
+# %% [markdown]
+# * To execute the code in the cell above, click on the cell to select it and then either press the play ![play](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/playIcon.PNG) button in the cell toolbar, or use the keyboard shortcut `Ctrl/Command` + `Enter`.
+# * To edit the code, just click in cell and start editing.
+# * To add a new cell below, click the `Add Cell` icon ![add cell](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/addIcon.PNG) at the bottom left of the cell or enter command mode with the `ESC` Key and then use the keyboard shortcut `B` to create the new cell below.
+#
+
+# %% [markdown]
+# # Features
+
+# %% [markdown]
+# **Variable explorer**
+#
+# To view all your active variables and their current values in the notebook, click on the variable explorer icon ![variable explorer](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/variableExplorerIcon.PNG) in the top toolbar.
+#
+# ![Variable Explorer](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/variableexplorer.png)
+#
+# **Data Viewer**
+#
+# To view your data frame in a more visual "Excel" like format, open the variable explorer and to the left of any dataframe object, you will see the data viewer icon ![data viewer](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/dataViewerIcon.PNG) which you can click to open the data viewer.
+#
+# ![Data Viewer](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/dataviewer.gif)
+#
+# **Convert to Python File**
+#
+# To export your notebook to a Python file (.py), click on the `Convert to Python script` icon ![Export icon](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/exportIcon.PNG) in the top toolbar 
+#
+# ![Export](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/savetopythonfile.png)
+#
+# **Plot Viewer**
+#
+# If you have a graph (such as matplotlib) in your output, you'll notice if you hover over the graph, the `Plot Viewer` icon ![Plot Viewer](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/plotViewerIcon.PNG) will appear in the top left. Click the icon to open up the graph in the Plotviewer which allows you to zoom on your plots and export it in formats such as png and jpeg.
+#
+# ![Plot Viewer](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/plotviewer.gif)
+#
+# **Switching Kernels**
+#
+# The notebook editor will detect all kernels in your system by default. To change your notebook kernel, click on the kernel status in the top toolbar at the far right. For example, your kernel status may say "Python 3: Idle". This will open up the kernel selector where you can choose your desired kernel.
+#
+# ![Switching Kernels](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/kernelchange.gif)
+#
+# **Remote Jupyter Server**
+#
+# To connect to a remote Jupyter server, open the command prompt and search for the command `Specify remote or local Jupyter server for connections`. Then select `Existing` and enter the remote Jupyter server URL. Afterwards, you'll be prompted to reload the window and the Notebook will be opened connected to the remote Jupyter server.
+#
+# ![Remote](https://raw.githubusercontent.com/microsoft/vscode-python/main/images/remoteserver.gif)
+
+# %% [markdown] colab_type="text" id="-Rh3-Vt9Nev9"
+# # More Resources
+
+# %% [markdown]
+# - [Data science tutorial for Visual Studio Code](https://code.visualstudio.com/docs/python/data-science-tutorial)
+# - [Jupyter Notebooks in Visual Studio Code documentation](https://code.visualstudio.com/docs/python/jupyter-support)
+</t>
+<t tx="ekr.20251214045245.64">@language python
+# %%
+# A leading (misleading?) comment.
+&lt;&lt; preamble &gt;&gt;
+@others
+@language json
+</t>
+<t tx="ekr.20251214045245.65"># %%
+# ---
+# jupyter:
+#   kernelspec:
+#     display_name: Python 3 (ipykernel)
+#     language: python
+#     name: python3
+# ---
+
+</t>
+<t tx="ekr.20251214045245.66">@language python
+</t>
+<t tx="ekr.20251214045245.67"># %%
+2 + 666 + 4
+</t>
+<t tx="ekr.20251214045245.68"># %%
+print('hi changed externally')
+</t>
+<t tx="ekr.20251214045245.69"># %% [markdown]
+# This is a markdown cell
+
+# %% [markdown]
+# Another markdown cell
+
+# %%
+</t>
+<t tx="ekr.20251214045245.7"></t>
+<t tx="ekr.20251214045245.70">&lt;&lt; prefix &gt;&gt;
+@others
+@language python
+@tabwidth -4
+</t>
+<t tx="ekr.20251214045245.71"># ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.4
+#   kernelspec:
+#     display_name: Python 3
+#     language: python
+#     name: python3
+# ---
+
+</t>
+<t tx="ekr.20251214045245.72"># %% [markdown]
+# Loading and Analyzing Data
+# ==========================
+
+</t>
+<t tx="ekr.20251214045245.73"># %%
+import pandas as pd  # programmers like shortening names for things, so they usually import pandas as "pd"
+import altair as alt # again with the shortening of names
+import requests # we use it for downloading the data so we don't have to save it on GitHub (too big!)
+import zipfile # for de-compressing the files we download from the EPA
+
+</t>
+<t tx="ekr.20251214045245.74"># %% [markdown]
+# ## Load the air quality data
+# The EPA published PM2.5 daily summary files annually [on their website](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Daily). This data is the "PM2.5 FRM/FEM Mass (88101)" dataset.
+# Pandas understands what a CSV file is, so here we can just load them into two `DataFrame`s. A data frame is simply one representation of a table of data. It is the most important form of storage for working with data in pandas.
+
+</t>
+<t tx="ekr.20251214045245.75"># %%
+# Download the data from the EPA website
+data_file_urls = [
+    'https://aqs.epa.gov/aqsweb/airdata/daily_88101_2020.zip',
+    'https://aqs.epa.gov/aqsweb/airdata/daily_88101_2019.zip'
+]
+# copied this example from https://stackoverflow.com/questions/16694907/download-large-file-in-python-with-requests
+for url in data_file_urls:
+    local_filename = "data/{}".format(url.split('/')[-1])
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(local_filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192): 
+                f.write(chunk)
+# and unzip the files
+files_to_unzip = ["data/{}".format(url.split('/')[-1]) for url in data_file_urls]
+for f in files_to_unzip:
+    with zipfile.ZipFile(f,"r") as zip_ref:
+        zip_ref.extractall("data")
+
+</t>
+<t tx="ekr.20251214045245.76"># %%
+air_2019_df = pd.read_csv("data/daily_88101_2019.csv")
+air_2020_df = pd.read_csv("data/daily_88101_2020.csv")
+air_2020_df.head() # this helpfully prints out the first few rows with headers to preview the data
+
+</t>
+<t tx="ekr.20251214045245.77"># %%
+"{} rows for 2019, {} rows for 2020".format(air_2019_df.shape[0], air_2019_df.shape[0])
+
+</t>
+<t tx="ekr.20251214045245.78"># %% [markdown]
+# ## Aggregate and average MA data by city
+# Let's compare MA data by city in 2020 and 2019.
+
+</t>
+<t tx="ekr.20251214045245.79"># %%
+# Step 1 - filter the data down by state name
+
+is_MA_data = air_2020_df['State Name'] == "Massachusetts"
+air_MA_2020_df = air_2020_df[is_MA_data]
+
+is_MA_data = air_2019_df['State Name'] == "Massachusetts"
+air_MA_2019_df = air_2019_df[is_MA_data]
+
+"{} reports for MA in 2019, {} reports for MA in 2020".format(air_MA_2019_df.shape[0], air_MA_2020_df.shape[0])
+
+</t>
+<t tx="ekr.20251214045245.8">@language rust
+
+@
+Docstring: *italics* and **bold**.
+@c
+
+#[cfg(test)]
+mod tests;
+</t>
+<t tx="ekr.20251214045245.80"># %%
+# now trim down to just the columns we care about so it is easier to understand
+interesting_columns = ['City Name', 'Latitude', 'Longitude', 'Arithmetic Mean']
+air_MA_2020_df = pd.DataFrame(air_MA_2020_df, columns=interesting_columns)
+air_MA_2019_df = pd.DataFrame(air_MA_2019_df, columns=interesting_columns)
+air_MA_2019_df
+
+</t>
+<t tx="ekr.20251214045245.81"># %%
+# now group all the records by city and average them
+avg_by_city_2020_MA_df = air_MA_2020_df.groupby('City Name').mean()\
+    .reset_index()\
+    .rename(columns={'City Name': 'City', 'Arithmetic Mean': 'Mean'})
+avg_by_city_2019_MA_df = air_MA_2019_df.groupby('City Name').mean()\
+    .reset_index()\
+    .rename(columns={'City Name': 'City', 'Arithmetic Mean': 'Mean'})
+# now we need to add in a year column so we can tell the data apart!
+avg_by_city_2020_MA_df['year'] = 2020
+avg_by_city_2019_MA_df['year'] = 2019
+# now we can just contacetane the two dataframes to get all our data in one place
+ma_city_avg_df = avg_by_city_2019_MA_df.append(avg_by_city_2020_MA_df)
+ma_city_avg_df.to_csv('data/MA-city-year-avg.csv')
+ma_city_avg_df
+
+</t>
+<t tx="ekr.20251214045245.82"># %% [markdown]
+# ## Visually Inspect the Data
+
+</t>
+<t tx="ekr.20251214045245.83"># %%
+alt.Chart(ma_city_avg_df, height=300).mark_bar().encode(
+    alt.X('year:N'),
+    alt.Y('Mean'),
+    color='year:N',
+    column=alt.Column(field='City', type='ordinal', spacing=10)
+).properties( 
+    title="MA City Average PM2.5 (by year)",
+)
+</t>
+<t tx="ekr.20251214045245.84">@language jupytext
+&lt;&lt; prefix &gt;&gt;
+@others
+@tabwidth -4
+</t>
+<t tx="ekr.20251214045245.85">@language jupytext
+# ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.4
+#   kernelspec:
+#     display_name: Python 3
+#     language: python
+#     name: python3
+# ---
+
+# %%
+</t>
+<t tx="ekr.20251214045245.86">@language jupytext
+
+# %% [markdown]
+# Loading and Analyzing Data
+# ==========================
+
+</t>
+<t tx="ekr.20251214045245.87"># %%
+import pandas as pd  # programmers like shortening names for things, so they usually import pandas as "pd"
+import altair as alt # again with the shortening of names
+import requests # we use it for downloading the data so we don't have to save it on GitHub (too big!)
+import zipfile # for de-compressing the files we download from the EPA
+
+</t>
+<t tx="ekr.20251214045245.88"># %% [markdown]
+# ## Load the air quality data
+# The EPA published PM2.5 daily summary files annually [on their website](https://aqs.epa.gov/aqsweb/airdata/download_files.html#Daily). This data is the "PM2.5 FRM/FEM Mass (88101)" dataset.
+# Pandas understands what a CSV file is, so here we can just load them into two `DataFrame`s. A data frame is simply one representation of a table of data. It is the most important form of storage for working with data in pandas.
+
+</t>
+<t tx="ekr.20251214045245.89"># %%
+# Download the data from the EPA website
+data_file_urls = [
+    'https://aqs.epa.gov/aqsweb/airdata/daily_88101_2020.zip',
+    'https://aqs.epa.gov/aqsweb/airdata/daily_88101_2019.zip'
+]
+# copied this example from https://stackoverflow.com/questions/16694907/download-large-file-in-python-with-requests
+for url in data_file_urls:
+    local_filename = "data/{}".format(url.split('/')[-1])
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(local_filename, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192): 
+                f.write(chunk)
+# and unzip the files
+files_to_unzip = ["data/{}".format(url.split('/')[-1]) for url in data_file_urls]
+for f in files_to_unzip:
+    with zipfile.ZipFile(f,"r") as zip_ref:
+        zip_ref.extractall("data")
+
+</t>
+<t tx="ekr.20251214045245.9">@language rust
+
+/// Rust comment.
+
+#[cfg(test)]
+mod tests;
+</t>
+<t tx="ekr.20251214045245.90"># %%
+air_2019_df = pd.read_csv("data/daily_88101_2019.csv")
+air_2020_df = pd.read_csv("data/daily_88101_2020.csv")
+air_2020_df.head() # this helpfully prints out the first few rows with headers to preview the data
+
+</t>
+<t tx="ekr.20251214045245.91"># %%
+"{} rows for 2019, {} rows for 2020".format(air_2019_df.shape[0], air_2019_df.shape[0])
+
+</t>
+<t tx="ekr.20251214045245.92"># %% [markdown]
+# ## Aggregate and average MA data by city
+# Let's compare MA data by city in 2020 and 2019.
+
+</t>
+<t tx="ekr.20251214045245.93"># %%
+# Step 1 - filter the data down by state name
+
+is_MA_data = air_2020_df['State Name'] == "Massachusetts"
+air_MA_2020_df = air_2020_df[is_MA_data]
+
+is_MA_data = air_2019_df['State Name'] == "Massachusetts"
+air_MA_2019_df = air_2019_df[is_MA_data]
+
+"{} reports for MA in 2019, {} reports for MA in 2020".format(air_MA_2019_df.shape[0], air_MA_2020_df.shape[0])
+
+</t>
+<t tx="ekr.20251214045245.94"># %%
+# now trim down to just the columns we care about so it is easier to understand
+interesting_columns = ['City Name', 'Latitude', 'Longitude', 'Arithmetic Mean']
+air_MA_2020_df = pd.DataFrame(air_MA_2020_df, columns=interesting_columns)
+air_MA_2019_df = pd.DataFrame(air_MA_2019_df, columns=interesting_columns)
+air_MA_2019_df
+
+</t>
+<t tx="ekr.20251214045245.95"># %%
+# now group all the records by city and average them
+avg_by_city_2020_MA_df = air_MA_2020_df.groupby('City Name').mean()\
+    .reset_index()\
+    .rename(columns={'City Name': 'City', 'Arithmetic Mean': 'Mean'})
+avg_by_city_2019_MA_df = air_MA_2019_df.groupby('City Name').mean()\
+    .reset_index()\
+    .rename(columns={'City Name': 'City', 'Arithmetic Mean': 'Mean'})
+# now we need to add in a year column so we can tell the data apart!
+avg_by_city_2020_MA_df['year'] = 2020
+avg_by_city_2019_MA_df['year'] = 2019
+# now we can just contacetane the two dataframes to get all our data in one place
+ma_city_avg_df = avg_by_city_2019_MA_df.append(avg_by_city_2020_MA_df)
+ma_city_avg_df.to_csv('data/MA-city-year-avg.csv')
+ma_city_avg_df
+
+</t>
+<t tx="ekr.20251214045245.96"># %% [markdown]
+# ## Visually Inspect the Data
+
+</t>
+<t tx="ekr.20251214045245.97"># %%
+alt.Chart(ma_city_avg_df, height=300).mark_bar().encode(
+    alt.X('year:N'),
+    alt.Y('Mean'),
+    color='year:N',
+    column=alt.Column(field='City', type='ordinal', spacing=10)
+).properties( 
+    title="MA City Average PM2.5 (by year)",
+)
+</t>
+<t tx="ekr.20251214045245.98"># jm = g.app.jupytextManager
+import io
+import jupytext
+path = r'c:/test/example-data-analysis.ipynb'
+last = c.lastTopLevel()
+p = last.insertAfter()
+p.h = f"Test: {path}"
+# The guts of jm.read.
+fmt = 'py:percent'
+notebook = jupytext.read(path, fmt=fmt)
+with io.StringIO() as f:
+    jupytext.write(notebook, f, fmt=fmt)
+    contents = f.getvalue()
+    p.b = contents
+c.redraw(p)
+</t>
+<t tx="ekr.20251214045245.99">@language matlab
+
+clear all, close all, clc
+
+A=imread('../DATA/dog.jpg');
+X=double(rgb2gray(A)); % Convert RBG-&gt;gray, 256 bit-&gt;double.
+nx = size(X,1); ny = size(X,2);
+imagesc(X), axis off, colormap gray 
+
+[U,S,V] = svd(X);
+
+for r=[5 20 100];  % Truncation value
+    Xapprox = U(:,1:r)*S(1:r,1:r)*V(:,1:r)'; % Approx. image
+    figure, imagesc(Xapprox), axis off
+    title(['r=',num2str(r,'%d'),']);
+end
+
+%% f_ch01_ex02_2
+subplot(1,2,1), semilogy(diag(S),'k') 
+subplot(1,2,2), plot(cumsum(diag(S))/sum(diag(S)),'k') 
 </t>
 </tnodes>
 </leo_file>
