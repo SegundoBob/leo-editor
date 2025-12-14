@@ -2305,7 +2305,6 @@
 </v>
 </v>
 <v t="ekr.20140915194122.23428"></v>
-<v t="ekr.20250715195720.1"></v>
 </vnodes>
 <tnodes>
 <t tx="TL.20080702085131.2">If True: Save the Leo file and all modified derived files every time the external editor saves a modified file.
@@ -2601,7 +2600,8 @@ Default is UTF-8 (case not important).</t>
 
 N.B. Leo requires utf-8 encoding for any non-ascii characters.</t>
 <t tx="ekr.20041119050105.10"></t>
-<t tx="ekr.20041119050105.11"></t>
+<t tx="ekr.20041119050105.11"># This setting applies only to search command.
+# Use @bool body-pane-wraps to specify whether the body pane wraps by default.</t>
 <t tx="ekr.20041119050105.12"></t>
 <t tx="ekr.20041119050105.14">When checked, the Find and Change commands search body text.
 </t>
