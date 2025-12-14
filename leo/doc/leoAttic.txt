@@ -3249,6 +3249,480 @@ class LeoFlexxTreeItem(flx.TreeItem):
     from leo.core import leoGlobals as g
     from leo.core import leoCommands
     from leo.commands.baseCommands import BaseEditCommandsClass
+#@+node:ekr.20251214043555.1: *3* Various buttons (attic)
+#@+node:ekr.20251214043555.2: *4* @@button adoc
+"""A prototype of running adoc and asciidoctor."""
+import os
+p = g.findNodeAnywhere(c, r'@adoc ad_test.adoc')
+assert p
+paths = c.asciiDoctorCommands.adoc_command(event=g.Bunch(p=p),verbose=False)
+paths = [os.path.abspath(os.path.normpath(z)) for z in paths]
+input_paths = ' '.join(paths)
+g.execute_shell_commands(['asciidoctor %s' % input_paths])
+output_paths = ' '.join([z.replace('.adoc', '.html') for z in paths])
+for path in paths:
+    print(f"wrote: {path}\n")
+if 0:
+    # optional: open .html files in the default browser.
+    g.execute_shell_commands([output_paths])
+@language python
+
+#@+node:ekr.20150413091056.1: *4* @@button check-clones
+"""Warn if leoProjects.txt or leoToDo.txt contain any clones."""
+
+clones,nodes,seen = 0,0,set()
+table = (
+  '@file ../doc/leoProjects.txt',
+  '@file ../doc/leoToDo.txt',
+)
+
+def check_clone(c,p0,root):
+    """Warn if p appears in any @<file> node outside of root's tree."""
+    global nodes,seen
+    v = p0.v
+    for p in c.all_positions():
+        nodes += 1
+        if p.v == v:
+            # Check *all* ancestors, not just the nearest one.
+            for parent in p.self_and_parents():
+                nodes += 1
+                if parent.isAnyAtFileNode() and parent.v != root.v:
+                    if parent.v not in seen:
+                        seen.add(parent.v)
+                        g.es_print('%s and %s contain clone: %s' % (
+                            root.h,parent.h,p0.h))
+
+for h in table:
+    root = g.findNodeAnywhere(c,h)
+    if root:
+        for p in root.self_and_subtree():
+            nodes += 1
+            if p.isCloned():
+                clones += 1
+                check_clone(c,p,root)
+    else:
+        g.es_print('not found',h,color='red')
+print('done: %s nodes, %s clones' % (nodes,clones))
+
+@tabwidth -4
+@language python
+#@+node:ekr.20211011090013.1: *4* @@button cvt-comments
+"""
+Find and convert hanging comments.
+
+Warning: do not run this script on unit testing files.
+"""
+# https://github.com/leo-editor/leo-editor/pull/2622
+g.cls()
+import re
+from typing import Any, List
+
+trace = True  # It's useful to trace even when also replacing.
+replace = True  # Replace body text.
+max_line_length = 70  # Maximum line length for lines containing trailing comments.
+
+@others
+
+for p in c.p.self_and_subtree():
+    convert(p)
+print('done')
+#@+node:ekr.20220425184232.1: *5* compute_lws
+def compute_lws(s: str) -> int:
+    """Return the leading whitespace of s."""
+    n = len(s) - len(s.lstrip())
+    return s[:n]
+#@+node:ekr.20220425052306.1: *5* convert
+compound_statement = (
+    # Leo doesn't use 'match'
+    'async ', 'class ', 'def ', 'else:', 'elif ', 'except',
+    'finally:', 'for ', 'if ', 'try:', 'while ', 'with ',
+)
+pat = re.compile(r'\)\s*->.*:\s*$')  # End of multiline def.
+
+def convert(p: Any) -> None:
+    """Convert all hanging comments in p.b."""
+    if p.isAnyAtFileNode():
+        print('   Scan:', p.h)
+    changed, last, result = False, '', []
+    i, lines = 0, p.b.split('\n')
+    sep = '-' * 40
+    while i < len(lines):
+        progress = i
+        more_lines = []
+        s = lines[i]
+        s_s = s.lstrip()
+        last_s = last.lstrip()
+        lws_s = compute_lws(s)
+        lws_last = compute_lws(last)
+        if (
+            last_s and s_s.startswith('#')
+            and not pat.match(last_s)
+            and not last_s.startswith(('#', '"""', "'''"))
+            and not last_s.endswith(('[', '(', '{', '):'))
+            and not last_s.startswith(compound_statement)
+            and lws_last < lws_s
+        ):
+            changed = True
+            result.pop()  # Discard the last line!
+            j = i + 1  # Look for more indented lines.
+            while j < len(lines):
+                s2 = lines[j]
+                s2_s = s2.strip()
+                lws_s2 = compute_lws(s2)
+                if lws_s2 >= lws_s and s2_s.startswith('#'):
+                    more_lines.append(s2)
+                    j += 1
+                else:
+                    break
+            if not more_lines and len(last_s) + len(s_s) < max_line_length:
+                # Emit one line.
+                result.append(f"{last}  {s_s}")
+                if trace:
+                    g.printObj([last, s, sep, f"{last}  {s_s}\n"], tag=p.h)
+            else:
+                # Emit the first comment line.
+                result.append(f"{lws_last}{s_s}")
+                # Emit any additional comment lines.
+                for z in more_lines:
+                    result.append(f"{lws_last}{z.lstrip()}")
+                # Emit the last (non-comment) line.
+                result.append(last)
+                if trace:
+                    added_lines = [f"{lws_last}{z.lstrip()}" for z in more_lines]
+                    g.printObj(
+                        [last, s] + more_lines + [sep] +
+                        [f"{lws_last}{s_s}"] + added_lines + [last], tag=p.h)
+            i += 1 + len(more_lines)
+            last = lines[i]
+        else:
+            result.append(s)
+            last = s
+            i += 1
+        assert progress < i
+    if changed:
+        print('Changed:', p.h)
+        if replace:
+            p.b = '\n'.join(result)
+#@+node:ekr.20251214043555.3: *4* @@button cycling syntax coloring
+@language python
+
+"""Cycle syntax coloring when there are multiple @langauge directives in a node."""
+# Original by Terry Brown, Revised by EKR.
+while not p.isRoot():
+    if p.b.strip().startswith("@language "):
+        lines = g.splitLines(p.b)
+        words = lines[0].split()
+        if len(words) > 2 and words[2][0].isalpha():
+            # Cycle the languages on line 1.
+            line0 = '%s %s %s\n' % (words[0], ' '.join(words[2:]), words[1])
+            p.b = line0 + ''.join(lines[1:])
+            c.selectVisBack()
+            c.selectVisNext()
+            break
+    p.moveToParent()
+else:
+    g.es("No ambiguous @language directive found")
+@language python
+#@+node:ekr.20251214043555.4: *4* @@button expand-section
+"""take a selected region,  convert each line to a section reference."""
+# For Eric S. Johansson
+current = c.p
+body = c.frame.body
+u,undoType = c.undoer, 'expand sections'
+last = c.lastTopLevel()
+wrapper = c.frame.body.wrapper
+sel_1, sel_2 = wrapper.getSelectionRange()
+ins = wrapper.getInsertPoint()
+tab_width = c.getTabWidth(c.p)
+head, lines, tail, oldSel, oldYview = c.getBodyLines()
+u.beforeChangeGroup(current, undoType)
+lines_3 = []
+for s in lines:
+    start_of_line, width_of_line = g.skip_leading_ws_with_indent(s, 0, c.tab_width)
+    new_section_heading = g.angleBrackets('{}')
+    l2 = s[start_of_line:].strip()
+    header = new_section_heading.format(l2)
+    # calculate replacement line for source material
+    lines_3.append((" "*start_of_line) + l2 + "\n")
+    undo_data = u.beforeInsertNode(current)
+    new_node = p.insertAsLastChild()
+    new_node.h = header
+    new_node.b = "'''\n'''"
+    u.afterInsertNode(new_node, 'Insert-Node', undo_data)
+        # New
+    c.redraw(current) # Selects the old node.
+preserveSel = sel_1 == sel_2
+if preserveSel:
+    ins += tab_width
+    oldSel = ins, ins
+c.updateBodyPane(head, ''.join(lines_3), tail, undoType, oldSel, oldYview, preserveSel)
+u.afterChangeGroup(current, undoType)
+@language python
+#@+node:ekr.20251214043555.5: *4* @@button graalvm
+"""
+Run the Javascripot code in the node selected in the outline.
+"""
+from subprocess import run
+graal = r"C:\apps\graalvm-ce-java11-20.0.0\languages\js\bin\js.exe"
+progfile = r"C:\test\grall_input.txt"
+s = c.atFileCommands.stringToString(
+    p, p.b, forcePythonSentinels=False, sentinels=False)
+prog = s.replace("\r\n", "\n")  # Use brute force. 
+with open(progfile, 'w') as f:
+    f.write(s)
+cmd = f'{graal} {progfile}'
+result = run(cmd, capture_output=True, text=True, encoding='utf-8')
+print(result.stdout or 'no output')
+@language python
+
+#@+node:ekr.20201013034742.2: *4* @@button make-importer
+g.cls()
+# define constants that describe the new language.
+name = 'php'  # The name of the file, and the prefix for classes.
+language = 'php'  # The name of the language, case doesn't matter.
+extensions = ['.php',]  # A list of file extensions supported by this importer.
+strict = False  # True if leading whitespace is particularly significant.
+state_ivar = 'self.curlies'
+    # 'self.indent' for python, coffeescript.
+    # 'self.curlies' for many other languages
+    # '(self, curlies, self.parens)' for more complex comparisons
+<< define run & helpers >>
+run(extensions, language, name, state_ivar)
+#@+node:ekr.20201013034742.3: *5* << define run & helpers >>
+@others
+#@+node:ekr.20201013034742.4: *6* copy_tree (make-importer)
+def copy_tree(source, root, h):
+    """Copy the source tree to the node after p, with headline h."""
+    p2 = root.insertAfter()
+    source.copyTreeFromSelfTo(p2)
+    p2.h = h
+    return p2
+ 
+#@+node:ekr.20201013034742.5: *6* make_substitutions
+def make_substitutions(destination, patterns):
+    """Make all substitutions in the destination tree."""
+    for p in destination.self_and_subtree():
+        h = substitute(p.h, patterns)
+        if p.h != h:
+            p.h = h
+        b = substitute(p.b, patterns)
+        if p.b != b:
+            p.b = b
+#@+node:ekr.20201013034742.6: *6* run
+def run(extensions, language, name, state_ivar):
+    """The driver for this script."""
+    patterns = {
+        'cap_name': name.capitalize(),
+        'extensions': '[%s]' % ', '.join(["'%s'" % (z) for z in extensions]),
+        'language': language.lower(),
+        'name': name.lower(),
+        'strict': 'True' if strict else 'False',
+        'state_ivar': state_ivar,
+    }
+    h = '@button make-importer'
+    root = g.findNodeAnywhere(c, h)
+    assert root, h
+    h = '@@file importers/{{name}}.py'
+    source = g.findNodeInTree(c, root, h)
+    assert source, h
+    destination = copy_tree(source, root, h)
+    make_substitutions(destination, patterns)
+    c.contractAllHeadlines()
+    c.redraw()
+#@+node:ekr.20201013034742.7: *6* substitue
+def substitute(s, patterns):
+    """Make all substitutions in s."""
+    for pattern in patterns:
+        find = '{{%s}}' % pattern
+        replace = patterns.get(pattern)
+        i = 0
+        while i < len(s):
+            progress = i
+            j = s.find(find, i)
+            if j == -1: break
+            s = s[:j] + replace + s[j+len(find):]
+            i = j+len(replace)
+            assert progress < i
+    return s
+#@+node:ekr.20201013034742.8: *5* @@file importers/{{name}}.py
+"""The @auto importer for the {{name}} language."""
+import leo.plugins.importers.linescanner as linescanner
+Importer = linescanner.Importer
+@others
+importer_dict = {
+    'class': {{cap_name}}_Importer,
+    'extensions': {{extensions}},
+}
+@language python
+@tabwidth -4
+
+
+#@+node:ekr.20201013034742.9: *6* class {{cap_name}}_Importer
+class {{cap_name}}_Importer(Importer):
+    """The importer for the {{name}} lanuage."""
+
+    def __init__(self, c):
+        """{{cap_name}}_Importer.__init__"""
+        # Init the base class.
+        Importer.__init__(self,
+            c,
+            language = '{{language}}',
+        )
+        
+    @others
+#@+node:ekr.20201013034742.10: *7* {{name}}.Overrides
+# These can be overridden in subclasses.
+#@+node:ekr.20201013034742.11: *8* {{name}}.clean_headline
+# Define an override if desired...
+
+if 0: # The base class
+    def clean_headline(self, s):
+        """Return a cleaned up headline s."""
+        return s.strip()
+        
+if 0: # A more complex example, for the C language.
+    def clean_headline(self, s):
+        """Return a cleaned up headline s."""
+        import re
+        type1 = r'(static|extern)*'
+        type2 = r'(void|int|float|double|char)*'
+        class_pattern = r'\s*(%s)\s*class\s+(\w+)' % (type1)
+        pattern = r'\s*(%s)\s*(%s)\s*(\w+)' % (type1, type2)
+        m = re.match(class_pattern, s)
+        if m:
+            prefix1 = '%s ' % (m.group(1)) if m.group(1) else ''
+            return '%sclass %s' % (prefix1, m.group(2))
+        m = re.match(pattern, s)
+        if m:
+            prefix1 = '%s ' % (m.group(1)) if m.group(1) else ''
+            prefix2 = '%s ' % (m.group(2)) if m.group(2) else ''
+            h = m.group(3) or '<no c function name>'
+            return '%s%s%s' % (prefix1, prefix2, h)
+        else:
+            return s
+#@+node:ekr.20201013034742.12: *8* {{name}}.clean_nodes
+def clean_nodes(self, parent):
+    """
+    Clean all nodes in parent's tree.
+    Subclasses override this as desired.
+    See perl_i.clean_nodes for an examplle.
+    """
+    pass
+#@+node:ekr.20201013034742.13: *6* class {{cap_name}}_ScanState
+class {{cap_name}}_ScanState:
+    """A class representing the state of the {{name}} line-oriented scan."""
+    
+    def __init__(self, d=None):
+        """{{cap_name}}_ScanState.__init__"""
+        if d:
+            prev = d.get('prev')
+            self.context = prev.context
+            # Adjust these by hand.
+            self.curlies = prev.curlies
+        else:
+            self.context = ''
+            # Adjust these by hand.
+            self.curlies = 0
+
+    def __repr__(self):
+        """{{cap_name}}_ScanState.__repr__"""
+        # Adjust these by hand.
+        return "{{cap_name}}_ScanState context: %r curlies: %s" % (
+            self.context, self.curlies)
+
+    __str__ = __repr__
+
+    @others
+#@+node:ekr.20251214043555.6: *4* @@button print-gnx
+"""@button (ekr.leo) print the gnx."""
+# g.cls()
+print('timestamp: %s lastIndex: %s' % (g.app.nodeIndices.timeString,g.app.nodeIndices.lastIndex))
+print('gnxs: -----')
+for p in c.p.self_and_subtree():
+    print('%s %s' % (p.v.gnx,p.h))
+print('uAs: -----')
+for p in c.p.self_and_subtree():
+    if p.v.u:
+        print('%s %s' % (p.v.u,p.h))
+# print('done')
+
+@language python
+#@+node:ekr.20251214043555.7: *4* @@button print-ua
+d = p.v.u
+if d:
+    for key in sorted(d):
+        print('%10s %s' % (key, d.get(key)))
+
+@language python
+#@+node:ekr.20251214043555.8: *4* @@button save-clipboard
+"""
+Save an image on the clipboard to .leo/screen_captures.
+Use Alt-PrintScn to copy the active window to the clipboard.
+"""
+import time
+app = g.app.gui.qtApp
+app.processEvents()
+image = app.clipboard().image()
+if not image.isNull():
+    base = r'C:\Users\edreamleo\.leo\screen_captures'
+    assert g.os_path_exists(base), repr(base)
+    fn = '%s.png' % time.strftime('%Y-%m-%d-%H.%M.%S')
+    path = g.os_path_finalize_join(base, fn)
+    image.save(path, 'png')
+    g.es_print('saved: %s' % path)
+
+@language python
+#@+node:ekr.20251214043555.9: *4* @@button screen-shot @key=ctrl-1
+"""Create a screenshot of the present Leo outline and save it to .leo/screen_captures."""
+#  --window-size=682x1264 is recommended.
+from leo.core.leoQt import isQt5, QtGui
+import time
+base = r'C:\Users\edreamleo\.leo\screen_captures'
+assert g.os_path_exists(base), repr(base)
+window = g.app.gui.qtApp.activeWindow()
+w = window.grab() if isQt5 else QtGui.QPixmap.grabWindow(window.winID())
+fn = '%s.png' % time.strftime('%Y-%m-%d-%H-%M-%S')
+path = g.os_path_finalize_join(base, fn)
+w.save(path, 'png')
+g.es_print('saved: %s' % path)
+
+@language python
+#@+node:ekr.20220527065937.1: *4* @@command json-to-outline
+g.cls()
+import json
+import os
+import textwrap
+path = r'C:\Repos\leo-editor\mypy_stubs\3.9\leo\core\leoApp.data.json'
+with open(path, 'r') as f:
+    d = json.load(f)
+
+def make_outline(d, p, topFlag):
+    """Set p.b from dict d. Generate child nodes for inner dicts.."""
+    result = []
+    for key, value in d.items():
+        if isinstance(value, dict):
+            h2 = 'top' if topFlag else p.h[2:-2].strip()
+            section_name = g.angleBrackets(f" {h2}.{key} ")
+            result.append(f'"{key}": {{\n')
+            result.append(f"    {section_name}\n")
+            result.append('}\n')
+            child = p.insertAsLastChild()
+            child.h = section_name
+            make_outline(value, child, topFlag=False)
+        elif isinstance(value, str):
+            result.append(f'"{key}": "{value}"\n')
+        else:
+            result.append(f'"{key}": {value}\n')
+    p.b = ''.join(result)
+
+# Recursively make the outline.
+top = c.lastTopLevel().insertAfter()
+top.h = os.path.basename(path)
+make_outline(d, top, topFlag=True)
+# Adjust top.b.
+top.b = f"{{\n{textwrap.indent(top.b.strip(),' '*4)}\n}}\n"
+c.redraw(top)
+    
 #@-all
 #@@nosearch
 #@-leo
