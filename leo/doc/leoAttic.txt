@@ -3102,6 +3102,153 @@ class LeoFlexxTreeItem(flx.TreeItem):
         return 'head'  # Required, for proper pane bindings.
 
     @others
+#@+node:ekr.20240404112831.1: *3* Import traces (do not delete)
+@nosearch
+#@+node:ekr.20240404112041.1: *4* Leo core module levels (by hand)
+@language python
+@nosearch
+
+# Level 0: no imports at top level.
+0 leo.core.leoApp
+0 leo.core.leoBridge
+0 leo.core.leoColor
+0 leo.core.leoFastRedraw
+0 leo.core.leoGlobals
+0 leo.core.leoImport
+0 leo.core.leoPymacs
+0 leo.core.leoQt
+0 leo.core.leoTokens
+0 leo.core.leoVersion
+0 leo.core.signal_manager
+0 leo.core.tracing_utils
+
+# Level 1: import only leoGlobals at top level.
+1 leo.core.leoAst
+1 leo.core.leoCache
+1 leo.core.leoChapters
+1 leo.core.leoCompare
+1 leo.core.leoDebugger
+1 leo.core.leoExternalFiles
+1 leo.core.leoFind
+1 leo.core.leoHistory
+1 leo.core.leoKeys
+1 leo.core.leoMarkup
+1 leo.core.leoMenu
+1 leo.core.leoNodes
+1 leo.core.leoPersistence
+1 leo.core.leoPlugins
+1 leo.core.leoRope
+1 leo.core.leoRst
+1 leo.core.leoSessions
+1 leo.core.leoShadow
+1 leo.core.leoTips
+1 leo.core.leoVim
+
+# Level 1: import only level 0 modules at top level.
+1 leo.core.leoBackground
+    from leo.core import leoGlobals as g
+    from leo.core.leoQt import QtCore
+1 leo.core.leoColorizer
+    from leo.core import leoGlobals as g
+    from leo.core.leoColor import leo_color_database
+    from leo.core.leoQt import Qsci, QtGui, QtWidgets, UnderlineStyle, Weight
+1 leo.plugins.modScripting
+    from leo.core import leoGlobals as g
+    from leo.core import leoColor
+    from leo.core import leoGui
+1 leo.core.leoPrinting
+    from leo.core import leoGlobals as g
+    from leo.core.leoQt import DialogCode, printsupport, QtGui
+1 leo.core.leoTest2
+    from leo.core import leoGlobals as g
+    from leo.core import leoApp
+1 leo.core.runLeo
+    from leo.core import leoGlobals as g
+    from leo.core import leoApp
+
+# Level 2: import only level 0 or 1 modules at top level.
+2 leo.core.leoAtFile:
+    from leo.core import leoGlobals as g
+    from leo.core import leoNodes
+2 leo.core.leoBeautify:
+    from leo.core import leoGlobals as g
+    from leo.core import leoAst
+2 leo.core.leoCommands:  # ctor instantiates all sub-commanders!!!
+    from leo.core import leoGlobals as g
+    from leo.core import leoNodes
+2 leo.core.leoConfig:
+    from leo.core import leoGlobals as g
+    from leo.plugins.mod_scripting import build_rclick_tree
+2 leo.core.leoFileCommands:
+    from leo.core import leoGlobals as g
+    from leo.core import leoNodes
+
+# Level 3: import only modules of level 0, 1 or 2 at top level.
+3 leo.core.leoFrame
+    from leo.core import leoGlobals as g
+    from leo.core import leoColorizer
+    from leo.core import leoMenu
+    from leo.core import leoNodes
+3 leo.core.leoserver
+    from leo.core.leoCommands import Commands as Cmdr
+    from leo.core.leoNodes import Position, VNode
+    from leo.core.leoGui import StringFindTabManager
+    from leo.core.leoExternalFiles import ExternalFilesController
+3 leo.core.leoUndo
+    from leo.core import leoGlobals as g
+    from leo.core.leoFileCommands import FastRead
+    from leo.core.leoNodes import Position, VNode
+
+# Level 4: import only modules of level 0, 1, 2 or 3 at top level.
+4 leo.core.leoGui
+    from leo.core import leoGlobals as g
+    from leo.core import leoFrame
+4 leo.core.leoclient
+    from leo.core import leoGlobals as g
+    from leo.core import leoserver
+#@+node:ekr.20240404151915.1: *4* Leo commands module levels (by hand)
+# Level 1: import only leoGlobals at top level.
+1 leo.commands.baseCommands
+1 leo.commands.checkerCommands
+1 leo.commands.editCommands
+1 leo.commands.commanderHelpCommands
+1 leo.commands.gototCommands
+
+# Level 1: import only level 0 modules at top level.
+1 leo.commands.commanderFileCommands
+    from leo.core import leoGlobals as g
+    from leo.core import leoImport
+    
+# Level 2: import only leoGlobals and leo.commands.baseCommands
+2 leo.commands.bufferCommands
+2 leo.commands.controlCommands
+2 leo.commands.debugCommands
+2 leo.commands.editCommands
+2 leo.commands.helpCommands
+2 leo.commands.keyCommands
+2 leo.commands.killBufferCommands
+2 leo.commands.rectangleCommands
+2 leo.commands.spellCommands
+
+# Level 2: import only level 0 or 1 modules at top level.
+2 leo.commands.abbrevCommands
+    from leo.core import leoGlobals as g
+    from leo.core import leoNodes
+    from leo.commands.baseCommands import BaseEditCommandsClass
+2 leo.commands.commanderOutlineCommands
+    from leo.core import leoGlobals as g
+    from leo.core import leoNodes
+    from leo.core import leoFileCommands
+    
+# Level 3: import only modules of level 0, 1 or 2 at top level.
+3 leo.commands.convertCommands
+    from leo.core import leoGlobals as g
+    from leo.core import leoBeautify
+    from leo.commands.baseCommands import BaseEditCommandsClass
+3 leo.commands.editFileCommands
+    from leo.core import leoGlobals as g
+    from leo.core import leoCommands
+    from leo.commands.baseCommands import BaseEditCommandsClass
 #@-all
 #@@nosearch
 #@-leo
