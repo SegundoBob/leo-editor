@@ -350,10 +350,8 @@ class LeoApp:
 
     # @+node:ekr.20120522160137.9911: *5* app.define_extension_dict
     # @@nobeautify
-    # fmt: off
 
     def define_extension_dict(self) -> None:
-
         # Keys are extensions, values are languages
         self.extension_dict: dict[str, str] = {
             # "ada":    "ada",
@@ -521,34 +519,33 @@ class LeoApp:
             "vert":     "glsl",
             "vue":      "javascript",
             "zpt":      "zpt",
-        }
+        }  # fmt: skip
 
         # These aren't real languages, or have no delims...
-            # cvs_commit, dsssl, embperl, freemarker, hex, jcl,
-            # patch, phpsection, progress, props, pseudoplain,
-            # relax_ng_compact, rtf, svn_commit.
+        # cvs_commit, dsssl, embperl, freemarker, hex, jcl,
+        # patch, phpsection, progress, props, pseudoplain,
+        # relax_ng_compact, rtf, svn_commit.
 
         # These have extensions which conflict with other languages.
-            # assembly_6502:    .asm or .a or .s
-            # assembly_macro32: .asm or .a
-            # assembly_mcs51:   .asm or .a
-            # assembly_parrot:  .asm or .a
-            # assembly_r2000:   .asm or .a
-            # assembly_x86:     .asm or .a
-            # squidconf:        .conf
-            # rpmspec:          .rpm
+        # assembly_6502:    .asm or .a or .s
+        # assembly_macro32: .asm or .a
+        # assembly_mcs51:   .asm or .a
+        # assembly_parrot:  .asm or .a
+        # assembly_r2000:   .asm or .a
+        # assembly_x86:     .asm or .a
+        # squidconf:        .conf
+        # rpmspec:          .rpm
 
         # Extra language extensions, used to associate extensions with mode files.
         # Used by importCommands.languageForExtension.
         # Keys are extensions, values are corresponding mode file (without .py)
         # A value of 'none' is a signal to unit tests that no extension file exists.
         self.extra_extension_dict = {
-            'pod'   : 'perl',
+            'pod': 'perl',
             'unknown_language': 'none',
-            'w'     : 'c',
+            'w': 'c',
         }
-        
-    # fmt: on
+
     # @+node:ekr.20031218072017.1417: *5* app.define_global_constants
     def define_global_constants(self) -> None:
         # self.prolog_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -561,10 +558,8 @@ class LeoApp:
 
     # @+node:ekr.20120522160137.9909: *5* app.define_language_delims_dict
     # @@nobeautify
-    # fmt: off
 
     def define_language_delims_dict(self) -> None:
-
         self.language_delims_dict: dict[str, str] = {
             # Internally, lower case is used for all language names.
             # Keys are languages, values are strings that contain 1, 2 or 3 delims separated by spaces.
@@ -761,15 +756,12 @@ class LeoApp:
             # "relax_ng_compact"   : "#",         # An xml schema.
             # "rtf"                : "",
             # "svn_commit"         : "",
-        }
+        }  # fmt: skip
 
-    # fmt: on
-    # fmt: off
     # @+node:ekr.20120522160137.9910: *5* app.define_language_extension_dict
     # @@nobeautify
 
     def define_language_extension_dict(self) -> None:
-
         # Used only by g.app.externalFilesController.get_ext.
 
         # Keys are languages, values are extensions.
@@ -922,24 +914,23 @@ class LeoApp:
             "xslt"          : "xsl",
             "yaml"          : "yaml",
             "zpt"           : "zpt",
-        }
+        }  # fmt: skip
 
         # These aren't real languages, or have no delims...
-            # cvs_commit, dsssl, embperl, freemarker, hex, jcl,
-            # patch, phpsection, progress, props, pseudoplain,
-            # relax_ng_compact, rtf, svn_commit.
+        # cvs_commit, dsssl, embperl, freemarker, hex, jcl,
+        # patch, phpsection, progress, props, pseudoplain,
+        # relax_ng_compact, rtf, svn_commit.
 
         # These have extensions which conflict with other languages.
-            # assembly_6502:    .asm or .a or .s
-            # assembly_macro32: .asm or .a
-            # assembly_mcs51:   .asm or .a
-            # assembly_parrot:  .asm or .a
-            # assembly_r2000:   .asm or .a
-            # assembly_x86:     .asm or .a
-            # squidconf:        .conf
-            # rpmspec:          .rpm
+        # assembly_6502:    .asm or .a or .s
+        # assembly_macro32: .asm or .a
+        # assembly_mcs51:   .asm or .a
+        # assembly_parrot:  .asm or .a
+        # assembly_r2000:   .asm or .a
+        # assembly_x86:     .asm or .a
+        # squidconf:        .conf
+        # rpmspec:          .rpm
 
-    # fmt: on
     # @+node:ekr.20140729162415.18086: *5* app.init_at_auto_names
     def init_at_auto_names(self) -> None:
         """Init the app.atAutoNames set."""
