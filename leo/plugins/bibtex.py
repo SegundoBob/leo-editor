@@ -69,20 +69,20 @@ from leo.core import leoGlobals as g
 # @+node:timo.20050215183130: ** <<define templates dict>>
 # pylint: disable=line-too-long
 templates = {
-    '@article': 'author       = {},\ntitle        = {},\njournal      = {},\nyear         = ',
-    '@book': 'author       = {},\ntitle        = {},\npublisher    = {},\nyear         = ',
-    '@booklet': 'title        = {}',
-    '@conference': 'author       = {},\ntitle        = {},\nbooktitle    = {},\nyear         = ',
-    '@inbook': 'author       = {},\ntitle        = {},\nchapter      = {},\npublisher    = {},\nyear         = ',
-    '@incollection': 'author       = {},\ntitle        = {},\nbooktitle    = {},\npublisher    = {},\nyear         = ',
-    '@inproceedings': 'author       = {},\ntitle        = {},\nbooktitle    = {},\nyear         = ',
-    '@manual': 'title        = {},',
-    '@mastersthesis': 'author       = {},\ntitle        = {},\nschool       = {},\nyear         = ',
-    '@misc': '',
-    '@phdthesis': 'author       = {},\ntitle        = {},\nschool       = {},\nyear         = ',
-    '@proceedings': 'title        = {},\nyear         = ',
-    '@techreport': 'author       = {},\ntitle        = {},\ninstitution  = {},\nyear         = ',
-    '@unpublished': 'author       = {},\ntitle        = {},\nnote         = {}'
+    '@article':         'author       = {},\ntitle        = {},\njournal      = {},\nyear         = ',
+    '@book':            'author       = {},\ntitle        = {},\npublisher    = {},\nyear         = ',
+    '@booklet':         'title        = {}',
+    '@conference':      'author       = {},\ntitle        = {},\nbooktitle    = {},\nyear         = ',
+    '@inbook':          'author       = {},\ntitle        = {},\nchapter      = {},\npublisher    = {},\nyear         = ',
+    '@incollection':    'author       = {},\ntitle        = {},\nbooktitle    = {},\npublisher    = {},\nyear         = ',
+    '@inproceedings':   'author       = {},\ntitle        = {},\nbooktitle    = {},\nyear         = ',
+    '@manual':          'title        = {},',
+    '@mastersthesis':   'author       = {},\ntitle        = {},\nschool       = {},\nyear         = ',
+    '@misc':            '',
+    '@phdthesis':       'author       = {},\ntitle        = {},\nschool       = {},\nyear         = ',
+    '@proceedings':     'title        = {},\nyear         = ',
+    '@techreport':      'author       = {},\ntitle        = {},\ninstitution  = {},\nyear         = ',
+    '@unpublished':     'author       = {},\ntitle        = {},\nnote         = {}'
 }  # fmt: skip
 # @-<< define templates dict>>
 entrytypes = list(templates.keys())

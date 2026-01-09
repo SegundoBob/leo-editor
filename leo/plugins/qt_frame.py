@@ -1414,14 +1414,13 @@ class FindTabManager:
         if not find:
             return
         d = {
-            'ignore_case': self.check_box_ignore_case,
-            'mark_changes': self.check_box_mark_changes,
-            'mark_finds': self.check_box_mark_finds,
-            'pattern_match': self.check_box_regexp,
-            'search_body': self.check_box_search_body,
+            'ignore_case':     self.check_box_ignore_case,
+            'mark_changes':    self.check_box_mark_changes,
+            'mark_finds':      self.check_box_mark_finds,
+            'pattern_match':   self.check_box_regexp,
+            'search_body':     self.check_box_search_body,
             'search_headline': self.check_box_search_headline,
-            'whole_word': self.check_box_whole_word,
-            # 'wrap':          self.check_box_wrap_around,
+            'whole_word':      self.check_box_whole_word,
         }  # fmt: skip
         w = d.get(checkbox_name)
         assert w

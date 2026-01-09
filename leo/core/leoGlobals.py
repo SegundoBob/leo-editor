@@ -94,11 +94,11 @@ globalDirectiveList = [
     # Order does not matter.
     'all',
     'beautify',
-    'colorcache',
+    'c',
     'code',
     'color',
+    'colorcache',
     'comment',
-    'c',
     'delims',
     'doc',
     'encoding',
@@ -373,6 +373,8 @@ def new_cmd_decorator(name: str, ivars: list[str]) -> Callable:
 # @-<< define g.decorators >>
 # @+<< define regexes >>
 # @+node:ekr.20200810093517.1: ** << define regexes >> (leoGlobals.py)
+# fmt: off
+
 # Regex used by this module, and in leoColorizer.py.
 g_language_pat = re.compile(r'^@language\s+(\w+)+', re.MULTILINE)
 
@@ -382,9 +384,7 @@ g_is_directive_pattern = re.compile(r'^\s*@([\w-]+)\s*')
 g_tabwidth_pat = re.compile(r'(^@tabwidth)', re.MULTILINE)
 
 # #2267: Support for @section-delims.
-g_section_delims_pat = re.compile(
-    r'^@section-delims[ \t]+([^ \w\n\t]+)[ \t]+([^ \w\n\t]+)[ \t]*$'
-)
+g_section_delims_pat = re.compile(r'^@section-delims[ \t]+([^ \w\n\t]+)[ \t]+([^ \w\n\t]+)[ \t]*$')
 
 # Patterns used by the colorizer...
 
@@ -400,6 +400,8 @@ unl_regex = re.compile(r"""\bunl:[^`'"]+""")
 url_leadins = 'fghmnptw'
 url_kinds = '(file|ftp|gopher|http|https|mailto|news|nntp|prospero|telnet|wais)'
 url_regex = re.compile(rf"""\b{url_kinds}://[^\s'"]+""")
+
+# fmt: on
 # @-<< define regexes >>
 tree_popup_handlers: list[Callable] = []  # Set later.
 user_dict: dict[str, Value] = {}  # Non-persistent dictionary for scripts and plugins.

@@ -317,6 +317,8 @@ class Commands:
         ] = []  # List of orphaned nodes for c.raise_error_dialogs.
 
     # @+node:ekr.20120217070122.10470: *5* c.initObjects
+    # fmt: off
+
     def initObjects(self, gui: LeoGui) -> None:
         c = self
         self.hiddenRootNode = leoNodes.VNode(context=c, gnx='hidden-root-vnode-gnx')
@@ -400,33 +402,33 @@ class Commands:
         if 0:
             g.trace(f"Import time: {t2 - t1:.2f}")
         # Define 11 subcommanders.
-        self.keyHandler = self.k = leoKeys.KeyHandlerClass(c)
-        self.chapterController = leoChapters.ChapterController(c)
-        self.shadowController = leoShadow.ShadowController(c)
-        self.fileCommands = leoFileCommands.FileCommands(c)
-        self.findCommands = leoFind.LeoFind(c)
-        self.atFileCommands = leoAtFile.AtFile(c)
-        self.importCommands = leoImport.LeoImportCommands(c)
-        self.markupCommands = leoMarkup.MarkupCommands(c)
-        self.persistenceController = leoPersistence.PersistenceDataController(c)
-        self.printingController = leoPrinting.PrintingController(c)
-        self.undoer = leoUndo.Undoer(c)
+        self.keyHandler = self.k    = leoKeys.KeyHandlerClass(c)
+        self.chapterController      = leoChapters.ChapterController(c)
+        self.shadowController       = leoShadow.ShadowController(c)
+        self.fileCommands           = leoFileCommands.FileCommands(c)
+        self.findCommands           = leoFind.LeoFind(c)
+        self.atFileCommands         = leoAtFile.AtFile(c)
+        self.importCommands         = leoImport.LeoImportCommands(c)
+        self.markupCommands         = leoMarkup.MarkupCommands(c)
+        self.persistenceController  = leoPersistence.PersistenceDataController(c)
+        self.printingController     = leoPrinting.PrintingController(c)
+        self.undoer                 = leoUndo.Undoer(c)
         # 15 command handlers...
-        self.abbrevCommands = abbrevCommands.AbbrevCommandsClass(c)
-        self.bufferCommands = bufferCommands.BufferCommandsClass(c)
-        self.controlCommands = controlCommands.ControlCommandsClass(c)
-        self.convertCommands = convertCommands.ConvertCommandsClass(c)
-        self.debugCommands = debugCommands.DebugCommandsClass(c)
-        self.editCommands = editCommands.EditCommandsClass(c)
-        self.editFileCommands = editFileCommands.EditFileCommandsClass(c)
-        self.gotoCommands = gotoCommands.GoToCommands(c)
-        self.helpCommands = helpCommands.HelpCommandsClass(c)
+        self.abbrevCommands     = abbrevCommands.AbbrevCommandsClass(c)
+        self.bufferCommands     = bufferCommands.BufferCommandsClass(c)
+        self.controlCommands    = controlCommands.ControlCommandsClass(c)
+        self.convertCommands    = convertCommands.ConvertCommandsClass(c)
+        self.debugCommands      = debugCommands.DebugCommandsClass(c)
+        self.editCommands       = editCommands.EditCommandsClass(c)
+        self.editFileCommands   = editFileCommands.EditFileCommandsClass(c)
+        self.gotoCommands       = gotoCommands.GoToCommands(c)
+        self.helpCommands       = helpCommands.HelpCommandsClass(c)
         self.keyHandlerCommands = keyCommands.KeyHandlerCommandsClass(c)
         self.killBufferCommands = killBufferCommands.KillBufferCommandsClass(c)
-        self.rectangleCommands = rectangleCommands.RectangleCommandsClass(c)
-        self.rstCommands = leoRst.RstCommands(c)
-        self.spellCommands = spellCommands.SpellCommandsClass(c)
-        self.vimCommands = leoVim.VimCommands(c)
+        self.rectangleCommands  = rectangleCommands.RectangleCommandsClass(c)
+        self.rstCommands        = leoRst.RstCommands(c)
+        self.spellCommands      = spellCommands.SpellCommandsClass(c)
+        self.vimCommands        = leoVim.VimCommands(c)
         # Create the list of subcommanders.
         self.subCommanders = [
             self.abbrevCommands,
@@ -468,6 +470,8 @@ class Commands:
             self.subCommanders.append(self.styleSheetManager)
         else:
             self.styleSheetManager = None
+
+    # fmt: on
 
     # @+node:ekr.20120217070122.10469: *5* c.initOptionsIvars
     def initOptionsIvars(self) -> None:
@@ -5076,17 +5080,20 @@ class Commands:
         return -1 < i1 < j1 or -1 < i2 < j2
 
     # @+node:ekr.20031218072017.2965: *6* c.canFindMatchingBracket
+    # fmt: off
+
     def canFindMatchingBracket(self) -> bool:
         c = self
         brackets = "()[]{}"
         w = c.frame.body.wrapper
         s = w.getAllText()
         ins = w.getInsertPoint()
-        c1 = s[ins] if 0 <= ins < len(s) else ''
-        c2 = s[ins - 1] if 0 <= ins - 1 < len(s) else ''
+        c1 = s[ins]   if 0 <= ins   < len(s) else ''
+        c2 = s[ins-1] if 0 <= ins-1 < len(s) else ''
         val = (c1 and c1 in brackets) or (c2 and c2 in brackets)
         return bool(val)
 
+    # fmt: on
     # @+node:ekr.20040303165342: *6* c.canHoist & canDehoist
     def canDehoist(self) -> bool:
         """
@@ -5419,14 +5426,12 @@ class Commands:
     # @+node:ekr.20160201072634.1: *4* c.cloneFindByPredicate
     def cloneFindByPredicate(
         self,
-        generator: Callable,  # The generator used to traverse the tree.
-        predicate: Callable,  # A function of one argument p, returning True
-        # if p should be included in the results.
-        failMsg: str = None,  # Failure message. Default is no message.
-        flatten: bool = False,  # True: Put all matches at the top level.
-        iconPath: str = None,  # Full path to icon to attach to all matches.
-        undoType: str = None,  # The undo name, shown in the Edit:Undo menu.
-        # The default is 'clone-find-predicate'
+        generator: Callable,
+        predicate: Callable,
+        failMsg: str = None,
+        flatten: bool = False,
+        iconPath: str = None,
+        undoType: str = None,
     ) -> Position:
         """
         Traverse the tree given using the generator, cloning all positions for

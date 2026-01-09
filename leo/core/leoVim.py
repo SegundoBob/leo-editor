@@ -2117,9 +2117,8 @@ class VimCommands:
             w = vc.w if c.vim_mode else c.frame.body
             if vc.is_text_wrapper(w):
                 fc = vc.c.findCommands
-                vc.search_stroke = (
-                    None  # Tell vc.update_dot_before_search not to update the dot.
-                )
+                # Tell vc.update_dot_before_search not to update the dot.
+                vc.search_stroke = None
                 fc.reverse = False
                 fc.openFindTab(vc.event)
                 fc.ftm.clear_focus()
