@@ -23,7 +23,7 @@ print(os.path.basename(__file__))
 leo_editor_dir = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 os.chdir(leo_editor_dir)
 
-args = f"--config {leo_editor_dir}{os.sep}pyproject.toml"
+args = f"--config {leo_editor_dir}{os.sep}pyproject.toml --quiet"
 isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
