@@ -130,9 +130,8 @@ class LeoApp:
         """
         # @+<< LeoApp: command-line arguments >>
         # @+node:ekr.20161028035755.1: *5* << LeoApp: command-line arguments >>
-        self.always_write_session_data = (
-            False  # Default: write session data only if no files on command line.
-        )
+        # Default: write session data only if no files on command line.
+        self.always_write_session_data = False
         self.batchMode = False  # True: run in batch mode.
         self.debug: list[str] = []  # A list of switches to be enabled.
         self.diff = False  # True: run Leo in diff mode.
@@ -140,26 +139,21 @@ class LeoApp:
         self.failFast = False  # True: Use the failfast option in unit tests.
         self.gui: LeoGui = None  # The gui class.
         self.guiArgName: str = None  # The gui name given in --gui option.
-        self.isTheme = (
-            False  # True: load files as theme files (ignore myLeoSettings.leo).
-        )
+        # True: load files as theme files (ignore myLeoSettings.leo).
+        self.isTheme = False
         self.listen_to_log_flag = False  # True: execute listen-to-log command.
         self.loaded_session = False  # Set by startup logic to True if no files specified on the command line.
         self.silentMode = False  # True: no signon.
         self.start_fullscreen = False  # For qt_frame plugin.
         self.start_maximized = False  # For qt_frame plugin.
         self.start_minimized = False  # For qt_frame plugin.
-        self.trace_binding: Optional[str] = (
-            None  # The name of a binding to trace, or None.
-        )
-        self.trace_setting: Optional[str] = (
-            None  # The name of a setting to trace, or None.
-        )
+        # The name of a binding to trace, or None.
+        self.trace_binding: Optional[str] = None
+        # The name of a setting to trace, or None.
+        self.trace_setting: Optional[str] = None
         self.translateToUpperCase = False  # Never set to True.
         self.use_splash_screen = True  # True: put up a splash screen.
-        self.write_black_sentinels = (
-            True  # True: write a space before '@' in sentinel lines.
-        )
+
         # @-<< LeoApp: command-line arguments >>
         # @+<< LeoApp: Debugging & statistics >>
         # @+node:ekr.20161028035835.1: *5* << LeoApp: Debugging & statistics >>
@@ -2948,9 +2942,6 @@ class LoadManager:
 
             # @+<< define scanArgv helpers >>
             # @+node:ekr.20230615053133.1: *7* << define scanArgv helpers >>
-            def _black() -> None:
-                g.app.write_black_sentinels = True
-
             def _diff() -> None:
                 g.app.diff = True
 
@@ -2970,9 +2961,6 @@ class LoadManager:
                 g.app.start_minimized = True
                 g.app.use_splash_screen = False
 
-            def _no_black() -> None:
-                g.app.write_black_sentinels = False
-
             def _no_plugins() -> None:
                 g.app.enablePlugins = False
 
@@ -2991,15 +2979,12 @@ class LoadManager:
             # @-<< define scanArgv helpers >>
 
             options_dict: dict[str, Callable] = {
-                '-b': _black,
-                '--black-sentinels': _black,
                 '--diff': _diff,
                 '--fail-fast': _fail_fast,
                 '--fullscreen': _full_screen,
                 '--listen-to-log': _listen_to_log,
                 '--maximized': _maximized,
                 '--minimized': _minimized,
-                '--no-black-sentinels': _no_black,
                 '--no-plugins': _no_plugins,
                 '--no-splash': _no_splash,
                 '--quit': _quit,
@@ -3112,6 +3097,7 @@ class LoadManager:
             '--load-type=@edit',
             '--load-type=@file',
             '--no-cache',
+            '--black-sentinels',
             '--ipython',
             '--session-restore',
             '--session-save',

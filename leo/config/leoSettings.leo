@@ -658,6 +658,7 @@
 <v t="ekr.20041119034357.14"><vh>@bool at-root-bodies-start-in-doc-mode = True</vh></v>
 <v t="ekr.20070419103554"><vh>@bool force-newlines-in-at-nosent-bodies = True</vh></v>
 <v t="ekr.20041119041747"><vh>@string output-newline = nl</vh></v>
+<v t="ekr.20260109162430.1"><vh>@bool write-black-sentinels = False</vh></v>
 </v>
 <v t="ekr.20241024123618.1"><vh>Jupytext options</vh>
 <v t="ekr.20241030020739.1"><vh>@int jupytext-max-headline-length = 60</vh></v>
@@ -2305,6 +2306,7 @@
 </v>
 </v>
 <v t="ekr.20140915194122.23428"></v>
+<v t="ekr.20260109162430.1"></v>
 </vnodes>
 <tnodes>
 <t tx="TL.20080702085131.2">If True: Save the Leo file and all modified derived files every time the external editor saves a modified file.
@@ -11927,6 +11929,7 @@ rest_comments_literal1_font_weight = normal
 <t tx="ekr.20250502045601.1">Percentage zoom.</t>
 <t tx="ekr.20250715195720.1">True: Leo will create an "update review tree" when any @file node changes externally.</t>
 <t tx="ekr.20250730050535.1">True: report changed files when saving a .leo file.</t>
+<t tx="ekr.20260109162430.1">New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.</t>
 <t tx="felix.20220506230435.1">True: (Legacy) The goto-first-visible-node and goto-first-visible-node commands collapse all nodes that are not ancestors of the target node that is selected.
 
 False: (Recommended) The commands act as simple navigation commands, and do not change the outline state.</t>

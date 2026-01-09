@@ -2639,12 +2639,12 @@ class AtFile:
 
         This method outputs all sentinels.
         """
-        at = self
+        at, c = self, self.c
         if at.sentinels or g.app.force_at_auto_sentinels:
             at.putIndent(at.indent)
             at.os(at.startSentinelComment)
             # Blacken python sentinels if --black-sentinels is in effect.
-            if g.app.write_black_sentinels and self.language == 'python':
+            if c.write_black_sentinels and self.language == 'python':
                 at.os(' ')
             # Apply the cweb hack to s:
             #   If the opening comment delim ends in '@',
