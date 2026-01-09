@@ -2604,7 +2604,7 @@ class TestOrange(BaseTest):
     def test_verbatim2(self):
 
         contents = """
-    # @@nobeautify
+    # @@beautify
     # @+at Starts doc part
     # More doc part.
     # The @c ends the doc part.
