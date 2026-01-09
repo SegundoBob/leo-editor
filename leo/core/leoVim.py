@@ -57,19 +57,19 @@ def show_stroke(stroke: Stroke) -> str:
     """Return the best human-readable form of stroke."""
     s = stroke.s if g.isStroke(stroke) else stroke
     d = {
-        '\n': r'<NL>',
-        'Ctrl+Left': '<Ctrl+Lt>',
-        'Ctrl+Right': '<Ctrl+Rt>',
-        'Ctrl+r': '<Ctrl+r>',
-        'Down': '<Dn>',
-        'Escape': '<Esc>',
-        'Left': '<Lt>',
-        'Right': '<Rt>',
-        'Up': '<Up>',
-        'colon': ':',
-        'dollar': '$',
-        'period': '.',
-        'space': ' ',
+        '\n':           r'<NL>',
+        'Ctrl+Left':    '<Ctrl+Lt>',
+        'Ctrl+Right':   '<Ctrl+Rt>',
+        'Ctrl+r':       '<Ctrl+r>',
+        'Down':         '<Dn>',
+        'Escape':       '<Esc>',
+        'Left':         '<Lt>',
+        'Right':        '<Rt>',
+        'Up':           '<Up>',
+        'colon':        ':',
+        'dollar':       '$',
+        'period':       '.',
+        'space':        ' ',
     }  # fmt: skip
     return d.get(s, s)
 

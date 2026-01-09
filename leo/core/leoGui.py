@@ -667,28 +667,32 @@ class StringFindTabManager:
 
     # @+others
     # @+node:ekr.20210221130549.2: *3*  sftm.ctor
-    def __init__(self, c: Cmdr) -> None:  # fmt: skip
+    # fmt: off
+
+    def __init__(self, c: Cmdr) -> None:
         """Ctor for the FindTabManager class."""
         self.c = c
         self.entry_focus = None  # Accessed directly from code(!)
         # Find/change text boxes...
-        self.find_findbox = StringLineEdit('find_text')
+        self.find_findbox    = StringLineEdit('find_text')
         self.find_replacebox = StringLineEdit('change_text')
         # Check boxes...
-        self.check_box_ignore_case = StringCheckBox('ignore_case')
-        self.check_box_mark_changes = StringCheckBox('mark_changes')
-        self.check_box_mark_finds = StringCheckBox('mark_finds')
-        self.check_box_regexp = StringCheckBox('pattern_match')
-        self.check_box_search_body = StringCheckBox('search_body')
-        self.check_box_search_headline = StringCheckBox('search_headline')
-        self.check_box_whole_word = StringCheckBox('whole_word')
+        self.check_box_ignore_case      = StringCheckBox('ignore_case')
+        self.check_box_mark_changes     = StringCheckBox('mark_changes')
+        self.check_box_mark_finds       = StringCheckBox('mark_finds')
+        self.check_box_regexp           = StringCheckBox('pattern_match')
+        self.check_box_search_body      = StringCheckBox('search_body')
+        self.check_box_search_headline  = StringCheckBox('search_headline')
+        self.check_box_whole_word       = StringCheckBox('whole_word')
         # Radio buttons...
-        self.radio_button_entire_outline = StringRadioButton('entire_outline')
-        self.radio_button_file_only = StringRadioButton('file_only')
-        self.radio_button_node_only = StringRadioButton('node_only')
+        self.radio_button_entire_outline  = StringRadioButton('entire_outline')
+        self.radio_button_file_only       = StringRadioButton('file_only')
+        self.radio_button_node_only       = StringRadioButton('node_only')
         self.radio_button_suboutline_only = StringRadioButton('suboutline_only')
         # Init the default values.
         self.init_widgets()
+        
+    # fmt: on
 
     # @+node:ekr.20210221130549.5: *3* sftm.clear_focus & init_focus & set_entry_focus
     def clear_focus(self) -> None:
@@ -798,9 +802,9 @@ class StringFindTabManager:
     def set_radio_button(self, name: str) -> None:
         """Set the value of the radio buttons"""
         d = {
-            'file-only': self.radio_button_file_only,
-            'node-only': self.radio_button_node_only,
-            'entire-outline': self.radio_button_entire_outline,
+            'file-only':       self.radio_button_file_only,
+            'node-only':       self.radio_button_node_only,
+            'entire-outline':  self.radio_button_entire_outline,
             'suboutline-only': self.radio_button_suboutline_only,
         }  # fmt: skip
         w = d.get(name)
@@ -837,13 +841,13 @@ class StringFindTabManager:
     def toggle_checkbox(self, checkbox_name: str) -> None:
         """Toggle the value of the checkbox whose name is given."""
         d = {
-            'ignore_case': self.check_box_ignore_case,
-            'mark_changes': self.check_box_mark_changes,
-            'mark_finds': self.check_box_mark_finds,
-            'pattern_match': self.check_box_regexp,
-            'search_body': self.check_box_search_body,
+            'ignore_case':     self.check_box_ignore_case,
+            'mark_changes':    self.check_box_mark_changes,
+            'mark_finds':      self.check_box_mark_finds,
+            'pattern_match':   self.check_box_regexp,
+            'search_body':     self.check_box_search_body,
             'search_headline': self.check_box_search_headline,
-            'whole_word': self.check_box_whole_word,
+            'whole_word':      self.check_box_whole_word,
         }  # fmt: skip
         w = d.get(checkbox_name)
         w.toggle()

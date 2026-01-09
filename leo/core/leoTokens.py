@@ -754,6 +754,8 @@ class TokenBasedOrange:  # Orange is the new Black.
 
     # @+others
     # @+node:ekr.20240105145241.2: *4* tbo.ctor
+    # fmt: off
+
     def __init__(self, settings: Optional[SettingsDict] = None):
         """Ctor for Orange class."""
 
@@ -794,26 +796,20 @@ class TokenBasedOrange:  # Orange is the new Black.
 
         # General patterns.
         self.beautify_pat = re.compile(
-            r'#\s*pragma:\s*beautify\b|#\s*@@beautify|#\s*@\+node|#\s*@[+-]others|#\s*@[+-]<<'
-        )
+            r'#\s*pragma:\s*beautify\b|#\s*@@beautify|#\s*@\+node|#\s*@[+-]others|#\s*@[+-]<<')
         self.comment_pat = re.compile(r'^(\s*)#[^@!# \n]')
-        self.nobeautify_pat = re.compile(
-            r'\s*#\s*pragma:\s*no\s*beautify\b|#\s*@@nobeautify'
-        )
-        self.nobeautify_sentinel_pat = re.compile(
-            r'^#\s*@@nobeautify\s*$', re.MULTILINE
-        )
+        self.nobeautify_pat = re.compile(r'\s*#\s*pragma:\s*no\s*beautify\b|#\s*@@nobeautify')
+        self.nobeautify_sentinel_pat = re.compile(r'^#\s*@@nobeautify\s*$', re.MULTILINE)
 
         # Patterns from FastAtRead class, specialized for python delims.
-        self.node_pat = re.compile(
-            r'^(\s*)#@\+node:([^:]+): \*(\d+)?(\*?) (.*)$'
-        )  # @node
+        self.node_pat = re.compile(r'^(\s*)#@\+node:([^:]+): \*(\d+)?(\*?) (.*)$')  # @node
         self.start_doc_pat = re.compile(r'^\s*#@\+(at|doc)?(\s.*?)?$')  # @doc or @
         self.at_others_pat = re.compile(r'^(\s*)#@(\+|-)others\b(.*)$')  # @others
 
         # Doc parts end with @c or a node sentinel. Specialized for python.
         self.end_doc_pat = re.compile(r"^\s*#@(@(c(ode)?)|([+]node\b.*))$")
-
+        
+    # fmt: on
     # @+node:ekr.20240126012433.1: *4* tbo: Checking & dumping
     # @+node:ekr.20240106220724.1: *5* tbo.dump_token_range
     def dump_token_range(
