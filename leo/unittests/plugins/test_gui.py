@@ -1,12 +1,14 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210910084607.1: * @file ../unittests/plugins/test_gui.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210910084607.1: * @file ../unittests/plugins/test_gui.py
 """Tests of gui base classes"""
-#@+<< test_gui imports >>
-#@+node:ekr.20220911102700.1: ** << test_gui imports >>
+
+# @+<< test_gui imports >>
+# @+node:ekr.20220911102700.1: ** << test_gui imports >>
 import os
 import time
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest, create_app
+
 try:
     from leo.core.leoQt import Qt, QtCore
     from leo.core.leoAPI import IconBarAPI, StatusLineAPI, TreeAPI
@@ -14,21 +16,26 @@ try:
     from leo.core.leoFrame import LeoTree
     from leo.core.leoFrame import NullIconBarClass, NullStatusLineClass, NullTree
     from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
-    from leo.plugins.qt_text import QLineEditWrapper, QScintillaWrapper, QTextEditWrapper
+    from leo.plugins.qt_text import (
+        QLineEditWrapper,
+        QScintillaWrapper,
+        QTextEditWrapper,
+    )
     from leo.plugins.qt_text import LeoQTextBrowser
     from leo.plugins.qt_tree import LeoQtTree
 except Exception:
     Qt = QtCore = None
-#@-<< test_gui imports >>
+# @-<< test_gui imports >>
 
-#@+others
-#@+node:ekr.20210910084607.2: ** class TestNullGui(LeoUnitTest)
+
+# @+others
+# @+node:ekr.20210910084607.2: ** class TestNullGui(LeoUnitTest)
 class TestNullGui(LeoUnitTest):
     """Test cases for gui base classes."""
 
     # Note: the default setUpClass creates a null gui.
-    #@+others
-    #@+node:ekr.20210909194336.23: *3* TestNullGui.test_null_gui_ctors_for_all_dialogs
+    # @+others
+    # @+node:ekr.20210909194336.23: *3* TestNullGui.test_null_gui_ctors_for_all_dialogs
     def test_null_gui_ctors_for_all_dialogs(self):
         c = self.c
         # Make sure the ctors don't crash.
@@ -39,13 +46,16 @@ class TestNullGui(LeoUnitTest):
         gui.runAskOkCancelStringDialog(c, 'title', 'message')
         gui.runAskYesNoDialog(c, 'title', 'message')
         gui.runAskYesNoCancelDialog(c, 'title', 'message')
-    #@-others
-#@+node:ekr.20210912064439.1: ** class TestQtGui(LeoUnitTest)
+
+    # @-others
+
+
+# @+node:ekr.20210912064439.1: ** class TestQtGui(LeoUnitTest)
 class TestQtGui(LeoUnitTest):
     """Test cases for gui base classes."""
 
-    #@+others
-    #@+node:ekr.20231012085112.1: *3* TestQtGui.setUp and setUpClass
+    # @+others
+    # @+node:ekr.20231012085112.1: *3* TestQtGui.setUp and setUpClass
     # Override LeoUnitTest setUpClass.
     @classmethod
     def setUpClass(cls):
@@ -56,12 +66,13 @@ class TestQtGui(LeoUnitTest):
         # Don't run *any* tests if Qt has not been installed.
         try:
             from leo.core.leoQt import Qt
+
             assert Qt
         except Exception:
             self.skipTest('Requires Qt')
-    #@+node:ekr.20210913120449.1: *3* TestQtGui.test_bug_2164
-    def test_bug_2164(self):
 
+    # @+node:ekr.20210913120449.1: *3* TestQtGui.test_bug_2164
+    def test_bug_2164(self):
         # show-invisibles crashes with PyQt6.
         from leo.core.leoQt import QtGui
 
@@ -73,7 +84,8 @@ class TestQtGui(LeoUnitTest):
         # Test the Qt6 flag.
         option = QtGui.QTextOption()
         assert hasattr(option.Flag, 'ShowTabsAndSpaces')
-    #@+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
+
+    # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.
     if 0:  # pragma: no cover
 
@@ -85,7 +97,8 @@ class TestQtGui(LeoUnitTest):
 
         def test_do_nothing3(self):
             time.sleep(0.1)
-    #@+node:ekr.20210912064439.2: *3* TestQtGui.test_qt_ctors_for_all_dialogs
+
+    # @+node:ekr.20210912064439.2: *3* TestQtGui.test_qt_ctors_for_all_dialogs
     def test_qt_ctors_for_all_dialogs(self):
         # Make sure the dialogs don't crash.
         c = self.c
@@ -97,24 +110,29 @@ class TestQtGui(LeoUnitTest):
         gui.runAskOkCancelStringDialog(c, 'title', 'message')
         gui.runAskYesNoDialog(c, 'title', 'message')
         gui.runAskYesNoCancelDialog(c, 'title', 'message')
-    #@+node:ekr.20210912133358.1: *3* TestQtGui.test_qt_enums
-    def test_qt_enums(self):
 
+    # @+node:ekr.20210912133358.1: *3* TestQtGui.test_qt_enums
+    def test_qt_enums(self):
         # https://github.com/leo-editor/leo-editor/issues/1973 list of enums
 
         if not QtCore and QtCore.Qt:
             self.skipTest('Requires Qt')  # pragma: no cover
         table = (
-            'DropAction', 'ItemFlag', 'KeyboardModifier',
-            'MouseButton', 'Orientation',
-            'TextInteractionFlag', 'ToolBarArea',
-            'WindowType', 'WindowState',
+            'DropAction',
+            'ItemFlag',
+            'KeyboardModifier',
+            'MouseButton',
+            'Orientation',
+            'TextInteractionFlag',
+            'ToolBarArea',
+            'WindowType',
+            'WindowState',
         )
         for ivar in table:
             assert hasattr(QtCore.Qt, ivar), repr(ivar)
-    #@+node:ekr.20220411165627.1: *3* TestQtGui.test_put_html_links
-    def test_put_html_links(self):
 
+    # @+node:ekr.20220411165627.1: *3* TestQtGui.test_put_html_links
+    def test_put_html_links(self):
         c, p = self.c, self.c.p
         # Create a test outline.
         assert p == self.root_p
@@ -126,12 +144,21 @@ class TestQtGui(LeoUnitTest):
             # python.
             (True, 'File "test_file.py", line 5'),
             # pylint.
-            (True, r'leo\unittest\test_file.py:1326:8: W0101: Unreachable code (unreachable)'),
+            (
+                True,
+                r'leo\unittest\test_file.py:1326:8: W0101: Unreachable code (unreachable)',
+            ),
             # pyflakes.
             (True, r"test_file.py:51:13 'leo.core.leoQt5.*' imported but unused"),
             # mypy...
-            (True, 'test_file.py:116: error: Function is missing a return type annotation  [no-untyped-def]'),
-            (True, r'leo\core\test_file.py:116: note: Use "-> None" if function does not return a value'),
+            (
+                True,
+                'test_file.py:116: error: Function is missing a return type annotation  [no-untyped-def]',
+            ),
+            (
+                True,
+                r'leo\core\test_file.py:116: note: Use "-> None" if function does not return a value',
+            ),
             (False, 'Found 1 error in 1 file (checked 1 source file)'),
             (False, 'mypy: done'),
             # Random output.
@@ -141,7 +168,8 @@ class TestQtGui(LeoUnitTest):
             s = s.replace('\\', os.sep).rstrip() + '\n'
             result = c.frame.log.put_html_links(s)
             self.assertEqual(result, expected, msg=repr(s))
-    #@+node:ekr.20220912093438.1: *3* TestQtGui.test_qt_attributes
+
+    # @+node:ekr.20220912093438.1: *3* TestQtGui.test_qt_attributes
     def test_qt_attributes(self):
         # Various preliminary tests.
         c = self.c
@@ -160,9 +188,9 @@ class TestQtGui(LeoUnitTest):
             for method in ('delete', 'insert', 'toPythonIndexRowCol'):
                 f = getattr(c.frame.body.wrapper, method, None)
                 print(repr(f))
-    #@+node:ekr.20220912140743.1: *3* TestQtGui.test_QTextEditWrapper_delete
-    def test_QTextEditWrapper_delete(self):
 
+    # @+node:ekr.20220912140743.1: *3* TestQtGui.test_QTextEditWrapper_delete
+    def test_QTextEditWrapper_delete(self):
         c = self.c
         wrapper = c.frame.body.wrapper
         widget = wrapper.widget
@@ -176,15 +204,17 @@ class TestQtGui(LeoUnitTest):
         # g.trace(wrapper.getAllText())
         wrapper.delete(6, 0)
         # g.trace(wrapper.getAllText())
-    #@-others
-#@+node:ekr.20220911100525.1: ** class TestAPIClasses(LeoUnitTest)
+
+    # @-others
+
+
+# @+node:ekr.20220911100525.1: ** class TestAPIClasses(LeoUnitTest)
 class TestAPIClasses(LeoUnitTest):
     """Tests that gui classes are compatible with the corresponding API class."""
 
-    #@+others
-    #@+node:ekr.20250329035732.1: *3* test_icon_bar_api
+    # @+others
+    # @+node:ekr.20250329035732.1: *3* test_icon_bar_api
     def test_icon_bar_api(self):
-
         def get_methods(cls):
             return [z for z in dir(cls) if not z.startswith('__')]
 
@@ -195,10 +225,12 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.append(QtIconBarClass)
         for cls in classes:
-            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
-    #@+node:ekr.20220911101304.1: *3* test_status_line_api
-    def test_status_line_api(self):
+            self.assertFalse(
+                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
+            )
 
+    # @+node:ekr.20220911101304.1: *3* test_status_line_api
+    def test_status_line_api(self):
         def get_methods(cls):
             return [z for z in dir(cls) if not z.startswith('__')]
 
@@ -209,10 +241,12 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.append(QtStatusLineClass)
         for cls in classes:
-            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
-    #@+node:ekr.20220911101329.1: *3* test_tree_api
-    def test_tree_api(self):
+            self.assertFalse(
+                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
+            )
 
+    # @+node:ekr.20220911101329.1: *3* test_tree_api
+    def test_tree_api(self):
         def get_methods(cls):
             return [z for z in dir(cls) if not z.startswith('__')]
 
@@ -223,10 +257,12 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.extend([LeoQtTree, LeoTree])
         for cls in classes:
-            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
-    #@+node:ekr.20220911101330.1: *3* test_text_api
-    def test_text_api(self):
+            self.assertFalse(
+                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
+            )
 
+    # @+node:ekr.20220911101330.1: *3* test_text_api
+    def test_text_api(self):
         def get_methods(cls):
             return [z for z in dir(cls) if not z.startswith('__')]
 
@@ -237,7 +273,12 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.extend([QLineEditWrapper, QTextEditWrapper, QScintillaWrapper])
         for cls in classes:
-            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
-    #@-others
-#@-others
-#@-leo
+            self.assertFalse(
+                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
+            )
+
+    # @-others
+
+
+# @-others
+# @-leo

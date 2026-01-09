@@ -136,7 +136,6 @@ directives_pat = None  # Set below.
 # @-<< define g.globalDirectiveList >>
 # @+<< define global decorator dicts >>
 # @+node:ekr.20150510103918.1: ** << define global decorator dicts >> (leoGlobals.py)
-###@nobeautify
 # @@language rest
 # @+at
 # The cmd_instance_dict supports per-class @cmd decorators. For example, the
@@ -1501,8 +1500,6 @@ class MatchBrackets:
         g.es(s, color='red')
 
     # @+node:ekr.20160119094053.1: *4* mb.run
-    ###@nobeautify
-
     def run(self) -> None:
         """The driver for the MatchBrackets class.
 
@@ -2035,8 +2032,6 @@ def startTracer(limit: int = 0, trace: bool = False, verbose: bool = False) -> C
 
 
 # @+node:ekr.20031219074948.1: *3* class g.Tracing/NullObject & helpers
-###@nobeautify
-
 tracing_tags: dict[int, str] = {}  # Keys are id's, values are tags.
 
 

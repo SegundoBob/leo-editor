@@ -612,8 +612,6 @@ if 1:  # pragma: no cover
         return str(id(obj))[-4:]
 
     # @+node:ekr.20191231060700.1: *4* function: op_name
-    # @@nobeautify
-
     # https://docs.python.org/3/library/ast.html
 
     _op_names = {

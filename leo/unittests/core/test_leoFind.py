@@ -655,7 +655,6 @@ class TestFind(LeoUnitTest):
         x.init_ivars_from_settings(partial_settings)
         x.compute_result_status(find_all_flag=False)
     # @+node:ekr.20230124162455.1: *4* TestFind.test_find_all_plain
-    ###@nobeautify
     def test_find_all_plain(self):
         c = self.c
         fc = c.findCommands
@@ -685,7 +684,6 @@ class TestFind(LeoUnitTest):
                 aList = fc.find_all_plain(find, s)
                 self.assertEqual(aList, expected, msg=s)
     # @+node:ekr.20230124162609.1: *4* TestFind.test_find_all_regex
-    ###@nobeautify
     def test_find_all_regex(self):
         c = self.c
         fc = c.findCommands

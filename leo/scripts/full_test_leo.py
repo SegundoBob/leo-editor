@@ -40,7 +40,7 @@ isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
 for command in [
-    # fr'{python} -m leo.scripts.beautify_all_leo',
+    rf'{python} -m leo.scripts.beautify_all_leo',
     rf'{python} -m leo.scripts.flake8_leo',
     rf'{python} -m leo.scripts.pyflakes_leo',
     rf'{python} -m leo.scripts.run_test_leo',

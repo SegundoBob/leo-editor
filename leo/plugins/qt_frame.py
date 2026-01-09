@@ -1407,8 +1407,6 @@ class FindTabManager:
         w.clear()
         w.insert(s)
     # @+node:ekr.20131117120458.16791: *3* ftm.toggle_checkbox
-    ###@nobeautify
-
     def toggle_checkbox(self, checkbox_name: str) -> None:
         """Toggle the value of the checkbox whose name is given."""
         c = self.c

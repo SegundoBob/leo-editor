@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20160317054700.1: * @file ../external/make_stub_files.py
+# @+leo-ver=5-thin
+# @+node:ekr.20160317054700.1: * @file ../external/make_stub_files.py
 #!/usr/bin/env python
 '''
 This script makes a stub (.pyi) file in the output directory for each
@@ -11,8 +11,8 @@ This file is in the public domain.
 
 Written by Edward K. Ream.
 '''
-#@+<< imports >>
-#@+node:ekr.20160317054700.2: **  << imports >> (make_stub_files.py)
+# @+<< imports >>
+# @+node:ekr.20160317054700.2: **  << imports >> (make_stub_files.py)
 import ast
 from collections import OrderedDict
 import configparser
@@ -24,12 +24,12 @@ import re
 import sys
 import time
 import types
-#@-<< imports >>
+# @-<< imports >>
 isPython3 = sys.version_info >= (3, 0, 0)
 # pylint: disable=no-else-return
-#@+others
-#@+node:ekr.20160317054700.3: **   type functions
-#@+node:ekr.20160317054700.4: *3* is_known_type
+# @+others
+# @+node:ekr.20160317054700.3: **   type functions
+# @+node:ekr.20160317054700.4: *3* is_known_type
 def is_known_type(s):
     '''
     Return True if s is nothing but a single known type.
@@ -90,9 +90,9 @@ def main():
     controller.scan_options()
     controller.run()
     print('done')
-#@+node:ekr.20160317054700.5: *3* merge_types (not used)
-#@+node:ekr.20160317054700.6: *3* reduce_types
-#@+node:ekr.20160523111223.1: **   unit_test (make_stub_files.py)
+# @+node:ekr.20160317054700.5: *3* merge_types (not used)
+# @+node:ekr.20160317054700.6: *3* reduce_types
+# @+node:ekr.20160523111223.1: **   unit_test (make_stub_files.py)
 def unit_test(raise_on_fail=True):
     '''Run basic unit tests for this file.'''
     import _ast
@@ -137,16 +137,16 @@ def unit_test(raise_on_fail=True):
         assert not errors, s
     else:
         print(s)
-#@+node:ekr.20160317054700.7: **   utility functions
-#@+node:ekr.20160317054700.8: *3* dump
-#@+node:ekr.20160317054700.9: *3* dump_dict
-#@+node:ekr.20160317054700.10: *3* dump_list
-#@+node:ekr.20160317054700.11: *3* main
-#@+node:ekr.20160317054700.13: *3* truncate
+# @+node:ekr.20160317054700.7: **   utility functions
+# @+node:ekr.20160317054700.8: *3* dump
+# @+node:ekr.20160317054700.9: *3* dump_dict
+# @+node:ekr.20160317054700.10: *3* dump_list
+# @+node:ekr.20160317054700.11: *3* main
+# @+node:ekr.20160317054700.13: *3* truncate
 def truncate(s, n):
     '''Return s truncated to n characters.'''
     return s if len(s) <= n else s[: n - 3] + '...'
-#@+node:ekr.20160317055215.1: **  class AstFormatter
+# @+node:ekr.20160317055215.1: **  class AstFormatter
 class AstFormatter:
     '''
     A class to recreate source code from an AST.
@@ -154,19 +154,19 @@ class AstFormatter:
     This does not have to be perfect, but it should be close.
     '''
     # pylint: disable=consider-using-enumerate
-    #@+others
-    #@+node:ekr.20160317055215.2: *3*  f.Entries
+    # @+others
+    # @+node:ekr.20160317055215.2: *3*  f.Entries
 
     # Entries...
-    #@+node:ekr.20160317055215.3: *4* f.__call__ (not used)
-    #@+node:ekr.20160317055215.4: *4* f.format (make_stub_files)
+    # @+node:ekr.20160317055215.3: *4* f.__call__ (not used)
+    # @+node:ekr.20160317055215.4: *4* f.format (make_stub_files)
     def format(self, node):
         '''Format the node (or list of nodes) and its descendants.'''
         self.level = 0
         val = self.visit(node)
         # pylint: disable=consider-using-ternary
         return val and val.strip() or ''
-    #@+node:ekr.20160317055215.5: *4* f.visit
+    # @+node:ekr.20160317055215.5: *4* f.visit
     def visit(self, node):
         '''Return the formatted version of an Ast node, or list of Ast nodes.'''
         if isinstance(node, (list, tuple)):
@@ -180,10 +180,10 @@ class AstFormatter:
             s = method(node)
             assert g.isString(s), type(s)
             return s
-    #@+node:ekr.20160317055215.6: *3* f.Contexts
+    # @+node:ekr.20160317055215.6: *3* f.Contexts
 
     # Contexts...
-    #@+node:ekr.20160317055215.7: *4* f.ClassDef (make_stub_files)
+    # @+node:ekr.20160317055215.7: *4* f.ClassDef (make_stub_files)
 
     # 2: ClassDef(identifier name, expr* bases,
     #             stmt* body, expr* decorator_list)
@@ -214,7 +214,7 @@ class AstFormatter:
             result.append(self.visit(z))
             self.level -= 1
         return ''.join(result)
-    #@+node:ekr.20160317055215.8: *4* f.FunctionDef & AsyncFunctionDef (make_stub_files)
+    # @+node:ekr.20160317055215.8: *4* f.FunctionDef & AsyncFunctionDef (make_stub_files)
 
     # 2: FunctionDef(identifier name, arguments args, stmt* body, expr* decorator_list)
     # 3: FunctionDef(identifier name, arguments args, stmt* body, expr* decorator_list,
@@ -244,39 +244,39 @@ class AstFormatter:
 
     def do_AsyncFunctionDef(self, node):
         return self.do_FunctionDef(node, async_flag=True)
-    #@+node:ekr.20160317055215.9: *4* f.Interactive
+    # @+node:ekr.20160317055215.9: *4* f.Interactive
     def do_Interactive(self, node):
         for z in node.body:
             self.visit(z)
-    #@+node:ekr.20160317055215.10: *4* f.Module
+    # @+node:ekr.20160317055215.10: *4* f.Module
     def do_Module(self, node):
         assert 'body' in node._fields
         result = ''.join([self.visit(z) for z in node.body])
         return result  # 'module:\n%s' % (result)
-    #@+node:ekr.20160317055215.11: *4* f.Lambda
+    # @+node:ekr.20160317055215.11: *4* f.Lambda
     def do_Lambda(self, node):
         return self.indent('lambda %s: %s' % (
             self.visit(node.args),
             self.visit(node.body)))
-    #@+node:ekr.20160317055215.12: *3* f.Expressions
+    # @+node:ekr.20160317055215.12: *3* f.Expressions
 
     # Expressions...
 
-    #@+node:ekr.20160317055215.13: *4* f.Expr
+    # @+node:ekr.20160317055215.13: *4* f.Expr
     def do_Expr(self, node):
         '''An outer expression: must be indented.'''
         return self.indent('%s\n' % self.visit(node.value))
-    #@+node:ekr.20160317055215.14: *4* f.Expression
+    # @+node:ekr.20160317055215.14: *4* f.Expression
     def do_Expression(self, node):
         '''An inner expression: do not indent.'''
         return '%s\n' % self.visit(node.body)
-    #@+node:ekr.20160317055215.15: *4* f.GeneratorExp
+    # @+node:ekr.20160317055215.15: *4* f.GeneratorExp
     def do_GeneratorExp(self, node):
         elt = self.visit(node.elt) or ''
         gens = [self.visit(z) for z in node.generators]
         gens = [z if z else '<**None**>' for z in gens]  # Kludge: probable bug.
         return '<gen %s for %s>' % (elt, ','.join(gens))
-    #@+node:ekr.20160317055215.16: *4* f.ctx nodes
+    # @+node:ekr.20160317055215.16: *4* f.ctx nodes
     def do_AugLoad(self, node):
         return 'AugLoad'
 
@@ -291,11 +291,11 @@ class AstFormatter:
 
     def do_Store(self, node):
         return 'Store'
-    #@+node:ekr.20160317055215.17: *3* f.Operands
+    # @+node:ekr.20160317055215.17: *3* f.Operands
 
     # Operands...
 
-    #@+node:ekr.20160317055215.18: *4* f.arguments (make_stub_files)
+    # @+node:ekr.20160317055215.18: *4* f.arguments (make_stub_files)
     # 2: arguments = (expr* args, identifier? vararg, identifier? kwarg, expr* defaults)
     # 3: arguments = (arg*  args, arg? vararg,
     #                arg* kwonlyargs, expr* kw_defaults,
@@ -336,7 +336,7 @@ class AstFormatter:
             name = getattr(node, 'kwarg', None)
             if name: args2.append('**' + name)
         return ','.join(args2)
-    #@+node:ekr.20160317055215.19: *4* f.arg (Python3 only) (make_stub_files)
+    # @+node:ekr.20160317055215.19: *4* f.arg (Python3 only) (make_stub_files)
 
     # 3: arg = (identifier arg, expr? annotation)
 
@@ -345,17 +345,17 @@ class AstFormatter:
             return '%s: %s' % (node.arg, self.visit(node.annotation))
         else:
             return node.arg
-    #@+node:ekr.20160317055215.20: *4* f.Attribute
+    # @+node:ekr.20160317055215.20: *4* f.Attribute
     # Attribute(expr value, identifier attr, expr_context ctx)
 
     def do_Attribute(self, node):
         return '%s.%s' % (
             self.visit(node.value),
             node.attr)  # Don't visit node.attr: it is always a string.
-    #@+node:ekr.20160317055215.21: *4* f.Bytes
+    # @+node:ekr.20160317055215.21: *4* f.Bytes
     def do_Bytes(self, node):  # Python 3.x only.
         return str(node.s)
-    #@+node:ekr.20160317055215.22: *4* f.Call & f.keyword
+    # @+node:ekr.20160317055215.22: *4* f.Call & f.keyword
     # Call(expr func, expr* args, keyword* keywords, expr? starargs, expr? kwargs)
 
     def do_Call(self, node):
@@ -370,7 +370,7 @@ class AstFormatter:
             args.append('**%s' % (self.visit(node.kwargs)))
         args = [z for z in args if z]  # Kludge: Defensive coding.
         return '%s(%s)' % (func, ','.join(args))
-    #@+node:ekr.20160317055215.23: *5* f.keyword
+    # @+node:ekr.20160317055215.23: *5* f.keyword
     # keyword = (identifier arg, expr value)
 
     def do_keyword(self, node):
@@ -379,11 +379,11 @@ class AstFormatter:
         # This is a keyword *arg*, not a Python keyword!
         return '%s=%s' % (node.arg, value)
 
-    #@+node:ekr.20170721092717.1: *4* f.Constant (Python 3.6+)
+    # @+node:ekr.20170721092717.1: *4* f.Constant (Python 3.6+)
     def do_Constant(self, node):  # Python 3.6+ only.
         assert isPython3
         return str(node.s)  # A guess.
-    #@+node:ekr.20160317055215.24: *4* f.comprehension
+    # @+node:ekr.20160317055215.24: *4* f.comprehension
     def do_comprehension(self, node):
         result = []
         name = self.visit(node.target)  # A name.
@@ -394,7 +394,7 @@ class AstFormatter:
             result.append(' if %s' % (''.join(ifs)))
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.25: *4* f.Dict
+    # @+node:ekr.20160317055215.25: *4* f.Dict
     def do_Dict(self, node):
         result = []
         keys = [self.visit(z) for z in node.keys]
@@ -414,15 +414,15 @@ class AstFormatter:
                 repr(keys), repr(values)))
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.26: *4* f.Ellipsis
+    # @+node:ekr.20160317055215.26: *4* f.Ellipsis
     def do_Ellipsis(self, node):
         return '...'
 
-    #@+node:ekr.20160317055215.27: *4* f.ExtSlice
+    # @+node:ekr.20160317055215.27: *4* f.ExtSlice
     def do_ExtSlice(self, node):
         return ':'.join([self.visit(z) for z in node.dims])
 
-    #@+node:ekr.20170721093043.1: *4* f.FormattedValue (Python 3.6+)
+    # @+node:ekr.20170721093043.1: *4* f.FormattedValue (Python 3.6+)
     # FormattedValue(expr value, int? conversion, expr? format_spec)
 
     def do_FormattedValue(self, node):  # Python 3.6+ only.
@@ -431,11 +431,11 @@ class AstFormatter:
             self.visit(node.value),
             self.visit(node.conversion) if node.conversion else '',
             self.visit(node.format_spec) if node.format_spec else '')
-    #@+node:ekr.20160317055215.28: *4* f.Index
+    # @+node:ekr.20160317055215.28: *4* f.Index
     def do_Index(self, node):
         return self.visit(node.value)
 
-    #@+node:ekr.20170721093148.1: *4* f.JoinedStr (Python 3.6+)
+    # @+node:ekr.20170721093148.1: *4* f.JoinedStr (Python 3.6+)
     # JoinedStr(expr* values)
 
     def do_JoinedStr(self, node):
@@ -444,7 +444,7 @@ class AstFormatter:
             for value in node.values:
                 self.visit(value)
 
-    #@+node:ekr.20160317055215.29: *4* f.List
+    # @+node:ekr.20160317055215.29: *4* f.List
     def do_List(self, node):
         # Not used: list context.
         # self.visit(node.ctx)
@@ -452,14 +452,14 @@ class AstFormatter:
         elts = [z for z in elts if z]  # Defensive.
         return '[%s]' % ','.join(elts)
 
-    #@+node:ekr.20160317055215.30: *4* f.ListComp
+    # @+node:ekr.20160317055215.30: *4* f.ListComp
     def do_ListComp(self, node):
         elt = self.visit(node.elt)
         gens = [self.visit(z) for z in node.generators]
         gens = [z if z else '<**None**>' for z in gens]  # Kludge: probable bug.
         return '%s for %s' % (elt, ''.join(gens))
 
-    #@+node:ekr.20160317055215.31: *4* f.Name
+    # @+node:ekr.20160317055215.31: *4* f.Name
     def do_Name(self, node):
         return node.id
 
@@ -467,11 +467,11 @@ class AstFormatter:
         s = repr(node.value)
         return 'bool' if s in ('True', 'False') else s
 
-    #@+node:ekr.20160317055215.32: *4* f.Num
+    # @+node:ekr.20160317055215.32: *4* f.Num
     def do_Num(self, node):
         return repr(node.n)
 
-    #@+node:ekr.20160317055215.34: *4* f.Slice
+    # @+node:ekr.20160317055215.34: *4* f.Slice
     def do_Slice(self, node):
         lower, upper, step = '', '', ''
         if getattr(node, 'lower', None) is not None:
@@ -485,12 +485,12 @@ class AstFormatter:
         else:
             return '%s:%s' % (lower, upper)
 
-    #@+node:ekr.20160317055215.35: *4* f.Str
+    # @+node:ekr.20160317055215.35: *4* f.Str
     def do_Str(self, node):
         '''This represents a string constant.'''
         return repr(node.s)
 
-    #@+node:ekr.20160317055215.36: *4* f.Subscript
+    # @+node:ekr.20160317055215.36: *4* f.Subscript
     # Subscript(expr value, slice slice, expr_context ctx)
 
     def do_Subscript(self, node):
@@ -498,11 +498,11 @@ class AstFormatter:
         the_slice = self.visit(node.slice)
         return '%s[%s]' % (value, the_slice)
 
-    #@+node:ekr.20160317055215.37: *4* f.Tuple
+    # @+node:ekr.20160317055215.37: *4* f.Tuple
     def do_Tuple(self, node):
         elts = [self.visit(z) for z in node.elts]
         return '(%s)' % ', '.join(elts)
-    #@+node:ekr.20160523135038.2: *4* f.DictComp (new)
+    # @+node:ekr.20160523135038.2: *4* f.DictComp (new)
     # DictComp(expr key, expr value, comprehension* generators)
 
     def do_DictComp(self, node):
@@ -511,14 +511,14 @@ class AstFormatter:
             self.visit(z)
         self.visit(node.value)
         self.visit(node.key)
-    #@+node:ekr.20160523135038.3: *4* f.Set (new)
+    # @+node:ekr.20160523135038.3: *4* f.Set (new)
     # Set(expr* elts)
 
     def do_Set(self, node):
         for z in node.elts:
             self.visit(z)
 
-    #@+node:ekr.20160523135038.4: *4* f.SetComp (new)
+    # @+node:ekr.20160523135038.4: *4* f.SetComp (new)
     # SetComp(expr elt, comprehension* generators)
 
     def do_SetComp(self, node):
@@ -526,24 +526,24 @@ class AstFormatter:
         for z in node.generators:
             self.visit(z)
         self.visit(node.elt)
-    #@+node:ekr.20160317055215.38: *3* f.Operators
+    # @+node:ekr.20160317055215.38: *3* f.Operators
 
     # Operators...
 
-    #@+node:ekr.20160317055215.39: *4* f.BinOp
+    # @+node:ekr.20160317055215.39: *4* f.BinOp
     def do_BinOp(self, node):
         return '%s%s%s' % (
             self.visit(node.left),
             self.op_name(node.op),
             self.visit(node.right))
 
-    #@+node:ekr.20160317055215.40: *4* f.BoolOp
+    # @+node:ekr.20160317055215.40: *4* f.BoolOp
     def do_BoolOp(self, node):
         op_name = self.op_name(node.op)
         values = [self.visit(z) for z in node.values]
         return op_name.join(values)
 
-    #@+node:ekr.20160317055215.41: *4* f.Compare
+    # @+node:ekr.20160317055215.41: *4* f.Compare
     def do_Compare(self, node):
         result = []
         lt = self.visit(node.left)
@@ -557,23 +557,23 @@ class AstFormatter:
             print('can not happen: ops', repr(ops), 'comparators', repr(comps))
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.42: *4* f.UnaryOp
+    # @+node:ekr.20160317055215.42: *4* f.UnaryOp
     def do_UnaryOp(self, node):
         return '%s%s' % (
             self.op_name(node.op),
             self.visit(node.operand))
 
-    #@+node:ekr.20160317055215.43: *4* f.ifExp (ternary operator)
+    # @+node:ekr.20160317055215.43: *4* f.ifExp (ternary operator)
     def do_IfExp(self, node):
         return '%s if %s else %s ' % (
             self.visit(node.body),
             self.visit(node.test),
             self.visit(node.orelse))
-    #@+node:ekr.20160317055215.44: *3* f.Statements
+    # @+node:ekr.20160317055215.44: *3* f.Statements
 
     # Statements...
 
-    #@+node:ekr.20170721093003.1: *4* f.AnnAssign
+    # @+node:ekr.20170721093003.1: *4* f.AnnAssign
     # AnnAssign(expr target, expr annotation, expr? value, int simple)
 
     def do_AnnAssign(self, node):
@@ -582,7 +582,7 @@ class AstFormatter:
             self.visit(node.annotation),
             self.visit(node.value),
         ))
-    #@+node:ekr.20160317055215.45: *4* f.Assert
+    # @+node:ekr.20160317055215.45: *4* f.Assert
     def do_Assert(self, node):
         test = self.visit(node.test)
         if getattr(node, 'msg', None):
@@ -591,40 +591,40 @@ class AstFormatter:
         else:
             return self.indent('assert %s' % test)
 
-    #@+node:ekr.20160317055215.46: *4* f.Assign
+    # @+node:ekr.20160317055215.46: *4* f.Assign
     def do_Assign(self, node):
         return self.indent('%s=%s\n' % (
             '='.join([self.visit(z) for z in node.targets]),
             self.visit(node.value)))
 
-    #@+node:ekr.20160317055215.47: *4* f.AugAssign
+    # @+node:ekr.20160317055215.47: *4* f.AugAssign
     def do_AugAssign(self, node):
         return self.indent('%s%s=%s\n' % (
             self.visit(node.target),
             self.op_name(node.op),  # Bug fix: 2013/03/08.
             self.visit(node.value)))
 
-    #@+node:ekr.20160523135457.1: *4* f.Await
+    # @+node:ekr.20160523135457.1: *4* f.Await
     # Await(expr value)
 
     def do_Await(self, node):
 
         return self.indent('await %s\n' % (
             self.visit(node.value)))
-    #@+node:ekr.20160317055215.48: *4* f.Break
+    # @+node:ekr.20160317055215.48: *4* f.Break
     def do_Break(self, node):
         return self.indent('break\n')
 
-    #@+node:ekr.20160317055215.49: *4* f.Continue
+    # @+node:ekr.20160317055215.49: *4* f.Continue
     def do_Continue(self, node):
         return self.indent('continue\n')
 
-    #@+node:ekr.20160317055215.50: *4* f.Delete
+    # @+node:ekr.20160317055215.50: *4* f.Delete
     def do_Delete(self, node):
         targets = [self.visit(z) for z in node.targets]
         return self.indent('del %s\n' % ','.join(targets))
 
-    #@+node:ekr.20160317055215.51: *4* f.ExceptHandler
+    # @+node:ekr.20160317055215.51: *4* f.ExceptHandler
     def do_ExceptHandler(self, node):
         result = []
         result.append(self.indent('except'))
@@ -642,7 +642,7 @@ class AstFormatter:
             self.level -= 1
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.52: *4* f.Exec
+    # @+node:ekr.20160317055215.52: *4* f.Exec
     # Python 2.x only
 
     def do_Exec(self, node):
@@ -658,7 +658,7 @@ class AstFormatter:
         else:
             return self.indent('exec %s\n' % (body))
 
-    #@+node:ekr.20160317055215.53: *4* f.For & AsyncFor
+    # @+node:ekr.20160317055215.53: *4* f.For & AsyncFor
     def do_For(self, node, async_flag=False):
         result = []
         result.append(self.indent('%sfor %s in %s:\n' % (
@@ -680,12 +680,12 @@ class AstFormatter:
     def do_AsyncFor(self, node):
         return self.do_For(node, async_flag=True)
 
-    #@+node:ekr.20160317055215.54: *4* f.Global
+    # @+node:ekr.20160317055215.54: *4* f.Global
     def do_Global(self, node):
         return self.indent('global %s\n' % (
             ','.join(node.names)))
 
-    #@+node:ekr.20160317055215.55: *4* f.If
+    # @+node:ekr.20160317055215.55: *4* f.If
     def do_If(self, node):
         result = []
         result.append(self.indent('if %s:\n' % (
@@ -702,7 +702,7 @@ class AstFormatter:
                 self.level -= 1
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.56: *4* f.Import & helper
+    # @+node:ekr.20160317055215.56: *4* f.Import & helper
     def do_Import(self, node):
         names = []
         for fn, asname in self.get_import_names(node):
@@ -713,7 +713,7 @@ class AstFormatter:
         return self.indent('import %s\n' % (
             ','.join(names)))
 
-    #@+node:ekr.20160317055215.57: *5* f.get_import_names
+    # @+node:ekr.20160317055215.57: *5* f.get_import_names
     def get_import_names(self, node):
         '''Return a list of the the full file names in the import statement.'''
         result = []
@@ -725,7 +725,7 @@ class AstFormatter:
                 print('unsupported kind in Import.names list', self.kind(ast2))
         return result
 
-    #@+node:ekr.20160317055215.58: *4* f.ImportFrom
+    # @+node:ekr.20160317055215.58: *4* f.ImportFrom
     def do_ImportFrom(self, node):
         names = []
         for fn, asname in self.get_import_names(node):
@@ -736,7 +736,7 @@ class AstFormatter:
         return self.indent('from %s import %s\n' % (
             node.module,
             ','.join(names)))
-    #@+node:ekr.20160317055215.59: *4* f.Nonlocal (Python 3)
+    # @+node:ekr.20160317055215.59: *4* f.Nonlocal (Python 3)
 
     # Nonlocal(identifier* names)
 
@@ -744,11 +744,11 @@ class AstFormatter:
 
         return self.indent('nonlocal %s\n' % ', '.join(node.names))
 
-    #@+node:ekr.20160317055215.60: *4* f.Pass
+    # @+node:ekr.20160317055215.60: *4* f.Pass
     def do_Pass(self, node):
         return self.indent('pass\n')
 
-    #@+node:ekr.20160317055215.61: *4* f.Print
+    # @+node:ekr.20160317055215.61: *4* f.Print
     # Python 2.x only
 
     def do_Print(self, node):
@@ -762,7 +762,7 @@ class AstFormatter:
         return self.indent('print(%s)\n' % (
             ','.join(vals)))
 
-    #@+node:ekr.20160317055215.62: *4* f.Raise
+    # @+node:ekr.20160317055215.62: *4* f.Raise
     # Raise(expr? type, expr? inst, expr? tback)    Python 2
     # Raise(expr? exc, expr? cause)                 Python 3
 
@@ -778,7 +778,7 @@ class AstFormatter:
         else:
             return self.indent('raise\n')
 
-    #@+node:ekr.20160317055215.63: *4* f.Return
+    # @+node:ekr.20160317055215.63: *4* f.Return
     def do_Return(self, node):
         if node.value:
             return self.indent('return %s\n' % (
@@ -818,11 +818,11 @@ class AstFormatter:
                 result.append(self.visit(z))
                 self.level -= 1
         return ''.join(result)
-    #@+node:ekr.20160317055215.64: *4* f.Starred (Python 3)
+    # @+node:ekr.20160317055215.64: *4* f.Starred (Python 3)
 
-    #@+node:ekr.20160317055215.65: *4* f.Suite
-    #@+node:ekr.20160317055215.66: *4* f.Try (Python 3)
-    #@+node:ekr.20160317055215.67: *4* f.TryExcept
+    # @+node:ekr.20160317055215.65: *4* f.Suite
+    # @+node:ekr.20160317055215.66: *4* f.Try (Python 3)
+    # @+node:ekr.20160317055215.67: *4* f.TryExcept
     def do_TryExcept(self, node):
         result = []
         result.append(self.indent('try:\n'))
@@ -841,7 +841,7 @@ class AstFormatter:
                 self.level -= 1
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.68: *4* f.TryFinally
+    # @+node:ekr.20160317055215.68: *4* f.TryFinally
     def do_TryFinally(self, node):
         result = []
         result.append(self.indent('try:\n'))
@@ -856,7 +856,7 @@ class AstFormatter:
             self.level -= 1
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.69: *4* f.While
+    # @+node:ekr.20160317055215.69: *4* f.While
     def do_While(self, node):
         result = []
         result.append(self.indent('while %s:\n' % (
@@ -873,7 +873,7 @@ class AstFormatter:
                 self.level -= 1
         return ''.join(result)
 
-    #@+node:ekr.20160317055215.70: *4* f.With & AsyncWith (make_stub_files)
+    # @+node:ekr.20160317055215.70: *4* f.With & AsyncWith (make_stub_files)
 
     # 2:  With(expr context_expr, expr? optional_vars,
     #          stmt* body)
@@ -913,35 +913,33 @@ class AstFormatter:
 
     def do_AsyncWith(self, node):
         return self.do_With(node, async_flag=True)
-    #@+node:ekr.20160317055215.71: *4* f.Yield
+    # @+node:ekr.20160317055215.71: *4* f.Yield
     def do_Yield(self, node):
         if getattr(node, 'value', None):
             return self.indent('yield %s\n' % (
                 self.visit(node.value)))
         else:
             return self.indent('yield\n')
-    #@+node:ekr.20160317055215.72: *4* f.YieldFrom (Python 3)
+    # @+node:ekr.20160317055215.72: *4* f.YieldFrom (Python 3)
     # YieldFrom(expr value)
 
     def do_YieldFrom(self, node):
 
         return self.indent('yield from %s\n' % (
             self.visit(node.value)))
-    #@+node:ekr.20160317055215.73: *3* f.Utils
+    # @+node:ekr.20160317055215.73: *3* f.Utils
 
     # Utils...
 
-    #@+node:ekr.20160317055215.74: *4* f.kind
+    # @+node:ekr.20160317055215.74: *4* f.kind
     def kind(self, node):
         '''Return the name of node's class.'''
         return node.__class__.__name__
 
-    #@+node:ekr.20160317055215.75: *4* f.indent
+    # @+node:ekr.20160317055215.75: *4* f.indent
     def indent(self, s):
         return '%s%s' % (' ' * 4 * self.level, s)
-    #@+node:ekr.20160317055215.76: *4* f.op_name
-    #@@nobeautify
-
+    # @+node:ekr.20160317055215.76: *4* f.op_name
     def op_name (self,node,strict=True):
         '''Return the print name of an operator node.'''
         d = {
@@ -984,19 +982,19 @@ class AstFormatter:
             'Not':      ' not ',
             'UAdd':     '+',
             'USub':     '-',
-        }
+        }  # fmt: skip
         name = d.get(self.kind(node),'<%s>' % node.__class__.__name__)
         if strict: assert name,self.kind(node)
         return name
-    #@-others
-#@+node:ekr.20160317054700.84: ** class AstArgFormatter (AstFormatter)
+    # @-others
+# @+node:ekr.20160317054700.84: ** class AstArgFormatter (AstFormatter)
 class AstArgFormatter(AstFormatter):
     '''
     Just like the AstFormatter class, except it prints the class
     names of constants instead of actual values.
     '''
-    #@+others
-    #@+node:ekr.20160317054700.85: *3* sf.Constants & Name
+    # @+others
+    # @+node:ekr.20160317054700.85: *3* sf.Constants & Name
 
     # Return generic markers to allow better pattern matches.
 
@@ -1019,12 +1017,12 @@ class AstArgFormatter(AstFormatter):
     def do_Str(self, node):
         '''This represents a string constant.'''
         return 'str'  # return repr(node.s)
-    #@-others
-#@+node:ekr.20160317054700.86: ** class LeoGlobals
+    # @-others
+# @+node:ekr.20160317054700.86: ** class LeoGlobals
 class LeoGlobals:
     '''A class supporting g.trace for compatibility with Leo.'''
-    #@+others
-    #@+node:ekr.20160317054700.87: *3* class NullObject (Python Cookbook)
+    # @+others
+    # @+node:ekr.20160317054700.87: *3* class NullObject (Python Cookbook)
     class NullObject:
         """
         An object that does nothing, and does it very well.
@@ -1048,7 +1046,7 @@ class LeoGlobals:
         def __getattr__(self, attr): return self
 
         def __setattr__(self, attr, val): return self
-    #@+node:ekr.20160317054700.88: *3* g._callerName
+    # @+node:ekr.20160317054700.88: *3* g._callerName
     def _callerName(self, n=1, files=False):
         # print('_callerName: %s %s' % (n,files))
         try:  # get the function name from the call stack.
@@ -1068,7 +1066,7 @@ class LeoGlobals:
         except Exception:
             # es_exception()
             return ''  # "<no caller name>"
-    #@+node:ekr.20160317054700.89: *3* g.callers
+    # @+node:ekr.20160317054700.89: *3* g.callers
     def callers(self, n=4, count=0, excludeCaller=True, files=False):
         '''Return a list containing the callers of the function that called g.callerList.
 
@@ -1092,14 +1090,14 @@ class LeoGlobals:
         if count > 0: result = result[:count]
         sep = '\n' if files else ','
         return sep.join(result)
-    #@+node:ekr.20160317054700.90: *3* g.cls
+    # @+node:ekr.20160317054700.90: *3* g.cls
     def cls(self):
         '''Clear the screen.'''
         if sys.platform.lower().startswith('win'):
             # Leo 6.7.5: Two calls seem to be required!
             os.system('cls')
             os.system('cls')
-    #@+node:ekr.20160318093308.1: *3* g.isString & isUnicode (make_stub_files.py)
+    # @+node:ekr.20160318093308.1: *3* g.isString & isUnicode (make_stub_files.py)
     def isString(self, s):
         '''Return True if s is any string, but not bytes.'''
         # pylint: disable=no-member
@@ -1115,25 +1113,25 @@ class LeoGlobals:
             return isinstance(s, str)
         else:
             return isinstance(s, types.UnicodeType)
-    #@+node:ekr.20160317054700.92: *3* g.shortFileName
+    # @+node:ekr.20160317054700.92: *3* g.shortFileName
     def shortFileName(self, fileName, n=None):
         if n is None or n < 1:
             return os.path.basename(fileName)
         else:
             return '/'.join(fileName.replace('\\', '/').split('/')[-n:])
-    #@+node:ekr.20160317054700.93: *3* g.splitLines
+    # @+node:ekr.20160317054700.93: *3* g.splitLines
     def splitLines(self, s):
         '''Split s into lines, preserving trailing newlines.'''
         return s.splitlines(True) if s else []
-    #@+node:ekr.20160317054700.94: *3* g.trace
+    # @+node:ekr.20160317054700.94: *3* g.trace
     def trace(self, *args, **keys):
         try:
             from leo.core import leoGlobals as leo_g
             leo_g.trace(caller_level=2, *args, **keys)
         except ImportError:
             print(args, keys)
-    #@-others
-#@+node:ekr.20160317054700.95: ** class Pattern
+    # @-others
+# @+node:ekr.20160317054700.95: ** class Pattern
 class Pattern:
     '''
     A class representing regex or balanced patterns.
@@ -1143,8 +1141,8 @@ class Pattern:
         for m in reversed(pattern.all_matches(s)):
             s = pattern.replace(m, s)
     '''
-    #@+others
-    #@+node:ekr.20160317054700.96: *3* pattern.ctor
+    # @+others
+    # @+node:ekr.20160317054700.96: *3* pattern.ctor
     def __init__(self, find_s, repl_s=''):
         '''Ctor for the Pattern class.'''
         self.find_s = find_s
@@ -1162,7 +1160,7 @@ class Pattern:
                 else:
                     result.append('\\' + ch)
             self.regex = re.compile(''.join(result))
-    #@+node:ekr.20160317054700.97: *3* pattern.__eq__, __ne__, __hash__
+    # @+node:ekr.20160317054700.97: *3* pattern.__eq__, __ne__, __hash__
     def __eq__(self, obj):
         """Return True if two Patterns are equivalent."""
         if isinstance(obj, Pattern):
@@ -1177,13 +1175,13 @@ class Pattern:
     def __hash__(self):
         '''Pattern.__hash__'''
         return len(self.find_s) + len(self.repl_s)
-    #@+node:ekr.20160317054700.98: *3* pattern.str & repr
+    # @+node:ekr.20160317054700.98: *3* pattern.str & repr
     def __repr__(self):
         '''Pattern.__repr__'''
         return '%s: %s' % (self.find_s, self.repl_s)
 
     __str__ = __repr__
-    #@+node:ekr.20160317054700.99: *3* pattern.is_balanced
+    # @+node:ekr.20160317054700.99: *3* pattern.is_balanced
     def is_balanced(self):
         '''Return True if self.find_s is a balanced pattern.'''
         s = self.find_s
@@ -1193,7 +1191,7 @@ class Pattern:
             if s.find(pattern) > -1:
                 return True
         return False
-    #@+node:ekr.20160317054700.100: *3* pattern.is_regex
+    # @+node:ekr.20160317054700.100: *3* pattern.is_regex
     def is_regex(self):
         '''
         Return True if self.find_s is a regular pattern.
@@ -1201,7 +1199,7 @@ class Pattern:
         '''
         return self.find_s.endswith('$')
             # A dollar sign is not valid in any Python expression.
-    #@+node:ekr.20160317054700.101: *3* pattern.all_matches & helpers
+    # @+node:ekr.20160317054700.101: *3* pattern.all_matches & helpers
     def all_matches(self, s):
         '''
         Return a list of match objects for all matches in s.
@@ -1221,7 +1219,7 @@ class Pattern:
             return aList
         else:
             return list(self.regex.finditer(s))
-    #@+node:ekr.20160317054700.102: *4* pattern.full_balanced_match
+    # @+node:ekr.20160317054700.102: *4* pattern.full_balanced_match
     def full_balanced_match(self, s, i):
         '''Return the index of the end of the match found at s[i:] or None.'''
         pattern = self.find_s
@@ -1243,7 +1241,7 @@ class Pattern:
             assert progress < i
         found = i <= len(s) and j == len(pattern)
         return i if found else None
-    #@+node:ekr.20160317054700.103: *4* pattern.match_balanced
+    # @+node:ekr.20160317054700.103: *4* pattern.match_balanced
     def match_balanced(self, delim, s, i):
         '''
         delim == s[i] and delim is in '([{'
@@ -1270,7 +1268,7 @@ class Pattern:
         # Unmatched: a syntax error.
         g.trace('unmatched %s in %s' % (delim, s), g.callers(4))
         return len(s) + 1
-    #@+node:ekr.20160317054700.104: *3* pattern.match (trace-matches)
+    # @+node:ekr.20160317054700.104: *3* pattern.match (trace-matches)
     def match(self, s, trace=False):
         '''
         Perform the match on the entire string if possible.
@@ -1298,7 +1296,7 @@ class Pattern:
                 return True, s
             else:
                 return False, s
-    #@+node:ekr.20160317054700.105: *3* pattern.match_entire_string
+    # @+node:ekr.20160317054700.105: *3* pattern.match_entire_string
     def match_entire_string(self, s):
         '''Return True if s matches self.find_s'''
         if self.is_balanced():
@@ -1307,7 +1305,7 @@ class Pattern:
         else:
             m = self.regex.match(s)
             return m and m.group(0) == s
-    #@+node:ekr.20160317054700.106: *3* pattern.replace & helpers
+    # @+node:ekr.20160317054700.106: *3* pattern.replace & helpers
     def replace(self, m, s):
         '''Perform any kind of replacement.'''
         if self.is_balanced():
@@ -1315,7 +1313,7 @@ class Pattern:
             return self.replace_balanced(s, start, end)
         else:
             return self.replace_regex(m, s)
-    #@+node:ekr.20160317054700.107: *4* pattern.replace_balanced
+    # @+node:ekr.20160317054700.107: *4* pattern.replace_balanced
     def replace_balanced(self, s1, start, end):
         '''
         Use m (returned by all_matches) to replace s by the string implied by repr_s.
@@ -1344,7 +1342,7 @@ class Pattern:
         repl = r[:j] + s_star + r[j + 1 :]
         if trace: g.trace('repl', self.repl_s, '==>', repl)
         return s1[:start] + repl + s1[end:]
-    #@+node:ekr.20160317054700.108: *4* pattern.replace_regex
+    # @+node:ekr.20160317054700.108: *4* pattern.replace_regex
     def replace_regex(self, m, s):
         '''Do the replacement in s specified by m.'''
         s = self.repl_s
@@ -1353,8 +1351,8 @@ class Pattern:
             if s.find(group) > -1:
                 s = s.replace(group, m.group(i))
         return s
-    #@-others
-#@+node:ekr.20160519071605.1: ** class ReduceTypes
+    # @-others
+# @+node:ekr.20160519071605.1: ** class ReduceTypes
 class ReduceTypes:
     '''
     A helper class for the top-level reduce_types function.
@@ -1362,8 +1360,8 @@ class ReduceTypes:
     This class reduces a list of type hints to a string containing the
     reduction of all types in the list.
     '''
-    #@+others
-    #@+node:ekr.20160519071605.2: *3* __init__
+    # @+others
+    # @+node:ekr.20160519071605.2: *3* __init__
     def __init__(self, aList=None, name=None, trace=False):
         '''Ctor for ReduceTypes class.'''
         self.aList = aList
@@ -1371,7 +1369,7 @@ class ReduceTypes:
         self.optional = False
         self.trace = trace
 
-    #@+node:ekr.20160519071605.3: *3* is_known_type
+    # @+node:ekr.20160519071605.3: *3* is_known_type
     def is_known_type(self, s):
         '''
         Return True if s is nothing but a single known type.
@@ -1437,7 +1435,7 @@ class ReduceTypes:
         if trace: g.trace('Fail:', s1)
         return False
 
-    #@+node:ekr.20160519071605.4: *3* reduce_collection
+    # @+node:ekr.20160519071605.4: *3* reduce_collection
     def reduce_collection(self, aList, kind):
         '''
         Reduce the inner parts of a collection for the given kind.
@@ -1464,7 +1462,7 @@ class ReduceTypes:
         result = sorted(set(result))
         return result
 
-    #@+node:ekr.20160519071605.5: *3* reduce_numbers
+    # @+node:ekr.20160519071605.5: *3* reduce_numbers
     def reduce_numbers(self, aList):
         '''
         Return aList with all number types in aList replaced by the most
@@ -1485,7 +1483,7 @@ class ReduceTypes:
             aList.append(found)
         return aList
 
-    #@+node:ekr.20160519071605.6: *3* reduce_types
+    # @+node:ekr.20160519071605.6: *3* reduce_types
     def reduce_types(self):
         '''
         self.aList consists of arbitrarily many types because this method is
@@ -1518,12 +1516,12 @@ class ReduceTypes:
         else:
             return self.show('Union[%s]' % (', '.join(sorted(r))))
 
-    #@+node:ekr.20160519071605.7: *3* reduce_unknowns
+    # @+node:ekr.20160519071605.7: *3* reduce_unknowns
     def reduce_unknowns(self, aList):
         '''Replace all unknown types in aList with Any.'''
         return [z if self.is_known_type(z) else 'Any' for z in aList]
 
-    #@+node:ekr.20160519071605.8: *3* show
+    # @+node:ekr.20160519071605.8: *3* show
     def show(self, s, known=True):
         '''Show the result of reduce_types.'''
         aList, name = self.aList, self.name
@@ -1547,7 +1545,7 @@ class ReduceTypes:
                 # widths above match the corresponding indents in match_all and match.
         return s
 
-    #@+node:ekr.20160519071605.9: *3* split_types
+    # @+node:ekr.20160519071605.9: *3* split_types
     def split_types(self, s):
         '''Split types on *outer level* commas.'''
         aList, i1, level = [], 0, 0
@@ -1561,16 +1559,16 @@ class ReduceTypes:
                 i1 = i + 1
         aList.append(s[i1:].strip())
         return aList
-    #@-others
-#@+node:ekr.20160317054700.118: ** class StandAloneMakeStubFile
+    # @-others
+# @+node:ekr.20160317054700.118: ** class StandAloneMakeStubFile
 class StandAloneMakeStubFile:
     '''
     A class to make Python stub (.pyi) files in the ~/stubs directory for
     every file mentioned in the [Source Files] section of
     ~/stubs/make_stub_files.cfg.
     '''
-    #@+others
-    #@+node:ekr.20160317054700.119: *3* msf.ctor
+    # @+others
+    # @+node:ekr.20160317054700.119: *3* msf.ctor
     def __init__(self):
         '''Ctor for StandAloneMakeStubFile class.'''
         self.options = {}
@@ -1598,14 +1596,14 @@ class StandAloneMakeStubFile:
         self.op_name_dict = self.make_op_name_dict()
         self.patterns_dict = {}
         self.regex_patterns = []
-    #@+node:ekr.20160317054700.120: *3* msf.finalize
+    # @+node:ekr.20160317054700.120: *3* msf.finalize
     def finalize(self, fn):
         '''Finalize and regularize a filename.'''
         fn = os.path.expanduser(fn)
         fn = os.path.abspath(fn)
         fn = os.path.normpath(fn)
         return fn
-    #@+node:ekr.20160317054700.121: *3* msf.make_stub_file
+    # @+node:ekr.20160317054700.121: *3* msf.make_stub_file
     def make_stub_file(self, fn):
         '''
         Make a stub file in ~/stubs for all source files mentioned in the
@@ -1624,7 +1622,7 @@ class StandAloneMakeStubFile:
         s = open(fn).read()
         node = ast.parse(s, filename=fn, mode='exec')
         StubTraverser(controller=self).run(node)
-    #@+node:ekr.20160317054700.122: *3* msf.run
+    # @+node:ekr.20160317054700.122: *3* msf.run
     def run(self):
         '''
         Make stub files for all files.
@@ -1644,7 +1642,7 @@ class StandAloneMakeStubFile:
                 print('no output directory')
         elif not self.enable_unit_tests:
             print('no input files')
-    #@+node:ekr.20160317054700.123: *3* msf.run_all_unit_tests
+    # @+node:ekr.20160317054700.123: *3* msf.run_all_unit_tests
     def run_all_unit_tests(self):
         '''Run all unit tests in the make_stub_files/test directory.'''
         import unittest
@@ -1653,7 +1651,7 @@ class StandAloneMakeStubFile:
                                 pattern='test*.py',
                                 top_level_dir=None)
         unittest.TextTestRunner(verbosity=1).run(suite)
-    #@+node:ekr.20160317054700.124: *3* msf.scan_command_line
+    # @+node:ekr.20160317054700.124: *3* msf.scan_command_line
     def scan_command_line(self):
         '''Set ivars from command-line arguments.'''
         # This automatically implements the --help option.
@@ -1710,7 +1708,7 @@ class StandAloneMakeStubFile:
             args = [self.finalize(z) for z in args]
             if args:
                 self.files = args
-    #@+node:ekr.20160317054700.125: *3* msf.scan_options & helpers
+    # @+node:ekr.20160317054700.125: *3* msf.scan_options & helpers
     def scan_options(self):
         '''Set all configuration-related ivars.'''
         trace = False
@@ -1759,7 +1757,7 @@ class StandAloneMakeStubFile:
         self.def_patterns = self.scan_patterns('Def Name Patterns')
         self.general_patterns = self.scan_patterns('General Patterns')
         self.make_patterns_dict()
-    #@+node:ekr.20160317054700.126: *4* msf.make_op_name_dict
+    # @+node:ekr.20160317054700.126: *4* msf.make_op_name_dict
     def make_op_name_dict(self):
         '''
         Make a dict whose keys are operators ('+', '+=', etc),
@@ -1782,13 +1780,13 @@ class StandAloneMakeStubFile:
         ):
             d[op] = ['Compare',]
         return d
-    #@+node:ekr.20160317054700.127: *4* msf.create_parser
+    # @+node:ekr.20160317054700.127: *4* msf.create_parser
     def create_parser(self):
         '''Create a RawConfigParser and return it.'''
         parser = configparser.RawConfigParser(dict_type=OrderedDict)  # Requires Python 2.7
         parser.optionxform = str
         return parser
-    #@+node:ekr.20160317054700.128: *4* msf.find_pattern_ops
+    # @+node:ekr.20160317054700.128: *4* msf.find_pattern_ops
     def find_pattern_ops(self, pattern):
         '''Return a list of operators in pattern.find_s.'''
         trace = False or self.trace_patterns
@@ -1827,7 +1825,7 @@ class StandAloneMakeStubFile:
                 break  # Only one match allowed.
         if trace and ops: g.trace(s1, ops)
         return ops
-    #@+node:ekr.20160317054700.129: *4* msf.get_config_string
+    # @+node:ekr.20160317054700.129: *4* msf.get_config_string
     def get_config_string(self):
 
         fn = self.finalize(self.config_fn)
@@ -1842,7 +1840,7 @@ class StandAloneMakeStubFile:
             print('\nconfiguration file not found: %s' % fn)
             return ''
 
-    #@+node:ekr.20160317054700.130: *4* msf.init_parser
+    # @+node:ekr.20160317054700.130: *4* msf.init_parser
     def init_parser(self, s):
         '''Add double back-slashes to all patterns starting with '['.'''
         if not s: return
@@ -1858,7 +1856,7 @@ class StandAloneMakeStubFile:
         file_object = io.StringIO(s)
         # pylint: disable=deprecated-method
         self.parser.readfp(file_object)
-    #@+node:ekr.20160317054700.131: *4* msf.is_section_name
+    # @+node:ekr.20160317054700.131: *4* msf.is_section_name
     def is_section_name(self, s):
 
         def munge(s):
@@ -1871,7 +1869,7 @@ class StandAloneMakeStubFile:
                 if s == munge(s2):
                     return True
         return False
-    #@+node:ekr.20160317054700.132: *4* msf.make_patterns_dict
+    # @+node:ekr.20160317054700.132: *4* msf.make_patterns_dict
     def make_patterns_dict(self):
         '''Assign all patterns to the appropriate ast.Node.'''
         trace = self.trace_patterns
@@ -1909,7 +1907,7 @@ class StandAloneMakeStubFile:
                 for pattern in sorted(aList):
                     print('  ' + repr(pattern))
         # Note: retain self.general_patterns for use in argument lists.
-    #@+node:ekr.20160317054700.133: *4* msf.scan_patterns
+    # @+node:ekr.20160317054700.133: *4* msf.scan_patterns
     def scan_patterns(self, section_name):
         '''Parse the config section into a list of patterns, preserving order.'''
         trace = self.trace_patterns
@@ -1934,15 +1932,15 @@ class StandAloneMakeStubFile:
                     print(z)
                 print('')
         return aList
-    #@-others
-#@+node:ekr.20160317054700.134: ** class Stub
+    # @-others
+# @+node:ekr.20160317054700.134: ** class Stub
 class Stub:
     '''
     A class representing all the generated stub for a class or def.
     stub.full_name should represent the complete context of a def.
     '''
-    #@+others
-    #@+node:ekr.20160317054700.135: *3* stub.ctor
+    # @+others
+    # @+node:ekr.20160317054700.135: *3* stub.ctor
     def __init__(self, kind, name, parent=None, stack=None):
         '''Stub ctor. Equality depends only on full_name and kind.'''
         self.children = []
@@ -1957,7 +1955,7 @@ class Stub:
         if parent:
             assert isinstance(parent, Stub)
             parent.children.append(self)
-    #@+node:ekr.20160317054700.136: *3* stub.__eq__ and __ne__
+    # @+node:ekr.20160317054700.136: *3* stub.__eq__ and __ne__
     def __eq__(self, obj):
         '''
         Stub.__eq__. Return whether two stubs refer to the same method.
@@ -1971,11 +1969,11 @@ class Stub:
     def __ne__(self, obj):
         """Stub.__ne__"""
         return not self.__eq__(obj)
-    #@+node:ekr.20160317054700.137: *3* stub.__hash__
+    # @+node:ekr.20160317054700.137: *3* stub.__hash__
     def __hash__(self):
         '''Stub.__hash__. Equality depends *only* on full_name and kind.'''
         return len(self.kind) + sum([ord(z) for z in self.full_name])
-    #@+node:ekr.20160317054700.138: *3* stub.__repr__and __str__
+    # @+node:ekr.20160317054700.138: *3* stub.__repr__and __str__
     def __repr__(self):
         '''Stub.__repr__.'''
         return 'Stub: %s %s' % (id(self), self.full_name)
@@ -1983,7 +1981,7 @@ class Stub:
     def __str__(self):
         '''Stub.__repr__.'''
         return 'Stub: %s' % self.full_name
-    #@+node:ekr.20160317054700.139: *3* stub.parents and level
+    # @+node:ekr.20160317054700.139: *3* stub.parents and level
     def level(self):
         '''Return the number of parents.'''
         return len(self.parents())
@@ -1991,15 +1989,15 @@ class Stub:
     def parents(self):
         '''Return a list of this stub's parents.'''
         return self.full_name.split('.')[:-1]
-    #@-others
-#@+node:ekr.20160317054700.140: ** class StubFormatter (AstFormatter)
+    # @-others
+# @+node:ekr.20160317054700.140: ** class StubFormatter (AstFormatter)
 class StubFormatter(AstFormatter):
     '''
     Formats an ast.Node and its descendants,
     making pattern substitutions in Name and operator nodes.
     '''
-    #@+others
-    #@+node:ekr.20160317054700.141: *3* sf.ctor
+    # @+others
+    # @+node:ekr.20160317054700.141: *3* sf.ctor
     def __init__(self, controller, traverser):
         '''Ctor for StubFormatter class.'''
         self.controller = x = controller
@@ -2015,7 +2013,7 @@ class StubFormatter(AstFormatter):
         self.trace_reduce = x.trace_reduce
         self.trace_visitors = x.trace_visitors
         self.verbose = x.verbose
-    #@+node:ekr.20160317054700.142: *3* sf.match_all
+    # @+node:ekr.20160317054700.142: *3* sf.match_all
     matched_d = {}
 
     def match_all(self, node, s, trace=False):
@@ -2038,22 +2036,22 @@ class StubFormatter(AstFormatter):
                         print('match_all:    %-12s %26s %40s ==> %s' % (caller, pattern, s1, s))
                 break
         return s
-    #@+node:ekr.20160317054700.143: *3* sf.visit
+    # @+node:ekr.20160317054700.143: *3* sf.visit
     def visit(self, node):
         '''StubFormatter.visit: supports --verbose tracing.'''
         s = AstFormatter.visit(self, node)
         return s
-    #@+node:ekr.20160317054700.144: *3* sf.trace_visitor
+    # @+node:ekr.20160317054700.144: *3* sf.trace_visitor
     def trace_visitor(self, node, op, s):
         '''Trace node's visitor.'''
         if self.trace_visitors:
             caller = g.callers(2).split(',')[1]
             s1 = AstFormatter().format(node).strip()
             print('%12s op %-6s: %s ==> %s' % (caller, op.strip(), s1, s))
-    #@+node:ekr.20160317054700.145: *3* sf.Operands
+    # @+node:ekr.20160317054700.145: *3* sf.Operands
 
     # StubFormatter visitors for operands...
-    #@+node:ekr.20160317054700.146: *4* sf.Attribute
+    # @+node:ekr.20160317054700.146: *4* sf.Attribute
 
     # Attribute(expr value, identifier attr, expr_context ctx)
 
@@ -2070,7 +2068,7 @@ class StubFormatter(AstFormatter):
             self.attrs_seen.append(s2)
             g.trace(s, '==>', s2)
         return s2 or s
-    #@+node:ekr.20160317054700.147: *4* sf.Constants: Bytes, Num, Str
+    # @+node:ekr.20160317054700.147: *4* sf.Constants: Bytes, Num, Str
 
     # Return generic markers to allow better pattern matches.
 
@@ -2085,7 +2083,7 @@ class StubFormatter(AstFormatter):
     def do_Str(self, node):
         '''This represents a string constant.'''
         return 'str'  # return repr(node.s)
-    #@+node:ekr.20160317054700.148: *4* sf.Dict
+    # @+node:ekr.20160317054700.148: *4* sf.Dict
     def do_Dict(self, node):
         result = []
         keys = [self.visit(z) for z in node.keys]
@@ -2103,13 +2101,13 @@ class StubFormatter(AstFormatter):
                 repr(keys), repr(values)))
         # return ''.join(result)
         return 'Dict[%s]' % ''.join(result)
-    #@+node:ekr.20160317054700.149: *4* sf.List
+    # @+node:ekr.20160317054700.149: *4* sf.List
     def do_List(self, node):
         '''StubFormatter.List.'''
         elts = [self.visit(z) for z in node.elts]
         elts = [z for z in elts if z]  # Defensive.
         return 'list[%s]' % ', '.join(elts)
-    #@+node:ekr.20160317054700.150: *4* sf.Name
+    # @+node:ekr.20160317054700.150: *4* sf.Name
     seen_names = []
 
     def do_Name(self, node):
@@ -2125,7 +2123,7 @@ class StubFormatter(AstFormatter):
             elif node.id == 'aList':
                 g.trace('**not found**', node.id)
         return s
-    #@+node:ekr.20160317054700.151: *4* sf.Tuple
+    # @+node:ekr.20160317054700.151: *4* sf.Tuple
     def do_Tuple(self, node):
         '''StubFormatter.Tuple.'''
         elts = [self.visit(z) for z in node.elts]
@@ -2135,10 +2133,10 @@ class StubFormatter(AstFormatter):
             s = '(%s)' % ', '.join(elts)
             return self.match_all(node, s)
         # return 'Tuple[%s]' % ', '.join(elts)
-    #@+node:ekr.20160317054700.152: *3* sf.Operators
+    # @+node:ekr.20160317054700.152: *3* sf.Operators
 
     # StubFormatter visitors for operators...
-    #@+node:ekr.20160317054700.153: *4* sf.BinOp
+    # @+node:ekr.20160317054700.153: *4* sf.BinOp
 
     # BinOp(expr left, operator op, expr right)
 
@@ -2171,7 +2169,7 @@ class StubFormatter(AstFormatter):
         s = self.match_all(node, s)
         self.trace_visitor(node, op, s)
         return s
-    #@+node:ekr.20160317054700.154: *4* sf.BoolOp
+    # @+node:ekr.20160317054700.154: *4* sf.BoolOp
 
     # BoolOp(boolop op, expr* values)
 
@@ -2184,7 +2182,7 @@ class StubFormatter(AstFormatter):
         s = self.match_all(node, s)
         self.trace_visitor(node, op, s)
         return s
-    #@+node:ekr.20160317054700.155: *4* sf.Call & sf.keyword
+    # @+node:ekr.20160317054700.155: *4* sf.Call & sf.keyword
 
     # Call(expr func, expr* args, keyword* keywords, expr? starargs, expr? kwargs)
 
@@ -2209,7 +2207,7 @@ class StubFormatter(AstFormatter):
         s = self.match_all(node, s, trace=trace)
         self.trace_visitor(node, 'call', s)
         return s
-    #@+node:ekr.20160317054700.156: *5* sf.keyword
+    # @+node:ekr.20160317054700.156: *5* sf.keyword
 
     # keyword = (identifier arg, expr value)
 
@@ -2218,7 +2216,7 @@ class StubFormatter(AstFormatter):
         value = self.visit(node.value)
         # This is a keyword *arg*, not a Python keyword!
         return '%s=%s' % (node.arg, value)
-    #@+node:ekr.20160317054700.157: *4* sf.Compare
+    # @+node:ekr.20160317054700.157: *4* sf.Compare
 
     # Compare(expr left, cmpop* ops, expr* comparators)
 
@@ -2231,7 +2229,7 @@ class StubFormatter(AstFormatter):
         ops = ','.join([self.op_name(z) for z in node.ops])
         self.trace_visitor(node, ops, s)
         return s
-    #@+node:ekr.20160317054700.158: *4* sf.IfExp
+    # @+node:ekr.20160317054700.158: *4* sf.IfExp
 
     # If(expr test, stmt* body, stmt* orelse)
 
@@ -2246,7 +2244,7 @@ class StubFormatter(AstFormatter):
         s = self.match_all(node, s)
         self.trace_visitor(node, 'if', s)
         return s
-    #@+node:ekr.20160317054700.159: *4* sf.Subscript
+    # @+node:ekr.20160317054700.159: *4* sf.Subscript
 
     # Subscript(expr value, slice slice, expr_context ctx)
 
@@ -2258,7 +2256,7 @@ class StubFormatter(AstFormatter):
         s = self.match_all(node, s)
         self.trace_visitor(node, '[]', s)
         return s
-    #@+node:ekr.20160317054700.160: *4* sf.UnaryOp
+    # @+node:ekr.20160317054700.160: *4* sf.UnaryOp
 
     # UnaryOp(unaryop op, expr operand)
 
@@ -2272,7 +2270,7 @@ class StubFormatter(AstFormatter):
             s = self.match_all(node, s)
             self.trace_visitor(node, op, s)
             return s
-    #@+node:ekr.20160317054700.161: *3* sf.Return
+    # @+node:ekr.20160317054700.161: *3* sf.Return
     def do_Return(self, node):
         '''
         StubFormatter ast.Return visitor.
@@ -2281,16 +2279,16 @@ class StubFormatter(AstFormatter):
         s = AstFormatter.do_Return(self, node)
         assert s.startswith('return'), repr(s)
         return s[len('return') :].strip()
-    #@-others
-#@+node:ekr.20160317054700.162: ** class StubTraverser (ast.NodeVisitor)
+    # @-others
+# @+node:ekr.20160317054700.162: ** class StubTraverser (ast.NodeVisitor)
 class StubTraverser(ast.NodeVisitor):
     '''
     An ast.Node traverser class that outputs a stub for each class or def.
     Names of visitors must start with visit_. The order of traversal does
     not matter, because so few visitors do anything.
     '''
-    #@+others
-    #@+node:ekr.20160317054700.163: *3* st.ctor
+    # @+others
+    # @+node:ekr.20160317054700.163: *3* st.ctor
     def __init__(self, controller):
         '''Ctor for StubTraverser class.'''
         self.controller = x = controller  # A StandAloneMakeStubFile instance.
@@ -2325,7 +2323,7 @@ class StubTraverser(ast.NodeVisitor):
         self.general_patterns = x.general_patterns
         self.patterns_dict = x.patterns_dict
 
-    #@+node:ekr.20160317054700.164: *3* st.add_stub
+    # @+node:ekr.20160317054700.164: *3* st.add_stub
     def add_stub(self, d, stub):
         '''Add the stub to d, checking that it does not exist.'''
         key = stub.full_name
@@ -2335,7 +2333,7 @@ class StubTraverser(ast.NodeVisitor):
             g.trace('Ignoring duplicate entry for %s in %s' % (stub, caller))
         else:
             d[key] = stub
-    #@+node:ekr.20160317054700.165: *3* st.indent & out
+    # @+node:ekr.20160317054700.165: *3* st.indent & out
     def indent(self, s):
         '''Return s, properly indented.'''
         # This version of indent *is* used.
@@ -2350,7 +2348,7 @@ class StubTraverser(ast.NodeVisitor):
             self.output_file.write(s + '\n')
         else:
             print(s)
-    #@+node:ekr.20160317054700.166: *3* st.run (main line) & helpers
+    # @+node:ekr.20160317054700.166: *3* st.run (main line) & helpers
     def run(self, node):
         '''StubTraverser.run: write the stubs in node's tree to self.output_fn.'''
         fn = self.output_fn
@@ -2378,7 +2376,7 @@ class StubTraverser(ast.NodeVisitor):
             print('wrote: %s in %4.2f sec' % (fn, t2 - t1))
         else:
             print('output directory not not found: %s' % dir_)
-    #@+node:ekr.20160317054700.167: *4* st.output_stubs
+    # @+node:ekr.20160317054700.167: *4* st.output_stubs
     def output_stubs(self, stub):
         '''Output this stub and all its descendants.'''
         for s in stub.out_list or []:
@@ -2390,13 +2388,13 @@ class StubTraverser(ast.NodeVisitor):
         # Recursively print all children.
         for child in stub.children:
             self.output_stubs(child)
-    #@+node:ekr.20160317054700.168: *4* st.output_time_stamp
+    # @+node:ekr.20160317054700.168: *4* st.output_time_stamp
     def output_time_stamp(self):
         '''Put a time-stamp in the output file.'''
         if self.output_file:
             self.output_file.write('# make_stub_files: %s\n' %
                 time.strftime("%a %d %b %Y at %H:%M:%S"))
-    #@+node:ekr.20160317054700.169: *4* st.update & helpers
+    # @+node:ekr.20160317054700.169: *4* st.update & helpers
     def update(self, fn, new_root):
         '''
         Merge the new_root tree with the old_root tree in fn (a .pyi file).
@@ -2428,7 +2426,7 @@ class StubTraverser(ast.NodeVisitor):
             return old_root
         else:
             return new_root
-    #@+node:ekr.20160317054700.170: *5* st.get_stub_file
+    # @+node:ekr.20160317054700.170: *5* st.get_stub_file
     def get_stub_file(self, fn):
         '''Read the stub file into s.'''
         if os.path.exists(fn):
@@ -2441,7 +2439,7 @@ class StubTraverser(ast.NodeVisitor):
         else:
             print('--update: not found: %s' % fn)
             return None
-    #@+node:ekr.20160317054700.171: *5* st.parse_stub_file
+    # @+node:ekr.20160317054700.171: *5* st.parse_stub_file
     def parse_stub_file(self, s, root_name):
         '''
         Parse s, the contents of a stub file, into a tree of Stubs.
@@ -2502,7 +2500,7 @@ class StubTraverser(ast.NodeVisitor):
             for s in lines:
                 g.trace('  ' + s.rstrip())
         return d, root
-    #@+node:ekr.20160317054700.172: *5* st.merge_stubs & helpers
+    # @+node:ekr.20160317054700.172: *5* st.merge_stubs & helpers
     def merge_stubs(self, new_stubs, old_root, new_root, trace=False):
         '''
         Merge the new_stubs *list* into the old_root *tree*.
@@ -2533,7 +2531,7 @@ class StubTraverser(ast.NodeVisitor):
             parent = self.find_parent_stub(stub, old_root) or old_root
             parent.children.append(stub)
             assert self.find_stub(stub, old_root), stub
-    #@+node:ekr.20160317054700.173: *6* st.check_delete
+    # @+node:ekr.20160317054700.173: *6* st.check_delete
     def check_delete(self, new_stubs, old_root, new_root, trace):
         '''Return a list of nodes that can be deleted.'''
         old_stubs = self.flatten_stubs(old_root)
@@ -2563,7 +2561,7 @@ class StubTraverser(ast.NodeVisitor):
         if trace:
             dump_list('delete_list', delete_list)
         return delete_list
-    #@+node:ekr.20160317054700.174: *6* st.flatten_stubs
+    # @+node:ekr.20160317054700.174: *6* st.flatten_stubs
     def flatten_stubs(self, root):
         '''Return a flattened list of all stubs in root's tree.'''
         aList = [root]
@@ -2576,11 +2574,11 @@ class StubTraverser(ast.NodeVisitor):
         aList.append(root)
         for child in root.children:
             self.flatten_stubs_helper(child, aList)
-    #@+node:ekr.20160317054700.175: *6* st.find_parent_stub
+    # @+node:ekr.20160317054700.175: *6* st.find_parent_stub
     def find_parent_stub(self, stub, root):
         '''Return stub's parent **in root's tree**.'''
         return self.find_stub(stub.parent, root) if stub.parent else None
-    #@+node:ekr.20160317054700.176: *6* st.find_stub
+    # @+node:ekr.20160317054700.176: *6* st.find_stub
     def find_stub(self, stub, root):
         '''Return the stub **in root's tree** that matches stub.'''
         if stub == root:  # Must use Stub.__eq__!
@@ -2589,7 +2587,7 @@ class StubTraverser(ast.NodeVisitor):
             stub2 = self.find_stub(stub, child)
             if stub2: return stub2
         return None
-    #@+node:ekr.20160317054700.177: *6* st.sort_stubs_by_hierarchy
+    # @+node:ekr.20160317054700.177: *6* st.sort_stubs_by_hierarchy
     def sort_stubs_by_hierarchy(self, stubs1):
         '''
         Sort the list of Stubs so that parents appear before all their
@@ -2607,7 +2605,7 @@ class StubTraverser(ast.NodeVisitor):
                 return result
         g.trace('can not happen: unbounded stub levels.')
         return []  # Abort the merge.
-    #@+node:ekr.20160317054700.178: *5* st.trace_stubs
+    # @+node:ekr.20160317054700.178: *5* st.trace_stubs
     def trace_stubs(self, stub, aList=None, header=None, level=-1):
         '''Return a trace of the given stub and all its descendants.'''
         indent = ' ' * 4 * max(0, level)
@@ -2620,7 +2618,7 @@ class StubTraverser(ast.NodeVisitor):
         if level == -1:
             return '\n'.join(aList) + '\n'
         return None
-    #@+node:ekr.20160317054700.179: *3* st.visit_ClassDef
+    # @+node:ekr.20160317054700.179: *3* st.visit_ClassDef
 
     # 2: ClassDef(identifier name, expr* bases,
     #             stmt* body, expr* decorator_list)
@@ -2665,7 +2663,7 @@ class StubTraverser(ast.NodeVisitor):
         self.class_name_stack.pop()
         self.level -= 1
         self.parent_stub = old_stub
-    #@+node:ekr.20160317054700.180: *3* st.visit_FunctionDef & helpers
+    # @+node:ekr.20160317054700.180: *3* st.visit_FunctionDef & helpers
 
     # 2: FunctionDef(identifier name, arguments args, stmt* body, expr* decorator_list)
     # 3: FunctionDef(identifier name, arguments args, stmt* body, expr* decorator_list,
@@ -2694,7 +2692,7 @@ class StubTraverser(ast.NodeVisitor):
             self.format_arguments(node.args),
             self.format_returns(node)))
         self.parent_stub = old_stub
-    #@+node:ekr.20160317054700.181: *4* st.format_arguments & helper
+    # @+node:ekr.20160317054700.181: *4* st.format_arguments & helper
 
     # arguments = (expr* args, identifier? vararg, identifier? kwarg, expr* defaults)
 
@@ -2728,7 +2726,7 @@ class StubTraverser(ast.NodeVisitor):
                 name = self.raw_format(name)
             result.append('**' + name)
         return ', '.join(result)
-    #@+node:ekr.20160317054700.182: *5* st.munge_arg
+    # @+node:ekr.20160317054700.182: *5* st.munge_arg
     def munge_arg(self, s):
         '''Add an annotation for s if possible.'''
         if s == 'self':
@@ -2740,7 +2738,7 @@ class StubTraverser(ast.NodeVisitor):
             self.warn_list.append(s)
             print('no annotation for %s' % s)
         return s + ': Any'
-    #@+node:ekr.20160317054700.183: *4* st.format_returns & helpers
+    # @+node:ekr.20160317054700.183: *4* st.format_returns & helpers
     def format_returns(self, node):
         '''
         Calculate the return type:
@@ -2770,7 +2768,7 @@ class StubTraverser(ast.NodeVisitor):
         raw, r = self.remove_recursive_calls(name, raw, r)
         # Step 4: Calculate return types.
         return self.format_return_expressions(name, raw, r)
-    #@+node:ekr.20160317054700.184: *5* st.format_return_expressions
+    # @+node:ekr.20160317054700.184: *5* st.format_return_expressions
     def format_return_expressions(self, name, raw_returns, reduced_returns):
         '''
         aList is a list of maximally reduced return expressions.
@@ -2801,7 +2799,7 @@ class StubTraverser(ast.NodeVisitor):
         else:
             s = reduce_types(reduced_returns, name=name, trace=self.trace_reduce)
             return s + ': ...'
-    #@+node:ekr.20160317054700.185: *5* st.get_def_name
+    # @+node:ekr.20160317054700.185: *5* st.get_def_name
     def get_def_name(self, node):
         '''Return the representation of a function or method name.'''
         if self.class_name_stack:
@@ -2812,7 +2810,7 @@ class StubTraverser(ast.NodeVisitor):
         else:
             name = node.name
         return name
-    #@+node:ekr.20160317054700.186: *5* st.remove_recursive_calls
+    # @+node:ekr.20160317054700.186: *5* st.remove_recursive_calls
     def remove_recursive_calls(self, name, raw, reduced):
         '''Remove any recursive calls to name from both lists.'''
         # At present, this works *only* if the return is nothing but the recursive call.
@@ -2829,13 +2827,13 @@ class StubTraverser(ast.NodeVisitor):
                 raw_result.append(raw[i])
                 reduced_result.append(reduced[i])
         return raw_result, reduced_result
-    #@+node:ekr.20160317054700.187: *3* st.visit_Return
+    # @+node:ekr.20160317054700.187: *3* st.visit_Return
     def visit_Return(self, node):
 
         self.returns.append(node)
             # New: return the entire node, not node.value.
-    #@-others
-#@+node:ekr.20160317054700.188: ** class TestClass
+    # @-others
+# @+node:ekr.20160317054700.188: ** class TestClass
 class TestClass:
     '''
     A class containing constructs that have caused difficulties.
@@ -2845,8 +2843,8 @@ class TestClass:
     # pylint: disable=undefined-variable
     # pylint: disable=no-method-argument
     # pylint: disable=unsubscriptable-object
-    #@+others
-    #@+node:ekr.20160317054700.189: *3* parse_group (Guido)
+    # @+others
+    # @+node:ekr.20160317054700.189: *3* parse_group (Guido)
     def parse_group(self, group):
         if len(group) >= 3 and group[-2] == 'as':
             del group[-2:]
@@ -2859,11 +2857,11 @@ class TestClass:
         del group[:i]
         assert all(g == '.' for g in group[1::2]), group
         return ndots, os.sep.join(group[::2])
-    #@+node:ekr.20160317054700.190: *3* return_all
+    # @+node:ekr.20160317054700.190: *3* return_all
     def return_all(self, s3):
         return all([is_known_type(z) for z in s3.split(',')])
         # return all(['abc'])
-    #@+node:ekr.20160317054700.191: *3* return_array
+    # @+node:ekr.20160317054700.191: *3* return_array
     def return_array(self):
         s = 'abc'
 
@@ -2871,19 +2869,19 @@ class TestClass:
             pass
 
         return f(s[1:-1])
-    #@+node:ekr.20160317054700.192: *3* return_list
+    # @+node:ekr.20160317054700.192: *3* return_list
     def return_list(self, a):
         return [a]
-    #@+node:ekr.20160317054700.193: *3* return_two_lists (fails)
+    # @+node:ekr.20160317054700.193: *3* return_two_lists (fails)
     def return_two_lists(self, aList, s):
         if 1:
             return aList
         else:
             return list(re.finditer('abc', s))
-    #@-others
-#@-others
+    # @-others
+# @-others
 
 g = LeoGlobals()  # For ekr.
 if __name__ == "__main__":
     main()
-#@-leo
+# @-leo

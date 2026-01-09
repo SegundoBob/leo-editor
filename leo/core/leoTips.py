@@ -189,17 +189,17 @@ tips: list[UserTip] = [
         title="Leo's most important plugins",
         text="""\
 
-Become familiar with Leo's most important plugins:
+    Become familiar with Leo's most important plugins:
 
-- bookmarks.py manages bookmarks.
-- contextmenu.py shows a menu when when right-clicking.
-- mod_scripting.py supports @button and @command nodes.
-- quicksearch.py adds a Nav tab for searching.
-- todo.py handles to-do lists and is a project manager.
-- viewrendered.py renders content in the rendering pane.
-- viewrendered3.py: an alternate renderer.
+    - bookmarks.py manages bookmarks.
+    - contextmenu.py shows a menu when when right-clicking.
+    - mod_scripting.py supports @button and @command nodes.
+    - quicksearch.py adds a Nav tab for searching.
+    - todo.py handles to-do lists and is a project manager.
+    - viewrendered.py renders content in the rendering pane.
+    - viewrendered3.py: an alternate renderer.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324072923.1: *4* Move clones to last top-level node
     UserTip(
@@ -210,14 +210,14 @@ Become familiar with Leo's most important plugins:
         title='Move clones to the last top-level node',
         text="""
 
-Focus your attention of the task at hand by cloning nodes,
-including @file nodes, then moving those clones so they are
-the last top-level nodes in the outline.
+    Focus your attention of the task at hand by cloning nodes,
+    including @file nodes, then moving those clones so they are
+    the last top-level nodes in the outline.
 
-This allows you to work on nodes scattered throughout an
-outline without altering the structure of @file nodes.
+    This allows you to work on nodes scattered throughout an
+    outline without altering the structure of @file nodes.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324065653.3: *4* myLeoSettings.leo
     UserTip(
@@ -228,13 +228,13 @@ outline without altering the structure of @file nodes.
         title="Put personal settings myLeoSettings.leo",
         text="""\
 
-Put your personal settings in myLeoSettings.leo, not leoSettings.leo.
+    Put your personal settings in myLeoSettings.leo, not leoSettings.leo.
 
-- The leo-settings command opens leoSettings.leo.
-- The my-leo-settings command opens myLeoSettings.leo.
-- Copy the desired settings nodes from leoSettings.leo to myLeoSettings.leo.
+    - The leo-settings command opens leoSettings.leo.
+    - The my-leo-settings command opens myLeoSettings.leo.
+    - Copy the desired settings nodes from leoSettings.leo to myLeoSettings.leo.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324065152.3: *4* Re @button make-md-toc
     UserTip(
@@ -243,13 +243,13 @@ Put your personal settings in myLeoSettings.leo, not leoSettings.leo.
         title="The @button make-md-toc script in LeoDocs.leo",
         text="""
 
-The (disabled) @button make-md-toc script in LeoDocs.leo writes a markdown table of contents to the console.
+    The (disabled) @button make-md-toc script in LeoDocs.leo writes a markdown table of contents to the console.
 
-You can then copy the text from the console to your document.
+    You can then copy the text from the console to your document.
 
-The selected outline node should be an `@auto-md` node.
+    The selected outline node should be an `@auto-md` node.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324073053.1: *3* Tips re Commands
     # @+node:ekr.20180324072156.1: *4* cff command
@@ -259,24 +259,13 @@ The selected outline node should be an `@auto-md` node.
         title="The clone-find commands gather nodes matching a pattern",
         text="""
 
-The cff command (aka clone-find-flattened) prompts for a
-search pattern, then clones all matching nodes so they are
-the children of a new last top-level node.
+    The cff command (aka clone-find-flattened) prompts for a
+    search pattern, then clones all matching nodes so they are
+    the children of a new last top-level node.
 
-This is a great way to study code.
+    This is a great way to study code.
 
-""",
-    ),
-    # @+node:ekr.20180324065153.1: *4* beautify command & @nobeautify
-    UserTip(
-        n=623,
-        tags=['Commands', 'Scripting'],
-        title="The beautify command & @nobeautify directive",
-        text="""
-
-The @nobeautify directive suppresses beautification of the node in which it appears.
-
-""",
+    """,
     ),
     # @+node:ekr.20180324072433.1: *4* cffm command
     UserTip(
@@ -285,13 +274,13 @@ The @nobeautify directive suppresses beautification of the node in which it appe
         title="The cffm command gathers marked outline nodes",
         text="""
 
-The cffm command (aka clone-find-flattened-marked) clones
-all marked nodes as a children of a new node, created as the
-last top-level node.
+    The cffm command (aka clone-find-flattened-marked) clones
+    all marked nodes as a children of a new node, created as the
+    last top-level node.
 
-Use this to gather nodes throughout an outline.
+    Use this to gather nodes throughout an outline.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324072541.1: *4* find-quick-selected command
     UserTip(
@@ -300,9 +289,9 @@ Use this to gather nodes throughout an outline.
         title="The find-quick-selected command",
         text="""
 
-The find-quick-selected (Ctrl-Shift-F) command finds all nodes containing the selected text.
+    The find-quick-selected (Ctrl-Shift-F) command finds all nodes containing the selected text.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324072904.1: *4* goto-next-clone command
     UserTip(
@@ -314,11 +303,11 @@ The find-quick-selected (Ctrl-Shift-F) command finds all nodes containing the se
         title='Alt-N (goto-next-clone) finds "primary" clones',
         text="""
 
-Use Alt-N to cycle through the clones of the present cloned node.
+    Use Alt-N to cycle through the clones of the present cloned node.
 
-This is a fast way of finding the clone whose ancestor is an @<file> node.
+    This is a fast way of finding the clone whose ancestor is an @<file> node.
 
-""",
+    """,
     ),
     # @+node:ekr.20180527052858.1: *4* help-*
     UserTip(
@@ -329,15 +318,15 @@ This is a fast way of finding the clone whose ancestor is an @<file> node.
         title="Leo's help system",
         text="""
 
-F11, help-for-command, shows the docstring for any Leo command.
+    F11, help-for-command, shows the docstring for any Leo command.
 
-F12, help-for-python, shows Python's help classes, modules, etc.
+    F12, help-for-python, shows Python's help classes, modules, etc.
 
-Leo's help-for commands discuss important topics.
+    Leo's help-for commands discuss important topics.
 
-<Alt-X>leo-help<tab> shows all these commands.
+    <Alt-X>leo-help<tab> shows all these commands.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324065153.6: *4* leo-* commands
     UserTip(
@@ -348,13 +337,13 @@ Leo's help-for commands discuss important topics.
         title='leo-* commands open common .leo files',
         text="""
 
-You can open files such as CheatSheet.leo, quickstart.leo,
-leoSettings.leo, myLeoSettings.leo and scripts.leo with
-commands starting with 'leo-'.
+    You can open files such as CheatSheet.leo, quickstart.leo,
+    leoSettings.leo, myLeoSettings.leo and scripts.leo with
+    commands starting with 'leo-'.
 
-<Alt-X>leo-<tab> shows the complete list.
+    <Alt-X>leo-<tab> shows the complete list.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324072609.1: *4* parse-body command
     UserTip(
@@ -363,9 +352,9 @@ commands starting with 'leo-'.
         title="The parse-body command",
         text="""
 
-The parse-body command parses p.b (the body text of the selected node) into separate nodes.
+    The parse-body command parses p.b (the body text of the selected node) into separate nodes.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324065153.2: *4* pylint command
     UserTip(
@@ -373,13 +362,13 @@ The parse-body command parses p.b (the body text of the selected node) into sepa
         tags=['Command', 'Testing'],
         title="<html>The pylint command",
         text="""
-<p>Leo's pylint command runs
-<a href="https://www.pylint.org/">pylint</a>
-on all `@<file>` nodes in the selected trees.</p>
+    <p>Leo's pylint command runs
+    <a href="https://www.pylint.org/">pylint</a>
+    on all `@<file>` nodes in the selected trees.</p>
 
-<p>Pylint runs in the background. It doesn't interfere with Leo.</p>
+    <p>Pylint runs in the background. It doesn't interfere with Leo.</p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324073008.1: *4* repeat-complex-command
     UserTip(
@@ -390,15 +379,15 @@ on all `@<file>` nodes in the selected trees.</p>
         title='Ctrl-P (repeat-complex-command)',
         text="""
 
-Ctrl-P re-executes the last command made from the minibuffer.
+    Ctrl-P re-executes the last command made from the minibuffer.
 
-You can use this to avoid having to define key bindings.
+    You can use this to avoid having to define key bindings.
 
-For example, instead of pressing an @button button, execute its command from the minibuffer.
+    For example, instead of pressing an @button button, execute its command from the minibuffer.
 
-Now you can re-execute the button using Ctrl-P.
+    Now you can re-execute the button using Ctrl-P.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324065153.3: *4* rst3 command
     UserTip(
@@ -406,11 +395,11 @@ Now you can re-execute the button using Ctrl-P.
         tags=['Tutorial', 'Commands'],
         title="<html>The rst3 command",
         text="""\
-<p>The rst3 command converts an @rst tree to a document file.</p>
+    <p>The rst3 command converts an @rst tree to a document file.</p>
 
-<p>See <a href="https://leo-editor.github.io/leo-editor/tutorial-rst3.html">Leo's rst3 tutorial.</a></p>
+    <p>See <a href="https://leo-editor.github.io/leo-editor/tutorial-rst3.html">Leo's rst3 tutorial.</a></p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324072625.1: *4* sort-siblings command
     UserTip(
@@ -421,9 +410,9 @@ Now you can re-execute the button using Ctrl-P.
         title="The sort-siblings command",
         text="""
 
-The sort-siblings (Alt-A) command sorts all the child nodes of their parent, or all top-level nodes.
+    The sort-siblings (Alt-A) command sorts all the child nodes of their parent, or all top-level nodes.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324073210.1: *3* Tips re Scripting
     # @+node:ekr.20180324065152.1: *4* Clearing the log window
@@ -433,15 +422,15 @@ The sort-siblings (Alt-A) command sorts all the child nodes of their parent, or 
         title="Clearing the Log window",
         text="""\
 
-When developing scripts that use Log window to display
-results, it is sometimes useful to clear Log window by
-inserting the following two lines at the beginning of your
-script:
+    When developing scripts that use Log window to display
+    results, it is sometimes useful to clear Log window by
+    inserting the following two lines at the beginning of your
+    script:
 
     c.frame.log.selectTab('Log')
     c.frame.log.clearLog()
 
-""",
+    """,
     ),
     # @+node:ekr.20180324072452.1: *4* g.callers()
     UserTip(
@@ -449,17 +438,17 @@ script:
         tags=['Scripting', 'Debugging', 'Beginner'],
         title="<html>The g.callers() function",
         text="""
-<p>g.callers() returns the last n callers (default 4) callers of a function or method.
-The verbose option shows each caller on a separate line.
-For example:</p>
+    <p>g.callers() returns the last n callers (default 4) callers of a function or method.
+    The verbose option shows each caller on a separate line.
+    For example:</p>
 
-<p><pre>    g.trace(g.callers())</pre></p>
+    <p><pre>    g.trace(g.callers())</pre></p>
 
-<p>You must
-<a href="https://leo-editor.github.io/leo-editor/running.html#running-leo-from-a-console-window">
-run Leo from a console</a> for this to work.</p>
+    <p>You must
+    <a href="https://leo-editor.github.io/leo-editor/running.html#running-leo-from-a-console-window">
+    run Leo from a console</a> for this to work.</p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324072527.1: *4* g.pdb
     UserTip(
@@ -467,15 +456,15 @@ run Leo from a console</a> for this to work.</p>
         tags=['Scripting', 'Debugging'],
         title="<html>The g.pdb function",
         text="""
-<p>g.pdb launches
-<a href="https://docs.python.org/3/library/pdb.html">Python's pdb debugger</a>
-adapted for Leo.</p>
+    <p>g.pdb launches
+    <a href="https://docs.python.org/3/library/pdb.html">Python's pdb debugger</a>
+    adapted for Leo.</p>
 
-<p>You must
-<a href="https://leo-editor.github.io/leo-editor/running.html#running-leo-from-a-console-window">
-run Leo from a console</a> for this to work.</p>
+    <p>You must
+    <a href="https://leo-editor.github.io/leo-editor/running.html#running-leo-from-a-console-window">
+    run Leo from a console</a> for this to work.</p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324072513.1: *4* g.trace
     UserTip(
@@ -483,15 +472,15 @@ run Leo from a console</a> for this to work.</p>
         tags=['Scripting', 'Debugging', 'Beginner'],
         title="<html>The g.trace function",
         text="""
-<p>The g.trace function prints all its arguments to the console.</p>
+    <p>The g.trace function prints all its arguments to the console.</p>
 
-<p>It's great for seeing patterns in running code.</p>
+    <p>It's great for seeing patterns in running code.</p>
 
-<p>You must
-<a href="https://leo-editor.github.io/leo-editor/running.html#running-leo-from-a-console-window">
-run Leo from a console</a> for this to work.</p>
+    <p>You must
+    <a href="https://leo-editor.github.io/leo-editor/running.html#running-leo-from-a-console-window">
+    run Leo from a console</a> for this to work.</p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324065152.4: *4* Pyflakes
     UserTip(
@@ -499,17 +488,17 @@ run Leo from a console</a> for this to work.</p>
         tags=['Settings', 'Scripting'],
         title="<html>The pyflakes command",
         text="""\
-<p><a href="https://pypi.python.org/pypi/pyflakes">pyflakes</a>
-checks python files almost instantly.</p>
+    <p><a href="https://pypi.python.org/pypi/pyflakes">pyflakes</a>
+    checks python files almost instantly.</p>
 
-<p>Enable pyflakes with these settings:
-<pre>
-@bool run-pyflakes-on-write = True
-@bool syntax-error-popup = True
-</pre>
-</p>
+    <p>Enable pyflakes with these settings:
+    <pre>
+    @bool run-pyflakes-on-write = True
+    @bool syntax-error-popup = True
+    </pre>
+    </p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324065653.1: *4* Re @button
     UserTip(
@@ -518,13 +507,13 @@ checks python files almost instantly.</p>
         title="@button nodes create commands",
         text="""
 
-For example, `@button my-command` creates the `my-command` button and the `my-command` command.
+    For example, `@button my-command` creates the `my-command` button and the `my-command` command.
 
-Within `@button` scripts, c.p is the presently selected outline node.
+    Within `@button` scripts, c.p is the presently selected outline node.
 
-As a result, @button nodes bring scripts to data.
+    As a result, @button nodes bring scripts to data.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324065152.2: *4* Section refs vs @others
     UserTip(
@@ -533,14 +522,14 @@ As a result, @button nodes bring scripts to data.
         title="Use section references sparingly",
         text=f"""
 
-Within scripts, use section references only when code must
-be placed exactly. Here is a common pattern for @file nodes
-for python files:
+    Within scripts, use section references only when code must
+    be placed exactly. Here is a common pattern for @file nodes
+    for python files:
 
     {g.angleBrackets('imports')}
     {'@others'}
 
-""",
+    """,
     ),
     # @+node:ekr.20180324085629.1: *4* Use section refs to avoid "one @others per node" rule
     UserTip(
@@ -551,15 +540,15 @@ for python files:
         title='Use section refs to avoid one @others per node rule',
         text=f"""
 
-Nodes can have at most one {at_s}others directive. You can work around this restriction as follows:
+    Nodes can have at most one {at_s}others directive. You can work around this restriction as follows:
 
     {at_s}file myFile.py
     {at_s}others
     {ref1_s} organizer {ref2_s}
 
-where the body of the {ref1_s} organizer {ref2_s} node contains just {at_s}others.
+    where the body of the {ref1_s} organizer {ref2_s} node contains just {at_s}others.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324073458.1: *3* Tips re Work flow
     # @+node:ekr.20180324065153.4: *4* Abbreviations
@@ -569,16 +558,16 @@ where the body of the {ref1_s} organizer {ref2_s} node contains just {at_s}other
         title="<html>Abbreviations",
         text="""
 
-<p>Leo's
-<a href="https://leo-editor.github.io/leo-editor/tutorial-pim.html#using-abbreviations-and-templates">
-abbreviations</a>
-can correct spelling mistakes, expand to multiple lines or even trees of nodes.
-</p>
+    <p>Leo's
+    <a href="https://leo-editor.github.io/leo-editor/tutorial-pim.html#using-abbreviations-and-templates">
+    abbreviations</a>
+    can correct spelling mistakes, expand to multiple lines or even trees of nodes.
+    </p>
 
-<p>Abbreviations can execute scripts and
-can prompt for values to be substituted within the abbreviation.</p>
+    <p>Abbreviations can execute scripts and
+    can prompt for values to be substituted within the abbreviation.</p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324072110.1: *4* Clones
     UserTip(
@@ -588,13 +577,13 @@ can prompt for values to be substituted within the abbreviation.</p>
         ],
         title="<html>Clones",
         text="""
-<p>
-<a href="https://leo-editor.github.io/leo-editor/tutorial-pim.html#clones">Clones</a>
-are "live" copies of the node itself and all its descendants.</p>
+    <p>
+    <a href="https://leo-editor.github.io/leo-editor/tutorial-pim.html#clones">Clones</a>
+    are "live" copies of the node itself and all its descendants.</p>
 
-<p>Clones are a unique feature of Leo.</p>
+    <p>Clones are a unique feature of Leo.</p>
 
-</html>""",
+    </html>""",
     ),
     # @+node:ekr.20180324072128.1: *4* Don't remember command names
     UserTip(
@@ -603,11 +592,11 @@ are "live" copies of the node itself and all its descendants.</p>
         title="Don't remember command names!",
         text="""
 
-To execute a command, type `Alt-X` followed by the first few characters of command name, followed by `Tab`.
+    To execute a command, type `Alt-X` followed by the first few characters of command name, followed by `Tab`.
 
-The list of commands matching what you have typed appears.
+    The list of commands matching what you have typed appears.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324065145.1: *4* How to assign shortcuts to scripts
     UserTip(
@@ -616,15 +605,15 @@ The list of commands matching what you have typed appears.
         title="How to assign shortcuts to scripts",
         text="""
 
-You can have a personal shortcut to run script while developing it.
+    You can have a personal shortcut to run script while developing it.
 
-For example: put `@key=Alt-4` in headline.
+    For example: put `@key=Alt-4` in headline.
 
-If your script grows to several subnodes, you won't have to
-select top node every time you wish to run script. It would
-be enough to just press your universal shortcut.
+    If your script grows to several subnodes, you won't have to
+    select top node every time you wish to run script. It would
+    be enough to just press your universal shortcut.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324072951.1: *4* How to find documenation
     UserTip(
@@ -635,9 +624,9 @@ be enough to just press your universal shortcut.
         title='How to find documentation',
         text="""
 
-Just search LeoDocs.leo.
+    Just search LeoDocs.leo.
 
-""",
+    """,
     ),
     # @+node:ekr.20180324072812.1: *4* How to find settings
     UserTip(
@@ -648,11 +637,11 @@ Just search LeoDocs.leo.
         title="How to find settings",
         text="""
 
-Just search leoSettings.leo.
+    Just search leoSettings.leo.
 
-leoSettings.leo contains the defaults for all of Leo's settings, with documentation for each.
+    leoSettings.leo contains the defaults for all of Leo's settings, with documentation for each.
 
-""",
+    """,
     ),
     # @+node:ekr.20180312101254.1: *4* How to find your @command nodes
     UserTip(
@@ -663,13 +652,13 @@ leoSettings.leo contains the defaults for all of Leo's settings, with documentat
         title="How to find all your @command nodes",
         text="""
 
-<alt-x>@c<tab> shows all the @command nodes in effect for the present outline, no matter where defined.
+    <alt-x>@c<tab> shows all the @command nodes in effect for the present outline, no matter where defined.
 
-myLeoSettings.leo can define *common* @command nodes that apply to all outlines.
+    myLeoSettings.leo can define *common* @command nodes that apply to all outlines.
 
-Such nodes reside in the @commands subtree of the @settings tree in myLeoSettings.leo.
+    Such nodes reside in the @commands subtree of the @settings tree in myLeoSettings.leo.
 
-""",
+    """,
     ),
     # @+node:ekr.20180503082333.1: *4* How to see all @command commands
     UserTip(
@@ -678,11 +667,11 @@ Such nodes reside in the @commands subtree of the @settings tree in myLeoSetting
         title="How to see all @command commands",
         text="""
 
-Type <alt-x>@c<tab> shows all the @command nodes in effect for the present outline, no matter where defined.
+    Type <alt-x>@c<tab> shows all the @command nodes in effect for the present outline, no matter where defined.
 
-Note: myLeoSettings.leo can define common @command nodes that apply to all outlines.
+    Note: myLeoSettings.leo can define common @command nodes that apply to all outlines.
 
-""",
+    """,
     ),
     # @-others
     # @@beautify

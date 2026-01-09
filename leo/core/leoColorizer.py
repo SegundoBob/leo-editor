@@ -374,8 +374,6 @@ class BaseColorizer:
             self.configDict[name] = color  # 2022/05/20: Discovered by pyflakes.
 
     # @+node:ekr.20110605121601.18574: *4* BaseColorizer.defineDefaultColorsDict
-    ###@nobeautify
-
     def defineDefaultColorsDict(self) -> None:
         # These defaults are sure to exist.
         self.default_colors_dict = {
@@ -520,8 +518,6 @@ class BaseColorizer:
         }  # fmt: skip
 
     # @+node:ekr.20110605121601.18575: *4* BaseColorizer.defineDefaultFontDict
-    ###@nobeautify
-
     def defineDefaultFontDict(self) -> None:
         self.default_font_dict = {
 
@@ -619,8 +615,6 @@ class BaseColorizer:
         return s.replace(' ', '').replace('-', '').replace('_', '').lower().strip()
 
     # @+node:ekr.20171114041307.1: *3* BaseColorizer.reloadSettings
-    ###@nobeautify
-
     def reloadSettings(self) -> None:
         c, getBool = self.c, self.c.config.getBool
         #

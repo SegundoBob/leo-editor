@@ -701,8 +701,6 @@ class StringFindTabManager:
         pass
 
     # @+node:ekr.20210221130549.4: *3* sftm.get_settings
-    ###@nobeautify
-
     def get_settings(self) -> g.Bunch:
         """
         Return a g.bunch representing all widget values.
@@ -797,8 +795,6 @@ class StringFindTabManager:
                 w.toggle()
 
     # @+node:ekr.20210221130549.8: *3* sftm.set_radio_button
-    ###@nobeautify
-
     def set_radio_button(self, name: str) -> None:
         """Set the value of the radio buttons"""
         d = {
@@ -838,8 +834,6 @@ class StringFindTabManager:
         pass
 
     # @+node:ekr.20210221130549.9: *3* sftm.toggle_checkbox
-    ###@nobeautify
-
     def toggle_checkbox(self, checkbox_name: str) -> None:
         """Toggle the value of the checkbox whose name is given."""
         d = {

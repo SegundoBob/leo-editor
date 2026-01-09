@@ -317,8 +317,6 @@ class Commands:
         ] = []  # List of orphaned nodes for c.raise_error_dialogs.
 
     # @+node:ekr.20120217070122.10470: *5* c.initObjects
-    ###@nobeautify
-
     def initObjects(self, gui: LeoGui) -> None:
         c = self
         self.hiddenRootNode = leoNodes.VNode(context=c, gnx='hidden-root-vnode-gnx')
@@ -3180,8 +3178,6 @@ class Commands:
 
     # @+node:ekr.20250404014922.1: *4* --- c: Legacy scanners (deprecated)
     # @+node:ekr.20080827175609.39: *5* c.scanAllDirectives (deprecated)
-    ###@nobeautify
-
     def scanAllDirectives(self, p: Position) -> dict[str, Value]:
         """
         Scan p and ancestors for directives.
@@ -3388,8 +3384,6 @@ class Commands:
         return c.doCommandByName(commandName, event)
 
     # @+node:ekr.20210305133229.1: *4* c.general_script_helper & helpers
-    ###@nobeautify
-
     def general_script_helper(
         self,
         command: str,
@@ -5082,9 +5076,7 @@ class Commands:
         return -1 < i1 < j1 or -1 < i2 < j2
 
     # @+node:ekr.20031218072017.2965: *6* c.canFindMatchingBracket
-    ###@nobeautify
-
-    def canFindMatchingBracket(self) -> bool:  # fmt: skip
+    def canFindMatchingBracket(self) -> bool:
         c = self
         brackets = "()[]{}"
         w = c.frame.body.wrapper
@@ -5425,8 +5417,6 @@ class Commands:
 
     # @+node:ekr.20171124084149.1: *3* c.Scripting utils
     # @+node:ekr.20160201072634.1: *4* c.cloneFindByPredicate
-    ###@nobeautify
-
     def cloneFindByPredicate(
         self,
         generator: Callable,  # The generator used to traverse the tree.

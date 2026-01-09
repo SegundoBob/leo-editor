@@ -43,8 +43,6 @@ class LeoMenu:
 
         # @+<< define self.enable_dict >>
         # @+node:ekr.20250506093659.1: *5* << define self.enable_dict >>
-        ###@nobeautify
-
         self.enable_dict = d = {
 
             # File menu...

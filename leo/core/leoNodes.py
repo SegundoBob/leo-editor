@@ -2168,10 +2168,9 @@ class Position:
 
 
 position = Position  # compatibility.
+
+
 # @+node:ekr.20031218072017.3341: ** class VNode
-###@nobeautify
-
-
 class VNode:
     __slots__ = [
         '_bodyString', '_headString', '_p_changed',
@@ -2185,8 +2184,6 @@ class VNode:
     ]  # fmt: skip
     # @+<< VNode constants >>
     # @+node:ekr.20031218072017.951: *3* << VNode constants >>
-    ###@nobeautify
-
     # fmt: off
 
     # Define the meaning of status bits in new vnodes.

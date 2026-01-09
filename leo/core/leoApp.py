@@ -349,8 +349,6 @@ class LeoApp:
         }
 
     # @+node:ekr.20120522160137.9911: *5* app.define_extension_dict
-    ###@nobeautify
-
     def define_extension_dict(self) -> None:
         # Keys are extensions, values are languages
         self.extension_dict: dict[str, str] = {
@@ -557,8 +555,6 @@ class LeoApp:
         self.prolog_namespace_string = f'xmlns:leo="{xml_url}"'
 
     # @+node:ekr.20120522160137.9909: *5* app.define_language_delims_dict
-    ###@nobeautify
-
     def define_language_delims_dict(self) -> None:
         self.language_delims_dict: dict[str, str] = {
             # Internally, lower case is used for all language names.
@@ -759,8 +755,6 @@ class LeoApp:
         }  # fmt: skip
 
     # @+node:ekr.20120522160137.9910: *5* app.define_language_extension_dict
-    ###@nobeautify
-
     def define_language_extension_dict(self) -> None:
         # Used only by g.app.externalFilesController.get_ext.
 

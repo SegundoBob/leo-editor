@@ -67,11 +67,10 @@ class ParserBaseClass:
     ]
     # Keys are settings names, values are (type,value) tuples.
     settingsDict: dict[str, Value] = {}
+
     # @-<< ParserBaseClass data >>
     # @+others
     # @+node:ekr.20041119204700: *3*  pbc.ctor
-    ###@nobeautify
-
     def __init__(self, c: Cmdr, localFlag: bool) -> None:
         """Ctor for the ParserBaseClass class."""
         self.c = c

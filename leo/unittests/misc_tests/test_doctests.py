@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210926044012.1: * @file ../unittests/misc_tests/test_doctests.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210926044012.1: * @file ../unittests/misc_tests/test_doctests.py
 """Run all doctests."""
+
 import doctest
 import glob
 import os
@@ -10,8 +11,9 @@ from leo.core import leoGlobals as g
 unittest_dir = os.path.dirname(__file__)
 leo_dir = os.path.abspath(os.path.join(unittest_dir, '..', '..'))
 
-#@+others  # Define a function containing a doctest.
-#@+node:ekr.20210926053601.1: ** factorial (test_dectests.py)
+
+# @+others  # Define a function containing a doctest.
+# @+node:ekr.20210926053601.1: ** factorial (test_dectests.py)
 def factorial(n):
     # Modified from https://docs.python.org/3/library/doctest.html
     # Must import factorial. See: stackoverflow.com/questions/65066002
@@ -45,6 +47,7 @@ def factorial(n):
     """  # Blank line above is required.
 
     import math
+
     if not n >= 0:
         raise ValueError("n must be >= 0")
     if math.floor(n) != n:
@@ -57,10 +60,14 @@ def factorial(n):
         result *= factor
         factor += 1
     return result
-#@-others
 
-class TestDocTests(unittest.TestCase):  # No need to be a subclass of leoTest2.LeoUnitTest.
 
+# @-others
+
+
+class TestDocTests(
+    unittest.TestCase
+):  # No need to be a subclass of leoTest2.LeoUnitTest.
     def test_all_doctests(self):
         fails_list = []  # List of files with failing doctests.
         files_list = []  # List of files containing a doctest.
@@ -84,7 +91,11 @@ class TestDocTests(unittest.TestCase):  # No need to be a subclass of leoTest2.L
                     print(f"{fails} failures in {g.shortFileName(f)}")
             self.assertEqual(fails_list, [])
         if 0:
-            g.trace(f"{n} doctests found in {len(files_list)} file{g.plural(len(files_list))}")
+            g.trace(
+                f"{n} doctests found in {len(files_list)} file{g.plural(len(files_list))}"
+            )
             g.printObj(files_list, tag="files containing any doctest")
             g.printObj(fails_list, tag="files containing a failed doctest")
-#@-leo
+
+
+# @-leo

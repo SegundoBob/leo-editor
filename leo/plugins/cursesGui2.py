@@ -695,8 +695,6 @@ class LeoTreeLine(npyscreen.TreeLine):
             self.value.content = s[:n] + chr(i) + s[n:]
         self.cursor_position += 1
     # @+node:ekr.20170508130025.1: *5* LeoTreeLine.set_handlers
-    ###@nobeautify
-
     def set_handlers(self) -> None:
 
         # pylint: disable=no-member
@@ -1026,8 +1024,6 @@ class StringFindTabManager:
             w = self.radio_button_entire_outline
             w.toggle()
     # @+node:ekr.20171128051435.7: *4* sftm.set_radio_button
-    ###@nobeautify
-
     def set_radio_button(self, name: str) -> None:
         """Set the value of the radio buttons"""
         c = self.c
@@ -1051,8 +1047,6 @@ class StringFindTabManager:
             setattr(fc, ivar, True)
 
     # @+node:ekr.20171128051435.8: *4* sftm.toggle_checkbox
-    ###@nobeautify
-
     def toggle_checkbox(self, checkbox_name: str) -> None:
         """Toggle the value of the checkbox whose name is given."""
         c = self.c
@@ -2820,8 +2814,6 @@ class LeoBody(npyscreen.MultiLineEditable):
         box.name = name
         box.update()
     # @+node:ekr.20170526064136.1: *4* LeoBody.set_handlers
-    ###@nobeautify
-
     def set_handlers(self) -> None:
         """LeoBody.set_handlers."""
         # pylint: disable=no-member
@@ -3655,8 +3647,6 @@ class LeoMLTree(npyscreen.MLTree):
             else:
                 self.h_cursor_line_down(ch)
     # @+node:ekr.20170507175304.1: *5* LeoMLTree.set_handlers
-    ###@nobeautify
-
     def set_handlers(self) -> None:
 
         # pylint: disable=no-member
