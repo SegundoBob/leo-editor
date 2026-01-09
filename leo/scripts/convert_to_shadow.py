@@ -49,15 +49,12 @@ import sys
 
 
 def convert(filename, leoFolder, prefix):
-
     if not os.path.exists(leoFolder):
-
         os.mkdir(leoFolder)
 
         assert os.path.exists(leoFolder)
 
     else:
-
         assert os.path.isdir(leoFolder)
 
     dir, name = os.path.split(filename)
@@ -65,7 +62,6 @@ def convert(filename, leoFolder, prefix):
     newname = os.path.join(dir, leoFolder, prefix + name)
 
     if os.path.exists(newname):
-
         return
 
     print("Putting", filename, "into the shadow folder", leoFolder)
@@ -77,27 +73,19 @@ def convert(filename, leoFolder, prefix):
     f.close()
 
 
-
 if __name__ == '__main__':
-
     scriptname, filename, leoFolder, prefix = sys.argv
 
     if filename == '-all':
-
         for filename in os.listdir("."):
-
             rest, extension = os.path.splitext(filename)
 
             if extension == '.py':
-
-                if (extension not in ['.leo', '.pyc'] and
-
-                    not filename.startswith("convert")):
-
+                if extension not in ['.leo', '.pyc'] and not filename.startswith(
+                    "convert"
+                ):
                     if os.path.isfile(filename):
-
                         convert(filename, leoFolder, prefix)
 
     else:
-
         convert(filename, leoFolder, prefix)

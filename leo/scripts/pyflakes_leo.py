@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20250227032644.1: * @file ../scripts/pyflakes_leo.py
+# @+leo-ver=5-thin
+# @+node:ekr.20250227032644.1: * @file ../scripts/pyflakes_leo.py
 """
 pyflakes.py: Run pyflakes on (most) .py files in LeoPyRef.leo.
 
@@ -45,11 +45,13 @@ if api and reporter:
             try:
                 with open(path, 'rb') as f:
                     contents = f.read().decode()
-                report = reporter.Reporter(errorStream=sys.stderr, warningStream=sys.stderr)
+                report = reporter.Reporter(
+                    errorStream=sys.stderr, warningStream=sys.stderr
+                )
                 errors = api.check(contents, '', report)
                 if errors:
                     print(f"{errors} errors in {path}")
             except Exception as e:
                 print(f"Exception in {path}: {e}")
 # print('pyflakes_leo: files:', n_files)
-#@-leo
+# @-leo

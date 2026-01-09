@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240322173731.1: * @file ../scripts/pip_uninstall_all.py
+# @+leo-ver=5-thin
+# @+node:ekr.20240322173731.1: * @file ../scripts/pip_uninstall_all.py
 """
 pip_uninstall_all.py: Use pip to uninstall *all* python packages.
 
@@ -8,6 +8,7 @@ Don't use this script unless you know what you are doing!
 See info item #3837 for full documentation.
 https://github.com/leo-editor/leo-editor/issues/3837
 """
+
 import os
 import subprocess
 import sys
@@ -28,7 +29,6 @@ for command in [
     f"{python} -m pip freeze > temp_requirements.txt",
     f"{python} -m pip uninstall -r temp_requirements.txt -y --verbose",
     f"{python} -m pip list",
-
 ]:
     print('')
     print(command)
@@ -42,4 +42,4 @@ if os.path.exists('temp_requirements.txt'):
 
 # cd to the leo-editor directory.
 os.chdir(leo_editor_dir)
-#@-leo
+# @-leo

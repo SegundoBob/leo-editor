@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240321123225.3: * @file ../scripts/install_leo_from_testpypi.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240321123225.3: * @file ../scripts/install_leo_from_testpypi.py
+# @@language python
 
 """
 install_leo_from_testpypi.py: Install leo from https://test.pypi.org/project/leo/.
@@ -23,4 +23,4 @@ os.chdir(home_dir)
 command = 'python -m pip install -i https://test.pypi.org/simple/ leo==6.8.7'
 print(command)
 subprocess.Popen(command, shell=True).communicate()
-#@-leo
+# @-leo

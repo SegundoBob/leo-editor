@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240321123214.1: * @file ../scripts/install_leo_locally.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240321123214.1: * @file ../scripts/install_leo_locally.py
+# @@language python
 """
 install_leo_locally.py: Install Leo from a wheel file in the `leo-editor/leo/dist` directory.
 
@@ -12,6 +12,7 @@ from the *parent* directory of the `leo-editor` directory.
 See info item #3837 for full documentation.
 https://github.com/leo-editor/leo-editor/issues/3837
 """
+
 import glob
 import os
 import sys
@@ -42,7 +43,7 @@ else:
     wheel_file = f"leo-{version}-py3-none-any.whl"
     #  --no-cache-dir  # slow
     #  --force-reinstall
-    command = fr"python -m pip install {dist_dir}{os.sep}{wheel_file}"
+    command = rf"python -m pip install {dist_dir}{os.sep}{wheel_file}"
     print(command)
     subprocess.Popen(command, shell=True).communicate()
 
@@ -54,4 +55,4 @@ else:
     print('site-packages/leo*...')
     for z in glob.glob(f"{package_dir}{os.sep}leo*"):
         print(' ', z)
-#@-leo
+# @-leo
