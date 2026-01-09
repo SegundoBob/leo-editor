@@ -3,7 +3,7 @@
 """
 full_test_leo.py: Run all these tests scripts in this order:
 
-- (skip) beautify_leo.py.
+- beautify_all_leo.py.
 - run_test_leo.py.
 - flake8_leo.py.
 - pyflakes_leo.py
