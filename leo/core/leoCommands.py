@@ -3803,9 +3803,9 @@ class Commands:
         else:
             path = fn
         if path:
-            c.saveTo(
-                fileName=path, silent=silent
-            )  # Issues saved message.  # pylint: disable=no-member
+            # pylint: disable=no-member
+            # Issues saved message.  
+            c.saveTo(fileName=path, silent=silent)
             # g.es('in', theDir)
         return path
 
