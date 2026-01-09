@@ -1164,10 +1164,7 @@ class MatchBrackets:
     # @+node:ekr.20160121112812.1: *5* mb.is_regex
     def is_regex(self, s: str, i: int) -> bool:
         """Return true if there is another slash on the line."""
-        if self.language in (
-            'javascript',
-            'perl',
-        ):
+        if self.language in ('javascript', 'perl'):
             assert s[i] == '/'
             offset = 1 if self.forward else -1
             i += offset
