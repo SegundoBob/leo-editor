@@ -1,13 +1,14 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20031218072017.3655: * @file leoFrame.py
+# @+leo-ver=5-thin
+# @+node:ekr.20031218072017.3655: * @file leoFrame.py
 """
 The base classes for all Leo Windows, their body, log and tree panes,
 key bindings and menus.
 
 These classes should be overridden to create frames for a particular gui.
 """
-#@+<< leoFrame imports >>
-#@+node:ekr.20120219194520.10464: ** << leoFrame imports >>
+
+# @+<< leoFrame imports >>
+# @+node:ekr.20120219194520.10464: ** << leoFrame imports >>
 from __future__ import annotations
 from collections.abc import Callable
 import os
@@ -20,9 +21,10 @@ from leo.core import leoColorizer
 from leo.core import leoMenu
 from leo.core import leoNodes
 from leo.core.leoAPI import StringTextWrapper
-#@-<< leoFrame imports >>
-#@+<< leoFrame annotations >>
-#@+node:ekr.20220415013957.1: ** << leoFrame annotations >>
+
+# @-<< leoFrame imports >>
+# @+<< leoFrame annotations >>
+# @+node:ekr.20220415013957.1: ** << leoFrame annotations >>
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoChapters import ChapterController
     from leo.core.leoColorizer import BaseColorizer
@@ -37,14 +39,17 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
     from leo.plugins.qt_text import QScintillaWrapper, QTextEditWrapper
     from leo.plugins.notebook import NbController
+
     Args = Any
     KWargs = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
     TextAPI = Union[QScintillaWrapper, QTextEditWrapper, StringTextWrapper]
-#@-<< leoFrame annotations >>
-#@+<< leoFrame: about handling events >>
-#@+node:ekr.20031218072017.2410: ** << leoFrame: about handling events >>
-#@+at Leo must handle events or commands that change the text in the outline
+
+
+# @-<< leoFrame annotations >>
+# @+<< leoFrame: about handling events >>
+# @+node:ekr.20031218072017.2410: ** << leoFrame: about handling events >>
+# @+at Leo must handle events or commands that change the text in the outline
 # or body panes. We must ensure that headline and body text corresponds
 # to the VNode corresponding to presently selected outline, and vice
 # versa. For example, when the user selects a new headline in the
@@ -69,27 +74,38 @@ if TYPE_CHECKING:  # pragma: no cover
 # - body.bodyChanged & tree.headChanged:
 #     Called by commands throughout Leo's core that change the body or headline.
 #     These are thin wrappers for updateBody and updateTree.
-#@-<< leoFrame: about handling events >>
-#@+<< leoFrame command decorators >>
-#@+node:ekr.20150509054428.1: ** << leoFrame command decorators >>
+# @-<< leoFrame: about handling events >>
+# @+<< leoFrame command decorators >>
+# @+node:ekr.20150509054428.1: ** << leoFrame command decorators >>
 def log_cmd(name: str) -> Callable:  # Not used.
     """Command decorator for the LeoLog class."""
     return g.new_cmd_decorator(name, ['c', 'frame', 'log'])
+
 
 def body_cmd(name: str) -> Callable:
     """Command decorator for the c.frame.body class."""
     return g.new_cmd_decorator(name, ['c', 'frame', 'body'])
 
+
 def frame_cmd(name: str) -> Callable:
     """Command decorator for the LeoFrame class."""
-    return g.new_cmd_decorator(name, ['c', 'frame',])
-#@-<< leoFrame command decorators >>
-#@+others
-#@+node:ekr.20031218072017.3656: ** class LeoBody
+    return g.new_cmd_decorator(
+        name,
+        [
+            'c',
+            'frame',
+        ],
+    )
+
+
+# @-<< leoFrame command decorators >>
+# @+others
+# @+node:ekr.20031218072017.3656: ** class LeoBody
 class LeoBody:
     """The base class for the body pane in Leo windows."""
-    #@+others
-    #@+node:ekr.20031218072017.3657: *3* LeoBody.__init__
+
+    # @+others
+    # @+node:ekr.20031218072017.3657: *3* LeoBody.__init__
     def __init__(self, frame: Widget, parentFrame: Widget) -> None:
         """Ctor for LeoBody class."""
         c = frame.c
@@ -104,7 +120,8 @@ class LeoBody:
         self.colorizer: BaseColorizer = None
         # Init user settings.
         self.use_chapters = False  # May be overridden in subclasses.
-    #@+node:ekr.20031218072017.3677: *3* LeoBody.Coloring
+
+    # @+node:ekr.20031218072017.3677: *3* LeoBody.Coloring
     def forceFullRecolor(self) -> None:
         pass
 
@@ -117,11 +134,12 @@ class LeoBody:
 
     def recolor(self, p: Position) -> None:
         g.print_unique_message(
-            f"LeoBody.recolor is deprecated: callers: {g.callers(6)}")
+            f"LeoBody.recolor is deprecated: callers: {g.callers(6)}"
+        )
         self.c.recolor()
 
     recolor_now = recolor
-    #@+node:ekr.20140903103455.18574: *3* LeoBody.Defined in subclasses
+    # @+node:ekr.20140903103455.18574: *3* LeoBody.Defined in subclasses
     # LeoBody methods that must be defined in subclasses.
 
     def createEditorFrame(self, w: TextAPI) -> TextAPI:
@@ -135,9 +153,10 @@ class LeoBody:
 
     def onFocusOut(self, obj: Widget) -> None:
         raise NotImplementedError
-    #@+node:ekr.20060528100747: *3* LeoBody.Editors
-    #@+node:ekr.20070424053629.1: *4* LeoBody.utils
-    #@+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
+
+    # @+node:ekr.20060528100747: *3* LeoBody.Editors
+    # @+node:ekr.20070424053629.1: *4* LeoBody.utils
+    # @+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
     def recolorWidget(self, p: Position, w: TextAPI) -> None:
         # Support QScintillaColorizer.colorize.
         c = self.c
@@ -149,8 +168,9 @@ class LeoBody:
                 c.frame.body.colorizer.colorize(p)
             finally:
                 c.frame.body.wrapper = old_wrapper
-    #@+node:ekr.20031218072017.4018: *3* LeoBody.Text
-    #@+node:ekr.20031218072017.4030: *4* LeoBody.getInsertLines
+
+    # @+node:ekr.20031218072017.4018: *3* LeoBody.Text
+    # @+node:ekr.20031218072017.4030: *4* LeoBody.getInsertLines
     def getInsertLines(self) -> tuple[str, str, str]:
         """
         Return before,after where:
@@ -173,7 +193,8 @@ class LeoBody:
         ins = g.checkUnicode(ins)
         after = g.checkUnicode(after)
         return before, ins, after
-    #@+node:ekr.20031218072017.4031: *4* LeoBody.getSelectionAreas
+
+    # @+node:ekr.20031218072017.4031: *4* LeoBody.getSelectionAreas
     def getSelectionAreas(self) -> tuple[str, str, str]:
         """
         Return before,sel,after where:
@@ -197,7 +218,8 @@ class LeoBody:
         sel = g.checkUnicode(sel)
         after = g.checkUnicode(after)
         return before, sel, after
-    #@+node:ekr.20031218072017.2377: *4* LeoBody.getSelectionLines
+
+    # @+node:ekr.20031218072017.2377: *4* LeoBody.getSelectionLines
     def getSelectionLines(self) -> tuple[str, str, str]:
         """
         Return before,sel,after where:
@@ -227,13 +249,18 @@ class LeoBody:
         sel = g.checkUnicode(s[i:j])
         after = g.checkUnicode(s[j : len(s)])
         return before, sel, after  # 3 strings.
-    #@-others
-#@+node:ekr.20031218072017.3678: ** class LeoFrame
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.3678: ** class LeoFrame
 class LeoFrame:
     """The base class for all Leo windows."""
+
     instances = 0
-    #@+others
-    #@+node:ekr.20031218072017.3679: *3* LeoFrame.__init__
+
+    # @+others
+    # @+node:ekr.20031218072017.3679: *3* LeoFrame.__init__
     def __init__(self, c: Cmdr, gui: LeoGui) -> None:
         self.c = c
         self.gui = gui
@@ -257,7 +284,8 @@ class LeoFrame:
         self.stylesheet: str = None  # The contents of <?xml-stylesheet...?> line.
         self.tab_width = 0  # The tab width in effect in this pane.
         self.title: str = None  # Must be created by subclasses.
-    #@+node:ekr.20051009045404: *4* frame.createFirstTreeNode
+
+    # @+node:ekr.20051009045404: *4* frame.createFirstTreeNode
     def createFirstTreeNode(self) -> VNode:
         c = self.c
         #
@@ -276,30 +304,35 @@ class LeoFrame:
         #                 the node hasn't been linked yet.
         p._linkAsRoot()
         return v
-    #@+node:ekr.20061109125528: *3* LeoFrame.May be defined in subclasses
-    #@+node:ekr.20031218072017.3688: *4* LeoFrame.getTitle & setTitle
+
+    # @+node:ekr.20061109125528: *3* LeoFrame.May be defined in subclasses
+    # @+node:ekr.20031218072017.3688: *4* LeoFrame.getTitle & setTitle
     def getTitle(self) -> str:
         return self.title
 
     def setTitle(self, title: str) -> None:
         self.title = title
-    #@+node:ekr.20031218072017.3687: *4* LeoFrame.setTabWidth
+
+    # @+node:ekr.20031218072017.3687: *4* LeoFrame.setTabWidth
     def setTabWidth(self, w: int) -> None:
         """Set the tab width in effect for this frame."""
         # Subclasses may override this to affect drawing.
         self.tab_width = w
-    #@+node:ekr.20220916041432.1: *4* LeoFrame.initCompleteHint
+
+    # @+node:ekr.20220916041432.1: *4* LeoFrame.initCompleteHint
     def initCompleteHint(self) -> None:
         """A hook for Qt."""
         pass
-    #@+node:ekr.20240510091810.1: *4* LeoFrame.compute_ratio & compute_secondary_ratio
+
+    # @+node:ekr.20240510091810.1: *4* LeoFrame.compute_ratio & compute_secondary_ratio
     def compute_ratio(self) -> float:
         return 0.5
 
     def compute_secondary_ratio(self) -> float:
         return 0.5
-    #@+node:ekr.20061109125528.1: *3* LeoFrame.Must be defined in base class
-    #@+node:ekr.20031218072017.3689: *4* LeoFrame.initialRatios
+
+    # @+node:ekr.20061109125528.1: *3* LeoFrame.Must be defined in base class
+    # @+node:ekr.20031218072017.3689: *4* LeoFrame.initialRatios
     def initialRatios(self) -> tuple[bool, float, float]:
         c = self.c
         s = c.config.getString("initial_split_orientation")
@@ -319,13 +352,15 @@ class LeoFrame:
             if r2 is None or r2 < 0.0 or r2 > 1.0:
                 r2 = 0.8
         return verticalFlag, r, r2
-    #@+node:ekr.20031218072017.3690: *4* LeoFrame.longFileName & shortFileName
+
+    # @+node:ekr.20031218072017.3690: *4* LeoFrame.longFileName & shortFileName
     def longFileName(self) -> str:
         return self.c.mFileName
 
     def shortFileName(self) -> str:
         return g.shortFileName(self.c.mFileName)
-    #@+node:ekr.20031218072017.3692: *4* LeoFrame.promptForSave
+
+    # @+node:ekr.20031218072017.3692: *4* LeoFrame.promptForSave
     def promptForSave(self) -> bool:
         """
         Prompt the user to save changes.
@@ -359,7 +394,8 @@ class LeoFrame:
                 if root.isDirty():
                     c.atFileCommands.writeOneAtEditNode(root)
                 return False  # Don't save and don't veto.
-            c.mFileName = g.app.gui.runSaveFileDialog(c,
+            c.mFileName = g.app.gui.runSaveFileDialog(
+                c,
                 title="Save",
                 filetypes=[("Leo files", "*.leo *.leojs *.db")],
             )
@@ -370,13 +406,15 @@ class LeoFrame:
             ok = c.fileCommands.save(c.mFileName)
             return not ok  # Veto if the save did not succeed.
         return True  # Veto.
-    #@+node:ekr.20031218072017.1375: *4* LeoFrame.frame.scanForTabWidth
+
+    # @+node:ekr.20031218072017.1375: *4* LeoFrame.frame.scanForTabWidth
     def scanForTabWidth(self, p: Position) -> None:
         """Return the tab width in effect at p."""
         c = self.c
         tab_width = c.getTabWidth(p)
         c.frame.setTabWidth(tab_width)
-    #@+node:ekr.20061119120006: *4* LeoFrame.Icon area convenience methods
+
+    # @+node:ekr.20061119120006: *4* LeoFrame.Icon area convenience methods
     def addIconButton(self, *args: Args, **keys: KWargs) -> Any:
         if self.iconBar:
             return self.iconBar.add(*args, **keys)
@@ -404,7 +442,8 @@ class LeoFrame:
     def showIconBar(self) -> None:
         if self.iconBar:
             self.iconBar.show()
-    #@+node:ekr.20041223105114.1: *4* LeoFrame.Status line convenience methods
+
+    # @+node:ekr.20041223105114.1: *4* LeoFrame.Status line convenience methods
     def clearStatusLine(self) -> None:
         if self.statusLine:
             self.statusLine.clear()
@@ -443,7 +482,8 @@ class LeoFrame:
     def updateStatusLine(self) -> None:
         if self.statusLine:
             self.statusLine.update()
-    #@+node:felix.20250313154127.1: *4* LeoFrame.Window Layouts
+
+    # @+node:felix.20250313154127.1: *4* LeoFrame.Window Layouts
     @frame_cmd('horizontal-window-layout')
     def horizontalWindowLayout(self, event: LeoKeyEvent = None) -> None:
         c = self.c
@@ -455,8 +495,9 @@ class LeoFrame:
         c = self.c
         c.inCommand = False  # Allow inner command
         c.doCommandByName('layout-vertical-thirds')
-    #@+node:ekr.20070130115927.4: *4* LeoFrame.Cut/Copy/Paste
-    #@+node:ekr.20070130115927.5: *5* LeoFrame.copyText
+
+    # @+node:ekr.20070130115927.4: *4* LeoFrame.Cut/Copy/Paste
+    # @+node:ekr.20070130115927.5: *5* LeoFrame.copyText
     @frame_cmd('copy-text')
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
@@ -478,7 +519,8 @@ class LeoFrame:
             g.app.gui.replaceClipboardWith(s)
 
     OnCopyFromMenu = copyText
-    #@+node:ekr.20070130115927.6: *5* LeoFrame.cutText
+
+    # @+node:ekr.20070130115927.6: *5* LeoFrame.cutText
     @frame_cmd('cut-text')
     def cutText(self, event: LeoKeyEvent = None) -> None:
         """Invoked from the mini-buffer and from shortcuts."""
@@ -506,7 +548,8 @@ class LeoFrame:
         c.recolor()  # 4398.
 
     OnCutFromMenu = cutText
-    #@+node:ekr.20070130115927.7: *5* LeoFrame.pasteText
+
+    # @+node:ekr.20070130115927.7: *5* LeoFrame.pasteText
     @frame_cmd('paste-text')
     def pasteText(self, event: LeoKeyEvent = None, middleButton: bool = False) -> None:
         """
@@ -524,13 +567,13 @@ class LeoFrame:
         i, j = w.getSelectionRange()  # Returns insert point if no selection.
 
         # 2025/12/01: c.k.previousSelection no longer exists.
-            # if middleButton and c.k.previousSelection is not None:
-                # start, end = c.k.previousSelection
-                # s = w.getAllText()
-                # s = s[start:end]
-                # c.k.previousSelection = None
-            # else:
-                # s = g.app.gui.getTextFromClipboard()
+        # if middleButton and c.k.previousSelection is not None:
+        # start, end = c.k.previousSelection
+        # s = w.getAllText()
+        # s = s[start:end]
+        # c.k.previousSelection = None
+        # else:
+        # s = g.app.gui.getTextFromClipboard()
         s = g.app.gui.getTextFromClipboard()
         s = g.checkUnicode(s)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
@@ -573,13 +616,17 @@ class LeoFrame:
         c.recolor()  # 4398.
 
     OnPasteFromMenu = pasteText
-    #@+node:ekr.20061016071937: *5* LeoFrame.OnPaste (support middle-button paste)
+
+    # @+node:ekr.20061016071937: *5* LeoFrame.OnPaste (support middle-button paste)
     def OnPaste(self, event: LeoKeyEvent = None) -> None:
         return self.pasteText(event=event, middleButton=True)
-    #@+node:ekr.20031218072017.3980: *4* LeoFrame.Edit Menu
-    #@+node:ekr.20031218072017.3982: *5* LeoFrame.endEditLabelCommand
+
+    # @+node:ekr.20031218072017.3980: *4* LeoFrame.Edit Menu
+    # @+node:ekr.20031218072017.3982: *5* LeoFrame.endEditLabelCommand
     @frame_cmd('end-edit-headline')
-    def endEditLabelCommand(self, event: LeoKeyEvent = None, p: Position = None) -> None:
+    def endEditLabelCommand(
+        self, event: LeoKeyEvent = None, p: Position = None
+    ) -> None:
         """End editing of a headline and move focus to the body pane."""
         frame = self
         c = frame.c
@@ -597,7 +644,8 @@ class LeoFrame:
             k.setDefaultInputState()
             # Recolor the *body* text, **not** the headline.
             k.showStateAndMode(w=c.frame.body.wrapper)
-    #@+node:ekr.20031218072017.3680: *3* LeoFrame.Must be defined in subclasses
+
+    # @+node:ekr.20031218072017.3680: *3* LeoFrame.Must be defined in subclasses
     def bringToFront(self) -> None:
         raise NotImplementedError
 
@@ -690,13 +738,17 @@ class LeoFrame:
 
     def toggleSplitDirection(self, event: LeoKeyEvent = None) -> None:
         raise NotImplementedError
-    #@-others
-#@+node:ekr.20031218072017.3694: ** class LeoLog
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.3694: ** class LeoLog
 class LeoLog:
     """The base class for the log pane in Leo windows."""
-    #@+others
-    #@+node:ekr.20150509054436.1: *3* LeoLog.Birth
-    #@+node:ekr.20031218072017.3695: *4* LeoLog.ctor
+
+    # @+others
+    # @+node:ekr.20150509054436.1: *3* LeoLog.Birth
+    # @+node:ekr.20031218072017.3695: *4* LeoLog.ctor
     def __init__(self, frame: Widget, parentFrame: Widget) -> None:
         """Ctor for LeoLog class."""
         self.frame = frame
@@ -705,25 +757,41 @@ class LeoLog:
         self.newlines = 0
         self.isNull = False
         # Official ivars...
-        self.canvasCtrl: Widget = None  # Set below. Same as self.canvasDict.get(self.tabName)
+        self.canvasCtrl: Widget = (
+            None  # Set below. Same as self.canvasDict.get(self.tabName)
+        )
         # Important: depending on the log *tab*, logCtrl may be either a wrapper or a widget.
-        self.logCtrl: Widget = None  # Set below. Same as self.textDict.get(self.tabName)
+        self.logCtrl: Widget = (
+            None  # Set below. Same as self.textDict.get(self.tabName)
+        )
         self.tabName: str = None  # The name of the active tab.
         self.tabFrame: Widget = None  # Same as self.frameDict.get(self.tabName)
-        self.canvasDict: dict[str, Widget] = {}  # Keys are page names.  Values are Widgets.
+        self.canvasDict: dict[
+            str, Widget
+        ] = {}  # Keys are page names.  Values are Widgets.
         self.frameDict: dict[str, Widget] = {}  # Keys are page names. Values are Frames
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
-        self.textDict: dict[str, Widget] = {}  # Keys are page names. Values are logCtrl's (text widgets).
+        self.textDict: dict[
+            str, Widget
+        ] = {}  # Keys are page names. Values are logCtrl's (text widgets).
         self.wrapper: TextAPI = None  # For cursesGui2.py.
-    #@+node:ekr.20070302094848.1: *3* LeoLog.clearTab
+
+    # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
         self.selectTab(tabName, wrap=wrap)
         w = self.logCtrl
         if w:
             w.delete(0, w.getLastIndex())
-    #@+node:ekr.20070302094848.2: *3* LeoLog.createTab
-    def createTab(self, tabName: str, createText: bool = True, widget: Widget = None, wrap: str = 'none') -> Widget:
+
+    # @+node:ekr.20070302094848.2: *3* LeoLog.createTab
+    def createTab(
+        self,
+        tabName: str,
+        createText: bool = True,
+        widget: Widget = None,
+        wrap: str = 'none',
+    ) -> Widget:
         # Important: widget *is* used in subclasses. Do not change the signature above.
         if createText:
             w = self.createTextWidget(self.tabFrame)
@@ -733,10 +801,12 @@ class LeoLog:
             self.canvasDict[tabName] = None
             self.textDict[tabName] = None
             self.frameDict[tabName] = tabName  # tabFrame
-    #@+node:ekr.20140903143741.18550: *3* LeoLog.LeoLog.createTextWidget
+
+    # @+node:ekr.20140903143741.18550: *3* LeoLog.LeoLog.createTextWidget
     def createTextWidget(self, parentFrame: Widget) -> Widget:
         return None
-    #@+node:ekr.20070302094848.5: *3* LeoLog.deleteTab
+
+    # @+node:ekr.20070302094848.5: *3* LeoLog.deleteTab
     def deleteTab(self, tabName: str) -> None:
         c = self.c
         if tabName == 'Log':
@@ -751,19 +821,23 @@ class LeoLog:
             self.selectTab('Log')
         c.invalidateFocus()
         c.bodyWantsFocus()
-    #@+node:ekr.20140903143741.18549: *3* LeoLog.enable/disable
+
+    # @+node:ekr.20140903143741.18549: *3* LeoLog.enable/disable
     def disable(self) -> None:
         self.enabled = False
 
     def enable(self, enabled: bool = True) -> None:
         self.enabled = enabled
-    #@+node:ekr.20070302094848.7: *3* LeoLog.getSelectedTab
+
+    # @+node:ekr.20070302094848.7: *3* LeoLog.getSelectedTab
     def getSelectedTab(self) -> str:
         return self.tabName
-    #@+node:ekr.20070302094848.6: *3* LeoLog.hideTab
+
+    # @+node:ekr.20070302094848.6: *3* LeoLog.hideTab
     def hideTab(self, tabName: str) -> None:
         self.selectTab('Log')
-    #@+node:ekr.20070302094848.8: *3* LeoLog.lower/raiseTab
+
+    # @+node:ekr.20070302094848.8: *3* LeoLog.lower/raiseTab
     def lowerTab(self, tabName: str) -> None:
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
@@ -771,16 +845,20 @@ class LeoLog:
     def raiseTab(self, tabName: str) -> None:
         self.c.invalidateFocus()
         self.c.bodyWantsFocus()
-    #@+node:ekr.20111122080923.10184: *3* LeoLog.orderedTabNames
+
+    # @+node:ekr.20111122080923.10184: *3* LeoLog.orderedTabNames
     def orderedTabNames(self, LeoLog: str = None) -> list:
         return list(self.frameDict.values())
-    #@+node:ekr.20070302094848.9: *3* LeoLog.numberOfVisibleTabs
+
+    # @+node:ekr.20070302094848.9: *3* LeoLog.numberOfVisibleTabs
     def numberOfVisibleTabs(self) -> int:
         return len([val for val in list(self.frameDict.values()) if val is not None])
-    #@+node:ekr.20070302101304: *3* LeoLog.put, putnl & helper
+
+    # @+node:ekr.20070302101304: *3* LeoLog.put, putnl & helper
     # All output to the log stream eventually comes here.
 
-    def put(self,
+    def put(
+        self,
         s: str,
         color: str = None,
         tabName: str = 'Log',
@@ -791,8 +869,15 @@ class LeoLog:
 
     def putnl(self, tabName: str = 'Log') -> None:
         pass
-    #@+node:ekr.20220410180439.1: *4* LeoLog.put_html_links & helpers
-    error_patterns = (g.flake8_pat, g.mypy_pat, g.pyflakes_pat, g.pylint_pat, g.python_pat)
+
+    # @+node:ekr.20220410180439.1: *4* LeoLog.put_html_links & helpers
+    error_patterns = (
+        g.flake8_pat,
+        g.mypy_pat,
+        g.pyflakes_pat,
+        g.pylint_pat,
+        g.python_pat,
+    )
 
     # This table encodes which groups extract the filename and line_number from global regex patterns.
     # This is the *only* method that should need to know this information!
@@ -816,8 +901,8 @@ class LeoLog:
         c = self.c
         trace = False and not g.unitTesting
 
-        #@+others  # Define helpers
-        #@+node:ekr.20220420100806.1: *5* function: find_match
+        # @+others  # Define helpers
+        # @+node:ekr.20220420100806.1: *5* function: find_match
         def find_match(line: str) -> tuple[re.Match, int, int]:
             """Search line for any pattern in link_table."""
             if not line.strip():
@@ -826,7 +911,8 @@ class LeoLog:
                 if m := pattern.match(line):
                     return m, filename_i, line_number_i
             return None, None, None
-        #@+node:ekr.20220412084258.1: *5* function: find_at_file_node
+
+        # @+node:ekr.20220412084258.1: *5* function: find_at_file_node
         def find_at_file_node(filename: str) -> Position:
             """Find a position corresponding to filename s"""
             target = os.path.normpath(filename)
@@ -842,10 +928,13 @@ class LeoLog:
                     if os.path.normpath(p.anyAtFileNodeName()).endswith(target):
                         return p
             return None
-        #@-others
+
+        # @-others
 
         # Report any bad chars.
-        printables = string.ascii_letters + string.digits + string.punctuation + ' ' + '\n'
+        printables = (
+            string.ascii_letters + string.digits + string.punctuation + ' ' + '\n'
+        )
         bad = list(set(ch for ch in s if ch not in printables))
         # Strip bad chars.
         if bad:
@@ -878,7 +967,9 @@ class LeoLog:
                     if trace:
                         # LeoQtLog.put writes: f'<a href="{url}" title="{nodeLink}">{s}</a>'
                         g.trace(f"{unl}::-{line_number}")
-                    self.put(line, nodeLink=f"{unl}::-{line_number}")  # Use global line.
+                    self.put(
+                        line, nodeLink=f"{unl}::-{line_number}"
+                    )  # Use global line.
                 else:  # An unusual case.
                     message = f"no p for {filename!r}"
                     if g.unitTesting:
@@ -888,10 +979,12 @@ class LeoLog:
             else:  # None of the patterns match.
                 self.put(line)
         return bool(found_matches)
-    #@+node:ekr.20070302094848.10: *3* LeoLog.renameTab
+
+    # @+node:ekr.20070302094848.10: *3* LeoLog.renameTab
     def renameTab(self, oldName: str, newName: str) -> None:
         pass
-    #@+node:ekr.20070302094848.11: *3* LeoLog.selectTab
+
+    # @+node:ekr.20070302094848.11: *3* LeoLog.selectTab
     def selectTab(self, tabName: str, wrap: str = 'none') -> None:
         """Create the tab if necessary and make it active."""
         c = self.c
@@ -908,12 +1001,16 @@ class LeoLog:
             # It is a cause of the 'sticky focus' problem.
             c.widgetWantsFocusNow(self.logCtrl)
         return tabFrame
-    #@-others
-#@+node:ekr.20031218072017.3704: ** class LeoTree
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.3704: ** class LeoTree
 class LeoTree:
     """The base class for the outline pane in Leo windows."""
-    #@+others
-    #@+node:ekr.20081005065934.8: *3* LeoTree.May be defined in subclasses
+
+    # @+others
+    # @+node:ekr.20081005065934.8: *3* LeoTree.May be defined in subclasses
     # These are new in Leo 4.6.
 
     def initAfterLoad(self) -> None:
@@ -932,7 +1029,8 @@ class LeoTree:
 
     def redraw_after_select(self, p: Position = None) -> None:
         self.c.redraw()
-    #@+node:ekr.20040803072955.91: *4* LeoTree.onHeadChanged
+
+    # @+node:ekr.20040803072955.91: *4* LeoTree.onHeadChanged
     # Tricky code: do not change without careful thought and testing.
     # Important: This code *is* used by the leoBridge module.
     def onHeadChanged(self, p: Position, undoType: str = 'Typing') -> None:
@@ -946,8 +1044,8 @@ class LeoTree:
             return
         ch = '\n'  # We only report the final keystroke.
         s = w.getAllText()
-        #@+<< truncate s if it has multiple lines >>
-        #@+node:ekr.20040803072955.94: *5* << truncate s if it has multiple lines >>
+        # @+<< truncate s if it has multiple lines >>
+        # @+node:ekr.20040803072955.94: *5* << truncate s if it has multiple lines >>
         # #3633: Replace newlines with a blank.
         if '\n' in s:
             s = re.sub(r'\s*\n\s*', ' ', s).replace('  ', ' ').rstrip()
@@ -956,7 +1054,7 @@ class LeoTree:
             g.warning("truncating headline to", limit, "characters")
             s = s[:limit]
         s = g.checkUnicode(s or '')
-        #@-<< truncate s if it has multiple lines >>
+        # @-<< truncate s if it has multiple lines >>
         # Make the change official, but undo to the *old* revert point.
         changed = s != p.h
         if not changed:
@@ -977,7 +1075,8 @@ class LeoTree:
         # Fix bug 1280689: don't call the non-existent c.treeEditFocusHelper
         c.redraw_after_head_changed()
         g.doHook("headkey2", c=c, p=p, ch=ch, changed=changed)
-    #@+node:ekr.20031218072017.3705: *3* LeoTree.__init__
+
+    # @+node:ekr.20031218072017.3705: *3* LeoTree.__init__
     def __init__(self, frame: Widget) -> None:
         """Ctor for the LeoTree class."""
         self.frame = frame
@@ -992,22 +1091,25 @@ class LeoTree:
         self.use_chapters = False  # May be overridden in subclasses.
         # Define these here to keep pylint happy.
         self.canvas: Widget = None
-    #@+node:ekr.20061109165848: *3* LeoTree.Must be defined in base class
-    #@+node:ekr.20040803072955.126: *4* LeoTree.endEditLabel
+
+    # @+node:ekr.20061109165848: *3* LeoTree.Must be defined in base class
+    # @+node:ekr.20040803072955.126: *4* LeoTree.endEditLabel
     def endEditLabel(self) -> None:
         """End editing of a headline and update p.h."""
         # Important: this will redraw if necessary.
         self.onHeadChanged(self.c.p)
         # Do *not* call setDefaultUnboundKeyAction here: it might put us in ignore mode!
-            # k.setDefaultInputState()
-            # k.showStateAndMode()
+        # k.setDefaultInputState()
+        # k.showStateAndMode()
         # This interferes with the find command and interferes with focus generally!
-            # c.bodyWantsFocus()
-    #@+node:ekr.20031218072017.3716: *4* LeoTree.getEditTextDict
+        # c.bodyWantsFocus()
+
+    # @+node:ekr.20031218072017.3716: *4* LeoTree.getEditTextDict
     def getEditTextDict(self, v: VNode) -> Widget:
         # New in 4.2: the default is an empty list.
         return self.edit_text_dict.get(v, [])
-    #@+node:ekr.20040803072955.88: *4* LeoTree.onHeadlineKey
+
+    # @+node:ekr.20040803072955.88: *4* LeoTree.onHeadlineKey
     def onHeadlineKey(self, event: LeoKeyEvent) -> None:
         """Handle a key event in a headline."""
         w = event.widget if event else None
@@ -1015,13 +1117,16 @@ class LeoTree:
         # This test prevents flashing in the headline when the control key is held down.
         if ch:
             self.updateHead(event, w)
-    #@+node:ekr.20120314064059.9739: *4* LeoTree.OnIconCtrlClick (@url)
+
+    # @+node:ekr.20120314064059.9739: *4* LeoTree.OnIconCtrlClick (@url)
     def OnIconCtrlClick(self, p: Position) -> None:
         g.openUrl(p)
-    #@+node:ekr.20031218072017.2312: *4* LeoTree.OnIconDoubleClick (do nothing)
+
+    # @+node:ekr.20031218072017.2312: *4* LeoTree.OnIconDoubleClick (do nothing)
     def OnIconDoubleClick(self, p: Position) -> None:
         pass
-    #@+node:ekr.20051026083544.2: *4* LeoTree.updateHead
+
+    # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
     def updateHead(self, event: LeoKeyEvent, w: TextAPI) -> None:
         """
         Update a headline from an event.
@@ -1056,14 +1161,16 @@ class LeoTree:
         if s.endswith('\n'):
             s = s[:-1]
         # 2011/11/14: Not used at present.
-            # w.setWidth(self.headWidth(s=s))
+        # w.setWidth(self.headWidth(s=s))
         if ch in ('\n', '\r'):
             self.endEditLabel()
-    #@+node:ekr.20031218072017.3706: *3* LeoTree.Must be defined in subclasses
+
+    # @+node:ekr.20031218072017.3706: *3* LeoTree.Must be defined in subclasses
     # Drawing & scrolling.
 
     def redraw(self, p: Position = None) -> None:
         raise NotImplementedError
+
     redraw_now = redraw
 
     def scrollTo(self, p: Position) -> None:
@@ -1071,7 +1178,8 @@ class LeoTree:
 
     # Headlines.
 
-    def editLabel(self,
+    def editLabel(
+        self,
         p: Position,
         selectAll: bool = False,
         selection: tuple = None,
@@ -1080,7 +1188,8 @@ class LeoTree:
 
     def edit_widget(self, p: Position) -> Widget:
         raise NotImplementedError
-    #@+node:ekr.20040803072955.128: *3* LeoTree.select & helpers
+
+    # @+node:ekr.20040803072955.128: *3* LeoTree.select & helpers
     tree_select_lockout = False
 
     def select(self, p: Position) -> None:
@@ -1098,7 +1207,7 @@ class LeoTree:
             print(f"----- {tag}: {p.h}")
             # print(f"{tag:>30}: {c.frame.body.wrapper} {p.h}")
             # Format matches traces in retired leoflexx.py
-                # print(f"{tag:30}: {len(p.b):4} {p.gnx} {p.h}")
+            # print(f"{tag:30}: {len(p.b):4} {p.gnx} {p.h}")
         try:
             self.tree_select_lockout = True
             self.prev_v = c.p.v
@@ -1117,7 +1226,8 @@ class LeoTree:
                         self.setItemForCurrentPosition()
             else:
                 c.requestLaterRedraw = True
-    #@+node:ekr.20070423101911: *4* LeoTree.selectHelper & helpers
+
+    # @+node:ekr.20070423101911: *4* LeoTree.selectHelper & helpers
     def selectHelper(self, p: Position) -> None:
         """
         A helper function for leoTree.select.
@@ -1151,14 +1261,16 @@ class LeoTree:
         if call_event_handlers:
             g.doHook("select2", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p)
             g.doHook("select3", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p)
-    #@+node:ekr.20140829053801.18453: *5* 1. LeoTree.unselect_helper
+
+    # @+node:ekr.20140829053801.18453: *5* 1. LeoTree.unselect_helper
     def unselect_helper(self, old_p: Position, p: Position) -> None:
         """Unselect the old node, calling the unselect hooks."""
         c = self.c
         call_event_handlers = p != old_p
         if call_event_handlers:
             unselect = not g.doHook(
-                "unselect1", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p)
+                "unselect1", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p
+            )
         else:
             unselect = True
 
@@ -1170,14 +1282,14 @@ class LeoTree:
                 self.unselectItem(old_p)
         if call_event_handlers:
             g.doHook("unselect2", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p)
-    #@+node:ekr.20140829053801.18455: *5* 2. LeoTree.select_new_node & helper
+
+    # @+node:ekr.20140829053801.18455: *5* 2. LeoTree.select_new_node & helper
     def select_new_node(self, old_p: Position, p: Position) -> None:
         """Select the new node, part 1."""
         c = self.c
         call_event_handlers = p != old_p
-        if (
-            call_event_handlers and g.doHook("select1",
-            c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p)
+        if call_event_handlers and g.doHook(
+            "select1", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p
         ):
             if 'select' in g.app.debug:
                 g.trace('select1 override')
@@ -1185,7 +1297,8 @@ class LeoTree:
         c.frame.setWrap(p)  # Not that expensive
         self.set_body_text_after_select(p, old_p)
         c.nodeHistory.update(p)
-    #@+node:ekr.20090608081524.6109: *6* LeoTree.set_body_text_after_select
+
+    # @+node:ekr.20090608081524.6109: *6* LeoTree.set_body_text_after_select
     def set_body_text_after_select(self, p: Position, old_p: Position) -> None:
         """Set the text after selecting a node."""
         c = self.c
@@ -1201,14 +1314,15 @@ class LeoTree:
         c.setCurrentPosition(p)
         w.setAllText(s)
         # This is now done after c.p has been changed.
-            # p.restoreCursorAndScroll()
-    #@+node:ekr.20140829053801.18458: *5* 3. LeoTree.change_current_position
+        # p.restoreCursorAndScroll()
+
+    # @+node:ekr.20140829053801.18458: *5* 3. LeoTree.change_current_position
     def change_current_position(self, old_p: Position, p: Position) -> None:
         """Select the new node, part 2."""
         c = self.c
 
         # c.setCurrentPosition(p)
-            # This is now done in set_body_text_after_select.
+        # This is now done in set_body_text_after_select.
 
         # GS I believe this should also get into the select1 hook
         c.frame.scanForTabWidth(p)
@@ -1220,13 +1334,15 @@ class LeoTree:
                 theChapter.p = p.copy()
 
         # Do not call treeFocusHelper here!
-            # c.treeFocusHelper()
+        # c.treeFocusHelper()
         c.undoer.onSelect(old_p, p)
-    #@+node:ekr.20140829053801.18459: *5* 4. LeoTree.scroll_cursor
+
+    # @+node:ekr.20140829053801.18459: *5* 4. LeoTree.scroll_cursor
     def scroll_cursor(self, p: Position) -> None:
         """Scroll the cursor."""
         p.restoreCursorAndScroll()  # Was in setBodyTextAfterSelect
-    #@+node:ekr.20140829053801.18460: *5* 5. LeoTree.set_status_line
+
+    # @+node:ekr.20140829053801.18460: *5* 5. LeoTree.set_status_line
     def set_status_line(self, p: Position) -> None:
         """Update the status line."""
         c = self.c
@@ -1235,22 +1351,35 @@ class LeoTree:
         if p and p.v:
             s = c.frame.computeStatusUnl(p)
             c.frame.putStatusLine(s)
-    #@-others
-#@+node:ekr.20070317073627: ** class LeoTreeTab
+
+    # @-others
+
+
+# @+node:ekr.20070317073627: ** class LeoTreeTab
 class LeoTreeTab:
     """A class representing a tabbed outline pane."""
-    #@+others
-    #@+node:ekr.20070317073627.1: *3* LeoTreeTab.ctor (LeoTreeTab)
-    def __init__(self, c: Cmdr, chapterController: ChapterController, parentFrame: Widget) -> None:
+
+    # @+others
+    # @+node:ekr.20070317073627.1: *3* LeoTreeTab.ctor (LeoTreeTab)
+    def __init__(
+        self, c: Cmdr, chapterController: ChapterController, parentFrame: Widget
+    ) -> None:
         self.c = c
         self.cc: ChapterController
         self.nb: NbController = None  # Created in createControl.
         self.parentFrame: Widget = parentFrame
-    #@+node:ekr.20070317073755: *3* LeoTreeTab: Must be defined in subclasses
+
+    # @+node:ekr.20070317073755: *3* LeoTreeTab: Must be defined in subclasses
     def createControl(self) -> TextAPI:
         raise NotImplementedError
 
-    def createTab(self, tabName: str, createText: bool = True, widget: Widget = None, select: bool = True) -> None:
+    def createTab(
+        self,
+        tabName: str,
+        createText: bool = True,
+        widget: Widget = None,
+        select: bool = True,
+    ) -> None:
         raise NotImplementedError
 
     def destroyTab(self, tabName: str) -> None:
@@ -1261,12 +1390,16 @@ class LeoTreeTab:
 
     def setTabLabel(self, tabName: str) -> None:
         raise NotImplementedError
-    #@-others
-#@+node:ekr.20031218072017.2191: ** class NullBody (LeoBody)
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.2191: ** class NullBody (LeoBody)
 class NullBody(LeoBody):
     """A do-nothing body class."""
-    #@+others
-    #@+node:ekr.20031218072017.2192: *3*  NullBody.__init__
+
+    # @+others
+    # @+node:ekr.20031218072017.2192: *3*  NullBody.__init__
     def __init__(self, frame: Widget = None, parentFrame: Widget = None) -> None:
         """Ctor for NullBody class."""
         super().__init__(frame, parentFrame)
@@ -1276,7 +1409,8 @@ class NullBody(LeoBody):
         self.widget: Widget = None
         self.wrapper = StringTextWrapper(c=self.c, name='body')
         self.colorizer = NullColorizer(self.c)
-    #@+node:ekr.20031218072017.2197: *3* NullBody: LeoBody interface
+
+    # @+node:ekr.20031218072017.2197: *3* NullBody: LeoBody interface
     # Birth, death...
     def createControl(self, parentFrame: Widget, p: Position) -> TextAPI:
         pass
@@ -1291,8 +1425,11 @@ class NullBody(LeoBody):
     # Low-level gui...
     def setFocus(self) -> None:
         pass
-    #@-others
-#@+node:ekr.20031218072017.2218: ** class NullColorizer (BaseColorizer)
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.2218: ** class NullColorizer (BaseColorizer)
 class NullColorizer(leoColorizer.BaseColorizer):
     """A colorizer class that doesn't color."""
 
@@ -1300,11 +1437,14 @@ class NullColorizer(leoColorizer.BaseColorizer):
 
     def colorize(self, p: Position, *, force: bool = False) -> None:
         self.recolorCount += 1  # For #503: Use string/null gui for unit tests
-#@+node:ekr.20031218072017.2222: ** class NullFrame (LeoFrame)
+
+
+# @+node:ekr.20031218072017.2222: ** class NullFrame (LeoFrame)
 class NullFrame(LeoFrame):
     """A null frame class for tests and batch execution."""
-    #@+others
-    #@+node:ekr.20040327105706: *3*  NullFrame.ctor
+
+    # @+others
+    # @+node:ekr.20040327105706: *3*  NullFrame.ctor
     def __init__(self, c: Cmdr, title: str, gui: LeoGui) -> None:
         """Ctor for the NullFrame class."""
         super().__init__(c, gui)
@@ -1325,7 +1465,8 @@ class NullFrame(LeoFrame):
         self.h = 500
         self.x = 40
         self.y = 40
-    #@+node:ekr.20061109124552: *3* NullFrame.do nothings
+
+    # @+node:ekr.20061109124552: *3* NullFrame.do nothings
     def bringToFront(self) -> None:
         pass
 
@@ -1441,24 +1582,29 @@ class NullFrame(LeoFrame):
 
     def update(self) -> None:
         pass
-    #@+node:ekr.20171112115045.1: *3* NullFrame.finishCreate
-    def finishCreate(self) -> None:
 
+    # @+node:ekr.20171112115045.1: *3* NullFrame.finishCreate
+    def finishCreate(self) -> None:
         # 2017/11/12: For #503: Use string/null gui for unit tests.
         self.createFirstTreeNode()  # Call the base LeoFrame method.
-    #@-others
-#@+node:ekr.20070301164543: ** class NullIconBarClass
+
+    # @-others
+
+
+# @+node:ekr.20070301164543: ** class NullIconBarClass
 class NullIconBarClass:
     """A class representing the singleton Icon bar"""
-    #@+others
-    #@+node:ekr.20070301164543.1: *3*  NullIconBarClass.ctor
+
+    # @+others
+    # @+node:ekr.20070301164543.1: *3*  NullIconBarClass.ctor
     def __init__(self, c: Cmdr, parentFrame: Widget) -> None:
         """Ctor for NullIconBarClass."""
         self.c = c
         self.iconFrame = None
         self.parentFrame: Widget = parentFrame
         self.w: Widget = g.NullObject()
-    #@+node:ekr.20070301165343: *3*  NullIconBarClass.Do nothing
+
+    # @+node:ekr.20070301165343: *3*  NullIconBarClass.Do nothing
     def addRow(self, height: str = None) -> None:
         pass
 
@@ -1482,7 +1628,8 @@ class NullIconBarClass:
 
     def show(self) -> None:
         pass
-    #@+node:ekr.20070301164543.2: *3* NullIconBarClass.add
+
+    # @+node:ekr.20070301164543.2: *3* NullIconBarClass.add
     def add(self, *args: Args, **keys: KWargs) -> Widget:
         """Add a (virtual) button to the (virtual) icon bar."""
         command: Callable = keys.get('command')
@@ -1495,10 +1642,10 @@ class NullIconBarClass:
 
             command = commandCallback
 
-
         class nullButtonWidget:
-
-            def __init__(self, c: Cmdr, command: Callable, name: str, text: str) -> None:
+            def __init__(
+                self, c: Cmdr, command: Callable, name: str, text: str
+            ) -> None:
                 self.c = c
                 self.command = command
                 self.name = name
@@ -1509,11 +1656,14 @@ class NullIconBarClass:
 
         b = nullButtonWidget(self.c, command, name, text)
         return b
-    #@+node:ekr.20140904043623.18574: *3* NullIconBarClass.clear
+
+    # @+node:ekr.20140904043623.18574: *3* NullIconBarClass.clear
     def clear(self) -> None:
         pass
-    #@+node:ekr.20140904043623.18575: *3* NullIconBarClass.setCommandForButton
-    def setCommandForButton(self,
+
+    # @+node:ekr.20140904043623.18575: *3* NullIconBarClass.setCommandForButton
+    def setCommandForButton(
+        self,
         button: Widget,
         command: str,
         command_p: Position,
@@ -1525,45 +1675,60 @@ class NullIconBarClass:
         try:
             # See PR #2441: Add rclick support.
             from leo.plugins.mod_scripting import build_rclick_tree
+
             rclicks = build_rclick_tree(command_p, top_level=True)
             button.rclicks = rclicks
         except Exception:
             pass
-    #@-others
-#@+node:ekr.20031218072017.2232: ** class NullLog (LeoLog)
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.2232: ** class NullLog (LeoLog)
 class NullLog(LeoLog):
     """A do-nothing log class."""
-    #@+others
-    #@+node:ekr.20070302095500: *3* NullLog.Birth
-    #@+node:ekr.20041012083237: *4* NullLog.__init__
-    def __init__(self, frame: Widget = None, parentFrame: Widget = None) -> None:
 
+    # @+others
+    # @+node:ekr.20070302095500: *3* NullLog.Birth
+    # @+node:ekr.20041012083237: *4* NullLog.__init__
+    def __init__(self, frame: Widget = None, parentFrame: Widget = None) -> None:
         super().__init__(frame, parentFrame)
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
         self.logNumber = 0
         self.widget: Widget = self.createControl(parentFrame)
         self.wrapper: TextAPI = None  # For cursesGui2.py.
-    #@+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
+
+    # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
     def finishCreate(self) -> None:
         pass
-    #@+node:ekr.20041012083237.1: *4* NullLog.createControl
+
+    # @+node:ekr.20041012083237.1: *4* NullLog.createControl
     def createControl(self, parentFrame: Widget) -> StringTextWrapper:
         return self.createTextWidget(parentFrame)
-    #@+node:ekr.20070302095121: *4* NullLog.createTextWidget
+
+    # @+node:ekr.20070302095121: *4* NullLog.createTextWidget
     def createTextWidget(self, parentFrame: Widget) -> StringTextWrapper:
         self.logNumber += 1
         c = self.c
         return StringTextWrapper(c=c, name=f"log-{self.logNumber}")
-    #@+node:ekr.20181119135041.1: *3* NullLog.hasSelection
+
+    # @+node:ekr.20181119135041.1: *3* NullLog.hasSelection
     def hasSelection(self) -> None:
         return self.widget.hasSelection()
-    #@+node:ekr.20111119145033.10186: *3* NullLog.isLogWidget
+
+    # @+node:ekr.20111119145033.10186: *3* NullLog.isLogWidget
     def isLogWidget(self, w: TextAPI) -> bool:
         return False
-    #@+node:ekr.20041012083237.3: *3* NullLog.put and putnl
-    def put(self,
-        s: str, color: str = None, tabName: str = 'Log', from_redirect: bool = False, nodeLink: str = None,
+
+    # @+node:ekr.20041012083237.3: *3* NullLog.put and putnl
+    def put(
+        self,
+        s: str,
+        color: str = None,
+        tabName: str = 'Log',
+        from_redirect: bool = False,
+        nodeLink: str = None,
     ) -> None:
         if self.enabled and not g.unitTesting:
             try:
@@ -1575,14 +1740,21 @@ class NullLog(LeoLog):
     def putnl(self, tabName: str = 'Log') -> None:
         if self.enabled and not g.unitTesting:
             g.pr('')
-    #@+node:ekr.20060124085830: *3* NullLog.tabs
+
+    # @+node:ekr.20060124085830: *3* NullLog.tabs
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
         pass
 
     def createCanvas(self, tabName: str) -> None:
         pass
 
-    def createTab(self, tabName: str, createText: bool = True, widget: Widget = None, wrap: str = 'none') -> None:
+    def createTab(
+        self,
+        tabName: str,
+        createText: bool = True,
+        widget: Widget = None,
+        wrap: str = 'none',
+    ) -> None:
         pass
 
     def deleteTab(self, tabName: str) -> None:
@@ -1602,8 +1774,11 @@ class NullLog(LeoLog):
 
     def selectTab(self, tabName: str, wrap: str = 'none') -> None:
         pass
-    #@-others
-#@+node:ekr.20070302171509: ** class NullStatusLineClass
+
+    # @-others
+
+
+# @+node:ekr.20070302171509: ** class NullStatusLineClass
 class NullStatusLineClass:
     """A do-nothing status line."""
 
@@ -1614,8 +1789,8 @@ class NullStatusLineClass:
         self.parentFrame = parentFrame
         self.textWidget = StringTextWrapper(c, name='status-line')
 
-    #@+others
-    #@+node:ekr.20070302171917: *3* NullStatusLineClass.methods
+    # @+others
+    # @+node:ekr.20070302171917: *3* NullStatusLineClass.methods
     def computeStatusUnl(self, p: Position) -> str:
         return ''
 
@@ -1645,25 +1820,32 @@ class NullStatusLineClass:
 
     def update(self) -> None:
         pass
-    #@-others
-#@+node:ekr.20031218072017.2233: ** class NullTree (LeoTree)
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.2233: ** class NullTree (LeoTree)
 class NullTree(LeoTree):
     """A do-almost-nothing tree class."""
-    #@+others
-    #@+node:ekr.20031218072017.2234: *3*  NullTree.__init__
+
+    # @+others
+    # @+node:ekr.20031218072017.2234: *3*  NullTree.__init__
     def __init__(self, frame: Widget) -> None:
         """Ctor for NullTree class."""
         super().__init__(frame)
         assert self.frame
         self.c = frame.c
-        self.editWidgetsDict: dict[VNode, Widget] = {}  # Keys are vnodes, values are StringTextWidgets.
+        self.editWidgetsDict: dict[
+            VNode, Widget
+        ] = {}  # Keys are vnodes, values are StringTextWidgets.
         self.font = None
         self.fontName = None
         self.canvas = None
         self.treeWidget = g.NullObject()
         self.redrawCount = 0
         self.updateCount = 0
-    #@+node:ekr.20070228163350.2: *3* NullTree.edit_widget
+
+    # @+node:ekr.20070228163350.2: *3* NullTree.edit_widget
     def edit_widget(self, p: Position) -> TextAPI:
         d = self.editWidgetsDict
         if not p or not p.v:
@@ -1671,12 +1853,14 @@ class NullTree(LeoTree):
         w = d.get(p.v)
         if not w:
             d[p.v] = w = StringTextWrapper(
-                c=self.c,
-                name=f"head-{1 + len(list(d.keys())):d}")
+                c=self.c, name=f"head-{1 + len(list(d.keys())):d}"
+            )
             w.setAllText(p.h)
         return w
-    #@+node:ekr.20070228164730: *3* NullTree.editLabel
-    def editLabel(self,
+
+    # @+node:ekr.20070228164730: *3* NullTree.editLabel
+    def editLabel(
+        self,
         p: Position,
         selectAll: bool = False,
         selection: tuple = None,
@@ -1688,14 +1872,16 @@ class NullTree(LeoTree):
             e = None
             return e, wrapper
         return None, None
-    #@+node:ekr.20070228173611: *3* NullTree.printWidgets
+
+    # @+node:ekr.20070228173611: *3* NullTree.printWidgets
     def printWidgets(self) -> None:
         d = self.editWidgetsDict
         for key in d:
             # keys are vnodes, values are StringTextWidgets.
             w = d.get(key)
             g.pr('w', w, 'v.h:', key.headString, 's:', repr(w.s))
-    #@+node:ekr.20070228163350.1: *3* NullTree.Drawing & scrolling
+
+    # @+node:ekr.20070228163350.1: *3* NullTree.Drawing & scrolling
     def redraw(self, p: Position = None) -> None:
         self.redrawCount += 1
 
@@ -1715,7 +1901,8 @@ class NullTree(LeoTree):
 
     def scrollTo(self, p: Position) -> None:
         pass
-    #@+node:ekr.20070228160345: *3* NullTree.setHeadline
+
+    # @+node:ekr.20070228160345: *3* NullTree.setHeadline
     def setHeadline(self, p: Position, s: str) -> None:
         """Set the actual text of the headline widget.
 
@@ -1728,9 +1915,12 @@ class NullTree(LeoTree):
             w.insert(0, s)
         else:
             g.trace('-' * 20, 'oops')  # pragma: no cover
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

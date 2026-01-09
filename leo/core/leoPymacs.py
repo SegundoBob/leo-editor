@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20061024060248.1: * @file leoPymacs.py
-#@+<< leoPymacs docstring>>
-#@+node:ekr.20061024060248.2: ** << leoPymacs docstring >>
+# @+leo-ver=5-thin
+# @+node:ekr.20061024060248.1: * @file leoPymacs.py
+# @+<< leoPymacs docstring>>
+# @+node:ekr.20061024060248.2: ** << leoPymacs docstring >>
 """A module to allow the Pymacs bridge to access Leo data.
 
 All code in this module must be called *from* Emacs:
@@ -22,40 +22,50 @@ Notes:
   Note that full path names are required in each case.
 
 """
-#@-<< leoPymacs docstring>>
+# @-<< leoPymacs docstring>>
 
 # As in leo.py we must be very careful about imports.
 
 g = None  # set by init: do *not* import it here!
 inited = False
 pymacsFile = __file__
-#@+others
-#@+node:ekr.20061024131236: ** dump (pymacs)
+
+
+# @+others
+# @+node:ekr.20061024131236: ** dump (pymacs)
 def dump(anObject):
     # global g
     init()
     return str(g.toEncodedString(repr(anObject), encoding='ascii'))
-#@+node:ekr.20061024130957: ** getters (pymacs)
+
+
+# @+node:ekr.20061024130957: ** getters (pymacs)
 def get_app():
     """Scripts can use g.app.scriptDict for communication with pymacs."""
     # global g
     init()
     return g.app
 
+
 def get_g():
     # global g
     init()
     return g
 
+
 def script_result():
     # global g
     init()
     return g.app.scriptResult
-#@+node:ekr.20061024060248.3: ** hello (pymacs)
+
+
+# @+node:ekr.20061024060248.3: ** hello (pymacs)
 def hello():
     init()
     return f"Hello from Leo.  g.app: {g.app}"
-#@+node:ekr.20061024075542: ** init  (pymacs)
+
+
+# @+node:ekr.20061024075542: ** init  (pymacs)
 def init():
     global inited
     if inited:
@@ -64,6 +74,7 @@ def init():
     # Add the parent path of this file to sys.path
     import os
     import sys
+
     path = os.path.normpath(os.path.join(os.path.dirname(pymacsFile), '..', '..'))
     if path not in sys.path:
         print(f"leoPymacs: Append {path!r} to sys.path")
@@ -88,7 +99,9 @@ def init():
     if 1:  # These traces show up in the pymacs buffer.
         g.trace('app', g.app)
         g.trace('gui', g.app.gui)
-#@+node:ekr.20061024075542.1: ** open (pymacs)
+
+
+# @+node:ekr.20061024075542.1: ** open (pymacs)
 def open(fileName=None):
     # global g
     init()
@@ -104,7 +117,9 @@ def open(fileName=None):
     else:
         g.es_print('', 'leoPymacs.open:', 'can not open', fileName)
     return c
-#@+node:ekr.20061024084200: ** run-script (pymacs)
+
+
+# @+node:ekr.20061024084200: ** run-script (pymacs)
 def run_script(c, script, p=None):
     # global g
 
@@ -123,8 +138,10 @@ def run_script(c, script, p=None):
         silent=True,  # Don't write to the log.
     )
     return g.app.scriptResult
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

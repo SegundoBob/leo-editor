@@ -2415,7 +2415,7 @@ def file_date(theFile: IO, format: str = None) -> str:
             if format is None:
                 format = "%m/%d/%y %H:%M:%S"
             return time.strftime(format, time.gmtime(n))
-        except(ImportError, NameError):
+        except (ImportError, NameError):
             pass  # Time module is platform dependent.
     return ""
 
@@ -4218,7 +4218,7 @@ def skip_pp_directive(s: str, i: int) -> int:
 
 def skip_pp_if(s: str, i: int) -> tuple[int, int]:
     start_line = g.get_line(s, i)  # used for error messages.
-    assert(
+    assert (
         g.match_word(s, i, "#if")
         or g.match_word(s, i, "#ifdef")
         or g.match_word(s, i, "#ifndef")
@@ -5548,7 +5548,7 @@ def bytesToStr(b: bytes, reportErrors: bool = False) -> str:
     encoding = 'utf-8'
     try:
         s = b.decode(encoding, 'strict')
-    except(UnicodeDecodeError, UnicodeError):  # noqa
+    except (UnicodeDecodeError, UnicodeError):  # noqa
         # https://wiki.python.org/moin/UnicodeDecodeError
         s = b.decode(encoding, 'replace')
         if reportErrors:
@@ -5589,7 +5589,7 @@ def checkUnicode(s: str, encoding: str = None) -> str:
         encoding = 'utf-8'
     try:
         s = s.decode(encoding, 'strict')
-    except(UnicodeDecodeError, UnicodeError):  # noqa
+    except (UnicodeDecodeError, UnicodeError):  # noqa
         # https://wiki.python.org/moin/UnicodeDecodeError
         s = s.decode(encoding, 'replace')
         g.trace(g.callers())
@@ -5739,7 +5739,7 @@ def toUnicode(s: object, encoding: str = None, reportErrors: bool = False) -> st
         encoding = 'utf-8'
     try:
         return s.decode(encoding, 'strict')
-    except(UnicodeDecodeError, UnicodeError):  # noqa
+    except (UnicodeDecodeError, UnicodeError):  # noqa
         # https://wiki.python.org/moin/UnicodeDecodeError
         s = s.decode(encoding, 'replace')
         if g.unitTesting:
@@ -8027,7 +8027,7 @@ def findGnx(gnx: str, c: Cmdr) -> Optional[Position]:
         gnx = m.group(1)
         try:
             n = int(m.group(2))
-        except(TypeError, ValueError):
+        except (TypeError, ValueError):
             pass
     # Search forwards, setting p2.
     for p in c.all_unique_positions():
@@ -8128,7 +8128,7 @@ def findUnl(unlList1: list[str], c: Cmdr) -> Optional[Position]:
                     line = m.group(3)
                     try:
                         n = int(line)
-                    except(TypeError, ValueError):
+                    except (TypeError, ValueError):
                         g.trace('bad line number', line)
                 if n < 0:
                     p2, offset = c.gotoCommands.find_file_line(

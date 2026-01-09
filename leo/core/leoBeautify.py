@@ -1,8 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20150521115018.1: * @file leoBeautify.py
+# @+leo-ver=5-thin
+# @+node:ekr.20150521115018.1: * @file leoBeautify.py
 """Leo's beautification classes."""
-#@+<< leoBeautify imports & annotations >>
-#@+node:ekr.20220822114944.1: ** << leoBeautify imports & annotations >>
+
+# @+<< leoBeautify imports & annotations >>
+# @+node:ekr.20220822114944.1: ** << leoBeautify imports & annotations >>
 from __future__ import annotations
 import sys
 import os
@@ -23,12 +24,13 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-#@-<< leoBeautify imports & annotations >>
+# @-<< leoBeautify imports & annotations >>
 
-#@+others
-#@+node:ekr.20191104201534.1: **   Top-level functions (leoBeautify.py)
-#@+node:ekr.20150528131012.1: *3* Beautify:commands
-#@+node:ekr.20150528131012.3: *4* beautify-c
+
+# @+others
+# @+node:ekr.20191104201534.1: **   Top-level functions (leoBeautify.py)
+# @+node:ekr.20150528131012.1: *3* Beautify:commands
+# @+node:ekr.20150528131012.3: *4* beautify-c
 @g.command('beautify-c')
 @g.command('pretty-print-c')
 def beautifyCCode(event: LeoKeyEvent) -> None:
@@ -36,7 +38,9 @@ def beautifyCCode(event: LeoKeyEvent) -> None:
     c = event.get('c')
     if c:
         CPrettyPrinter(c).pretty_print_tree(c.p)
-#@+node:ekr.20200107165628.1: *4* beautify-file-diff
+
+
+# @+node:ekr.20200107165628.1: *4* beautify-file-diff
 @g.command('diff-beautify-files')
 @g.command('beautify-files-diff')
 def orange_diff_files(event: LeoKeyEvent) -> None:
@@ -67,7 +71,9 @@ def orange_diff_files(event: LeoKeyEvent) -> None:
     t2 = time.process_time()
     print('')
     g.es_print(f"{tag}: {len(roots)} file{g.plural(len(roots))} in {t2 - t1:5.2f} sec.")
-#@+node:ekr.20200107165603.1: *4* beautify-files
+
+
+# @+node:ekr.20200107165603.1: *4* beautify-files
 @g.command('beautify-files')
 def orange_files(event: LeoKeyEvent) -> None:
     """beautify one or more files at c.p."""
@@ -91,10 +97,11 @@ def orange_files(event: LeoKeyEvent) -> None:
     t2 = time.process_time()
     print('')
     g.es_print(
-        f"total files: {len(roots)}, "
-        f"changed files: {n_changed}, "
-        f"in {t2 - t1:5.2f} sec.")
-#@+node:ekr.20200103055814.1: *4* blacken-files
+        f"total files: {len(roots)}, changed files: {n_changed}, in {t2 - t1:5.2f} sec."
+    )
+
+
+# @+node:ekr.20200103055814.1: *4* blacken-files
 @g.command('blacken-files')
 def blacken_files(event: LeoKeyEvent) -> None:
     """Run black on one or more files at c.p."""
@@ -110,11 +117,15 @@ def blacken_files(event: LeoKeyEvent) -> None:
         path = c.fullPath(root)
         if path and os.path.exists(path):
             g.es_print(f"{tag}: {path}")
-            g.execute_shell_commands(f'&"{python}" -m black --skip-string-normalization "{path}"')
+            g.execute_shell_commands(
+                f'&"{python}" -m black --skip-string-normalization "{path}"'
+            )
         else:
             print(f"{tag}: file not found:{path}")
             g.es(f"{tag}: file not found:\n{path}")
-#@+node:ekr.20200103060057.1: *4* blacken-files-diff
+
+
+# @+node:ekr.20200103060057.1: *4* blacken-files-diff
 @g.command('blacken-files-diff')
 def blacken_files_diff(event: LeoKeyEvent) -> None:
     """
@@ -133,11 +144,15 @@ def blacken_files_diff(event: LeoKeyEvent) -> None:
         path = c.fullPath(root)
         if path and os.path.exists(path):
             g.es_print(f"{tag}: {path}")
-            g.execute_shell_commands(f'&"{python}" -m black --skip-string-normalization --diff "{path}"')
+            g.execute_shell_commands(
+                f'&"{python}" -m black --skip-string-normalization --diff "{path}"'
+            )
         else:
             print(f"{tag}: file not found:{path}")
             g.es(f"{tag}: file not found:\n{path}")
-#@+node:ekr.20191025072511.1: *4* fstringify-files
+
+
+# @+node:ekr.20191025072511.1: *4* fstringify-files
 @g.command('fstringify-files')
 def fstringify_files(event: LeoKeyEvent) -> None:
     """fstringify one or more files at c.p."""
@@ -166,10 +181,11 @@ def fstringify_files(event: LeoKeyEvent) -> None:
     t2 = time.process_time()
     print('')
     g.es_print(
-        f"total files: {len(roots)}, "
-        f"changed files: {n_changed}, "
-        f"in {t2 - t1:5.2f} sec.")
-#@+node:ekr.20200103055858.1: *4* fstringify-files-diff
+        f"total files: {len(roots)}, changed files: {n_changed}, in {t2 - t1:5.2f} sec."
+    )
+
+
+# @+node:ekr.20200103055858.1: *4* fstringify-files-diff
 @g.command('diff-fstringify-files')
 @g.command('fstringify-files-diff')
 def fstringify_diff_files(event: LeoKeyEvent) -> None:
@@ -199,7 +215,9 @@ def fstringify_diff_files(event: LeoKeyEvent) -> None:
     t2 = time.process_time()
     print('')
     g.es_print(f"{len(roots)} file{g.plural(len(roots))} in {t2 - t1:5.2f} sec.")
-#@+node:ekr.20200112060001.1: *4* fstringify-files-silent
+
+
+# @+node:ekr.20200112060001.1: *4* fstringify-files-silent
 @g.command('silent-fstringify-files')
 @g.command('fstringify-files-silent')
 def fstringify_files_silent(event: LeoKeyEvent) -> None:
@@ -228,12 +246,16 @@ def fstringify_files_silent(event: LeoKeyEvent) -> None:
     g.es_print(
         f"{n_tot} total file{g.plural(len(roots))}, "
         f"{n_changed} changed file{g.plural(n_changed)} "
-        f"in {t2 - t1:5.2f} sec.")
-#@+node:ekr.20200108045048.1: *4* orange_settings
+        f"in {t2 - t1:5.2f} sec."
+    )
+
+
+# @+node:ekr.20200108045048.1: *4* orange_settings
 def orange_settings(c: Cmdr) -> dict[str, object]:
     """Return a dictionary of settings for the leo.core.leoAst.Orange class."""
     allow_joined_strings = c.config.getBool(
-        'beautify-allow-joined-strings', default=False)
+        'beautify-allow-joined-strings', default=False
+    )
     n_max_join = c.config.getInt('beautify-max-join-line-length')
     max_join_line_length = 88 if n_max_join is None else n_max_join
     n_max_split = c.config.getInt('beautify-max-split-line-length')
@@ -248,15 +270,19 @@ def orange_settings(c: Cmdr) -> dict[str, object]:
         'max_split_line_length': max_split_line_length,
         'tab_width': abs(c.tab_width),
     }
-#@+node:ekr.20191028140926.1: *3* Beautify:test functions
-#@+node:ekr.20191029184103.1: *4* function: show
+
+
+# @+node:ekr.20191028140926.1: *3* Beautify:test functions
+# @+node:ekr.20191029184103.1: *4* function: show
 def show(obj: object, tag: str, dump: bool) -> None:
     print(f"{tag}...\n")
     if dump:
         g.printObj(obj)
     else:
         print(obj)
-#@+node:ekr.20150602154951.1: *3* function: should_beautify
+
+
+# @+node:ekr.20150602154951.1: *3* function: should_beautify
 def should_beautify(p: Position) -> bool:
     """
     Return True if @beautify is in effect for node p.
@@ -288,14 +314,18 @@ def should_beautify(p: Position) -> bool:
             return False
     # The default is to beautify.
     return True
-#@+node:ekr.20150602204440.1: *3* function: should_kill_beautify
+
+
+# @+node:ekr.20150602204440.1: *3* function: should_kill_beautify
 def should_kill_beautify(p: Position) -> bool:
     """Return True if p.b contains @killbeautify"""
     return p.findDirective('killbeautify')
-#@+node:ekr.20110917174948.6903: ** class CPrettyPrinter
+
+
+# @+node:ekr.20110917174948.6903: ** class CPrettyPrinter
 class CPrettyPrinter:
-    #@+others
-    #@+node:ekr.20110917174948.6904: *3* cpp.__init__
+    # @+others
+    # @+node:ekr.20110917174948.6904: *3* cpp.__init__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for CPrettyPrinter class."""
         self.c = c
@@ -304,9 +334,9 @@ class CPrettyPrinter:
         self.parens = 0  # The parenthesis nesting level.
         self.result: list[str] = []  # The list of tokens that form the final result.
         self.tab_width = 4  # The number of spaces in each unit of leading indentation.
-    #@+node:ekr.20191104195610.1: *3* cpp.pretty_print_tree
-    def pretty_print_tree(self, p: Position) -> None:
 
+    # @+node:ekr.20191104195610.1: *3* cpp.pretty_print_tree
+    def pretty_print_tree(self, p: Position) -> None:
         c = self.c
         if should_kill_beautify(p):
             return
@@ -327,8 +357,11 @@ class CPrettyPrinter:
         if not changed:
             g.es("Command did not find any content to beautify")
         c.bodyWantsFocus()
-    #@+node:ekr.20110917174948.6911: *3* cpp.indent & helpers
-    def indent(self, p: Position, toList: bool = False, giveWarnings: bool = True) -> Union[str, list[str]]:
+
+    # @+node:ekr.20110917174948.6911: *3* cpp.indent & helpers
+    def indent(
+        self, p: Position, toList: bool = False, giveWarnings: bool = True
+    ) -> Union[str, list[str]]:
         """Beautify a node with @language C in effect."""
         if not should_beautify(p):
             return [] if toList else ''  # #2271
@@ -345,7 +378,8 @@ class CPrettyPrinter:
         for s in aList:
             self.put_token(s)
         return self.result if toList else ''.join(self.result)
-    #@+node:ekr.20110918225821.6815: *4* cpp.add_statement_braces
+
+    # @+node:ekr.20110918225821.6815: *4* cpp.add_statement_braces
     def add_statement_braces(self, s: str, giveWarnings: bool = False) -> list[str]:
         p = self.p
 
@@ -398,7 +432,8 @@ class CPrettyPrinter:
                 i += 1
             assert progress < i
         return result
-    #@+node:ekr.20110919184022.6903: *5* cpp.skip_ws
+
+    # @+node:ekr.20110919184022.6903: *5* cpp.skip_ws
     def skip_ws(self, s: str, i: int) -> int:
         while i < len(s):
             token = s[i]
@@ -407,7 +442,8 @@ class CPrettyPrinter:
             else:
                 break
         return i
-    #@+node:ekr.20110918225821.6820: *5* cpp.skip_ws_and_comments
+
+    # @+node:ekr.20110918225821.6820: *5* cpp.skip_ws_and_comments
     def skip_ws_and_comments(self, s: str, i: int) -> int:
         while i < len(s):
             token = s[i]
@@ -418,7 +454,8 @@ class CPrettyPrinter:
             else:
                 break
         return i
-    #@+node:ekr.20110918225821.6817: *5* cpp.skip_parens
+
+    # @+node:ekr.20110918225821.6817: *5* cpp.skip_parens
     def skip_parens(self, s: str, i: int) -> int:
         """Skips from the opening ( to the matching ).
 
@@ -438,7 +475,8 @@ class CPrettyPrinter:
             else:
                 i += 1
         return i
-    #@+node:ekr.20110918225821.6818: *5* cpp.skip_statement
+
+    # @+node:ekr.20110918225821.6818: *5* cpp.skip_statement
     def skip_statement(self, s: str, i: int) -> int:
         """Skip to the next ';' or '}' token."""
         while i < len(s):
@@ -448,7 +486,8 @@ class CPrettyPrinter:
             else:
                 i += 1
         return i
-    #@+node:ekr.20110917204542.6967: *4* cpp.put_token & helpers
+
+    # @+node:ekr.20110917204542.6967: *4* cpp.put_token & helpers
     def put_token(self, s: str) -> None:
         """Append token s to self.result as is,
         *except* for adjusting leading whitespace and comments.
@@ -467,7 +506,7 @@ class CPrettyPrinter:
             self.parens -= 1
         elif s.startswith('\n'):
             if self.parens <= 0:
-                s = f'\n{" "*self.brackets*self.tab_width}'
+                s = f'\n{" " * self.brackets * self.tab_width}'
             else:
                 pass  # Use the existing indentation.
         elif s.isspace():
@@ -482,7 +521,8 @@ class CPrettyPrinter:
             pass  # put s as it is.
         if s:
             self.result.append(s)
-    #@+node:ekr.20110917204542.6968: *5* prev_token
+
+    # @+node:ekr.20110917204542.6968: *5* prev_token
     def prev_token(self, s: str) -> bool:
         """Return the previous token, ignoring whitespace and comments."""
         i = len(self.result) - 1
@@ -495,10 +535,12 @@ class CPrettyPrinter:
             else:
                 return False
         return False
-    #@+node:ekr.20110918184425.6916: *5* reformat_block_comment
+
+    # @+node:ekr.20110918184425.6916: *5* reformat_block_comment
     def reformat_block_comment(self, s: str) -> str:
         return s
-    #@+node:ekr.20110917204542.6969: *5* remove_indent
+
+    # @+node:ekr.20110917204542.6969: *5* remove_indent
     def remove_indent(self) -> None:
         """Remove one tab-width of blanks from the previous token."""
         w = abs(self.tab_width)
@@ -512,10 +554,12 @@ class CPrettyPrinter:
                     self.result.append('\n' + s2[:-w])
                 else:
                     self.result.append(s[:-w])
-    #@+node:ekr.20110918225821.6819: *3* cpp.match
+
+    # @+node:ekr.20110918225821.6819: *3* cpp.match
     def match(self, s: str, i: int, pat: str) -> bool:
         return i < len(s) and s[i] == pat
-    #@+node:ekr.20110917174948.6930: *3* cpp.tokenize & helper
+
+    # @+node:ekr.20110917174948.6930: *3* cpp.tokenize & helper
     def tokenize(self, s: str) -> list[str]:
         """Tokenize comments, strings, identifiers, whitespace and operators."""
         result: list[str] = []
@@ -546,27 +590,30 @@ class CPrettyPrinter:
         return result
 
     # The following could be added to the 'else' clause::
-        # Accumulate everything else.
-        # while (
-            # j < n and
-            # not s[j].isspace() and
-            # not s[j].isalpha() and
-            # # start of strings, identifiers, and single-character tokens.
-            # not s[j] in '"\'_@' and
-            # not g.match(s,j,'//') and
-            # not g.match(s,j,'/*') and
-            # not g.match(s,j,'-->')
-        # ):
-            # j += 1
-    #@+node:ekr.20110917193725.6974: *4* cpp.skip_block_comment
+    # Accumulate everything else.
+    # while (
+    # j < n and
+    # not s[j].isspace() and
+    # not s[j].isalpha() and
+    # # start of strings, identifiers, and single-character tokens.
+    # not s[j] in '"\'_@' and
+    # not g.match(s,j,'//') and
+    # not g.match(s,j,'/*') and
+    # not g.match(s,j,'-->')
+    # ):
+    # j += 1
+    # @+node:ekr.20110917193725.6974: *4* cpp.skip_block_comment
     def skip_block_comment(self, s: str, i: int) -> int:
         assert g.match(s, i, "/*")
         j = s.find("*/", i)
         if j == -1:
             return len(s)
         return j + 2
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

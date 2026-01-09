@@ -1,14 +1,15 @@
 #! /usr/bin/env python
-#@+leo-ver=5-thin
-#@+node:ekr.20070227091955.1: * @file leoBridge.py
-#@@first
+# @+leo-ver=5-thin
+# @+node:ekr.20070227091955.1: * @file leoBridge.py
+# @@first
 """A module to allow full access to Leo commanders from outside Leo."""
-#@@language python
-#@@tabwidth -4
-#@+<< about the leoBridge module >>
-#@+node:ekr.20070227091955.2: ** << about the leoBridge module >>
-#@@language rest
-#@+at
+
+# @@language python
+# @@tabwidth -4
+# @+<< about the leoBridge module >>
+# @+node:ekr.20070227091955.2: ** << about the leoBridge module >>
+# @@language rest
+# @+at
 # A **host** program is a Python program separate from Leo. Host programs may
 # be created by Leo, but at the time they are run host programs must not be
 # part of Leo in any way. So if they are run from Leo, they must be run in a
@@ -44,9 +45,9 @@
 # - bridge.openLeoFile(path) returns a completely standard Leo commander.
 #   Host programs can use these commanders as described in Leo's scripting
 #   chapter.
-#@-<< about the leoBridge module >>
-#@+<< leoBridge imports & annotations >>
-#@+node:ekr.20220901084154.1: ** << leoBridge imports & annotations >>
+# @-<< about the leoBridge module >>
+# @+<< leoBridge imports & annotations >>
+# @+node:ekr.20220901084154.1: ** << leoBridge imports & annotations >>
 # This module must import *no* Leo modules at the outer level!
 from __future__ import annotations
 import os
@@ -58,13 +59,16 @@ from types import ModuleType
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
+
     Args = Any
     KWargs = Any
-#@-<< leoBridge imports & annotations >>
+# @-<< leoBridge imports & annotations >>
 
 gBridgeController = None  # The singleton bridge controller.
-#@+others
-#@+node:ekr.20070227092442: ** function: controller
+
+
+# @+others
+# @+node:ekr.20070227092442: ** function: controller
 def controller(
     gui: str = 'nullGui',
     loadPlugins: bool = True,
@@ -78,19 +82,17 @@ def controller(
     global gBridgeController
     if not gBridgeController:
         gBridgeController = BridgeController(
-            gui,
-            loadPlugins,
-            readSettings,
-            silent,
-            tracePlugins,
-            useCaches,
-            verbose)
+            gui, loadPlugins, readSettings, silent, tracePlugins, useCaches, verbose
+        )
     return gBridgeController
-#@+node:ekr.20070227092442.2: ** class BridgeController
+
+
+# @+node:ekr.20070227092442.2: ** class BridgeController
 class BridgeController:
     """Creates a way for host programs to access Leo."""
-    #@+others
-    #@+node:ekr.20070227092442.3: *3* bridge.ctor
+
+    # @+others
+    # @+node:ekr.20070227092442.3: *3* bridge.ctor
     def __init__(
         self,
         guiName: str,
@@ -114,11 +116,13 @@ class BridgeController:
         self.vs_code_flag = vs_code_flag  # #2098
         self.mainLoop = False  # True only if a non-null-gui mainloop is active.
         self.initLeo()
-    #@+node:ekr.20070227092442.4: *3* bridge.globals
+
+    # @+node:ekr.20070227092442.4: *3* bridge.globals
     def globals(self) -> ModuleType:
         """Return a fully initialized leoGlobals module."""
         return self.g if self.isOpen() else None
-    #@+node:ekr.20070227093530: *3* bridge.initLeo & helpers
+
+    # @+node:ekr.20070227093530: *3* bridge.initLeo & helpers
     def initLeo(self) -> None:
         """
         Init the Leo app to which this class gives access.
@@ -127,11 +131,12 @@ class BridgeController:
         if not self.isValidPython():
             return
         t1 = time.process_time()
-        #@+<< initLeo imports >>
-        #@+node:ekr.20070227093629.1: *4* << initLeo imports >> initLeo (leoBridge)
+        # @+<< initLeo imports >>
+        # @+node:ekr.20070227093629.1: *4* << initLeo imports >> initLeo (leoBridge)
         try:
             # #1472: Simplify import of g
             from leo.core import leoGlobals as g
+
             self.g = g
         except ImportError:
             print("Error importing leoGlobals.py")
@@ -143,6 +148,7 @@ class BridgeController:
             g.in_bridge = self.vs_code_flag  # #2098.
             g.in_vs_code = True  # 2098.
             from leo.core import leoApp
+
             g.app = leoApp.LeoApp()
         except ImportError:
             print("Error importing leoApp.py")
@@ -153,6 +159,7 @@ class BridgeController:
         #
         # Create the g.app.pluginsController here.
         from leo.core import leoPlugins
+
         leoPlugins.init()  # Necessary. Sets g.app.pluginsController.
         try:
             from leo.core import leoJupytext
@@ -169,7 +176,7 @@ class BridgeController:
         except ImportError:
             print("Error importing leoConfig.py")
             traceback.print_exc()
-        #@-<< initLeo imports >>
+        # @-<< initLeo imports >>
         g.app.recentFilesManager = leoApp.RecentFilesManager()
         g.app.loadManager = lm = leoApp.LoadManager()
         g.app.jupytextManager = leoJupytext.JupytextManager()
@@ -213,13 +220,20 @@ class BridgeController:
         g.doHook("start2", c=None, p=None, v=None, fileName=None)
         t2 = time.process_time()
         if self.verbose:
-            print(f"bridge.initLeo:     {t2-t1:.2f} sec.")
-    #@+node:ekr.20070302061713: *4* bridge.adjustSysPath
+            print(f"bridge.initLeo:     {t2 - t1:.2f} sec.")
+
+    # @+node:ekr.20070302061713: *4* bridge.adjustSysPath
     def adjustSysPath(self) -> None:
         """Adjust sys.path to enable imports as usual with Leo."""
         g = self.g
         leoDirs = (  # 2008/7/30
-            'config', 'doc', 'extensions', 'modes', 'plugins', 'core', 'test'
+            'config',
+            'doc',
+            'extensions',
+            'modes',
+            'plugins',
+            'core',
+            'test',
         )
         for theDir in leoDirs:
             path = os.path.normpath(os.path.join(g.app.loadDir, '..', theDir))
@@ -228,10 +242,13 @@ class BridgeController:
 
         # #258: leoBridge does not work with @auto-md subtrees.
         for theDir in ('importers', 'writers'):
-            path = os.path.normpath(os.path.join(g.app.loadDir, '..', 'plugins', theDir))
+            path = os.path.normpath(
+                os.path.join(g.app.loadDir, '..', 'plugins', theDir)
+            )
             if path not in sys.path:
                 sys.path.insert(0, path)
-    #@+node:ekr.20070227095743: *4* bridge.createGui
+
+    # @+node:ekr.20070227095743: *4* bridge.createGui
     def createGui(self) -> None:
         g = self.g
         if self.guiName == 'nullGui':
@@ -242,7 +259,8 @@ class BridgeController:
             log.logInited = True  # Bug fix: 2012/10/17.
         else:
             assert False, f"leoBridge.py: unsupported gui: {self.guiName}"  # noqa
-    #@+node:ekr.20070227093629.4: *4* bridge.isValidPython
+
+    # @+node:ekr.20070227093629.4: *4* bridge.isValidPython
     def isValidPython(self) -> bool:
         if sys.platform == 'cli':
             return True
@@ -267,12 +285,14 @@ class BridgeController:
             if not g.isValidPython:
                 print(message)
                 g.app.gui.runAskOkDialog(
-                    None, "Python version error", message=message, text="Exit")
+                    None, "Python version error", message=message, text="Exit"
+                )
             return g.isValidPython
         except Exception as e:
             print(f"{tag}: unexpected exception: {e}")
             return False
-    #@+node:ekr.20070227093629.9: *4* bridge.reportDirectories
+
+    # @+node:ekr.20070227093629.9: *4* bridge.reportDirectories
     def reportDirectories(self) -> None:
         if not self.silentMode:
             g = self.g
@@ -281,12 +301,14 @@ class BridgeController:
                 ("home", g.app.homeDir),
             ):
                 g.blue('', kind, 'directory', '', ':', theDir)
-    #@+node:ekr.20070227093918: *3* bridge.isOpen
+
+    # @+node:ekr.20070227093918: *3* bridge.isOpen
     def isOpen(self) -> bool:
         """Return True if the bridge is open."""
         g = self.g
         return bool(g and g.app and g.app.gui)
-    #@+node:ekr.20070227092442.5: *3* bridge.openLeoFile & helpers
+
+    # @+node:ekr.20070227092442.5: *3* bridge.openLeoFile & helpers
     def openLeoFile(self, fileName: str) -> Optional[Cmdr]:
         """Open a .leo file, or create a new Leo frame if no fileName is given."""
         g = self.g
@@ -315,9 +337,10 @@ class BridgeController:
             log.enabled = True
         t2 = time.process_time()
         if self.verbose:
-            print(f"bridge.openLeoFile: {t2-t1:.2f} sec.")
+            print(f"bridge.openLeoFile: {t2 - t1:.2f} sec.")
         return c
-    #@+node:ekr.20070227093629.5: *4* bridge.completeFileName
+
+    # @+node:ekr.20070227093629.5: *4* bridge.completeFileName
     def completeFileName(self, fileName: str) -> str:
         g = self.g
         if not (fileName and fileName.strip()):
@@ -327,15 +350,20 @@ class BridgeController:
         if not ext:
             fileName = fileName + ".leo"
         return fileName
-    #@+node:vitalije.20190923081235.1: *4* bridge.reopen_cachers
+
+    # @+node:vitalije.20190923081235.1: *4* bridge.reopen_cachers
     def reopen_cachers(self) -> None:
         from leo.core import leoCache
+
         g = self.g
         try:
             g.app.db.get('dummy')
         except Exception:
             g.app.global_cacher = leoCache.GlobalCacher()
             g.app.db = g.app.global_cacher.db
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

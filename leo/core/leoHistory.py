@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20150514154159.1: * @file leoHistory.py
-#@+<< leoHistory imports & annotations >>
-#@+node:ekr.20221213120137.1: ** << leoHistory imports & annotations >>
+# @+leo-ver=5-thin
+# @+node:ekr.20150514154159.1: * @file leoHistory.py
+# @+<< leoHistory imports & annotations >>
+# @+node:ekr.20221213120137.1: ** << leoHistory imports & annotations >>
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
@@ -12,10 +12,11 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position
 
 assert g
-#@-<< leoHistory imports & annotations >>
+# @-<< leoHistory imports & annotations >>
 
-#@+others
-#@+node:ekr.20160514120255.1: ** class NodeHistory
+
+# @+others
+# @+node:ekr.20160514120255.1: ** class NodeHistory
 class NodeHistory:
     """A class encapsulating knowledge of visited nodes."""
 
@@ -26,8 +27,8 @@ class NodeHistory:
         self.beadPointer = -1
         self.skipBeadUpdate = False
 
-    #@+others
-    #@+node:ekr.20160426061203.1: *3* NodeHistory.dump
+    # @+others
+    # @+node:ekr.20160426061203.1: *3* NodeHistory.dump
     def dump(self) -> None:
         """Dump the beadList"""
         if g.unitTesting or not self.beadList:
@@ -40,7 +41,8 @@ class NodeHistory:
             mark_s = '**' if i == self.beadPointer else '  '
             print(f"{mark_s} {chapter_s} {p_s}")
         print('')
-    #@+node:ekr.20070615134813: *3* NodeHistory.goNext
+
+    # @+node:ekr.20070615134813: *3* NodeHistory.goNext
     def goNext(self) -> None:
         """Select the next node, if possible."""
         c = self.c
@@ -55,7 +57,8 @@ class NodeHistory:
         else:
             del self.beadList[self.beadPointer]
             self.beadPointer -= 1
-    #@+node:ekr.20130915111638.11288: *3* NodeHistory.goPrev
+
+    # @+node:ekr.20130915111638.11288: *3* NodeHistory.goPrev
     def goPrev(self) -> None:
         """Select the previously visited node, if possible."""
         c = self.c
@@ -70,7 +73,8 @@ class NodeHistory:
         else:
             del self.beadList[self.beadPointer]
             self.beadPointer += 1
-    #@+node:ekr.20130915111638.11294: *3* NodeHistory.select
+
+    # @+node:ekr.20130915111638.11294: *3* NodeHistory.select
     def select(self, p: Position, chapter: Chapter) -> None:
         """Select p in the given chapter."""
         c, cc = self.c, self.c.chapterController
@@ -79,7 +83,8 @@ class NodeHistory:
         if oldChapter != chapter:
             cc.selectChapterForPosition(p, chapter=chapter)
         c.selectPosition(p)  # Calls cc.selectChapterForPosition
-    #@+node:ville.20090724234020.14676: *3* NodeHistory.update
+
+    # @+node:ville.20090724234020.14676: *3* NodeHistory.update
     def update(self, p: Position) -> None:
         """
         Update the beadList while p is being selected.
@@ -110,9 +115,12 @@ class NodeHistory:
         data = (p.copy(), cc.getSelectedChapter())
         self.beadList.insert(self.beadPointer + 1, data)
         self.beadPointer += 1
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

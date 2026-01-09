@@ -545,6 +545,7 @@ class LeoApp:
             'unknown_language': 'none',
             'w': 'c',
         }  # fmt: skip
+
     # @+node:ekr.20031218072017.1417: *5* app.define_global_constants
     def define_global_constants(self) -> None:
         # self.prolog_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -929,6 +930,7 @@ class LeoApp:
         # assembly_x86:     .asm or .a
         # squidconf:        .conf
         # rpmspec:          .rpm
+
     # @+node:ekr.20140729162415.18086: *5* app.init_at_auto_names
     def init_at_auto_names(self) -> None:
         """Init the app.atAutoNames set."""
