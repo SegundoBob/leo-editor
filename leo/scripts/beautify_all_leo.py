@@ -29,16 +29,15 @@ python = 'py' if isWindows else 'python'
 
 # Use -m so that __name__ == '__main__'.
 command_head = f"{python} -m ruff format {args}"
+# Don't change the leo/external or leo/modes directories.
 for command in [
     # f"{command_head} leo{os.sep}commands",
     f"{command_head} leo{os.sep}core",
-    # f"{command_head} leo{os.sep}external",
     # f"{command_head} leo{os.sep}plugins",
     f"{command_head} leo{os.sep}scripts",
-    # f"{command_head} leo{os.sep}modes",
-    # f"{command_head} leo{os.sep}unittests{os.sep}commands",
-    # f"{command_head} leo{os.sep}unittests{os.sep}plugins",
-    # f"{command_head} leo{os.sep}unittests{os.sep}misc_tests",
+    f"{command_head} leo{os.sep}unittests{os.sep}commands",
+    f"{command_head} leo{os.sep}unittests{os.sep}plugins",
+    f"{command_head} leo{os.sep}unittests{os.sep}misc_tests",
 ]:
     subprocess.Popen(command, shell=True).communicate()
 # @-leo

@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20230710105542.1: * @file ../unittests/commands/test_commanderFileCommands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20230710105542.1: * @file ../unittests/commands/test_commanderFileCommands.py
 """Tests of leo.commands.leoConvertCommands."""
 # pylint: disable=no-member
 
@@ -8,14 +8,16 @@ import tempfile
 import textwrap
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
+
 assert g
 assert textwrap
 
-#@+others
-#@+node:ekr.20230710105810.1: ** class TestCommanderFileCommands (LeoUnitTest)
+
+# @+others
+# @+node:ekr.20230710105810.1: ** class TestCommanderFileCommands (LeoUnitTest)
 class TestCommanderFileCommands(LeoUnitTest):
-    #@+others
-    #@+node:ekr.20230710105853.1: *3* TestCommanderFileCommands.test_refresh_from_disk
+    # @+others
+    # @+node:ekr.20230710105853.1: *3* TestCommanderFileCommands.test_refresh_from_disk
     def test_refresh_from_disk(self):
         c = self.c
         at = c.atFileCommands
@@ -55,6 +57,9 @@ class TestCommanderFileCommands(LeoUnitTest):
             self.assertTrue(os.path.exists(file_name), msg=file_name)
             os.remove(file_name)
             self.assertFalse(os.path.exists(file_name), msg=file_name)
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo
