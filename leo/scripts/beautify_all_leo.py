@@ -23,21 +23,22 @@ print(os.path.basename(__file__))
 leo_editor_dir = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 os.chdir(leo_editor_dir)
 
+# Define components of a single command.
 args = f"--config {leo_editor_dir}{os.sep}pyproject.toml --quiet"
 isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
-
+targets = (
+    # Don't change the leo/external or leo/modes directories.
+    f"leo{os.sep}commands",
+    f"leo{os.sep}core",
+    # f"leo{os.sep}plugins",
+    f"leo{os.sep}scripts",
+    f"leo{os.sep}unittests{os.sep}commands",
+    f"leo{os.sep}unittests{os.sep}plugins",
+    f"leo{os.sep}unittests{os.sep}misc_tests",
+)
 # Use -m so that __name__ == '__main__'.
-command_head = f"{python} -m ruff format {args}"
-# Don't change the leo/external or leo/modes directories.
-for command in [
-    f"{command_head} leo{os.sep}commands",
-    f"{command_head} leo{os.sep}core",
-    # f"{command_head} leo{os.sep}plugins",
-    f"{command_head} leo{os.sep}scripts",
-    f"{command_head} leo{os.sep}unittests{os.sep}commands",
-    f"{command_head} leo{os.sep}unittests{os.sep}plugins",
-    f"{command_head} leo{os.sep}unittests{os.sep}misc_tests",
-]:
-    subprocess.Popen(command, shell=True).communicate()
+command = f"{python} -m ruff format {args} {' '.join(targets)}"
+# print('command:', command)
+subprocess.Popen(command, shell=True).communicate()
 # @-leo
