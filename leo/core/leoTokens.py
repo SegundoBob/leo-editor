@@ -808,7 +808,7 @@ class TokenBasedOrange:  # Orange is the new Black.
 
         # Doc parts end with @c or a node sentinel. Specialized for python.
         self.end_doc_pat = re.compile(r"^\s*#@(@(c(ode)?)|([+]node\b.*))$")
-        
+
     # fmt: on
     # @+node:ekr.20240126012433.1: *4* tbo: Checking & dumping
     # @+node:ekr.20240106220724.1: *5* tbo.dump_token_range

@@ -691,7 +691,7 @@ class StringFindTabManager:
         self.radio_button_suboutline_only = StringRadioButton('suboutline_only')
         # Init the default values.
         self.init_widgets()
-        
+
     # fmt: on
 
     # @+node:ekr.20210221130549.5: *3* sftm.clear_focus & init_focus & set_entry_focus
