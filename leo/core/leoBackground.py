@@ -55,7 +55,9 @@ class BackgroundProcessManager:
     # @+<< BPM docstring>>
     # @+node:ekr.20161029063227.1: *3*  << BPM docstring>>
     """
+    # @verbatim
     #@@language rest
+    # @verbatim
     #@@wrap
 
     The BackgroundProcessManager (BPM) class runs background processes,
