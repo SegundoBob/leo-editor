@@ -349,7 +349,7 @@ class LeoApp:
         }
 
     # @+node:ekr.20120522160137.9911: *5* app.define_extension_dict
-    # @@nobeautify
+    ###@nobeautify
 
     def define_extension_dict(self) -> None:
         # Keys are extensions, values are languages
@@ -544,8 +544,7 @@ class LeoApp:
             'pod': 'perl',
             'unknown_language': 'none',
             'w': 'c',
-        }
-
+        }  # fmt: skip
     # @+node:ekr.20031218072017.1417: *5* app.define_global_constants
     def define_global_constants(self) -> None:
         # self.prolog_string = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -557,7 +556,7 @@ class LeoApp:
         self.prolog_namespace_string = f'xmlns:leo="{xml_url}"'
 
     # @+node:ekr.20120522160137.9909: *5* app.define_language_delims_dict
-    # @@nobeautify
+    ###@nobeautify
 
     def define_language_delims_dict(self) -> None:
         self.language_delims_dict: dict[str, str] = {
@@ -759,7 +758,7 @@ class LeoApp:
         }  # fmt: skip
 
     # @+node:ekr.20120522160137.9910: *5* app.define_language_extension_dict
-    # @@nobeautify
+    ###@nobeautify
 
     def define_language_extension_dict(self) -> None:
         # Used only by g.app.externalFilesController.get_ext.
@@ -930,7 +929,6 @@ class LeoApp:
         # assembly_x86:     .asm or .a
         # squidconf:        .conf
         # rpmspec:          .rpm
-
     # @+node:ekr.20140729162415.18086: *5* app.init_at_auto_names
     def init_at_auto_names(self) -> None:
         """Init the app.atAutoNames set."""

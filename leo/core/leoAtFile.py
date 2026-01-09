@@ -95,7 +95,7 @@ class AtFile:
     # @-<< AtFile: define __slots__ >>
     # @+<< AtFile: define constants >>
     # @+node:ekr.20131224053735.16380: *3* << AtFile: define constants >>
-    # @@nobeautify
+    ###@nobeautify
 
     # fmt: off
 
@@ -3593,7 +3593,7 @@ class FastAtRead:
         self.section_delims_pat: re.Pattern = None
 
     # @+node:ekr.20180602103135.3: *3* fast_at.get_patterns
-    # @@nobeautify
+    ###@nobeautify
 
     def get_patterns(self, comment_delims: tuple) -> None:
         """Create regex patterns for the given comment delims."""

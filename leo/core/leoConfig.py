@@ -65,7 +65,7 @@ class ParserBaseClass:
     # @-<< ParserBaseClass data >>
     # @+others
     # @+node:ekr.20041119204700: *3*  pbc.ctor
-    # @@nobeautify
+    ###@nobeautify
 
     def __init__(self, c: Cmdr, localFlag: bool) -> None:
         """Ctor for the ParserBaseClass class."""
@@ -79,33 +79,33 @@ class ParserBaseClass:
         self.openWithList: list[dict[str, Value]] = []
         # Keys are canonicalized names.
         self.dispatchDict = {
-            'bool':         self.doBool,
-            'buttons':      self.doButtons,  # New in 4.4.4
-            'color':        self.doColor,
-            'commands':     self.doCommands,  # New in 4.4.8.
-            'data':         self.doData,  # New in 4.4.6
-            'directory':    self.doDirectory,
+            'bool': self.doBool,
+            'buttons': self.doButtons,  # New in 4.4.4
+            'color': self.doColor,
+            'commands': self.doCommands,  # New in 4.4.8.
+            'data': self.doData,  # New in 4.4.6
+            'directory': self.doDirectory,
             'enabledplugins': self.doEnabledPlugins,
-            'font':         self.doFont,
-            'ifenv':        self.doIfEnv,  # New in 5.2 b1.
-            'ifhostname':   self.doIfHostname,
-            'ifplatform':   self.doIfPlatform,
-            'ignore':       self.doIgnore,
-            'int':          self.doInt,
-            'ints':         self.doInts,
-            'float':        self.doFloat,
-            'menus':        self.doMenus,  # New in 4.4.4
-            'menuat':       self.doMenuat,
-            'popup':        self.doPopup,  # New in 4.4.8
-            'mode':         self.doMode,  # New in 4.4b1.
-            'openwith':     self.doOpenWith,  # New in 4.4.3 b1.
-            'outlinedata':  self.doOutlineData,  # New in 4.11.1.
-            'path':         self.doPath,
-            'ratio':        self.doRatio,
-            'shortcuts':    self.doShortcuts,
-            'string':       self.doString,
-            'strings':      self.doStrings,
-        }
+            'font': self.doFont,
+            'ifenv': self.doIfEnv,  # New in 5.2 b1.
+            'ifhostname': self.doIfHostname,
+            'ifplatform': self.doIfPlatform,
+            'ignore': self.doIgnore,
+            'int': self.doInt,
+            'ints': self.doInts,
+            'float': self.doFloat,
+            'menus': self.doMenus,  # New in 4.4.4
+            'menuat': self.doMenuat,
+            'popup': self.doPopup,  # New in 4.4.8
+            'mode': self.doMode,  # New in 4.4b1.
+            'openwith': self.doOpenWith,  # New in 4.4.3 b1.
+            'outlinedata': self.doOutlineData,  # New in 4.11.1.
+            'path': self.doPath,
+            'ratio': self.doRatio,
+            'shortcuts': self.doShortcuts,
+            'string': self.doString,
+            'strings': self.doStrings,
+        }  # fmt: skip
         self.debug_count = 0
     # @+node:ekr.20080514084054.4: *3* pbc.computeModeName
     def computeModeName(self, name: str) -> str:
