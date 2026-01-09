@@ -7,15 +7,14 @@ import os
 import sys
 import textwrap
 import unittest
+import warnings
 
-# import warnings
-# warnings.simplefilter("ignore")
-# try:
-    # # Suppress a warning about imp being deprecated.
-    # with warnings.catch_warnings():
-        # import black
-# except Exception:  # pragma: no cover
-    # black = None
+try:
+    # Suppress a warning about imp being deprecated.
+    with warnings.catch_warnings():
+        import black
+except Exception:  # pragma: no cover
+    black = None
 
 from leo.core import leoGlobals as g
 
@@ -24,6 +23,8 @@ from leo.core.leoTokens import InputToken, Tokenizer, TokenBasedOrange
 
 # Utility functions.
 from leo.core.leoTokens import dump_contents, dump_tokens, input_tokens_to_string
+
+warnings.simplefilter("ignore")
 # @-<< test_leoTokens imports >>
 v1, v2, junk1, junk2, junk3 = sys.version_info
 py_version = (v1, v2)
@@ -169,6 +170,845 @@ class Optional_TestFiles(BaseTest):
     def test_runLeo(self):
 
         self.make_file_data('runLeo.py')
+    # @-others
+# @+node:ekr.20240105153425.42: ** class TestTokenBasedOrange (BaseTest)
+class TestTokenBasedOrange(BaseTest):
+    """
+    Tests for the TokenBasedOrange class.
+
+    Note: TokenBasedOrange never inserts or deletes lines.
+    """
+    # @+others
+    # @+node:ekr.20240105153425.43: *3* TestTBO.blacken
+    def blacken(self, contents):
+        """Return the results of running black on contents"""
+        if not black:
+            self.skipTest('Requires Black')  # pragma: no cover
+        # Suppress string normalization!
+        try:
+            mode = black.FileMode()
+            mode.string_normalization = False
+            # mode.line_length = line_length
+        except TypeError:  # pragma: no cover
+            self.skipTest('Requires newer version of Black')
+        return black.format_str(contents, mode=mode)
+    # @+node:ekr.20240116104552.1: *3* TestTBO.slow_test_leoColorizer
+    def slow_test_leoApp(self) -> None:  # pragma: no cover
+
+        # This test is no longer needed.
+        # The tbo command beautifies all files.
+        filename = 'leoColorizer.py'
+        test_dir = os.path.dirname(__file__)
+        path = g.os_path_finalize_join(test_dir, '..', '..', 'core', filename)
+        assert os.path.exists(path), repr(path)
+
+        tbo = TokenBasedOrange()
+        tbo.filename = path
+
+        if 0:  # Diff only.
+            tbo.beautify_file(path)
+        else:
+            contents, tokens = self.make_file_data(path)
+            expected = contents
+            results = self.beautify(contents, tokens)
+
+            regularized_expected = tbo.regularize_newlines(expected)
+            regularized_results = tbo.regularize_newlines(results)
+
+            if regularized_expected != regularized_results:
+                tbo.show_diffs(regularized_expected, regularized_results)
+
+            assert regularized_expected == regularized_results
+    # @+node:ekr.20240105153425.45: *3* TestTBO.test_annotations
+    def test_annotations(self):  # Required for full coverage.
+
+        table = (
+            # Case 0.
+            """s: str = None\n""",
+            # Case 1.
+            ("""
+                def annotated_f(s: str = None, x=None) -> None:
+                    pass
+            """),
+            # Case 2.
+            ("""
+                def f1():
+                    self.rulesetName : str = ''
+            """),
+        )
+        for i, contents in enumerate(table):
+            contents, tokens = self.make_data(contents)
+            expected = self.blacken(contents).rstrip() + '\n'
+            results = self.beautify(contents, tokens)
+            if results != expected:  # pragma: no cover
+                g.printObj(contents, tag='Contents')
+                g.printObj(expected, tag='Expected (blackened)')
+                g.printObj(results, tag='Results')
+            self.assertEqual(results, expected)
+
+    # @+node:ekr.20240105153425.46: *3* TestTBO.test_at_doc_part
+    def test_at_doc_part(self):
+
+        contents = """
+    # @+at Line 1
+    # Line 2
+    # @@c
+
+    print('hi')
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents.rstrip() + '\n'
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.47: *3* TestTBO.test_backslash_newline
+    def test_backslash_newline(self):
+        """
+        This test is necessarily different from black, because orange doesn't
+        delete semicolon tokens.
+        """
+        contents = r"""
+    print(a);\
+    print(b)
+    print(c); \
+    print(d)
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents.rstrip() + '\n'
+        # expected = self.blacken(contents).rstrip() + '\n'
+        results = self.beautify(contents, tokens)
+        # g.printObj(tokens, tag='Tokens')
+        # g.printObj(results, tag='Results')
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.48: *3* TestTBO.test_blank_lines_after_function
+    def test_blank_lines_after_function(self):
+
+        contents = """
+    # Comment line 1.
+    # Comment line 2.
+
+    def spam():
+        pass
+        # Properly indented comment.
+
+    # Comment line3.
+    # Comment line4.
+    a = 2
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        if results != expected:
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.49: *3* TestTBO.test_blank_lines_after_function_2
+    def test_blank_lines_after_function_2(self):
+
+        contents = """
+    # Leading comment line 1.
+    # Leading comment lines 2.
+
+    def spam():
+        pass
+
+    # Trailing comment line.
+    a = 2
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.50: *3* TestTBO.test_blank_lines_after_function_3
+    def test_blank_lines_after_function_3(self):
+
+        # From leoAtFile.py.
+        contents = """
+    def writeAsisNode(self, p):
+        print('1')
+
+        def put(s):
+            print('2')
+
+        # Trailing comment 1.
+        # Trailing comment 2.
+        print('3')
+    """
+
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        if results != expected:
+            g.printObj(tokens, tag='Tokens')
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.53: *3* TestTBO.test_comment_indented
+    def test_comment_indented(self):
+
+        table = (
+            """
+            if 1:
+                pass
+                    # An indented comment.
+            """,
+
+            """
+            table = (
+                # Regular comment.
+            )
+            """
+        )
+        fails = 0
+        for contents in table:
+            contents, tokens = self.make_data(contents)
+            expected = contents
+            results = self.beautify(contents, tokens)
+            if results != expected:  # pragma: no cover
+                fails += 1
+                print(f"Fail: {fails}")
+                g.printObj(results, tag='Results')
+                g.printObj(expected, tag='Expected')
+        assert not fails, fails
+    # @+node:ekr.20240105153425.54: *3* TestTBO.test_comment_space_after_delim
+    def test_comment_space_after_delim(self):
+
+        table = (
+            # Test 1.
+            (
+                """#No space after delim.\n""",
+                """# No space after delim.\n""",
+            ),
+            # Test 2.  Don't change bang lines.
+            (
+                """#! /usr/bin/env python\n""",
+                """#! /usr/bin/env python\n""",
+            ),
+            # Test 3.  Don't change ### comments.
+            (
+                """### To do.\n""",
+                """### To do.\n""",
+            ),
+        )
+        fails = 0
+        for contents, expected in table:
+            contents, tokens = self.make_data(contents)
+            results = self.beautify(contents, tokens)
+            message = (
+                f"\n"
+                f"  contents: {contents!r}\n"
+                f"  expected: {expected!r}\n"
+                f"       got: {results!r}")
+            if results != expected:  # pragma: no cover
+                fails += 1
+                print(f"Fail: {fails}\n{message}")
+        assert not fails, fails
+    # @+node:ekr.20240105153425.55: *3* TestTBO.test_decorators
+    def test_decorators(self):
+
+        table = (
+        # Case 0.
+        """
+    @my_decorator(1)
+    def func():
+        pass
+    """,
+        # Case 1.
+        """
+    if 1:
+        @my_decorator
+        def func():
+            pass
+    """,
+        # Case 2.
+        '''
+    @g.commander_command('promote')
+    def promote(self, event=None, undoFlag=True):
+        """Make all children of the selected nodes siblings of the selected node."""
+    ''',
+        )
+        for i, contents in enumerate(table):
+            contents, tokens = self.make_data(contents)
+            expected = contents
+            results = self.beautify(contents, tokens)
+            if results != expected:
+                g.trace('Fail:', i)  # pragma: no cover
+                g.printObj(contents, tag='Contents')
+                g.printObj(results, tag='Results')
+            self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.56: *3* TestTBO.test_dont_delete_blank_lines
+    def test_dont_delete_blank_lines(self):
+
+        contents = """
+    class Test:
+
+        def test_func():
+
+            pass
+
+        a = 2
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents.rstrip() + '\n'
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20250506092303.1: *3* TestTBO.test_flake8_errors
+    def test_flake8_errors(self):
+
+        tag = 'test_flake8_errors'
+
+        # Part 1: tests w/o black.
+        non_black_table = (
+            # leoAbbrevCommands.py: line 160.
+            """c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}, }\n""",
+        )
+        for i, contents in enumerate(non_black_table):
+            description = f"{tag} (w/o black) part {i}"
+            contents, tokens = self.make_data(contents, description=description)
+            expected = contents
+            results = self.beautify(contents, tokens, filename=description)
+            if 0:  # pragma: no cover
+                g.printObj(tokens, tag=description)
+                g.printObj(expected, tag='Expected')
+                g.printObj(results, tag='Results')
+            if results != expected:  # pragma: no cover
+                print('')
+                print(
+                    f"TestTokenBasedOrange.{tag}: FAIL\n"
+                    f"  contents: {contents.rstrip()}\n"
+                    f"     black: {expected.rstrip()}\n"
+                    f"    orange: {results.rstrip() if results else 'None'}")
+            self.assertEqual(results, expected, msg=description)
+
+
+        # All entries are expected values...
+        black_table = (
+            # leoserver.py: line 1575.
+            """s = s[len('@nocolor') :]\n""",
+            # leoGlobals.py.
+            """g.pr(f"{self.calledDict.get(key,0):d}", key)""",  # line 1805
+            """tracing_tags [id(self)] = tag""",  # line 1913.
+            # make_stub_files.py.
+            """def match(self, s, trace=False):\n    pass""",
+        )
+        for i, contents in enumerate(black_table):
+            description = f"{tag} (black) part {i}"
+            contents, tokens = self.make_data(contents, description=description)
+            expected = self.blacken(contents)
+            results = self.beautify(contents, tokens, filename=description)
+            if results != expected:  # pragma: no cover
+                print('')
+                # g.printObj(tokens, tag='Tokens')
+                g.printObj(expected, tag='Expected')
+                g.printObj(results, tag='Results')
+            self.assertEqual(results, expected, msg=description)
+    # @+node:ekr.20240105153425.65: *3* TestTBO.test_leo_sentinels
+    def test_leo_sentinels_1(self):
+
+        # Careful: don't put a sentinel into the file directly.
+        # That would corrupt leoAst.py.
+        sentinel = '#@+node:ekr.20200105143308.54: ** test'
+        contents = f"""
+    {sentinel}
+    def spam():
+        pass
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents.rstrip() + '\n'
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.66: *3* TestTBO.test_leo_sentinels_2
+    def test_leo_sentinels_2(self):
+
+        # Careful: don't put a sentinel into the file directly.
+        # That would corrupt leoAst.py.
+        sentinel = '#@+node:ekr.20200105143308.54: ** test'
+        contents = f"""
+    {sentinel}
+    class TestClass:
+        pass
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents.rstrip() + '\n'
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.67: *3* TestTBO.test_lines_before_class
+    def test_lines_before_class(self):
+
+        contents = """
+    a = 2
+    class aClass:
+        pass
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240128181802.1: *3* TestTBO.test_multi_line_imports
+    def test_multi_line_imports(self):
+
+        # The space between 'import' and '(' is correct.
+        contents = """
+            from .module1 import (
+                w1,
+                w2,
+            )
+            from .module1 import \\
+                w
+            from .module1 import (
+                w1,
+                w2,
+            )
+            import leo.core.leoGlobals \\
+                as g
+        """
+        contents, tokens = self.make_data(contents)
+        expected = contents.strip() + '\n'
+        results = self.beautify(contents, tokens)
+        if results != expected:
+            g.printObj(tokens, tag='Tokens')
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.68: *3* TestTBO.test_multi_line_pet_peeves
+    def test_multi_line_pet_peeves(self):
+
+        contents = """
+            if x == 4: pass
+            if x == 4 : pass
+            print (x, y); x, y = y, x
+            print (x , y) ; x , y = y , x
+            if(1):
+                pass
+            elif(2):
+                pass
+            while(3):
+                pass
+        """
+        # At present Orange doesn't split lines...
+        expected = self.prep(
+            """
+                if x == 4: pass
+                if x == 4: pass
+                print(x, y); x, y = y, x
+                print(x, y); x, y = y, x
+                if (1):
+                    pass
+                elif (2):
+                    pass
+                while (3):
+                    pass
+            """)
+        contents, tokens = self.make_data(contents)
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240420050005.1: *3* TestTBO.test_multi_line_statement
+    def test_multi_line_statements(self):
+
+        contents = """
+            if 1:  # Simulate indent.
+                def orange_command(
+                    s: str,
+                ) -> None:
+                    pass
+            if 1:  # The trailing ]) causes the problem.
+                return ''.join(
+                    ['%s%s' % (sep, self.dump_ast(z, level + 1)) for z in node])
+        """
+
+        expected = self.prep(
+            """
+            if 1:  # Simulate indent.
+                def orange_command(
+                    s: str,
+                ) -> None:
+                    pass
+            if 1:  # The trailing ]) causes the problem.
+                return ''.join(
+                    ['%s%s' % (sep, self.dump_ast(z, level + 1)) for z in node])
+            """)
+        contents, tokens = self.make_data(contents)
+        results = self.beautify(contents, tokens)
+        if results != expected:
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        self.assertEqual(results, expected)
+    # @+node:ekr.20250202043822.1: *3* TestTBO.test_nested_fstrings
+    def test_nested_fstrings(self):
+
+        # https://github.com/leo-editor/leo-editor/issues/4289
+        contents = """
+            diff_str = f"{CMPS[cmp(old, new)]}{(diff and f'{diff:.2f}') or ''}"
+        """
+
+        contents, tokens = self.make_data(contents)
+        expected = contents.rstrip() + '\n'
+        results = self.beautify(contents, tokens)
+        # g.printObj(tokens, tag='Tokens')
+        # g.printObj(results, tag='Results')
+        self.assertEqual(results, expected)
+
+
+    # @+node:ekr.20240105153425.69: *3* TestTBO.test_one_line_pet_peeves
+    def test_one_line_pet_peeves(self):
+
+        # One-line pet peeves, except those involving slices and unary ops.
+
+        # See https://peps.python.org/pep-0008/#pet-peeves
+        # See https://peps.python.org/pep-0008/#other-recommendations
+
+        tag = 'test_one_line_pet_peeves'
+
+        # Except where noted, all entries are expected values...
+        table = (
+            # #4420
+            """default, *_ = node.infer()""",  # From pylint.
+
+            # Assignments...
+            """a = b * c""",
+            """a = b + c""",
+            """a = b - c""",
+            # * and **, inside and outside function calls.
+            """f(*args)""",
+            """f(**kwargs)""",
+            """f(*args, **kwargs)""",
+            """f(a, *args)""",
+            """f(a=2, *args)""",
+            # Calls...
+            """f(-1)""",
+            """f(-1 < 2)""",
+            """f(1)""",
+            """f(2 * 3)""",
+            """f(2 + name)""",
+            """f(a)""",
+            """f(a.b)""",
+            """f(a=2 + 3, b=4 - 5, c= 6 * 7, d=8 / 9, e=10 // 11)""",
+            """f(a[1 + 2])""",
+            """f({key: 1})""",
+            """t = (0,)""",
+            """x, y = y, x""",
+            # Dicts...
+            """d = {key: 1}""",
+            """d['key'] = a[i]""",
+            # Trailing comments: expect two spaces.
+            """whatever # comment""",
+            """whatever  # comment""",
+            """whatever   # comment""",
+            # Word ops...
+            """v1 = v2 and v3 if v3 not in v4 or v5 in v6 else v7""",
+            """print(v7 for v8 in v9)""",
+            # Returns...
+            """return -1""",
+        )
+        for i, contents in enumerate(table):
+            description = f"{tag} part {i}"
+            contents, tokens = self.make_data(contents, description=description)
+            expected = self.blacken(contents)
+            results = self.beautify(contents, tokens, filename=description)
+            if results != expected:  # pragma: no cover
+                print('')
+                print(
+                    f"TestTokenBasedOrange.{tag}: FAIL\n"
+                    f"  contents: {contents.rstrip()}\n"
+                    f"     black: {expected.rstrip()}\n"
+                    f"    orange: {results.rstrip() if results else 'None'}")
+            self.assertEqual(results, expected, msg=description)
+    # @+node:ekr.20240128002403.1: *3* TestTBO.test_percent_op
+    def test_percent_op(self):
+
+        # leo/plugins/writers/basewriter.py, line 38
+        contents = """at.os('%s@+node:%s%s' % (delim, s, delim2))"""
+        contents, tokens = self.make_data(contents)
+        expected = self.blacken(contents).rstrip() + '\n'
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20240105153425.70: *3* TestTBO.test_relative_imports
+    def test_relative_imports(self):
+
+        # #2533.
+        contents = """
+            from .module1 import w
+            from . module2 import x
+            from ..module1 import y
+            from .. module2 import z
+            from . import a
+            from.import b
+            from .. import c
+            from..import d
+            from leo.core import leoExternalFiles
+            import leo.core.leoGlobals as g
+        """
+        expected = self.prep(
+        """
+            from .module1 import w
+            from .module2 import x
+            from ..module1 import y
+            from ..module2 import z
+            from . import a
+            from . import b
+            from .. import c
+            from .. import d
+            from leo.core import leoExternalFiles
+            import leo.core.leoGlobals as g
+        """)
+        contents, tokens = self.make_data(contents)
+        results = self.beautify(contents, tokens)
+        if results != expected:  # pragma: no cover
+            # g.printObj(tokens, tag='Tokens')
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        self.assertEqual(expected, results)
+    # @+node:ekr.20240109090653.1: *3* TestTBO.test_slice
+    def test_slice(self):
+
+        # Test one-line pet peeves involving slices.
+
+        # See https://peps.python.org/pep-0008/#pet-peeves
+        # See https://peps.python.org/pep-0008/#other-recommendations
+
+        tag = 'test_slice'
+
+        # Except where noted, all entries are expected values....
+        table = (
+
+            # Differences between leoAst.py and leoTokens.py.
+            # tbo.cmd changes several files, including these.
+            # In all cases, the differences make leoTokens.py *more*
+            # compatible with Black than leoAst.py!
+
+                # #4420: From pylint.
+                """base_name = ".".join(package.split(".", self.depth)[: self.depth])""",
+                """ws = contents[self.prev_offset : s_offset]""",  # Follow-on test.
+
+                # From leoAst.py.
+                """val = val[:i] + '# ' + val[i + 1 :]\n""",
+                # From leoApp.py.
+                """
+                    for name in rf.getRecentFiles()[:n]:
+                        pass
+                """,
+
+                # From leoUndo.py.
+                """s.extend(body_lines[-trailing:])\n""",
+                # From leoTokens.py.
+                # The expected value of the two last lines is the last line.
+                """
+                    if line1.startswith(tag) and line1.endswith(tag2):
+                        e = line1[n1 : -n2].strip()
+                        e = line1[n1:-n2].strip()
+                """,
+
+                # Legacy tests...
+                """a[:-1]""",
+                """a[: 1 if True else 2 :]""",
+                """a[1 : 1 + 2]""",
+                """a[lower:]""",
+                """a[lower::]""",
+                """a[:upper]""",
+                """a[:upper:]""",
+                """a[::step]""",
+                """a[lower:upper:]""",
+                """a[lower:upper:step]""",
+                """a[lower + offset : upper + offset]""",
+                """a[: upper_fn(x) :]""",
+                """a[: upper_fn(x) : step_fn(x)]""",
+                """a[:: step_fn(x)]""",
+                """a[: upper_fn(x) :]""",
+                """a[: upper_fn(x) : 2 + 1]""",
+                """a[:]""",
+                """a[::]""",
+                """a[1:]""",
+                """a[1::]""",
+                """a[:2]""",
+                """a[:2:]""",
+                """a[::3]""",
+                """a[1:2]""",
+                """a[1:2:]""",
+                """a[:2:3]""",
+                """a[1:2:3]""",
+        )
+
+        for i, contents in enumerate(table):
+            description = f"{tag} part {i}"
+            contents, tokens = self.make_data(contents, description=description)
+            expected = self.blacken(contents)
+            results = self.beautify(contents, tokens, filename=description)
+            if results != expected:  # pragma: no cover
+                print('')
+                print('TestTokenBasedOrange')
+                # g.printObj(contents, tag='Contents')
+                g.printObj(expected, tag='Expected (Black)')
+                g.printObj(results, tag='Results')
+            self.assertEqual(expected, results)
+    # @+node:ekr.20250505153051.1: *3* TestTBO.test_spaces_after_keyword
+    def test_spaces_after_keyword(self):
+
+        contents = """return  ''\n"""
+        expected = """return ''\n"""
+        contents, tokens = self.make_data(contents)
+        results = self.beautify(contents, tokens)
+        if results != expected:  # pragma: no cover
+            g.printObj(tokens, tag='Tokens')
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        assert results == expected
+    # @+node:ekr.20240105153425.76: *3* TestTBO.test_star_star_operator
+    def test_star_star_operator(self):
+
+        # Don't rely on black for this test.
+        contents = """a = b ** c"""
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected)
+    # @+node:ekr.20250505152406.1: *3* TestTBO.test_trailing_ws_in_docstring
+    def test_trailing_ws_in_docstring(self):
+
+        expected = textwrap.dedent('''\
+    """
+    This line contains trailing ws
+    """
+    ''')
+        # Create the trailing ws by hand so flake8 doesn't complain!
+        contents = expected.replace('ws', 'ws  ')
+        assert contents != expected
+        contents, tokens = self.make_data(contents)
+        results = self.beautify(contents, tokens)
+        if results != expected:  # pragma: no cover
+            g.printObj(tokens, tag='Tokens')
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        assert results == expected
+    # @+node:ekr.20240109070553.1: *3* TestTBO.test_unary_ops
+    def test_unary_ops(self):
+
+        # One-line pet peeves involving unary ops but *not* slices.
+
+        # See https://peps.python.org/pep-0008/#pet-peeves
+        # See https://peps.python.org/pep-0008/#other-recommendations
+
+        tag = 'test_unary_op'
+
+        # All entries are expected values....
+        table = (
+            # Calls...
+            """f(-1)""",
+            """f(-1 < 2)""",
+            # Dicts...
+            """d = {key: -3}""",
+            """d['key'] = a[-i]""",
+            # Unary minus...
+            """v = -1 if a < b else -2""",
+            # ~
+            """a = ~b""",
+            """c = a[:~e:]""",
+            # """d = a[f() - 1 :]""",
+            # """e = a[2 - 1 :]""",
+            # """e = a[b[2] - 1 :]""",
+        )
+        for i, contents in enumerate(table):
+            description = f"{tag} part {i}"
+            contents, tokens = self.make_data(contents, description=description)
+            expected = self.blacken(contents)
+            results = self.beautify(contents, tokens, filename=description)
+            if results != expected:  # pragma: no cover
+                print('')
+                print(
+                    f"TestTokenBasedOrange.{tag}:\n"
+                    f"  contents: {contents.rstrip()}\n"
+                    f"     black: {expected.rstrip()}\n"
+                    f"    orange: {results.rstrip() if results else 'None'}")
+            self.assertEqual(results, expected, msg=description)
+    # @+node:ekr.20240105153425.79: *3* TestTBO.test_verbatim
+    def test_verbatim(self):
+
+        contents = """
+    # @@nobeautify
+
+    def addOptionsToParser(self, parser, trace_m):
+
+        add = parser.add_option
+
+        def add_bool(option, help, dest=None):
+            add(option, action='store_true', dest=dest, help=help)
+
+        add_bool('--diff',          'use Leo as an external git diff')
+        # add_bool('--dock',          'use a Qt dock')
+        add_bool('--fullscreen',    'start fullscreen')
+        add_bool('--init-docks',    'put docks in default positions')
+        # Multiple bool values.
+        add('-v', '--version', action='store_true',
+            help='print version number and exit')
+
+    # From leoAtFile.py
+    noDirective     =  1 # not an at-directive.
+    allDirective    =  2 # at-all (4.2)
+    docDirective    =  3 # @doc.
+
+
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected, msg=contents)
+
+    # @+node:ekr.20240105153425.80: *3* TestTBO.test_verbatim_with_pragma
+    def test_verbatim_with_pragma(self):
+
+        contents = """
+    # pragma: no beautify
+
+    def addOptionsToParser(self, parser, trace_m):
+
+        add = parser.add_option
+
+        def add_bool(option, help, dest=None):
+            add(option, action='store_true', dest=dest, help=help)
+
+        add_bool('--diff',          'use Leo as an external git diff')
+        # add_bool('--dock',          'use a Qt dock')
+        add_bool('--fullscreen',    'start fullscreen')
+        add_other('--window-size',  'initial window size (height x width)', m='SIZE')
+        add_other('--window-spot',  'initial window position (top x left)', m='SPOT')
+        # Multiple bool values.
+        add('-v', '--version', action='store_true',
+            help='print version number and exit')
+
+    # pragma: beautify
+    """
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        self.assertEqual(results, expected, msg=contents)
+    # @+node:ekr.20250505231955.1: *3* TestTBO.test_ws_in_blank_line
+    def test_ws_in_blank_line(self):
+
+        contents = 'line 1\n   \nline 2\n'
+        expected = 'line 1\n\nline 2\n'
+        contents, tokens = self.make_data(contents)
+        results = self.beautify(contents, tokens)
+        if results != expected:  # pragma: no cover
+            g.printObj(tokens, tag='Tokens')
+            g.printObj(results, tag='Results')
+            g.printObj(expected, tag='Expected')
+        assert results == expected
+    # @+node:ekr.20240105153425.81: *3* TestTBO.verbatim2
+    def test_verbatim2(self):
+
+        # We *do* want this test to contain verbatim sentinels.
+        contents = """
+    # @@beautify
+    ###@nobeautify
+    # @+at Starts doc part
+    # More doc part.
+    # The @c ends the doc part.
+    # @@c
+        """
+        contents, tokens = self.make_data(contents)
+        expected = contents
+        results = self.beautify(contents, tokens)
+        # g.printObj(results, tag='Results')
+        # g.printObj(expected, tag='Expected')
+        self.assertEqual(results, expected, msg=contents)
     # @-others
 # @+node:ekr.20240105153425.85: ** class TestTokens (BaseTest)
 class TestTokens(BaseTest):
