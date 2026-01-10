@@ -8,9 +8,10 @@
 <vnodes>
 <v t="ekr.20051031040240"><vh>Startup</vh>
 <v t="ekr.20080412053100.5"><vh>@settings</vh>
-<v t="ekr.20221129012213.1"><vh>@bool run-flake8-on-write = False</vh></v>
+<v t="ekr.20251214042454.1"><vh>@bool body-pane-wraps = False</vh></v>
 <v t="ekr.20140902155015.18674"><vh>@bool qt-use-scintilla = False</vh></v>
 <v t="ekr.20250715195948.1"><vh>@bool report-changed-at-clean-nodes = True</vh></v>
+<v t="ekr.20221129012213.1"><vh>@bool run-flake8-on-write = False</vh></v>
 <v t="ekr.20210530065000.2"><vh>@data exec-script-commands</vh></v>
 <v t="ekr.20210530065000.3"><vh>@data exec-script-patterns</vh></v>
 <v t="ekr.20150425145248.1"><vh>@data history-list</vh></v>
@@ -20,6 +21,8 @@
 <v t="ekr.20200212095937.1"><vh>Beautify command settings</vh>
 <v t="ekr.20200212095937.2"><vh>@bool beautify-allow-joined-strings = False</vh></v>
 <v t="ekr.20200212095937.3"><vh>@bool beautify-keep-comment-indentation = True</vh></v>
+<v t="ekr.20260108172912.1"><vh>@bool beautify-python-code-on-write = False</vh></v>
+<v t="ekr.20260110024304.1"><vh>@bool write-black-sentinels = True</vh></v>
 <v t="ekr.20200212095937.5"><vh>@int beautify-max-join-line-length = 0</vh></v>
 <v t="ekr.20200212095937.6"><vh>@int beautify-max-split-line-length = 0</vh></v>
 </v>
@@ -34,76 +37,6 @@
 <v t="ekr.20240528034319.1"><vh>&lt;&lt; test the beautifier &gt;&gt;</vh></v>
 <v t="ekr.20240417150035.1"><vh>&lt;&lt; old commands &gt;&gt;</vh></v>
 <v t="ekr.20230511074046.1"><vh>&lt;&lt; prefixes &gt;&gt;</vh></v>
-</v>
-<v t="ekr.20241103050115.1"><vh>@command mypy-modes</vh></v>
-<v t="ekr.20201013034659.1"><vh>@ignore Unused buttons and commands</vh>
-<v t="ekr.20211020091540.1"><vh>@@command b</vh></v>
-<v t="ekr.20220527065937.1"><vh>@command json-to-outline</vh></v>
-<v t="ekr.20150413091056.1"><vh>@@button check-clones</vh></v>
-<v t="ekr.20180324065741.1"><vh>@@button copy-to-next</vh></v>
-<v t="ekr.20150507170849.1"><vh>@@button create decorators</vh>
-<v t="ekr.20150508063538.1"><vh>create_d</vh></v>
-<v t="ekr.20150508071622.1"><vh>create_decorator (@button)</vh></v>
-<v t="ekr.20150508063412.1"><vh>create_decorators</vh></v>
-<v t="ekr.20150508074623.1"><vh>create_fixups</vh></v>
-<v t="ekr.20150508063926.1"><vh>find_class</vh></v>
-<v t="ekr.20150507174711.1"><vh>find_next_clone</vh></v>
-<v t="ekr.20150507175246.1"><vh>munge_lines</vh></v>
-<v t="ekr.20150508062944.1"><vh>run</vh></v>
-</v>
-<v t="ekr.20211011090013.1"><vh>@@button cvt-comments</vh>
-<v t="ekr.20220425184232.1"><vh>compute_lws</vh></v>
-<v t="ekr.20220425052306.1"><vh>convert</vh></v>
-</v>
-<v t="ekr.20150509183433.1"><vh>@@button make-decorators2</vh>
-<v t="ekr.20150509183433.2"><vh>create_d</vh></v>
-<v t="ekr.20150509183433.3"><vh>create_decorator (@button)</vh></v>
-<v t="ekr.20150509183433.4"><vh>create_decorators V2</vh></v>
-<v t="ekr.20150509183433.8"><vh>munge_lines</vh></v>
-<v t="ekr.20150509183433.9"><vh>run V2</vh></v>
-</v>
-<v t="ekr.20201013034742.2"><vh>@@button make-importer</vh>
-<v t="ekr.20201013034742.3"><vh>&lt;&lt; define run &amp; helpers &gt;&gt;</vh>
-<v t="ekr.20201013034742.4"><vh>copy_tree (make-importer)</vh></v>
-<v t="ekr.20201013034742.5"><vh>make_substitutions</vh></v>
-<v t="ekr.20201013034742.6"><vh>run</vh></v>
-<v t="ekr.20201013034742.7"><vh>substitue</vh></v>
-</v>
-<v t="ekr.20201013034742.8"><vh>@@file importers/{{name}}.py</vh>
-<v t="ekr.20201013034742.9"><vh>class {{cap_name}}_Importer</vh>
-<v t="ekr.20201013034742.10"><vh>{{name}}.Overrides</vh>
-<v t="ekr.20201013034742.11"><vh>{{name}}.clean_headline</vh></v>
-<v t="ekr.20201013034742.12"><vh>{{name}}.clean_nodes</vh></v>
-</v>
-</v>
-<v t="ekr.20201013034742.13"><vh>class {{cap_name}}_ScanState</vh></v>
-</v>
-</v>
-<v t="ekr.20190406154306.1"><vh>@@button open-pyzo</vh></v>
-<v t="ekr.20201013034742.16"><vh>@@button pep8 @key=Ctrl-5</vh>
-<v t="ekr.20201013034742.17"><vh>class Pep8</vh>
-<v t="ekr.20201013034742.18"><vh>change_all &amp; helpers</vh>
-<v t="ekr.20201013034742.19"><vh>change_body</vh></v>
-<v t="ekr.20201013034742.20"><vh>change_headline</vh></v>
-</v>
-<v t="ekr.20201013034742.21"><vh>get_name</vh></v>
-<v t="ekr.20201013034742.22"><vh>run</vh></v>
-<v t="ekr.20201013034742.23"><vh>to_pep8</vh></v>
-</v>
-<v t="ekr.20201013034742.24"><vh>clear</vh></v>
-</v>
-<v t="ekr.20150703061709.1"><vh>@@button run-pylint</vh></v>
-<v t="ekr.20180824065751.1"><vh>@@button show-gnx</vh></v>
-<v t="ekr.20131121084830.16362"><vh>@@button toggle-debug</vh></v>
-<v t="ekr.20201018062305.1"><vh>@@button write-leoPyRef</vh>
-<v t="ekr.20201018065757.1"><vh>check_file_names</vh></v>
-<v t="ekr.20201018065921.1"><vh>check_nodes</vh></v>
-<v t="ekr.20201018070822.1"><vh>main</vh></v>
-<v t="ekr.20201018072911.1"><vh>oops</vh></v>
-<v t="ekr.20201018063747.1"><vh>put_content</vh></v>
-<v t="ekr.20210510071427.1"><vh>put_prolog</vh></v>
-<v t="ekr.20210510071812.1"><vh>put_tnodes</vh></v>
-</v>
 </v>
 </v>
 <v t="ekr.20210110092457.1"><vh>leojs buttons</vh>
@@ -375,7 +308,7 @@
 </v>
 <v t="ekr.20240321122614.1"><vh>--- test scripts</vh>
 <v t="ekr.20240323050520.1"><vh>@file ../scripts/beautify_all_leo.py</vh></v>
-<v t="ekr.20240322065528.1"><vh>@file ../scripts/beautify_leo.py</vh></v>
+<v t="ekr.20251129060454.1"><vh>@file ../scripts/check_leo.py</vh></v>
 <v t="ekr.20240322084902.1"><vh>@file ../scripts/flake8_leo.py</vh></v>
 <v t="ekr.20240323051724.1"><vh>@file ../scripts/full_test_leo.py</vh></v>
 <v t="ekr.20240321122413.8"><vh>@file ../scripts/mypy_leo.py</vh></v>
@@ -529,7 +462,6 @@
 <v t="ekr.20181030041436.1"><vh>Gui</vh>
 <v t="ekr.20150107090324.1"><vh>@file ../plugins/cursesGui.py</vh></v>
 <v t="ekr.20170419092835.1"><vh>@file ../plugins/cursesGui2.py</vh></v>
-<v t="ekr.20181103094900.1"><vh>@file ../plugins/leoflexx.py</vh></v>
 <v t="peckj.20150428142633.1"><vh>@file ../plugins/python_terminal.py</vh></v>
 </v>
 <v t="ekr.20140723122936.17925"><vh>Importer plugins</vh>
@@ -942,15 +874,6 @@ and how to use it.
 </t>
 <t tx="ekr.20120309073937.9878"></t>
 <t tx="ekr.20121126102050.10134"></t>
-<t tx="ekr.20131121084830.16362">@language python
-
-# Toggle the settings.
-g.app.debug_app = not g.app.debug_app
-g.app.debug_widgets = not g.app.debug_widgets
-# Report the new settings.
-print('g.app.debug_app: %s' % g.app.debug_app)
-print('g.app.debug_widgets: %s' % g.app.debug_widgets)
-</t>
 <t tx="ekr.20140723122936.17925"># Leo loads these plugins automatically.  Do not add them to @enabled-plugins nodes.
 
 # These plugins now contain the importer code for all kinds of @auto nodes.
@@ -1089,53 +1012,16 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
 
 &lt;/xsl:stylesheet&gt;
 </t>
-<t tx="ekr.20150413091056.1">"""Warn if leoProjects.txt or leoToDo.txt contain any clones."""
-
-clones,nodes,seen = 0,0,set()
-table = (
-  '@file ../doc/leoProjects.txt',
-  '@file ../doc/leoToDo.txt',
-)
-
-def check_clone(c,p0,root):
-    """Warn if p appears in any @&lt;file&gt; node outside of root's tree."""
-    global nodes,seen
-    v = p0.v
-    for p in c.all_positions():
-        nodes += 1
-        if p.v == v:
-            # Check *all* ancestors, not just the nearest one.
-            for parent in p.self_and_parents():
-                nodes += 1
-                if parent.isAnyAtFileNode() and parent.v != root.v:
-                    if parent.v not in seen:
-                        seen.add(parent.v)
-                        g.es_print('%s and %s contain clone: %s' % (
-                            root.h,parent.h,p0.h))
-
-for h in table:
-    root = g.findNodeAnywhere(c,h)
-    if root:
-        for p in root.self_and_subtree():
-            nodes += 1
-            if p.isCloned():
-                clones += 1
-                check_clone(c,p,root)
-    else:
-        g.es_print('not found',h,color='red')
-print('done: %s nodes, %s clones' % (nodes,clones))
-
-@tabwidth -4
-@language python
-</t>
-<t tx="ekr.20150425145248.1">pylint
-test-pylint
-test-one
+<t tx="ekr.20150425145248.1">check-leo
 execute-script
+# patch-pyflakes
+# pylint
 
 # restart-leo
 # ctrl-click-at-cursor
 
+# test-pylint
+# test-one
 # mypy-modes
 # pyflakes
 # test1-pyflakes
@@ -1161,301 +1047,7 @@ os.environ['LEO_BACKUP'] must be the path to an existing (writable) directory.
 """
 c.backup_helper(sub_dir='leoPy')
 </t>
-<t tx="ekr.20150507170849.1">g.cls()
-
-print('===== Start =====')
-
-class CreateDecorators:
-    """
-    A class to create decorators from tables in getPublicCommands.
-    
-    Note: the node "Found: getPublicCommands" must exist.
-    """
-    def __init__(self,c,make_changes):
-        self.c = c
-        self.fixups = self.create_fixups()
-        self.n = 0
-        self.n_fail = 0
-        self.make_changes=make_changes
-        self.suppress = [
-            'c.frame.body and c.frame.body.addEditor',
-            'cls','cloneFindParents','cycleTabFocus',
-            'k and k.keyboardQuit',
-            'menuShortcutPlaceHolder','removeBlankLines',
-            'saveBuffersKillLeo',
-        ]
-    @others
-
-CreateDecorators(c,make_changes=False).run()
-</t>
-<t tx="ekr.20150507174711.1">def find_next_clone(self,p):
-    v = p.v
-    p = p.copy()
-    p.moveToThreadNext()
-    wrapped = False
-    while 1:
-        # g.trace(p.v,p.h)
-        if p and p.v == v:
-            break
-        elif p:
-            p.moveToThreadNext()
-        elif wrapped:
-            break
-        else:
-            wrapped = True
-            p = c.rootPosition()
-    return p
-</t>
-<t tx="ekr.20150507175246.1">def munge_lines(self,root,publicCommands):
-    """Return munged lines of """
-    s = publicCommands.b
-    i,j = s.find('{'),s.find('}')
-    s = s[i+1:j]
-    lines = sorted([z.strip() for z in g.splitLines(s) if z.strip()])
-    lines = [z for z in lines if not z.startswith('#')]
-    lines = [z[:z.find('#')] if z.find('#') &gt; -1 else z for z in lines]
-    lines = [z.rstrip().rstrip(',') for z in lines]
-    lines = [z[1:] for z in lines]
-    lines = [z.replace("':",' ') for z in lines]
-    self.n += len(lines)
-    return lines
-</t>
-<t tx="ekr.20150508062944.1">def run(self):
-    """Top-level code."""
-    self.n = 0
-    found = g.findNodeAnywhere(c,'Found: getPublicCommands')
-    assert found
-    for child in found.children():
-        publicCommands = self.find_next_clone(child)
-        root = self.find_class(publicCommands)
-        if root:
-            lines = self.munge_lines(root,publicCommands)
-            d = self.create_d(lines,publicCommands)
-            self.create_decorators(d,root)
-    print('\n%s commands %s failed' % (self.n,self.n_fail))
-</t>
-<t tx="ekr.20150508063412.1">def create_decorators(self,d,root):
-    """Create decorators for all items in d in root's tree."""
-    # print('***** %s' % root.h)
-    if root.h in self.fixups:
-        roots = []
-        aList = self.fixups.get(root.h)
-        for root2_h in aList:
-            root2 = g.findNodeAnywhere(self.c,root2_h)
-            if root2:
-                # g.trace(root.h,'=====&gt;',root2.h)
-                roots.append(root2)
-            else:
-                g.trace('===== not found',root2_h)
-    else:
-        roots = [root]
-    for f_name in sorted(d.keys()):
-        found = False
-        for root in roots:
-            c_name = d.get(f_name)
-            found = self.create_decorator(c_name,f_name,root)
-            if found: break
-        if not found and f_name not in self.suppress:
-            print('===== not found: %30s %s' % (root.h,f_name))
-            self.n_fail += 1
-</t>
-<t tx="ekr.20150508063538.1">def create_d(self,lines,publicCommands):
-    """Create a dict. keys are method names; values are command names."""
-    trace = False
-    if trace:
-        g.trace('\n', publicCommands.h)
-    d = {}
-    for s in lines:
-        aList = s.split()
-        if len(aList) &gt; 2:
-            aList = [alist[0],' '.join(alist[1:])]
-        c_name,f_name = alist[0].strip(),alist[1].strip()
-        if ' ' not in f_name:
-            f_name = f_name.split('.')[-1]
-        # if '(' in f_name:
-            # f_name = f_name[:f_name.find('(')]
-        if trace: g.trace('%45s %s' % (c_name,f_name))
-        d [f_name] = c_name
-    return d
-</t>
-<t tx="ekr.20150508063926.1">def find_class(self,p):
-    """Return the position of the class enclosing p."""
-    for p2 in p.parents():
-        if p2.h.lower().find('class') &gt; -1 and p2.b.find('class') &gt; -1:
-            return p2
-    else:
-        g.trace('*** no class for p.h')
-        return None
-</t>
-<t tx="ekr.20150508071622.1">def create_decorator(self,c_name,f_name,root):
-    """
-    Search root for a definition of f_name.
-    If found, insert @cmd(f_name) before the definition.
-    """
-    # g.trace('%45s %s' % (c_name,f_name))
-    trace = False
-    found = False
-    decorator = "@cmd('%s')\n" % (c_name)
-    for p in root.self_and_subtree(copy=False):
-        changed,result = False,[]
-        for s in g.splitLines(p.b):
-            if g.match_word(s,0,'def ' + f_name):
-                if found:
-                    if f_name not in self.suppress:
-                        g.trace('duplicate def',f_name)
-                else:
-                    changed,found = True,True
-                    result.append(decorator)
-                    # print('%s%s' % (decorator,s))
-            result.append(s)
-        # if changed and self.make_changes:
-            # new_body = ''.join(result)
-            # # use git as our undo :-)
-            # p.b = new_body
-    return found
-</t>
-<t tx="ekr.20150508074623.1">def create_fixups(self):
-    """
-    Return a fixup dict.
-    Keys are headlines for classes.
-    Values are new headlines of nodes containing the actual class.
-    """
-    return {
-        'ChapterCommandsClass': ['class ChapterController'],
-        'EditCommandsClass': [
-            'EditCommandsClass',
-            'class Commands',
-            'class LeoQtFrame',
-            'class LeoBody',
-        ],
-        'class SearchCommandsClass': ['class LeoFind (LeoFind.py)'],
-        'KeyHandlerCommandsClass (add docstrings)': [
-            'class KeyHandlerClass',
-            'class AutoCompleterClass',
-        ]
-    }
-</t>
-<t tx="ekr.20150509183433.1">g.cls()
-
-# Changed files:
-# leoApp.py
-# leoAtFile.py
-# leoCommands.py
-# leoFileCommands.py
-# leoFrame.py
-# leoUndo.py
-# qt_frame.py
-
-make_changes = True  # True, actually make the change
-
-class CreateDecorators:
-    """
-    A class to create decorators from tables in getPublicCommands.
-    
-    Note: the node "Found: getPublicCommands" must exist.
-    """
-    def __init__(self):
-        self.n = 0
-        self.n_fail = 0
-        self.s = self.define_s()
-    @others
-
-CreateDecorators().run()
-</t>
-<t tx="ekr.20150509183433.2">def create_d(self,lines):
-    """Create a dict. keys are method names; values are command names."""
-    trace = False
-    d = {}
-    for s in lines:
-        aList = s.split()
-        if len(aList) &gt; 2:
-            aList = [alist[0],' '.join(alist[1:])]
-        c_name,f_name = alist[0].strip(),alist[1].strip()
-        if ' ' not in f_name:
-            f_name = f_name.split('.')[-1]
-        if trace:
-            g.trace('%45s %s' % (c_name,f_name))
-        d [f_name] = c_name
-    return d
-</t>
-<t tx="ekr.20150509183433.3">def create_decorator(self,c_name,f_name,root):
-    """
-    Search root for a definition of f_name.
-    If found, insert @cmd(f_name) before the definition.
-    """
-    trace = True
-    found = False
-    decorator = "@cmd('%s')\n" % (c_name)
-    for p in root.self_and_subtree(copy=False):
-        changed,result = False,[]
-        for s in g.splitLines(p.b):
-            if g.match_word(s,0,'def ' + f_name):
-                if found:
-                    if f_name not in self.suppress:
-                        g.trace('duplicate def',f_name)
-                else:
-                    changed,found = True,True
-                    result.append(decorator)
-            result.append(s)
-        if changed and make_changes:
-            new_body = ''.join(result)
-            print('%40s %s' % (p.h[:40],decorator.rstrip()))
-    return found
-</t>
-<t tx="ekr.20150509183433.4">def create_decorators(self,d):
-    """Create decorators for all items in d in root's tree."""
-    table = (
-        'class Commands', # c.
-        'class LeoQtFrame', # f.
-        'class LeoFrame', # f.
-        'class LeoApp', # g.app.
-        '@file leoAtFile.py', # c.atFileCommands
-        '@file leoFileCommands.py', # c.fileCommands
-        'class Undoer', # c.undoer
-    )
-    roots = []
-    for h in table:
-        root = g.findNodeAnywhere(c,h)
-        assert root,h
-        roots.append(root)
-    for f_name in sorted(d.keys()):
-        found = False
-        for root in roots:
-            c_name = d.get(f_name)
-            found = self.create_decorator(c_name,f_name,root)
-            if found: break
-        if not found and f_name not in self.suppress:
-            print(f"===== not found: {f_name!r}")
-            self.n_fail += 1
-</t>
-<t tx="ekr.20150509183433.8">def munge_lines(self,s):
-    """Return munged lines of s. """
-    lines = sorted([z.strip() for z in g.splitLines(s) if z.strip()])
-    lines = [z for z in lines if not z.startswith('#')]
-    lines = [z[:z.find('#')] if z.find('#') &gt; -1 else z for z in lines]
-    lines = [z.rstrip().rstrip(',') for z in lines]
-    lines = [z[1:] for z in lines]
-    lines = [z.replace("':",' ') for z in lines]
-    self.n += len(lines)
-    return lines
-</t>
-<t tx="ekr.20150509183433.9">def run(self):
-    """Top-level code."""
-    lines = self.munge_lines(self.s)
-    d = self.create_d(lines)
-    self.create_decorators(d)
-    print('%s commands %s failed' % (self.n,self.n_fail))
-</t>
 <t tx="ekr.20150514035207.1"></t>
-<t tx="ekr.20150703061709.1">@language python
-
-"""myLeoSettings.py: save the outline and run the pylint command"""
-
-# print('@button run-pylint: %s' % c.shortFileName())
-if c.isChanged():
-    c.save()
-c.k.simulateCommand('pylint')
-</t>
 <t tx="ekr.20160122104332.1">@language python
 </t>
 <t tx="ekr.20160123142722.1" _mod_time="4741da24cf0b43cf212e"># An example configuration file for make_stub_files.py.
@@ -1487,18 +1079,19 @@ prefix_lines:
 <t tx="ekr.20170427114412.1"></t>
 <t tx="ekr.20170428084123.1">@language python
 """Recursively import all python files in a directory and clean the result."""
-@tabwidth -4 # For a better match.
+@tabwidth - 4  # For a better match.
 g.cls()
 # dir_ = g.os_path_finalize_join(g.app.loadDir, '..', 'modes')
 # dir_ = g.os_path_finalize_join(g.app.loadDir, '..', '..', 'setup.py')
-dir_ = r'C:\Python\Python3.13\Lib\pdb.py'
+# dir_ = r'C:\Python\Python3.13\Lib\pdb.py'
+dir_ = r'C:\Python\Python3.14\Lib\site-packages\mypy'
 c.recursiveImport(
     dir_=dir_,
-    kind = '@clean', # '@auto', '@clean', '@nosent','@file',
-    recursive = True,
-    safe_at_file = True,
-    theTypes = ['.py'],
-    verbose = True,
+    kind= '@clean',  # '@auto', '@clean', '@nosent','@file',
+    recursive=True,
+    safe_at_file=False,
+    theTypes=['.py'],
+    verbose=True,
 )
 if 1:
     last = c.lastTopLevel()
@@ -1506,9 +1099,10 @@ if 1:
     if last.hasChildren():
         last.firstChild().expand()
     c.redraw(last)
-print('Done')</t>
+print('Done')
+</t>
 <t tx="ekr.20170428085201.1">@nosearch
-@nobeautify</t>
+</t>
 <t tx="ekr.20170811173924.1">@language python
 import os
 import subprocess
@@ -1535,25 +1129,11 @@ os.chdir(old_dir)
 print('done! wrote %s' % fn)
 </t>
 <t tx="ekr.20171031111403.1"></t>
-<t tx="ekr.20180225010644.1">@nobeautify</t>
+<t tx="ekr.20180225010644.1"></t>
 <t tx="ekr.20180225010707.1"></t>
 <t tx="ekr.20180225010743.1">@nosearch</t>
 <t tx="ekr.20180225010850.1"></t>
 <t tx="ekr.20180225010913.1"></t>
-<t tx="ekr.20180324065741.1">"""Copy the selected text to the next node."""
-w = c.frame.body.wrapper
-s = w.getSelectedText()
-if s.strip():
-    w.deleteTextSelection()
-    c.p.b = w.getAllText()
-    w.setInsertPoint(0)
-    p = c.insertHeadline()
-    c.selectPosition(p)
-    p.b = s
-    c.editHeadline()
-else:
-    g.es_print('no text selected')
-</t>
 <t tx="ekr.20180504191650.36"></t>
 <t tx="ekr.20180504191650.42"></t>
 <t tx="ekr.20180504191650.68" _mod_time="4741da24cf053b9aa12e"></t>
@@ -1688,7 +1268,6 @@ efc.GitDiffController(c).diff_two_branches(
     fn='leo/config/leoSettings.leo',  # Don't use back slashes.
 )
 </t>
-<t tx="ekr.20180824065751.1">print(p.gnx)</t>
 <t tx="ekr.20181030041436.1"></t>
 <t tx="ekr.20190402091335.1">from leo.commands import editFileCommands as efc
 
@@ -1697,7 +1276,6 @@ efc.GitDiffController(c).diff_two_revs(
     rev2='devel',   # New
 )
 </t>
-<t tx="ekr.20190406154306.1">g.openWithFileName(r'C:\apps\pyzo\pyzo.leo')</t>
 <t tx="ekr.20190607124533.1"></t>
 <t tx="ekr.20200212095937.1"></t>
 <t tx="ekr.20200212095937.2">True:  allow joined lines to contain strings.
@@ -1749,278 +1327,6 @@ print('done')</t>
 @tabwidth -4
 @pagewidth 80
 </t>
-<t tx="ekr.20201013034659.1"></t>
-<t tx="ekr.20201013034742.10"># These can be overridden in subclasses.
-</t>
-<t tx="ekr.20201013034742.11"># Define an override if desired...
-
-if 0: # The base class
-    def clean_headline(self, s):
-        """Return a cleaned up headline s."""
-        return s.strip()
-        
-if 0: # A more complex example, for the C language.
-    def clean_headline(self, s):
-        """Return a cleaned up headline s."""
-        import re
-        type1 = r'(static|extern)*'
-        type2 = r'(void|int|float|double|char)*'
-        class_pattern = r'\s*(%s)\s*class\s+(\w+)' % (type1)
-        pattern = r'\s*(%s)\s*(%s)\s*(\w+)' % (type1, type2)
-        m = re.match(class_pattern, s)
-        if m:
-            prefix1 = '%s ' % (m.group(1)) if m.group(1) else ''
-            return '%sclass %s' % (prefix1, m.group(2))
-        m = re.match(pattern, s)
-        if m:
-            prefix1 = '%s ' % (m.group(1)) if m.group(1) else ''
-            prefix2 = '%s ' % (m.group(2)) if m.group(2) else ''
-            h = m.group(3) or '&lt;no c function name&gt;'
-            return '%s%s%s' % (prefix1, prefix2, h)
-        else:
-            return s
-</t>
-<t tx="ekr.20201013034742.12">def clean_nodes(self, parent):
-    """
-    Clean all nodes in parent's tree.
-    Subclasses override this as desired.
-    See perl_i.clean_nodes for an examplle.
-    """
-    pass
-</t>
-<t tx="ekr.20201013034742.13">class {{cap_name}}_ScanState:
-    """A class representing the state of the {{name}} line-oriented scan."""
-    
-    def __init__(self, d=None):
-        """{{cap_name}}_ScanState.__init__"""
-        if d:
-            prev = d.get('prev')
-            self.context = prev.context
-            # Adjust these by hand.
-            self.curlies = prev.curlies
-        else:
-            self.context = ''
-            # Adjust these by hand.
-            self.curlies = 0
-
-    def __repr__(self):
-        """{{cap_name}}_ScanState.__repr__"""
-        # Adjust these by hand.
-        return "{{cap_name}}_ScanState context: %r curlies: %s" % (
-            self.context, self.curlies)
-
-    __str__ = __repr__
-
-    @others
-</t>
-<t tx="ekr.20201013034742.16">"""Converts the word at the cursor to pep8 style throughout a given tree."""
-# aTestExample notFoundExample.
-import re
-# clear()
-table = (
-    # 'BLS.new_scan',
-    # 'BLS.Code generation',
-    # 'class Importer',
-)
-@others
-Pep8(table, change=True).run()
-</t>
-<t tx="ekr.20201013034742.17">class Pep8:
-    """
-    Convert the word under the cursor to pep8 style in all subtrees in
-    table.
-    """
-    
-    def __init__ (self, table, change=False):
-        """Ctor for Pep8 class."""
-        self.change = change
-        self.table = table
-        
-    @others
-</t>
-<t tx="ekr.20201013034742.18">def change_all(self, name, new_name, root):
-    """Change name to new_name throughout root's tree."""
-    u = c.undoer
-    bunch = u.beforeChangeTree(root)
-    found = False
-    self.pattern = re.compile(r'\b%s\b' % name)
-    for p in root.self_and_subtree():
-        found = self.change_headline(name, new_name, p) or found
-        found = self.change_body(name, new_name, p) or found
-    if found:
-        u.afterChangeTree(root, 'pep8', bunch)
-    return found
-</t>
-<t tx="ekr.20201013034742.19">def change_body(self, name, new_name, p):
-    indices = []
-    for m in self.pattern.finditer(p.b):
-        indices.append(str(m.start()))
-    if indices:
-        n = len(indices)
-        g.es_print('%s change%s: %s' % (n, g.plural(n), p.h))
-        s = p.b
-        for i in reversed(indices):
-            i = int(i)
-            s = s[:i] + new_name + s[i+len(name):]
-        if self.change:
-            p.b = s
-            p.setDirty()
-        else:
-            g.es_print(s)
-    return bool(indices)</t>
-<t tx="ekr.20201013034742.2">g.cls()
-# define constants that describe the new language.
-name = 'php'  # The name of the file, and the prefix for classes.
-language = 'php'  # The name of the language, case doesn't matter.
-extensions = ['.php',]  # A list of file extensions supported by this importer.
-strict = False  # True if leading whitespace is particularly significant.
-state_ivar = 'self.curlies'
-    # 'self.indent' for python, coffeescript.
-    # 'self.curlies' for many other languages
-    # '(self, curlies, self.parens)' for more complex comparisons
-&lt;&lt; define run &amp; helpers &gt;&gt;
-run(extensions, language, name, state_ivar)
-</t>
-<t tx="ekr.20201013034742.20">def change_headline(self, name, new_name, p):
-    m = self.pattern.search(p.h)
-    if m:
-        i = m.start()
-        s = p.h
-        s = s[:i] + new_name + s[i+len(name):]
-        if self.change:
-            p.h = s
-            p.setDirty()
-            g.es_print('changed headline', s)
-        else:
-            g.es_print('headline', s)
-    return bool(m)
-</t>
-<t tx="ekr.20201013034742.21">def get_name(self):
-    i, j = c.editCommands.extendToWord(event=None, select=False)
-    w = c.frame.body.wrapper
-    s = w.getAllText()
-    name = s[i:j]
-    return name
-</t>
-<t tx="ekr.20201013034742.22">def run(self):
-    # self.clear()
-    name = self.get_name()
-    new_name = self.to_pep8(name)
-    if len(name) &lt; 2:
-        g.es_print('name too short:', name)
-    elif new_name == name:
-        g.es_print('already pep8:', name)
-    else:
-        g.es_print('%s -&gt; %s' % (name, new_name))
-        # Preload the replacement text.
-        c.findCommands.ftm.set_find_text(new_name)
-        found = False
-        for target in table:
-            root = g.findNodeAnywhere(c, target)
-            if root:
-                found = self.change_all(name, new_name, root) or found
-            else:
-                g.es_print('not found: %s' % target)
-        if found:
-            c.redraw()
-        else:
-            g.es_print('not found:', name)
-</t>
-<t tx="ekr.20201013034742.23">def to_pep8(self, s):
-    
-    if len(s) &gt; 1 and s[0].islower() and s.lower() != s:
-        result = []
-        for ch in s:
-            result.append(ch)
-            if ch.isupper():
-                result.pop()
-                result.append('_%s' % (ch.lower()))
-        return ''.join(result)
-    else:
-        return name</t>
-<t tx="ekr.20201013034742.24">def clear():
-    g.cls()
-    c.k.simulateCommand('clear-log')
-</t>
-<t tx="ekr.20201013034742.3">@others</t>
-<t tx="ekr.20201013034742.4">def copy_tree(source, root, h):
-    """Copy the source tree to the node after p, with headline h."""
-    p2 = root.insertAfter()
-    source.copyTreeFromSelfTo(p2)
-    p2.h = h
-    return p2
- </t>
-<t tx="ekr.20201013034742.5">def make_substitutions(destination, patterns):
-    """Make all substitutions in the destination tree."""
-    for p in destination.self_and_subtree():
-        h = substitute(p.h, patterns)
-        if p.h != h:
-            p.h = h
-        b = substitute(p.b, patterns)
-        if p.b != b:
-            p.b = b
-</t>
-<t tx="ekr.20201013034742.6">def run(extensions, language, name, state_ivar):
-    """The driver for this script."""
-    patterns = {
-        'cap_name': name.capitalize(),
-        'extensions': '[%s]' % ', '.join(["'%s'" % (z) for z in extensions]),
-        'language': language.lower(),
-        'name': name.lower(),
-        'strict': 'True' if strict else 'False',
-        'state_ivar': state_ivar,
-    }
-    h = '@button make-importer'
-    root = g.findNodeAnywhere(c, h)
-    assert root, h
-    h = '@@file importers/{{name}}.py'
-    source = g.findNodeInTree(c, root, h)
-    assert source, h
-    destination = copy_tree(source, root, h)
-    make_substitutions(destination, patterns)
-    c.contractAllHeadlines()
-    c.redraw()</t>
-<t tx="ekr.20201013034742.7">def substitute(s, patterns):
-    """Make all substitutions in s."""
-    for pattern in patterns:
-        find = '{{%s}}' % pattern
-        replace = patterns.get(pattern)
-        i = 0
-        while i &lt; len(s):
-            progress = i
-            j = s.find(find, i)
-            if j == -1: break
-            s = s[:j] + replace + s[j+len(find):]
-            i = j+len(replace)
-            assert progress &lt; i
-    return s
-</t>
-<t tx="ekr.20201013034742.8">"""The @auto importer for the {{name}} language."""
-import leo.plugins.importers.linescanner as linescanner
-Importer = linescanner.Importer
-@others
-importer_dict = {
-    'class': {{cap_name}}_Importer,
-    'extensions': {{extensions}},
-}
-@language python
-@tabwidth -4
-
-
-</t>
-<t tx="ekr.20201013034742.9">class {{cap_name}}_Importer(Importer):
-    """The importer for the {{name}} lanuage."""
-
-    def __init__(self, c):
-        """{{cap_name}}_Importer.__init__"""
-        # Init the base class.
-        Importer.__init__(self,
-            c,
-            language = '{{language}}',
-        )
-        
-    @others
-</t>
 <t tx="ekr.20201015145257.1">import leo.core.leoImport as leoImport
 import importlib
 importlib.reload(leoImport)
@@ -2031,96 +1337,6 @@ assert g.os_path_exists(path)
 x = leoImport.LegacyExternalFileImporter(c)
 x.import_file(path)
 </t>
-<t tx="ekr.20201018062305.1">"""
-Overwrite LeoPyRef.leo from the given list of nodes.
-
-This script will delete any nodes that are in LeoPyRef.leo but not in
-leoPy.leo.
-
-"""
-# Do not use this script—it creates huge diffs.
-import io
-import os
-@others
-main(node_list = ['Startup', 'Notes', 'Script files', 'Code'])
-</t>
-<t tx="ekr.20201018063747.1">def put_content(positions_list):
-    """
-    Return the desired contents of leoPyRef.leo.
-    
-    Based on code by Виталије Милошевић.
-    """
-    fc = c.fileCommands
-    # Make only a few copies.
-    p = c.rootPosition().copy()
-    fc.currentPosition = p.copy()
-    fc.rootPosition = p.copy()
-    old_vnodesDict = fc.vnodesDict  # Save.
-    fc.vnodesDict = {}
-    try:
-        # Put the file
-        fc.outputFile = io.StringIO()
-        put_prolog()  # Put prolog w/o the stylesheet.
-        fc.putHeader()
-        fc.putGlobals()
-        fc.putPrefs()
-        fc.putFindSettings()
-        fc.put("&lt;vnodes&gt;\n")
-        for p in positions_list:
-            # An optimization: Write the next top-level node.
-            fc.put_v_element(p, isIgnore=p.isAtIgnoreNode())
-        fc.put("&lt;/vnodes&gt;\n")
-        put_tnodes(positions_list)  # Put only *required* tnodes.
-        fc.putPostlog()
-        s = fc.outputFile.getvalue()
-    finally:
-        fc.outputFile = None
-        fc.vnodesDict = old_vnodesDict  # Restore!
-    return s
-</t>
-<t tx="ekr.20201018065757.1">def check_file_names():
-    """Return True if leoPyRef exists and we are running from leoPy.leo."""
-    if not 'leoPy.leo' in c.shortFileName():
-        oops('Run this script only from leoPy.leo')
-        return None
-    fileName = g.finalize_join(g.app.loadDir, '..', 'core', 'leoPyRef.leo')
-    if not os.path.exists(fileName):
-        oops(f"Not found: {fileName}")
-        return None
-    return fileName</t>
-<t tx="ekr.20201018065921.1">def check_nodes(node_list):
-    """Return True if all nodes are found."""
-    result = []
-    for node in node_list:
-        p = g.findTopLevelNode(c, node, exact=True)
-        if p:
-            result.append(p.copy())
-        else:
-            oops(f"Top-level node {node} not found")
-            return []
-    return result</t>
-<t tx="ekr.20201018070822.1">def main(node_list):
-    """The main line."""
-    c.endEditing()
-    fileName = check_file_names()
-    if not fileName:
-        return  # Error.
-    positions_list = check_nodes(node_list)
-    if not positions_list:
-        return  # Error.
-    content = put_content(positions_list)
-    if not content:
-        return  # Error.
-    with open(fileName, 'w', encoding="utf-8", newline='\n') as f:
-        f.write(content)
-    print('')
-    g.es_print(f"Updated {g.shortFileName(fileName)}")
-</t>
-<t tx="ekr.20201018072911.1">def oops(message):
-    """Print an error message"""
-    print('')
-    g.es_print(message)
-    print('')</t>
 <t tx="ekr.20201202144529.1"></t>
 <t tx="ekr.20201208114843.1"># No longer needed. Use the git-diff-pr command.
 import leo.commands.editFileCommands as efc
@@ -2253,47 +1469,6 @@ for key in sorted(d.keys()):
         else:
             print('no position for', v)
 print('done')</t>
-<t tx="ekr.20210510071427.1">def put_prolog():
-    """Same as fc.putProlog, without the stylysheet."""
-    fc = c.fileCommands
-    tag = 'http://leoeditor.com/namespaces/leo-python-editor/1.1'
-    #
-    # Put the xml line.
-    fc.putXMLLine()
-    #
-    # Put the "created by Leo" line.
-    fc.put('&lt;!-- Created by Leo: http://leoeditor.com/leo_toc.html --&gt;\n')
-    #
-    # Do *not* put the stylesheet line.
-        # fc.putStyleSheetLine()
-    #
-    # Put the namespace
-    fc.put(f'&lt;leo_file xmlns:leo="{tag}" &gt;\n')
-</t>
-<t tx="ekr.20210510071812.1">def put_tnodes(positions_list):
-    """
-    Write all tnodes except those for vnodes appearing in @file, @edit or @auto nodes.
-    """
-        
-    def should_suppress(p):
-        return any(z.isAtFileNode() or z.isAtEditNode() or z.isAtAutoNode()
-            for z in p.self_and_parents())
-
-    fc = c.fileCommands
-    fc.put("&lt;tnodes&gt;\n")
-    suppress = {}
-    for p in c.all_positions(copy=False):
-        if should_suppress(p):
-            suppress[p.v] = True
-    # Write tnodes in *outline* order.
-    written = {}
-    for root in positions_list:
-        for p in root.self_and_subtree():
-            if p.v not in suppress and p.v not in written:
-                written[p.v] = True
-                fc.put_t_element(p.v)
-    fc.put("&lt;/tnodes&gt;\n")
-</t>
 <t tx="ekr.20210530065000.2"># This node contains the commands needed to execute a program in a particular language.
 # Format: language-name: command
 
@@ -2473,26 +1648,6 @@ converter = convertCommands.ConvertAtTests()
 convertCommands.convert_at_test_nodes(c, converter, root, copy_tree=True)</t>
 <t tx="ekr.20210912064148.1"></t>
 <t tx="ekr.20210912064205.1"></t>
-<t tx="ekr.20211011090013.1">"""
-Find and convert hanging comments.
-
-Warning: do not run this script on unit testing files.
-"""
-# https://github.com/leo-editor/leo-editor/pull/2622
-g.cls()
-import re
-from typing import Any, List
-
-trace = True  # It's useful to trace even when also replacing.
-replace = True  # Replace body text.
-max_line_length = 70  # Maximum line length for lines containing trailing comments.
-
-@others
-
-for p in c.p.self_and_subtree():
-    convert(p)
-print('done')
-</t>
 <t tx="ekr.20211014103433.1">"""
 Convert the TeX sources, assumed to be in ~/tex.web, to an outline.
 
@@ -2573,8 +1728,6 @@ def do_sec(i, m, s):
     child = parent.insertAsLastChild()
     child.h = h.strip()
     parents.append(('@ ', child))
-</t>
-<t tx="ekr.20211020091540.1">c.backup_helper(sub_dir='leoPy')
 </t>
 <t tx="ekr.20220306092217.1">"""Invoke EKR's private test-one.cmd script."""
 
@@ -2675,83 +1828,6 @@ x.diff_two_revs(rev1, rev2)
                 if tail.strip():
                     result.append(tail.rstrip() + '\n')
     return ''.join(result)
-</t>
-<t tx="ekr.20220425052306.1">compound_statement = (
-    # Leo doesn't use 'match'
-    'async ', 'class ', 'def ', 'else:', 'elif ', 'except',
-    'finally:', 'for ', 'if ', 'try:', 'while ', 'with ',
-)
-pat = re.compile(r'\)\s*-&gt;.*:\s*$')  # End of multiline def.
-
-def convert(p: Any) -&gt; None:
-    """Convert all hanging comments in p.b."""
-    if p.isAnyAtFileNode():
-        print('   Scan:', p.h)
-    changed, last, result = False, '', []
-    i, lines = 0, p.b.split('\n')
-    sep = '-' * 40
-    while i &lt; len(lines):
-        progress = i
-        more_lines = []
-        s = lines[i]
-        s_s = s.lstrip()
-        last_s = last.lstrip()
-        lws_s = compute_lws(s)
-        lws_last = compute_lws(last)
-        if (
-            last_s and s_s.startswith('#')
-            and not pat.match(last_s)
-            and not last_s.startswith(('#', '"""', "'''"))
-            and not last_s.endswith(('[', '(', '{', '):'))
-            and not last_s.startswith(compound_statement)
-            and lws_last &lt; lws_s
-        ):
-            changed = True
-            result.pop()  # Discard the last line!
-            j = i + 1  # Look for more indented lines.
-            while j &lt; len(lines):
-                s2 = lines[j]
-                s2_s = s2.strip()
-                lws_s2 = compute_lws(s2)
-                if lws_s2 &gt;= lws_s and s2_s.startswith('#'):
-                    more_lines.append(s2)
-                    j += 1
-                else:
-                    break
-            if not more_lines and len(last_s) + len(s_s) &lt; max_line_length:
-                # Emit one line.
-                result.append(f"{last}  {s_s}")
-                if trace:
-                    g.printObj([last, s, sep, f"{last}  {s_s}\n"], tag=p.h)
-            else:
-                # Emit the first comment line.
-                result.append(f"{lws_last}{s_s}")
-                # Emit any additional comment lines.
-                for z in more_lines:
-                    result.append(f"{lws_last}{z.lstrip()}")
-                # Emit the last (non-comment) line.
-                result.append(last)
-                if trace:
-                    added_lines = [f"{lws_last}{z.lstrip()}" for z in more_lines]
-                    g.printObj(
-                        [last, s] + more_lines + [sep] +
-                        [f"{lws_last}{s_s}"] + added_lines + [last], tag=p.h)
-            i += 1 + len(more_lines)
-            last = lines[i]
-        else:
-            result.append(s)
-            last = s
-            i += 1
-        assert progress &lt; i
-    if changed:
-        print('Changed:', p.h)
-        if replace:
-            p.b = '\n'.join(result)
-</t>
-<t tx="ekr.20220425184232.1">def compute_lws(s: str) -&gt; int:
-    """Return the leading whitespace of s."""
-    n = len(s) - len(s.lstrip())
-    return s[:n]
 </t>
 <t tx="ekr.20220503081113.1">g.cls()
 import re
@@ -2889,42 +1965,7 @@ assert core_p and command_p and globals_p
     # 'toString', 'toUnicode', 'trace', 'translateString',
     # 'underline', 'undoHelper', 'unl', 'values', 'visit',
     # 'warn', 'warning', 'word',</t>
-<t tx="ekr.20220527065937.1">g.cls()
-import json
-import os
-import textwrap
-path = r'C:\Repos\leo-editor\mypy_stubs\3.9\leo\core\leoApp.data.json'
-with open(path, 'r') as f:
-    d = json.load(f)
-
-def make_outline(d, p, topFlag):
-    """Set p.b from dict d. Generate child nodes for inner dicts.."""
-    result = []
-    for key, value in d.items():
-        if isinstance(value, dict):
-            h2 = 'top' if topFlag else p.h[2:-2].strip()
-            section_name = g.angleBrackets(f" {h2}.{key} ")
-            result.append(f'"{key}": {{\n')
-            result.append(f"    {section_name}\n")
-            result.append('}\n')
-            child = p.insertAsLastChild()
-            child.h = section_name
-            make_outline(value, child, topFlag=False)
-        elif isinstance(value, str):
-            result.append(f'"{key}": "{value}"\n')
-        else:
-            result.append(f'"{key}": {value}\n')
-    p.b = ''.join(result)
-
-# Recursively make the outline.
-top = c.lastTopLevel().insertAfter()
-top.h = os.path.basename(path)
-make_outline(d, top, topFlag=True)
-# Adjust top.b.
-top.b = f"{{\n{textwrap.indent(top.b.strip(),' '*4)}\n}}\n"
-c.redraw(top)
-    </t>
-<t tx="ekr.20220823195205.1" _mod_time="4741da24cf0b43cf212e">"""
+<t tx="ekr.20220823195205.1" _mod_time="4741da58145e5f5f2e2e">"""
 Stand alone GUI free index builder for Leo's full text search system::
 
   python leoftsindex.py &lt;file1&gt; &lt;file2&gt; &lt;file3&gt;...
@@ -3172,7 +2213,7 @@ print('done')</t>
 <t tx="ekr.20240107154430.1"># 79: PEP8 recommendation.</t>
 <t tx="ekr.20240204082420.1"></t>
 <t tx="ekr.20240204082924.1"></t>
-<t tx="ekr.20240206161713.1" _mod_time="4741da264b7471db2a2e">@language ini
+<t tx="ekr.20240206161713.1" _mod_time="4741da58847d4499552e">@language ini
 
 [bdist_wheel]
 
@@ -3204,7 +2245,7 @@ extend-ignore =
 
     # Don't check B020. It conflicts with Leo idioms like `for p in p.children():
     # Found for loop that reassigns the iterable it is iterating with each iterable value.
-    B020
+    # B020
 
     # blank line contains whitespace
     # W293
@@ -3212,7 +2253,7 @@ extend-ignore =
     # Comments and continuation lines...
 
     # expected an indented block (comment)
-    E115
+    # E115
 
     # unexpected indentation (comment)
     E116
@@ -3307,7 +2348,7 @@ extend-ignore =
     E303
 
     # expected 2 blank lines after class or function definition, found 0.
-    E305
+    # E305
 
     # expected 1 blank line before a nested definition, found 0.
     E306
@@ -3683,16 +2724,11 @@ if new_b != proj_p.b:
     proj_p.b = new_b
     c.redraw()
     c.save()</t>
-<t tx="ekr.20241103050115.1">"""Invoke EKR's private test-mypy.cmd script."""
-
-import os
-
-if c.isChanged():
-    print('Saved!')
-    c.save()
-
-os.system('mypy-modes.cmd')
-</t>
 <t tx="ekr.20250715195948.1"></t>
+<t tx="ekr.20251214042454.1">True: Wrap body text.
+
+</t>
+<t tx="ekr.20260108172912.1"></t>
+<t tx="ekr.20260110024304.1">New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.</t>
 </tnodes>
 </leo_file>
