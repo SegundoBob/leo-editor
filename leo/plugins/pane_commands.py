@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20221019064053.1: * @file ../plugins/pane_commands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20221019064053.1: * @file ../plugins/pane_commands.py
 """A plugin that adds top-of-pane and bottom-of-pane commands."""
 # https://github.com/leo-editor/leo-editor/issues/2910
 # Original code by jknGH. Plugin by EKR.
@@ -15,15 +15,15 @@ if TYPE_CHECKING:
 
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 
-#@+others
-#@+node:ekr.20221019064557.1: ** init (pane_commands.py)
+# @+others
+# @+node:ekr.20221019064557.1: ** init (pane_commands.py)
 def init() -> bool:
     """Return True if the plugin has loaded successfully."""
     if g.app.gui.guiName() != "qt":
         return False
     g.plugin_signon(__name__)
     return True
-#@+node:ekr.20221020063528.1: ** bottom of-pane
+# @+node:ekr.20221020063528.1: ** bottom of-pane
 @g.command('bottom-of-pane')
 def bottomOfPane(event: LeoKeyEvent = None) -> None:
     """ move the text cursor to the last character visible in the body pane
@@ -53,7 +53,7 @@ def bottomOfPane(event: LeoKeyEvent = None) -> None:
     w.setTextCursor(cursor)
 
     c.bodyWantsFocusNow()
-#@+node:ekr.20221020063441.1: ** top-of-pane
+# @+node:ekr.20221020063441.1: ** top-of-pane
 @g.command('top-of-pane')
 def topOfPane(event: LeoKeyEvent = None) -> None:
     """ move the text cursor to the first character visible in the body pane
@@ -77,7 +77,7 @@ def topOfPane(event: LeoKeyEvent = None) -> None:
 
     c.bodyWantsFocusNow()
 
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo
