@@ -615,10 +615,12 @@ class BaseColorizer:
         return s.replace(' ', '').replace('-', '').replace('_', '').lower().strip()
 
     # @+node:ekr.20171114041307.1: *3* BaseColorizer.reloadSettings
-    # fmt: off
 
     def reloadSettings(self) -> None:
         c, getBool = self.c, self.c.config.getBool
+
+        # fmt: off
+
         # Init all settings ivars.
         self.color_tags_list: list[str] = []
         self.showInvisibles      = getBool("show-invisibles-by-default")
@@ -626,6 +628,9 @@ class BaseColorizer:
         self.use_hyperlinks      = getBool("use-hyperlinks")
         self.use_pygments        = None  # Set in report_changes.
         self.use_pygments_styles = getBool('use-pygments-styles', default=True)
+
+        # fmt: on
+
         # Report changes to pygments settings.
         self.report_changes()
         # Init the default fonts.
@@ -657,8 +662,6 @@ class BaseColorizer:
         self.defineDefaultFontDict()
         self.configureTags()
         self.init()
-
-    # fmt: on
 
     # @+node:ekr.20190327053604.1: *4* BaseColorizer.report_changes
     prev_use_pygments: bool = None

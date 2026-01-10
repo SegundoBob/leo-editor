@@ -317,8 +317,6 @@ class Commands:
         ] = []  # List of orphaned nodes for c.raise_error_dialogs.
 
     # @+node:ekr.20120217070122.10470: *5* c.initObjects
-    # fmt: off
-
     def initObjects(self, gui: LeoGui) -> None:
         c = self
         self.hiddenRootNode = leoNodes.VNode(context=c, gnx='hidden-root-vnode-gnx')
@@ -401,6 +399,9 @@ class Commands:
         t2 = time.process_time()
         if 0:
             g.trace(f"Import time: {t2 - t1:.2f}")
+
+        # fmt: off
+
         # Define 11 subcommanders.
         self.keyHandler = self.k    = leoKeys.KeyHandlerClass(c)
         self.chapterController      = leoChapters.ChapterController(c)
@@ -413,6 +414,7 @@ class Commands:
         self.persistenceController  = leoPersistence.PersistenceDataController(c)
         self.printingController     = leoPrinting.PrintingController(c)
         self.undoer                 = leoUndo.Undoer(c)
+
         # 15 command handlers...
         self.abbrevCommands     = abbrevCommands.AbbrevCommandsClass(c)
         self.bufferCommands     = bufferCommands.BufferCommandsClass(c)
@@ -429,6 +431,9 @@ class Commands:
         self.rstCommands        = leoRst.RstCommands(c)
         self.spellCommands      = spellCommands.SpellCommandsClass(c)
         self.vimCommands        = leoVim.VimCommands(c)
+
+        # fmt: on
+
         # Create the list of subcommanders.
         self.subCommanders = [
             self.abbrevCommands,
@@ -470,8 +475,6 @@ class Commands:
             self.subCommanders.append(self.styleSheetManager)
         else:
             self.styleSheetManager = None
-
-    # fmt: on
 
     # @+node:ekr.20120217070122.10469: *5* c.initOptionsIvars
     def initOptionsIvars(self) -> None:
@@ -5082,7 +5085,6 @@ class Commands:
         return -1 < i1 < j1 or -1 < i2 < j2
 
     # @+node:ekr.20031218072017.2965: *6* c.canFindMatchingBracket
-    # fmt: off
 
     def canFindMatchingBracket(self) -> bool:
         c = self
@@ -5090,12 +5092,15 @@ class Commands:
         w = c.frame.body.wrapper
         s = w.getAllText()
         ins = w.getInsertPoint()
+
+        # fmt: off
         c1 = s[ins]   if 0 <= ins   < len(s) else ''
         c2 = s[ins-1] if 0 <= ins-1 < len(s) else ''
+        # fmt: on
+
         val = (c1 and c1 in brackets) or (c2 and c2 in brackets)
         return bool(val)
 
-    # fmt: on
     # @+node:ekr.20040303165342: *6* c.canHoist & canDehoist
     def canDehoist(self) -> bool:
         """

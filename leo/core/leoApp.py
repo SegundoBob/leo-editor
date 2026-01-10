@@ -3097,6 +3097,7 @@ class LoadManager:
             '--load-type=@edit',
             '--load-type=@file',
             '--no-cache',
+            '-b',
             '--black-sentinels',
             '--ipython',
             '--session-restore',

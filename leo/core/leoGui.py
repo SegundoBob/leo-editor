@@ -667,12 +667,14 @@ class StringFindTabManager:
 
     # @+others
     # @+node:ekr.20210221130549.2: *3*  sftm.ctor
-    # fmt: off
 
     def __init__(self, c: Cmdr) -> None:
         """Ctor for the FindTabManager class."""
         self.c = c
         self.entry_focus = None  # Accessed directly from code(!)
+
+        # fmt: off
+
         # Find/change text boxes...
         self.find_findbox    = StringLineEdit('find_text')
         self.find_replacebox = StringLineEdit('change_text')
@@ -689,10 +691,11 @@ class StringFindTabManager:
         self.radio_button_file_only       = StringRadioButton('file_only')
         self.radio_button_node_only       = StringRadioButton('node_only')
         self.radio_button_suboutline_only = StringRadioButton('suboutline_only')
+
+        # fmt: on
+
         # Init the default values.
         self.init_widgets()
-
-    # fmt: on
 
     # @+node:ekr.20210221130549.5: *3* sftm.clear_focus & init_focus & set_entry_focus
     def clear_focus(self) -> None:
