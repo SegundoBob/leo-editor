@@ -1,13 +1,15 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170428084208.213: * @file ../external/npyscreen/wgmultilinetreeselectable.py
+# @+leo-ver=5-thin
+# @+node:ekr.20170428084208.213: * @file ../external/npyscreen/wgmultilinetreeselectable.py
 from leo.core import leoGlobals as g
+
 assert g
-#@+others
-#@+node:ekr.20170428084208.214: ** Declarations
+# @+others
+# @+node:ekr.20170428084208.214: ** Declarations
 import curses
 from . import wgmultilinetree
 
-#@+node:ekr.20170428084208.215: ** class TreeLineSelectable
+
+# @+node:ekr.20170428084208.215: ** class TreeLineSelectable
 class TreeLineSelectable(wgmultilinetree.TreeLine):
     # NB - as print is currently defined, it is assumed that these will
     # NOT contain multi-width characters, and that len() will correctly
@@ -17,8 +19,8 @@ class TreeLineSelectable(wgmultilinetree.TreeLine):
     CANNOT_SELECT = '   '
     CANNOT_SELECT_SELECTED = ' * '
 
-    #@+others
-    #@+node:ekr.20170428084208.216: *3* _print_select_controls
+    # @+others
+    # @+node:ekr.20170428084208.216: *3* _print_select_controls
     def _print_select_controls(self):
         SELECT_DISPLAY = None
 
@@ -33,30 +35,26 @@ class TreeLineSelectable(wgmultilinetree.TreeLine):
             else:
                 SELECT_DISPLAY = self.CANNOT_SELECT
 
-
         if self.do_colors():
             attribute_list = self.parent.theme_manager.findPair(self, 'CONTROL')
         else:
             attribute_list = curses.A_NORMAL
 
-
-        #python2 compatibility
+        # python2 compatibility
         if isinstance(SELECT_DISPLAY, bytes):
             SELECT_DISPLAY = SELECT_DISPLAY.decode()
 
-
-
-        self.add_line(self.rely,
-                      self.left_margin + self.relx,
-                      SELECT_DISPLAY,
-                      self.make_attributes_list(SELECT_DISPLAY, attribute_list),
-                      self.width - self.left_margin,
+        self.add_line(
+            self.rely,
+            self.left_margin + self.relx,
+            SELECT_DISPLAY,
+            self.make_attributes_list(SELECT_DISPLAY, attribute_list),
+            self.width - self.left_margin,
         )
 
         return len(SELECT_DISPLAY)
 
-
-    #@+node:ekr.20170428084208.217: *3* _print
+    # @+node:ekr.20170428084208.217: *3* _print
     def _print(self, left_margin=0):
         if not hasattr(self._tree_real_value, 'selected'):
             return None
@@ -66,17 +64,17 @@ class TreeLineSelectable(wgmultilinetree.TreeLine):
 
         self.left_margin += self._print_select_controls() + 1
 
-
         if self.highlight:
             self.parent.curses_pad.bkgdset(' ', curses.A_STANDOUT)
         super(wgmultilinetree.TreeLine, self)._print()
 
+    # @-others
 
-    #@-others
-#@+node:ekr.20170428084208.218: ** class TreeLineSelectableAnnotated
+
+# @+node:ekr.20170428084208.218: ** class TreeLineSelectableAnnotated
 class TreeLineSelectableAnnotated(TreeLineSelectable, wgmultilinetree.TreeLineAnnotated):
-    #@+others
-    #@+node:ekr.20170428084208.219: *3* _print
+    # @+others
+    # @+node:ekr.20170428084208.219: *3* _print
     def _print(self, left_margin=0):
         if not hasattr(self._tree_real_value, 'selected'):
             return None
@@ -92,21 +90,21 @@ class TreeLineSelectableAnnotated(TreeLineSelectable, wgmultilinetree.TreeLineAn
             self.parent.curses_pad.bkgdset(' ', curses.A_STANDOUT)
         super(wgmultilinetree.TreeLine, self)._print()
 
+    # @-others
 
 
-    #@-others
-#@+node:ekr.20170428084208.220: ** class MLTreeMultiSelect
+# @+node:ekr.20170428084208.220: ** class MLTreeMultiSelect
 class MLTreeMultiSelect(wgmultilinetree.MLTree):
     _contained_widgets = TreeLineSelectable
-    #@+others
-    #@+node:ekr.20170428084208.221: *3* __init__
+
+    # @+others
+    # @+node:ekr.20170428084208.221: *3* __init__
     def __init__(self, screen, select_cascades=True, *args, **keywords):
         super(MLTreeMultiSelect, self).__init__(screen, *args, **keywords)
         self.select_cascades = select_cascades
 
-    #@+node:ekr.20170428084208.222: *3* MLTreeMultiSelect.h_select
+    # @+node:ekr.20170428084208.222: *3* MLTreeMultiSelect.h_select
     def h_select(self, ch):
-
         # g.trace('===== (MLTreeMultiSelect)')
         vl = self.values[self.cursor_line]
         vl_to_set = not vl.selected
@@ -120,7 +118,8 @@ class MLTreeMultiSelect(wgmultilinetree.MLTree):
             self.editing = False
             self.how_exited = True
         self.display()
-    #@+node:ekr.20170428084208.223: *3* get_selected_objects
+
+    # @+node:ekr.20170428084208.223: *3* get_selected_objects
     def get_selected_objects(self, return_node=True):
         for v in self._walk_tree(self._myFullValues, only_expanded=False, ignore_root=False):
             if v.selected:
@@ -129,13 +128,16 @@ class MLTreeMultiSelect(wgmultilinetree.MLTree):
                 else:
                     yield self._get_content(v)
 
-    #@-others
-#@+node:ekr.20170428084208.224: ** class MLTreeMultiSelectAnnotated
+    # @-others
+
+
+# @+node:ekr.20170428084208.224: ** class MLTreeMultiSelectAnnotated
 class MLTreeMultiSelectAnnotated(MLTreeMultiSelect):
     _contained_widgets = TreeLineSelectableAnnotated
 
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@nobeautify
-#@-leo
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@nobeautify
+# @-leo

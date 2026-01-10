@@ -32,6 +32,7 @@ node's body is assumed to be a simple text listing of paths to .leo files).
 """
 
 import sys
+
 # add folder containing 'leo' folder to path
 # sys.path.append("/home/tbrown/Package/leo/bzr/leo.repo/trunk")
 import leo.core.leoBridge as leoBridge
@@ -42,7 +43,7 @@ controller = leoBridge.controller(
     loadPlugins=False,  # True: attempt to load plugins.
     readSettings=False,  # True: read standard settings files.
     silent=False,  # True: don't print signon messages.
-    verbose=False
+    verbose=False,
 )
 g = controller.globals()
 
@@ -60,7 +61,6 @@ done = set()  # outlines scanned, to avoid repetition repetition
 todo = list(files)
 
 while todo:
-
     item = todo.pop(0)
 
     print("INDEX: %s" % item)
@@ -93,7 +93,6 @@ while todo:
         files = [fn]
 
     for fn in files:
-
         # file names may still have '#' if taken from a node list
         real_name = fn.split('#', 1)[0]
         if real_name in done:

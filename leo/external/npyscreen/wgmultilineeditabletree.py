@@ -8,8 +8,9 @@ import curses
 import logging
 import npyscreen
 import weakref
-def print_list(aList, tag=None, sort=False, indent=''):
 
+
+def print_list(aList, tag=None, sort=False, indent=''):
     if aList:
         bList = list(sorted(aList)) if sort else aList
         logging.info('%s...[' % (tag) if tag else '[')
@@ -18,6 +19,8 @@ def print_list(aList, tag=None, sort=False, indent=''):
         logging.info(']')
     else:
         logging.info(tag + '...[]' if tag else '[]')
+
+
 class TreeDataEditable(npyscreen.TreeData):
     '''A TreeData class that has a len and new_first_child methods.'''
 
@@ -33,11 +36,12 @@ class TreeDataEditable(npyscreen.TreeData):
         c = cld(parent=self, *args, **keywords)
         self._children.insert(index, c)
         return weakref.proxy(c)
+
+
 class TreeLineEditable(npyscreen.TreeLine):
     '''A editable TreeLine class.'''
 
     def __init__(self, *args, **kwargs):
-
         super(TreeLineEditable, self).__init__(*args, **kwargs)
         self.set_handlers()
 
@@ -53,72 +57,72 @@ class TreeLineEditable(npyscreen.TreeLine):
         while self.editing and self.parent.editing:
             self.display()
             self.get_and_use_key_press()
-                # A base TreeLine method.
+            # A base TreeLine method.
         self.parent.editing = old_parent_editing
         self.editing = False
         self.how_exited = True
         # return self._post_edit()
         self.highlight = False
         self.update()
+
     def h_cursor_beginning(self, ch):
-
         self.cursor_position = 0
+
     def h_cursor_end(self, ch):
-
         # self.value is a TreeDataEditable.
-        self.cursor_position = max(0, len(self.value.content)-1)
+        self.cursor_position = max(0, len(self.value.content) - 1)
+
     def h_cursor_left(self, input):
+        self.cursor_position = max(0, self.cursor_position - 1)
 
-        self.cursor_position = max(0, self.cursor_position -1)
     def h_cursor_right(self, input):
-
         self.cursor_position += 1
 
     def h_delete_left(self, input):
-
         # self.value is a TreeDataEditable.
         n = self.cursor_position
         s = self.value.content
         if 0 <= n <= len(s):
-            self.value.content = s[:n] + s[n+1:]
+            self.value.content = s[:n] + s[n + 1 :]
             self.cursor_position -= 1
-    def h_end_editing(self, ch):
 
+    def h_end_editing(self, ch):
         # logging.info('TreeLineEditable: %s' % ch)
         self.editing = False
         self.how_exited = None
-    def h_insert(self, i):
 
+    def h_insert(self, i):
         # self.value is a TreeDataEditable.
         n = self.cursor_position + 1
         s = self.value.content
         self.value.content = s[:n] + chr(i) + s[n:]
         self.cursor_position += 1
-    def set_handlers(self):
 
+    def set_handlers(self):
         # pylint: disable=no-member
         # Override *all* other complex handlers.
         if 1:
-            self.complex_handlers = (
-                (curses.ascii.isprint, self.h_insert),
-            )
+            self.complex_handlers = ((curses.ascii.isprint, self.h_insert),)
         else:
             self.complex_handlers.append(
                 (curses.ascii.isprint, self.h_insert),
             )
-        self.handlers.update({
-            curses.ascii.ESC:       self.h_end_editing,
-            curses.ascii.NL:        self.h_end_editing,
-            curses.ascii.LF:        self.h_end_editing,
-            curses.KEY_HOME:        self.h_cursor_beginning,  # 262
-            curses.KEY_END:         self.h_cursor_end,        # 358.
-            curses.KEY_LEFT:        self.h_cursor_left,
-            curses.KEY_RIGHT:       self.h_cursor_right,
-            curses.ascii.BS:        self.h_delete_left,
-            curses.KEY_BACKSPACE:   self.h_delete_left,
-        })
-class MLTreeLine (npyscreen.MLTree):
+        self.handlers.update(
+            {
+                curses.ascii.ESC: self.h_end_editing,
+                curses.ascii.NL: self.h_end_editing,
+                curses.ascii.LF: self.h_end_editing,
+                curses.KEY_HOME: self.h_cursor_beginning,  # 262
+                curses.KEY_END: self.h_cursor_end,  # 358.
+                curses.KEY_LEFT: self.h_cursor_left,
+                curses.KEY_RIGHT: self.h_cursor_right,
+                curses.ascii.BS: self.h_delete_left,
+                curses.KEY_BACKSPACE: self.h_delete_left,
+            }
+        )
 
+
+class MLTreeLine(npyscreen.MLTree):
     # pylint: disable=used-before-assignment
     _contained_widgets = TreeLineEditable
 
@@ -130,20 +134,18 @@ class MLTreeLine (npyscreen.MLTree):
         self.set_handlers()
 
     def dump_values(self):
-
         def info(z):
             return '%15s: %s' % (z._parent.get_content(), z.get_content())
 
         print_list([info(z) for z in self.values])
 
     def dump_widgets(self):
-
         def info(z):
             return '%s.%s' % (id(z), z.__class__.__name__)
 
         print_list([info(z) for z in self._my_widgets])
-    def delete_line(self):
 
+    def delete_line(self):
         trace = True
         if trace:
             logging.info('cursor_line: %r' % self.cursor_line)
@@ -151,20 +153,22 @@ class MLTreeLine (npyscreen.MLTree):
         if self.values:
             del self.values[self.cursor_line]
             self.display()
-    def edit_headline(self):
 
+    def edit_headline(self):
         trace = True
         if not self.values:
-            if trace: logging.info('no values')
+            if trace:
+                logging.info('no values')
             self.insert_line()
             return False
         try:
-            active_line = self._my_widgets[(self.cursor_line-self.start_display_at)]
-            if trace: logging.info('MLTreeEditable.active_line: %r' % active_line)
+            active_line = self._my_widgets[(self.cursor_line - self.start_display_at)]
+            if trace:
+                logging.info('MLTreeEditable.active_line: %r' % active_line)
         except IndexError:
             # pylint: disable=pointless-statement
             self._my_widgets[0]
-                # Does this have something to do with weakrefs?
+            # Does this have something to do with weakrefs?
             self.cursor_line = 0
             self.insert_line()
             return True
@@ -180,6 +184,7 @@ class MLTreeLine (npyscreen.MLTree):
         self.reset_display_cache()
         self.display()
         return True
+
     def new_node(self):
         '''
         Insert a new outline TreeData widget at the current line.
@@ -206,40 +211,39 @@ class MLTreeLine (npyscreen.MLTree):
         if trace:
             logging.info('LeoMLTree: line: %3s %s' % (self.cursor_line, headline))
         return node
-    def insert_line(self):
 
+    def insert_line(self):
         trace = True
         trace_values = False
         if trace:
             logging.info('cursor_line: %r', self.cursor_line)
-            if trace_values: self.dump_values()
+            if trace_values:
+                self.dump_values()
         if self.cursor_line is None:
             self.cursor_line = 0
-        self.values.insert(self.cursor_line+1, self.new_node())
+        self.values.insert(self.cursor_line + 1, self.new_node())
         self.cursor_line += 1
         self.display()
         self.edit_headline()
 
-
     # These insert or delete entire outline nodes.
     def h_delete(self, ch):
-
         self.delete_line()
+
     def h_edit_headline(self, ch):
-
         self.edit_headline()
+
     def h_insert(self, ch):
-
         return self.insert_line()
-    def h_move_left(self, ch):
 
+    def h_move_left(self, ch):
         node = self.values[self.cursor_line]
         if self._has_children(node) and node.expanded:
             self.h_collapse_tree(ch)
         else:
             self.h_cursor_line_up(ch)
-    def h_move_right(self, ch):
 
+    def h_move_right(self, ch):
         node = self.values[self.cursor_line]
         if self._has_children(node):
             if node.expanded:
@@ -248,8 +252,8 @@ class MLTreeLine (npyscreen.MLTree):
                 self.h_expand_tree(ch)
         else:
             self.h_cursor_line_down(ch)
-    def set_handlers(self):
 
+    def set_handlers(self):
         # pylint: disable=no-member
         d = {
             curses.KEY_LEFT: self.h_move_left,
