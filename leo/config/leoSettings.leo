@@ -11886,7 +11886,8 @@ rest_comments_literal1_font_weight = normal
 <t tx="ekr.20250502045601.1">Percentage zoom.</t>
 <t tx="ekr.20250715195720.1">True: Leo will create an "update review tree" when any @file node changes externally.</t>
 <t tx="ekr.20250730050535.1">True: report changed files when saving a .leo file.</t>
-<t tx="ekr.20260109162430.1">New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.</t>
+<t tx="ekr.20260109162430.1"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
+# This setting is strongly recommended so that you can use ruff format to beautify your code.</t>
 <t tx="felix.20220506230435.1">True: (Legacy) The goto-first-visible-node and goto-first-visible-node commands collapse all nodes that are not ancestors of the target node that is selected.
 
 False: (Recommended) The commands act as simple navigation commands, and do not change the outline state.</t>
