@@ -2648,20 +2648,16 @@ class AtFile:
         if not os.path.exists(filename):
             return False
         old_p = p.copy()
-        old_contents = g.readFile(filename)
         ok = g.beautify_with_ruff(root, filename)
         if not ok:
             return False
-        # Suppress the reload prompt.
+
+        # *Always* reload the file, suppressing the reload prompt.
+        # g.es(f"beautified: {g.shortFileName(filename)}")
+
         efc = g.app.externalFilesController
         efc.set_time(filename)
-
-        # Update.
-        new_contents = g.readFile(filename)
-        if new_contents != old_contents:
-            g.es(f"beautified: {g.shortFileName(filename)}")
-            # Reload the file immediately.
-            c.refreshFromDisk(root)
+        c.refreshFromDisk(root)
 
         # #4159: This may not restore the outline as it was,
         # but it's much better than doing nothing.

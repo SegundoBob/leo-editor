@@ -1310,10 +1310,18 @@ class Commands:
         script_p = p or c.p  # Only for error reporting below.
 
         # Compute flags
-        beautify_flag = language == 'python' and c.config.getBool('beautify-python-code-on-write', default=False)
-        pyflakes_flag = (
-            runPyflakes and language == 'python' and c.config.getBool('run-pyflakes-on-write', default=False)
+        # fmt: off
+        beautify_flag = (
+            language == 'python'
+            and c.config.getBool('beautify-python-code-on-write', default=False)
         )
+        g.trace(beautify_flag)  ###
+        pyflakes_flag = (
+            runPyflakes
+            and language == 'python'
+            and c.config.getBool('run-pyflakes-on-write', default=False)
+        )
+        # fmt: on
         if not script and language not in ('jupytext', 'python'):  # #4197, #4226.
             w = c.frame.body.wrapper
             # For non-python languages...
@@ -5344,22 +5352,21 @@ class Commands:
                 contents.append(s)
 
         # Part 2: Beautify.
-        self.indent_level = 0
-        self.filename = g.finalize_join(g.app.homeLeoDir, 'test', 'beautify_node.py')
+        test_dir = g.finalize_join(g.app.leoEditorDir, 'leo', 'test')
+        path = g.finalize_join(test_dir, 'beautify_node.py')
         old_contents = ''.join(contents)
-        path = g.finalize_join(g.app.homeLeoDir, 'test', 'beautify_node.py')
-        g.trace(os.path.exists(path), path)
         try:
-            with open(self.filename, 'w') as f:
+            with open(path, 'w') as f:
                 f.write(old_contents)
         except Exception as e:
-            print(f"exception writing: {self.filename}:\n{e}")
+            print(f"exception writing: {path}:\n{e}")
             # g.trace(g.callers())
             # g.es_exception()
             return False
 
-        g.beautify_with_ruff(root, self.filename)
-        results_s: str = g.readFile(self.filename)
+        g.trace(root.h)
+        g.beautify_with_ruff(root, path)
+        results_s: str = g.readFile(path)
 
         # Part 3: Undo replacements, regularize comments and clean trailing ws.
         body_lines: list[str] = g.splitLines(root.b)
