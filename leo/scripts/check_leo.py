@@ -359,19 +359,11 @@ class CheckLeo:
             f"in {t3 - t1:.2f} sec."
         )
         if report_times:
-            print(
-                f"Setup: {t2 - t1:.2f} sec.\n"
-                f" Scan: {t3 - t2:.2f} sec.\n"
-                f"Total: {t3 - t1:.2f} sec."
-            )
+            print(f"Setup: {t2 - t1:.2f} sec.\n Scan: {t3 - t2:.2f} sec.\nTotal: {t3 - t1:.2f} sec.")
         if report_all_args:
             report_set(all_args, 'function/method args')
         if report_unusual_attrs:
-            unusual_attrs = [
-                z
-                for z in all_attrs
-                if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')
-            ]
+            unusual_attrs = [z for z in all_attrs if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')]
             print(f"{len(unusual_attrs)} Unusual attrs..")
             for z in sorted(list(unusual_attrs)):
                 print(f"  {z}")
@@ -428,11 +420,7 @@ class Visitor(ast.NodeVisitor):
     def context_name(self) -> str:
         """Return the name of the present traversal context."""
         node = self.context_stack[-1]
-        return (
-            node.name
-            if isinstance(node, ((ast.ClassDef, ast.FunctionDef)))
-            else module_name
-        )
+        return node.name if isinstance(node, ((ast.ClassDef, ast.FunctionDef))) else module_name
 
     # @+node:ekr.20251129080749.7: *3* Visitor.visit_Attribute & helpers
     def visit_Attribute(self, node: ast.AST) -> None:
@@ -471,9 +459,7 @@ class Visitor(ast.NodeVisitor):
                 # Use full_check = True for testing.
                 if not full_check and self.should_ignore(parts):
                     return
-                if show_all_context_flag or (
-                    show_context_flag and checked not in undefined_chains
-                ):
+                if show_all_context_flag or (show_context_flag and checked not in undefined_chains):
                     self.show_context(node)
                     print(checked)
                 undefined_chains.add(checked)

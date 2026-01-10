@@ -45,9 +45,7 @@ if api and reporter:
             try:
                 with open(path, 'rb') as f:
                     contents = f.read().decode()
-                report = reporter.Reporter(
-                    errorStream=sys.stderr, warningStream=sys.stderr
-                )
+                report = reporter.Reporter(errorStream=sys.stderr, warningStream=sys.stderr)
                 errors = api.check(contents, '', report)
                 if errors:
                     print(f"{errors} errors in {path}")

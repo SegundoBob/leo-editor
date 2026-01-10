@@ -36,8 +36,8 @@ targets = (
     # Don't change the leo/external or leo/modes directories.
     f"leo{os.sep}commands",
     f"leo{os.sep}core",
-    # # # f"leo{os.sep}plugins",
-    # # # f"leo{os.sep}scripts",
+    # f"leo{os.sep}plugins",
+    f"leo{os.sep}scripts",
     # # # f"leo{os.sep}unittests{os.sep}commands",
     # # # f"leo{os.sep}unittests{os.sep}plugins",
     # # # f"leo{os.sep}unittests{os.sep}misc_tests",
