@@ -127,14 +127,7 @@ class LeoMenu:
         for i, ch in enumerate(s):
             prev = s[i - 1] if i > 0 else ''
             prevprev = s[i - 2] if i > 1 else ''
-            if (
-                i == 0
-                or i == 1
-                and prev == '&'
-                or prev == '-'
-                or prev == '&'
-                and prevprev == '-'
-            ):
+            if i == 0 or i == 1 and prev == '&' or prev == '-' or prev == '&' and prevprev == '-':
                 result.append(ch.capitalize())
             elif removeHyphens and ch == '-':
                 result.append(' ')
@@ -186,9 +179,7 @@ class LeoMenu:
             self.createOpenWithMenuFromTable(aList)
 
     # @+node:ekr.20070927082205: *6* LeoMenu.createMenuFromConfigList
-    def createMenuFromConfigList(
-        self, parentName: str, aList: list, level: int = 0
-    ) -> None:
+    def createMenuFromConfigList(self, parentName: str, aList: list, level: int = 0) -> None:
         """Build menu based on nested list
 
         List entries are either:
@@ -242,9 +233,7 @@ class LeoMenu:
             self.createMenuEntries(parentMenu, table)
 
     # @+node:ekr.20070927172712: *6* LeoMenu.handleSpecialMenus
-    def handleSpecialMenus(
-        self, name: str, parentName: str, alt_name: str = None, table: list = None
-    ) -> bool:
+    def handleSpecialMenus(self, name: str, parentName: str, alt_name: str = None, table: list = None) -> bool:
         """
         Handle a special menu if name is the name of a special menu.
         return True if this method handles the menu.
@@ -461,9 +450,7 @@ class LeoMenu:
         g.app.menuWarningsGiven = True
 
     # @+node:ekr.20031218072017.3804: *4* LeoMenu.createNewMenu
-    def createNewMenu(
-        self, menuName: str, parentName: str = "top", before: str = None
-    ) -> Menu:
+    def createNewMenu(self, menuName: str, parentName: str = "top", before: str = None) -> Menu:
         try:
             parent = self.getMenu(parentName)  # parent may be None.
             menu = self.getMenu(menuName)
@@ -481,9 +468,7 @@ class LeoMenu:
                 amp_index = index_label.find("&")
                 index_label = index_label.replace("&", "")
                 index = parent.index(index_label)
-                self.insert_cascade(
-                    parent, index=index, label=label, menu=menu, underline=amp_index
-                )
+                self.insert_cascade(parent, index=index, label=label, menu=menu, underline=amp_index)
             else:
                 self.add_cascade(parent, label=label, menu=menu, underline=amp_index)
             return menu
@@ -665,9 +650,7 @@ class LeoMenu:
 
     # @+node:ekr.20031218072017.3808: *3* LeoMenu.Must be overridden in menu subclasses
     # @+node:ekr.20031218072017.3809: *4* LeoMenu.9 Routines with Tk spellings
-    def add_cascade(
-        self, parent: Widget, label: str, menu: Menu, underline: int
-    ) -> None:
+    def add_cascade(self, parent: Widget, label: str, menu: Menu, underline: int) -> None:
         pass
 
     def add_command(
@@ -703,9 +686,7 @@ class LeoMenu:
     ) -> None:
         pass
 
-    def insert_cascade(
-        self, parent: Widget, index: int, label: str, menu: Menu, underline: int
-    ) -> Widget:
+    def insert_cascade(self, parent: Widget, index: int, label: str, menu: Menu, underline: int) -> Widget:
         pass
 
     def new_menu(self, parent: Widget, tearoff: int = 0, label: str = '') -> Menu:
@@ -721,9 +702,7 @@ class LeoMenu:
     def createMenuBar(self, frame: Widget) -> None:
         pass
 
-    def createOpenWithMenu(
-        self, parent: Widget, label: str, index: int, amp_index: int
-    ) -> Menu:
+    def createOpenWithMenu(self, parent: Widget, label: str, index: int, amp_index: int) -> Menu:
         pass
 
     def disableMenu(self, menu: Menu, name: str) -> None:
@@ -735,9 +714,7 @@ class LeoMenu:
     def getMenuLabel(self, menu: Menu, name: str) -> str:
         return ''
 
-    def setMenuLabel(
-        self, menu: Menu, name: str, label: str, underline: int = -1
-    ) -> None:
+    def setMenuLabel(self, menu: Menu, name: str, label: str, underline: int = -1) -> None:
         pass
 
     # @-others

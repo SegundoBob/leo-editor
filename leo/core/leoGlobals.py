@@ -288,9 +288,7 @@ class CommanderCommand:
         def commander_command_wrapper(event: LeoKeyEvent) -> Any:
             c = event.get('c')
             method = getattr(c, func.__name__, None)
-            return method(
-                event=event
-            )  # Return value to caller (for doCommand, doCommandByName...)
+            return method(event=event)  # Return value to caller (for doCommand, doCommandByName...)
 
         # Inject ivars for plugins_menu.py.
         commander_command_wrapper.__func_name__ = func.__name__  # For leoInteg.
@@ -637,9 +635,7 @@ class EmergencyDialog:
             underline = d.get("underline", 0)
             command = d.get("command", None)
             bd = 4 if isDefault else 2
-            b = Tk.Button(
-                f, width=6, text=text, bd=bd, underline=underline, command=command
-            )
+            b = Tk.Button(f, width=6, text=text, bd=bd, underline=underline, command=command)
             b.pack(side="left", padx=5, pady=10)
             buttonList.append(b)
             if isDefault and command:
@@ -711,11 +707,7 @@ class GeneralSetting:
     def __repr__(self) -> str:
         # Better for g.printObj.
         val = str(self.val).replace('\n', ' ')
-        return (
-            f"GS: path: {g.shortFileName(self.path or '')} "
-            f"source: {self.source or ''} "
-            f"kind: {self.kind} val: {val}"
-        )
+        return f"GS: path: {g.shortFileName(self.path or '')} source: {self.source or ''} kind: {self.kind} val: {val}"
 
     dump = __repr__
     __str__ = __repr__
@@ -1376,11 +1368,7 @@ class MatchBrackets:
         if self.forward:
             if self.single_comment and g.match(s, i, self.single_comment):
                 return True
-            return (
-                self.start_comment
-                and self.end_comment
-                and g.match(s, i, self.start_comment)
-            )
+            return self.start_comment and self.end_comment and g.match(s, i, self.start_comment)
         if s[i] == '\n':
             if self.single_comment:
                 # Scan backward for any single-comment delim.
@@ -1390,9 +1378,7 @@ class MatchBrackets:
                         return True
                     i -= 1
             return False
-        return (
-            self.start_comment and self.end_comment and g.match(s, i, self.end_comment)
-        )
+        return self.start_comment and self.end_comment and g.match(s, i, self.end_comment)
 
     # @+node:ekr.20160119230141.1: *4* mb.scan_back & helpers
     def scan_back(self, ch1: str, target: str, s: str, i: int) -> Optional[int]:
@@ -1489,9 +1475,7 @@ class MatchBrackets:
                         i -= 1
                     assert progress > i
             return False
-        return (
-            self.start_comment and self.end_comment and g.match(s, i, self.end_comment)
-        )
+        return self.start_comment and self.end_comment and g.match(s, i, self.end_comment)
 
     # @+node:ekr.20160119104148.1: *4* mb.oops
     def oops(self, s: str) -> None:
@@ -1907,9 +1891,7 @@ class Tracer:
 
     # @+others
     # @+node:ekr.20080531075119.2: *4*  __init__ (Tracer)
-    def __init__(
-        self, limit: int = 0, trace: bool = False, verbose: bool = False
-    ) -> None:
+    def __init__(self, limit: int = 0, trace: bool = False, verbose: bool = False) -> None:
         # Keys are function names.
         # Values are the number of times the function was called by the caller.
         self.callDict: dict[str, dict] = {}
@@ -1992,11 +1974,7 @@ class Tracer:
         if event == 'return':
             if self.stack:
                 name = self.stack.pop()
-                if (
-                    self.trace
-                    and self.verbose
-                    and (self.limit == 0 or len(self.stack) < self.limit)
-                ):
+                if self.trace and self.verbose and (self.limit == 0 or len(self.stack) < self.limit):
                     g.trace(f"{pad}ret ", name)
             else:
                 g.trace('return underflow')
@@ -2086,9 +2064,7 @@ class NullObject:
 class TracingNullObject:
     """Tracing NullObject."""
 
-    def __init__(
-        self, tag: str, ivars: list[str] = None, *args: Args, **kwargs: KWargs
-    ) -> None:
+    def __init__(self, tag: str, ivars: list[str] = None, *args: Args, **kwargs: KWargs) -> None:
         tracing_tags[id(self)] = tag  # noqa  # conflict between flake8 and black.
 
     def __call__(self, *args: Args, **kwargs: KWargs) -> "TracingNullObject":
@@ -2217,11 +2193,7 @@ def assert_is(obj: object, list_or_class: Any, warn: bool = True) -> bool:
     if warn:
         ok = isinstance(obj, list_or_class)
         if not ok:
-            g.es_print(
-                f"can not happen. {obj!r}: "
-                f"expected {list_or_class}, "
-                f"got: {obj.__class__.__name__}"
-            )
+            g.es_print(f"can not happen. {obj!r}: expected {list_or_class}, got: {obj.__class__.__name__}")
             g.es_print(g.callers())
         return ok
     ok = isinstance(obj, list_or_class)
@@ -2448,11 +2420,7 @@ getLineAfter = get_line_after
 def getIvarsDict(obj: object) -> dict[str, Value]:
     """Return a dictionary of ivars:values for non-methods of obj."""
     d: dict[str, Value] = dict(
-        [
-            [key, getattr(obj, key)]
-            for key in dir(obj)
-            if not isinstance(getattr(obj, key), types.MethodType)
-        ]
+        [[key, getattr(obj, key)] for key in dir(obj) if not isinstance(getattr(obj, key), types.MethodType)]
     )
     return d
 
@@ -2468,11 +2436,7 @@ def checkUnchangedIvars(
     for key in d:
         if key not in exceptions:
             if getattr(obj, key) != d.get(key):
-                g.trace(
-                    f"changed ivar: {key} "
-                    f"old: {repr(d.get(key))} "
-                    f"new: {repr(getattr(obj, key))}"
-                )
+                g.trace(f"changed ivar: {key} old: {repr(d.get(key))} new: {repr(getattr(obj, key))}")
                 ok = False
     return ok
 
@@ -2543,9 +2507,7 @@ def objToString(
         result = repr(obj)
     else:
         # Return the enumerated lines of the string.
-        lines = ''.join(
-            [f"  {i + offset:4}: {z!r}\n" for i, z in enumerate(g.splitLines(obj))]
-        )
+        lines = ''.join([f"  {i + offset:4}: {z!r}\n" for i, z in enumerate(g.splitLines(obj))])
         result = f"[\n{lines}]\n"
     return f"{tag.strip()}: {result}" if tag and tag.strip() else result
 
@@ -2992,13 +2954,7 @@ def isDirective(s: str) -> bool:
 # @+node:ekr.20200810074755.1: *3* g.isValidLanguage
 def isValidLanguage(language: str) -> bool:
     """True if the given language may be used as an external file."""
-    return bool(
-        language
-        and (
-            language in g.app.language_delims_dict
-            or language in g.app.delegate_language_dict
-        )
-    )
+    return bool(language and (language in g.app.language_delims_dict or language in g.app.delegate_language_dict))
 
 
 # @+node:ekr.20250403040834.1: *3* --- to be deprecated! Using directives list
@@ -3063,9 +3019,7 @@ def scanAtLineendingDirectives(aList: list) -> Optional[str]:
 
 
 # @+node:ekr.20080827175609.34: *4* g.scanAtPagewidthDirectives (deprecated)
-def scanAtPagewidthDirectives(
-    aList: list, issue_error_flag: bool = False
-) -> Optional[int]:
+def scanAtPagewidthDirectives(aList: list, issue_error_flag: bool = False) -> Optional[int]:
     """Scan aList for @pagewidth directives. Return the page width or None"""
     g.deprecated()
     for d in aList:
@@ -3094,9 +3048,7 @@ def scanAllAtPathDirectives(c: Cmdr, p: Position) -> str:
 
 
 # @+node:ekr.20080827175609.37: *4* g.scanAtTabwidthDirectives & scanAllAtTabWidthDirectives (deprecated)
-def scanAtTabwidthDirectives(
-    aList: list, issue_error_flag: bool = False
-) -> Optional[int]:
+def scanAtTabwidthDirectives(aList: list, issue_error_flag: bool = False) -> Optional[int]:
     """Scan aList for @tabwidth directives."""
     g.deprecated()
     for d in aList:
@@ -3406,9 +3358,7 @@ def fullPath(c: Cmdr, p: Position) -> str:
 
 
 # @+node:ekr.20190327192721.1: *3* g.get_files_in_directory
-def get_files_in_directory(
-    directory: str, kinds: list = None, recursive: bool = True
-) -> list[str]:
+def get_files_in_directory(directory: str, kinds: list = None, recursive: bool = True) -> list[str]:
     """
     Return a list of all files of the given file extensions in the directory.
     Default kinds: ['*.py'].
@@ -3572,9 +3522,7 @@ def makePathRelativeTo(fullPath: str, basePath: str) -> str:
 
 
 # @+node:ekr.20090520055433.5945: *3* g.openWithFileName
-def openWithFileName(
-    fileName: str, old_c: Cmdr = None, gui: LeoGui = None
-) -> Optional[Cmdr]:
+def openWithFileName(fileName: str, old_c: Cmdr = None, gui: LeoGui = None) -> Optional[Cmdr]:
     """
     Load any kind of file in the appropriate way:
 
@@ -3884,9 +3832,7 @@ def find_word(s: str, word: str, i: int = 0) -> int:
 
 
 # @+node:ekr.20211029090118.1: *3* g.findAncestorVnodeByPredicate
-def findAncestorVnodeByPredicate(
-    p: Position, v_predicate: Optional[Callable]
-) -> Optional[VNode]:
+def findAncestorVnodeByPredicate(p: Position, v_predicate: Optional[Callable]) -> Optional[VNode]:
     """
     Return first ancestor vnode matching the predicate.
 
@@ -3917,9 +3863,7 @@ def findAncestorVnodeByPredicate(
 
 
 # @+node:ekr.20170220103251.1: *3* g.findRootsWithPredicate
-def findRootsWithPredicate(
-    c: Cmdr, root: Position, predicate: Callable = None
-) -> list[Position]:
+def findRootsWithPredicate(c: Cmdr, root: Position, predicate: Callable = None) -> list[Position]:
     """
     Commands often want to find one or more **roots**, given a position p.
     A root is the position of any node matching a predicate.
@@ -4049,11 +3993,7 @@ def skip_braces(s: str, i: int) -> int:
         elif g.match(s, i, '/*'):
             i = g.skip_block_comment(s, i)
         # 7/29/02: be more careful handling conditional code.
-        elif (
-            g.match_word(s, i, "#if")
-            or g.match_word(s, i, "#ifdef")
-            or g.match_word(s, i, "#ifndef")
-        ):
+        elif g.match_word(s, i, "#if") or g.match_word(s, i, "#ifdef") or g.match_word(s, i, "#ifndef"):
             i, delta = g.skip_pp_if(s, i)
             level += delta
         else:
@@ -4212,11 +4152,7 @@ def skip_pp_directive(s: str, i: int) -> int:
 
 def skip_pp_if(s: str, i: int) -> tuple[int, int]:
     start_line = g.get_line(s, i)  # used for error messages.
-    assert (
-        g.match_word(s, i, "#if")
-        or g.match_word(s, i, "#ifdef")
-        or g.match_word(s, i, "#ifndef")
-    )
+    assert g.match_word(s, i, "#if") or g.match_word(s, i, "#ifdef") or g.match_word(s, i, "#ifndef")
     i = g.skip_line(s, i)
     i, delta1 = g.skip_pp_part(s, i)
     i = g.skip_ws(s, i)
@@ -4242,11 +4178,7 @@ def skip_pp_part(s: str, i: int) -> tuple[int, int]:
     delta = 0
     while i < len(s):
         c = s[i]
-        if (
-            g.match_word(s, i, "#if")
-            or g.match_word(s, i, "#ifdef")
-            or g.match_word(s, i, "#ifndef")
-        ):
+        if g.match_word(s, i, "#if") or g.match_word(s, i, "#ifdef") or g.match_word(s, i, "#ifndef"):
             i, delta1 = g.skip_pp_if(s, i)
             delta += delta1
         elif g.match_word(s, i, "#else") or g.match_word(s, i, "#endif"):
@@ -4423,9 +4355,7 @@ def match(s: str, i: int, pattern: str) -> bool:
 # @+node:ekr.20031218072017.3182: *4* g.match_c_word
 def match_c_word(s: str, i: int, name: str) -> bool:
     n = len(name)
-    return bool(
-        name and name == s[i : i + n] and (i + n == len(s) or not g.is_c_id(s[i + n]))
-    )
+    return bool(name and name == s[i : i + n] and (i + n == len(s) or not g.is_c_id(s[i + n])))
 
 
 # @+node:ekr.20031218072017.3183: *4* g.match_ignoring_case
@@ -4434,13 +4364,9 @@ def match_ignoring_case(s1: str, s2: str) -> bool:
 
 
 # @+node:ekr.20031218072017.3184: *4* g.match_word & g.match_words
-def match_words(
-    s: str, i: int, patterns: Sequence[str], *, ignore_case: bool = False
-) -> bool:
+def match_words(s: str, i: int, patterns: Sequence[str], *, ignore_case: bool = False) -> bool:
     """Return true if any of the given patterns match at s[i]"""
-    return any(
-        g.match_word(s, i, pattern, ignore_case=ignore_case) for pattern in patterns
-    )
+    return any(g.match_word(s, i, pattern, ignore_case=ignore_case) for pattern in patterns)
 
 
 def match_word(s: str, i: int, pattern: str, *, ignore_case: bool = False) -> bool:
@@ -4765,9 +4691,7 @@ class GitIssueController:
             g.es_print('state must be in (None, "open", "closed")')
 
     # @+node:ekr.20180325024334.1: *5* git.get_all_issues
-    def get_all_issues(
-        self, label_list: list, root: Position, state: str, limit: int = 100
-    ) -> None:
+    def get_all_issues(self, label_list: list, root: Position, state: str, limit: int = 100) -> None:
         """Get all issues for the base url."""
         try:
             import requests
@@ -4868,8 +4792,7 @@ class GitIssueController:
             aList = [
                 z
                 for z in r.json()
-                if z.get('milestone') is not None
-                and self.milestone == z.get('milestone').get('title')
+                if z.get('milestone') is not None and self.milestone == z.get('milestone').get('title')
             ]
         else:
             aList = [z for z in r.json()]
@@ -4952,9 +4875,7 @@ def getModifiedFiles(repo_path: str) -> list[str]:
     try:
         # We are not checking the return code here, so:
         # pylint: disable=subprocess-run-check
-        result = subprocess.run(
-            ["git", "status", "--porcelain"], capture_output=True, text=True
-        )
+        result = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
         if result.returncode != 0:
             print("Error running git command")
             return []
@@ -5328,9 +5249,7 @@ def convertPythonIndexToRowCol(s: str, i: int) -> tuple[int, int]:
 
 
 # @+node:ekr.20050315071727: *4* g.convertRowColToPythonIndex
-def convertRowColToPythonIndex(
-    s: str, row: int, col: int, lines: list[str] = None
-) -> int:
+def convertRowColToPythonIndex(s: str, row: int, col: int, lines: list[str] = None) -> int:
     """Convert zero-based row/col indices into a python index into string s."""
     if row < 0:
         return 0
@@ -5454,9 +5373,7 @@ def longestCommonPrefix(s1: str, s2: str) -> str:
     return prefix
 
 
-def itemsMatchingPrefixInList(
-    s: str, aList: list[str], matchEmptyPrefix: bool = False
-) -> tuple[list, str]:
+def itemsMatchingPrefixInList(s: str, aList: list[str], matchEmptyPrefix: bool = False) -> tuple[list, str]:
     """This method returns a sorted list items of aList whose prefix is s.
 
     It also returns the longest common prefix of all the matches.
@@ -5696,9 +5613,7 @@ def strToBytes(s: str, reportErrors: bool = False) -> bytes:
 
 
 # @+node:ekr.20050208093800: *4* g.toEncodedString
-def toEncodedString(
-    s: str, encoding: str = 'utf-8', reportErrors: bool = False
-) -> bytes:
+def toEncodedString(s: str, encoding: str = 'utf-8', reportErrors: bool = False) -> bytes:
     """Convert unicode string to an encoded string."""
     if not isinstance(s, str):
         return s
@@ -5723,10 +5638,7 @@ def toUnicode(s: object, encoding: str = None, reportErrors: bool = False) -> st
     tag = 'g.toUnicode'
     if not isinstance(s, bytes):
         if reportErrors and not isinstance(s, (NullObject, TracingNullObject)):
-            message = (
-                f"{tag}: unexpected argument of type {s.__class__.__name__}\n"
-                f"Callers: {g.callers}"
-            )
+            message = f"{tag}: unexpected argument of type {s.__class__.__name__}\nCallers: {g.callers}"
             g.es_print_unique_message(message)
         return ''
     if not encoding:
@@ -5812,9 +5724,7 @@ def computeWidth(s: str, tab_width: int) -> int:
 # @@language python
 
 
-def wrap_lines(
-    lines: list[str], pageWidth: int, firstLineWidth: int = None
-) -> list[str]:
+def wrap_lines(lines: list[str], pageWidth: int, firstLineWidth: int = None) -> list[str]:
     """Returns a list of lines, consisting of the input lines wrapped to the given pageWidth."""
     if pageWidth < 10:
         pageWidth = 10
@@ -5868,19 +5778,13 @@ def wrap_lines(
                 # End the previous line.
                 if line:
                     result.append(line)
-                    outputLineWidth = (
-                        pageWidth  # DTHEIN 3-NOV-2002: width for remaining lines
-                    )
+                    outputLineWidth = pageWidth  # DTHEIN 3-NOV-2002: width for remaining lines
                 # Discard the whitespace and put the word on a new line.
                 line = word
                 # Careful: the word may be longer than pageWidth.
-                if (
-                    len(line) > pageWidth
-                ):  # DTHEIN 18-JAN-2004: line can equal pagewidth
+                if len(line) > pageWidth:  # DTHEIN 18-JAN-2004: line can equal pagewidth
                     result.append(line)
-                    outputLineWidth = (
-                        pageWidth  # DTHEIN 3-NOV-2002: width for remaining lines
-                    )
+                    outputLineWidth = pageWidth  # DTHEIN 3-NOV-2002: width for remaining lines
                     line = ""
                 # @-<< place word on a new line >>
     if line:
@@ -6322,9 +6226,7 @@ def isUniqueClass(obj: object, list_or_class: Any, *, n: int = 2) -> None:
         if isinstance(obj, list_or_class):
             return
     except Exception as e:
-        print(
-            f"\ng.isUniqueClass: {g.callers()}\nBad arg 2: {list_or_class!r}\n{e!r}\n"
-        )
+        print(f"\ng.isUniqueClass: {g.callers()}\nBad arg 2: {list_or_class!r}\n{e!r}\n")
         return
     key = g.callers(n)
     value_s = obj.__class__.__name__
@@ -6705,9 +6607,7 @@ def CheckVersion(
             result = val
             break
     else:
-        raise EnvironmentError(
-            "condition must be one of '>=', '>', '==', '!=', '<', or '<='."
-        )
+        raise EnvironmentError("condition must be one of '>=', '>', '==', '!=', '<', or '<='.")
     return result
 
 
@@ -7239,9 +7139,7 @@ def os_startfile(fname: str) -> None:
 
 # @+node:ekr.20111115155710.9859: ** g.Parsing & Tokenizing
 # @+node:ekr.20031218072017.822: *3* g.createTopologyList
-def createTopologyList(
-    c: Cmdr, root: Position = None, useHeadlines: bool = False
-) -> list:
+def createTopologyList(c: Cmdr, root: Position = None, useHeadlines: bool = False) -> list:
     """Creates a list describing a node and all its descendants"""
     if not root:
         root = c.rootPosition()
@@ -7357,9 +7255,7 @@ def exec_file(path: str, d: dict[str, Value], script: str = None) -> None:
 
 
 # @+node:ekr.20131016032805.16721: *3* g.execute_shell_commands
-def execute_shell_commands(
-    commands: Union[str, list[str]], trace: bool = False
-) -> None:
+def execute_shell_commands(commands: Union[str, list[str]], trace: bool = False) -> None:
     """
     Execute each shell command in a separate process.
     Wait for each command to complete, except those starting with '&'
@@ -7515,9 +7411,7 @@ def findNodeByPath(c: Cmdr, path: str) -> Optional[Position]:
 
 
 # @+node:ekr.20210303123423.1: *4* g.findNodeInChildren
-def findNodeInChildren(
-    c: Cmdr, p: Position, headline: str, exact: bool = True
-) -> Optional[Position]:
+def findNodeInChildren(c: Cmdr, p: Position, headline: str, exact: bool = True) -> Optional[Position]:
     """Search for a node in v's tree matching the given headline."""
     p1 = p.copy()
     h = headline.strip()
@@ -7532,9 +7426,7 @@ def findNodeInChildren(
 
 
 # @+node:ekr.20210303123423.2: *4* g.findNodeInTree
-def findNodeInTree(
-    c: Cmdr, p: Position, headline: str, exact: bool = True
-) -> Optional[Position]:
+def findNodeInTree(c: Cmdr, p: Position, headline: str, exact: bool = True) -> Optional[Position]:
     """Search for a node in v's tree matching the given headline."""
     h = headline.strip()
     p1 = p.copy()
@@ -7708,9 +7600,7 @@ def handleScriptException(
 
 # @+node:ekr.20230803155851.1: ** g.Sentinels
 # @+node:ekr.20230803160315.1: *3* g.is_invisible_sentinel
-def is_invisible_sentinel(
-    delims: tuple[str, str, str], contents: list[str], i: int
-) -> bool:
+def is_invisible_sentinel(delims: tuple[str, str, str], contents: list[str], i: int) -> bool:
     """
     delims are the comment delims in effect.
 
@@ -7912,9 +7802,7 @@ def computeFileUrl(fn: str, c: Cmdr = None, p: Position = None) -> str:
 
 
 # @+node:ekr.20190608090856.1: *3* g.es_clickable_link (not used)
-def es_clickable_link(
-    c: Cmdr, p: Position, line_number: int, message: str
-) -> None:  # pragma: no cover
+def es_clickable_link(c: Cmdr, p: Position, line_number: int, message: str) -> None:  # pragma: no cover
     """
     Write a clickable message to the given line number of p.b.
 
@@ -8108,9 +7996,7 @@ def findUnl(unlList1: list[str], c: Cmdr) -> Optional[Position]:
     targets.append(target.strip())
     targets.extend(unlList[:-1])
     # Find all target positions. Prefer later positions.
-    positions = list(
-        reversed(list(z for z in c.all_positions() if z.h.strip() in targets))
-    )
+    positions = list(reversed(list(z for z in c.all_positions() if z.h.strip() in targets)))
     while unlList:
         for p in positions:
             p1 = p.copy()
@@ -8125,9 +8011,7 @@ def findUnl(unlList1: list[str], c: Cmdr) -> Optional[Position]:
                     except (TypeError, ValueError):
                         g.trace('bad line number', line)
                 if n < 0:
-                    p2, offset = c.gotoCommands.find_file_line(
-                        -n, p
-                    )  # Calls c.redraw().
+                    p2, offset = c.gotoCommands.find_file_line(-n, p)  # Calls c.redraw().
                     if not p2:
                         g.trace(f"{p.h}: global line {n} not found")
                 return p
@@ -8212,11 +8096,7 @@ def handleUrl(url: str, c: Cmdr = None, p: Position = None) -> Optional[str]:
     urll = url.lower()
     if urll.startswith('@url'):
         url = url[4:].lstrip()
-    if (
-        urll.startswith(('#', 'unl://', 'unl:gnx:'))
-        or urll.startswith('file://')
-        and '-->' in urll
-    ):
+    if urll.startswith(('#', 'unl://', 'unl:gnx:')) or urll.startswith('file://') and '-->' in urll:
         return g.handleUnl(url, c)
     try:
         g.handleUrlHelper(url, c, p)
@@ -8349,9 +8229,7 @@ def openUrl(p: Position) -> None:  # pragma: no cover
 
 
 # @+node:ekr.20110605121601.18135: *3* g.openUrlOnClick (open-url-under-cursor)
-def openUrlOnClick(
-    event: QMouseEvent, url: str = None
-) -> Optional[str]:  # pragma: no cover
+def openUrlOnClick(event: QMouseEvent, url: str = None) -> Optional[str]:  # pragma: no cover
     """Open the URL under the cursor.  Return it for unit testing."""
     # QTextEditWrapper.mouseReleaseEvent calls this outside Leo's command logic.
     # Make sure to catch all exceptions!

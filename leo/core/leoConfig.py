@@ -78,9 +78,7 @@ class ParserBaseClass:
 
         # True if this is the .leo file being opened, not myLeoSettings.leo or leoSettings.leo.
         self.localFlag: bool = localFlag
-        self.shortcutsDict: dict[str, list[g.BindingInfo]] = g.SettingsDict(
-            'parser.shortcutsDict'
-        )
+        self.shortcutsDict: dict[str, list[g.BindingInfo]] = g.SettingsDict('parser.shortcutsDict')
         # A list of dicts containing 'name','shortcut','command' keys.
         self.openWithList: list[dict[str, Value]] = []
         # Keys are canonicalized names.
@@ -195,9 +193,7 @@ class ParserBaseClass:
         if aList:
             # Bug fix: 2011/11/24: Extend the list, don't replace it.
             g.app.config.atCommonButtonsList.extend(aList)
-            g.app.config.buttonsFileName = (
-                c.shortFileName() if c else '<no settings file>'
-            )
+            g.app.config.buttonsFileName = c.shortFileName() if c else '<no settings file>'
 
     # @+node:ekr.20041120094940.2: *4* pbc.doColor
     def doColor(self, p: Position, kind: str, name: str, val: Value) -> None:
@@ -301,9 +297,7 @@ class ParserBaseClass:
         s = ''.join(aList)
         # Set the global config ivars.
         g.app.config.enabledPluginsString = s
-        g.app.config.enabledPluginsFileName = (
-            c.shortFileName() if c else '<no settings file>'
-        )
+        g.app.config.enabledPluginsFileName = c.shortFileName() if c else '<no settings file>'
 
     # @+node:ekr.20041120094940.6: *4* pbc.doFloat
     def doFloat(self, p: Position, kind: str, name: str, val: Value) -> None:
@@ -498,9 +492,7 @@ class ParserBaseClass:
                 self.dumpMenuTree(val, level + 1, path=path + '/' + name)
 
     # @+node:tbrown.20080514180046.8: *5* pbc.patchMenuTree
-    def patchMenuTree(
-        self, orig: list[Value], targetPath: str, path: str = ''
-    ) -> Value:
+    def patchMenuTree(self, orig: list[Value], targetPath: str, path: str = '') -> Value:
         kind: str
         val: Value
         val2: Value
@@ -568,11 +560,7 @@ class ParserBaseClass:
                 if g.match_word(h, 0, tag):
                     itemName = h[len(tag) :].strip()
                     if itemName:
-                        lines = [
-                            z
-                            for z in g.splitLines(p.b)
-                            if z.strip() and not z.strip().startswith('#')
-                        ]
+                        lines = [z for z in g.splitLines(p.b) if z.strip() and not z.strip().startswith('#')]
                         # Only the first body line is significant.
                         # This allows following comment lines.
                         body = lines[0].strip() if lines else ''
@@ -696,9 +684,7 @@ class ParserBaseClass:
             self.valueError(p, kind, name, val)
 
     # @+node:ekr.20041120105609: *4* pbc.doShortcuts
-    def doShortcuts(
-        self, p: Position, kind: str, junk_name: str, junk_val: Value, s: str = None
-    ) -> None:
+    def doShortcuts(self, p: Position, kind: str, junk_name: str, junk_val: Value, s: str = None) -> None:
         """Handle an @shortcut or @shortcuts node."""
         c, d = self.c, self.shortcutsDict
         if s is None:
@@ -961,9 +947,7 @@ class ParserBaseClass:
     def traverse(self) -> tuple[Value, Value]:
         """Traverse the entire settings tree."""
         c = self.c
-        self.settingsDict: dict[str, list[g.GeneralSetting]] = g.SettingsDict(
-            f"settingsDict for {c.shortFileName()}"
-        )
+        self.settingsDict: dict[str, list[g.GeneralSetting]] = g.SettingsDict(f"settingsDict for {c.shortFileName()}")
         self.shortcutsDict = g.SettingsDict(f"shortcutsDict for {c.shortFileName()}")
         # This must be called after the outline has been inited.
         p = c.config.settingsRoot()
@@ -1086,9 +1070,7 @@ class ActiveSettingsOutline:
         # #1340: Don't do this. It is no longer needed.
         # g.app.restoreWindowState(c)
 
-        c.frame.resizePanesToRatio(
-            c.frame.compute_ratio(), c.frame.compute_secondary_ratio()
-        )
+        c.frame.resizePanesToRatio(c.frame.compute_ratio(), c.frame.compute_secondary_ratio())
         c.clearChanged()  # Clears all dirty bits.
 
         # Finish.
@@ -1153,9 +1135,7 @@ class ActiveSettingsOutline:
         self.clean(root)
 
     # @+node:ekr.20190905091614.9: *3* aso.create_unified_settings
-    def create_unified_settings(
-        self, kind: str, root: Position, settings_root: Position
-    ) -> None:
+    def create_unified_settings(self, kind: str, root: Position, settings_root: Position) -> None:
         """Create the active settings tree under root."""
         c = self.commander
         lm = g.app.loadManager
@@ -1310,12 +1290,8 @@ class GlobalConfigManager:
         self.atCommonButtonsList: list[tuple[Position, str, list[Callable]]] = []
         # List of info for common @commands nodes.
         self.atCommonCommandsList: list[tuple[Position, str]] = []
-        self.atLocalButtonsList: list[
-            Position
-        ] = []  # List of positions of @button nodes.
-        self.atLocalCommandsList: list[
-            Position
-        ] = []  # List of positions of @command nodes.
+        self.atLocalButtonsList: list[Position] = []  # List of positions of @button nodes.
+        self.atLocalCommandsList: list[Position] = []  # List of positions of @command nodes.
         self.buttonsFileName = ''
         self.configsExist = False  # True when we successfully open a setting file.
         self.default_derived_file_encoding = 'utf-8'
@@ -1323,9 +1299,7 @@ class GlobalConfigManager:
         self.enabledPluginsString: Optional[str] = ''
         self.menusList: list[Value] = []
         self.menusFileName = ''
-        self.modeCommandsDict: dict[str, g.SettingsDict] = g.SettingsDict(
-            'modeCommandsDict'
-        )
+        self.modeCommandsDict: dict[str, g.SettingsDict] = g.SettingsDict('modeCommandsDict')
         self.panes = None
         self.recentFiles: list[str] = []
         self.sc = None
@@ -1352,11 +1326,7 @@ class GlobalConfigManager:
                 val = gs.val
                 if gs.kind == 'data':
                     # #748: Remove comments
-                    aList = [
-                        ' ' * 8 + z.rstrip()
-                        for z in val
-                        if z.strip() and not z.strip().startswith('#')
-                    ]
+                    aList = [' ' * 8 + z.rstrip() for z in val if z.strip() and not z.strip().startswith('#')]
                     if not aList:
                         val = '[]'
                     elif limit == 0 or len(aList) < limit:
@@ -1657,12 +1627,8 @@ class LocalConfigManager:
         if previousSettings:
             self.settingsDict = previousSettings.settingsDict
             self.shortcutsDict = previousSettings.shortcutsDict
-            assert isinstance(self.settingsDict, g.SettingsDict), (
-                self.settingsDict.__class__.__name__
-            )
-            assert isinstance(self.shortcutsDict, g.SettingsDict), (
-                self.shortcutsDict.__class__.__name__
-            )
+            assert isinstance(self.settingsDict, g.SettingsDict), self.settingsDict.__class__.__name__
+            assert isinstance(self.shortcutsDict, g.SettingsDict), self.shortcutsDict.__class__.__name__
         else:
             self.settingsDict = d1 = lm.globalSettingsDict
             self.shortcutsDict = d2 = lm.globalBindingsDict
@@ -2184,9 +2150,7 @@ class LocalConfigManager:
         for name, val, _c, letter in g.app.config.config_iter(c):
             # @verbatim
             # @font nodes set @family, @weight, @slant, @size settings.
-            if name.strip().startswith(
-                ('@font', '@family', '@weight', '@slant', '@size')
-            ):
+            if name.strip().startswith(('@font', '@family', '@weight', '@slant', '@size')):
                 kind = '   ' if letter == ' ' else f"[{letter}]"
                 result.append(f"{kind} {name} = {val}\n")
         # Use a single g.es statement.
@@ -2230,9 +2194,7 @@ class LocalConfigManager:
         g.es_print('', ''.join(result), tabName='Settings')
 
     # @+node:ekr.20120215072959.12475: *3* c.config.set
-    def set(
-        self, p: Position, kind: str, name: str, val: Value, warn: bool = True
-    ) -> None:
+    def set(self, p: Position, kind: str, name: str, val: Value, warn: bool = True) -> None:
         """
         Init the setting for name to val.
 
@@ -2368,9 +2330,7 @@ def parseFont(b: str) -> tuple[str, str, bool, bool, float]:
                 size = 12.0
         elif name.endswith('_slant'):
             slant = line[i + 1 :].strip()
-        if settings_name is None and name.endswith(
-            ('_family', '_slant', '_weight', '_size')
-        ):
+        if settings_name is None and name.endswith(('_family', '_slant', '_weight', '_size')):
             settings_name = name.rsplit('_', 1)[0]
     return settings_name, family, weight == 'bold', slant in ('slant', 'italic'), size
 

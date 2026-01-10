@@ -258,9 +258,7 @@ if 1:  # pragma: no cover
         t2 = time.process_time()
         if any_changed or Orange(settings).verbose:
             n, files_s = any_changed, ','.join(arg_files)
-            print(
-                f"orange: {t2 - t1:3.1f} sec. changed {n} file{g.plural(n)} in {files_s}"
-            )
+            print(f"orange: {t2 - t1:3.1f} sec. changed {n} file{g.plural(n)} in {files_s}")
 
     # @+node:ekr.20200702121315.1: *3* command: orange_diff_command
     def orange_diff_command(files: list[str], settings: Settings = None) -> None:
@@ -347,9 +345,7 @@ if 1:  # pragma: no cover
         print(f"{tag}...\n")
         if not tokens:
             return
-        print(
-            "Note: values shown are repr(value) *except* for 'string' and 'fstring*' tokens."
-        )
+        print("Note: values shown are repr(value) *except* for 'string' and 'fstring*' tokens.")
         tokens[0].dump_header()
         for z in tokens:
             print(z.dump())
@@ -378,9 +374,7 @@ if 1:  # pragma: no cover
 
     # @+node:ekr.20200113154120.1: *3* functions: tokens
     # @+node:ekr.20191223093539.1: *4* function: find_anchor_token
-    def find_anchor_token(
-        node: Node, global_token_list: list[Token]
-    ) -> Optional[Token]:
+    def find_anchor_token(node: Node, global_token_list: list[Token]) -> Optional[Token]:
         """
         Return the anchor_token for node, a token such that token.node == node.
 
@@ -546,9 +540,7 @@ if 1:  # pragma: no cover
         return ''.join([z.to_string() for z in tokens])
 
     # @+node:ekr.20191223053324.1: *4* function: tokens_for_node
-    def tokens_for_node(
-        filename: str, node: Node, global_token_list: list[Token]
-    ) -> list[Token]:
+    def tokens_for_node(filename: str, node: Node, global_token_list: list[Token]) -> list[Token]:
         """Return the list of all tokens descending from node."""
         # Find any token descending from node.
         token = find_anchor_token(node, global_token_list)
@@ -687,9 +679,7 @@ if 1:  # pragma: no cover
             return ok
 
         try:
-            five_tuples = tokenize.tokenize(
-                io.BytesIO(contents.encode('utf-8')).readline
-            )
+            five_tuples = tokenize.tokenize(io.BytesIO(contents.encode('utf-8')).readline)
         except Exception:
             print('make_tokens: exception in tokenize.tokenize')
             g.es_exception()
@@ -788,9 +778,7 @@ if 1:  # pragma: no cover
     # @+node:ekr.20200120110005.1: *4* function: is_statement_node
     def is_statement_node(node: Node) -> bool:
         """Return True if node is a top-level statement."""
-        return is_long_statement(node) or isinstance(
-            node, (ast.Break, ast.Continue, ast.Pass, ast.Try)
-        )
+        return is_long_statement(node) or isinstance(node, (ast.Break, ast.Continue, ast.Pass, ast.Try))
 
     # @+node:ekr.20191231082137.1: *4* function: nearest_common_ancestor
     def nearest_common_ancestor(node1: Node, node2: Node) -> Optional[Node]:
@@ -894,9 +882,7 @@ class AstDumper:  # pragma: no cover
         return ''.join(result)
 
     # @+node:ekr.20191125035321.1: *5* dumper.dump_tree_and_links_helper
-    def dump_tree_and_links_helper(
-        self, node: Node, level: int, result: list[str]
-    ) -> None:
+    def dump_tree_and_links_helper(self, node: Node, level: int, result: list[str]) -> None:
         """Return the list of lines in result."""
         if node is None:
             return
@@ -928,9 +914,7 @@ class AstDumper:  # pragma: no cover
         parent_id = getattr(parent, 'node_index', '??')
         parent_s = f"{parent_id:>3}.{parent.__class__.__name__} " if parent else ''
         class_name = node.__class__.__name__
-        descriptor_s = (
-            f"{node_id}.{class_name}: {self.show_fields(class_name, node, 20)}"
-        )
+        descriptor_s = f"{node_id}.{class_name}: {self.show_fields(class_name, node, 20)}"
         tokens_s = self.show_tokens(node, 70, 100)
         lines = self.show_line_range(node)
         full_s1 = f"{parent_s:<16} {lines:<10} {indent}{descriptor_s} "
@@ -1070,16 +1054,9 @@ class AstDumper:  # pragma: no cover
         """
         sep1 = '\n%s' % (self.indent_ws * (level + 1))
         if isinstance(node, ast.AST):
-            fields = [
-                (a, self.dump_ast(b, level + 1)) for a, b in self.get_fields(node)
-            ]
+            fields = [(a, self.dump_ast(b, level + 1)) for a, b in self.get_fields(node)]
             if self.include_attributes and node._attributes:
-                fields.extend(
-                    [
-                        (a, self.dump_ast(getattr(node, a), level + 1))
-                        for a in node._attributes
-                    ]
-                )
+                fields.extend([(a, self.dump_ast(getattr(node, a), level + 1)) for a in node._attributes])
             if self.annotate_fields:
                 aList = ['%s=%s' % (a, b) for a, b in fields]
             else:
@@ -1089,9 +1066,7 @@ class AstDumper:  # pragma: no cover
             return '%s(%s%s)' % (name, sep, sep1.join(aList))
         if isinstance(node, list):
             sep = sep1
-            return 'LIST[%s]' % ''.join(
-                ['%s%s' % (sep, self.dump_ast(z, level + 1)) for z in node]
-            )
+            return 'LIST[%s]' % ''.join(['%s%s' % (sep, self.dump_ast(z, level + 1)) for z in node])
         return repr(node)
 
     # @+node:ekr.20141012064706.18393: *5* dumper.get_fields
@@ -1119,9 +1094,7 @@ class Fstringify:
 
     # @+others
     # @+node:ekr.20191222083947.1: *4* fs.fstringify
-    def fstringify(
-        self, contents: str, filename: str, tokens: list[Token], tree: Node
-    ) -> str:
+    def fstringify(self, contents: str, filename: str, tokens: list[Token], tree: Node) -> str:
         """
         Fstringify.fstringify:
 
@@ -1138,11 +1111,7 @@ class Fstringify:
         # Main pass.
         string_node = ast.Str if g.python_version_tuple < (3, 12, 0) else ast.Constant  # pylint: disable=no-member
         for node in ast.walk(tree):
-            if (
-                isinstance(node, ast.BinOp)
-                and op_name(node.op) == '%'
-                and isinstance(node.left, string_node)
-            ):
+            if isinstance(node, ast.BinOp) and op_name(node.op) == '%' and isinstance(node.left, string_node):
                 self.make_fstring(node)
         results = tokens_to_string(self.tokens)
         return results
@@ -1375,10 +1344,7 @@ class Fstringify:
             # These are the only kinds of tokens we expect to generate.
             ok = token.kind == 'string' or token.kind == 'op' and token.value in '{}'
             if not ok:  # pragma: no cover (defensive)
-                self.message(
-                    f"unexpected token: {token.kind} {token.value}\n"
-                    f":           lt_s: {lt_s!r}"
-                )
+                self.message(f"unexpected token: {token.kind} {token.value}\n:           lt_s: {lt_s!r}")
                 return False
         # These checks are important...
         if token0.value != 'f':
@@ -1471,9 +1437,7 @@ class Fstringify:
         return [tokens]
 
     # @+node:ekr.20191226155316.1: *5* fs.substitute_values
-    def substitute_values(
-        self, lt_s: str, specs: list[re.Match], values: list[list[Token]]
-    ) -> list[Token]:
+    def substitute_values(self, lt_s: str, specs: list[re.Match], values: list[list[Token]]) -> list[Token]:
         """
         Replace specifiers with values in lt_s string.
 
@@ -1542,11 +1506,7 @@ class Fstringify:
         file_s = f"{'file':>{pad}}"
         ln_n_s = f"{'line number':>{pad}}"
         line_s = f"{'line':>{pad}}"
-        print(
-            f"{file_s}: {self.filename}\n"
-            f"{ln_n_s}: {self.line_number}\n"
-            f"{line_s}: {self.line!r}"
-        )
+        print(f"{file_s}: {self.filename}\n{ln_n_s}: {self.line_number}\n{line_s}: {self.line!r}")
 
     # @+node:ekr.20191225054848.1: *4* fs.replace
     def replace(self, node: Node, s: str, values: list[list[Token]]) -> None:
@@ -1608,10 +1568,7 @@ class InputToken:
     # @+node:ekr.20240104082325.2: *4* itoken.brief_dump
     def brief_dump(self) -> str:  # pragma: no cover
         """Dump a token."""
-        return (
-            f"{self.index:>3} line: {self.line_number:<2} "
-            f"{self.kind:>15} {self.show_val(100)}"
-        )
+        return f"{self.index:>3} line: {self.line_number:<2} {self.kind:>15} {self.show_val(100)}"
 
     # @+node:ekr.20240104082325.3: *4* itoken.dump
     def dump(self) -> str:  # pragma: no cover
@@ -1619,12 +1576,7 @@ class InputToken:
         # Let block.
         node_id = self.node.node_index if self.node else ''
         node_cn = self.node.__class__.__name__ if self.node else ''
-        return (
-            f"{self.line_number:4} "
-            f"{node_id:5} {node_cn:16} "
-            f"{self.index:>5} {self.kind:>15} "
-            f"{self.show_val(100)}"
-        )
+        return f"{self.line_number:4} {node_id:5} {node_cn:16} {self.index:>5} {self.kind:>15} {self.show_val(100)}"
 
     # @+node:ekr.20240104082325.4: *4* itoken.dump_header
     def dump_header(self) -> None:  # pragma: no cover
@@ -1644,9 +1596,7 @@ class InputToken:
             node_s = f"{node_id} {self.node.__class__.__name__}"
         else:
             node_s = "None"
-        return (
-            f"index: {self.index:<3} {self.kind:>12} {self.show_val(20):<20} {node_s}"
-        )
+        return f"index: {self.index:<3} {self.kind:>12} {self.show_val(20):<20} {node_s}"
 
     # @+node:ekr.20240104082325.6: *4* itoken.show_val
     def show_val(self, truncate_n: int) -> str:  # pragma: no cover
@@ -1760,9 +1710,7 @@ class Orange:  # Orange is the new Black.
         self.level = 0  # Set only by do_indent and do_dedent.
         self.lws = ''  # Leading whitespace.
         self.paren_level = 0  # Number of unmatched '(' tokens.
-        self.square_brackets_stack: list[
-            bool
-        ] = []  # A stack of bools, for self.word().
+        self.square_brackets_stack: list[bool] = []  # A stack of bools, for self.word().
         self.state_stack: list["ParseState"] = []  # Stack of ParseState objects.
         self.val = None  # The input token's value (a string).
         self.verbatim = False  # True: don't beautify.
@@ -1842,9 +1790,7 @@ class Orange:  # Orange is the new Black.
         return True
 
     # @+node:ekr.20240104093833.1: *5* orange.init_tokens_from_file
-    def init_tokens_from_file(
-        self, filename: str
-    ) -> tuple[str, str, list[Token]]:  # pragma: no cover
+    def init_tokens_from_file(self, filename: str) -> tuple[str, str, list[Token]]:  # pragma: no cover
         """
         Create the list of tokens for the given file.
         Return (contents, encoding, tokens).
@@ -1878,9 +1824,7 @@ class Orange:  # Orange is the new Black.
             return ok
 
         try:
-            five_tuples = tokenize.tokenize(
-                io.BytesIO(contents.encode('utf-8')).readline
-            )
+            five_tuples = tokenize.tokenize(io.BytesIO(contents.encode('utf-8')).readline)
         except Exception:
             print('make_tokens: exception in tokenize.tokenize')
             g.es_exception()
@@ -2013,9 +1957,7 @@ class Orange:  # Orange is the new Black.
         self.line_indent()
 
     # @+node:ekr.20200220054928.1: *6* orange.handle_dedent_after_class_or_def
-    def handle_dedent_after_class_or_def(
-        self, kind: str
-    ) -> None:  # pragma: no cover (black)
+    def handle_dedent_after_class_or_def(self, kind: str) -> None:  # pragma: no cover (black)
         """
         Insert blank lines after a class or def as the result of a 'dedent' token.
 
@@ -2212,9 +2154,7 @@ class Orange:  # Orange is the new Black.
         self.blank()
 
     # @+node:ekr.20200210175117.1: *5* orange.do_verbatim
-    beautify_pat = re.compile(
-        r'#\s*pragma:\s*beautify\b|#\s*@@beautify|#\s*@\+node|#\s*@[+-]others|#\s*@[+-]<<'
-    )
+    beautify_pat = re.compile(r'#\s*pragma:\s*beautify\b|#\s*@@beautify|#\s*@\+node|#\s*@[+-]others|#\s*@[+-]<<')
 
     def do_verbatim(self) -> None:
         """
@@ -2254,9 +2194,7 @@ class Orange:  # Orange is the new Black.
             return
         # Handle start-of-line whitespace.
         prev = self.code_list[-1]
-        inner = (
-            self.paren_level or self.square_brackets_stack or self.curly_brackets_level
-        )
+        inner = self.paren_level or self.square_brackets_stack or self.curly_brackets_level
         if prev.kind == 'line-indent' and inner:
             # Retain the indent that won't be cleaned away.
             self.clean('line-indent')
@@ -2348,9 +2286,7 @@ class Orange:  # Orange is the new Black.
             if isinstance(node, (ast.BinOp, ast.Call, ast.IfExp)):
                 return True
             num_node = ast.Num if g.python_version_tuple < (3, 12, 0) else ast.Constant  # pylint: disable=no-member
-            return isinstance(node, ast.UnaryOp) and not isinstance(
-                node.operand, num_node
-            )
+            return isinstance(node, ast.UnaryOp) and not isinstance(node.operand, num_node)
 
         node = self.token.node
         self.clean('blank')
@@ -2855,10 +2791,7 @@ class Token:
     # @+node:ekr.20191231114927.1: *4* token.brief_dump
     def brief_dump(self) -> str:  # pragma: no cover
         """Dump a token."""
-        return (
-            f"{self.index:>3} line: {self.line_number:<2} "
-            f"{self.kind:>15} {self.show_val(100)}"
-        )
+        return f"{self.index:>3} line: {self.line_number:<2} {self.kind:>15} {self.show_val(100)}"
 
     # @+node:ekr.20200223022950.11: *4* token.dump
     def dump(self) -> str:  # pragma: no cover
@@ -2866,12 +2799,7 @@ class Token:
         # Let block.
         node_id = self.node.node_index if self.node else ''
         node_cn = self.node.__class__.__name__ if self.node else ''
-        return (
-            f"{self.line_number:4} "
-            f"{node_id:5} {node_cn:16} "
-            f"{self.index:>5} {self.kind:>15} "
-            f"{self.show_val(100)}"
-        )
+        return f"{self.line_number:4} {node_id:5} {node_cn:16} {self.index:>5} {self.kind:>15} {self.show_val(100)}"
 
     # @+node:ekr.20200121081151.1: *4* token.dump_header
     def dump_header(self) -> None:  # pragma: no cover
@@ -2891,9 +2819,7 @@ class Token:
             node_s = f"{node_id} {self.node.__class__.__name__}"
         else:
             node_s = "None"
-        return (
-            f"index: {self.index:<3} {self.kind:>12} {self.show_val(20):<20} {node_s}"
-        )
+        return f"index: {self.index:<3} {self.kind:>12} {self.show_val(20):<20} {node_s}"
 
     # @+node:ekr.20191113095507.1: *4* token.show_val
     def show_val(self, truncate_n: int) -> str:  # pragma: no cover
@@ -2922,9 +2848,7 @@ class Tokenizer:
     token_index = 0
     prev_line_token = None
 
-    def add_token(
-        self, kind: str, five_tuple: tuple, line: str, s_row: int, value: str
-    ) -> None:
+    def add_token(self, kind: str, five_tuple: tuple, line: str, s_row: int, value: str) -> None:
         """
         Add an InputToken to the results list.
 
@@ -3099,9 +3023,7 @@ class TokenOrderGenerator:
         return count
 
     # @+node:ekr.20191113063144.4: *5* tog.create_links (inits all ivars)
-    def create_links(
-        self, tokens: list[Token], tree: Node, file_name: str = ''
-    ) -> None:
+    def create_links(self, tokens: list[Token], tree: Node, file_name: str = '') -> None:
         """
         A generator creates two-way links between the given tokens and ast-tree.
 
@@ -3129,9 +3051,7 @@ class TokenOrderGenerator:
         self.token('endmarker', '')
 
     # @+node:ekr.20191229071733.1: *5* tog.init_from_file
-    def init_from_file(
-        self, filename: str
-    ) -> tuple[str, str, list[Token], Node]:  # pragma: no cover
+    def init_from_file(self, filename: str) -> tuple[str, str, list[Token], Node]:  # pragma: no cover
         """
         Create the tokens and ast tree for the given file.
         Create links between tokens and the parse tree.
@@ -3148,9 +3068,7 @@ class TokenOrderGenerator:
         return contents, encoding, tokens, tree
 
     # @+node:ekr.20191229071746.1: *5* tog.init_from_string
-    def init_from_string(
-        self, contents: str, filename: str
-    ) -> tuple[list[Token], Node]:  # pragma: no cover
+    def init_from_string(self, contents: str, filename: str) -> tuple[list[Token], Node]:  # pragma: no cover
         """
         Tokenize, parse and create links in the contents string.
 
@@ -3184,9 +3102,7 @@ class TokenOrderGenerator:
             return ok
 
         try:
-            five_tuples = tokenize.tokenize(
-                io.BytesIO(contents.encode('utf-8')).readline
-            )
+            five_tuples = tokenize.tokenize(io.BytesIO(contents.encode('utf-8')).readline)
         except Exception:
             print('make_tokens: exception in tokenize.tokenize')
             g.es_exception()
@@ -3452,9 +3368,7 @@ class TokenOrderGenerator:
         """Leave a visitor."""
         # begin_visitor and end_visitor must be paired.
         entry_name = self.begin_end_stack.pop()
-        assert entry_name == node.__class__.__name__, (
-            f"{entry_name!r} {node.__class__.__name__}"
-        )
+        assert entry_name == node.__class__.__name__, f"{entry_name!r} {node.__class__.__name__}"
         assert self.node == node, (repr(self.node), repr(node))
         # Restore self.node.
         self.node = self.node_stack.pop()
@@ -3794,9 +3708,7 @@ class TokenOrderGenerator:
             self.token('op', '}')
 
     # @+node:ekr.20191113063144.37: *6* tog.Ellipsis (Removed in Python 3.14)
-    def do_Ellipsis(
-        self, node: Node
-    ) -> None:  # pragma: no cover (Does not exist for python 3.8+)
+    def do_Ellipsis(self, node: Node) -> None:  # pragma: no cover (Does not exist for python 3.8+)
         self.op('...')
 
     # @+node:ekr.20191113063144.38: *6* tog.ExtSlice
@@ -3988,9 +3900,7 @@ class TokenOrderGenerator:
                 assert token.kind == 'tstring_middle', expect('tstring_middle', token)
                 self.token(token.kind, token.value)
             else:
-                assert isinstance(inner_node, ast.Interpolation), expect(
-                    'ast.Interpolation', node
-                )
+                assert isinstance(inner_node, ast.Interpolation), expect('ast.Interpolation', node)
                 self.visit(inner_node)
 
         # Eat the tstring_end token.
@@ -4456,9 +4366,7 @@ class TokenOrderGenerator:
                 token = None
                 break
         else:
-            raise AssignLinksError(
-                'do_MatchSequence: Ill-formed tuple'
-            )  # pragma: no cover
+            raise AssignLinksError('do_MatchSequence: Ill-formed tuple')  # pragma: no cover
         if token:
             self.op(token.value)
         for pattern in patterns:
@@ -4681,9 +4589,7 @@ def main() -> None:  # pragma: no cover
             requested_files.append(os.path.join(cwd, path))
         else:
             root_dir = os.path.join(cwd, path)
-            requested_files.extend(
-                glob.glob(f'{root_dir}**{os.sep}*.py', recursive=True)
-            )
+            requested_files.extend(glob.glob(f'{root_dir}**{os.sep}*.py', recursive=True))
     if not requested_files:
         print(f"No files in {arg_files!r}")
         return
@@ -4729,13 +4635,9 @@ def scan_ast_args() -> tuple[object, dict[str, object], list[str]]:
     description = textwrap.dedent("""\
         Execute fstringify or beautify commands contained in leoAst.py.
     """)
-    parser = argparse.ArgumentParser(
-        description=description, formatter_class=argparse.RawTextHelpFormatter
-    )
+    parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('PATHS', nargs='*', help='directory or list of files')
-    group = parser.add_mutually_exclusive_group(
-        required=False
-    )  # Don't require any args.
+    group = parser.add_mutually_exclusive_group(required=False)  # Don't require any args.
     add = group.add_argument
     add('--fstringify', dest='f', action='store_true', help='fstringify PATHS')
     add(

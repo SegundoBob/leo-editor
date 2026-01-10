@@ -74,9 +74,7 @@ class ExternalFilesController:
     # @+node:ekr.20150404083533.1: *3* efc.ctor
     def __init__(self, c: Cmdr = None) -> None:
         """Ctor for ExternalFiles class."""
-        self.checksum_d: dict[
-            str, str
-        ] = {}  # Keys are full paths, values are file checksums.
+        self.checksum_d: dict[str, str] = {}  # Keys are full paths, values are file checksums.
         # For efc.on_idle.
         # Keys are commanders.
         # Values are cached @bool check-for-changed-external-file settings.
@@ -172,9 +170,7 @@ class ExternalFilesController:
             # Add all commanders for which
             # @verbatim
             # @bool check_for_changed_external_file is True.
-            self.unchecked_commanders = [
-                z for z in g.app.commanders() if self.is_enabled(z)
-            ]
+            self.unchecked_commanders = [z for z in g.app.commanders() if self.is_enabled(z)]
             self.unchecked_files = [z for z in self.files if z.exists()]
 
     # @+node:ekr.20150404045115.1: *5* efc.idle_check_commander
@@ -681,10 +677,7 @@ class ExternalFilesController:
             return
         path_name = g.splitLongFileName(path)
         kind = '@asis' if p.h.startswith('@asis') else '@nosent'
-        message = (
-            f"{path_name} has changed outside Leo.\n\n"
-            f"An {kind} node created this file.\n\n"
-        )
+        message = f"{path_name} has changed outside Leo.\n\nAn {kind} node created this file.\n\n"
         if kind == '@nosent':
             message += '@nosent nodes cannot be updated from disk.\n'
         elif kind == '@asis':

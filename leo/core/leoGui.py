@@ -61,9 +61,7 @@ class LeoGui:
         # Define special keys that may be overridden is subclasses.
         self.ignoreChars: list[str] = []  # Keys that should always be ignored.
         self.FKeys: list[str] = []  # The representation of F-keys.
-        self.specialChars: list[
-            str
-        ] = []  # A list of characters/keys to be handle specially.
+        self.specialChars: list[str] = []  # A list of characters/keys to be handle specially.
 
     # @+node:ekr.20051206103652: *3* LeoGui.widget_name
     def widget_name(self, w: Widget) -> str:
@@ -109,9 +107,7 @@ class LeoGui:
         """Create and run Leo's About Leo dialog."""
         raise NotImplementedError
 
-    def runAskOkDialog(
-        self, c: Cmdr, title: str, message: str = None, text: str = "Ok"
-    ) -> Any:
+    def runAskOkDialog(self, c: Cmdr, title: str, message: str = None, text: str = "Ok") -> Any:
         """Create and run an askOK dialog ."""
         raise NotImplementedError
 
@@ -372,9 +368,7 @@ class LeoKeyEvent:
         assert g.isStrokeOrNone(stroke), f"(LeoKeyEvent) {stroke!r} {g.callers()}"
         if 0:  # Doesn't add much.
             if 'keys' in g.app.debug:
-                print(
-                    f"LeoKeyEvent: binding: {binding}, stroke: {stroke}, char: {char!r}"
-                )
+                print(f"LeoKeyEvent: binding: {binding}, stroke: {stroke}, char: {char!r}")
         self.c = c
         self.char = char or ''
         self.event = event  # New in Leo 4.11.
@@ -423,21 +417,15 @@ class NullGui(LeoGui):
         self.focusWidget: Widget = None
         self.isNullGui = True
         self.idleTimeClass: Any = g.NullObject
-        self.lastFrame: Widget = (
-            None  # The outer frame, to set g.app.log in runMainLoop.
-        )
+        self.lastFrame: Widget = None  # The outer frame, to set g.app.log in runMainLoop.
         self.plainTextWidget: Widget = g.NullObject
         self.script = None
 
     # @+node:ekr.20031218072017.3744: *3* NullGui.dialogs
-    def runAboutLeoDialog(
-        self, c: Cmdr, version: str, theCopyright: str, url: str, email: str
-    ) -> str:
+    def runAboutLeoDialog(self, c: Cmdr, version: str, theCopyright: str, url: str, email: str) -> str:
         return None
 
-    def runAskOkDialog(
-        self, c: Cmdr, title: str, message: str = None, text: str = "Ok"
-    ) -> str:
+    def runAskOkDialog(self, c: Cmdr, title: str, message: str = None, text: str = "Ok") -> str:
         return 'Ok'
 
     def runAskOkCancelNumberDialog(

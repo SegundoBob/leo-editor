@@ -135,9 +135,7 @@ class FreeMindImporter:
             ("FreeMind files", "*.mm.html"),
             ("All files", "*"),
         ]
-        names = g.app.gui.runOpenFilesDialog(
-            c, title="Import FreeMind File", filetypes=filetypes
-        )
+        names = g.app.gui.runOpenFilesDialog(c, title="Import FreeMind File", filetypes=filetypes)
         c.bringToFront()
         if names:
             g.chdir(names[0])
@@ -165,9 +163,7 @@ class LeoImportCommands:
         self.fileName: str = None  # The original file name, say x.cpp
         self.fileType: str = None  # ".py", ".c", etc.
         self.methodName: str = None  # x, as in < < x methods > > =
-        self.output_newline: str = g.getOutputNewline(
-            c=c
-        )  # Value of @bool output_newline
+        self.output_newline: str = g.getOutputNewline(c=c)  # Value of @bool output_newline
         self.treeType = "@file"  # None or "@file"
         self.verbose = True  # Leo 6.6
         self.webType = "@noweb"  # "cweb" or "noweb"
@@ -181,9 +177,7 @@ class LeoImportCommands:
 
     # @+node:ekr.20031218072017.3289: *3* ic.Export
     # @+node:ekr.20031218072017.3290: *4* ic.convertCodePartToWeb & helpers
-    def convertCodePartToWeb(
-        self, s: str, i: int, p: Position, result: str
-    ) -> tuple[int, str]:
+    def convertCodePartToWeb(self, s: str, i: int, p: Position, result: str) -> tuple[int, str]:
         """
         Headlines not containing a section reference are ignored in noweb
         and generate index index in cweb.
@@ -208,9 +202,7 @@ class LeoImportCommands:
         return i, result.strip() + nl
 
     # @+node:ekr.20140630085837.16720: *5* ic.appendHeadRef
-    def appendHeadRef(
-        self, p: Position, file_name: str, head_ref: str, result: str
-    ) -> None:
+    def appendHeadRef(self, p: Position, file_name: str, head_ref: str, result: str) -> None:
         ic = self
         nl = ic.output_newline
         if ic.webType == "cweb":
@@ -468,9 +460,7 @@ class LeoImportCommands:
         theFile.close()
 
     # @+node:ekr.20031218072017.3300: *4* ic.removeSentinelsCommand
-    def removeSentinelsCommand(
-        self, paths: list[str], toString: bool = False
-    ) -> Optional[str]:
+    def removeSentinelsCommand(self, paths: list[str], toString: bool = False) -> Optional[str]:
         c = self.c
         self.encoding = c.getEncoding(c.p)
         for fileName in paths:
@@ -529,9 +519,7 @@ class LeoImportCommands:
     # @+node:ekr.20031218072017.3303: *4* ic.removeSentinelLines
     # This does not handle @nonl properly, but that no longer matters.
 
-    def removeSentinelLines(
-        self, s: str, line_delim: str, start_delim: str, unused_end_delim: str
-    ) -> str:
+    def removeSentinelLines(self, s: str, line_delim: str, start_delim: str, unused_end_delim: str) -> str:
         """Properly remove all sentinel lines in s."""
         delim = (line_delim or start_delim or '') + '@'
         verbatim = delim + 'verbatim'
@@ -1205,9 +1193,7 @@ class LeoImportCommands:
             g.es_exception()
 
     # @+node:ekr.20250807161513.1: *4* ic.compute_imported_headline
-    def compute_imported_headline(
-        self, importer: Any, lines: list[str], p: Position
-    ) -> str:
+    def compute_imported_headline(self, importer: Any, lines: list[str], p: Position) -> str:
         """Compute the headline for the given imported lines."""
         for s in lines:
             s = s.strip()
@@ -1331,10 +1317,7 @@ class LeoImportCommands:
         if self.isDocStart(s, i):
             return True
         return self.webType == "cweb" and (
-            g.match(s, i, "@c")
-            or g.match(s, i, "@p")
-            or g.match(s, i, "@d")
-            or g.match(s, i, "@f")
+            g.match(s, i, "@c") or g.match(s, i, "@p") or g.match(s, i, "@d") or g.match(s, i, "@f")
         )
 
     # @+node:ekr.20031218072017.3312: *4* ic.massageWebBody
@@ -1466,9 +1449,7 @@ class MindMapImporter:
             ("MindJet files", "*.csv"),
             ("All files", "*"),
         ]
-        names = g.app.gui.runOpenFilesDialog(
-            c, title="Import MindJet File", filetypes=filetypes
-        )
+        names = g.app.gui.runOpenFilesDialog(c, title="Import MindJet File", filetypes=filetypes)
         c.bringToFront()
         if names:
             g.chdir(names[0])
@@ -1549,9 +1530,7 @@ class MORE_Importer:
         filetypes = [
             ("All files", "*"),
         ]
-        names = g.app.gui.runOpenFilesDialog(
-            c, title="Import MORE Files", filetypes=filetypes
-        )
+        names = g.app.gui.runOpenFilesDialog(c, title="Import MORE Files", filetypes=filetypes)
         c.bringToFront()
         if names:
             g.chdir(names[0])
@@ -1575,9 +1554,7 @@ class MORE_Importer:
                 c.redraw(p)
 
     # @+node:ekr.20161006101347.1: *3* MORE.import_file
-    def import_file(
-        self, fileName: str
-    ) -> Optional[Position]:  # Not a command, so no event arg.
+    def import_file(self, fileName: str) -> Optional[Position]:  # Not a command, so no event arg.
         c = self.c
         u = c.undoer
         ic = c.importCommands
@@ -1767,9 +1744,7 @@ class RecursiveImportController:
         self.recursive = recursive
         self.root: Position = None
         file_name = c.fileName()
-        self.outline_directory: Optional[str] = (
-            os.path.dirname(file_name) if file_name else None
-        )
+        self.outline_directory: Optional[str] = os.path.dirname(file_name) if file_name else None
         self.safe_at_file = safe_at_file
         self.theTypes = theTypes
         self.verbose = verbose
@@ -1963,11 +1938,7 @@ class RecursiveImportController:
             return False
 
         # Never remove p itself!
-        aList = [
-            p2
-            for p2 in p.subtree()
-            if not p2.b.strip() and not has_significant_children(p2)
-        ]
+        aList = [p2 for p2 in p.subtree() if not p2.b.strip() and not has_significant_children(p2)]
         if aList:
             c.deletePositionsInList(aList)  # Don't redraw.
 
@@ -2156,9 +2127,7 @@ class TabImporter:
         types = [
             ("All files", "*"),
         ]
-        names = g.app.gui.runOpenFilesDialog(
-            c, title="Import Tabbed File", filetypes=types
-        )
+        names = g.app.gui.runOpenFilesDialog(c, title="Import Tabbed File", filetypes=types)
         c.bringToFront()
         if names:
             g.chdir(names[0])
@@ -2347,9 +2316,7 @@ class ToDoImporter:
                 complete_date = ''
             if completed and not complete_date:
                 print(f"no completion date: {line.rstrip()!s}")
-            tasks.append(
-                ToDoTask(bool(completed), priority, start_date, complete_date, task_s)
-            )
+            tasks.append(ToDoTask(bool(completed), priority, start_date, complete_date, task_s))
         return tasks
 
     # @+node:ekr.20200310100919.1: *3* todo_i.prompt_for_files
@@ -2364,9 +2331,7 @@ class ToDoImporter:
             ("Text files", "*.txt"),
             ("All files", "*"),
         ]
-        names = g.app.gui.runOpenFilesDialog(
-            c, title="Import todo.txt File", filetypes=types
-        )
+        names = g.app.gui.runOpenFilesDialog(c, title="Import todo.txt File", filetypes=types)
         c.bringToFront()
         if not names:
             return {}
@@ -2411,14 +2376,7 @@ class ToDoTask:
         start_s = self.start_date if self.start_date else ''
         end_s = self.complete_date if self.complete_date else ''
         mark_s = '[X]' if self.completed else '[ ]'
-        result = [
-            f"Task: "
-            f"{mark_s} "
-            f"{self.priority:1} "
-            f"start: {start_s:10} "
-            f"end: {end_s:10} "
-            f"{self.task_s}"
-        ]
+        result = [f"Task: {mark_s} {self.priority:1} start: {start_s:10} end: {end_s:10} {self.task_s}"]
         for ivar in ('contexts', 'projects', 'key_vals'):
             aList = getattr(self, ivar, None)
             if aList:
@@ -2512,11 +2470,7 @@ class ZimImportController:
             name = result[1].decode('utf-8')
             unquote = urllib.parse.unquote
             # mypy: error: "str" has no attribute "decode"; maybe "encode"?  [attr-defined]
-            path = [
-                g.os_path_abspath(
-                    g.os_path_join(pathToZim, unquote(result[2]).decode('utf-8'))
-                )
-            ]  # type:ignore
+            path = [g.os_path_abspath(g.os_path_join(pathToZim, unquote(result[2]).decode('utf-8')))]  # type:ignore
             results.append((level, name, path))
         return results
 
@@ -2561,9 +2515,7 @@ class ZimImportController:
                         child.doDelete()
                     else:
                         child.h = 'Introduction'
-            elif (
-                p.hasFirstChild() and p.h.startswith("@rst-no-head") and not p.b.strip()
-            ):
+            elif p.hasFirstChild() and p.h.startswith("@rst-no-head") and not p.b.strip():
                 child = p.getFirstChild()
                 p_no_head = p.h.replace("@rst-no-head", "").strip()
                 # Replace empty @rst-no-head by its same named children
@@ -2597,9 +2549,7 @@ class ZimImportController:
             for level, name, rst in files:
                 if level == self.rstLevel:
                     name = f"{self.rstType} {name}"
-                rstNodes[str(level + 1)] = self.rstToLastChild(
-                    rstNodes[str(level)], name, rst
-                )
+                rstNodes[str(level + 1)] = self.rstToLastChild(rstNodes[str(level)], name, rst)
             # Clean nodes
             g.es('Start cleaning process. Please wait...', color='blue')
             self.clean(zimNode, self.rstType)
@@ -2668,9 +2618,7 @@ class LegacyExternalFileImporter:
         # Compute the local ignore list for this file.
         ignore = tuple(delim1 + z for z in self.ignore)
         # Handle each line of the file.
-        nodes: list[
-            LegacyImportNode
-        ] = []  # An list of LegacyImportNode, in file order.
+        nodes: list[LegacyImportNode] = []  # An list of LegacyImportNode, in file order.
         stack: list[LegacyImportNode] = []  # A stack of LegacyImportNode.
         for line in g.splitLines(s):
             s = line.lstrip()
@@ -2680,9 +2628,7 @@ class LegacyExternalFileImporter:
             elif s.startswith(ignore):
                 # Ignore these. Use comments instead of @doc bodies.
                 pass
-            elif s.startswith(delim1 + '@+others') or s.startswith(
-                delim1 + '@' + lws + '@+others'
-            ):
+            elif s.startswith(delim1 + '@+others') or s.startswith(delim1 + '@' + lws + '@+others'):
                 self.add(lws + '@others\n', stack)
             elif s.startswith(delim1 + '@<<'):
                 n = len(delim1 + '@<<')
@@ -2748,9 +2694,7 @@ class LegacyExternalFileImporter:
             ("Legacy external files", "*.py"),
             ("All files", "*"),
         ]
-        paths = g.app.gui.runOpenFilesDialog(
-            c, title="Import Legacy External Files", filetypes=filetypes
-        )
+        paths = g.app.gui.runOpenFilesDialog(c, title="Import Legacy External Files", filetypes=filetypes)
         c.bringToFront()
         if paths:
             g.chdir(paths[0])

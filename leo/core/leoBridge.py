@@ -81,9 +81,7 @@ def controller(
     """Create an singleton instance of a bridge controller."""
     global gBridgeController
     if not gBridgeController:
-        gBridgeController = BridgeController(
-            gui, loadPlugins, readSettings, silent, tracePlugins, useCaches, verbose
-        )
+        gBridgeController = BridgeController(gui, loadPlugins, readSettings, silent, tracePlugins, useCaches, verbose)
     return gBridgeController
 
 
@@ -242,9 +240,7 @@ class BridgeController:
 
         # #258: leoBridge does not work with @auto-md subtrees.
         for theDir in ('importers', 'writers'):
-            path = os.path.normpath(
-                os.path.join(g.app.loadDir, '..', 'plugins', theDir)
-            )
+            path = os.path.normpath(os.path.join(g.app.loadDir, '..', 'plugins', theDir))
             if path not in sys.path:
                 sys.path.insert(0, path)
 
@@ -284,9 +280,7 @@ class BridgeController:
         try:
             if not g.isValidPython:
                 print(message)
-                g.app.gui.runAskOkDialog(
-                    None, "Python version error", message=message, text="Exit"
-                )
+                g.app.gui.runAskOkDialog(None, "Python version error", message=message, text="Exit")
             return g.isValidPython
         except Exception as e:
             print(f"{tag}: unexpected exception: {e}")

@@ -231,27 +231,15 @@ class Commands:
     # @+node:ekr.20120217070122.10473: *5* c.initCommandIvars
     def initCommandIvars(self) -> None:
         """Init ivars used while executing a command."""
-        self.commandsDict: dict[
-            str, Callable
-        ] = {}  # Keys are command names, values are functions.
-        self.disableCommandsMessage = (
-            ''  # The presence of this message disables all commands.
-        )
-        self.hookFunction: Optional[Callable] = (
-            None  # One of three places that g.doHook looks for hook functions.
-        )
-        self.ignoreChangedPaths = (
-            False  # True: disable path changed message in at.WriteAllHelper.
-        )
+        self.commandsDict: dict[str, Callable] = {}  # Keys are command names, values are functions.
+        self.disableCommandsMessage = ''  # The presence of this message disables all commands.
+        self.hookFunction: Optional[Callable] = None  # One of three places that g.doHook looks for hook functions.
+        self.ignoreChangedPaths = False  # True: disable path changed message in at.WriteAllHelper.
         self.inCommand = False  # Interlocks to prevent premature closing of a window.
-        self.outlineToNowebDefaultFileName: str = (
-            "noweb.nw"  # For Outline To Noweb dialog.
-        )
+        self.outlineToNowebDefaultFileName: str = "noweb.nw"  # For Outline To Noweb dialog.
         # For hoist/dehoist commands.
         # Affects drawing routines and find commands, but *not* generators.
-        self.hoistStack: list[
-            g.Bunch
-        ] = []  # Stack of g.Bunches to be root of drawn tree.
+        self.hoistStack: list[g.Bunch] = []  # Stack of g.Bunches to be root of drawn tree.
         # For outline navigation.
         self.navPrefix: str = ''  # Must always be a string.
         self.navTime: Optional[float] = None
@@ -269,24 +257,16 @@ class Commands:
         """Init per-document ivars."""
         self.expansionLevel = 0  # The expansion level of this outline.
         self.expansionNode = None  # The last node we expanded or contracted.
-        self.nodeConflictList: list[
-            Position
-        ] = []  # List of nodes with conflicting read-time data.
-        self.nodeConflictFileName: Optional[str] = (
-            None  # The fileName for c.nodeConflictList.
-        )
-        self.user_dict: dict[
-            str, Value
-        ] = {}  # Non-persistent dictionary for free use by scripts and plugins.
+        self.nodeConflictList: list[Position] = []  # List of nodes with conflicting read-time data.
+        self.nodeConflictFileName: Optional[str] = None  # The fileName for c.nodeConflictList.
+        self.user_dict: dict[str, Value] = {}  # Non-persistent dictionary for free use by scripts and plugins.
 
     # @+node:ekr.20120217070122.10467: *5* c.initEventIvars
     def initEventIvars(self) -> None:
         """Init ivars relating to gui events."""
         self.configInited = False
         self.doubleClickFlag = False
-        self.exists = (
-            True  # Indicate that this class exists and has not been destroyed.
-        )
+        self.exists = True  # Indicate that this class exists and has not been destroyed.
         self.in_qt_dialog = False  # True: in a qt dialog.
         self.loading = False  # True: we are loading a file: disables c.setChanged()
         self.promptingForClose = False  # True: lock out additional closing dialogs.
@@ -301,20 +281,12 @@ class Commands:
     def initFileIvars(self, fileName: str, relativeFileName: str) -> None:
         """Init file-related ivars of the commander."""
         self.changed = False  # True: the outline has changed since the last save.
-        self.ignored_at_file_nodes: list[
-            Position
-        ] = []  # List of nodes for c.raise_error_dialogs.
-        self.import_error_nodes: list[
-            Position
-        ] = []  # List of nodes for c.raise_error_dialogs.
+        self.ignored_at_file_nodes: list[Position] = []  # List of nodes for c.raise_error_dialogs.
+        self.import_error_nodes: list[Position] = []  # List of nodes for c.raise_error_dialogs.
         self.last_dir: str = None  # The last used directory.
-        self.mFileName: str = (
-            fileName or ''
-        )  # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
+        self.mFileName: str = fileName or ''  # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
         self.mRelativeFileName = relativeFileName or ''
-        self.orphan_at_file_nodes: list[
-            Position
-        ] = []  # List of orphaned nodes for c.raise_error_dialogs.
+        self.orphan_at_file_nodes: list[Position] = []  # List of orphaned nodes for c.raise_error_dialogs.
 
     # @+node:ekr.20120217070122.10470: *5* c.initObjects
     def initObjects(self, gui: LeoGui) -> None:
@@ -533,9 +505,7 @@ class Commands:
         if not c.gui.isNullGui:
             # #2485: register idle_focus_helper in the proper context.
             try:
-                g.app.pluginsController.loadingModuleNameStack.append(
-                    'leo.core.leoCommands'
-                )
+                g.app.pluginsController.loadingModuleNameStack.append('leo.core.leoCommands')
                 g.registerHandler('idle', c.idle_focus_helper)
             finally:
                 g.app.pluginsController.loadingModuleNameStack.pop()
@@ -686,12 +656,8 @@ class Commands:
         c.contractVisitedNodes = getBool('contractVisitedNodes')
         c.fixedWindowPositionData = getData('fixedWindowPosition')
         c.focus_border_color = getColor('focus-border-color') or 'red'
-        c.focus_border_command_state_color = (
-            getColor('focus-border-command-state-color') or 'blue'
-        )
-        c.focus_border_overwrite_state_color = (
-            getColor('focus-border-overwrite-state-color') or 'green'
-        )
+        c.focus_border_command_state_color = getColor('focus-border-command-state-color') or 'blue'
+        c.focus_border_overwrite_state_color = getColor('focus-border-overwrite-state-color') or 'green'
         c.focus_border_width = getInt('focus-border-width') or 1  # pixels
         c.forceExecuteEntireBody = getBool('force-execute-entire-body', default=False)
         c.make_node_conflicts_node = getBool('make-node-conflicts-node', default=True)
@@ -700,9 +666,7 @@ class Commands:
         c.sparse_move = getBool('sparse-move-outline-left')
         c.sparse_find = getBool('collapse-nodes-during-finds')
         c.sparse_spell = getBool('collapse-nodes-while-spelling')
-        c.sparse_goto_visible = getBool(
-            'collapse-on-goto-first-last-visible', default=False
-        )
+        c.sparse_goto_visible = getBool('collapse-on-goto-first-last-visible', default=False)
         c.stayInTreeAfterSelect = getBool('stayInTreeAfterSelect')
         c.smart_tab = getBool('smart-tab')
         c.tab_width = getInt('tab-width') or -4
@@ -783,9 +747,7 @@ class Commands:
             directory = os.path.dirname(path)
         else:
             directory = None
-        c.general_script_helper(
-            command, ext, language, directory=directory, regex=regex, root=p
-        )
+        c.general_script_helper(command, ext, language, directory=directory, regex=regex, root=p)
 
     # @+node:tom.20241014154415.1: *3* @cmd c.execute-external-file
     # @@language python
@@ -1202,9 +1164,7 @@ class Commands:
                         'Cannot find a terminal to launch the external file',
                         color='red',
                     )
-                    g.es(
-                        f'   You can specify a terminal in an "@data {MAP_SETTING_NODE}" setting node'
-                    )
+                    g.es(f'   You can specify a terminal in an "@data {MAP_SETTING_NODE}" setting node')
                     g.es('  ', SETTINGS_HELP)
                     return
 
@@ -1237,9 +1197,7 @@ class Commands:
             if setting_terminal:
                 terminal = which(terminal)
                 if not terminal:
-                    g.es(
-                        f'Cannot find terminal specified in setting: {setting_terminal}'
-                    )
+                    g.es(f'Cannot find terminal specified in setting: {setting_terminal}')
                     g.es('Trying an alternative')
                     terminal = getTerminal()
                     g.es('using', terminal)
@@ -1355,13 +1313,9 @@ class Commands:
         script_p = p or c.p  # Only for error reporting below.
 
         # Compute flags
-        beautify_flag = language == 'python' and c.config.getBool(
-            'beautify-python-code-on-write', default=False
-        )
+        beautify_flag = language == 'python' and c.config.getBool('beautify-python-code-on-write', default=False)
         pyflakes_flag = (
-            runPyflakes
-            and language == 'python'
-            and c.config.getBool('run-pyflakes-on-write', default=False)
+            runPyflakes and language == 'python' and c.config.getBool('run-pyflakes-on-write', default=False)
         )
         if not script and language not in ('jupytext', 'python'):  # #4197, #4226.
             w = c.frame.body.wrapper
@@ -1399,10 +1353,7 @@ class Commands:
         if pyflakes_flag and not g.unitTesting:
             from leo.commands import checkerCommands as cc
 
-            prefix = (
-                'c,g,p,script_gnx=None,None,None,None;'
-                'assert c and g and p and script_gnx;\n'
-            )
+            prefix = 'c,g,p,script_gnx=None,None,None,None;assert c and g and p and script_gnx;\n'
             cc.PyflakesCommand(c).check_script(script_p, prefix + script)
 
         # Execute the script!
@@ -1421,9 +1372,7 @@ class Commands:
                         namespace = namespace or {}
                         namespace.update(script_gnx=script_p.gnx)
                     # We *always* execute the script with p = c.p.
-                    callResult = c.executeScriptHelper(
-                        args, define_g, define_name, namespace, script
-                    )
+                    callResult = c.executeScriptHelper(args, define_g, define_name, namespace, script)
                 except KeyboardInterrupt:
                     g.es('interrupted')
                 except Exception:
@@ -1468,9 +1417,7 @@ class Commands:
         # This does not prevent zombie windows if the script puts up a dialog...
         try:
             c.inCommand = False
-            g.inScript = g.app.inScript = (
-                True  # g.inScript is a synonym for g.app.inScript.
-            )
+            g.inScript = g.app.inScript = True  # g.inScript is a synonym for g.app.inScript.
             if c.write_script_file:
                 scriptFile = self.writeScriptFile(script)
                 exec(compile(script, scriptFile, 'exec'), d)
@@ -1642,9 +1589,7 @@ class Commands:
     all_positions_with_unique_vnodes_iter = all_unique_positions
 
     # @+node:ekr.20161120125322.1: *5* c.all_unique_roots
-    def all_unique_roots(
-        self, copy: bool = True, predicate: Callable = None
-    ) -> Generator:
+    def all_unique_roots(self, copy: bool = True, predicate: Callable = None) -> Generator:
         """
         A generator yielding all unique root positions in the outline that
         satisfy the given predicate. p.isAnyAtFileNode is the default
@@ -1969,10 +1914,7 @@ class Commands:
             if paths:
                 break
         if len(paths) > 1:
-            message = (
-                f"Multiple @path directives in {p.h!r}\n"
-                f"Using the first path: @path {paths[0]}"
-            )
+            message = f"Multiple @path directives in {p.h!r}\nUsing the first path: @path {paths[0]}"
             g.print_unique_message(message)
         return paths[0] if paths else None
 
@@ -2090,9 +2032,7 @@ class Commands:
         return p
 
     # @+node:ekr.20040307104131.3: *5* c.positionExists
-    def positionExists(
-        self, p: Position, root: Position = None, trace: bool = False
-    ) -> bool:
+    def positionExists(self, p: Position, root: Position = None, trace: bool = False) -> bool:
         """Return True if a position exists in c's tree"""
         if not p or not p.v:
             return False
@@ -2481,15 +2421,11 @@ class Commands:
         t2 = time.time()
         if not ok:
             g.es_print(
-                f"check-outline ERROR! {c.shortFileName()} "
-                f"{count} nodes, {gnx_errors} gnx errors, ",
+                f"check-outline ERROR! {c.shortFileName()} {count} nodes, {gnx_errors} gnx errors, ",
                 color='red',
             )
         elif c.verbose_check_outline and not g.unitTesting:
-            print(
-                f"check-outline OK: {t2 - t1:4.2f} sec. "
-                f"{c.shortFileName()} {count} nodes"
-            )
+            print(f"check-outline OK: {t2 - t1:4.2f} sec. {c.shortFileName()} {count} nodes")
         return gnx_errors
 
     # @+node:ekr.20150318131947.7: *4* c.checkLinks & helpers
@@ -2579,15 +2515,11 @@ class Commands:
         next = p.next()
         if back:
             if not g._assert(p == back.next()):
-                g.trace(
-                    f"p!=p.back().next()\n     back: {back}\nback.next: {back.next()}"
-                )
+                g.trace(f"p!=p.back().next()\n     back: {back}\nback.next: {back.next()}")
                 return False
         if next:
             if not g._assert(p == next.back()):
-                g.trace(
-                    f"p!=p.next().back\n     next: {next}\nnext.back: {next.back()}"
-                )
+                g.trace(f"p!=p.next().back\n     next: {next}\nnext.back: {next.back()}")
                 return False
         return True
 
@@ -2706,10 +2638,7 @@ class Commands:
 
         # For unit testing.
         strict = 'test:strict' in g.app.debug
-        verbose = any(
-            z in g.app.debug
-            for z in ('test:verbose', 'gnx', 'shutdown', 'startup', 'verbose')
-        )
+        verbose = any(z in g.app.debug for z in ('test:verbose', 'gnx', 'shutdown', 'startup', 'verbose'))
         error_list, messages, n = find_errors()
         if n == 0:
             return 0
@@ -2811,9 +2740,7 @@ class Commands:
             g.es_exception()
             if dump:
                 # Write the invalid ouitline to the corresponding leo.txt file.
-                filename = os.path.normpath(
-                    os.path.expanduser(f"~/.leo/BAD-{c.shortFileName()}.txt")
-                )
+                filename = os.path.normpath(os.path.expanduser(f"~/.leo/BAD-{c.shortFileName()}.txt"))
                 try:
                     with open(filename, 'bw') as f:
                         for s in g.splitLines(translated_contents):
@@ -2830,9 +2757,7 @@ class Commands:
     # This code is no longer used by any Leo command,
     # but it will be retained for use of scripts.
     # @+node:ekr.20040723094220.1: *4* c.checkAllPythonCode
-    def checkAllPythonCode(
-        self, event: LeoKeyEvent = None, ignoreAtIgnore: bool = True
-    ) -> str:
+    def checkAllPythonCode(self, event: LeoKeyEvent = None, ignoreAtIgnore: bool = True) -> str:
         """Check all nodes in the selected tree for syntax and tab errors."""
         c = self
         count = 0
@@ -2848,9 +2773,7 @@ class Commands:
                     g.enl()
                 # @-<< print dots >>
             if c.getLanguage(p) == "python":
-                if not g.scanForAtSettings(p) and (
-                    not ignoreAtIgnore or not g.scanForAtIgnore(c, p)
-                ):
+                if not g.scanForAtSettings(p) and (not ignoreAtIgnore or not g.scanForAtIgnore(c, p)):
                     try:
                         c.checkPythonNode(p)
                     except (SyntaxError, tokenize.TokenError, tabnanny.NannyNag):
@@ -3034,9 +2957,7 @@ class Commands:
 
     # @+node:ekr.20180503110307.1: *4* c.interactive*
     # @+node:ekr.20180504075937.1: *5* c.interactive
-    def interactive(
-        self, callback: Callable, event: LeoKeyEvent, prompts: Sequence
-    ) -> None:
+    def interactive(self, callback: Callable, event: LeoKeyEvent, prompts: Sequence) -> None:
         # @+<< c.interactive docstring >>
         # @+node:ekr.20180503131222.1: *6* << c.interactive docstring >>
         """
@@ -3075,9 +2996,7 @@ class Commands:
             g.trace('At most 3 arguments are supported.')
 
     # @+node:ekr.20180503111213.1: *5* c.interactive1
-    def interactive1(
-        self, callback: Callable, event: LeoKeyEvent, prompts: Sequence
-    ) -> None:
+    def interactive1(self, callback: Callable, event: LeoKeyEvent, prompts: Sequence) -> None:
         c, k = self, self.k
         prompt = prompts[0]
 
@@ -3091,9 +3010,7 @@ class Commands:
         k.get1Arg(event, handler=state1)
 
     # @+node:ekr.20180503111249.1: *5* c.interactive2
-    def interactive2(
-        self, callback: Callable, event: LeoKeyEvent, prompts: Sequence
-    ) -> None:
+    def interactive2(self, callback: Callable, event: LeoKeyEvent, prompts: Sequence) -> None:
         c, k = self, self.k
         d: dict[str, str] = {}
         prompt1, prompt2 = prompts
@@ -3113,9 +3030,7 @@ class Commands:
         k.get1Arg(event, handler=state1)
 
     # @+node:ekr.20180503111249.2: *5* c.interactive3
-    def interactive3(
-        self, callback: Callable, event: LeoKeyEvent, prompts: Sequence
-    ) -> None:
+    def interactive3(self, callback: Callable, event: LeoKeyEvent, prompts: Sequence) -> None:
         c = self
         d: dict[str, str] = {}
         k = self.k
@@ -3297,9 +3212,7 @@ class Commands:
             g.trace(f"stroke: {stroke!r}, expected char: {expected!r}, got: {got!r}")
 
     # @+node:ekr.20031218072017.2817: *4* c.doCommand
-    def doCommand(
-        self, command_func: Callable, command_name: str, event: LeoKeyEvent
-    ) -> Value:
+    def doCommand(self, command_func: Callable, command_name: str, event: LeoKeyEvent) -> Value:
         """
         Execute the given command function, invoking hooks and catching exceptions.
 
@@ -3663,9 +3576,7 @@ class Commands:
         if rclick is not installed.
         """
 
-        def minibufferCallback(
-            event: LeoKeyEvent, function: Callable = function
-        ) -> None:
+        def minibufferCallback(event: LeoKeyEvent, function: Callable = function) -> None:
             # Avoid a pylint complaint.
             if hasattr(self, 'theContextMenuController'):
                 cm = self.theContextMenuController
@@ -3942,15 +3853,9 @@ class Commands:
         # @+node:ekr.20250725152709.1: *5* << calculate the list of subdirectories >>
         # Default to all direct sub-directories of the top directory.
         if not sub_directories:
-            sub_directories = [
-                z
-                for z in os.listdir(top_directory)
-                if os.path.isdir(os.path.join(top_directory, z))
-            ]
+            sub_directories = [z for z in os.listdir(top_directory) if os.path.isdir(os.path.join(top_directory, z))]
         # @-<< calculate the list of subdirectories >>
-        g.es_print(
-            f"Scanning {len(sub_directories)} directories.\nThis may take awhile."
-        )
+        g.es_print(f"Scanning {len(sub_directories)} directories.\nThis may take awhile.")
         # The main loop.
         old_p = c.p
         try:
@@ -3972,9 +3877,7 @@ class Commands:
                     )
 
                     # _create_link_files converts these full paths to relative paths.
-                    files.extend(
-                        [z for z in new_files if os.path.isfile(z) and z not in files]
-                    )
+                    files.extend([z for z in new_files if os.path.isfile(z) and z not in files])
                 # @-<< find files in sub_directory >>
                 if files:
                     sub_outline_name = f"{g.shortFileName(sub_directory)}_links.leo"
@@ -4021,9 +3924,7 @@ class Commands:
             all_files = sorted(list(set(all_files)))
             if not g.unitTesting:
                 t2 = time.process_time()
-                g.es_print(
-                    f"Done! Created {len(all_files)} outlines in {t2 - t1:3.2} sec"
-                )
+                g.es_print(f"Done! Created {len(all_files)} outlines in {t2 - t1:3.2} sec")
         finally:
             c.selectPosition(old_p)
             c.enableRedrawFlag = True
@@ -4163,9 +4064,7 @@ class Commands:
         if not g.unitTesting:
             t2 = time.process_time()
             kind = 'hidden ' if gui == g.app.nullGui else ''
-            g.es_print(
-                f"Done! Opened {len(result)} {kind}outlines in {t2 - t1:3.2} sec"
-            )
+            g.es_print(f"Done! Opened {len(result)} {kind}outlines in {t2 - t1:3.2} sec")
             g.printObj(scanned, tag='Scanned')
             g.printObj(result, tag='Result')
         return result
@@ -4187,9 +4086,7 @@ class Commands:
             g.doHook("recentfiles2", c=c2, p=c2.p, v=c2.p, fileName=fn)
 
     # @+node:ekr.20031218072017.2823: *4* c.openWith
-    def openWith(
-        self, event: LeoKeyEvent = None, d: dict[str, Position] = None
-    ) -> None:
+    def openWith(self, event: LeoKeyEvent = None, d: dict[str, Position] = None) -> None:
         """
         This is *not* a command.
 
@@ -4243,9 +4140,7 @@ class Commands:
         x.diff_file(fn=fn, rev1=rev1, rev2=rev2)
 
     # @+node:ekr.20180508110755.1: *4* c.diff_two_revs
-    def diff_two_revs(
-        self, directory: str = None, rev1: str = '', rev2: str = ''
-    ) -> None:
+    def diff_two_revs(self, directory: str = None, rev1: str = '', rev2: str = '') -> None:
         """
         Create an outline describing the git diffs for all files changed
         between rev1 and rev2.
@@ -4262,9 +4157,7 @@ class Commands:
         """
         from leo.commands import editFileCommands as efc
 
-        efc.GitDiffController(c=self).diff_two_branches(
-            branch1=branch1, branch2=branch2, fn=fn
-        )
+        efc.GitDiffController(c=self).diff_two_branches(branch1=branch1, branch2=branch2, fn=fn)
 
     # @+node:ekr.20180510105125.1: *4* c.git_diff
     def git_diff(self, rev1: str = 'HEAD', rev2: str = '') -> None:
@@ -4334,17 +4227,13 @@ class Commands:
                 g.es_print(import_message2)
                 if use_dialogs:
                     import_dialog_message = f"{import_message1}\n{import_message2}"
-                    g.app.gui.runAskOkDialog(
-                        c, message=import_dialog_message, title='Import errors'
-                    )
+                    g.app.gui.runAskOkDialog(c, message=import_dialog_message, title='Import errors')
         if c.ignored_at_file_nodes:
             files = '\n'.join(sorted(set(c.ignored_at_file_nodes)))  # type:ignore
             if files not in self.warnings_dict:
                 self.warnings_dict[files] = True
                 kind_s = 'read' if kind == 'read' else 'written'
-                ignored_message = (
-                    f"The following were not {kind_s} because they contain @ignore:"
-                )
+                ignored_message = f"The following were not {kind_s} because they contain @ignore:"
                 kind = 'read' if kind.startswith('read') else 'written'
                 g.es_print(ignored_message, color='red')
                 g.es_print(files)
@@ -4362,8 +4251,7 @@ class Commands:
                     'The following were not written because of errors:\n',
                     '\n'.join(sorted(set(c.orphan_at_file_nodes))),  # type:ignore
                     '',
-                    'Warning: changes to these files will be lost\n'
-                    'unless you can save the files successfully.',
+                    'Warning: changes to these files will be lost\nunless you can save the files successfully.',
                 ]
             )
             g.app.gui.runAskOkDialog(c, message=message, title='Not Written')
@@ -4382,9 +4270,7 @@ class Commands:
     def syntaxErrorDialog(self) -> None:
         """Warn about syntax errors in files."""
         c = self
-        if g.app.syntax_error_files and c.config.getBool(
-            'syntax-error-popup', default=False
-        ):
+        if g.app.syntax_error_files and c.config.getBool('syntax-error-popup', default=False):
             aList = sorted(set(g.app.syntax_error_files))
             g.app.syntax_error_files = []
             list_s = '\n'.join(aList)
@@ -4437,9 +4323,7 @@ class Commands:
         undoType = 'Clone Drag'
         current = c.p
         clone = p.clone()  # Creates clone & dependents, does not set undo.
-        if not c.checkDrag(p, parent) or not c.checkMoveWithParentWithWarning(
-            clone, parent, True
-        ):
+        if not c.checkDrag(p, parent) or not c.checkMoveWithParentWithWarning(clone, parent, True):
             clone.doDelete(newNode=p)  # Destroys clone and makes p the current node.
             c.selectPosition(p)  # Also sets root position.
             return
@@ -4460,9 +4344,7 @@ class Commands:
         undoType = 'Clone Drag'
         current = c.p
         clone = p.clone()  # Creates clone.  Does not set undo.
-        if c.checkDrag(p, after) and c.checkMoveWithParentWithWarning(
-            clone, after.parent(), True
-        ):
+        if c.checkDrag(p, after) and c.checkMoveWithParentWithWarning(clone, after.parent(), True):
             c.endEditing()
             undoData = u.beforeInsertNode(current)
             clone.setDirty()
@@ -4847,9 +4729,7 @@ class Commands:
         trace = 'focus' in g.app.debug
         if w and g.app.gui:
             if trace:
-                name = (
-                    w.objectName() if hasattr(w, 'objectName') else w.__class__.__name__
-                )
+                name = w.objectName() if hasattr(w, 'objectName') else w.__class__.__name__
                 g.trace('(c)', name, g.callers(2))
             c.requestedFocusWidget = w
 
@@ -4858,9 +4738,7 @@ class Commands:
         c = self
         if w and g.app.gui:
             if trace:
-                name = (
-                    w.objectName() if hasattr(w, 'objectName') else w.__class__.__name__
-                )
+                name = w.objectName() if hasattr(w, 'objectName') else w.__class__.__name__
                 g.trace('(c)', name, g.callers(4))
             g.app.gui.set_focus(c, w)
         elif trace:
@@ -4962,9 +4840,7 @@ class Commands:
         if command:
             # Command is one of two callbacks defined in createMenuEntries.
 
-            def add_commandCallback(
-                c: Commands = c, command: Callable = command
-            ) -> Value:
+            def add_commandCallback(c: Commands = c, command: Callable = command) -> Value:
                 val = command()
                 # Careful: func may destroy c.
                 if c.exists:
@@ -5544,9 +5420,7 @@ class Commands:
         u.beforeChangeGroup(u_node, undoType)
         changed_node = False
         for idx, head in enumerate(heads):
-            if (
-                parent is None and idx == 0
-            ):  # if parent = None, create top level node for first head
+            if parent is None and idx == 0:  # if parent = None, create top level node for first head
                 if not forcecreate:
                     for pos in self.all_positions():
                         if pos.h == head:
@@ -5626,11 +5500,7 @@ class Commands:
         for z in aList:
             try:
                 op, p, n = z
-                ok = (
-                    op in ('insert', 'delete')
-                    and isinstance(p, leoNodes.position)
-                    and isinstance(n, int)
-                )
+                ok = op in ('insert', 'delete') and isinstance(p, leoNodes.position) and isinstance(n, int)
                 if ok:
                     aList2 = d.get(p.v, [])
                     data = n, op
@@ -5756,8 +5626,7 @@ class Commands:
         c.configurables.sort(key=lambda obj: obj.__class__.__name__.lower())
         for obj in c.configurables:
             func = (
-                getattr(obj, 'reloadSettings', None)
-                or getattr(obj, 'reload_settings', None)  # An official alias.
+                getattr(obj, 'reloadSettings', None) or getattr(obj, 'reload_settings', None)  # An official alias.
             )
             if func:
                 try:

@@ -141,14 +141,9 @@ class VimCommands:
                 for key in d2:
                     f, f2 = d.get(key), d2.get(key)
                     if f2 and f and f != f2:
-                        g.trace(
-                            f"conflicting motion key in {tag} "
-                            f"dict: {key} {f2.__name__} {f.__name__}"
-                        )
+                        g.trace(f"conflicting motion key in {tag} dict: {key} {f2.__name__} {f.__name__}")
                     elif f2 and not f:
-                        g.trace(
-                            f"missing motion key in {tag} dict: {key} {f2.__name__}"
-                        )
+                        g.trace(f"missing motion key in {tag} dict: {key} {f2.__name__}")
                         # d[key] = f2
 
     # @+node:ekr.20140222064735.16702: *5* vc.create_motion_dispatch_d
@@ -452,31 +447,21 @@ class VimCommands:
     def init_state_ivars(self) -> None:
         """Init all ivars related to command state."""
         self.ch = None  # The incoming character.
-        self.command_i: int = (
-            None  # The offset into the text at the start of a command.
-        )
-        self.command_list: list[
-            VimEvent
-        ] = []  # The list of all characters seen in this command.
-        self.command_n: int = (
-            None  # The repeat count in effect at the start of a command.
-        )
+        self.command_i: int = None  # The offset into the text at the start of a command.
+        self.command_list: list[VimEvent] = []  # The list of all characters seen in this command.
+        self.command_n: int = None  # The repeat count in effect at the start of a command.
         self.command_w: Widget = None  # The widget in effect at the start of a command.
         self.event: QEvent = None  # The event for the current key.
         self.extend = False  # True: extending selection.
         self.handler: Callable = self.do_normal_mode  # Use the handler for normal mode.
         self.in_command = False  # True: we have seen some command characters.
         self.in_motion = False  # True if parsing an *inner* motion, the 2j in d2j.
-        self.motion_func: Callable = (
-            None  # The callback handler to execute after executing an inner motion.
-        )
+        self.motion_func: Callable = None  # The callback handler to execute after executing an inner motion.
         self.motion_i: int = None  # The offset into the text at the start of a motion.
         self.n1 = 1  # The first repeat count.
         self.n = 1  # The second repeat count.
         self.n1_seen = False  # True if self.n1 has been set.
-        self.next_func: Callable = (
-            None  # The continuation of a multi-character command.
-        )
+        self.next_func: Callable = None  # The continuation of a multi-character command.
         self.old_sel: tuple = None  # The selection range at the start of a command.
         self.repeat_list: list[str] = []  # The characters of the current repeat count.
         # The value returned by do_key().
@@ -486,9 +471,7 @@ class VimCommands:
         self.stroke: Stroke = None  # The incoming stroke.
         self.visual_line_flag = False  # True: in visual-line state.
         self.vis_mode_i: int = None  # The insertion point at the start of visual mode.
-        self.vis_mode_w: Widget = (
-            None  # The widget in effect at the start of visual mode.
-        )
+        self.vis_mode_w: Widget = None  # The widget in effect at the start of visual mode.
 
     # @+node:ekr.20140803220119.18107: *5* vc.init_persistent_ivars
     def init_persistent_ivars(self) -> None:
@@ -1498,9 +1481,7 @@ class VimCommands:
         """Begin a search."""
         if self.is_text_wrapper(self.w):
             fc = self.c.findCommands
-            self.search_stroke = (
-                self.stroke
-            )  # A scratch ivar for update_dot_before_search().
+            self.search_stroke = self.stroke  # A scratch ivar for update_dot_before_search().
             fc.reverse = True
             fc.openFindTab(self.event)
             fc.ftm.clear_focus()
@@ -1543,9 +1524,7 @@ class VimCommands:
         """Begin a search."""
         if self.is_text_wrapper(self.w):
             fc = self.c.findCommands
-            self.search_stroke = (
-                self.stroke
-            )  # A scratch ivar for update_dot_before_search().
+            self.search_stroke = self.stroke  # A scratch ivar for update_dot_before_search().
             fc.reverse = False
             fc.openFindTab(self.event)
             fc.ftm.clear_focus()
@@ -2015,10 +1994,7 @@ class VimCommands:
                 self.handler()
             if self.return_value not in (True, False):
                 # It looks like no acceptance method has been called.
-                self.oops(
-                    f"bad return_value: {repr(self.return_value)} "
-                    f"{self.state} {self.next_func}"
-                )
+                self.oops(f"bad return_value: {repr(self.return_value)} {self.state} {self.next_func}")
                 self.done()  # Sets self.return_value to True.
         except Exception:
             g.es_exception()
@@ -2542,9 +2518,7 @@ class VimCommands:
                 u.afterChangeBody(p, 'vc-save-body', bunch)
 
     # @+node:ekr.20140804123147.18929: *4* vc.set_border & helper
-    def set_border(
-        self, kind: str = None, w: Wrapper = None, activeFlag: bool = None
-    ) -> None:
+    def set_border(self, kind: str = None, w: Wrapper = None, activeFlag: bool = None) -> None:
         """
         Set the border color of self.w, depending on state.
         Called from qtBody.onFocusColorHelper and self.show_status.

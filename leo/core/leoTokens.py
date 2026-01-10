@@ -62,9 +62,7 @@ def dump_contents(contents: str, tag: str = 'Contents') -> None:  # pragma: no c
 
 
 # @+node:ekr.20240105140814.42: *3* function: dump_lines
-def dump_lines(
-    tokens: list[InputToken], tag: str = 'lines'
-) -> None:  # pragma: no cover
+def dump_lines(tokens: list[InputToken], tag: str = 'lines') -> None:  # pragma: no cover
     print('')
     print(f"{tag}...\n")
     for z in tokens:
@@ -84,17 +82,12 @@ def dump_results(results: list[str], tag: str = 'Results') -> None:  # pragma: n
 
 
 # @+node:ekr.20240105140814.44: *3* function: dump_tokens
-def dump_tokens(
-    tokens: list[InputToken], tag: str = 'Tokens'
-) -> None:  # pragma: no cover
+def dump_tokens(tokens: list[InputToken], tag: str = 'Tokens') -> None:  # pragma: no cover
     print('')
     print(f"{tag}...\n")
     if not tokens:
         return
-    print(
-        "Note: values shown are repr(value) "
-        "*except* for 'string' and 'fstring*' tokens."
-    )
+    print("Note: values shown are repr(value) *except* for 'string' and 'fstring*' tokens.")
     tokens[0].dump_header()
     for z in tokens:
         print(z.dump())
@@ -142,9 +135,7 @@ def main() -> None:  # pragma: no cover
             requested_files.append(os.path.join(cwd, path))
         else:
             root_dir = os.path.join(cwd, path)
-            requested_files.extend(
-                glob.glob(f'{root_dir}**{os.sep}*.py', recursive=True)
-            )
+            requested_files.extend(glob.glob(f'{root_dir}**{os.sep}*.py', recursive=True))
     if not requested_files:
         # print(f"No files in {arg_files!r}")
         return
@@ -168,9 +159,7 @@ def main() -> None:  # pragma: no cover
 
     # Do the command.
     if to_be_checked_files:
-        orange_command(
-            arg_files, requested_files, dirty_files, to_be_checked_files, settings_dict
-        )
+        orange_command(arg_files, requested_files, dirty_files, to_be_checked_files, settings_dict)
 
 
 # @+node:ekr.20240105140814.5: *3* function: orange_command (leoTokens.py)
@@ -208,9 +197,7 @@ def orange_command(
 
 
 # @+node:ekr.20240105140814.10: *3* function: scan_args (leoTokens.py)
-def scan_args() -> tuple[
-    argparse.Namespace, SettingsDict, list[str]
-]:  # pragma: no cover
+def scan_args() -> tuple[argparse.Namespace, SettingsDict, list[str]]:  # pragma: no cover
     description = textwrap.dedent("""Beautify or diff files""")
     parser = argparse.ArgumentParser(
         description=description,
@@ -241,9 +228,7 @@ def scan_args() -> tuple[
         action='store_true',
         help='show diffs instead of changing files',
     )
-    add2(
-        '-r', '--report', dest='report', action='store_true', help='show summary report'
-    )
+    add2('-r', '--report', dest='report', action='store_true', help='show summary report')
     add2(
         '-w',
         '--write',
@@ -336,9 +321,7 @@ class InputToken:  # leoTokens.py.
     # @+node:ekr.20240105140814.55: *4* itoken.dump
     def dump(self) -> str:  # pragma: no cover
         """Dump a token and related links."""
-        return (
-            f"{self.line_number:4} {self.index:>5} {self.kind:>15} {self.show_val(100)}"
-        )
+        return f"{self.line_number:4} {self.index:>5} {self.kind:>15} {self.show_val(100)}"
 
     # @+node:ekr.20240105140814.56: *4* itoken.dump_header
     def dump_header(self) -> None:  # pragma: no cover
@@ -555,9 +538,7 @@ class Tokenizer:
         Perform consistency checks and handle all exceptions.
         """
         try:
-            five_tuples = tokenize.tokenize(
-                io.BytesIO(contents.encode('utf-8')).readline
-            )
+            five_tuples = tokenize.tokenize(io.BytesIO(contents.encode('utf-8')).readline)
         except Exception as e:  # pragma: no cover
             print(f"make_input_tokens: exception {e!r}")
             return []
@@ -640,14 +621,10 @@ class ScanState:  # leoTokens.py.
         self.value: list[int] = []  # Not always used.
 
     def __repr__(self) -> str:  # pragma: no cover
-        return (
-            f"ScanState: i: {self.token.index:<4} kind: {self.kind} value: {self.value}"
-        )
+        return f"ScanState: i: {self.token.index:<4} kind: {self.kind} value: {self.value}"
 
     def __str__(self) -> str:  # pragma: no cover
-        return (
-            f"ScanState: i: {self.token.index:<4} kind: {self.kind} value: {self.value}"
-        )
+        return f"ScanState: i: {self.token.index:<4} kind: {self.kind} value: {self.value}"
 
 
 # @+node:ekr.20240105145241.1: *3* class TokenBasedOrange
@@ -813,9 +790,7 @@ class TokenBasedOrange:  # Orange is the new Black.
 
     # @+node:ekr.20240126012433.1: *4* tbo: Checking & dumping
     # @+node:ekr.20240106220724.1: *5* tbo.dump_token_range
-    def dump_token_range(
-        self, i1: int, i2: int, tag: Optional[str] = None
-    ) -> None:  # pragma: no cover
+    def dump_token_range(self, i1: int, i2: int, tag: Optional[str] = None) -> None:  # pragma: no cover
         """Dump the given range of input tokens."""
         if tag:
             print(tag)
@@ -858,12 +833,7 @@ class TokenBasedOrange:  # Orange is the new Black.
         context_s = ''.join(prev_lines) + '\n'
 
         # Return the full error message.
-        return (
-            f"{message.strip()}\n"
-            '\n'
-            f"At token {self.index}, line: {line_number} file: {self.filename}\n"
-            f"{context_s}"
-        )
+        return f"{message.strip()}\n\nAt token {self.index}, line: {line_number} file: {self.filename}\n{context_s}"
 
     # @+node:ekr.20240117053310.1: *5* tbo.oops
     def oops(self, message: str) -> None:  # pragma: no cover
@@ -901,9 +871,7 @@ class TokenBasedOrange:  # Orange is the new Black.
         # State vars for whitespace.
         self.curly_brackets_level = 0  # Number of unmatched '{' tokens.
         self.paren_level = 0  # Number of unmatched '(' tokens.
-        self.square_brackets_stack: list[
-            bool
-        ] = []  # A stack of bools, for self.gen_word().
+        self.square_brackets_stack: list[bool] = []  # A stack of bools, for self.gen_word().
         self.indent_level = 0  # Set only by do_indent and do_dedent.
 
         # Parse state.
@@ -1074,9 +1042,7 @@ class TokenBasedOrange:  # Orange is the new Black.
         return changed
 
     # @+node:ekr.20240105145241.8: *5* tbo.init_tokens_from_file
-    def init_tokens_from_file(
-        self, filename: str
-    ) -> tuple[str, list[InputToken]]:  # pragma: no cover
+    def init_tokens_from_file(self, filename: str) -> tuple[str, list[InputToken]]:  # pragma: no cover
         """
         Create the list of tokens for the given file.
         Return (contents, encoding, tokens).
@@ -1807,11 +1773,7 @@ class TokenBasedOrange:  # Orange is the new Black.
 
                 # Handle '(' and ')'
                 elif value == '(':
-                    if (
-                        self.is_python_keyword(prev_token)
-                        or prev_token
-                        and prev_token.kind != 'name'
-                    ):
+                    if self.is_python_keyword(prev_token) or prev_token and prev_token.kind != 'name':
                         state_kind = '('
                     else:
                         state_kind = 'arg'
@@ -1838,11 +1800,7 @@ class TokenBasedOrange:  # Orange is the new Black.
             elif kind == 'name':
                 # @+<< pre-scan 'name' tokens >>
                 # @+node:ekr.20240128231119.1: *6* << pre-scan 'name' tokens >>
-                prev_is_yield = (
-                    prev_token
-                    and prev_token.kind == 'name'
-                    and prev_token.value == 'yield'
-                )
+                prev_is_yield = prev_token and prev_token.kind == 'name' and prev_token.value == 'yield'
                 if value in ('from', 'import') and not prev_is_yield:
                     # 'import' and 'from x import' statements should be at the outer level.
                     assert not scan_stack, scan_stack
@@ -2005,9 +1963,7 @@ class TokenBasedOrange:  # Orange is the new Black.
             self.set_context(i, 'dict')
 
     # @+node:ekr.20240129034209.1: *5* tbo.is_unary_op_with_prev
-    def is_unary_op_with_prev(
-        self, prev: Optional[InputToken], token: InputToken
-    ) -> bool:
+    def is_unary_op_with_prev(self, prev: Optional[InputToken], token: InputToken) -> bool:
         """
         Return True if token is a unary op in the context of prev, the previous
         significant token.

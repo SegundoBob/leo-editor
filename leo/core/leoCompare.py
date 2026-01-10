@@ -215,9 +215,7 @@ class BaseLeoCompare:
         return s1 == s2
 
     # @+node:ekr.20031218072017.3638: *3* compare_open_files
-    def compare_open_files(
-        self, f1: TextIO, f2: TextIO, name1: str, name2: str
-    ) -> None:
+    def compare_open_files(self, f1: TextIO, f2: TextIO, name1: str, name2: str) -> None:
         # self.show("compare_open_files")
         lines1 = 0
         lines2 = 0
@@ -268,22 +266,14 @@ class BaseLeoCompare:
                 if self.ignoreBlankLines and s1.isspace():
                     s1 = None
                     continue
-                if (
-                    self.ignoreSentinelLines
-                    and sentinelComment1
-                    and self.isSentinel(s1, sentinelComment1)
-                ):
+                if self.ignoreSentinelLines and sentinelComment1 and self.isSentinel(s1, sentinelComment1):
                     s1 = None
                     continue
             if s2:
                 if self.ignoreBlankLines and s2.isspace():
                     s2 = None
                     continue
-                if (
-                    self.ignoreSentinelLines
-                    and sentinelComment2
-                    and self.isSentinel(s2, sentinelComment2)
-                ):
+                if self.ignoreSentinelLines and sentinelComment2 and self.isSentinel(s2, sentinelComment2):
                     s2 = None
                     continue
             # @-<< ignore blank lines and/or sentinels >>
@@ -377,9 +367,7 @@ class BaseLeoCompare:
         self.show(out)
 
     # @+node:ekr.20031218072017.3648: *4* compare.dumpToEndOfFile
-    def dumpToEndOfFile(
-        self, tag: str, f: TextIO, s: str, line: int, printTrailing: bool
-    ) -> int:
+    def dumpToEndOfFile(self, tag: str, f: TextIO, s: str, line: int, printTrailing: bool) -> int:
         trailingLines = 0
         while 1:
             if not s:
@@ -542,9 +530,7 @@ class CompareLeoOutlines:
         c2 = self.open_outline(fn2)
         if c1 and c2:
             self.make_diff_outlines(c1, c2)
-            self.file_node.b = (
-                f"{self.file_node.b.rstrip()}\n@language {c2.target_language}\n"
-            )
+            self.file_node.b = f"{self.file_node.b.rstrip()}\n@language {c2.target_language}\n"
 
     # @+node:ekr.20180211170333.4: *3* loc.Utils
     # @+node:ekr.20180211170333.5: *4* loc.compute_dicts
@@ -566,9 +552,7 @@ class CompareLeoOutlines:
         return added, deleted, changed
 
     # @+node:ekr.20180211170333.6: *4* loc.create_compare_node
-    def create_compare_node(
-        self, c1: Cmdr, c2: Cmdr, d: dict[str, tuple[VNode, VNode]], kind: str
-    ) -> None:
+    def create_compare_node(self, c1: Cmdr, c2: Cmdr, d: dict[str, tuple[VNode, VNode]], kind: str) -> None:
         """Create nodes describing the changes."""
         if not d:
             return
@@ -734,9 +718,7 @@ def diffMarkedNodes(event: LeoKeyEvent) -> None:
         n += 1
         p1, p2 = aList[0], aList[1]
         aList = aList[1:]
-        lines = difflib.Differ().compare(
-            g.splitLines(p1.b.rstrip() + '\n'), g.splitLines(p2.b.rstrip() + '\n')
-        )
+        lines = difflib.Differ().compare(g.splitLines(p1.b.rstrip() + '\n'), g.splitLines(p2.b.rstrip() + '\n'))
         p = root.insertAsLastChild()
         p.h = f"diff {n}"
         p.b = f"1: {p1.h}\n2: {p2.h}\n{''.join(list(lines))}"

@@ -133,9 +133,7 @@ class LeoBody:
             self.colorizer.updateSyntaxColorer(p.copy())
 
     def recolor(self, p: Position) -> None:
-        g.print_unique_message(
-            f"LeoBody.recolor is deprecated: callers: {g.callers(6)}"
-        )
+        g.print_unique_message(f"LeoBody.recolor is deprecated: callers: {g.callers(6)}")
         self.c.recolor()
 
     recolor_now = recolor
@@ -624,9 +622,7 @@ class LeoFrame:
     # @+node:ekr.20031218072017.3980: *4* LeoFrame.Edit Menu
     # @+node:ekr.20031218072017.3982: *5* LeoFrame.endEditLabelCommand
     @frame_cmd('end-edit-headline')
-    def endEditLabelCommand(
-        self, event: LeoKeyEvent = None, p: Position = None
-    ) -> None:
+    def endEditLabelCommand(self, event: LeoKeyEvent = None, p: Position = None) -> None:
         """End editing of a headline and move focus to the body pane."""
         frame = self
         c = frame.c
@@ -757,24 +753,16 @@ class LeoLog:
         self.newlines = 0
         self.isNull = False
         # Official ivars...
-        self.canvasCtrl: Widget = (
-            None  # Set below. Same as self.canvasDict.get(self.tabName)
-        )
+        self.canvasCtrl: Widget = None  # Set below. Same as self.canvasDict.get(self.tabName)
         # Important: depending on the log *tab*, logCtrl may be either a wrapper or a widget.
-        self.logCtrl: Widget = (
-            None  # Set below. Same as self.textDict.get(self.tabName)
-        )
+        self.logCtrl: Widget = None  # Set below. Same as self.textDict.get(self.tabName)
         self.tabName: str = None  # The name of the active tab.
         self.tabFrame: Widget = None  # Same as self.frameDict.get(self.tabName)
-        self.canvasDict: dict[
-            str, Widget
-        ] = {}  # Keys are page names.  Values are Widgets.
+        self.canvasDict: dict[str, Widget] = {}  # Keys are page names.  Values are Widgets.
         self.frameDict: dict[str, Widget] = {}  # Keys are page names. Values are Frames
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
-        self.textDict: dict[
-            str, Widget
-        ] = {}  # Keys are page names. Values are logCtrl's (text widgets).
+        self.textDict: dict[str, Widget] = {}  # Keys are page names. Values are logCtrl's (text widgets).
         self.wrapper: TextAPI = None  # For cursesGui2.py.
 
     # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
@@ -932,9 +920,7 @@ class LeoLog:
         # @-others
 
         # Report any bad chars.
-        printables = (
-            string.ascii_letters + string.digits + string.punctuation + ' ' + '\n'
-        )
+        printables = string.ascii_letters + string.digits + string.punctuation + ' ' + '\n'
         bad = list(set(ch for ch in s if ch not in printables))
         # Strip bad chars.
         if bad:
@@ -967,9 +953,7 @@ class LeoLog:
                     if trace:
                         # LeoQtLog.put writes: f'<a href="{url}" title="{nodeLink}">{s}</a>'
                         g.trace(f"{unl}::-{line_number}")
-                    self.put(
-                        line, nodeLink=f"{unl}::-{line_number}"
-                    )  # Use global line.
+                    self.put(line, nodeLink=f"{unl}::-{line_number}")  # Use global line.
                 else:  # An unusual case.
                     message = f"no p for {filename!r}"
                     if g.unitTesting:
@@ -1268,9 +1252,7 @@ class LeoTree:
         c = self.c
         call_event_handlers = p != old_p
         if call_event_handlers:
-            unselect = not g.doHook(
-                "unselect1", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p
-            )
+            unselect = not g.doHook("unselect1", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p)
         else:
             unselect = True
 
@@ -1288,9 +1270,7 @@ class LeoTree:
         """Select the new node, part 1."""
         c = self.c
         call_event_handlers = p != old_p
-        if call_event_handlers and g.doHook(
-            "select1", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p
-        ):
+        if call_event_handlers and g.doHook("select1", c=c, new_p=p, old_p=old_p, new_v=p, old_v=old_p):
             if 'select' in g.app.debug:
                 g.trace('select1 override')
             return
@@ -1361,9 +1341,7 @@ class LeoTreeTab:
 
     # @+others
     # @+node:ekr.20070317073627.1: *3* LeoTreeTab.ctor (LeoTreeTab)
-    def __init__(
-        self, c: Cmdr, chapterController: ChapterController, parentFrame: Widget
-    ) -> None:
+    def __init__(self, c: Cmdr, chapterController: ChapterController, parentFrame: Widget) -> None:
         self.c = c
         self.cc: ChapterController
         self.nb: NbController = None  # Created in createControl.
@@ -1643,9 +1621,7 @@ class NullIconBarClass:
             command = commandCallback
 
         class nullButtonWidget:
-            def __init__(
-                self, c: Cmdr, command: Callable, name: str, text: str
-            ) -> None:
+            def __init__(self, c: Cmdr, command: Callable, name: str, text: str) -> None:
                 self.c = c
                 self.command = command
                 self.name = name
@@ -1835,9 +1811,7 @@ class NullTree(LeoTree):
         super().__init__(frame)
         assert self.frame
         self.c = frame.c
-        self.editWidgetsDict: dict[
-            VNode, Widget
-        ] = {}  # Keys are vnodes, values are StringTextWidgets.
+        self.editWidgetsDict: dict[VNode, Widget] = {}  # Keys are vnodes, values are StringTextWidgets.
         self.font = None
         self.fontName = None
         self.canvas = None
@@ -1852,9 +1826,7 @@ class NullTree(LeoTree):
             return None
         w = d.get(p.v)
         if not w:
-            d[p.v] = w = StringTextWrapper(
-                c=self.c, name=f"head-{1 + len(list(d.keys())):d}"
-            )
+            d[p.v] = w = StringTextWrapper(c=self.c, name=f"head-{1 + len(list(d.keys())):d}")
             w.setAllText(p.h)
         return w
 
