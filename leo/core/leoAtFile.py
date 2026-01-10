@@ -2652,21 +2652,22 @@ class AtFile:
         ok = g.beautify_with_ruff(root, filename)
         if not ok:
             return False
+        # Suppress the reload prompt.
+        efc = g.app.externalFilesController
+        efc.set_time(filename)
+
+        # Update.
         new_contents = g.readFile(filename)
-        changed = new_contents == old_contents
-        if changed:
+        if new_contents != old_contents:
             g.es(f"beautified: {g.shortFileName(filename)}")
-            # Suppress the reload prompt.
-            efc = g.app.externalFilesController
-            efc.set_time(filename)
             # Reload the file immediately.
             c.refreshFromDisk(root)
-        else:
-            # #4159: This may not restore the outline as it was,
-            # but it's much better than doing nothing.
-            c.selectPosition(old_p)
-            c.contractAllOtherNodes()
-            c.redraw(old_p)
+
+        # #4159: This may not restore the outline as it was,
+        # but it's much better than doing nothing.
+        c.selectPosition(old_p)
+        c.contractAllOtherNodes()
+        c.redraw(old_p)
         return True
 
     # @+node:ekr.20221128123139.1: *6* at.runFlake8

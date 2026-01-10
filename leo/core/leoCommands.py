@@ -5358,12 +5358,6 @@ class Commands:
             # g.es_exception()
             return False
 
-        # tokens = Tokenizer().make_input_tokens(contents_s)
-        # if not tokens:
-        #     return False
-        # results_s: str = self.beautify(contents_s, self.filename, tokens)
-
-        #
         g.beautify_with_ruff(root, self.filename)
         results_s: str = g.readFile(self.filename)
 
