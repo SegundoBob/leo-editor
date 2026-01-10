@@ -1315,7 +1315,6 @@ class Commands:
             language == 'python'
             and c.config.getBool('beautify-python-code-on-write', default=False)
         )
-        g.trace(beautify_flag)  ###
         pyflakes_flag = (
             runPyflakes
             and language == 'python'
@@ -1327,15 +1326,14 @@ class Commands:
             # For non-python languages...
             valid = (
                 # There must be a selection,
-                w
-                and w.getSelectedText().strip()
+                w and w.getSelectedText().strip()
                 # and the selection must apply to p,
                 and p == c.p
                 # and the 'useSelectedText` kwarg must be True,
                 and useSelectedText
                 # and script *won't* be expanded to the entire body.
                 and not c.forceExecuteEntireBody
-            )
+            )  # fmt: skip
             if not valid:
                 message = f"Must select text to execute {language} script"
                 g.es_print(message, color='blue')
@@ -5334,16 +5332,19 @@ class Commands:
         """Beautify a single node"""
 
         # Patterns for lines that must be replaced.
+        at_pat = re.compile(r'(\s*)@(.*)')  # @language, @others, etc.
         section_ref_pat = re.compile(r'(\s*)\<\<(.+)\>\>(.*)')
         nobeautify_pat = re.compile(r'(\s*)\@nobeautify(.*)')
         trailing_ws_pat = re.compile(r'(.*)#(.*)')
 
-        # Part 1: Replace @others and section references with 'pass'
-        #         This hack is valid!
+        # Part 1: A hack: munge @others, @language, and section references.
         indices: list[int] = []  # Indices of replaced lines.
         contents: list[str] = []  # Contents after replacements.
         for i, s in enumerate(g.splitLines(root.b)):
-            if m := section_ref_pat.match(s):
+            if m := at_pat.match(s):
+                contents.append(f"{m.group(1)}# @{m.group(2)}\n")
+                indices.append(i)
+            elif m := section_ref_pat.match(s):
                 contents.append(f"{m.group(1)}pass\n")
                 indices.append(i)
             elif m := nobeautify_pat.match(s):
@@ -5354,17 +5355,15 @@ class Commands:
         # Part 2: Beautify.
         test_dir = g.finalize_join(g.app.leoEditorDir, 'leo', 'test')
         path = g.finalize_join(test_dir, 'beautify_node.py')
-        old_contents = ''.join(contents)
+        old_contents = ''.join(contents).rstrip() + '\n\n'
         try:
             with open(path, 'w') as f:
                 f.write(old_contents)
         except Exception as e:
             print(f"exception writing: {path}:\n{e}")
-            # g.trace(g.callers())
             # g.es_exception()
             return False
 
-        g.trace(root.h)
         g.beautify_with_ruff(root, path)
         results_s: str = g.readFile(path)
 
@@ -5378,7 +5377,7 @@ class Commands:
             results[i] = old_line.rstrip() + '\n'
 
         # Part 4: Update the body if necessary.
-        new_body = ''.join(results)
+        new_body = ''.join(results).rstrip() + '\n'
         changed = root.b.rstrip() != new_body.rstrip()
         if changed:
             root.b = new_body

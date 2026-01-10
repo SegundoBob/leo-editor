@@ -6672,7 +6672,8 @@ def beautify_with_ruff(root: Position, filename: str) -> bool:
         args = (
             f"--config {g.app.leoEditorDir}{os.sep}pyproject.toml",
             '--config line-length=120',
-            '--silent',  # Messages here aren't useful.
+            '--silent',
+            # '--verbose',  # Messages useful only for debugging
         )
         isWindows = sys.platform.startswith('win')
         python = 'py' if isWindows else 'python'

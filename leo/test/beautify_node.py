@@ -1,4 +1,4 @@
-@language python
+# @language python
+# Test.
+# @others
 
-#Test.
-print('hi')
