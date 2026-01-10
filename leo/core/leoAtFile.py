@@ -2589,7 +2589,7 @@ class AtFile:
         if self.checkPythonCodeOnWrite:  # First
             ok = self.checkPythonSyntax(root, contents)
         if ok and self.beautifyOnWrite:  # Second.
-            ok = self.runTokenBasedBeautifier(root, fileName)
+            ok = self.runRuffFormat(root, fileName)
         if ok and self.runPyFlakesOnWrite:  # Creates clickable links.
             ok = self.runPyflakes(root)
         if ok and self.runFlake8OnWrite:  # Does *not* create clickable links.
@@ -2640,9 +2640,9 @@ class AtFile:
             else:
                 g.es_print(f"{j + 1:5}: {line}")
 
-    # @+node:ekr.20240926044644.1: *6* at.runTokenBasedBeautifier
-    def runTokenBasedBeautifier(self, root: Position, filename: str) -> bool:
-        """Run Leo's token-based beautifier on the selected position."""
+    # @+node:ekr.20240926044644.1: *6* at.runTokenBasedBeautifier (revise)
+    def runRuffFormat(self, root: Position, filename: str) -> bool:
+        """Run ruff format on the selected position."""
         c = self.c
         p = c.p
         if not os.path.exists(filename):
@@ -2650,10 +2650,11 @@ class AtFile:
         old_p = p.copy()
         try:
             old_sys_argv = sys.argv[:]
-            sys.argv = ['tbo']  # A hack: don't run leo.core.leoTokens.main.
-            from leo.core.leoTokens import beautify_file
-
-            changed = beautify_file(filename)
+            # sys.argv = ['tbo']  # A hack: don't run leo.core.leoTokens.main.
+            # from leo.core.leoTokens import beautify_file
+            # changed = beautify_file(filename)
+            g.trace('@bool beautify-python-code-on-write not ready yet')
+            changed = False  ### To do.
             if changed:
                 g.es(f"beautified: {g.shortFileName(filename)}")
                 # Suppress the reload prompt.
