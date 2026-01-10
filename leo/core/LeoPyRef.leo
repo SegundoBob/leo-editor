@@ -2688,7 +2688,8 @@ if new_b != proj_p.b:
 <t tx="ekr.20251214042454.1">True: Wrap body text.
 
 </t>
-<t tx="ekr.20260110024304.1">New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.</t>
+<t tx="ekr.20260110024304.1"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
+# This setting is strongly recommended so that you can use ruff format to beautify your code.</t>
 <t tx="ekr.20260110061420.1"></t>
 </tnodes>
 </leo_file>
