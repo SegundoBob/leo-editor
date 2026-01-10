@@ -1,9 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:mhw.20190808083008.1: * @file ../scripts/add-desktop-links.leox
-#@@language python
-#@@tabwidth -4
-#@+others
-#@+node:mhw.20190808083214.1: ** main
+# @+leo-ver=5-thin
+# @+node:mhw.20190808083008.1: * @file ../scripts/add-desktop-links.leox
+# @@language python
+# @@tabwidth -4
+# @+others
+# @+node:mhw.20190808083214.1: ** main
 """Create Leo Editor desktop shortcut link
   Assumes Leo has been installed with pip and that Leo's launcher scripts are in PATH.
 """
@@ -37,7 +37,7 @@ g.es_print(
 
 if debug:
     g.es_print(f"\n*** debug:\n{(scut)}")
-#@+node:lkj.20190926225552.1: ** usage
+# @+node:lkj.20190926225552.1: ** usage
 """make_shortcut() arguments:
 ---------
 script      (str) path to script, may include command-line arguments
@@ -58,5 +58,5 @@ Notes:
 
 Avoid 'terminal' and 'executable' when 'script' is a binary exe
 """
-#@-others
-#@-leo
+# @-others
+# @-leo
