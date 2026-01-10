@@ -695,10 +695,7 @@ class Commands:
     def beautify_tree_command(self, event: LeoKeyEvent = None) -> None:
         """Undoably beautify c.p and its subtree."""
         c = self
-        from leo.core.leoTokens import TokenBasedOrange
-
-        tbo = TokenBasedOrange()
-        tbo.beautify_script_tree(c.p)
+        c.beautify_script_tree(c.p)
 
     # @+node:ekr.20210530065748.1: *3* @cmd c.execute-general-script
     @cmd('execute-general-script')
@@ -1338,10 +1335,7 @@ class Commands:
 
         # #4350: Optionally beautify each node in script_p's tree separately.
         if beautify_flag and not script and not g.unitTesting:
-            from leo.core.leoTokens import TokenBasedOrange
-
-            tbo = TokenBasedOrange()
-            tbo.beautify_script_tree(script_p)
+            c.beautify_script_tree(c.p)
 
         # Compute the script if necessary.
         if not script:
@@ -5306,6 +5300,89 @@ class Commands:
             c.redraw()
 
     # @+node:ekr.20171124084149.1: *3* c.Scripting utils
+    # @+node:ekr.20260110083713.1: *4* c.beautify_script_tree
+    def beautify_script_tree(self, root: Position) -> None:
+        """Undoably beautify root's entire tree."""
+        c = root.v.context
+        u, undoType = c.undoer, 'beautify-script'
+        first_p = c.p
+        n_changed = 0
+        for p in root.self_and_subtree():
+            bunch = u.beforeChangeNodeContents(p)
+            changed = self.beautify_script_node(p)
+            if changed:
+                if n_changed == 0:  # #4443.
+                    u.beforeChangeGroup(first_p, undoType)
+                n_changed += 1
+                u.afterChangeNodeContents(p, undoType, bunch)
+        if n_changed:
+            u.afterChangeGroup(root, undoType)
+            c.redraw(root)
+            if not g.unitTesting:
+                g.es_print(f"Beautified {n_changed} node{g.plural(n_changed)}")
+
+    # @+node:ekr.20260110084856.1: *5* c.beautify_script_node
+    def beautify_script_node(self, root: Position) -> bool:
+        """Beautify a single node"""
+
+        # Patterns for lines that must be replaced.
+        section_ref_pat = re.compile(r'(\s*)\<\<(.+)\>\>(.*)')
+        nobeautify_pat = re.compile(r'(\s*)\@nobeautify(.*)')
+        trailing_ws_pat = re.compile(r'(.*)#(.*)')
+
+        # Part 1: Replace @others and section references with 'pass'
+        #         This hack is valid!
+        indices: list[int] = []  # Indices of replaced lines.
+        contents: list[str] = []  # Contents after replacements.
+        for i, s in enumerate(g.splitLines(root.b)):
+            if m := section_ref_pat.match(s):
+                contents.append(f"{m.group(1)}pass\n")
+                indices.append(i)
+            elif m := nobeautify_pat.match(s):
+                return False
+            else:
+                contents.append(s)
+
+        # Part 2: Beautify.
+        self.indent_level = 0
+        self.filename = g.finalize_join(g.app.homeLeoDir, 'test', 'beautify_node.py')
+        old_contents = ''.join(contents)
+        path = g.finalize_join(g.app.homeLeoDir, 'test', 'beautify_node.py')
+        g.trace(os.path.exists(path), path)
+        try:
+            with open(self.filename, 'w') as f:
+                f.write(old_contents)
+        except Exception as e:
+            print(f"exception writing: {self.filename}:\n{e}")
+            # g.trace(g.callers())
+            # g.es_exception()
+            return False
+
+        # tokens = Tokenizer().make_input_tokens(contents_s)
+        # if not tokens:
+        #     return False
+        # results_s: str = self.beautify(contents_s, self.filename, tokens)
+
+        #
+        g.beautify_with_ruff(root, self.filename)
+        results_s: str = g.readFile(self.filename)
+
+        # Part 3: Undo replacements, regularize comments and clean trailing ws.
+        body_lines: list[str] = g.splitLines(root.b)
+        results: list[str] = g.splitLines(results_s)
+        for i in indices:
+            old_line = body_lines[i]
+            if m := trailing_ws_pat.match(old_line):
+                old_line = f"{m.group(1).rstrip()}  #{m.group(2)}"
+            results[i] = old_line.rstrip() + '\n'
+
+        # Part 4: Update the body if necessary.
+        new_body = ''.join(results)
+        changed = root.b.rstrip() != new_body.rstrip()
+        if changed:
+            root.b = new_body
+        return changed
+
     # @+node:ekr.20160201072634.1: *4* c.cloneFindByPredicate
     def cloneFindByPredicate(
         self,

@@ -10,7 +10,6 @@ import difflib
 import io
 import os
 import re
-import subprocess
 import sys
 import tabnanny
 import time
@@ -2650,35 +2649,25 @@ class AtFile:
             return False
         old_p = p.copy()
         old_contents = g.readFile(filename)
-        try:
-            # Define components of a single command.
-            args = (
-                f"--config {g.app.leoEditorDir}{os.sep}pyproject.toml",
-                '--config line-length=120',
-                '--silent',
-            )
-            isWindows = sys.platform.startswith('win')
-            python = 'py' if isWindows else 'python'
-            command = f"{python} -m ruff format {' '.join(args)} {filename}"
-            subprocess.Popen(command, shell=True).communicate()  # Wait for results.
-            changed = old_contents != g.readFile(filename)
-            if changed:
-                g.es(f"beautified: {g.shortFileName(filename)}")
-                # Suppress the reload prompt.
-                efc = g.app.externalFilesController
-                efc.set_time(filename)
-                # Reload the file immediately.
-                c.refreshFromDisk(root)
-            return True
-        except Exception:
-            g.es_exception()
+        ok = g.beautify_with_ruff(root, filename)
+        if not ok:
             return False
-        finally:
+        new_contents = g.readFile(filename)
+        changed = new_contents == old_contents
+        if changed:
+            g.es(f"beautified: {g.shortFileName(filename)}")
+            # Suppress the reload prompt.
+            efc = g.app.externalFilesController
+            efc.set_time(filename)
+            # Reload the file immediately.
+            c.refreshFromDisk(root)
+        else:
             # #4159: This may not restore the outline as it was,
             # but it's much better than doing nothing.
             c.selectPosition(old_p)
             c.contractAllOtherNodes()
             c.redraw(old_p)
+        return True
 
     # @+node:ekr.20221128123139.1: *6* at.runFlake8
     def runFlake8(self, root: Position) -> bool:  # pragma: no cover

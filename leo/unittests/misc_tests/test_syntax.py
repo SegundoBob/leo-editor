@@ -34,6 +34,7 @@ class TestSyntax(LeoUnitTest):
         skip_tuples = (
             ('extensions', 'asciidoc.py'),
             ('test', 'scriptFile.py'),
+            ('test', 'beautify_node.py'),
         )
         join = g.finalize_join
         skip_list = [join(g.app.loadDir, '..', a, b) for a, b in skip_tuples]
