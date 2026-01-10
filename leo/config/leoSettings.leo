@@ -84,21 +84,6 @@
 </v>
 <v t="ekr.20061011082224"><vh>About myLeoSettings.leo</vh></v>
 <v t="ekr.20200227064211.1"><vh>Notes</vh>
-<v t="ekr.20200226103829.1"><vh>Recently deleted settings</vh>
-<v t="ekr.20230613071616.1"><vh>--- old import options</vh>
-<v t="tbrown.20180525163032.1"><vh>@@bool add-context-to-headlines = True</vh></v>
-<v t="ekr.20200620064409.1"><vh>@@bool add-file-context-to-headlines = True</vh></v>
-<v t="ekr.20211209060458.1"><vh>@@bool put-class-in-imported-headlines = True</vh></v>
-<v t="ekr.20200620060909.1"><vh>@@bool put-cython-decorators-in-imported-headlines = False</vh></v>
-</v>
-<v t="ekr.20071110153046"><vh>@@@bool at-auto-warns-about-leading-whitespace = True</vh></v>
-<v t="ekr.20170509104949.1"><vh>@@@menu &amp;Window Layout</vh>
-<v t="tbrown.20160130095933.1"><vh>@@@item free-layout-context-menu</vh></v>
-<v t="tbrown.20160130095933.2"><vh>@@@item free-layout-load</vh></v>
-<v t="tbrown.20160130095933.3"><vh>@@@item free-layout-restore</vh></v>
-<v t="tbrown.20160130095933.4"><vh>@@@item free-layout-zoom</vh></v>
-</v>
-</v>
 <v t="ekr.20200226104131.1"><vh>Future settings</vh>
 <v t="ekr.20190926110217.1"><vh>@string adoc-base-directory = None</vh></v>
 </v>
@@ -534,11 +519,6 @@
 <v t="ekr.20190608085550.1"><vh>@int max-find-long-lines-length = 110</vh></v>
 <v t="ekr.20180301060510.1"><vh>@int print-settings-at-data-limit = 20</vh></v>
 <v t="ekr.20041119041019.1"><vh>@string remove-sentinels-extension = .txt</vh></v>
-<v t="ekr.20141010095448.19776"><vh>Beautify command settings</vh>
-<v t="ekr.20200210045434.1"><vh>@bool beautify-allow-joined-strings = False</vh></v>
-<v t="ekr.20190926105603.1"><vh>@int beautify-max-join-line-length = 80</vh></v>
-<v t="ekr.20190926105638.1"><vh>@int beautify-max-split-line-length = 88</vh></v>
-</v>
 <v t="ekr.20110611092035.16488"><vh>Bracket matching settings</vh>
 <v t="ekr.20060804095015.1"><vh>@string close-flash-brackets = )]}</vh></v>
 <v t="ekr.20060804095015"><vh>@string open-flash-brackets = ([{</vh></v>
@@ -1112,8 +1092,6 @@
 </v>
 <v t="ekr.20180403104558.1"><vh>@menu &amp;Beautify Text</vh>
 <v t="ekr.20170316105542.1"><vh>@item beautify-&amp;c</vh></v>
-<v t="ekr.20131213135427.22267"><vh>@item &amp;beautify-files</vh></v>
-<v t="ekr.20131213135427.22268"><vh>@item &amp;diff-beautify-files</vh></v>
 </v>
 <v t="ekr.20180403104751.1"><vh>@menu &amp;Capitalize Text</vh>
 <v t="ekr.20131213135427.22273"><vh>@item &amp;capitalize-word</vh></v>
@@ -1467,7 +1445,12 @@
 <v t="ekr.20131213135427.22159"><vh>@item focus-to-&amp;minibuffer</vh></v>
 <v t="ekr.20131213135427.22160"><vh>@item focus-to-&amp;tree</vh></v>
 </v>
-<v t="ekr.20170509104949.1"></v>
+<v t="ekr.20170509104949.1"><vh>@@@menu &amp;Window Layout</vh>
+<v t="tbrown.20160130095933.1"><vh>@@@item free-layout-context-menu</vh></v>
+<v t="tbrown.20160130095933.2"><vh>@@@item free-layout-load</vh></v>
+<v t="tbrown.20160130095933.3"><vh>@@@item free-layout-restore</vh></v>
+<v t="tbrown.20160130095933.4"><vh>@@@item free-layout-zoom</vh></v>
+</v>
 </v>
 <v t="ekr.20131213135427.22343"><vh>@menu &amp;Help</vh>
 <v t="ekr.20131213135427.22344"><vh>@item &amp;about-leo</vh></v>
@@ -3862,10 +3845,6 @@ outline.
 <t tx="ekr.20071010123223.1">打开</t>
 <t tx="ekr.20071024145953">False (legacy): Top pane contains outline and log panes.
 True: Top pane contains only outline.  Bottom pane contains body and log panes.</t>
-<t tx="ekr.20071110153046">This option has effect only when importing so-called non-strict languages,
-for which leading whitespace is not terribly significant.
-
-True: @auto warns about mismatches that occur solely in leading whitespace.</t>
 <t tx="ekr.20071114072753">True: the vim plugin will open @url nodes when they are double clicked.</t>
 <t tx="ekr.20071213060239">@color</t>
 <t tx="ekr.20071213061454.1">True: Writes **node markers** for use by the http plugin.
@@ -5698,8 +5677,6 @@ minibuffer-find-mode    use-find-dialog     mode: Ctrl-F puts focus in
 <t tx="ekr.20131213135427.22258"></t>
 <t tx="ekr.20131213135427.22259"></t>
 <t tx="ekr.20131213135427.22266"></t>
-<t tx="ekr.20131213135427.22267"></t>
-<t tx="ekr.20131213135427.22268"></t>
 <t tx="ekr.20131213135427.22270"></t>
 <t tx="ekr.20131213135427.22271"></t>
 <t tx="ekr.20131213135427.22273"></t>
@@ -9155,7 +9132,6 @@ c.k.simulateCommand('show-color-wheel')
 <t tx="ekr.20140922124047.19516"></t>
 <t tx="ekr.20140922124047.19517"></t>
 <t tx="ekr.20140922124047.20313"></t>
-<t tx="ekr.20141010095448.19776"></t>
 <t tx="ekr.20141024165714.1">True:  Scroll the find tab ensure find input field visible. (fixes bug 1254861)
 False: Never scroll the find tab automatically.</t>
 <t tx="ekr.20141112072219.1"></t>
@@ -11178,9 +11154,6 @@ c.redraw()
 <t tx="ekr.20190608085550.1">The maximum line length allowed by the find-long-lines command.</t>
 <t tx="ekr.20190622093004.1"></t>
 <t tx="ekr.20190712053127.1"></t>
-<t tx="ekr.20190926105603.1">Should be &lt;= beautify-max-split-line-length.
-Zero suppresses all line joining.</t>
-<t tx="ekr.20190926105638.1">Zero suppresses all line splitting.</t>
 <t tx="ekr.20190926110217.1"></t>
 <t tx="ekr.20191008030417.1"></t>
 <t tx="ekr.20191023140453.1"></t>
@@ -11198,10 +11171,7 @@ sphinx-build {input_dir} {output_dir} {i_path}</t>
 The output_dir directory specified in the command:
 
 sphinx-build {input_dir} {output_dir} {i_path}</t>
-<t tx="ekr.20200210045434.1">True:  allow joined lines to contain strings.
-False: (Recommended by EKR): Retain alignment of strings.</t>
 <t tx="ekr.20200226102131.1">True: report unchanged files when saving a .leo file.</t>
-<t tx="ekr.20200226103829.1"></t>
 <t tx="ekr.20200226104131.1"></t>
 <t tx="ekr.20200226105416.1">def check_user_settings(self, settings_d, user_settings_d):
     """
@@ -11237,17 +11207,6 @@ opened longest. You can this setting to specify an alternative location.
 For example: /home/tbrown/.bookmarks.leo#@bookmarks--&gt;Incoming
 </t>
 <t tx="ekr.20200227064211.1">@nosearch</t>
-<t tx="ekr.20200620060909.1">True: The cython importer will copy the first decorator preceding a
-      function/method into the headline of the imported node.
-      
-**Note**: The importer will copy only the first line of a multiline decorator.</t>
-<t tx="ekr.20200620064409.1">*Note*: Used only if @bool add-context-to-headlines is True.
-
-If True, use headline "bar (foo.py)" for bar() defined at top level in foo.py. This is
-useful if you've cloned the node so its origin is not obvious from context.
-
-If False, does not do the above, useful if you don't use clones and don't
-want the visual clutter of repeated class / file names.</t>
 <t tx="ekr.20201010141557.1">The name of Leo's active theme, or None, which gives Leo's legacy (light) theme.
 
 To enable a theme, put the following setting in myLeoSettings.leo:
@@ -11353,7 +11312,6 @@ n, number
 p, Position
 s, string
 v, VNode</t>
-<t tx="ekr.20211209060458.1">True: Add 'class' to the headlines of class nodes (python only).</t>
 <t tx="ekr.20220105172501.1"># comma-separated pairs of strings: (argument-name, typescript-type)
 
 # Note: add-mypy-annotations can automatically annotate kwargs initialized to 
@@ -11637,7 +11595,6 @@ screencast_font_slant = normal
     
 False: do nothing when the mouse hovers over nodes.</t>
 <t tx="ekr.20230507080533.1"></t>
-<t tx="ekr.20230613071616.1"></t>
 <t tx="ekr.20230627130611.1">gnx:    Show gnx-based unls in the status area.
 legacy: Show legacy (headline-based) uns in the status area.</t>
 <t tx="ekr.20230627131213.1"></t>
@@ -12606,10 +12563,6 @@ AltControlShift hoist
 #     WITH: /
 
 </t>
-<t tx="tbrown.20180525163032.1">If True, uses headline "Foo.bar" for bar() defined in class Foo.
-
-If False, does not do the above, useful if you don't use clones and don't
-want the visual clutter of repeated class / file names.</t>
 <t tx="tom.20210922141748.1"></t>
 <t tx="tom.20220424213334.1"></t>
 <t tx="tom.20220424213426.1"></t>
