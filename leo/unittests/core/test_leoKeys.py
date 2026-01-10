@@ -1,17 +1,17 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210903155556.1: * @file ../unittests/core/test_leoKeys.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210903155556.1: * @file ../unittests/core/test_leoKeys.py
 """Tests of leoKeys.py"""
 
 import string
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
 
-#@+others
-#@+node:ekr.20210903155556.2: ** class TestKeys(LeoUnitTest)
+# @+others
+# @+node:ekr.20210903155556.2: ** class TestKeys(LeoUnitTest)
 class TestKeys(LeoUnitTest):
     """Test cases for leoKeys.py"""
-    #@+others
-    #@+node:ekr.20210909194336.50: *3* TestKeys.test_g_KeyStroke
+    # @+others
+    # @+node:ekr.20210909194336.50: *3* TestKeys.test_g_KeyStroke
     def test_g_KeyStroke(self):
         table = [
             # Gang of four, unmodified)
@@ -72,7 +72,7 @@ class TestKeys(LeoUnitTest):
             stroke = g.KeyStroke(binding=setting)
             val = stroke.s
             assert val == result, 'For %r, expected %r, Got %r' % (setting, result, val)
-    #@+node:ekr.20210909194336.51: *3* TestKeys.test_g_KeyStroke_printable_characters_
+    # @+node:ekr.20210909194336.51: *3* TestKeys.test_g_KeyStroke_printable_characters_
     def test_g_KeyStroke_printable_characters_(self):
         # Unshifted.
         for ch in string.printable:
@@ -86,7 +86,7 @@ class TestKeys(LeoUnitTest):
         for ch in string.digits + string.ascii_letters:
             stroke = g.KeyStroke(binding='Shift-' + ch)
             assert stroke.s in string.printable, (repr(ch), repr(stroke.s))
-    #@+node:ekr.20210909194336.52: *3* TestKeys.test_k_get_leo_completions
+    # @+node:ekr.20210909194336.52: *3* TestKeys.test_k_get_leo_completions
     def test_k_get_leo_completions(self):
         c = self.c
         table = (
@@ -99,7 +99,7 @@ class TestKeys(LeoUnitTest):
         for expected, prefix in table:
             aList = ac.get_leo_completions(prefix)
             assert len(aList) >= expected, 'len(aList): %s, prefix: %s' % (len(aList), prefix)
-    #@+node:ekr.20210909194336.53: *3* TestKeys.test_k_isPlainKey
+    # @+node:ekr.20210909194336.53: *3* TestKeys.test_k_isPlainKey
     def test_k_isPlainKey(self):
         k = self.c.k
         for ch in (string.printable):
@@ -121,11 +121,11 @@ class TestKeys(LeoUnitTest):
             )
             for ch in special:
                 assert not k.isPlainKey(ch), 'is plain: %s' % (ch)
-    #@+node:ekr.20210909194336.54: *3* TestKeys.test_k_print_bindings
+    # @+node:ekr.20210909194336.54: *3* TestKeys.test_k_print_bindings
     def test_k_show_bindings(self):
         c = self.c
         c.k.showBindings()
-    #@+node:ekr.20210909194336.55: *3* TestKeys.test_k_registerCommand
+    # @+node:ekr.20210909194336.55: *3* TestKeys.test_k_registerCommand
     callback_was_called = False
 
     def test_k_registerCommand(self):
@@ -138,7 +138,7 @@ class TestKeys(LeoUnitTest):
         k.registerCommand(commandName, callback)
         k.simulateCommand(commandName)
         assert self.callback_was_called, commandName
-    #@+node:ekr.20210901140645.8: *3* TestKeys.test_k_settings_ivars_match_settings
+    # @+node:ekr.20210901140645.8: *3* TestKeys.test_k_settings_ivars_match_settings
     def test_k_settings_ivars_match_settings(self):
         c = self.c
         k = c.k
@@ -169,6 +169,6 @@ class TestKeys(LeoUnitTest):
             self.assertTrue(hasattr(k, ivar), msg=ivar)
             val = getattr(k, ivar)
             self.assertEqual(val, setting, msg=ivar)
-    #@-others
-#@-others
-#@-leo
+    # @-others
+# @-others
+# @-leo

@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20230714131540.1: * @file ../unittests/core/test_leoCompare.py
+# @+leo-ver=5-thin
+# @+node:ekr.20230714131540.1: * @file ../unittests/core/test_leoCompare.py
 """Tests of leoCompare.py"""
 import os
 import tempfile
@@ -7,12 +7,12 @@ from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
 assert g
 
-#@+others
-#@+node:ekr.20230714131540.2: ** class TestCompare(LeoUnitTest)
+# @+others
+# @+node:ekr.20230714131540.2: ** class TestCompare(LeoUnitTest)
 class TestCompare(LeoUnitTest):
     """Test cases for leoCompare.py"""
-    #@+others
-    #@+node:ekr.20230714131540.3: *3* TestCompare.test_diff_marked_nodes
+    # @+others
+    # @+node:ekr.20230714131540.3: *3* TestCompare.test_diff_marked_nodes
     def test_diff_marked_nodes(self):
 
         from leo.core.leoCompare import diffMarkedNodes
@@ -63,7 +63,7 @@ class TestCompare(LeoUnitTest):
             u.redo()
             self.assertEqual(0, c.checkOutline())
             self.assertEqual(c.lastTopLevel().h, 'diff marked nodes')
-    #@+node:ekr.20230714160900.1: *3* TestCompare.test_diff_list_of_files
+    # @+node:ekr.20230714160900.1: *3* TestCompare.test_diff_list_of_files
     def test_diff_list_of_files(self):
 
         from leo.core.leoCompare import CompareLeoOutlines
@@ -126,6 +126,6 @@ class TestCompare(LeoUnitTest):
             self.assertTrue(os.path.exists(path), msg=path)
             os.remove(path)
             self.assertFalse(os.path.exists(path), msg=path)
-    #@-others
-#@-others
-#@-leo
+    # @-others
+# @-others
+# @-leo

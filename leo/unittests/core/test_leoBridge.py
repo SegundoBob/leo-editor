@@ -1,17 +1,17 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210903153138.1: * @file ../unittests/core/test_leoBridge.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210903153138.1: * @file ../unittests/core/test_leoBridge.py
 """Tests of leoBridge.py"""
 
 import os
 from leo.core.leoTest2 import LeoUnitTest
 import leo.core.leoBridge as leoBridge
 
-#@+others
-#@+node:ekr.20210903153138.2: ** class TestBridge(LeoUnitTest)
+# @+others
+# @+node:ekr.20210903153138.2: ** class TestBridge(LeoUnitTest)
 class TestBridge(LeoUnitTest):
     """Test cases for leoBridge.py"""
-    #@+others
-    #@+node:ekr.20210903153548.1: *3* TestBridge.test_bridge
+    # @+others
+    # @+node:ekr.20210903153548.1: *3* TestBridge.test_bridge
     def test_bridge(self):
         # The most basic test.
         controller = leoBridge.controller(
@@ -29,6 +29,6 @@ class TestBridge(LeoUnitTest):
         self.assertTrue(os.path.exists(test_dot_leo), msg=test_dot_leo)
         c = controller.openLeoFile(test_dot_leo)
         self.assertTrue(c)
-    #@-others
-#@-others
-#@-leo
+    # @-others
+# @-others
+# @-leo

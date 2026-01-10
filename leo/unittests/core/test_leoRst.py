@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210902055206.1: * @file ../unittests/core/test_leoRst.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210902055206.1: * @file ../unittests/core/test_leoRst.py
 """Tests of leoRst.py"""
 
 try:
@@ -11,8 +11,8 @@ from leo.core.leoTest2 import LeoUnitTest
 
 assert leoRst
 
-#@+others
-#@+node:ekr.20210327072030.1: ** class TestRst (LeoUnitTest)
+# @+others
+# @+node:ekr.20210327072030.1: ** class TestRst (LeoUnitTest)
 class TestRst(LeoUnitTest):
     """A class to run rst-related unit tests."""
 
@@ -21,8 +21,8 @@ class TestRst(LeoUnitTest):
         if not docutils:
             self.skipTest('Requires docutils')  # pragma: no cover
 
-    #@+others
-    #@+node:ekr.20210902211919.12: *3* TestRst.test_at_no_head
+    # @+others
+    # @+node:ekr.20210902211919.12: *3* TestRst.test_at_no_head
     def test_at_no_head(self):
         c = self.c
         rc = c.rstCommands
@@ -67,7 +67,7 @@ class TestRst(LeoUnitTest):
         html = rc.writeToDocutils(source, ext='.html')
         # Don't bother testing the html. It will depend on docutils.
         assert html and html.startswith('<?xml') and html.strip().endswith('</html>')
-    #@+node:ekr.20210902211919.9: *3* TestRst.test_handleMissingStyleSheetArgs
+    # @+node:ekr.20210902211919.9: *3* TestRst.test_handleMissingStyleSheetArgs
     def test_handleMissingStyleSheetArgs(self):
         c = self.c
         x = c.rstCommands
@@ -85,7 +85,7 @@ class TestRst(LeoUnitTest):
         ):
             result = x.handleMissingStyleSheetArgs(s=s)
             self.assertEqual(result, expected)
-    #@+node:ekr.20210902211919.11: *3* TestRst.test_unicode_characters
+    # @+node:ekr.20210902211919.11: *3* TestRst.test_unicode_characters
     def test_unicode_characters(self):
         c = self.c
         rc = c.rstCommands
@@ -121,7 +121,7 @@ class TestRst(LeoUnitTest):
         html = rc.writeToDocutils(source, ext='.html')
         # Don't bother testing the html. It will depend on docutils.
         assert html and html.startswith('<?xml') and html.strip().endswith('</html>')
-    #@+node:ekr.20210327092009.1: *3* TestRst.write_logic
+    # @+node:ekr.20210327092009.1: *3* TestRst.write_logic
     def test_write_to_docutils(self):
         c = self.c
         rc = c.rstCommands
@@ -183,6 +183,6 @@ class TestRst(LeoUnitTest):
         html = rc.writeToDocutils(source, ext='.html')
         # Don't bother testing the html. It will depend on docutils.
         assert html and html.startswith('<?xml') and html.strip().endswith('</html>')
-    #@-others
-#@-others
-#@-leo
+    # @-others
+# @-others
+# @-leo
