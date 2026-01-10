@@ -129,9 +129,7 @@ def convertAllBlanks(self: Self, event: LeoKeyEvent = None) -> None:
             lines = text.split('\n')
             for line in lines:
                 i, w = g.skip_leading_ws_with_indent(line, 0, tabWidth)
-                s = (
-                    g.computeLeadingWhitespace(w, abs(tabWidth)) + line[i:]
-                )  # use positive width.
+                s = g.computeLeadingWhitespace(w, abs(tabWidth)) + line[i:]  # use positive width.
                 if s != line:
                     changed = True
                 result.append(s)
@@ -173,9 +171,7 @@ def convertAllTabs(self: Self, event: LeoKeyEvent = None) -> None:
             lines = text.split('\n')
             for line in lines:
                 i, w = g.skip_leading_ws_with_indent(line, 0, tabWidth)
-                s = (
-                    g.computeLeadingWhitespace(w, -abs(tabWidth)) + line[i:]
-                )  # use negative width.
+                s = g.computeLeadingWhitespace(w, -abs(tabWidth)) + line[i:]  # use negative width.
                 if s != line:
                     changed = True
                 result.append(s)
@@ -240,9 +236,7 @@ def convertTabs(self: Self, event: LeoKeyEvent = None) -> bool:
     changed, result = False, []
     for line in lines:
         i, width = g.skip_leading_ws_with_indent(line, 0, tabWidth)
-        s = (
-            g.computeLeadingWhitespace(width, -abs(tabWidth)) + line[i:]
-        )  # use negative width.
+        s = g.computeLeadingWhitespace(width, -abs(tabWidth)) + line[i:]  # use negative width.
         if s != line:
             changed = True
         result.append(s)
@@ -508,9 +502,7 @@ g.command_alias('extractPythonMethod', extract)
 
 
 # @+node:ekr.20171123135625.20: *3* function: createFirstChildNode
-def createFirstChildNode(
-    c: Cmdr, parent: Position, headline: str, body: str
-) -> Position:
+def createFirstChildNode(c: Cmdr, parent: Position, headline: str, body: str) -> Position:
     """A helper function for the three extract commands."""
     # #1955: don't strip trailing lines.
     if not body:
@@ -525,18 +517,14 @@ def createFirstChildNode(
 
 # @+node:ekr.20171123135625.24: *3* function: extractDef
 extractDef_patterns = (
-    re.compile(
-        r'\((?:def|defn|defui|deftype|defrecord|defonce)\s+(\S+)'
-    ),  # clojure definition
+    re.compile(r'\((?:def|defn|defui|deftype|defrecord|defonce)\s+(\S+)'),  # clojure definition
     re.compile(r'^\s*(?:def|class)\s+(\w+)'),  # python definitions
     re.compile(r'^\bvar\s+(\w+)\s*=\s*function\b'),  # js function
     re.compile(r'^(?:export\s)?\s*function\s+(\w+)\s*\('),  # js function
     re.compile(r'\b(\w+)\s*:\s*function\s'),  # js function
     re.compile(r'\.(\w+)\s*=\s*function\b'),  # js function
     re.compile(r'(?:export\s)?\b(\w+)\s*=\s(?:=>|->)'),  # coffeescript function
-    re.compile(
-        r'(?:export\s)?\b(\w+)\s*=\s(?:\([^)]*\))\s*(?:=>|->)'
-    ),  # coffeescript function
+    re.compile(r'(?:export\s)?\b(\w+)\s*=\s(?:\([^)]*\))\s*(?:=>|->)'),  # coffeescript function
     re.compile(r'\b(\w+)\s*:\s(?:=>|->)'),  # coffeescript function
     re.compile(r'\b(\w+)\s*:\s(?:\([^)]*\))\s*(?:=>|->)'),  # coffeescript function
 )
@@ -980,9 +968,7 @@ def rp_get_args(c: Cmdr) -> tuple[int, int, str, int, int]:
 
 
 # @+node:ekr.20171123135625.46: *3* function: rp_get_leading_ws
-def rp_get_leading_ws(
-    c: Cmdr, lines: list[str], tabWidth: int
-) -> tuple[list[int], list[str]]:
+def rp_get_leading_ws(c: Cmdr, lines: list[str], tabWidth: int) -> tuple[list[int], list[str]]:
     """Compute and return indents and leading_ws."""
     # c = self
     indents = [0, 0]
@@ -1107,9 +1093,7 @@ def startsParagraph(s: str) -> bool:
     elif s[0].isalpha():
         # Careful: single characters only.
         # This could cause problems in some situations.
-        val = (g.match(s, 1, ')') or g.match(s, 1, '.')) and (
-            len(s) < 2 or s[2] in ' \t\n'
-        )
+        val = (g.match(s, 1, ')') or g.match(s, 1, '.')) and (len(s) < 2 or s[2] in ' \t\n')
     else:
         val = s.startswith('@') or s.startswith('-')
     return val
@@ -1117,9 +1101,7 @@ def startsParagraph(s: str) -> bool:
 
 # @+node:ekr.20201124191844.1: ** c_ec.reformatSelection
 @g.commander_command('reformat-selection')
-def reformatSelection(
-    self: Self, event: LeoKeyEvent = None, undoType: str = 'Reformat Selection'
-) -> None:
+def reformatSelection(self: Self, event: LeoKeyEvent = None, undoType: str = 'Reformat Selection') -> None:
     """
     Reformat the selected text, as in reformat-paragraph, but without
     expanding the selection past the selected lines.
@@ -1184,9 +1166,7 @@ def showInvisiblesHelper(c: Cmdr, val: Value) -> None:
     colorizer.highlighter.showInvisibles = val
     # It is much easier to change the menu name here than in the menu updater.
     menu = frame.menu.getMenu("Edit")
-    index = frame.menu.getMenuLabel(
-        menu, 'Hide Invisibles' if val else 'Show Invisibles'
-    )
+    index = frame.menu.getMenuLabel(menu, 'Hide Invisibles' if val else 'Show Invisibles')
     if index is None:
         if val:
             frame.menu.setMenuLabel(menu, "Show Invisibles", "Hide Invisibles")
@@ -1229,9 +1209,7 @@ def toggleAngleBrackets(self: Self, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20171123135625.49: ** c_ec.unformatParagraph & helper
 @g.commander_command('unformat-paragraph')
-def unformatParagraph(
-    self: Self, event: LeoKeyEvent = None, undoType: str = 'Unformat Paragraph'
-) -> None:
+def unformatParagraph(self: Self, event: LeoKeyEvent = None, undoType: str = 'Unformat Paragraph') -> None:
     """
     Unformat a text paragraph. Removes all extra whitespace in a paragraph.
 

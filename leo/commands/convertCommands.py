@@ -145,12 +145,7 @@ class To_Python:  # pragma: no cover
     def is_string_or_comment(self, lines: list[str], i: int) -> bool:
         # Does range checking.
         m = self.match
-        return (
-            m(lines, i, "'")
-            or m(lines, i, '"')
-            or m(lines, i, "//")
-            or m(lines, i, "/*")
-        )
+        return m(lines, i, "'") or m(lines, i, '"') or m(lines, i, "//") or m(lines, i, "/*")
 
     # @+node:ekr.20150514063305.136: *5* is_ws and is_ws_or_nl
     def is_ws(self, ch: str) -> bool:
@@ -355,9 +350,7 @@ class To_Python:  # pragma: no cover
                 i += 1
 
     # @+node:ekr.20150514063305.150: *5* safe_replace
-    def safe_replace(
-        self, lines: list[str], findString: str, changeString: str
-    ) -> None:
+    def safe_replace(self, lines: list[str], findString: str, changeString: str) -> None:
         """
         Replaces occurrences of findString by changeString,
         but only outside of C comments and strings.
@@ -575,9 +568,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
         """A class that implements the add-mypy-annotations command."""
 
         changed_lines = 0
-        default_annotation = (
-            'Any'  # The 'DEFAULT' @data add-mypy-annotations key overrides this.
-        )
+        default_annotation = 'Any'  # The 'DEFAULT' @data add-mypy-annotations key overrides this.
         default_return_annotation = 'None'
         tag = 'add-mypy-annotations'
         types_d: dict[str, str] = {}  # Keys are argument names. Values are mypy types.
@@ -673,9 +664,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
 
         # #2606: End the pattern at the *first* "):" so arguments don't end prematurely.
         #        Alas, now we can't convert defs that already have return values.
-        def_pat = re.compile(
-            r'^([ \t]*)def[ \t]+(\w+)\s*\((.*?)\):(.*?)\n', re.MULTILINE + re.DOTALL
-        )
+        def_pat = re.compile(r'^([ \t]*)def[ \t]+(\w+)\s*\((.*?)\):(.*?)\n', re.MULTILINE + re.DOTALL)
 
         return_dict: dict[str, str] = {
             '__init__': 'None',
@@ -1347,8 +1336,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 u.afterChangeBody(p, undo_type, bunch)
         if n_changed:
             g.es_print(
-                f"Changed {n_changed} unl{g.plural(n_changed)} "
-                f"in {n_changed_nodes} node{g.plural(n_changed_nodes)}"
+                f"Changed {n_changed} unl{g.plural(n_changed)} in {n_changed_nodes} node{g.plural(n_changed_nodes)}"
             )
             u.afterChangeGroup(p1, undo_type)
         c.contractAllHeadlines()
@@ -1383,21 +1371,13 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 self.config_fn = None
                 self.enable_unit_tests = False
                 self.files: list[str] = []  # May also be set in the config file.
-                self.output_directory = self.finalize(
-                    c.config.getString('stub-output-directory') or '.'
-                )
+                self.output_directory = self.finalize(c.config.getString('stub-output-directory') or '.')
                 self.output_fn: str = None
                 self.overwrite = c.config.getBool('stub-overwrite', default=False)
-                self.trace_matches = c.config.getBool(
-                    'stub-trace-matches', default=False
-                )
-                self.trace_patterns = c.config.getBool(
-                    'stub-trace-patterns', default=False
-                )
+                self.trace_matches = c.config.getBool('stub-trace-matches', default=False)
+                self.trace_patterns = c.config.getBool('stub-trace-patterns', default=False)
                 self.trace_reduce = c.config.getBool('stub-trace-reduce', default=False)
-                self.trace_visitors = c.config.getBool(
-                    'stub-trace-visitors', default=False
-                )
+                self.trace_visitors = c.config.getBool('stub-trace-visitors', default=False)
                 self.update_flag = c.config.getBool('stub-update', default=False)
                 self.verbose = c.config.getBool('stub-verbose', default=False)
                 self.warn = c.config.getBool('stub-warn', default=False)
@@ -1546,9 +1526,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 """Ctor for Python_To_Coffeescript_Adapter class."""
                 self.c = c
                 self.files: list[str] = []
-                self.output_directory = self.finalize(
-                    c.config.getString('py2cs-output-directory')
-                )
+                self.output_directory = self.finalize(c.config.getString('py2cs-output-directory'))
                 # self.output_fn = None
                 self.overwrite = c.config.getBool('py2cs-overwrite', default=False)
                 # Connect to the external module.
@@ -1635,9 +1613,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 This may be dubious because it destroys outline structure.
                 """
                 delims = ('#', None, None)
-                return ''.join(
-                    [z for z in g.splitLines(s) if not g.is_sentinel(z, delims)]
-                )
+                return ''.join([z for z in g.splitLines(s) if not g.is_sentinel(z, delims)])
 
             # @-others
 
@@ -1693,9 +1669,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                     key, value = line.split(',')
                     self.types_d[key.strip()] = value.strip()
                 except Exception:
-                    g.es_print(
-                        'ignoring bad key/value pair in @data python-to-typescript-types'
-                    )
+                    g.es_print('ignoring bad key/value pair in @data python-to-typescript-types')
                     g.es_print(repr(line))
 
         # @+node:ekr.20231119103026.3: *5* py2rust.convert
@@ -2024,9 +1998,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
         # @+node:ekr.20231119103026.19: *7* py2rust.do_section_ref
         section_ref_pat = re.compile(r"^([ \t]*)(\<\<.*?\>\>)\s*(.*)$")
 
-        def do_section_ref(
-            self, i: int, lines: list[str], m: Match, p: Position
-        ) -> int:
+        def do_section_ref(self, i: int, lines: list[str], m: Match, p: Position) -> int:
             # Handle trailing code.
             lws, section_name, tail = m.group(1), m.group(2), m.group(3).strip()
             if tail.startswith('#'):
@@ -2095,9 +2067,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
         # @+node:ekr.20231119103026.23: *7* py2rust.do_trailing_comment
         trailing_comment_pat = re.compile(r'^([ \t]*)(.*)#(.*)\n')
 
-        def do_trailing_comment(
-            self, i: int, lines: list[str], m: Match, p: Position
-        ) -> int:
+        def do_trailing_comment(self, i: int, lines: list[str], m: Match, p: Position) -> int:
             """
             Handle a trailing comment line.
 
@@ -2108,9 +2078,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 m.group(2).rstrip(),
                 m.group(3).strip(),
             )
-            statement_s = (
-                f"{statement};" if self.ends_statement(i, lines) else statement
-            )
+            statement_s = f"{statement};" if self.ends_statement(i, lines) else statement
             lines[i] = f"{lws}{statement_s}  // {trailing_comment}\n"
             return i + 1
 
@@ -2194,9 +2162,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
         # @+node:ekr.20231119103026.28: *7* py2rust.find_indented_block
         lws_pat = re.compile(r'^([ \t]*)')
 
-        def find_indented_block(
-            self, i: int, lines: list[str], m: Match, p: Position
-        ) -> int:
+        def find_indented_block(self, i: int, lines: list[str], m: Match, p: Position) -> int:
             """Return j, the index of the line *after* the indented block."""
             # Scan for the first non-empty line with the same or less indentation.
             lws = m.group(1)
@@ -2229,17 +2195,13 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             self.do_f_strings(lines)
             self.do_ternary(lines)
             self.replace_single_quotes(lines)
-            self.do_assignment(
-                lines
-            )  # Do this last, so it doesn't add 'let' to inserted comments.
+            self.do_assignment(lines)  # Do this last, so it doesn't add 'let' to inserted comments.
 
             # Replace the flag with a real newline.
             return ''.join(lines).replace(self.kill_semicolons_flag, '\n')
 
         # @+node:ekr.20231119103026.32: *8* py2rust.do_assignment
-        assignment_pat = re.compile(
-            r'^([ \t]*)(.*?)\s+=\s+(.*)$'
-        )  # Require whitespace around the '='
+        assignment_pat = re.compile(r'^([ \t]*)(.*?)\s+=\s+(.*)$')  # Require whitespace around the '='
 
         def do_assignment(self, lines: list[str]) -> None:
             """Add let to all non-tuple assignments."""
@@ -2299,12 +2261,8 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 assert i > progress
 
         # @+node:ekr.20231119103026.34: *8* py2rust.do_ternary
-        ternary_pat1 = re.compile(
-            r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$'
-        )  # assignment
-        ternary_pat2 = re.compile(
-            r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$'
-        )  # return statement
+        ternary_pat1 = re.compile(r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$')  # assignment
+        ternary_pat2 = re.compile(r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$')  # return statement
 
         def do_ternary(self, lines: list[str]) -> None:
             i = 0
@@ -2322,16 +2280,12 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                         m1.group(5),
                     )
                     lines[i] = f"{lws}// {s.strip()}\n"
-                    lines.insert(
-                        i + 1, f"{lws}{target} = if {cond} {{{a}}} else {{{b}}};\n"
-                    )
+                    lines.insert(i + 1, f"{lws}{target} = if {cond} {{{a}}} else {{{b}}};\n")
                     i += 2
                 elif m2:
                     lws, a, cond, b = m2.group(1), m2.group(2), m2.group(3), m2.group(4)
                     lines[i] = f"{lws}// {s.strip()}\n"
-                    lines.insert(
-                        i + 1, f"{lws}return if {cond} then {{{a}}} else {{{b}}};\n"
-                    )
+                    lines.insert(i + 1, f"{lws}return if {cond} then {{{a}}} else {{{b}}};\n")
                     i += 2
                 else:
                     i += 1
@@ -2442,9 +2396,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                     key, value = line.split(',')
                     self.types_d[key.strip()] = value.strip()
                 except Exception:
-                    g.es_print(
-                        'ignoring bad key/value pair in @data python-to-typescript-types'
-                    )
+                    g.es_print('ignoring bad key/value pair in @data python-to-typescript-types')
                     g.es_print(repr(line))
             # Create the list of patterns.
             self.patterns = (
@@ -2804,9 +2756,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
         # @+node:ekr.20211018125503.1: *7* py2ts.do_section_ref
         section_ref_pat = re.compile(r"^([ \t]*)(\<\<.*?\>\>)\s*(.*)$")
 
-        def do_section_ref(
-            self, i: int, lines: list[str], m: Match, p: Position
-        ) -> int:
+        def do_section_ref(self, i: int, lines: list[str], m: Match, p: Position) -> int:
             # Handle trailing code.
             lws, section_name, tail = m.group(1), m.group(2), m.group(3).strip()
             if tail.startswith('#'):
@@ -2875,9 +2825,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
         # @+node:ekr.20211013172540.1: *7* py2ts.do_trailing_comment
         trailing_comment_pat = re.compile(r'^([ \t]*)(.*)#(.*)\n')
 
-        def do_trailing_comment(
-            self, i: int, lines: list[str], m: Match, p: Position
-        ) -> int:
+        def do_trailing_comment(self, i: int, lines: list[str], m: Match, p: Position) -> int:
             """
             Handle a trailing comment line.
 
@@ -2888,9 +2836,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 m.group(2).rstrip(),
                 m.group(3).strip(),
             )
-            statement_s = (
-                f"{statement};" if self.ends_statement(i, lines) else statement
-            )
+            statement_s = f"{statement};" if self.ends_statement(i, lines) else statement
             lines[i] = f"{lws}{statement_s}  // {trailing_comment}\n"
             return i + 1
 
@@ -2967,9 +2913,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
         # @+node:ekr.20211013123001.1: *7* py2ts.find_indented_block
         lws_pat = re.compile(r'^([ \t]*)')
 
-        def find_indented_block(
-            self, i: int, lines: list[str], m: Match, p: Position
-        ) -> int:
+        def find_indented_block(self, i: int, lines: list[str], m: Match, p: Position) -> int:
             """Return j, the index of the line *after* the indented block."""
             # Scan for the first non-empty line with the same or less indentation.
             lws = m.group(1)
@@ -3038,9 +2982,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             self.move_docstrings(lines)
             self.do_f_strings(lines)
             self.do_ternary(lines)
-            self.do_assignment(
-                lines
-            )  # Do this last, so it doesn't add 'const' to inserted comments.
+            self.do_assignment(lines)  # Do this last, so it doesn't add 'const' to inserted comments.
             s = (
                 ''.join(lines)
                 .replace('@language python', '@language typescript')
@@ -3049,9 +2991,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             return re.sub(r'\bNone\b', 'null', s)
 
         # @+node:ekr.20211021061023.1: *8* py2ts.do_assignment
-        assignment_pat = re.compile(
-            r'^([ \t]*)(.*?)\s+=\s+(.*)$'
-        )  # Require whitespace around the '='
+        assignment_pat = re.compile(r'^([ \t]*)(.*?)\s+=\s+(.*)$')  # Require whitespace around the '='
 
         def do_assignment(self, lines: list[str]) -> None:
             """Add const to all non-tuple assignments."""
@@ -3124,12 +3064,8 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 assert i > progress
 
         # @+node:ekr.20211021051033.1: *8* py2ts.do_ternary
-        ternary_pat1 = re.compile(
-            r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$'
-        )  # assignment
-        ternary_pat2 = re.compile(
-            r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$'
-        )  # return statement
+        ternary_pat1 = re.compile(r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$')  # assignment
+        ternary_pat2 = re.compile(r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$')  # return statement
 
         def do_ternary(self, lines: list[str]) -> None:
             i = 0
@@ -3174,9 +3110,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             if self.alias:
                 s = re.sub(rf"\b{self.alias}\.", 'this.', s)
                 # Remove lines like `at = self`.
-                s = re.sub(
-                    rf"^\s*{self.alias}\s*=\s*this\s*\n", '', s, flags=re.MULTILINE
-                )
+                s = re.sub(rf"^\s*{self.alias}\s*=\s*this\s*\n", '', s, flags=re.MULTILINE)
                 # Remove lines like `at, c = self, self.c`.
                 s = re.sub(
                     rf"^(\s*){self.alias}\s*,\s*c\s*=\s*this,\s*this.c\n",
@@ -3435,9 +3369,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                         j = i + 1
                         prevSemi = j
                     elif self.match(lines, i, "{"):
-                        j = self.handlePossibleFunctionHeader(
-                            lines, i, prevSemi, firstOpen
-                        )
+                        j = self.handlePossibleFunctionHeader(lines, i, prevSemi, firstOpen)
                         prevSemi = j
                         firstOpen = None  # restart the scan
                     else:

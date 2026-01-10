@@ -46,9 +46,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         """Ctor for KillBufferCommandsClass class."""
         # pylint: disable=super-init-not-called
         self.c = c
-        self.kbiterator = (
-            self.iterateKillBuffer()
-        )  # An instance of KillBufferIterClass.
+        self.kbiterator = self.iterateKillBuffer()  # An instance of KillBufferIterClass.
         # For interacting with system clipboard.
         self.last_clipboard: str = None
         # Position of the last item returned by iterateKillBuffer.
