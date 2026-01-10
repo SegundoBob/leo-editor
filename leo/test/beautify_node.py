@@ -1,4 +1,0 @@
-# @language python
-# Test.
-# @others
-
