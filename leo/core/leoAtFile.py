@@ -10,6 +10,7 @@ import difflib
 import io
 import os
 import re
+import subprocess
 import sys
 import tabnanny
 import time
@@ -2640,7 +2641,7 @@ class AtFile:
             else:
                 g.es_print(f"{j + 1:5}: {line}")
 
-    # @+node:ekr.20240926044644.1: *6* at.runTokenBasedBeautifier (revise)
+    # @+node:ekr.20240926044644.1: *6* at.runRuffFormat
     def runRuffFormat(self, root: Position, filename: str) -> bool:
         """Run ruff format on the selected position."""
         c = self.c
@@ -2648,13 +2649,19 @@ class AtFile:
         if not os.path.exists(filename):
             return False
         old_p = p.copy()
+        old_contents = g.readFile(filename)
         try:
-            old_sys_argv = sys.argv[:]
-            # sys.argv = ['tbo']  # A hack: don't run leo.core.leoTokens.main.
-            # from leo.core.leoTokens import beautify_file
-            # changed = beautify_file(filename)
-            g.trace('@bool beautify-python-code-on-write not ready yet')
-            changed = False  ### To do.
+            # Define components of a single command.
+            args = (
+                f"--config {g.app.leoEditorDir}{os.sep}pyproject.toml",
+                '--config line-length=120',
+                '--silent',
+            )
+            isWindows = sys.platform.startswith('win')
+            python = 'py' if isWindows else 'python'
+            command = f"{python} -m ruff format {' '.join(args)} {filename}"
+            subprocess.Popen(command, shell=True).communicate()  # Wait for results.
+            changed = old_contents != g.readFile(filename)
             if changed:
                 g.es(f"beautified: {g.shortFileName(filename)}")
                 # Suppress the reload prompt.
@@ -2667,7 +2674,6 @@ class AtFile:
             g.es_exception()
             return False
         finally:
-            sys.argv = old_sys_argv
             # #4159: This may not restore the outline as it was,
             # but it's much better than doing nothing.
             c.selectPosition(old_p)
