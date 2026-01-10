@@ -37,7 +37,7 @@ targets = (
     f"leo{os.sep}core",
     f"leo{os.sep}external",
     f"leo{os.sep}modes",
-    # f"leo{os.sep}plugins",
+    f"leo{os.sep}plugins",
     f"leo{os.sep}scripts",
     f"leo{os.sep}unittests{os.sep}commands",
     f"leo{os.sep}unittests{os.sep}plugins",
