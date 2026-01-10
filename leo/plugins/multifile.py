@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:mork.20041018204908.1: * @file ../plugins/multifile.py
-#@+<< docstring >>
-#@+node:ekr.20050226114732: ** << docstring >>
-#@@language rest
+# @+leo-ver=5-thin
+# @+node:mork.20041018204908.1: * @file ../plugins/multifile.py
+# @+<< docstring >>
+# @+node:ekr.20050226114732: ** << docstring >>
+# @@language rest
 r""" Allows Leo to write a file to multiple locations.
 
 This plugin acts as a post-write mechanism, a file must be written to the
@@ -44,23 +44,23 @@ The @multiprefix stays in effect for the entire tree until reset with another
 an ancestor a copy of the file is created. These directives must at the
 beginning of the line and by themselves.
 """
-#@-<< docstring >>
-#@+<< imports >>
-#@+node:ekr.20050226114732.1: ** << imports >>
+# @-<< docstring >>
+# @+<< imports >>
+# @+node:ekr.20050226114732.1: ** << imports >>
 import os.path
 import shutil
 import weakref
 from typing import Any
 from leo.core import leoGlobals as g
 from leo.core import leoAtFile
-#@-<< imports >>
+# @-<< imports >>
 multiprefix = '@multiprefix'
 multipath = '@multipath'
 haveseen: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
 files: dict[str, Any] = {}  # Values are positions.
 original_precheck = None
-#@+others
-#@+node:ekr.20050226115130.1: ** init & helpers (multifile.py)
+# @+others
+# @+node:ekr.20050226115130.1: ** init & helpers (multifile.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     if g.unitTesting:
@@ -81,7 +81,7 @@ def init():
     g.registerHandler(('new', 'menu2'), addMenu)
     g.plugin_signon(__name__)
     return True  # gui-independent.
-#@+node:mork.20041019091317: *3* addMenu
+# @+node:mork.20041019091317: *3* addMenu
 def addMenu(tag, keywords):
 
     c = keywords.get('c')
@@ -92,7 +92,7 @@ def addMenu(tag, keywords):
     c.add_command(menu,
         label="Insert Directory String",
         command=lambda c=c: insertDirectoryString(c))
-#@+node:mork.20041019091524: *3* insertDirectoryString
+# @+node:mork.20041019091524: *3* insertDirectoryString
 def insertDirectoryString(c):
 
     d = g.app.gui.runOpenDirectoryDialog(
@@ -104,7 +104,7 @@ def insertDirectoryString(c):
         w.insert(ins, d)
         # w.event_generate('<Key>')
         # w.update_idletasks()
-#@+node:mork.20041018204908.3: ** decorated_precheck
+# @+node:mork.20041018204908.3: ** decorated_precheck
 def decorated_precheck(self, fileName, root):
     """Call at.precheck, then add fileName to the global files list."""
 
@@ -117,7 +117,7 @@ def decorated_precheck(self, fileName, root):
     if val and root.isDirty():
         files[fileName] = root.copy()
     return val
-#@+node:mork.20041018204908.6: ** stop
+# @+node:mork.20041018204908.6: ** stop
 def stop(tag, keywords):
 
     c = keywords.get('c')
@@ -138,7 +138,7 @@ def stop(tag, keywords):
                 g.error("multifile:\nCant write %s to %s" % (fileName, path))
                 g.es_exception_type()
     files.clear()
-#@+node:mork.20041018204908.5: ** scanForMultiPath
+# @+node:mork.20041018204908.5: ** scanForMultiPath
 def scanForMultiPath(c):
 
     """Return a dictionary whose keys are fileNames and whose values are
@@ -175,7 +175,7 @@ def scanForMultiPath(c):
                     aList.extend(paths)
                     d[fileName] = aList
     return d
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

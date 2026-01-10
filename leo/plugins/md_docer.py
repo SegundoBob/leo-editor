@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:vitalije.20180804172140.1: * @file ../plugins/md_docer.py
+# @+leo-ver=5-thin
+# @+node:vitalije.20180804172140.1: * @file ../plugins/md_docer.py
 """This plugin adds few commands for those who use Leo for writing
    markdown documentation with code samples taken from real source
    files.
@@ -42,18 +42,18 @@ def init():
     g.registerHandler('save1', beforeSave)
     g.plugin_signon(__name__)
     return True
-#@+others
-#@+node:vitalije.20180804174131.1: ** md_write_files
+# @+others
+# @+node:vitalije.20180804174131.1: ** md_write_files
 @g.command('md-write-files')
 def md_write_files(event):
     """writes all md nodes. A md node is node whose headline
        starts with 'md:' followed by file name."""
     c = event.get('c')
-    #@+others
-    #@+node:vitalije.20180804180150.1: *3* hl
+    # @+others
+    # @+node:vitalije.20180804180150.1: *3* hl
     def hl(v, lev):
         return '#' * (lev + 1) + ' ' + v.h + '\n'
-    #@+node:vitalije.20180804180104.1: *3* mdlines
+    # @+node:vitalije.20180804180104.1: *3* mdlines
     def mdlines(v, lev=0):
         if lev > 0 and not v.b.startswith('#'):
             yield hl(v, lev)
@@ -73,12 +73,12 @@ def md_write_files(event):
             for line in mdlines(v1, lev + 1):
                 yield line
         yield ''
-    #@+node:vitalije.20180804180749.1: *3* process
+    # @+node:vitalije.20180804180749.1: *3* process
     def process(v, fname):
         with open(fname, 'w', encoding='utf-8') as out:
             out.write('\n'.join(mdlines(v, 0)))
         g.es(fname, 'ok')
-    #@-others
+    # @-others
     seen = set()
     p = c.rootPosition()
     while p:
@@ -100,24 +100,24 @@ def md_write_files(event):
                 p.moveToNodeAfterTree()
             else:
                 p.moveToThreadNext()
-#@+node:vitalije.20180804180928.1: ** md_copy_leo_gnx
+# @+node:vitalije.20180804180928.1: ** md_copy_leo_gnx
 @g.command('md-copy-leo-gnx')
 def md_copy_leo_gnx(event):
     """Puts on clipboard `LEOGNX:<gnx of currently selected node>`."""
     c = event.get('c')
     g.app.gui.replaceClipboardWith('LEOGNX:' + c.p.gnx)
-#@+node:vitalije.20180805114033.1: ** beforeSave
+# @+node:vitalije.20180805114033.1: ** beforeSave
 def beforeSave(tag, key):
     sync_transformations(key)
-#@+node:vitalije.20180805114039.1: ** sync_transformations
+# @+node:vitalije.20180805114039.1: ** sync_transformations
 @g.command('md-sync-transformations')
 def sync_transformations(event):
     c = event.get('c')
     gnxDict = c.fileCommands.gnxDict
     trscripts = {}
     trtargets = {}
-    #@+others
-    #@+node:vitalije.20180805121201.1: *3* collect_data (md_docer.py)
+    # @+others
+    # @+node:vitalije.20180805121201.1: *3* collect_data (md_docer.py)
     def collect_data():
         p = c.rootPosition()
         seen = set()
@@ -154,7 +154,7 @@ def sync_transformations(event):
                 p.moveToThreadNext()
             else:
                 p.moveToThreadNext()
-    #@-others
+    # @-others
     collect_data()
     count = 0
     for dst, args in trtargets.items():
@@ -169,5 +169,5 @@ def sync_transformations(event):
             g.es_exception()
     if count:
         g.es('%d node(s) transformed' % count)
-#@-others
-#@-leo
+# @-others
+# @-leo

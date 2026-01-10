@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20090430075506.3: * @file ../plugins/leoPluginNotes.txt
-#@+all
-#@+node:ekr.20071113084440.1: ** @@file test/syntax_error_plugin.py
+# @+leo-ver=5-thin
+# @+node:ekr.20090430075506.3: * @file ../plugins/leoPluginNotes.txt
+# @+all
+# @+node:ekr.20071113084440.1: ** @@file test/syntax_error_plugin.py
 """
 This plugin intentionally has a syntax error.
 It is used for testing Leo's plugin loading logic.
@@ -14,9 +14,9 @@ a = # This is the syntax error
 def init ():
     """Return True if the plugin has loaded successfully."""
     return True
-#@+node:ekr.20161014155650.1: ** Structured vr docstring
+# @+node:ekr.20161014155650.1: ** Structured vr docstring
 # Alas, this DOES NOT WORK because comment delimiters are python delims, not rST delims.
-#@+node:ekr.20161014155647.1: *3* << vr docstring >>
+# @+node:ekr.20161014155647.1: *3* << vr docstring >>
 @language rest
 @wrap
 
@@ -24,7 +24,7 @@ Creates a window for *live* rendering of reSTructuredText, markdown text,
 images, movies, sounds, rst, html, etc.
 
 @others
-#@+node:ekr.20161014155647.2: *4* vr docstring: Dependencies
+# @+node:ekr.20161014155647.2: *4* vr docstring: Dependencies
 Dependencies
 ============
 
@@ -33,7 +33,7 @@ so installing docutils is highly recommended when using this plugin.
 
 This plugin uses markdown, http://http://pypi.python.org/pypi/Markdown, to render Markdown,
 so installing markdown is highly recommended when using this plugin.
-#@+node:ekr.20161014155647.3: *4* vr docstring: Commands
+# @+node:ekr.20161014155647.3: *4* vr docstring: Commands
 Commands
 ========
 
@@ -85,7 +85,7 @@ viewrendered.py creates the following (``Alt-X``) commands:
     This is especially useful for @graphics-script nodes:
     such nodes are update automatically only when selected,
     not when the body text changes.
-#@+node:ekr.20161014155647.4: *4* vr docstring: Rendering reStructuredText
+# @+node:ekr.20161014155647.4: *4* vr docstring: Rendering reStructuredText
 Rendering reStructuredText
 ==========================
 
@@ -109,7 +109,7 @@ will look something like:
     `This` is **really** a line of text.
 
 **Important**: reStructuredText errors and warnings will appear in red in the rendering pane.
-#@+node:ekr.20161014155647.5: *4* vr docstring: Rendering markdown
+# @+node:ekr.20161014155647.5: *4* vr docstring: Rendering markdown
 Rendering markdown
 ==================
 
@@ -118,7 +118,7 @@ for more information on markdown.
 
 Unless ``@string view-rendered-default-kind`` is set to ``md``, markdown rendering must be
 specified by putting it in a ``@md`` node.
-#@+node:ekr.20161014155647.6: *4* vr docstring: Special Renderings
+# @+node:ekr.20161014155647.6: *4* vr docstring: Special Renderings
 Special Renderings
 ===================
 
@@ -158,7 +158,7 @@ contain a filename.  If relative, the filename is resolved relative to Leo's loa
   See http://en.wikipedia.org/wiki/Scalable_Vector_Graphics
   **Note**: if the first character of the body text is ``<`` after removing Leo directives,
   the contents of body pane is taken to be an svg image.
-#@+node:ekr.20161014155647.7: *4* vr docstring: Settings
+# @+node:ekr.20161014155647.7: *4* vr docstring: Settings
 Settings
 ========
 
@@ -178,7 +178,7 @@ Settings
   A comma-delineated list of markdown extensions to use.
   Suitable extensions can be seen here:
   http://pythonhosted.org/Markdown/extensions/index.html
-#@+node:ekr.20161014155647.8: *4* vr docstring: Acknowledgments
+# @+node:ekr.20161014155647.8: *4* vr docstring: Acknowledgments
 Acknowledgments
 ================
 
@@ -187,9 +187,9 @@ Terry Brown created this initial version of this plugin.
 EKR generalized this plugin and added communication and coordination between the free_layout, NestedSplitter and viewrendered plugins.
 
 Jacob Peck added markdown support.
-#@-all
-#@@killbeautify
+# @-all
+# @@killbeautify
 # This file contains unused plugins and code
-#@@language python
+# @@language python
 
-#@-leo
+# @-leo

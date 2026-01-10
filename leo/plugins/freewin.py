@@ -1,11 +1,11 @@
-#@+leo-ver=5-thin
-#@+node:tom.20210613135525.1: * @file ../plugins/freewin.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:tom.20210613135525.1: * @file ../plugins/freewin.py
+# @@language python
 r"""
-#@+<< docstring >>
-#@+node:tom.20210603022210.1: ** << docstring >> (freewin.py)
-#@+others
-#@+node:tom.20240811231825.1: *3* About
+# @+<< docstring >>
+# @+node:tom.20210603022210.1: ** << docstring >> (freewin.py)
+# @+others
+# @+node:tom.20240811231825.1: *3* About
 Freewin - a plugin with a basic editor pane that tracks an
 outline node.
 
@@ -18,7 +18,7 @@ no matter how the user navigates within or between outlines.
 :By: T\. B\. Passin
 :Version: 2.41
 :Date: 16 Nov 2024
-#@+node:tom.20240811231850.1: *3* New With This Version
+# @+node:tom.20240811231850.1: *3* New With This Version
 New With This Version
 ======================
 Removed diagnostic startup message.
@@ -42,7 +42,7 @@ algorithm as the standard Leo body editor.
 
 There are no settings that affect these new features.
 
-#@+node:tom.20210604174603.1: *3* Opening a Window
+# @+node:tom.20210604174603.1: *3* Opening a Window
 Opening a Window
 ~~~~~~~~~~~~~~~~~
 
@@ -67,11 +67,11 @@ the node has been moved to a new position in its outline.
 .. Note:: A Freewin window will close if the underlying node is removed.
           This will not change the body of the underlying node.
 
-#@+node:tom.20210625220923.1: *3* Navigating
+# @+node:tom.20210625220923.1: *3* Navigating
 Navigating
 ~~~~~~~~~~~
 
-#@@nocolor
+# @@nocolor
 
 A Freewin window only ever displays the content of the node it ws opened
 on. However, the selected node in the outline in the host can be changed,
@@ -96,7 +96,7 @@ in the rendering pane (see below) if the setting::
 
 is set in the @settings tree. The setting can be in the @settings tree of
 an outline or in myLeoSettings.leo.
-#@+node:tom.20210604181030.1: *3* Rendering with Restructured Text
+# @+node:tom.20210604181030.1: *3* Rendering with Restructured Text
 Rendering with Restructured Text
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -134,7 +134,7 @@ setting to the setting tree of an outline or to myLeoSettings.leo:
 
     @string fw-render-pane = nav-view
 
-#@+node:tom.20210626134532.1: *3* Hotkeys
+# @+node:tom.20210626134532.1: *3* Hotkeys
 Hotkeys
 ~~~~~~~
 
@@ -145,13 +145,13 @@ Freewin uses two hotkeys:
 
 <CNTL-F9> is available in the editor view, and in the rendered view
 with limitations discussed above discussed above.
-#@+node:tom.20210712005103.1: *3* Commands
+# @+node:tom.20210712005103.1: *3* Commands
 Commands
 ~~~~~~~~~
 
 Freewin has one minibuffer command: ``z-open-freewin``. This opens a
 Freewin window linked to the currently selected node.
-#@+node:tom.20210712005441.1: *3* Settings
+# @+node:tom.20210712005441.1: *3* Settings
 Settings
 ~~~~~~~~~
 
@@ -166,7 +166,7 @@ able to display all the features that a full rendered view can.
 2. ``@bool fw-copy-html = False``
 
    Change to `True` to copy the rendered RsT to the clipboard.
-#@+node:tom.20210614171220.1: *3* Stylesheets and Dark-themed Appearance
+# @+node:tom.20210614171220.1: *3* Stylesheets and Dark-themed Appearance
 Stylesheets and Dark-themed Appearance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -182,7 +182,7 @@ The plugin attempts to determine whether the Leo theme in use
 is a dark theme or not.  If it is, a dark-themed stylesheet
 will be used if it is found.  The "dark" determination is based
 on the ``@color_theme_is_dark`` setting in the Leo theme file.
-#@+node:tom.20210604181134.1: *4* Styling the Editor View
+# @+node:tom.20210604181134.1: *4* Styling the Editor View
 Styling the Editor View
 ~~~~~~~~~~~~~~~~~~~~~~~~
 The editor panel styles will be set by a
@@ -221,7 +221,7 @@ No Stylesheet
 
 If the correctly-named stylesheet is not present in the
 user's ``.leo/css`` directory then the plugin will use the default values given above.
-#@+node:tom.20210604181109.1: *4* Styling the RsT View
+# @+node:tom.20210604181109.1: *4* Styling the RsT View
 Styling the RsT View
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -261,13 +261,13 @@ No Stylesheet
 If no stylesheet exists for the Restructured Text view, the
 default Docutils stylesheet will be used for either light or dark
 Leo themes.
-#@-others
+# @-others
 
-#@-<< docstring >>
+# @-<< docstring >>
 """
 # pylint: disable=invalid-name
-#@+<< imports >>
-#@+node:tom.20210527153415.1: ** << imports >> (freewin.py)
+# @+<< imports >>
+# @+node:tom.20210527153415.1: ** << imports >> (freewin.py)
 from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 from os.path import exists, join as osp_join
@@ -293,8 +293,8 @@ if not qt_imports_ok:
 
 QWebEngineView = QtWebEngineWidgets.QWebEngineView
 
-#@+<<import docutils>>
-#@+node:tom.20210529002833.1: *3* <<import docutils>>
+# @+<<import docutils>>
+# @+node:tom.20210529002833.1: *3* <<import docutils>>
 got_docutils = False
 try:
     from docutils.core import publish_string
@@ -312,7 +312,7 @@ except Exception as e:
 if not got_docutils:
     print('Freewin: no docutils - rendered view is not available')
 
-#@-<<import docutils>>
+# @-<<import docutils>>
 
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
@@ -334,18 +334,18 @@ QPalette = QtGui.QPalette
 
 WrapMode = QtGui.QTextOption.WrapMode
 
-#@-<< imports >>
-#@+<< annotations >>
-#@+node:tom.20220919101426.1: ** << annotations >>
+# @-<< imports >>
+# @+<< annotations >>
+# @+node:tom.20220919101426.1: ** << annotations >>
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoQt import QtWidgets
     from leo.core.leoQt import QtGui
     from leo.plugins.qt_text import LeoQTextBrowser
-#@-<< annotations >>
-#@+<< declarations >>
-#@+node:tom.20210527153422.1: ** << declarations >>
+# @-<< annotations >>
+# @+<< declarations >>
+# @+node:tom.20210527153422.1: ** << declarations >>
 # pylint: disable=invalid-name
 # Dimensions and placing of editor windows
 W: int = 570
@@ -376,8 +376,8 @@ FullWidthSelection = 0x06000
 
 instances: dict[str, ZEditorWin] = {}
 
-#@+others
-#@+node:tom.20210709130401.1: *3* Fonts and Text
+# @+others
+# @+node:tom.20210709130401.1: *3* Fonts and Text
 ZOOM_FACTOR: float = 1.1
 
 F7_KEY: int = 0x01000036  # See https://doc.qt.io/qt-5/qt.html#Key-enum (enum Qt::Key)
@@ -392,11 +392,11 @@ GNX1: re.Pattern = re.compile(GNX1re)
 
 TABWIDTH: int = 36  # Best guess but may not always be right.
 TAB2SPACES: int = 4  # Tab replacement when writing back to host node
-#@-others
+# @-others
 
-#@-<< declarations >>
-#@+<< Stylesheets >>
-#@+node:tom.20210614172857.1: ** << Stylesheets >>
+# @-<< declarations >>
+# @+<< Stylesheets >>
+# @+node:tom.20210614172857.1: ** << Stylesheets >>
 RENDER_BTN_STYLESHEET_LIGHT: str = f'''color: {FG_COLOR_LIGHT};
     background: {BG_COLOR_LIGHT};
     font-size: 11pt;'''
@@ -405,8 +405,8 @@ RENDER_BTN_STYLESHEET_DARK: str = f'''color: {FG_COLOR_DARK};
     background: {BG_COLOR_DARK};
     font-size: 11pt;'''
 
-#@+others
-#@+node:tom.20210625145324.1: *3* RsT Stylesheet Dark
+# @+others
+# @+node:tom.20210625145324.1: *3* RsT Stylesheet Dark
 RST_STYLESHEET_DARK: str = '''body {
   color: #cbdedc; /*#ededed;*/
   background: #202020;
@@ -457,7 +457,7 @@ RST_STYLESHEET_DARK: str = '''body {
 }
 
 '''
-#@+node:tom.20210625155534.1: *3* RsT Stylesheet Light
+# @+node:tom.20210625155534.1: *3* RsT Stylesheet Light
 RST_STYLESHEET_LIGHT: str = '''body {
   color: #6B5B53;
   background: #ededed;
@@ -520,15 +520,15 @@ RST_STYLESHEET_LIGHT: str = '''body {
     border-radius: .5em;
   }
 '''
-#@-others
-#@-<< Stylesheets >>
+# @-others
+# @-<< Stylesheets >>
 
-#@+others
-#@+node:ekr.20210617074439.1: ** init
+# @+others
+# @+node:ekr.20210617074439.1: ** init
 def init() -> bool:
     """Return True if the plugin has loaded successfully."""
     return True
-#@+node:tom.20210527153848.1: ** z-commands
+# @+node:tom.20210527153848.1: ** z-commands
 @g.command('z-open-freewin')
 def open_z_window(event: LeoKeyEvent) -> None:
     """Open or show editing window for the selected node."""
@@ -545,7 +545,7 @@ def open_z_window(event: LeoKeyEvent) -> None:
 
     zwin.show()
     zwin.activateWindow()
-#@+node:tom.20210625145842.1: ** getGnx
+# @+node:tom.20210625145842.1: ** getGnx
 def getGnx(line: str) -> str:
     """Find and return a gnx in a line of text, or None.
 
@@ -555,7 +555,7 @@ def getGnx(line: str) -> str:
     matched = GNX1.match(line) or GNX.match(line)
     target = matched[1] if matched else None
     return target
-#@+node:tom.20210625145905.1: ** getLine
+# @+node:tom.20210625145905.1: ** getLine
 def getLine(text_edit: QtWidgets.QTextEdit) -> str:
     """Return line of text at cursor position.
 
@@ -578,7 +578,7 @@ def getLine(text_edit: QtWidgets.QTextEdit) -> str:
     after = text[pos:]
     line = before.split('\n')[-1] + after.split('\n')[0]
     return line
-#@+node:tom.20210625161018.1: ** gotoHostGnx
+# @+node:tom.20210625161018.1: ** gotoHostGnx
 def gotoHostGnx(c: Cmdr, target: str) -> bool:
     """Change host node selection to target gnx.
 
@@ -599,10 +599,10 @@ def gotoHostGnx(c: Cmdr, target: str) -> bool:
             c.selectPosition(p)
             return True
     return False
-#@+node:tom.20210628002321.1: ** copy2clip
+# @+node:tom.20210628002321.1: ** copy2clip
 def copy2clip(text: str) -> None:
     clipboard.setText(text)
-#@+node:tom.20220329145952.1: ** change_css_prop
+# @+node:tom.20220329145952.1: ** change_css_prop
 def change_css_prop(css: str, prop: str, newval: str) -> str:
     """Change the value of a named property in a css stylesheet fragment.
 
@@ -621,14 +621,14 @@ def change_css_prop(css: str, prop: str, newval: str) -> str:
 
     return css.replace(val, newval, 1)
 
-#@+node:tom.20240810173532.1: ** get_body_css
+# @+node:tom.20240810173532.1: ** get_body_css
 def get_body_css(c):
     """Return the text of Leo's top-level CSS stylesheet."""
     ssm = g.app.gui.styleSheetManagerClass(c)
     w = ssm.get_master_widget()
     sheet = w.styleSheet()
     return sheet
-#@+node:tom.20220329150105.1: ** get_body_colors
+# @+node:tom.20220329150105.1: ** get_body_colors
 # Get current colors from the body editor widget
 def get_body_colors(c: Cmdr) -> tuple[str, str]:
     wrapper = c.frame.body.wrapper
@@ -641,7 +641,7 @@ def get_body_colors(c: Cmdr) -> tuple[str, str]:
     bg: str = f'#{bg_hex:06x}'
 
     return fg, bg
-#@+node:tom.20220329231604.1: ** is_body_dark
+# @+node:tom.20220329231604.1: ** is_body_dark
 def is_body_dark(c: Cmdr) -> bool:
     """Return True if host's body appears to have a dark theme."""
     fg, bg = get_body_colors(c)
@@ -650,11 +650,11 @@ def is_body_dark(c: Cmdr) -> bool:
     bg_color = QColor(bg)
     h, s, vbg, a = bg_color.getHsv()
     return vbg < 90
-#@+node:tom.20210527153906.1: ** class ZEditorWin
+# @+node:tom.20210527153906.1: ** class ZEditorWin
 class ZEditorWin(QtWidgets.QMainWindow):
     """An editing window that echos the contents of an outline node."""
-    #@+others
-    #@+node:tom.20210527185804.1: *3* ctor
+    # @+others
+    # @+node:tom.20210527185804.1: *3* ctor
     def __init__(self, c: Cmdr, title: str = 'Z-editor') -> None:
         # pylint: disable=too-many-locals
         # pylint: disable = too-many-statements
@@ -684,8 +684,8 @@ class ZEditorWin(QtWidgets.QMainWindow):
         self.editor.cursorPositionChanged.connect(self.highlightCurrentLine)
         self.editor.textChanged.connect(self.highlightCurrentLine)
 
-        #@+<<set stylesheet paths>>
-        #@+node:tom.20210604170628.1: *4* <<set stylesheet paths>>
+        # @+<<set stylesheet paths>>
+        # @+node:tom.20210604170628.1: *4* <<set stylesheet paths>>
         self.editor_csspath = ''
         self.rst_csspath = ''
 
@@ -703,9 +703,9 @@ class ZEditorWin(QtWidgets.QMainWindow):
         else:
             self.rst_csspath = self.rst_csspath.replace('\\', '/')
 
-        #@-<<set stylesheet paths>>
-        #@+<<set stylesheets>>
-        #@+node:tom.20210615101103.1: *4* <<set stylesheets>>
+        # @-<<set stylesheet paths>>
+        # @+<<set stylesheets>>
+        # @+node:tom.20210615101103.1: *4* <<set stylesheets>>
         editor_sheet = get_body_css(self.c)
         editor_sheet += self.get_color_font_css()
 
@@ -719,9 +719,9 @@ class ZEditorWin(QtWidgets.QMainWindow):
 
         css_fragment = self.get_color_css()
         self.rst_stylesheet += css_fragment
-        #@-<<set stylesheets>>
-        #@+<<set up editor>>
-        #@+node:tom.20210602172856.1: *4* <<set up editor>>
+        # @-<<set stylesheets>>
+        # @+<<set up editor>>
+        # @+node:tom.20210602172856.1: *4* <<set up editor>>
         self.doc = self.editor.document()
         self.editor.setWordWrapMode(WrapMode.WrapAtWordBoundaryOrAnywhere)
 
@@ -750,18 +750,18 @@ class ZEditorWin(QtWidgets.QMainWindow):
             browser.setReadOnly(True)
             browser_doc = browser.document()
             browser_doc.setDefaultStyleSheet(stylesheet)
-        #@-<<set up editor>>
-        #@+<<set up render button>>
-        #@+node:tom.20210602173354.1: *4* <<set up render button>>
+        # @-<<set up editor>>
+        # @+<<set up render button>>
+        # @+node:tom.20210602173354.1: *4* <<set up render button>>
         self.render_button = QPushButton("Rendered <--> Plain")
         self.render_button.clicked.connect(self.switch_and_render)
 
         b_style = RENDER_BTN_STYLESHEET_DARK if is_dark else RENDER_BTN_STYLESHEET_LIGHT
         self.render_button.setStyleSheet(b_style)
-        #@-<<set up render button>>
+        # @-<<set up render button>>
 
-        #@+<<build central widget>>
-        #@+node:tom.20210528235126.1: *4* <<build central widget>> (freewin.py)
+        # @+<<build central widget>>
+        # @+node:tom.20210528235126.1: *4* <<build central widget>> (freewin.py)
         self.stacked_widget = QStackedWidget()
         self.stacked_widget.insertWidget(EDITOR, self.editor)
         self.stacked_widget.insertWidget(BROWSER, self.browser)
@@ -775,21 +775,21 @@ class ZEditorWin(QtWidgets.QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-        #@-<<build central widget>>
-        #@+<<set geometry>>
-        #@+node:tom.20210528235451.1: *4* <<set geometry>>
+        # @-<<build central widget>>
+        # @+<<set geometry>>
+        # @+node:tom.20210528235451.1: *4* <<set geometry>>
         Y_ = Y + (len(instances) % 10) * DELTA_Y
         self.setGeometry(QtCore.QRect(X, Y_, W, H))
-        #@-<<set geometry>>
-        #@+<<set window title>>
-        #@+node:tom.20210531235412.1: *4* <<set window title>>
+        # @-<<set geometry>>
+        # @+<<set window title>>
+        # @+node:tom.20210531235412.1: *4* <<set window title>>
         # Show parent's title-->our title, our gnx
         ph = ''
         parents_ = list(c.p.parents())
         if parents_:
             ph = parents_[0].h + '-->'
         self.setWindowTitle(f'{ph}{c.p.h}   {c.p.gnx}')
-        #@-<<set window title>>
+        # @-<<set window title>>
 
         self.render_kind = EDITOR
 
@@ -808,7 +808,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
         QApplication.processEvents()
         self.show()
 
-    #@+node:tom.20240811000132.1: *3* get_color_font_css
+    # @+node:tom.20240811000132.1: *3* get_color_font_css
     def get_color_font_css(self) -> str:
         """Return CSS with body editor's colors and font."""
         fg, bg = get_body_colors(self.c)
@@ -835,15 +835,15 @@ class ZEditorWin(QtWidgets.QMainWindow):
         }}
         """
         return color_style
-    #@+node:tom.20210625205847.1: *3* reload settings
+    # @+node:tom.20210625205847.1: *3* reload settings
     def reloadSettings(self):
         c = self.c
         c.registerReloadSettings(self)
         self.render_pane_type = c.config.getString('fw-render-pane') or ''  # type: ignore [attr-defined]
         self.copy_html = c.config.getBool('fw-copy-html', default=False)  # type: ignore [attr-defined]
 
-    #@+node:tom.20240811185426.1: *3* fw.calcHiliteColor
-    #@@language python
+    # @+node:tom.20240811185426.1: *3* fw.calcHiliteColor
+    # @@language python
     def calcHiliteColor(self, editor) -> QColor:
         """Return the line highlight color based on an existing editor widget.
 
@@ -872,8 +872,8 @@ class ZEditorWin(QtWidgets.QMainWindow):
             else:
                 hl = bg.lighter(140)
         return hl
-    #@+node:tom.20240811185449.1: *3* fw.highlightCurrentLine
-    #@@language python
+    # @+node:tom.20240811185449.1: *3* fw.highlightCurrentLine
+    # @@language python
     def highlightCurrentLine(self) -> None:
         """Highlight cursor line."""
         curs = self.editor.textCursor()
@@ -898,7 +898,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
         selection.cursor.clearSelection()
 
         self.editor.setExtraSelections([selection])
-    #@+node:tom.20210528090313.1: *3* update
+    # @+node:tom.20210528090313.1: *3* update
     # Must have this signature: called by leoPlugins.callTagHandler.
     def update(self, tag: str, keywords: Any) -> None:
         """Update host node if this card's text has changed.
@@ -958,7 +958,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
 
             self.doc.setModified(False)
 
-    #@+node:tom.20210703173219.1: *3* teardown
+    # @+node:tom.20210703173219.1: *3* teardown
     def teardown(self, tag: str = '') -> None:
         # Close window and delete it when host node is deleted.
         if self.closing:
@@ -975,7 +975,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
         instances[id_] = None  # Not sure if we need this
         del instances[id_]
         self.deleteLater()
-    #@+node:tom.20210619000302.1: *3* keyPressEvent
+    # @+node:tom.20210619000302.1: *3* keyPressEvent
     def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:  # pylint:disable=method-hidden
         """Take action on keypresses.
 
@@ -1015,13 +1015,13 @@ class ZEditorWin(QtWidgets.QMainWindow):
                     _zf = w.zoomFactor()
                     w.setZoomFactor(_zf / ZOOM_FACTOR)
 
-    #@+node:tom.20210527234644.1: *3* _register_handlers
+    # @+node:tom.20210527234644.1: *3* _register_handlers
     def _register_handlers(self):
         """_register_handlers - attach to Leo signals"""
         for hook, handler in self.handlers:
             g.registerHandler(hook, handler)
 
-    #@+node:tom.20210529000221.1: *3* set_and_render
+    # @+node:tom.20210529000221.1: *3* set_and_render
     def set_and_render(self, switch: bool = True):
         """Switch between the editor and RsT viewer, and render text."""
         self.switching = True
@@ -1054,7 +1054,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
 
     def switch_and_render(self):
         self.set_and_render(True)
-    #@+node:tom.20210602174838.1: *3* render_rst
+    # @+node:tom.20210602174838.1: *3* render_rst
     def render_rst(self, text):
         """Render text of the editor widget as HTML and display it."""
         if not got_docutils:
@@ -1084,6 +1084,6 @@ class ZEditorWin(QtWidgets.QMainWindow):
                         f'{self.rst_stylesheet}\n</style>\n</head>\n')
                 _html = _html.replace('</head>', style_insert, 1)
         return _html
-    #@-others
-#@-others
-#@-leo
+    # @-others
+# @-others
+# @-leo

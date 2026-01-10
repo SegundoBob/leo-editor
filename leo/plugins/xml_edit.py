@@ -1,9 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20110428144124.29061: * @file ../plugins/xml_edit.py
-#@@language python
-#@@tabwidth -4
-#@+others
-#@+node:tbrown.20110428102237.20322: ** xml_edit declarations
+# @+leo-ver=5-thin
+# @+node:tbrown.20110428144124.29061: * @file ../plugins/xml_edit.py
+# @@language python
+# @@tabwidth -4
+# @+others
+# @+node:tbrown.20110428102237.20322: ** xml_edit declarations
 """ Provides commands (Alt-x) for importing and exporting XML from a Leo
 outline. These commands are to XML what ``@auto-rst`` is to
 reStructuredText.
@@ -120,7 +120,7 @@ filetypes = [
 # xml namespace mapping from prefix to full namespace
 NSMAP: dict[str, Any] = {}
 
-#@+node:tbrown.20110428102237.20325: ** append_element
+# @+node:tbrown.20110428102237.20325: ** append_element
 def append_element(xml_node, to_leo_node):
     """handle appending xml_node which may be Element, Comment, or
     ProcessingInstruction.  Recurses for Element.
@@ -165,7 +165,7 @@ def append_element(xml_node, to_leo_node):
         for xml_child in xml_node:
             append_element(xml_child, leo_node)
 
-#@+node:tbrown.20110429155827.20762: ** cd_here
+# @+node:tbrown.20110429155827.20762: ** cd_here
 def cd_here(c, p):
     """attempt to cd to the directory in effect at p according
     to Leo's @path concept
@@ -174,7 +174,7 @@ def cd_here(c, p):
         os.chdir(c.getPath(p))
     except Exception:
         pass  # well, at least we tried
-#@+node:tbrown.20110428102237.20327: ** get_element
+# @+node:tbrown.20110428102237.20327: ** get_element
 def get_element(leo_node):
     """recursively read from leo nodes and write into an Element tree
     """
@@ -204,7 +204,7 @@ def get_element(leo_node):
 
     return ele
 
-#@+node:tbrown.20110428102237.20323: ** get_tag
+# @+node:tbrown.20110428102237.20323: ** get_tag
 def get_tag(xml_node, attrib=None):
     """replace {http://full.name.space.com/}element with fns:element
     """
@@ -221,11 +221,11 @@ def get_tag(xml_node, attrib=None):
             # don't break here, this loop also updates NSMAP for later
     return name
 
-#@+node:ekr.20110523130519.18190: ** init
+# @+node:ekr.20110523130519.18190: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     return True
-#@+node:tbrown.20110428102237.20329: ** leo2xml
+# @+node:tbrown.20110428102237.20329: ** leo2xml
 @g.command('leo2xml')
 def leo2xml(event):
     """wrapper to write xml for current node
@@ -245,7 +245,7 @@ def leo2xml(event):
     open(file_name, 'w').write(ans)
 
     c.redraw()
-#@+node:tbrown.20110501200908.19857: ** leo2xml2leo
+# @+node:tbrown.20110501200908.19857: ** leo2xml2leo
 @g.command('leo2xml2leo')
 def leo2xml2leo(event):
     """wrapper to cycle leo->xml->leo, mostly to clean up headers
@@ -267,7 +267,7 @@ def leo2xml2leo(event):
 
     c.selectPosition(nd)
     c.redraw()
-#@+node:tbrown.20110428102237.20324: ** make_tag
+# @+node:tbrown.20110428102237.20324: ** make_tag
 def make_tag(tag):
     """replace  fns:element with {http://full.name.space.com/}element
     """
@@ -278,7 +278,7 @@ def make_tag(tag):
     ns, tag = tag.split(':', 1)
 
     return '{%s}%s' % (NSMAP[ns], tag)
-#@+node:tbrown.20110428102237.20326: ** xml2leo
+# @+node:tbrown.20110428102237.20326: ** xml2leo
 @g.command('xml2leo')
 def xml2leo(event, from_string=None):
     """handle import of an .xml file, places new subtree after c.p
@@ -341,7 +341,7 @@ def xml2leo(event, from_string=None):
     c.redraw()
 
     return nd
-#@+node:tbrown.20110428102237.20328: ** xml_for_subtree
+# @+node:tbrown.20110428102237.20328: ** xml_for_subtree
 def xml_for_subtree(nd):
     """get the xml for the subtree at nd
     """
@@ -378,7 +378,7 @@ def xml_for_subtree(nd):
     ans = [g.toUnicode(z) for z in ans]  # EKR: 2011/04/29
 
     return '\n'.join(ans)
-#@+node:tbrown.20110429140247.20760: ** xml_validate
+# @+node:tbrown.20110429140247.20760: ** xml_validate
 @g.command('xml-validate')
 def xml_validate(event):
     """Perform DTD validation on the xml and return error output
@@ -427,5 +427,5 @@ def xml_validate(event):
         for i in range(max(0, lineno - 6), min(len(xml_text), lineno + 3)):
             g.es("%d%s %s" % (i, ':' if i != lineno else '*', xml_text[i]))
 
-#@-others
-#@-leo
+# @-others
+# @-leo

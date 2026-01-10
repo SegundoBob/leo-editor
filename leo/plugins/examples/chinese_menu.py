@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20040828105233: * @file ../plugins/examples/chinese_menu.py
+# @+leo-ver=5-thin
+# @+node:ekr.20040828105233: * @file ../plugins/examples/chinese_menu.py
 
 """
 Translate a few menu items into Simplified Chinese
@@ -18,8 +18,8 @@ Translate a few menu items into Simplified Chinese
 # All the headlines appear as "??".
 from leo.core import leoGlobals as g
 
-#@+others
-#@+node:ekr.20111104210837.9689: ** init
+# @+others
+# @+node:ekr.20111104210837.9689: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = not g.unitTesting  # Unpleasant for unit testing.
@@ -27,13 +27,13 @@ def init():
         g.registerHandler("menu2", onMenu)
         g.plugin_signon(__name__)
     return ok
-#@+node:ekr.20040828105233.1: ** onMenu
+# @+node:ekr.20040828105233.1: ** onMenu
 def onMenu(tag, keywords):
 
     c = keywords.get("c")
     table = (
-        #@+others
-        #@+node:ekr.20040828105233.2: *3* file menu
+        # @+others
+        # @+node:ekr.20040828105233.2: *3* file menu
         ("File", "File文件"),
             ("New", "新建"),
             ("Open...", "打开"),
@@ -79,7 +79,7 @@ def onMenu(tag, keywords):
                 ("Export all to AsciiDoc", "全部导出为 AsciiDoc 文件"),
                 ("Export current tree to AsciiDoc", "将当前树导出为 AsciiDoc 文件"),
             ("Exit", "退出"),
-        #@+node:ekr.20040828105233.3: *3* edit menu
+        # @+node:ekr.20040828105233.3: *3* edit menu
         ("Edit", "Edit编辑"),
             ("Undo Typing", "撤销键入"),
             ("Undo Cut Node", "撤销剪切结点"),
@@ -123,7 +123,7 @@ def onMenu(tag, keywords):
             ("Show Invisibles", "显示不可见域"),
             ("Hide Invisibles", "隐藏不可见域"),
             ("Preferences", "偏好设置"),
-        #@+node:ekr.20040828105233.4: *3* outline menu
+        # @+node:ekr.20040828105233.4: *3* outline menu
         ("Outline", "Outline大纲"),
             ("Cut Node", "剪切结点"),
             ("Copy Node", "拷贝结点"),
@@ -183,10 +183,10 @@ def onMenu(tag, keywords):
                 ("Go To Next Visible", "跳转到下一个可见结点"),
                 ("Go To Prev Node", "跳转到上一结点"),
                 ("Go To Next Node", "跳转到下一结点"),
-        #@+node:ekr.20040828105233.5: *3* plugins menu
+        # @+node:ekr.20040828105233.5: *3* plugins menu
         ("Plugins", "Plugins插件"),
             ("chinese", "Chinese (汉化)"),
-        #@+node:ekr.20040828105233.6: *3* window menu
+        # @+node:ekr.20040828105233.6: *3* window menu
         ("Window", "Window窗口"),
             ("Equal Sized Panes", "使各面板大小相等"),
             ("Toggle Active Pane", "切换激活面板"),
@@ -195,7 +195,7 @@ def onMenu(tag, keywords):
             ("Minimize All", "全部最小化"),
             ("Open Compare Window", "打开文件比较窗口..."),
             ("Open Python Window", "打开Python集成环境(IDLE)..."),
-        #@+node:ekr.20040828105233.7: *3* help menu
+        # @+node:ekr.20040828105233.7: *3* help menu
         ("Help", "Help帮助"),
             ("About Leo...", "关于Leo..."),
             ("Online Home Page", "访问在线主页"),
@@ -204,12 +204,12 @@ def onMenu(tag, keywords):
             ("Open LeoDocs.leo", "打开 LeoDocs.leo"),
             ("Open LeoConfig.leo", "打开 LeoConfig.leo"),
             ("Apply Settings", "应用设置")
-        #@-others
+        # @-others
     )
 
     # Call the convenience routine to do the work.
     c.frame.menu.setRealMenuNamesFromTable(table)
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

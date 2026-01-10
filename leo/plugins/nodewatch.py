@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:peckj.20131130132659.5964: * @file ../plugins/nodewatch.py
-#@+<< docstring >>
-#@+node:peckj.20131101132841.6445: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:peckj.20131130132659.5964: * @file ../plugins/nodewatch.py
+# @+<< docstring >>
+# @+node:peckj.20131101132841.6445: ** << docstring >>
 """
 Provides a GUI in the Log pane (tab name 'Nodewatch') that lists node headlines.
 The nodes that show up in this GUI are scriptable on a per-outline basis, with
@@ -95,17 +95,17 @@ Run all @settings->@nodewatch nodes in the outline, and update the nodewatch GUI
 (same as clicking the refresh button in the nodewatch GUI).
 
 """
-#@-<< docstring >>
-#@+<< imports >>
-#@+node:peckj.20131101132841.6447: ** << imports >>
+# @-<< docstring >>
+# @+<< imports >>
+# @+node:peckj.20131101132841.6447: ** << imports >>
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtWidgets, QtCore
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
-#@-<< imports >>
-#@+others
-#@+node:peckj.20131101132841.6448: ** init
+# @-<< imports >>
+# @+others
+# @+node:peckj.20131101132841.6448: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     if g.app.gui is None:
@@ -117,7 +117,7 @@ def init():
     else:
         g.es('nodewatch.py not loaded', color='red')
     return ok
-#@+node:peckj.20131101132841.6449: ** onCreate
+# @+node:peckj.20131101132841.6449: ** onCreate
 def onCreate(tag, keys):
 
     c = keys.get('c')
@@ -126,25 +126,25 @@ def onCreate(tag, keys):
 
     theNodewatchController = NodewatchController(c)
     c.theNodewatchController = theNodewatchController
-#@+node:peckj.20131101132841.6450: ** class NodewatchController
+# @+node:peckj.20131101132841.6450: ** class NodewatchController
 class NodewatchController:
-    #@+others
-    #@+node:peckj.20131101132841.6452: *3* __init__
+    # @+others
+    # @+node:peckj.20131101132841.6452: *3* __init__
     def __init__(self, c):
         self.c = c
         self.watchlists = {}  # a dictionary, with key = Category, value = list of (idx,vnode) tuples
         c.theNodewatchController = self
         self.ui = LeoNodewatchWidget(c)
         c.frame.log.createTab('Nodewatch', widget=self.ui)
-    #@+node:peckj.20131101132841.6453: *3* add
+    # @+node:peckj.20131101132841.6453: *3* add
     def add(self, key, values):
         """ add a list of vnodes ('values') to the nodewatch category 'key' """
         self.watchlists[key] = list(enumerate(values))
-    #@-others
-#@+node:peckj.20131101132841.6451: ** class LeoNodewatchWidget
+    # @-others
+# @+node:peckj.20131101132841.6451: ** class LeoNodewatchWidget
 class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
-    #@+others
-    #@+node:peckj.20131101132841.6454: *3* __init__
+    # @+others
+    # @+node:peckj.20131101132841.6454: *3* __init__
     def __init__(self, c, parent=None):
         super().__init__(parent)
         self.c = c
@@ -156,8 +156,8 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
             autoexecute_nodewatch_nodes = False
         if autoexecute_nodewatch_nodes:
             self.update_all()
-    #@+node:peckj.20131101132841.6462: *3* initialization
-    #@+node:peckj.20131101132841.6455: *4* initUI
+    # @+node:peckj.20131101132841.6462: *3* initialization
+    # @+node:peckj.20131101132841.6455: *4* initUI
     def initUI(self):
         # create GUI components
         ## this code is atrocious... don't look too closely
@@ -201,15 +201,15 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
         self.verticalLayout.addWidget(self.label)
         self.verticalLayout_2.addLayout(self.verticalLayout)
         QtCore.QMetaObject.connectSlotsByName(self)
-    #@+node:peckj.20131101132841.6457: *4* registerCallbacks
+    # @+node:peckj.20131101132841.6457: *4* registerCallbacks
     def registerCallbacks(self):
         self.listWidget.itemSelectionChanged.connect(self.item_selected)
         self.listWidget.itemClicked.connect(self.item_selected)
         self.comboBox.currentIndexChanged.connect(self.update_list)
         self.pushButton.clicked.connect(self.update_all)
 
-    #@+node:peckj.20131101132841.6463: *3* updates + interaction
-    #@+node:peckj.20131101132841.6459: *4* item_selected
+    # @+node:peckj.20131101132841.6463: *3* updates + interaction
+    # @+node:peckj.20131101132841.6459: *4* item_selected
     def item_selected(self):
         idx = self.listWidget.currentRow()
         key = str(self.comboBox.currentText())
@@ -219,7 +219,7 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
         pos = self.c.vnode2position(tup[1])
         self.c.selectPosition(pos)
         self.c.redraw()
-    #@+node:peckj.20131101132841.6460: *4* update_combobox
+    # @+node:peckj.20131101132841.6460: *4* update_combobox
     def update_combobox(self):
         self.c.theNodewatchController.watchlists = {}
         nodes = self.get_valid_nodewatch_nodes()
@@ -228,7 +228,7 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
         self.comboBox.clear()
         keys = sorted(self.c.theNodewatchController.watchlists.keys())
         self.comboBox.addItems(keys)
-    #@+node:peckj.20131101132841.6461: *4* update_list
+    # @+node:peckj.20131101132841.6461: *4* update_list
     def update_list(self):
         key = str(self.comboBox.currentText())
         self.listWidget.clear()
@@ -237,7 +237,7 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
         count = self.listWidget.count()
         self.label.clear()
         self.label.setText("Total: %s items" % count)
-    #@+node:peckj.20131101132841.6458: *4* update_all
+    # @+node:peckj.20131101132841.6458: *4* update_all
     def update_all(self, event=None):
         """ updates the nodewatch GUI by running all valid @nodewatch nodes """
         key = str(self.comboBox.currentText())
@@ -250,8 +250,8 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
             idx = 0
         self.comboBox.setCurrentIndex(idx)
         self.update_list()
-    #@+node:peckj.20131104093045.6578: *3* helpers
-    #@+node:peckj.20131104093045.6579: *4* get_valid_nodewatch_nodes
+    # @+node:peckj.20131104093045.6578: *3* helpers
+    # @+node:peckj.20131104093045.6579: *4* get_valid_nodewatch_nodes
     def get_valid_nodewatch_nodes(self):
         """ returns a list of valid vnodes """
         nodes = []
@@ -269,8 +269,8 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
                 if settings and not ignore:
                     nodes.append(node)
         return nodes
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+    # @-others
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

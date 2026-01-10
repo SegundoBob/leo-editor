@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20081223111325.3: * @file ../plugins/backlink.py
-#@+<< docstring >>
-#@+node:ekr.20140920145803.17984: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:tbrown.20081223111325.3: * @file ../plugins/backlink.py
+# @+<< docstring >>
+# @+node:ekr.20140920145803.17984: ** << docstring >>
 """Allows arbitrary links between nodes.
 
 FIXME: add more docs.
@@ -31,12 +31,12 @@ which is not helpful.  By setting this value to 1, you would see::
 
 where the extra information is the name of the linked node's parent.
 """
-#@-<< docstring >>
-#@+<< notes >>
-#@+node:ekr.20140920145803.17983: ** << notes >>
-#@@language rest
-#@@wrap
-#@+at
+# @-<< docstring >>
+# @+<< notes >>
+# @+node:ekr.20140920145803.17983: ** << notes >>
+# @@language rest
+# @@wrap
+# @+at
 #
 # Backlink will store all its stuff in v.unknownAttributes['_bklnk']
 #
@@ -74,7 +74,7 @@ where the extra information is the name of the linked node's parent.
 # - loadLinksInt()
 # - deleteSet(bool)
 # - linkClicked(n) (zero based)
-#@-<< notes >>
+# @-<< notes >>
 # By TNB. Revised for Qt6 by EKR.
 
 # EKR: gnx-based unls make this plugin obsolete.
@@ -84,9 +84,9 @@ try:  # #2343
     from leo.core.leoQt import QtGui, QtWidgets, uic
 except Exception:
     QtGui = QtWidgets = None
-#@+others
-#@+node:ekr.20140920145803.17995: ** top-level
-#@+node:ekr.20090616105756.3940: *3* init (backlink.py)
+# @+others
+# @+node:ekr.20140920145803.17995: ** top-level
+# @+node:ekr.20090616105756.3940: *3* init (backlink.py)
 warning_given = False
 
 def init():
@@ -98,7 +98,7 @@ def init():
     g.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
     return True
-#@+node:ekr.20090616105756.3941: *3* onCreate
+# @+node:ekr.20090616105756.3941: *3* onCreate
 def onCreate(tag, keys):
 
     c = keys.get('c')
@@ -106,11 +106,11 @@ def onCreate(tag, keys):
         return
 
     backlinkController(c)
-#@+node:ekr.20090616105756.3942: ** class backlinkController
+# @+node:ekr.20090616105756.3942: ** class backlinkController
 class backlinkController:
     """Display and edit links in leo trees"""
-    #@+others
-    #@+node:ekr.20090616105756.3943: *3* bc.__init__ & reloadSettings (backlinkController)
+    # @+others
+    # @+node:ekr.20090616105756.3943: *3* bc.__init__ & reloadSettings (backlinkController)
     def __init__(self, c):
         """Ctor for backlinkController class."""
         self.c = c
@@ -129,7 +129,7 @@ class backlinkController:
         c = self.c
         c.registerReloadSettings(self)
         self.name_levels = c.config.getInt('backlink-name-levels') or 0
-    #@+node:tbrown.20091005145931.5227: *3* bc.fixIDs
+    # @+node:tbrown.20091005145931.5227: *3* bc.fixIDs
     def fixIDs(self, c):
 
         update = {}
@@ -157,7 +157,7 @@ class backlinkController:
                     v.u['_bklnk']['links'].extend([
                         (i[0], update[i[1]]) for i in v.u['_bklnk']['links']
                         if i[1] in update])
-    #@+node:ekr.20090616105756.3944: *3* bc.deleteLink
+    # @+node:ekr.20090616105756.3944: *3* bc.deleteLink
     def deleteLink(self, on, to, type_):
         """delete a link from 'on' to 'to' of type 'type_'"""
 
@@ -196,7 +196,7 @@ class backlinkController:
                 gcc.do_update()
         except AttributeError:
             pass
-    #@+node:ekr.20090616105756.3945: *3* bc.deleteSet
+    # @+node:ekr.20090616105756.3945: *3* bc.deleteSet
     def deleteSet(self, enabled):
         """UI informing us that delete mode has been set to value of 'enabled'"""
 
@@ -205,7 +205,7 @@ class backlinkController:
             self.showMessage('Click a link to DELETE it', color='red')
         else:
             self.showMessage('Click a link to follow it')
-    #@+node:tbnorth.20170616105931.1: *3* bc.handleURL
+    # @+node:tbnorth.20170616105931.1: *3* bc.handleURL
     def handleURL(self, url: str) -> None:
         """handleUrl - user clicked an URL / UNL link
 
@@ -244,7 +244,7 @@ class backlinkController:
             new_p.setDirty()
             new_c.setChanged()
             g.es("NOTE: created back link automatically")
-    #@+node:ekr.20090616105756.3946: *3* bc.initBacklink
+    # @+node:ekr.20090616105756.3946: *3* bc.initBacklink
     def initBacklink(self, v):
         """set up a vnode to support links"""
 
@@ -255,7 +255,7 @@ class backlinkController:
                 v.u['_bklnk'][entry] = []
 
         self.vnode[v.gnx] = v
-    #@+node:ekr.20090616105756.3947: *3* bc.initIvars
+    # @+node:ekr.20090616105756.3947: *3* bc.initIvars
     def initIvars(self):
         """initialize, called by __init__ and loadLinks(Int)"""
 
@@ -264,7 +264,7 @@ class backlinkController:
         self.linkMark = None
         self.vnode = {}
         self.messageUsed = False
-    #@+node:ekr.20090616105756.3948: *3* bc.linkAction
+    # @+node:ekr.20090616105756.3948: *3* bc.linkAction
     def linkAction(self, dir_, newChild=False):
         """link to/from current position from/to mark node"""
 
@@ -291,7 +291,7 @@ class backlinkController:
 
         self.updateTabInt()
         self.c.redraw()
-    #@+node:ekr.20090616105756.3949: *3* bc.link
+    # @+node:ekr.20090616105756.3949: *3* bc.link
     def link(self, from_, to, type_='directed'):
         """make a link"""
 
@@ -300,7 +300,7 @@ class backlinkController:
         to.setDirty()
         self.c.setChanged()
 
-    #@+node:ekr.20090616105756.3950: *3* bc.vlink
+    # @+node:ekr.20090616105756.3950: *3* bc.vlink
     def vlink(self, v0, v1, type_='directed'):
         self.initBacklink(v0)
         self.initBacklink(v1)
@@ -327,7 +327,7 @@ class backlinkController:
         except AttributeError:
             pass
 
-    #@+node:ekr.20090616105756.3951: *3* bc.linkClicked
+    # @+node:ekr.20090616105756.3951: *3* bc.linkClicked
     def linkClicked(self, selected):
         """UI informs us that link number 'selected' (zero based) was clicked"""
 
@@ -349,7 +349,7 @@ class backlinkController:
             return
         assert self.c.positionExists(self.dests[selected][1])
         self.c.selectPosition(self.dests[selected][1])
-    #@+node:ekr.20090616105756.3952: *3* bc.linkDst
+    # @+node:ekr.20090616105756.3952: *3* bc.linkDst
     def linkDst(self):
         """link from current position to dest. node"""
         if not self.linkDestination or not self.c.positionExists(self.linkDestination):
@@ -359,7 +359,7 @@ class backlinkController:
         self.link(self.c.p, self.linkDestination)
 
         self.updateTabInt()
-    #@+node:ekr.20090616105756.3953: *3* bc.linksFrom
+    # @+node:ekr.20090616105756.3953: *3* bc.linksFrom
     def linksFrom(self, v, type_='S'):
         ans: list = []
         if not (v.u and '_bklnk' in v.u and 'links' in v.u['_bklnk']):
@@ -372,10 +372,10 @@ class backlinkController:
 
         return ans
 
-    #@+node:ekr.20090616105756.3954: *3* bc.linksTo
+    # @+node:ekr.20090616105756.3954: *3* bc.linksTo
     def linksTo(self, v):
         return self.linksFrom(v, type_='D')
-    #@+node:ekr.20090616105756.3955: *3* bc.linkSrc
+    # @+node:ekr.20090616105756.3955: *3* bc.linkSrc
     def linkSrc(self):
         """link from current position to source node"""
 
@@ -386,7 +386,7 @@ class backlinkController:
         self.link(self.linkSource, self.c.p)
 
         self.updateTabInt()
-    #@+node:ekr.20090616105756.3956: *3* bc.linkUnd
+    # @+node:ekr.20090616105756.3956: *3* bc.linkUnd
     def linkUnd(self):
         """undirected link from current position to source node, use dest.
         if source not set."""
@@ -403,7 +403,7 @@ class backlinkController:
         self.link(source, self.c.p, type_='undirected')
 
         self.updateTabInt()
-    #@+node:tbnorth.20170616103256.1: *3* bc.linkUrl
+    # @+node:tbnorth.20170616103256.1: *3* bc.linkUrl
     def linkUrl(self):
         """linkUrl - link from current position to an URL / UNL"""
 
@@ -426,14 +426,14 @@ class backlinkController:
         c.p.setDirty()
         c.setChanged()
 
-    #@+node:ekr.20090616105756.3957: *3* bc.loadLinks
+    # @+node:ekr.20090616105756.3957: *3* bc.loadLinks
     def loadLinks(self, tag, keywords):
         """load links after file opened"""
         if self.c != keywords['c']:
             return  # not our problem
 
         self.loadLinksInt()
-    #@+node:ekr.20090616105756.3958: *3* bc.loadLinksInt
+    # @+node:ekr.20090616105756.3958: *3* bc.loadLinksInt
     def loadLinksInt(self):
         """load links after file opened or reload on request from UI"""
 
@@ -486,22 +486,22 @@ class backlinkController:
             self.vnode[vnode].u['_bklnk']['links'] = newlinks
 
         self.showMessage('Link info. loaded on %d nodes' % len(idsSeen))
-    #@+node:ekr.20090616105756.3959: *3* bc.mark
+    # @+node:ekr.20090616105756.3959: *3* bc.mark
     def mark(self):
         """Mark current position as 'mark' (called by UI)"""
         self.linkMark = self.c.p.copy()
         self.showMessage('Marked')
-    #@+node:ekr.20090616105756.3960: *3* bc.markDst
+    # @+node:ekr.20090616105756.3960: *3* bc.markDst
     def markDst(self):
         """Mark current position as 'destination' (called by UI)"""
         self.linkDestination = self.c.p.copy()
         self.showMessage('Dest. marked')
-    #@+node:ekr.20090616105756.3961: *3* bc.markSrc
+    # @+node:ekr.20090616105756.3961: *3* bc.markSrc
     def markSrc(self):
         """Mark current position as 'source' (called by UI)"""
         self.linkSource = self.c.p.copy()
         self.showMessage('Source marked')
-    #@+node:tbnorth.20170616135915.1: *3* bc.nextLink
+    # @+node:tbnorth.20170616135915.1: *3* bc.nextLink
     def nextLink(self):
         """nextLink - jump to next node with a link
         """
@@ -531,7 +531,7 @@ class backlinkController:
             return
         g.es("Search wrapped")
         c.selectPosition(c.vnode2position(hits[0][0]))
-    #@+node:ekr.20090616105756.3962: *3* bc.positionExistsSomewhere
+    # @+node:ekr.20090616105756.3962: *3* bc.positionExistsSomewhere
     def positionExistsSomewhere(self, p, root=None):
         """A local copy of c.positionExists so that when the
         failure to check p._childIndex bug is fixed, that fixing
@@ -559,7 +559,7 @@ class backlinkController:
                 p.moveToBack()  # ???
 
         return False
-    #@+node:ekr.20090616105756.3963: *3* bc.showLinksLog
+    # @+node:ekr.20090616105756.3963: *3* bc.showLinksLog
     def showLinksLog(self, tag, k):
 
         # deprecated
@@ -593,7 +593,7 @@ class backlinkController:
                 for dest in dests:
                     g.es("%s %s" % ({'S': '->', 'D': '<-', 'U': '--'}[dest[0]],
                         dest[1].h))
-    #@+node:ekr.20090616105756.3965: *3* bc.showMessage
+    # @+node:ekr.20090616105756.3965: *3* bc.showMessage
     def showMessage(self, msg, optional=False, color='black'):
         """Show the message, but don't overwrite earlier important
         message if this message is optional"""
@@ -603,7 +603,7 @@ class backlinkController:
         if not self.messageUsed and not optional:
             self.messageUsed = True
         self.ui.showMessage(msg, color)
-    #@+node:ekr.20090616105756.3966: *3* bc.swap
+    # @+node:ekr.20090616105756.3966: *3* bc.swap
     def swap(self):
         """Swap current pos. w. mark"""
         if not self.linkMark or not self.c.positionExists(self.linkMark):
@@ -612,14 +612,14 @@ class backlinkController:
         p = self.linkMark
         self.linkMark = self.c.p.copy()
         self.c.selectPosition(p)
-    #@+node:ekr.20090616105756.3967: *3* bc.updateTab (backlink.py)
+    # @+node:ekr.20090616105756.3967: *3* bc.updateTab (backlink.py)
     def updateTab(self, tag, k):
         """called by leo select position hook"""
         if k['c'] != self.c:
             return  # not our problem
 
         self.updateTabInt()
-    #@+node:ekr.20090616105756.3968: *3* bc.updateTabInt (backlink.py)
+    # @+node:ekr.20090616105756.3968: *3* bc.updateTabInt (backlink.py)
     def updateTabInt(self):
         """called on new position (leo hook) and when links added / deleted"""
         c = self.c
@@ -694,17 +694,17 @@ class backlinkController:
             texts.extend(urls)
         self.ui.loadList(texts)
 
-    #@+node:ekr.20090616105756.3969: *3* bc.vnodePosition
+    # @+node:ekr.20090616105756.3969: *3* bc.vnodePosition
     def vnodePosition(self, v):
         """Return a position for vnode v, if there is one"""
         return self.c.vnode2position(v)
-    #@-others
-#@+node:ekr.20090616105756.3939: ** class backlinkQtUI
+    # @-others
+# @+node:ekr.20090616105756.3939: ** class backlinkQtUI
 if QtWidgets:
 
     class backlinkQtUI(QtWidgets.QWidget):  # type:ignore
-        #@+others
-        #@+node:ekr.20140920145803.17987: *3* bc.__init__
+        # @+others
+        # @+node:ekr.20140920145803.17987: *3* bc.__init__
         def __init__(self, owner):
             """Ctor for backlinkQtUI class."""
             self.owner = owner
@@ -726,7 +726,7 @@ if QtWidgets:
             u.linkList.itemClicked.connect(self.listClicked)
             u.deleteBtn.stateChanged.connect(o.deleteSet)
             u.nextBtn.clicked.connect(o.nextLink)
-        #@+node:ekr.20140920145803.17988: *3* ui.dirClicked
+        # @+node:ekr.20140920145803.17988: *3* ui.dirClicked
         def dirClicked(self):
 
             ui = self.UI
@@ -736,11 +736,11 @@ if QtWidgets:
             else:
                 ui.dirLeftBtn.setText("from")
                 ui.dirRightBtn.setText("to")
-        #@+node:ekr.20140920145803.17989: *3* ui.listClicked
+        # @+node:ekr.20140920145803.17989: *3* ui.listClicked
         def listClicked(self):
 
             self.owner.linkClicked(self.UI.linkList.currentRow())
-        #@+node:ekr.20140920145803.17990: *3* ui.linkClicked
+        # @+node:ekr.20140920145803.17990: *3* ui.linkClicked
         def linkClicked(self):
             ui = self.UI
             if ui.whatSel.currentText() == "mark, undirected":
@@ -756,7 +756,7 @@ if QtWidgets:
                 self.owner.linkAction('from', newChild=newChild)
             else:
                 self.owner.linkAction('to', newChild=newChild)
-        #@+node:ekr.20140920145803.17991: *3* ui.loadList
+        # @+node:ekr.20140920145803.17991: *3* ui.loadList
         def loadList(self, lst):
             ui = self.UI
             ui.linkList.clear()
@@ -767,12 +767,12 @@ if QtWidgets:
                     ui.linkList.addItem(list_item)
                 else:
                     ui.linkList.addItem(item)
-        #@+node:ekr.20140920145803.17993: *3* ui.enableDelete
+        # @+node:ekr.20140920145803.17993: *3* ui.enableDelete
         def enableDelete(self, enable):
             ui = self.UI
             ui.deleteBtn.setChecked(False)
             ui.deleteBtn.setEnabled(enable)
-        #@+node:ekr.20140920145803.17992: *3* ui.showMessage
+        # @+node:ekr.20140920145803.17992: *3* ui.showMessage
         def showMessage(self, msg, color):
             """Show the message in the label area."""
             ui = self.UI
@@ -781,8 +781,8 @@ if QtWidgets:
             pal.setColor(pal.ColorRole.Window, fg)  # #2197
             ui.label.setPalette(pal)
             ui.label.setText(msg)
-        #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+        # @-others
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

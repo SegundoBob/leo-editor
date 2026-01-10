@@ -1,19 +1,19 @@
-#@+leo-ver=5-thin
-#@+node:ville.20110115234843.8742: * @file ../plugins/dragdropgoodies.py
-#@+<< docstring >>
-#@+node:ville.20110115234843.8743: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:ville.20110115234843.8742: * @file ../plugins/dragdropgoodies.py
+# @+<< docstring >>
+# @+node:ville.20110115234843.8743: ** << docstring >>
 """A plugin containing utils relating to drag and drop."""
-#@-<< docstring >>
-#@+<< imports >>
-#@+node:ville.20110115234843.8745: ** << imports >>
+# @-<< docstring >>
+# @+<< imports >>
+# @+node:ville.20110115234843.8745: ** << imports >>
 from leo.core import leoGlobals as g
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
-#@-<< imports >>
+# @-<< imports >>
 
-#@+others
-#@+node:ville.20110115234843.8746: ** init
+# @+others
+# @+node:ville.20110115234843.8746: ** init
 def init():
 
     ok = g.app.gui.guiName() == "qt"
@@ -26,7 +26,7 @@ def init():
         g.registerHandler('outlinedrop', onDrop)
         g.plugin_signon(__name__)
     return ok
-#@+node:ville.20110115234843.8753: ** onDrop
+# @+node:ville.20110115234843.8753: ** onDrop
 def onDrop(tag, keys):
     print("ta", tag)
     ev = keys['dropevent']
@@ -40,30 +40,30 @@ def onDrop(tag, keys):
     return False
 
 
-#@+node:ville.20110116001102.8714: ** mimeDataDump
+# @+node:ville.20110116001102.8714: ** mimeDataDump
 def mime_data_dump(md):
     for fo in md.formats():
         da = str(md.data(fo))
         print("FO", fo)
         print(da)
         print("END")
-#@+node:ville.20110115234843.8747: ** onCreate
+# @+node:ville.20110115234843.8747: ** onCreate
 def onCreate(tag, keys):
 
     c = keys.get('c')
     if c:
         pluginController(c)
-#@+node:ville.20110115234843.8748: ** class pluginController
+# @+node:ville.20110115234843.8748: ** class pluginController
 class pluginController:
 
-    #@+others
-    #@+node:ville.20110115234843.8749: *3* __init__
+    # @+others
+    # @+node:ville.20110115234843.8749: *3* __init__
     def __init__(self, c):
 
         pass
 
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+    # @-others
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20130813134319.11942: * @file ../plugins/richtext.py
+# @+leo-ver=5-thin
+# @+node:tbrown.20130813134319.11942: * @file ../plugins/richtext.py
 # This plugin is obsolete. There are no plans to make it work with Qt6.
-#@+<< docstring >>
-#@+node:tbrown.20130813134319.14333: ** << docstring >> (richtext.py)
+# @+<< docstring >>
+# @+node:tbrown.20130813134319.14333: ** << docstring >> (richtext.py)
 """
 richtext.py - Rich text editing
 ===============================
@@ -57,11 +57,11 @@ To make a button to toggle the editor on and off, use::
       c.doCommandByName('cke-text-switch')
 
 """
-#@-<< docstring >>
+# @-<< docstring >>
 # This complaint is probably valid.
 # pylint: disable=no-name-in-module
-#@+<< imports >>
-#@+node:tbrown.20130813134319.14335: ** << imports >> (richtext.py)
+# @+<< imports >>
+# @+node:tbrown.20130813134319.14335: ** << imports >> (richtext.py)
 import time
 from urllib.parse import unquote
 from leo.core import leoGlobals as g
@@ -72,9 +72,9 @@ g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 #
 # Alias.
 real_webkit = QtWebKit and 'engine' not in g.os_path_basename(QtWebKit.__file__).lower()
-#@-<< imports >>
-#@+others
-#@+node:tbrown.20130813134319.14337: ** init (richtext.py)
+# @-<< imports >>
+# @+others
+# @+node:tbrown.20130813134319.14337: ** init (richtext.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     if not QtWebKit:
@@ -88,10 +88,10 @@ def init():
     elif name != 'nullGui':
         print('richtext.py plugin not loading because gui is not Qt')
     return ok
-#@+node:tbrown.20130813134319.5691: ** class CKEEditor
+# @+node:tbrown.20130813134319.5691: ** class CKEEditor
 class CKEEditor(QtWidgets.QWidget):  # type:ignore
-    #@+others
-    #@+node:tbrown.20130813134319.7225: *3* __init__ & reloadSettings (CKEEditor)
+    # @+others
+    # @+node:tbrown.20130813134319.7225: *3* __init__ & reloadSettings (CKEEditor)
     def __init__(self, *args, **kwargs):
 
         self.c = kwargs['c']
@@ -137,7 +137,7 @@ class CKEEditor(QtWidgets.QWidget):  # type:ignore
         self.config = self.c.config.getData("richtext_cke_config")
         if self.config:
             self.config = '\n'.join(self.config).strip()
-    #@+node:tbrown.20130813134319.7226: *3* select_node
+    # @+node:tbrown.20130813134319.7226: *3* select_node
     def select_node(self, tag, kwargs):
         c = kwargs['c']
         if c != self.c:
@@ -177,7 +177,7 @@ class CKEEditor(QtWidgets.QWidget):  # type:ignore
                 path = nodepath
 
         self.webview.setHtml(data, QtCore.QUrl.fromLocalFile(path + "/"))
-    #@+node:tbrown.20130813134319.7228: *3* unselect_node
+    # @+node:tbrown.20130813134319.7228: *3* unselect_node
     def unselect_node(self, tag, kwargs):
 
         c = kwargs['c']
@@ -222,7 +222,7 @@ class CKEEditor(QtWidgets.QWidget):  # type:ignore
             else:
                 pass  # discard edits
         return None
-    #@+node:tbrown.20130813134319.7229: *3* close
+    # @+node:tbrown.20130813134319.7229: *3* close
     def close(self):
         if self.c and not self.at_rich_close:
             # save changes?
@@ -231,8 +231,8 @@ class CKEEditor(QtWidgets.QWidget):  # type:ignore
         g.unregisterHandler('select3', self.select_node)
         g.unregisterHandler('unselect1', self.unselect_node)
         return QtWidgets.QWidget.close(self)
-    #@-others
-#@+node:tbrown.20130813134319.5694: ** class CKEPaneProvider
+    # @-others
+# @+node:tbrown.20130813134319.5694: ** class CKEPaneProvider
 class CKEPaneProvider:
     ns_id = '_add_cke_pane'
 
@@ -257,13 +257,13 @@ class CKEPaneProvider:
         # used by register_provider() to unregister previously registered
         # providers of the same service
         return self.ns_id
-#@+node:tbrown.20130813134319.14339: ** onCreate
+# @+node:tbrown.20130813134319.14339: ** onCreate
 def onCreate(tag, key):
 
     c = key.get('c')
 
     CKEPaneProvider(c)
-#@+node:tbrown.20130814090427.22458: ** at_rich_check
+# @+node:tbrown.20130814090427.22458: ** at_rich_check
 def at_rich_check(tag, key):
 
     p = key.get('new_p')
@@ -281,7 +281,7 @@ def at_rich_check(tag, key):
         cmd_CloseEditor(key, at_rich=True)
     elif do == 'open':
         cmd_OpenEditor(key, at_rich=True)
-#@+node:tbrown.20130813134319.5692: ** @g.command('cke-text-open')
+# @+node:tbrown.20130813134319.5692: ** @g.command('cke-text-open')
 @g.command('cke-text-open')
 def cmd_OpenEditor(event=None, at_rich=False):
     """Open the rich text editor, hide the regular editor."""
@@ -297,7 +297,7 @@ def cmd_OpenEditor(event=None, at_rich=False):
     w.at_rich = at_rich
     splitter = body.parent()
     splitter.replace_widget(body, w)
-#@+node:tbrown.20130813134319.5693: ** @g.command('cke-text-close')
+# @+node:tbrown.20130813134319.5693: ** @g.command('cke-text-close')
 @g.command('cke-text-close')
 def cmd_CloseEditor(event=None, at_rich=False):
     """Close the rich text editor, unhide the regular editor."""
@@ -317,7 +317,7 @@ def cmd_CloseEditor(event=None, at_rich=False):
     splitter = rte.parent()
     rte.at_rich_close = True
     splitter.replace_widget(rte, body)
-#@+node:tbrown.20130813134319.7233: ** @g.command('cke-text-switch')
+# @+node:tbrown.20130813134319.7233: ** @g.command('cke-text-switch')
 @g.command('cke-text-switch')
 def cmd_SwitchEditor(event):
     """Switch between regular and rich text editor."""
@@ -328,7 +328,7 @@ def cmd_SwitchEditor(event):
         cmd_OpenEditor(event)
     else:
         cmd_CloseEditor(event)
-#@+node:tbrown.20130813134319.7231: ** @g.command('cke-text-toggle-autosave')
+# @+node:tbrown.20130813134319.7231: ** @g.command('cke-text-toggle-autosave')
 @g.command('cke-text-toggle-autosave')
 def cmd_ToggleAutosave(event):
     """
@@ -342,7 +342,7 @@ def cmd_ToggleAutosave(event):
     c._ckeeditor_autosave = not c._ckeeditor_autosave
     g.es("Rich text autosave " +
          ("ENABLED" if c._ckeeditor_autosave else "disabled"))
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

@@ -1,26 +1,26 @@
 #!/usr/bin/python
 # coding=utf-8
-#@+leo-ver=5-thin
-#@+node:bob.20180205135005.1: * @file ../plugins/leo_babel/tests/lib_test.py
-#@@first
-#@@first
-#@@language python
-#@@tabwidth -4
+# @+leo-ver=5-thin
+# @+node:bob.20180205135005.1: * @file ../plugins/leo_babel/tests/lib_test.py
+# @@first
+# @@first
+# @@language python
+# @@tabwidth -4
 
-#@+<< imports >>
-#@+node:bob.20180205135704.1: ** << imports >>
+# @+<< imports >>
+# @+node:bob.20180205135704.1: ** << imports >>
 import datetime
 # import time
 
 from leo.core import leoGlobals as leoG
-#@-<< imports >>
-#@+<< version >>
-#@+node:bob.20180205135712.1: ** << version >>
+# @-<< imports >>
+# @+<< version >>
+# @+node:bob.20180205135712.1: ** << version >>
 version = '1.0'
-#@-<< version >>
+# @-<< version >>
 
-#@+others
-#@+node:bob.20180115163141.1: ** findTests()
+# @+others
+# @+node:bob.20180115163141.1: ** findTests()
 def findTests(cmdrT):
     """ Find all the Leo-Babel test nodes in the specified file
 
@@ -38,18 +38,18 @@ def findTests(cmdrT):
     for rpx in rootParentList:
         for lbr in rpx.children_iter():
             yield lbr
-#@+node:bob.20180116151937.1: ** class EsCapture
+# @+node:bob.20180116151937.1: ** class EsCapture
 class EsCapture:
     """ Object to capture leoG.es() output
     """
 
-    #@+others
-    #@+node:bob.20180116152036.1: *3* __init__()
+    # @+others
+    # @+node:bob.20180116152036.1: *3* __init__()
     def __init__(self):
         self._es = leoG.es
         leoG.es = self.esCapture
         self._colorDict = None
-    #@+node:bob.20180116152548.1: *3* beginCollection()
+    # @+node:bob.20180116152548.1: *3* beginCollection()
     def beginCollection(self):
         """ Begin collection of leoG.es() output
 
@@ -60,7 +60,7 @@ class EsCapture:
             None
         """
         self._colorDict = dict()
-    #@+node:bob.20180116152729.1: *3* endCollection()
+    # @+node:bob.20180116152729.1: *3* endCollection()
     def endCollection(self):
         """ End collection of leoG.es() output
 
@@ -75,7 +75,7 @@ class EsCapture:
         self._colorDict = None
 
         # leoG.trace('End Collection')
-    #@+node:bob.20180116151252.1: *3* esCapture()
+    # @+node:bob.20180116151252.1: *3* esCapture()
     def esCapture(self, *args, **keys):
         """ Capture the leoG.es() output and then pass it on
         to leoG.es()
@@ -99,7 +99,7 @@ class EsCapture:
             listx.append((args, keys))
             self._colorDict[color] = listx
         self._es(*args, **keys)
-    #@+node:bob.20180116153437.1: *3* getData()
+    # @+node:bob.20180116153437.1: *3* getData()
     def getData(self):
         """ Return the collected data
 
@@ -113,14 +113,14 @@ class EsCapture:
         """
 
         return self._collectedDict
-    #@-others
-#@+node:bob.20180116154559.1: ** class TestCmdr
+    # @-others
+# @+node:bob.20180116154559.1: ** class TestCmdr
 class TestCmdr:
     """ Global Parameters for Test Code
     """
 
-    #@+others
-    #@+node:bob.20180116154657.1: *3* __init__()
+    # @+others
+    # @+node:bob.20180116154657.1: *3* __init__()
     def __init__(self, cmdrT, fdR):
         """ Initialize Test Globals
 
@@ -132,22 +132,22 @@ class TestCmdr:
             None
         """
 
-        #@+others
-        #@+node:bob.20180116154845.1: *4* _getColor()
+        # @+others
+        # @+node:bob.20180116154845.1: *4* _getColor()
         def _getColor(cmdr, settingName, default=None):
             """ Add a default option to c.config.getColor()
             """
 
             colorx = cmdr.config.getColor(settingName)
             return colorx or default
-        #@+node:bob.20180116154857.1: *4* _getString()
+        # @+node:bob.20180116154857.1: *4* _getString()
         def _getString(cmdr, settingName, default=None):
             """ Add a default option to c.config.getString()
             """
 
             strx = cmdr.config.getString(settingName)
             return strx or default
-        #@-others
+        # @-others
 
         self.colorStdout = _getColor(cmdrT, 'Leo-Babel-stdout', default='#00ff00')
         self.colorStderr = _getColor(cmdrT, 'Leo-Babel-stderr', default='#A020F0')
@@ -162,8 +162,8 @@ class TestCmdr:
         self.babelExecCnt = 0
 
         fdR.write('||* Tests *|| {0}\n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%s')))
-    #@-others
-#@+node:bob.20180125160225.14: ** runTests()
+    # @-others
+# @+node:bob.20180125160225.14: ** runTests()
 def runTests(itPoll, cmdrT, fdR, testCmdr, genFindTests):
     """ Run the tests polling at idle time
 
@@ -178,8 +178,8 @@ def runTests(itPoll, cmdrT, fdR, testCmdr, genFindTests):
         None
     """
 
-    #@+others
-    #@+node:bob.20180317172851.1: *3* formatCaptured()
+    # @+others
+    # @+node:bob.20180317172851.1: *3* formatCaptured()
     def formatCaptured(capturedList):
         """ Format the captured List for a node body
 
@@ -196,7 +196,7 @@ def runTests(itPoll, cmdrT, fdR, testCmdr, genFindTests):
             for linex in lineList:
                 outList.append(linex.rstrip())
         return '\n'.join(outList) + '\n'
-    #@-others
+    # @-others
 
     babelCmdr = cmdrT.user_dict.get('leo_babel')
     if babelCmdr is None:
@@ -240,14 +240,14 @@ def runTests(itPoll, cmdrT, fdR, testCmdr, genFindTests):
     testCmdr.esCapture.beginCollection()
     # Returns immediately, long before the command is executed.
     cmdrT.k.simulateCommand('babel-exec-p')
-#@+node:bob.20180205135258.1: ** main()
+# @+node:bob.20180205135258.1: ** main()
 def main():
     """ Command Line Program Entry point
     """
 
     raise NotImplementedError('{0} is not a command line program.'.format(__file__))
-#@-others
+# @-others
 
 if __name__ == "__main__":
     main()
-#@-leo
+# @-leo

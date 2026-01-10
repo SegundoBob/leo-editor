@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:EKR.20040517075715.12: * @file ../plugins/xemacs.py
-#@+<< docstring >>
-#@+node:ekr.20101112195628.5434: ** << docstring >> (xemacs.py)
+# @+leo-ver=5-thin
+# @+node:EKR.20040517075715.12: * @file ../plugins/xemacs.py
+# @+<< docstring >>
+# @+node:ekr.20101112195628.5434: ** << docstring >> (xemacs.py)
 """ Allows you to edit nodes in emacs/xemacs.
 
 Provides the emacs-open-node command which passes the body
@@ -11,17 +11,17 @@ You may edit the node in the emacs buffer and changes will
 appear in Leo.
 
 """
-#@-<< docstring >>
+# @-<< docstring >>
 
 # Initial version: http://www.cs.mu.oz.au/~markn/leo/external_editors.leo
 # Edited by EKR.
 
-#@+<< imports >>
-#@+node:ekr.20050218024153: ** << imports >> (xemacs.py)
+# @+<< imports >>
+# @+node:ekr.20050218024153: ** << imports >> (xemacs.py)
 import os
 import sys
 from leo.core import leoGlobals as g
-#@-<< imports >>
+# @-<< imports >>
 
 # Full path of emacsclient executable. We need the full path as spawnlp
 # is not yet implemented in leoCommands.py
@@ -41,15 +41,15 @@ elif sys.platform.startswith("linux"):
 else:
     _emacs_cmd = "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
 
-#@+others
-#@+node:ekr.20050218023308: ** xemacs.init
+# @+others
+# @+node:ekr.20050218023308: ** xemacs.init
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = not g.unitTesting
     if ok:
         g.plugin_signon(__name__)
     return ok
-#@+node:ekr.20050313071202: ** xemacs.open_in_emacs
+# @+node:ekr.20050313071202: ** xemacs.open_in_emacs
 contextmenu_message_given = False
 
 def open_in_emacs(tag, keywords):
@@ -58,7 +58,7 @@ def open_in_emacs(tag, keywords):
     if c:
         return open_in_emacs_helper(c, p or c.p)
     return None
-#@+node:ekr.20120315101404.9748: ** xemacs.open_in_emacs_helper
+# @+node:ekr.20120315101404.9748: ** xemacs.open_in_emacs_helper
 def open_in_emacs_helper(c, p):
     global contextmenu_message_given
     v = p.v
@@ -94,7 +94,7 @@ def open_in_emacs_helper(c, p):
     else:
         # Reopen the old temp file.
         os.system(emacs_cmd)
-#@+node:ekr.20120315101404.9747: ** g.command('emacs-open-node')
+# @+node:ekr.20120315101404.9747: ** g.command('emacs-open-node')
 @g.command('emacs-open-node')
 def open_in_emacs_command(event):
     """ Open current node in (x)emacs
@@ -104,7 +104,7 @@ def open_in_emacs_command(event):
     c = event.get('c')
     if c:
         open_in_emacs_helper(c, c.p)
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

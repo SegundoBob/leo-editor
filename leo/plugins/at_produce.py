@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20040915085351: * @file ../plugins/at_produce.py
-#@+<< docstring >>
-#@+node:ekr.20050311110307: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:ekr.20040915085351: * @file ../plugins/at_produce.py
+# @+<< docstring >>
+# @+node:ekr.20050311110307: ** << docstring >>
 """ Executes commands in nodes whose body text starts with @produce.
 
 WARNING: trying to execute a non-existent command will hang Leo.
@@ -26,7 +26,7 @@ This plugin is not intended as a replacement for make or Ant, but as a
 simple substitute when that machinery is overkill.
 
 """
-#@-<< docstring >>
+# @-<< docstring >>
 
 # 2014/09/21: EKR
 # - Creates at-produce-all and at-produce-selected commands.
@@ -41,8 +41,8 @@ from leo.core import leoGlobals as g
 # Global vars.
 pr = '@' + 'produce'
 
-#@+others
-#@+node:ekr.20040915085351.7: ** addMenu (no longer used)
+# @+others
+# @+node:ekr.20040915085351.7: ** addMenu (no longer used)
 def addMenu(tag, keywords):
     """Produce two new entries at the end of the Outlines menu."""
 
@@ -57,7 +57,7 @@ def addMenu(tag, keywords):
     c.add_command(menu,
         label="Execute Tree Produce",
         command=lambda c=c: run(c, all=False))
-#@+node:ekr.20140920173002.17965: ** at-produce commands
+# @+node:ekr.20140920173002.17965: ** at-produce commands
 @g.command('at-produce-all')
 def produce_all_f(event):
     c = event.get('c')
@@ -69,14 +69,14 @@ def produce_selected_f(event):
     c = event.get('c')
     if c:
         run(c, all=False)
-#@+node:ekr.20050311110629.1: ** init
+# @+node:ekr.20050311110629.1: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     # g.registerHandler(('new','menu2'),addMenu)
     g.globalDirectiveList.append('produce')
     g.plugin_signon(__name__)
     return True
-#@+node:ekr.20040915085351.5: ** run & helpers
+# @+node:ekr.20040915085351.5: ** run & helpers
 def run(c, all):
     """
     Run all @produce nodes in a separate thread.
@@ -98,7 +98,7 @@ def run(c, all):
         timer_callback_helper(c, t, timer)
     timer.handler = timer_callback
     timer.start()
-#@+node:ekr.20040915085351.2: *3* getList
+# @+node:ekr.20040915085351.2: *3* getList
 def getList(c, all):
     """
     Return a list of all @produce lines in body texts in an outline.
@@ -112,7 +112,7 @@ def getList(c, all):
             if line.startswith(pr):
                 aList.append(line)
     return aList
-#@+node:ekr.20040915085351.6: *3* runList
+# @+node:ekr.20040915085351.6: *3* runList
 def runList(c, aList):
     """
     Run all commands in aList (in a separate thread).
@@ -155,7 +155,7 @@ def runList(c, aList):
         f.read()
     finally:
         f.close()
-#@+node:ekr.20140920173002.17966: *3* timer_callback_helper
+# @+node:ekr.20140920173002.17966: *3* timer_callback_helper
 def timer_callback_helper(c, t, timer):
     """All drawing must be done in the main thread."""
     if t.isAlive():
@@ -176,7 +176,7 @@ def timer_callback_helper(c, t, timer):
         c.redraw()
         timer.stop()
         g.es_print('at-produce: done')
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20070322113635: * @file ../plugins/bookmarks.py
-#@+<< docstring: bookmarks.py >>
-#@+node:tbrown.20070322113635.1: ** << docstring: bookmarks.py >>
+# @+leo-ver=5-thin
+# @+node:tbrown.20070322113635: * @file ../plugins/bookmarks.py
+# @+<< docstring: bookmarks.py >>
+# @+node:tbrown.20070322113635.1: ** << docstring: bookmarks.py >>
 """ Manage bookmarks in a list, and show bookmarks in a pane.
 
 This plugin has two bookmark related functions.  It manages nodes that
@@ -208,10 +208,10 @@ it to edit the bookmark node itself, and delete the body text (UNL) there.
 
 """
 
-#@-<< docstring: bookmarks.py >>
+# @-<< docstring: bookmarks.py >>
 # Written by Terry Brown.
-#@+<< imports: bookmarks.py >>
-#@+node:tbrown.20070322113635.3: ** << imports: bookmarks.py >>
+# @+<< imports: bookmarks.py >>
+# @+node:tbrown.20070322113635.3: ** << imports: bookmarks.py >>
 from collections import namedtuple
 import hashlib
 from leo.core import leoGlobals as g
@@ -220,9 +220,9 @@ from leo.core.leoQt import ControlType, KeyboardModifier, MouseButton, Orientati
 
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
-#@-<< imports: bookmarks.py >>
-#@+others
-#@+node:ekr.20100128073941.5371: ** init (bookmarks.py)
+# @-<< imports: bookmarks.py >>
+# @+others
+# @+node:ekr.20100128073941.5371: ** init (bookmarks.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     if g.unitTesting:
@@ -234,14 +234,14 @@ def init():
     g.plugin_signon(__name__)
     return True
 
-#@+node:tbrown.20110712121053.19751: ** onCreate
+# @+node:tbrown.20110712121053.19751: ** onCreate
 def onCreate(tag, keys):
 
     c = keys.get('c')
     if not c:
         return
     BookMarkDisplayProvider(c)
-#@+node:tbrown.20120319161800.21489: ** bookmarks-open-*
+# @+node:tbrown.20120319161800.21489: ** bookmarks-open-*
 @g.command('bookmarks-open-bookmark')
 def cmd_open_bookmark(event):
     c = event.get('c')
@@ -269,7 +269,7 @@ def cmd_open_node(event):
         # No need to handle url hooks here.
         g.handleUrl(url, c=c, p=p)
 
-#@+node:tbrown.20110712100955.39215: ** bookmarks-show
+# @+node:tbrown.20110712100955.39215: ** bookmarks-show
 @g.command('bookmarks-show')
 def cmd_show(event):
     gui = g.app.gui
@@ -282,7 +282,7 @@ def cmd_show(event):
     main_splitter.insertWidget(1, bmd.w)
     # Give equal width to the panes in the secondary splitter.
     main_splitter.setSizes([100000] * len(main_splitter.sizes()))
-#@+node:tbrown.20131226095537.26309: ** bookmarks-switch
+# @+node:tbrown.20131226095537.26309: ** bookmarks-switch
 @g.command('bookmarks-switch')
 def cmd_switch(event):
     """switch between bookmarks and previous position in outline"""
@@ -317,7 +317,7 @@ def cmd_switch(event):
     oc.redraw()
     oc.bringToFront()
 
-#@+node:tbrown.20140101093550.25175: ** bookmarks-bookmark-*
+# @+node:tbrown.20140101093550.25175: ** bookmarks-bookmark-*
 def _get_bm_container(c, child=False, organizer=False):
     """_get_bm_container - get the controller and container for a new bookmark
 
@@ -431,7 +431,7 @@ def cmd_bookmark_find_flat(event):
     if len(nodes) > 40:
         g.es("Stopped after 40 hits")
 
-#@+node:tbrown.20140101093550.25176: ** bookmarks-level-*
+# @+node:tbrown.20140101093550.25176: ** bookmarks-level-*
 @g.command('bookmarks-level-increase')
 def cmd_level_increase(event, delta=1):
     """increase levels, number of rows shown, for bookmarks"""
@@ -450,7 +450,7 @@ def cmd_level_decrease(event):
     """decrease levels, number of rows shown, for bookmarks"""
     cmd_level_increase(event, delta=-1)
 
-#@+node:tbrown.20131214112218.36871: ** bookmarks-mark
+# @+node:tbrown.20131214112218.36871: ** bookmarks-mark
 @g.command('bookmarks-mark-as-target')
 def cmd_mark_as_target(event):
     """Mark current node as Bookmarks list for use by another file,
@@ -462,7 +462,7 @@ def cmd_mark_as_target(event):
     g.es("Node noted - now use\nbookmarks-use-other-outline\nin the "
         "outline you want to\nstore bookmarks in this node")
 
-#@+node:ekr.20190619132530.1: ** bookmarks-use-other-outline
+# @+node:ekr.20190619132530.1: ** bookmarks-use-other-outline
 @g.command('bookmarks-use-other-outline')
 def cmd_use_other_outline(event):
     """Set bookmarks for this outline from a list (node) in
@@ -482,14 +482,14 @@ def cmd_use_other_outline(event):
     main_splitter.insertWidget(1, bmd.w)
     # Give equal width to the panes in the secondary splitter.
     main_splitter.setSizes([100000] * len(main_splitter.sizes()))
-#@+node:ekr.20140917180536.17896: ** class FlowLayout (QLayout)
+# @+node:ekr.20140917180536.17896: ** class FlowLayout (QLayout)
 class FlowLayout(QtWidgets.QLayout):  # type:ignore
     """
     from http://ftp.ics.uci.edu/pub/centos0/ics-custom-build/BUILD/
     PyQt-x11-gpl-4.7.2/examples/layouts/flowlayout.py
     """
-    #@+others
-    #@+node:ekr.20140917180536.17897: *3* __init__
+    # @+others
+    # @+node:ekr.20140917180536.17897: *3* __init__
     def __init__(self, parent=None, margin=0, spacing=-1):
         """Ctor for FlowLayout class."""
         super().__init__(parent)
@@ -499,39 +499,39 @@ class FlowLayout(QtWidgets.QLayout):  # type:ignore
             self.setMargin(0)
         self.setSpacing(spacing)
         self.itemList = []
-    #@+node:ekr.20140917180536.17898: *3* __del__
+    # @+node:ekr.20140917180536.17898: *3* __del__
     def __del__(self):
         item = self.takeAt(0)
         while item:
             item = self.takeAt(0)
 
-    #@+node:ekr.20140917180536.17899: *3* addItem
+    # @+node:ekr.20140917180536.17899: *3* addItem
     def addItem(self, item):
         self.itemList.append(item)
 
-    #@+node:ekr.20140917180536.17900: *3* insertWidget
+    # @+node:ekr.20140917180536.17900: *3* insertWidget
     def insertWidget(self, index, item):
         x = QtWidgets.QWidgetItem(item)
         assert x  # for pyflakes
         # item.setParent(x)
         # self.itemList.insert(index, x)
 
-    #@+node:ekr.20140917180536.17901: *3* count
+    # @+node:ekr.20140917180536.17901: *3* count
     def count(self):
         return len(self.itemList)
 
-    #@+node:ekr.20140917180536.17902: *3* itemAt
+    # @+node:ekr.20140917180536.17902: *3* itemAt
     def itemAt(self, index):
         if 0 <= index < len(self.itemList):
             return self.itemList[index]
         return None
-    #@+node:ekr.20140917180536.17903: *3* takeAt
+    # @+node:ekr.20140917180536.17903: *3* takeAt
     def takeAt(self, index):
         if 0 <= index < len(self.itemList):
             return self.itemList.pop(index)
         return None
 
-    #@+node:ekr.20140917180536.17904: *3* expandingDirections (override)
+    # @+node:ekr.20140917180536.17904: *3* expandingDirections (override)
     def expandingDirections(self):
 
         """
@@ -543,25 +543,25 @@ class FlowLayout(QtWidgets.QLayout):  # type:ignore
         """
         return Orientation.Horizontal  # Best guess.
 
-    #@+node:ekr.20140917180536.17905: *3* hasHeightForWidth
+    # @+node:ekr.20140917180536.17905: *3* hasHeightForWidth
     def hasHeightForWidth(self):
         return True
 
-    #@+node:ekr.20140917180536.17906: *3* heightForWidth
+    # @+node:ekr.20140917180536.17906: *3* heightForWidth
     def heightForWidth(self, width):
         height = self.doLayout(QtCore.QRect(0, 0, width, 0), True)
         return height
 
-    #@+node:ekr.20140917180536.17907: *3* setGeometry
+    # @+node:ekr.20140917180536.17907: *3* setGeometry
     def setGeometry(self, rect):
         super().setGeometry(rect)
         self.doLayout(rect, False)
 
-    #@+node:ekr.20140917180536.17908: *3* sizeHint
+    # @+node:ekr.20140917180536.17908: *3* sizeHint
     def sizeHint(self):
         return self.minimumSize()
 
-    #@+node:ekr.20140917180536.17909: *3* minimumSize
+    # @+node:ekr.20140917180536.17909: *3* minimumSize
     def minimumSize(self):
 
         size = QtCore.QSize()
@@ -570,7 +570,7 @@ class FlowLayout(QtWidgets.QLayout):  # type:ignore
         size += QtCore.QSize(2 * self.margin(), 2 * self.margin())
         return size
 
-    #@+node:ekr.20140917180536.17910: *3* doLayout
+    # @+node:ekr.20140917180536.17910: *3* doLayout
     def doLayout(self, rect, testOnly):
         x = rect.x()
         y = rect.y()
@@ -592,14 +592,14 @@ class FlowLayout(QtWidgets.QLayout):  # type:ignore
             x = nextX
             lineHeight = max(lineHeight, item.sizeHint().height())
         return y + lineHeight - rect.y()
-    #@+node:tbnorth.20160315104244.1: *3* margin
+    # @+node:tbnorth.20160315104244.1: *3* margin
     def margin(self):
         """margin - return margin
         """
 
         return self._margin
 
-    #@+node:tbnorth.20160315104324.1: *3* setMargin
+    # @+node:tbnorth.20160315104324.1: *3* setMargin
     def setMargin(self, margin):
         """setMargin - set margin
 
@@ -608,9 +608,9 @@ class FlowLayout(QtWidgets.QLayout):  # type:ignore
 
         self._margin = margin
 
-    #@-others
+    # @-others
 
-#@+node:tbrown.20110712100955.18924: ** class BookMarkDisplay
+# @+node:tbrown.20110712100955.18924: ** class BookMarkDisplay
 class BookMarkDisplay:
     """Manage a pane showing bookmarks"""
     Bookmark = namedtuple('Bookmark', 'head url ancestors siblings children v')
@@ -628,8 +628,8 @@ class BookMarkDisplay:
         KeyboardModifier.ShiftModifier: 'Shift'
     }
 
-    #@+others
-    #@+node:tbrown.20110712100955.18926: *3* __init__ & reloadSettings (BookMarkDisplay)
+    # @+others
+    # @+node:tbrown.20110712100955.18926: *3* __init__ & reloadSettings (BookMarkDisplay)
     def __init__(self, c, v=None):
 
         self.c = c
@@ -682,7 +682,7 @@ class BookMarkDisplay:
         self.mod_map = dict(i.strip().split() for i in mod_map if i.strip())
 
 
-    #@+node:tbrown.20131227100801.30379: *3* background_clicked
+    # @+node:tbrown.20131227100801.30379: *3* background_clicked
     def background_clicked(self, event, bookmarks, row_parent):
         """background_clicked - Handle a background click in a bookmark pane
 
@@ -701,7 +701,7 @@ class BookMarkDisplay:
             return
         cmd_bookmark(event={'c': row_parent.context}, container=row_parent)
 
-    #@+node:tbnorth.20160502105134.1: *3* button_clicked
+    # @+node:tbnorth.20160502105134.1: *3* button_clicked
     def button_clicked(self, event, bm, but, up=False):
         """button_clicked - handle a button being clicked
 
@@ -754,7 +754,7 @@ class BookMarkDisplay:
         else:
             # don't leave focus adrift when clicking organizer node
             self.c.bodyWantsFocusNow()
-    #@+node:tbrown.20140807091931.30231: *3* button_menu
+    # @+node:tbrown.20140807091931.30231: *3* button_menu
     def button_menu(self, event, bm, but, up=False):
         """button_menu - handle a button being right-clicked
 
@@ -794,7 +794,7 @@ class BookMarkDisplay:
         point = event.position().toPoint()  # Qt6 documentation is wrong.
         global_point = but.mapToGlobal(point)
         menu.exec(global_point)
-    #@+node:tbnorth.20160830110146.1: *3* context_menu
+    # @+node:tbnorth.20160830110146.1: *3* context_menu
     def context_menu(self, event, container=None):
         """context_menu
         """
@@ -817,7 +817,7 @@ class BookMarkDisplay:
         point = event.position().toPoint()  # Qt6 documentation is wrong.
         global_point = menu.mapToGlobal(point)
         menu.exec(global_point)
-    #@+node:tbrown.20110712100955.18925: *3* color
+    # @+node:tbrown.20110712100955.18925: *3* color
     def color(self, text, dark=False):
         """make a consistent light background color for text"""
         text = g.toEncodedString(text, 'utf-8')
@@ -826,7 +826,7 @@ class BookMarkDisplay:
         x = tuple(int(x[2 * i : 2 * i + 2], 16) // 4 + add for i in range(3))  # type:ignore
         x = '%02x%02x%02x' % x
         return x
-    #@+node:tbrown.20131227100801.23856: *3* find_node
+    # @+node:tbrown.20131227100801.23856: *3* find_node
     def find_node(self, url):
         """find_node - Return position which is a bookmark for url, or None
 
@@ -840,7 +840,7 @@ class BookMarkDisplay:
                 return node
         return None
 
-    #@+node:tbrown.20140206130031.25813: *3* fix_text
+    # @+node:tbrown.20140206130031.25813: *3* fix_text
     def fix_text(self, text):
         """fix_text - Return text with any leading @<file> removed
 
@@ -857,7 +857,7 @@ class BookMarkDisplay:
             return ' '.join(parts)
         return text
 
-    #@+node:tbrown.20110712100955.39216: *3* get_list
+    # @+node:tbrown.20110712100955.39216: *3* get_list
     def get_list(self, levels=None):
         """Return list of Bookmarks
         """
@@ -910,7 +910,7 @@ class BookMarkDisplay:
 
         return result
 
-    #@+node:tbrown.20140103082018.24102: *3* get_unl (bookmarks.py)
+    # @+node:tbrown.20140103082018.24102: *3* get_unl (bookmarks.py)
     def get_unl(self, p=None):
         """get_unl - Return a UNL which is local (with_file=False)
         if self.c == self.v.context, otherwise includes the file path.
@@ -926,7 +926,7 @@ class BookMarkDisplay:
         # not local
         return p.get_UNL(with_file=True, with_proto=True)
 
-    #@+node:tbrown.20131227100801.23858: *3* show_list
+    # @+node:tbrown.20131227100801.23858: *3* show_list
     def show_list(self, links, up=False):
         """show_list - update pane with buttons
 
@@ -1055,7 +1055,7 @@ class BookMarkDisplay:
 
         w.layout().addStretch()
 
-    #@+node:tbrown.20110712100955.39218: *3* update
+    # @+node:tbrown.20110712100955.39218: *3* update
     def update(self, tag, keywords):
         """re-show the current list of bookmarks"""
 
@@ -1066,7 +1066,7 @@ class BookMarkDisplay:
 
         return None  # do not stop processing the select1 hook
 
-    #@+node:tbrown.20130222093439.30271: *3* delete_bookmark
+    # @+node:tbrown.20130222093439.30271: *3* delete_bookmark
     def delete_bookmark(self, bm):
 
         c = bm.v.context
@@ -1089,7 +1089,7 @@ class BookMarkDisplay:
 
         self.show_list(self.get_list())
 
-    #@+node:tbrown.20140804215436.30052: *3* promote_bookmark
+    # @+node:tbrown.20140804215436.30052: *3* promote_bookmark
     def promote_bookmark(self, bm):
         """Promote bookmark"""
         p = bm.v.context.vnode2position(bm.v)
@@ -1099,7 +1099,7 @@ class BookMarkDisplay:
         bm.v.context.redraw()
         bm.v.context.bodyWantsFocusNow()
         self.show_list(self.get_list())
-    #@+node:tbrown.20171128173307.1: *3* rename_bookmark
+    # @+node:tbrown.20171128173307.1: *3* rename_bookmark
     def rename_bookmark(self, bm):
         """Rename bookmark"""
 
@@ -1120,7 +1120,7 @@ class BookMarkDisplay:
             bm.v.context.bodyWantsFocusNow()
             self.show_list(self.get_list())
 
-    #@+node:tbrown.20130601104424.55363: *3* update_bookmark
+    # @+node:tbrown.20130601104424.55363: *3* update_bookmark
     def update_bookmark(self, bm):
         """Update *EXISTING* bookmark to current node"""
 
@@ -1136,7 +1136,7 @@ class BookMarkDisplay:
         bm.v.context.bodyWantsFocusNow()
         self.show_list(self.get_list())
 
-    #@+node:tbrown.20130222093439.30275: *3* edit_bookmark
+    # @+node:tbrown.20130222093439.30275: *3* edit_bookmark
     def edit_bookmark(self, bm, v=None):
 
         if v is None:
@@ -1149,19 +1149,19 @@ class BookMarkDisplay:
         c.selectPosition(p)
         c.bringToFront()
 
-    #@-others
+    # @-others
 
-#@+node:tbrown.20110712121053.19746: ** class BookMarkDisplayProvider
+# @+node:tbrown.20110712121053.19746: ** class BookMarkDisplayProvider
 class BookMarkDisplayProvider:
-    #@+others
-    #@+node:tbrown.20110712121053.19747: *3* __init__ (BookMarkDisplayProvider)
+    # @+others
+    # @+node:tbrown.20110712121053.19747: *3* __init__ (BookMarkDisplayProvider)
     def __init__(self, c):
         self.c = c
-    #@+node:tbrown.20110712121053.19748: *3* ns_provides
+    # @+node:tbrown.20110712121053.19748: *3* ns_provides
     def ns_provides(self):
         return [('Bookmarks', '_leo_bookmarks_show')]
 
-    #@+node:tbrown.20110712121053.19749: *3* ns_provide (bookmarks.py)
+    # @+node:tbrown.20110712121053.19749: *3* ns_provide (bookmarks.py)
     def ns_provide(self, id_):
         if id_.startswith('_leo_bookmarks_show'):
 
@@ -1205,10 +1205,10 @@ class BookMarkDisplayProvider:
             return bmd.w
         return None
 
-    #@-others
+    # @-others
 
-#@-others
-#@@language python
-#@@tabwidth -4
+# @-others
+# @@language python
+# @@tabwidth -4
 
-#@-leo
+# @-leo

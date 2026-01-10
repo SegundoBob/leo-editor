@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20140723122936.18151: * @file ../plugins/importers/leo_rst.py
+# @+leo-ver=5-thin
+# @+node:ekr.20140723122936.18151: * @file ../plugins/importers/leo_rst.py
 """
 The @auto importer for restructured text.
 
@@ -17,15 +17,15 @@ if TYPE_CHECKING:
 # All valid rst underlines, with '#' *last*, so it is effectively reserved.
 underlines = '*=-^~"\'+!$%&(),./:;<>?@[\\]_`{|}#'
 
-#@+others
-#@+node:ekr.20161127192007.2: ** class Rst_Importer(Importer)
+# @+others
+# @+node:ekr.20161127192007.2: ** class Rst_Importer(Importer)
 class Rst_Importer(Importer):
     """The importer for the rst language."""
 
     language = 'rest'
 
-    #@+others
-    #@+node:ekr.20230529072922.1: *3* rst_i.gen_block & helpers
+    # @+others
+    # @+node:ekr.20230529072922.1: *3* rst_i.gen_block & helpers
     def gen_block(self, parent: Position) -> None:
         """
         Rst_Importer: gen_block.
@@ -66,7 +66,7 @@ class Rst_Importer(Importer):
         assert parent == self.root
         for p in self.root.self_and_subtree():
             p.b = ''.join(self.lines_dict[p.v])
-    #@+node:ekr.20230529072922.2: *4* rst_i.ch_level
+    # @+node:ekr.20230529072922.2: *4* rst_i.ch_level
     # # 430, per RagBlufThim. Was {'#': 1,}
     rst_seen: dict[str, int] = {}
     rst_level = 0  # A trick.
@@ -80,7 +80,7 @@ class Rst_Importer(Importer):
         self.rst_level += 1
         d[ch] = self.rst_level
         return self.rst_level
-    #@+node:ekr.20230529072922.3: *4* rst_i.is_lookahead_overline
+    # @+node:ekr.20230529072922.3: *4* rst_i.is_lookahead_overline
     def is_lookahead_overline(self, i: int) -> bool:
         """True if lines[i:i+2] form an overlined/underlined line."""
         lines = self.lines
@@ -98,7 +98,7 @@ class Rst_Importer(Importer):
             and len(line0) >= len(line1)
             and len(line2) >= len(line1)
         )
-    #@+node:ekr.20230529072922.4: *4* rst_i.is_lookahead_underline
+    # @+node:ekr.20230529072922.4: *4* rst_i.is_lookahead_underline
     def is_lookahead_underline(self, i: int) -> bool:
         """True if lines[i:i+1] form an underlined line."""
         lines = self.lines
@@ -110,7 +110,7 @@ class Rst_Importer(Importer):
             not line0.isspace() and len(line1) >= 4
             and self.is_underline(line1) and not self.is_underline(line0)
         )
-    #@+node:ekr.20230529072922.5: *4* rst_i.is_underline
+    # @+node:ekr.20230529072922.5: *4* rst_i.is_underline
     def is_underline(self, line: str, extra: str = None) -> bool:
         """True if the line consists of nothing but the same underlining characters."""
         if line.isspace():
@@ -125,7 +125,7 @@ class Rst_Importer(Importer):
             if ch != ch1:
                 return False
         return bool(ch1)
-    #@+node:ekr.20230529072922.6: *4* rst_i.make_dummy_node
+    # @+node:ekr.20230529072922.6: *4* rst_i.make_dummy_node
     def make_dummy_node(self, headline: str) -> Position:
         """Make a decls node."""
         parent = self.stack[-1]
@@ -135,7 +135,7 @@ class Rst_Importer(Importer):
         self.lines_dict[child.v] = []
         self.stack.append(child)
         return child
-    #@+node:ekr.20230529072922.7: *4* rst_i.make_rst_node
+    # @+node:ekr.20230529072922.7: *4* rst_i.make_rst_node
     def make_rst_node(self, level: int, headline: str) -> Position:
         """Create a new node, with the given headline."""
         assert level > 0
@@ -150,8 +150,8 @@ class Rst_Importer(Importer):
         self.lines_dict[child.v] = []
         self.stack.append(child)
         return self.stack[level]
-    #@-others
-#@-others
+    # @-others
+# @-others
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for reStructureText."""
@@ -162,6 +162,6 @@ importer_dict = {
     'extensions': ['.rst', '.rest'],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

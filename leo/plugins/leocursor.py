@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20100228141752.5691: * @file ../plugins/leocursor.py
+# @+leo-ver=5-thin
+# @+node:tbrown.20100228141752.5691: * @file ../plugins/leocursor.py
 """ Creates a LeoCursor object that can walk around a Leo outline and decode
 attributes from nodes.
 
@@ -14,8 +14,8 @@ See .../plugins/examples/leocursorexample.leo for application.
 import re
 from typing import Any
 
-#@+others
-#@+node:tbrown.20100206093439.5452: ** class AttribManager(AttribManager)
+# @+others
+# @+node:tbrown.20100206093439.5452: ** class AttribManager(AttribManager)
 class AttribManager:
 
     """Class responsible for reading / writing attributes from
@@ -37,7 +37,7 @@ class AttribManager:
     def keys(self, v):
         """Get list of attribute keys from a vnode"""
         raise NotImplementedError()
-#@+node:tbrown.20100206093439.5453: ** class AM_Colon
+# @+node:tbrown.20100206093439.5453: ** class AM_Colon
 class AM_Colon(AttribManager):
 
     """Attributes are in the body text as::
@@ -98,13 +98,13 @@ class AM_Colon(AttribManager):
             if m and m.group(1) == what:
                 return True
         return False
-#@+node:tbrown.20100206093439.5455: ** class AM_CapColon(AM_Colon)
+# @+node:tbrown.20100206093439.5455: ** class AM_CapColon(AM_Colon)
 class AM_CapColon(AM_Colon):
 
     """Like AM_Colon, but first letter must be capital."""
 
     pattern = re.compile(r"^([A-Z][A-Za-z0-9_]*:)(\s+(\S.*))*$")  # 2022/09/16
-#@+node:tbrown.20100206093439.5451: ** class LeoCursor
+# @+node:tbrown.20100206093439.5451: ** class LeoCursor
 class LeoCursor:
 
     """See module docs."""
@@ -112,8 +112,8 @@ class LeoCursor:
     class NotPresent(Exception):
         pass
 
-    #@+others
-    #@+node:tbrown.20100205200824.5424: *3* __init__
+    # @+others
+    # @+node:tbrown.20100205200824.5424: *3* __init__
     def __init__(self, v, other=None):
 
         self.__v = v
@@ -126,12 +126,12 @@ class LeoCursor:
             self.__root = v
             self.__attribManagers = []
             self.__parents = []
-    #@+node:tbrown.20100205200824.9978: *3* __iter__
+    # @+node:tbrown.20100205200824.9978: *3* __iter__
     def __iter__(self):
 
         for i in self.__v.children:
             yield self.__at(i)
-    #@+node:tbrown.20100206093439.5447: *3* __call__
+    # @+node:tbrown.20100206093439.5447: *3* __call__
     def __call__(self, path):
 
         """'Group .*/June/Event .*' - all the events that descend from June
@@ -177,7 +177,7 @@ class LeoCursor:
             stems = new_stems
 
         return stems
-    #@+node:tbrown.20100205200824.5425: *3* __getattr__
+    # @+node:tbrown.20100205200824.5425: *3* __getattr__
     def __getattr__(self, what):
 
         if what == '_H':
@@ -207,14 +207,14 @@ class LeoCursor:
             except AttribManager.NotPresent:
                 pass
         raise LeoCursor.NotPresent()
-    #@+node:tbrown.20100208110238.12228: *3* __getitem__
+    # @+node:tbrown.20100208110238.12228: *3* __getitem__
     def __getitem__(self, what):
         """which can be a slice object, we let builtin list take care of it"""
 
         if isinstance(what, int):
             return self.__at(self.__v.children[what])
         return [self.__at(i) for i in self.__v.children[what]]
-    #@+node:tbrown.20100206093439.5449: *3* __body
+    # @+node:tbrown.20100206093439.5449: *3* __body
     def __body(self):
 
         b = str(self.__v.b)
@@ -224,16 +224,16 @@ class LeoCursor:
             b = i.filterBody(b)
 
         return b
-    #@+node:tbrown.20100206093439.5450: *3* __at
+    # @+node:tbrown.20100206093439.5450: *3* __at
     def __at(self, v):
 
         return LeoCursor(v, self)
-    #@+node:tbrown.20100206093439.5457: *3* _setAttribManagers
+    # @+node:tbrown.20100206093439.5457: *3* _setAttribManagers
     def _setAttribManagers(self, mngrs):
 
         self.__attribManagers = list(mngrs)
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+    # @-others
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

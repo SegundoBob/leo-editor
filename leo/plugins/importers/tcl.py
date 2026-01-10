@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170615153639.2: * @file ../plugins/importers/tcl.py
+# @+leo-ver=5-thin
+# @+node:ekr.20170615153639.2: * @file ../plugins/importers/tcl.py
 """
 The @auto importer for the tcl language.
 """
@@ -12,8 +12,8 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
 
-#@+others
-#@+node:ekr.20170615153639.3: ** class Tcl_Importer(Importer)
+# @+others
+# @+node:ekr.20170615153639.3: ** class Tcl_Importer(Importer)
 class Tcl_Importer(Importer):
     """The importer for the tcl language."""
 
@@ -22,7 +22,7 @@ class Tcl_Importer(Importer):
     block_patterns = (
         ('proc', re.compile(r'\s*\bproc\s+(\w+)')),
     )
-#@-others
+# @-others
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for tcl."""
@@ -32,6 +32,6 @@ importer_dict = {
     'extensions': ['.tcl'],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

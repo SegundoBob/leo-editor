@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:edream.110203113231.873: * @file ../plugins/at_folder.py
+# @+leo-ver=5-thin
+# @+node:edream.110203113231.873: * @file ../plugins/at_folder.py
 r"""Synchronizes @folder nodes with folders.
 
 If a node is named '\@folder *<path_to_folder>*', the content (filenames) of the
@@ -17,15 +17,15 @@ while keep every files in a flat/single directory on your computer.
 import os
 from leo.core import leoGlobals as g
 
-#@+others
-#@+node:ekr.20140920173002.17961: ** init
+# @+others
+# @+node:ekr.20140920173002.17961: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     g.registerHandler("select1", onSelect)
     g.plugin_signon(__name__)
     # Fix https://bugs.launchpad.net/leo-editor/+bug/1335310
     return True
-#@+node:ekr.20140920173002.17960: ** onSelect
+# @+node:ekr.20140920173002.17960: ** onSelect
 def onSelect(tag, keywords):
     c = keywords.get('c') or keywords.get('new_c')
     if not c:
@@ -35,7 +35,7 @@ def onSelect(tag, keywords):
     if g.match_word(h, 0, "@folder"):
         sync_node_to_folder(c, v, h[8:])
 
-#@+node:edream.110203113231.875: ** sync_node_to_folder
+# @+node:edream.110203113231.875: ** sync_node_to_folder
 def sync_node_to_folder(c, parent, d):
 
     oldlist = {}
@@ -63,7 +63,7 @@ def sync_node_to_folder(c, parent, d):
     # warn for orphan oldlist
     if oldlist:
         g.es('missing: ' + ','.join(oldlist.keys()))
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

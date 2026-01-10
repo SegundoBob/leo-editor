@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20140723122936.18147: * @file ../plugins/importers/pascal.py
+# @+leo-ver=5-thin
+# @+node:ekr.20140723122936.18147: * @file ../plugins/importers/pascal.py
 """The @auto importer for the pascal language."""
 from __future__ import annotations
 import re
@@ -10,8 +10,8 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
 
-#@+others
-#@+node:ekr.20161126171035.2: ** class Pascal_Importer(Importer)
+# @+others
+# @+node:ekr.20161126171035.2: ** class Pascal_Importer(Importer)
 class Pascal_Importer(Importer):
     """The importer for the pascal language."""
 
@@ -27,8 +27,8 @@ class Pascal_Importer(Importer):
 
     patterns = list(z[1] for z in block_patterns)
 
-    #@+others
-    #@+node:ekr.20230518071145.1: *3* pascal_i.find_end_of_block
+    # @+others
+    # @+node:ekr.20230518071145.1: *3* pascal_i.find_end_of_block
     def find_end_of_block(self, i1: int, i2: int) -> int:
         """
         i is the index of the line *following* the start of the block.
@@ -42,8 +42,8 @@ class Pascal_Importer(Importer):
                 return i
             i += 1
         return i2
-    #@-others
-#@-others
+    # @-others
+# @-others
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for pascal."""
@@ -53,8 +53,8 @@ importer_dict = {
     'extensions': ['.pas'],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
+# @@language python
+# @@tabwidth -4
 
 
-#@-leo
+# @-leo

@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:edream.110203113231.734: * @file ../plugins/quit_leo.py
+# @+leo-ver=5-thin
+# @+node:edream.110203113231.734: * @file ../plugins/quit_leo.py
 """ Shows how to force Leo to quit."""
-#@@language python
-#@@tabwidth -4
+# @@language python
+# @@tabwidth -4
 from leo.core import leoGlobals as g
 
 def init():
@@ -21,4 +21,4 @@ def init():
         g.registerHandler("idle", forceLeoToQuit)
         g.plugin_signon(__name__)
     return ok
-#@-leo
+# @-leo

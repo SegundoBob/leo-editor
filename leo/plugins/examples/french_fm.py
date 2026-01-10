@@ -1,13 +1,13 @@
-#@+leo-ver=5-thin
-#@+node:EKR.20040517080202.3: * @file ../plugins/examples/french_fm.py
+# @+leo-ver=5-thin
+# @+node:EKR.20040517080202.3: * @file ../plugins/examples/french_fm.py
 """traduit les menus en Français"""
 
 # French translation completed by Frédéric Momméja, Spring 2003
 
 from leo.core import leoGlobals as g
 
-#@+others
-#@+node:ekr.20111104210837.9688: ** init
+# @+others
+# @+node:ekr.20111104210837.9688: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = g.unitTesting  # Unpleasant for unit testing.
@@ -16,7 +16,7 @@ def init():
         g.registerHandler("menu2", onMenu)
         g.plugin_signon(__name__)
     return ok
-#@+node:EKR.20040517080202.4: ** onMenu
+# @+node:EKR.20040517080202.4: ** onMenu
 def onMenu(tag, keywords):
     c = keywords.get("c")
     table = (
@@ -169,7 +169,7 @@ def onMenu(tag, keywords):
             ("Apply Settings", "Appliquer les &Réglages"))
     # Call the convenience routine to do the work.
     c.frame.menu.setRealMenuNamesFromTable(table)
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

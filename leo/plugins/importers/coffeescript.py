@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20160505094722.1: * @file ../plugins/importers/coffeescript.py
+# @+leo-ver=5-thin
+# @+node:ekr.20160505094722.1: * @file ../plugins/importers/coffeescript.py
 """The @auto importer for coffeescript."""
 from __future__ import annotations
 import re
@@ -9,8 +9,8 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
 
-#@+others
-#@+node:ekr.20160505094722.2: ** class Coffeescript_Importer(Python_Importer)
+# @+others
+# @+node:ekr.20160505094722.2: ** class Coffeescript_Importer(Python_Importer)
 class Coffeescript_Importer(Python_Importer):
 
     language = 'coffeescript'
@@ -20,7 +20,7 @@ class Coffeescript_Importer(Python_Importer):
         ('def', re.compile(r'^\s*(.+?):.*?->')),
         ('def', re.compile(r'^\s*(.+?)=.*?->')),
     )
-#@-others
+# @-others
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for coffeescript."""
@@ -30,6 +30,6 @@ importer_dict = {
     'extensions': ['.coffee',],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

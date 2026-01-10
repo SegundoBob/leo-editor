@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:edream.110203113231.724: * @file ../plugins/mod_autosave.py
+# @+leo-ver=5-thin
+# @+node:edream.110203113231.724: * @file ../plugins/mod_autosave.py
 """ Autosaves the Leo outline every so often to a .bak file.
 
 The time between saves is given by the setting, with default as shown::
@@ -26,8 +26,8 @@ g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 # The global settings dict: Keys are commanders. Values are settings dicts.
 gDict: dict[Cmdr, dict] = {}
 
-#@+others
-#@+node:ekr.20060108123141.2: ** init (mod_autosave.py)
+# @+others
+# @+node:ekr.20060108123141.2: ** init (mod_autosave.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     if g.unitTesting:
@@ -36,7 +36,7 @@ def init():
     g.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
     return True
-#@+node:edream.110203113231.726: ** onCreate (mod_autosave.py)
+# @+node:edream.110203113231.726: ** onCreate (mod_autosave.py)
 def onCreate(tag, keywords):
     """Handle the per-Leo-file settings."""
     # global gDict
@@ -63,7 +63,7 @@ def onCreate(tag, keywords):
     if verbose:
         print(f"{c.shortFileName()} auto save {interval} every sec.")
     g.registerHandler('idle', onIdle)
-#@+node:ekr.20100904062957.10654: ** onIdle (mod_autosave.py)
+# @+node:ekr.20100904062957.10654: ** onIdle (mod_autosave.py)
 def onIdle(tag, keywords):
     """
     Save the outline to a .bak file every "interval" seconds if it has changed.
@@ -84,7 +84,7 @@ def onIdle(tag, keywords):
     # Continue to save the outline to the .bak file
     # until the user explicitly saves the outline.
     d['last'] = time.time()
-#@+node:ekr.20230327042532.1: ** save (mode_autosave.py)
+# @+node:ekr.20230327042532.1: ** save (mode_autosave.py)
 def save(c: Cmdr, verbose: bool) -> None:
     """Save c's outlines to a .bak file without changing any part of the UI."""
     fc = c.fileCommands
@@ -107,7 +107,7 @@ def save(c: Cmdr, verbose: bool) -> None:
         # Restore the log.
         g.app.logWaiting = []
         g.app.log = old_log
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

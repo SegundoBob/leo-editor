@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-#@+leo-ver=5-thin
-#@+node:ekr.20120309073748.9872: * @file ../plugins/bigdash.py
-#@@first
+# @+leo-ver=5-thin
+# @+node:ekr.20120309073748.9872: * @file ../plugins/bigdash.py
+# @@first
 """
 Global search window
 
@@ -13,10 +13,10 @@ Requires the whoosh library ('easy_install whoosh') to do full text searches.
 """
 # By VMV.
 # Stand-alone version by EKR.
-#@+<<  notes >>
-#@+node:ville.20120302233106.3583: ** << notes >> (bigdash.py)
-#@@nocolor-node
-#@+at
+# @+<<  notes >>
+# @+node:ville.20120302233106.3583: ** << notes >> (bigdash.py)
+# @@nocolor-node
+# @+at
 #
 # Terry: I added an index of the oulines containing hits at the top of the
 # output. Because the link handling is already handled by BigDash and not the
@@ -32,9 +32,9 @@ Requires the whoosh library ('easy_install whoosh') to do full text searches.
 # - Made several top-level functions methods of the appropriate class.
 # - Pylint passes this file, requiring explicit imports.
 # - Improved status reports.
-#@-<<  notes >>
-#@+<< imports >>
-#@+node:ekr.20140920041848.17949: ** << imports >> (bigdash.py)
+# @-<<  notes >>
+# @+<< imports >>
+# @+node:ekr.20140920041848.17949: ** << imports >> (bigdash.py)
 import os
 import sys
 from typing import Any
@@ -52,11 +52,11 @@ except ImportError:
 
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
-#@-<< imports >>
+# @-<< imports >>
 index_error_given = False
-#@+others
-#@+node:ville.20120225144051.3580: ** top-level functions
-#@+node:ekr.20140920041848.17924: *3* global-search command (bigdash.py)
+# @+others
+# @+node:ville.20120225144051.3580: ** top-level functions
+# @+node:ekr.20140920041848.17924: *3* global-search command (bigdash.py)
 @g.command("global-search")
 def global_search_f(event):
     """
@@ -70,7 +70,7 @@ def global_search_f(event):
         # Use the per-commander setting.
         g.app._global_search.fts_max_hits = c.config.getInt('fts-max-hits') or 30
         g.app._global_search.show()
-#@+node:ville.20120302233106.3580: *3* init (bigdash.py)
+# @+node:ville.20120302233106.3580: *3* init (bigdash.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     # Fix #1114: Don't require QtWebKitWidgets here.
@@ -79,21 +79,21 @@ def init():
         g.app._global_search = GlobalSearch()
         g.plugin_signon(__name__)
     return ok
-#@+node:ekr.20140919160020.17909: ** class BigDash
+# @+node:ekr.20140919160020.17909: ** class BigDash
 class BigDash:
-    #@+others
-    #@+node:ekr.20140919160020.17916: *3* __init__
+    # @+others
+    # @+node:ekr.20140919160020.17916: *3* __init__
     def __init__(self):
         self.handlers = []
         self.link_handler = lambda x: 1
         self.create_ui()
-    #@+node:ekr.20140919160020.17913: *3* _lnk_handler
+    # @+node:ekr.20140919160020.17913: *3* _lnk_handler
     def _lnk_handler(self, url):
         self.link_handler(str(url.toString()))
-    #@+node:ekr.20140919160020.17912: *3* add_cmd_handler
+    # @+node:ekr.20140919160020.17912: *3* add_cmd_handler
     def add_cmd_handler(self, f):
         self.handlers.append(f)
-    #@+node:ekr.20140919160020.17915: *3* create_ui (bigdash.py)
+    # @+node:ekr.20140919160020.17915: *3* create_ui (bigdash.py)
     def create_ui(self):
 
         self.w = w = QtWidgets.QWidget()
@@ -116,7 +116,7 @@ class BigDash:
 
         self.add_cmd_handler(help_handler)
         self.led.setFocus()
-    #@+node:ekr.20140919160020.17910: *3* docmd
+    # @+node:ekr.20140919160020.17910: *3* docmd
     def docmd(self):
         t = self.led.text()
         for h in self.handlers:
@@ -124,10 +124,10 @@ class BigDash:
             if r:
                 # handler that accepts the call should return True
                 break
-    #@+node:ekr.20140919160020.17911: *3* set_link_handler
+    # @+node:ekr.20140919160020.17911: *3* set_link_handler
     def set_link_handler(self, lh):
         self.link_handler = lh
-    #@+node:ekr.20140919160020.17914: *3* show_help
+    # @+node:ekr.20140919160020.17914: *3* show_help
     def show_help(self):
         """Show the contents of the help panel."""
         if whoosh:
@@ -162,11 +162,11 @@ class BigDash:
     """
         self.web.setHtml(s)
 
-    #@-others
-#@+node:ekr.20140919160020.17897: ** class GlobalSearch
+    # @-others
+# @+node:ekr.20140919160020.17897: ** class GlobalSearch
 class GlobalSearch:
-    #@+others
-    #@+node:ekr.20140919160020.17898: *3* __init__(GlobalSearch)
+    # @+others
+    # @+node:ekr.20140919160020.17898: *3* __init__(GlobalSearch)
     def __init__(self):
         """Ctor for GlobalSearch class."""
         # A default: will be overridden by the global-search command.
@@ -181,11 +181,11 @@ class GlobalSearch:
         else:
             self.fts = None
         self.anchors = {}
-    #@+node:ekr.20140919160020.17922: *3* add_anchor
+    # @+node:ekr.20140919160020.17922: *3* add_anchor
     def add_anchor(self, l, tgt, text):
 
         l.append('<a href="%s">%s</a>' % (tgt, text))
-    #@+node:ekr.20140919160020.17906: *3* do_find
+    # @+node:ekr.20140919160020.17906: *3* do_find
     def do_find(self, tgt, q, target_outline=None):
         self._old_tgt = tgt
         self._old_q = q
@@ -244,7 +244,7 @@ class GlobalSearch:
         html = "".join(hits)
         tgt.web.setHtml(html)
         self.bd.set_link_handler(self.do_link_jump_gnx)
-    #@+node:ekr.20140919160020.17902: *3* do_fts
+    # @+node:ekr.20140919160020.17902: *3* do_fts
     def do_fts(self, tgt, qs):
 
         ss = g.toUnicode(qs)
@@ -286,7 +286,7 @@ class GlobalSearch:
             gc.update_new_cs()
         if q:
             self.do_find(tgt, q)
-    #@+node:ekr.20140919160020.17904: *3* do_link
+    # @+node:ekr.20140919160020.17904: *3* do_link
     def do_link(self, l):
 
         a = self.anchors[l]
@@ -294,7 +294,7 @@ class GlobalSearch:
         c.selectPosition(p)
         c.bringToFront()
 
-    #@+node:ekr.20140919160020.17905: *3* do_link_jump_gnx
+    # @+node:ekr.20140919160020.17905: *3* do_link_jump_gnx
     def do_link_jump_gnx(self, l):
         # print ("jumping to", l)
         if l.startswith("about:blank#"):
@@ -314,7 +314,7 @@ class GlobalSearch:
             c.bringToFront()
             return
         g.es_print("Not found in any open document: %s" % l)
-    #@+node:ekr.20140919160020.17903: *3* do_search (bigdash.py)
+    # @+node:ekr.20140919160020.17903: *3* do_search (bigdash.py)
     def do_search(self, tgt, qs):
 
         ss = str(qs)
@@ -344,7 +344,7 @@ class GlobalSearch:
         html = "".join(hitparas)
         tgt.web.setHtml(html)
         self.bd.set_link_handler(self.do_link)
-    #@+node:ekr.20140919160020.17900: *3* do_stats
+    # @+node:ekr.20140919160020.17900: *3* do_stats
     def do_stats(self, tgt, qs):
         """Show statistics."""
         if qs == "stats":
@@ -352,7 +352,7 @@ class GlobalSearch:
             docs = s['documents']
             tgt.web.setHtml("<p>Indexed documents:</p><ul>" +
                 "".join("<li>%s</li>" % doc for doc in docs) + "</ul>")
-    #@+node:ekr.20140919160020.17921: *3* matchlines
+    # @+node:ekr.20140919160020.17921: *3* matchlines
     def matchlines(self, b, miter):
 
         res = []
@@ -366,31 +366,31 @@ class GlobalSearch:
 
             res.append((li, (m.start() - st, m.end() - st), (spre, spost)))
         return res
-    #@+node:ekr.20140919160020.17919: *3* open_unl (bigdash)
+    # @+node:ekr.20140919160020.17919: *3* open_unl (bigdash)
     def open_unl(self, unl):
 
         parts = unl.split("#", 1)
         c = g.openWithFileName(parts[0])
         if len(parts) > 1:
             g.findAnyUnl(parts[1], c)
-    #@+node:ekr.20140919160020.17899: *3* show
+    # @+node:ekr.20140919160020.17899: *3* show
     def show(self):
         """Show the global search window."""
         self.bd.w.show()
-    #@-others
-#@+node:ekr.20140919160020.17920: ** class LeoConnector
+    # @-others
+# @+node:ekr.20140919160020.17920: ** class LeoConnector
 class LeoConnector(QtCore.QObject):  # type:ignore
     pass
-#@+node:ekr.20140920041848.17939: ** class LeoFts
+# @+node:ekr.20140920041848.17939: ** class LeoFts
 class LeoFts:
-    #@+others
-    #@+node:ekr.20140920041848.17940: *3* fts.__init__
+    # @+others
+    # @+node:ekr.20140920041848.17940: *3* fts.__init__
     def __init__(self, gnxcache, idx_dir):
         """Ctor for LeoFts class (bigdash.py)"""
         self.gnxcache = gnxcache
         self.idx_dir = idx_dir
         self.ix = self.open_index(idx_dir)
-    #@+node:ekr.20140920041848.17941: *3* fts.schema
+    # @+node:ekr.20140920041848.17941: *3* fts.schema
     def schema(self):
 
         my_analyzer = RegexTokenizer("[a-zA-Z_]+") | LowercaseFilter() | StopFilter()
@@ -402,12 +402,12 @@ class LeoFts:
             parent=ID(stored=True),
             doc=ID(stored=True))
         return schema
-    #@+node:ekr.20140920041848.17942: *3* fts.create
+    # @+node:ekr.20140920041848.17942: *3* fts.create
     def create(self):
 
         schema = self.schema()
         self.ix = create_in(self.idx_dir, schema)
-    #@+node:ekr.20140920041848.17943: *3* fts.index_nodes
+    # @+node:ekr.20140920041848.17943: *3* fts.index_nodes
     def index_nodes(self, c):
         writer = self.ix.writer()
         doc = c.mFileName
@@ -423,13 +423,13 @@ class LeoFts:
                 doc=doc)
         writer.commit()
         self.gnxcache.clear()
-    #@+node:ekr.20140920041848.17944: *3* fts.drop_document
+    # @+node:ekr.20140920041848.17944: *3* fts.drop_document
     def drop_document(self, docfile):
         writer = self.ix.writer()
         g.es_print("Drop index: %s" % g.shortFileName(docfile))
         writer.delete_by_term("doc", docfile)
         writer.commit()
-    #@+node:ekr.20170124095047.1: *3* fts.open_index
+    # @+node:ekr.20170124095047.1: *3* fts.open_index
     def open_index(self, idx_dir):
         global index_error_given
         if os.path.exists(idx_dir):
@@ -462,13 +462,13 @@ class LeoFts:
                 g.es_exception()
                 return None
 
-    #@+node:ekr.20140920041848.17945: *3* fts.statistics
+    # @+node:ekr.20140920041848.17945: *3* fts.statistics
     def statistics(self):
         r = {}
         with self.ix.searcher() as s:
             r['documents'] = list(s.lexicon("doc"))
         return r
-    #@+node:ekr.20140920041848.17946: *3* fts.search
+    # @+node:ekr.20140920041848.17946: *3* fts.search
     def search(self, searchstring, limit=30):
 
         res = []
@@ -490,37 +490,37 @@ class LeoFts:
                     rr['f'] = False
                 res.append(rr)
         return res
-    #@+node:ekr.20140920041848.17947: *3* fts.close
+    # @+node:ekr.20140920041848.17947: *3* fts.close
     def close(self):
         self.ix.close()
-    #@-others
-#@+node:ekr.20140920041848.17933: ** class GnxCache
+    # @-others
+# @+node:ekr.20140920041848.17933: ** class GnxCache
 class GnxCache:
     """ map gnx => vnode """
-    #@+others
-    #@+node:ekr.20140920041848.17934: *3* __init__
+    # @+others
+    # @+node:ekr.20140920041848.17934: *3* __init__
     def __init__(self):
         """Ctor for GnxCashe class (bigdash.py)"""
         self.clear()
-    #@+node:ekr.20140919160020.17918: *3* all_positions_global
+    # @+node:ekr.20140919160020.17918: *3* all_positions_global
     def all_positions_global(self):
 
         for c in g.app.commanders():
             for p in c.all_unique_positions():
                 yield(c, p)
-    #@+node:ekr.20140920041848.17938: *3* clear
+    # @+node:ekr.20140920041848.17938: *3* clear
     def clear(self):
 
         self.ps = {}
         self.cs = set()
-    #@+node:ekr.20140920041848.17936: *3* get
+    # @+node:ekr.20140920041848.17936: *3* get
     def get(self, gnx):
 
         if not self.ps:
             self.update_new_cs()
         res = self.ps.get(gnx, None)
         return res
-    #@+node:ekr.20140920041848.17937: *3* get_p
+    # @+node:ekr.20140920041848.17937: *3* get_p
     def get_p(self, gnx):
 
         r = self.get(gnx)
@@ -535,7 +535,7 @@ class GnxCache:
                 return c, p.copy()
         return None, None
 
-    #@+node:ekr.20140920041848.17935: *3* update_new_cs
+    # @+node:ekr.20140920041848.17935: *3* update_new_cs
     def update_new_cs(self):
 
         for c in g.app.commanders():
@@ -544,14 +544,14 @@ class GnxCache:
                     k = p.gnx
                     self.ps[k] = c, p.v
                 self.cs.add(c.hash())
-    #@-others
-#@-others
+    # @-others
+# @-others
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     bd = GlobalSearch()
     sys.exit(app.exec())
 
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

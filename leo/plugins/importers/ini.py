@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20140723122936.18142: * @file ../plugins/importers/ini.py
+# @+leo-ver=5-thin
+# @+node:ekr.20140723122936.18142: * @file ../plugins/importers/ini.py
 """The @auto importer for .ini files."""
 from __future__ import annotations
 import re
@@ -10,8 +10,8 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
 
-#@+others
-#@+node:ekr.20140723122936.18043: ** class Ini_Importer(Importer)
+# @+others
+# @+node:ekr.20140723122936.18043: ** class Ini_Importer(Importer)
 class Ini_Importer(Importer):
 
     language = 'ini'
@@ -21,8 +21,8 @@ class Ini_Importer(Importer):
         ('section', section_pat),
     )
 
-    #@+others
-    #@+node:ekr.20230516142345.1: *3* ini_i.find_end_of_block
+    # @+others
+    # @+node:ekr.20230516142345.1: *3* ini_i.find_end_of_block
     def find_end_of_block(self, i: int, i2: int) -> int:
         """
         Ini_Importer.find_end_of_block.
@@ -37,8 +37,8 @@ class Ini_Importer(Importer):
                 return i
             i += 1
         return i2
-    #@-others
-#@-others
+    # @-others
+# @-others
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for .ini files."""
@@ -48,6 +48,6 @@ importer_dict = {
     'extensions': ['.ini',],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

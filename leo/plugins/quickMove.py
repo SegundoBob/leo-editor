@@ -1,9 +1,9 @@
 # coding: utf-8
-#@+leo-ver=5-thin
-#@+node:tbrown.20070117104409: * @file ../plugins/quickMove.py
-#@@first
-#@+<< docstring >>
-#@+node:tbrown.20070117104409.1: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:tbrown.20070117104409: * @file ../plugins/quickMove.py
+# @@first
+# @+<< docstring >>
+# @+node:tbrown.20070117104409.1: ** << docstring >>
 """Creates buttons to move nodes quickly to other nodes.
 
 Quickly move/copy/clone nodes from around the tree to one or more target nodes.
@@ -127,14 +127,14 @@ Tags
 
 
 """
-#@-<< docstring >>
+# @-<< docstring >>
 
 # By Terry Brown, 2007-01-12
 
 # EKR: gnx-based unls make this plugin obsolete.
 
-#@+<< imports >>
-#@+node:tbrown.20070117104409.2: ** << imports >>
+# @+<< imports >>
+# @+node:tbrown.20070117104409.2: ** << imports >>
 from copy import deepcopy
 from typing import Any, Sequence
 from leo.core import leoGlobals as g
@@ -146,10 +146,10 @@ from leo.plugins.attrib_edit import DialogCode, ListDialog
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
-#@-<< imports >>
+# @-<< imports >>
 
-#@+others
-#@+node:tbrown.20070117104409.3: ** init and onCreate
+# @+others
+# @+node:tbrown.20070117104409.3: ** init and onCreate
 def init():
     """Return True if the plugin has loaded successfully."""
     g.registerHandler('after-create-leo-frame', onCreate)
@@ -160,7 +160,7 @@ def init():
 
 def onCreate(tag, keywords):
     quickMove(keywords['c'])
-#@+node:tbrown.20150822130731.1: ** visit_next_target
+# @+node:tbrown.20150822130731.1: ** visit_next_target
 @g.command("quickmove_visit_next_target")
 def visit_next_target(event):
     """visit_next_target - go to the UNL at the start of the list
@@ -186,7 +186,7 @@ def visit_next_target(event):
     unl = g._quickmove_target_list[0]
     g._quickmove_target_list = g._quickmove_target_list[1:] + [unl]
     g.handleUrl(unl, c)
-#@+node:tbnorth.20171002092646.1: ** keyboard commands
+# @+node:tbnorth.20171002092646.1: ** keyboard commands
 @g.command('quickmove-keyboard-popup')
 def keyboard_popup(event):
     c = event.get('c')
@@ -199,7 +199,7 @@ def keyboard_action(event):
     if not c or not hasattr(c, 'quickMove'):
         return
     c.quickMove.keyboard_action()
-#@+node:tbrown.20070117104409.4: ** class quickMove
+# @+node:tbrown.20070117104409.4: ** class quickMove
 class quickMove:
 
     """quickMove binds to a controller, adds menu entries for
@@ -217,8 +217,8 @@ class quickMove:
       ('jump', False, "Jump to", ""),
     ]
 
-    #@+others
-    #@+node:tbrown.20120619072702.22812: *3* add_target
+    # @+others
+    # @+node:tbrown.20120619072702.22812: *3* add_target
     def add_target(self, p):
         """add the current node as a target for global operations"""
 
@@ -233,7 +233,7 @@ class quickMove:
 
         # make sure g.app.db knows it's been changed
         g.app.db['_quickmove'] = g.app.db['_quickmove']
-    #@+node:tbrown.20110914094319.18256: *3* copy_recursively
+    # @+node:tbrown.20110914094319.18256: *3* copy_recursively
     @staticmethod
     def copy_recursively(nd0, nd1):
         """Recursively copy subtree
@@ -245,7 +245,7 @@ class quickMove:
 
         for child in nd0.children():
             quickMove.copy_recursively(child, nd1.insertAsLastChild())
-    #@+node:ekr.20070117113133: *3* __init__ (quickMove, quickMove.py)
+    # @+node:ekr.20070117113133: *3* __init__ (quickMove, quickMove.py)
     def __init__(self, c):
 
         self.table = (
@@ -340,11 +340,11 @@ class quickMove:
 
         if g.app.gui.guiName() == "qt":
             g.tree_popup_handlers.append(self.popup)
-    #@+node:tbrown.20091207120031.5356: *3* dtor
+    # @+node:tbrown.20091207120031.5356: *3* dtor
     def __del__(self, c=None):
         if g.app.gui.guiName() == "qt":
             g.tree_popup_handlers.remove(self.popup)
-    #@+node:ekr.20070117113133.2: *3* addButton (quickMove.py)
+    # @+node:ekr.20070117113133.2: *3* addButton (quickMove.py)
     def addButton(self, which, type_="move", v=None, parent=None):
         """Add a button that creates a target for future moves."""
         c = self.c
@@ -420,7 +420,7 @@ class quickMove:
                     but.insertAction(but.actions()[-1], rc)
 
         self.buttons.append((mb, b))
-    #@+node:tbrown.20091217114654.5372: *3* permanentButton
+    # @+node:tbrown.20091217114654.5372: *3* permanentButton
     def permanentButton(self, event=None, v=None, type_=None, first=None):
         """make buttons on this node permanent
 
@@ -452,7 +452,7 @@ class quickMove:
             c.setChanged()
         else:
             g.es("Didn't find button")
-    #@+node:tbrown.20091217114654.5374: *3* clearButton
+    # @+node:tbrown.20091217114654.5374: *3* clearButton
     def clearButton(self, event=None, v=None):
         """clear permanent buttons specs from uA"""
         c = self.c
@@ -466,7 +466,7 @@ class quickMove:
             g.es('Removing buttons - reload to apply')
         else:
             g.es('Quickmove buttons not found')
-    #@+node:tbrown.20091207102637.11494: *3* context menu popup
+    # @+node:tbrown.20091207102637.11494: *3* context menu popup
     def popup(self, c, p, menu):
         """make popup menu entry for tree context menu"""
         # pylint: disable=function-redefined
@@ -543,7 +543,7 @@ class quickMove:
         a.triggered.connect(lambda checked, p=p: self.show_targets())
         a = pathmenu.addAction("Read targets")
         a.triggered.connect(lambda checked, p=p: self.read_targets())
-    #@+node:tbrown.20131219205216.30229: *3* keyboard_popup, action
+    # @+node:tbrown.20131219205216.30229: *3* keyboard_popup, action
     def keyboard_popup(self):
         """Assign a quick move action with the current node
         as a target, to be triggered with quickmove_keyboard_action
@@ -588,7 +588,7 @@ class quickMove:
     def keyboard_action(self):
 
         self.keyboard_target.moveCurrentNodeToTarget()
-    #@+node:tbrown.20120621072000.19675: *3* do_wrap
+    # @+node:tbrown.20120621072000.19675: *3* do_wrap
     def do_wrap(self, cb, name):
         """Call a callback and store it in the list of recent actions
         which get top level menu items"""
@@ -602,7 +602,7 @@ class quickMove:
             del self.recent_moves[-1]
 
         cb()
-    #@+node:tbrown.20100810095317.24878: *3* set_parent
+    # @+node:tbrown.20100810095317.24878: *3* set_parent
     def set_parent(self, v, first, type_):
 
         ans = []
@@ -658,7 +658,7 @@ class quickMove:
         b.button.parent().layout().removeWidget(b.button)
 
         g.es('Moved to parent')
-    #@+node:tbrown.20110914094319.18255: *3* to_other
+    # @+node:tbrown.20110914094319.18255: *3* to_other
     def to_other(self, c2, cut=False):
         """Copy/Move(cut == True) p from self.c to c2 at quickmove node,
         or top of outline.  c2 may be self.c., *OR AN UNL* - see unl_to_pos()
@@ -694,7 +694,7 @@ class quickMove:
         c2.redraw()
         self.c.bringToFront(c2=self.c)
         self.c.redraw()  # must come second to keep focus
-    #@+node:tbrown.20120104084659.21948: *3* bookmark_other
+    # @+node:tbrown.20120104084659.21948: *3* bookmark_other
     def bookmark_other(self, c2):
         """Bookmark p from self.c to c2 at quickmove node,
         or c.db['_leo_bookmarks_show'] or top of
@@ -738,7 +738,7 @@ class quickMove:
         c2.redraw()
         self.c.bringToFront(c2=self.c)
         self.c.redraw()  # must come second to keep focus
-    #@+node:tbrown.20120620073922.33740: *3* unl_to_pos (quickmove.py)
+    # @+node:tbrown.20120620073922.33740: *3* unl_to_pos (quickmove.py)
     def unl_to_pos(self, c2, for_p, bookmark=False):
         """"c2 may be an outline (like c) or an UNL (string)
 
@@ -771,7 +771,7 @@ class quickMove:
             nd.copy().back().moveAfter(nd)
 
         return c2, nd
-    #@+node:tbrown.20120620073922.22304: *3* show_targets
+    # @+node:tbrown.20120620073922.22304: *3* show_targets
     def show_targets(self):
         """Add a node with the global targets listed by name and UNL"""
 
@@ -792,7 +792,7 @@ class quickMove:
 
         c.selectPosition(nd)
         c.redraw()
-    #@+node:tbrown.20120620073922.28410: *3* read_targets
+    # @+node:tbrown.20120620073922.28410: *3* read_targets
     def read_targets(self):
         """Read the targets displayed for editing by show_targets(), and
         replace the global list"""
@@ -829,15 +829,15 @@ class quickMove:
         g.app.db['_quickmove'] = g.app.db['_quickmove']
 
         g.es("%d targets read - you should delete this node now" % len(new))
-    #@-others
+    # @-others
 
-#@+node:tbrown.20070117104409.5: ** class quickMoveButton
+# @+node:tbrown.20070117104409.5: ** class quickMoveButton
 class quickMoveButton:
 
     """contains target data and function for moving node"""
 
-    #@+others
-    #@+node:ekr.20070117121326: *3* ctor
+    # @+others
+    # @+node:ekr.20070117121326: *3* ctor
     def __init__(self, owner, target, which, type_):
 
         self.c = owner.c
@@ -848,7 +848,7 @@ class quickMoveButton:
         # (which or '') - handle legacy cases
         self.type_ = type_
         self.has_parent = False
-    #@+node:ekr.20070117121326.1: *3* moveCurrentNodeToTarget
+    # @+node:ekr.20070117121326.1: *3* moveCurrentNodeToTarget
     def moveCurrentNodeToTarget(self, checked=False):
 
         """Move the current position to the last child of self.target."""
@@ -966,7 +966,7 @@ class quickMoveButton:
             c.setChanged()
 
         c.redraw()
-    #@+node:ekr.20070123061606: *3* checkMove
+    # @+node:ekr.20070123061606: *3* checkMove
     def checkMove(self, p, p2):
         c = self.c
         for z in p2.parents():
@@ -976,7 +976,7 @@ class quickMoveButton:
             c.checkMoveWithParentWithWarning(p, p2, warningFlag=False) and
             c.checkMoveWithParentWithWarning(p2, p, warningFlag=False)
         )
-    #@+node:tbrown.20100114111020.15726: *3* computeUNL
+    # @+node:tbrown.20100114111020.15726: *3* computeUNL
     def computeUNL(self, p):
 
         p = p.copy()
@@ -985,8 +985,8 @@ class quickMoveButton:
             heads.insert(0, p.h)
             p = p.parent()
         return "#" + "-->".join(heads)
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+    # @-others
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

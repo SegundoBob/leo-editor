@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20080214092357: * @file ../plugins/test/ekr_test.py
+# @+leo-ver=5-thin
+# @+node:ekr.20080214092357: * @file ../plugins/test/ekr_test.py
 from leo.core import leoGlobals as g
 
 def init():
@@ -30,4 +30,4 @@ def onmenu2(tag, keys):
         g.funcToMethod(f=ekrCommand2, theClass=c, name=None)
         c.k.registerCommand('ekr-command1', c.ekrCommand1)
         c.k.registerCommand('ekr-command2', c.ekrCommand2)
-#@-leo
+# @-leo

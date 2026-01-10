@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:danr7.20060912105041.1: * @file ../plugins/paste_as_headlines.py
-#@+<< docstring >>
-#@+node:danr7.20060912105041.2: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:danr7.20060912105041.1: * @file ../plugins/paste_as_headlines.py
+# @+<< docstring >>
+# @+node:danr7.20060912105041.2: ** << docstring >>
 """ Creates new headlines from clipboard text.
 
 If the pasted text would be greater than 50 characters in length, the plugin
@@ -10,22 +10,22 @@ text of that node. Creates a "Paste as Headlines" option the Edit menu directly
 under the existing Paste option.
 
 """
-#@-<< docstring >>
+# @-<< docstring >>
 # By Dan Rahmel.
-#@+<< imports >>
-#@+node:danr7.20060912105041.4: ** << imports >>
+# @+<< imports >>
+# @+node:danr7.20060912105041.4: ** << imports >>
 from leo.core import leoGlobals as g
 
-#@-<< imports >>
-#@+others
-#@+node:ekr.20100128073941.5377: ** init
+# @-<< imports >>
+# @+others
+# @+node:ekr.20100128073941.5377: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     g.registerHandler("create-optional-menus",
         createPasteAsHeadlinesMenu)
     g.plugin_signon(__name__)
     return True  # Ok for unit testing: creates menu.
-#@+node:danr7.20060912105041.5: ** createPasteAsHeadlinesMenu
+# @+node:danr7.20060912105041.5: ** createPasteAsHeadlinesMenu
 def createPasteAsHeadlinesMenu(tag, keywords):
 
     c = keywords.get("c")
@@ -46,7 +46,7 @@ def createPasteAsHeadlinesMenu(tag, keywords):
         label=index_label,
         underline=amp_index,
         command=lambda c=c: paste_as_headlines(c))
-#@+node:danr7.20060912105041.6: ** paste_as_headlines
+# @+node:danr7.20060912105041.6: ** paste_as_headlines
 def paste_as_headlines(c):
     # g.es("Starting...")
     currentPos = c.p
@@ -76,7 +76,7 @@ def paste_as_headlines(c):
                 insertNode.h = tempHead
     currentPos.expand()
     c.redraw()
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

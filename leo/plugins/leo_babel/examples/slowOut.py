@@ -1,10 +1,10 @@
 #!/usr/bin/python
-#@+leo-ver=5-thin
-#@+node:bob.20170716135108.2: * @file ../plugins/leo_babel/examples/slowOut.py
-#@@first
+# @+leo-ver=5-thin
+# @+node:bob.20170716135108.2: * @file ../plugins/leo_babel/examples/slowOut.py
+# @@first
 # -*- encoding: utf-8 -*-
 
-#@@language python
+# @@language python
 
 import sys
 import time
@@ -17,4 +17,4 @@ for idx in range(1, 6):
         sys.stderr.flush()  # This is necessary when stderr is redirected to a file.
     time.sleep(3)
 print('Done')
-#@-leo
+# @-leo

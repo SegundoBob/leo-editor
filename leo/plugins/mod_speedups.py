@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20101110094759.5843: * @file ../plugins/mod_speedups.py
+# @+leo-ver=5-thin
+# @+node:ekr.20101110094759.5843: * @file ../plugins/mod_speedups.py
 """ Experimental speedups
 
 Various optimizations. Use at your own risk.
@@ -12,12 +12,12 @@ If stuff breaks, disable this plugin before reporting bugs.
 import os.path
 from leo.core import leoGlobals as g
 
-#@+others
-#@+node:ville.20090804155017.7594: ** init
+# @+others
+# @+node:ville.20090804155017.7594: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     return True
-#@+node:ville.20090804155017.12332: ** os.path shortcuts
+# @+node:ville.20090804155017.12332: ** os.path shortcuts
 g.os_path_basename = os.path.basename
 g.os_path_split = os.path.split
 g.os_path_splitext = os.path.splitext
@@ -27,7 +27,7 @@ g.os_path_exists = os.path.exists
 
 
 
-#@+node:ville.20090804155017.12333: ** os_path_finalize caching (mod_speedups.py)
+# @+node:ville.20090804155017.12333: ** os_path_finalize caching (mod_speedups.py)
 os_path_finalize_orig = g.finalize
 os_path_finalize_join_orig = g.finalize_join
 
@@ -68,7 +68,7 @@ g.finalize = os_path_finalize_cached
 g.finalize_join = os_path_finalize_join_cached
 # g.os_path_expanduser = os_path_expanduser_cached
 
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

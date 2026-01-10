@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20130930160706.23451: * @file ../plugins/markup_inline.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:tbrown.20130930160706.23451: * @file ../plugins/markup_inline.py
+# @@language python
 """
 Commands to go with keybindings in @settings-->@keys-->@shortcuts
 to implement Ctrl-B,I,U Bold Italic Underline markup in plain text.
@@ -76,4 +76,4 @@ def cmd_italic(c):
 
 def cmd_underline(c):
     markup_inline(c, kind='underline')
-#@-leo
+# @-leo
