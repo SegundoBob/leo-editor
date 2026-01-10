@@ -1,11 +1,11 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240201175949.1: * @file ../../requirements.txt
+# @+leo-ver=5-thin
+# @+node:ekr.20240201175949.1: * @file ../../requirements.txt
 # leo-editor/requirements.txt.
 
 # The dependencies here should match those in pyproject.toml.
 
-#@+<< requirements.txt: dependencies >>
-#@+node:ekr.20241022091142.1: ** << requirements.txt: dependencies >>
+# @+<< requirements.txt: dependencies >>
+# @+node:ekr.20241022091142.1: ** << requirements.txt: dependencies >>
 # Warning: these dependencies should match those in pyproject.toml.
 
 # For build devs.
@@ -61,9 +61,9 @@ Send2Trash; platform_system=="Windows"      # picture_viewer plugin.
 # cursesGui2 plugin.
 # The windows-curses package has been updated for Python 3.13.
 # windows-curses[curses]; platform_system=="Windows" ; python_version < "3.14"
-#@-<< requirements.txt: dependencies >>
+# @-<< requirements.txt: dependencies >>
 
-#@@language python
-#@@nosearch
+# @@language python
+# @@nosearch
 
-#@-leo
+# @-leo

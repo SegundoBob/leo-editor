@@ -1,15 +1,17 @@
 #! /usr/bin/env python
-#@+leo-ver=5-thin
-#@+node:ekr.20031218072017.2605: * @file runLeo.py
-#@@first
+# @+leo-ver=5-thin
+# @+node:ekr.20031218072017.2605: * @file runLeo.py
+# @@first
 """Entry point for Leo in Python."""
-#@+<< imports and inits >>
-#@+node:ekr.20080921091311.1: ** << imports and inits >> (runLeo.py)
+
+# @+<< imports and inits >>
+# @+node:ekr.20080921091311.1: ** << imports and inits >> (runLeo.py)
 import os
 import sys
 import traceback
 
 # Override sys.excepthook.
+
 
 def leo_excepthook(typ, val, tb):
     # Like g.es_exception.
@@ -22,6 +24,7 @@ def leo_excepthook(typ, val, tb):
         print(line.rstrip())
     print('')
 
+
 sys.excepthook = leo_excepthook
 
 # Partial fix for #541.
@@ -29,9 +32,12 @@ sys.excepthook = leo_excepthook
 if sys.executable.endswith("pythonw.exe"):
     sys.stdout = open(os.devnull, "w")
     sys.stderr = open(
-        os.path.join(os.getenv("TEMP", default=""),  # #1557.
-        "stderr-" + os.path.basename(sys.argv[0])),
-        "w")
+        os.path.join(
+            os.getenv("TEMP", default=""),  # #1557.
+            "stderr-" + os.path.basename(sys.argv[0]),
+        ),
+        "w",
+    )
 
 # Make sure the leo directory is on sys.path.
 path = os.getcwd()
@@ -43,6 +49,7 @@ try:
     # #1472: bind to g immediately.
     from leo.core import leoGlobals as g
     from leo.core import leoApp
+
     g.app = leoApp.LeoApp()
 except Exception:
     message = (
@@ -56,9 +63,11 @@ except Exception:
     print('')
     traceback.print_exc()
     sys.exit(1)
-#@-<< imports and inits >>
-#@+others
-#@+node:ekr.20031218072017.2607: ** profile_leo (runLeo.py)
+
+
+# @-<< imports and inits >>
+# @+others
+# @+node:ekr.20031218072017.2607: ** profile_leo (runLeo.py)
 def profile_leo():
     """
     Gather and print statistics about Leo.
@@ -77,6 +86,7 @@ def profile_leo():
         return
     import cProfile as profile
     from leo.core import leoGlobals as g
+
     theDir = os.getcwd()
     # On Windows, name must be a plain string.
     # This is a binary file.
@@ -88,8 +98,11 @@ def profile_leo():
     stats.sort_stats('tottime')
     stats.print_stats(200)
 
+
 prof = profile_leo
-#@+node:ekr.20120219154958.10499: ** run (runLeo.py)
+
+
+# @+node:ekr.20120219154958.10499: ** run (runLeo.py)
 def run(fileName=None, pymacs: bool = None, *args, **keywords):
     """Initialize and run Leo"""
     # #1403: sys.excepthook doesn't help.
@@ -97,16 +110,20 @@ def run(fileName=None, pymacs: bool = None, *args, **keywords):
     assert g.app
     g.app.loadManager = leoApp.LoadManager()
     g.app.loadManager.load(fileName, pymacs)
-#@+node:maphew.20180110221247.1: ** run console (runLeo.py)
+
+
+# @+node:maphew.20180110221247.1: ** run console (runLeo.py)
 def run_console(*args, **keywords):
     """Initialize and run Leo in console mode gui"""
     sys.argv.append('--gui=console')
     run(*args, **keywords)
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
 
 if __name__ == "__main__":
     run()
-#@-leo
+# @-leo

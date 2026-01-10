@@ -1,16 +1,16 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170302123956.1: * @file ../doc/leoAttic.txt
+# @+leo-ver=5-thin
+# @+node:ekr.20170302123956.1: * @file ../doc/leoAttic.txt
 # This is Leo's final resting place for dead code.
 # New in Leo 6.7.5. The attic will contain only code retired in the present release.
 
-#@@language python
-#@@killbeautify
-#@+all
-#@+node:ekr.20240617085704.1: ** Permanent attic
-#@+node:ekr.20230913144248.1: *3* g.SherlockTracer
+# @@language python
+# @@killbeautify
+# @+all
+# @+node:ekr.20240617085704.1: ** Permanent attic
+# @+node:ekr.20230913144248.1: *3* g.SherlockTracer
 # I am going to leave this class in the attic indefinitely.
 # It might be useful as the base for other classes.
-#@+node:ekr.20121128031949.12605: *4* class g.SherlockTracer
+# @+node:ekr.20121128031949.12605: *4* class g.SherlockTracer
 class SherlockTracer:
     """
     A stand-alone tracer class with many of Sherlock's features.
@@ -47,7 +47,7 @@ class SherlockTracer:
     g.SherlockTracer(patterns).run()
     """
     @others
-#@+node:ekr.20121128031949.12602: *5* sherlock.__init__
+# @+node:ekr.20121128031949.12602: *5* sherlock.__init__
 def __init__(
     self,
     patterns: list[Any],
@@ -76,17 +76,17 @@ def __init__(
             QtCore.pyqtRemoveInputHook()
     except Exception:
         pass
-#@+node:ekr.20140326100337.16844: *5* sherlock.__call__
+# @+node:ekr.20140326100337.16844: *5* sherlock.__call__
 def __call__(self, frame: Any, event: Any, arg: Any) -> Any:
     """Exists so that self.dispatch can return self."""
     return self.dispatch(frame, event, arg)
-#@+node:ekr.20140326100337.16846: *5* sherlock.bad_pattern
+# @+node:ekr.20140326100337.16846: *5* sherlock.bad_pattern
 def bad_pattern(self, pattern: Any) -> None:
     """Report a bad Sherlock pattern."""
     if pattern not in self.bad_patterns:
         self.bad_patterns.append(pattern)
         print(f"\nignoring bad pattern: {pattern}\n")
-#@+node:ekr.20140326100337.16847: *5* sherlock.check_pattern
+# @+node:ekr.20140326100337.16847: *5* sherlock.check_pattern
 def check_pattern(self, pattern: str) -> bool:
     """Give an error and return False for an invalid pattern."""
     try:
@@ -99,7 +99,7 @@ def check_pattern(self, pattern: str) -> bool:
     except Exception:
         self.bad_pattern(pattern)
         return False
-#@+node:ekr.20121128031949.12609: *5* sherlock.dispatch
+# @+node:ekr.20121128031949.12609: *5* sherlock.dispatch
 def dispatch(self, frame: Any, event: Any, arg: Any) -> Any:
     """The dispatch method."""
     if event == 'call':
@@ -110,7 +110,7 @@ def dispatch(self, frame: Any, event: Any, arg: Any) -> Any:
         self.do_line(frame, arg)
     # Queue the SherlockTracer instance again.
     return self
-#@+node:ekr.20121128031949.12603: *5* sherlock.do_call & helper
+# @+node:ekr.20121128031949.12603: *5* sherlock.do_call & helper
 def do_call(self, frame: Any, unused_arg: Any) -> None:
     """Trace through a function call."""
     frame1 = frame
@@ -147,7 +147,7 @@ def do_call(self, frame: Any, unused_arg: Any) -> None:
     d = self.stats.get(file_name, {})
     d[full_name] = 1 + d.get(full_name, 0)
     self.stats[file_name] = d
-#@+node:ekr.20130111185820.10194: *6* sherlock.get_args
+# @+node:ekr.20130111185820.10194: *6* sherlock.get_args
 def get_args(self, frame: Any) -> list[str]:
     """Return a list of string "name=val" for each arg in the function call."""
     code = frame.f_code
@@ -174,7 +174,7 @@ def get_args(self, frame: Any) -> list[str]:
                 if val:
                     result.append(f"{name}={val}")
     return result
-#@+node:ekr.20140402060647.16845: *5* sherlock.do_line (not used)
+# @+node:ekr.20140402060647.16845: *5* sherlock.do_line (not used)
 bad_fns: list[str] = []
 
 def do_line(self, frame: Any, arg: Any) -> None:
@@ -208,7 +208,7 @@ def do_line(self, frame: Any, arg: Any) -> None:
         print(f"{name:3} {line}")
     else:
         print(f"{g.shortFileName(file_name)} {n} {full_name} {line}")
-#@+node:ekr.20130109154743.10172: *5* sherlock.do_return & helper
+# @+node:ekr.20130109154743.10172: *5* sherlock.do_return & helper
 def do_return(self, frame: Any, arg: Any) -> None:  # Arg *is* used below.
     """Trace a return statement."""
     code = frame.f_code
@@ -231,7 +231,7 @@ def do_return(self, frame: Any, arg: Any) -> None:  # Arg *is* used below.
             self.put_ret(f"<{ret1.__class__.__name__}>", n, path)
     else:
         self.put_ret(arg, n, path)
-#@+node:ekr.20220605141445.1: *6* sherlock.put_ret
+# @+node:ekr.20220605141445.1: *6* sherlock.put_ret
 def put_ret(self, arg: Any, n: int, path: str) -> None:
     """Print arg, the value returned by a "return" statement."""
     indent = ' ' * max(0, n - self.n + 1) if self.indent else ''
@@ -262,7 +262,7 @@ def put_ret(self, arg: Any, n: int, path: str) -> None:
             f"{path}:{indent}-{self.full_name} -> "
             f"{exctype.__name__}, {value} {arg_s}"
         )
-#@+node:ekr.20121128111829.12185: *5* sherlock.fn_is_enabled
+# @+node:ekr.20121128111829.12185: *5* sherlock.fn_is_enabled
 def fn_is_enabled(self, func: Any, patterns: list[str]) -> bool:
     """Return True if tracing for the given function is enabled."""
     if func in self.ignored_functions:
@@ -309,7 +309,7 @@ def fn_is_enabled(self, func: Any, patterns: list[str]) -> bool:
     except Exception:
         self.bad_pattern(pattern)
         return False
-#@+node:ekr.20130112093655.10195: *5* sherlock.get_full_name
+# @+node:ekr.20130112093655.10195: *5* sherlock.get_full_name
 def get_full_name(self, locals_: Any, name: str) -> str:
     """Return class_name::name if possible."""
     full_name = name
@@ -320,7 +320,7 @@ def get_full_name(self, locals_: Any, name: str) -> str:
     except Exception:
         pass
     return full_name
-#@+node:ekr.20121128111829.12183: *5* sherlock.is_enabled
+# @+node:ekr.20121128111829.12183: *5* sherlock.is_enabled
 ignored_files: list[str] = []  # List of files.
 ignored_functions: list[str] = []  # List of files.
 
@@ -398,7 +398,7 @@ def is_enabled(
         except Exception:
             self.bad_pattern(pattern)
     return enabled
-#@+node:ekr.20121128111829.12182: *5* sherlock.print_stats
+# @+node:ekr.20121128111829.12182: *5* sherlock.print_stats
 def print_stats(self, patterns: list[str] = None) -> None:
     """Print all accumulated statisitics."""
     print('\nSherlock statistics...')
@@ -418,7 +418,7 @@ def print_stats(self, patterns: list[str] = None) -> None:
             print('/'.join(parts[-2:]))
             for key in result:
                 print(f"{d.get(key):4} {key}")
-#@+node:ekr.20121128031949.12614: *5* sherlock.run
+# @+node:ekr.20121128031949.12614: *5* sherlock.run
 # Modified from pdb.Pdb.set_trace.
 
 def run(self, frame: Any = None) -> None:
@@ -433,7 +433,7 @@ def run(self, frame: Any = None) -> None:
         self.n += 1
     # Pass self to sys.settrace to give easy access to all methods.
     sys.settrace(self)
-#@+node:ekr.20140322090829.16834: *5* sherlock.push & pop
+# @+node:ekr.20140322090829.16834: *5* sherlock.push & pop
 def push(self, patterns: list[str]) -> None:
     """Push the old patterns and set the new."""
     self.pattern_stack.append(self.patterns)  # type:ignore
@@ -447,11 +447,11 @@ def pop(self) -> None:
         print(f"SherlockTracer.pop: {self.patterns}")
     else:
         print('SherlockTracer.pop: pattern stack underflow')
-#@+node:ekr.20140326100337.16845: *5* sherlock.set_patterns
+# @+node:ekr.20140326100337.16845: *5* sherlock.set_patterns
 def set_patterns(self, patterns: list[str]) -> None:
     """Set the patterns in effect."""
     self.patterns = [z for z in patterns if self.check_pattern(z)]
-#@+node:ekr.20140322090829.16831: *5* sherlock.show
+# @+node:ekr.20140322090829.16831: *5* sherlock.show
 def show(self, item: Any) -> str:
     """return the best representation of item."""
     if not item:
@@ -468,11 +468,11 @@ def show(self, item: Any) -> str:
     if s.startswith("<object object"):
         s = "_dummy"
     return s
-#@+node:ekr.20121128093229.12616: *5* sherlock.stop
+# @+node:ekr.20121128093229.12616: *5* sherlock.stop
 def stop(self) -> None:
     """Stop all tracing."""
     sys.settrace(None)
-#@+node:ekr.20181202062518.1: *3* leoFastRedraw.py
+# @+node:ekr.20181202062518.1: *3* leoFastRedraw.py
 """
 Gui-independent fast-redraw code.
 
@@ -490,7 +490,7 @@ class FastRedraw:
 @language python
 @tabwidth -4
 @pagewidth 70
-#@+node:ekr.20181202060924.4: *4* LeoGui.dump_diff_op_codes
+# @+node:ekr.20181202060924.4: *4* LeoGui.dump_diff_op_codes
 def dump_diff_op_codes(self, a, b, op_codes):
     """Dump the opcodes returned by difflib.SequenceMatcher."""
 
@@ -510,7 +510,7 @@ def dump_diff_op_codes(self, a, b, op_codes):
             print(f"{tag:7} at {i1}:{i2} (b)    ==> {summarize(b[j1:j2])!r}")
         else:
             print('unknown tag')
-#@+node:ekr.20181202060924.5: *4* LeoGui.dump_opcodes
+# @+node:ekr.20181202060924.5: *4* LeoGui.dump_opcodes
 def dump_opcodes(self, opcodes):
     """Dump the opcodes returned by app.peep_hole and app.make_redraw_list."""
     for z in opcodes:
@@ -526,7 +526,7 @@ def dump_opcodes(self, opcodes):
             print("  [%s]" % ',\n    '.join(gnxs))
         else:
             print(z)
-#@+node:ekr.20181202060924.2: *4* LeoGui.flatten_outline
+# @+node:ekr.20181202060924.2: *4* LeoGui.flatten_outline
 def flatten_outline(self, c):
     """Return a flat list of strings "level:gnx" for all *visible* positions."""
     trace = False and not g.unitTesting
@@ -546,7 +546,7 @@ def extend_flattened_outline(self, aList, p):
     if p.isExpanded():
         for child in p.children():
             self.extend_flattened_outline(aList, child)
-#@+node:ekr.20181202060924.3: *4* LeoGui.make_redraw_list
+# @+node:ekr.20181202060924.3: *4* LeoGui.make_redraw_list
 def make_redraw_list(self, a, b):
     """
     Diff the a (old) and b (new) outline lists.
@@ -582,7 +582,7 @@ def make_redraw_list(self, a, b):
         print('app.make_redraw_list: opcodes after peephole...')
         self.dump_opcodes(opcodes)
     return opcodes
-#@+node:ekr.20181202060924.6: *4* LeoGui.peep_hole
+# @+node:ekr.20181202060924.6: *4* LeoGui.peep_hole
 def peep_hole(self, opcodes):
     """Scan the list of opcodes, merging adjacent op-codes."""
     i, result = 0, []
@@ -608,7 +608,7 @@ def peep_hole(self, opcodes):
         result.append(op0)
         i += 1
     return result
-#@+node:ekr.20181103094900.1: *3* ../plugins/leoflexx.py
+# @+node:ekr.20181103094900.1: *3* ../plugins/leoflexx.py
 
 # Disable mypy checking.
 # type:ignore
@@ -625,7 +625,7 @@ def peep_hole(self, opcodes):
 # pylint: disable=use-a-generator
 
 @others
-#@+node:ekr.20181122215342.1: *4* << leoflexx: docstring >>
+# @+node:ekr.20181122215342.1: *4* << leoflexx: docstring >>
 @language md
 @wrap
 """
@@ -652,7 +652,7 @@ You should see the flexx (Tornado) server start up in the console.
 Something that looks like Leo should then appear in the browser. Everything
 you see is real, and most of it is "live".
 """
-#@+node:ekr.20181113041314.1: *4* << leoflexx: imports >>
+# @+node:ekr.20181113041314.1: *4* << leoflexx: imports >>
 import os
 import re
 import sys
@@ -678,14 +678,14 @@ try:
     from pscript import RawJS
 except Exception:
     flx = None
-#@+node:ekr.20181111074958.1: *4* << leoflexx: assets >>
+# @+node:ekr.20181111074958.1: *4* << leoflexx: assets >>
 # Assets for ace JS editor.
 base_url = 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/'
 flx.assets.associate_asset(__name__, base_url + 'ace.js')
 flx.assets.associate_asset(__name__, base_url + 'mode-python.js')
 flx.assets.associate_asset(__name__, base_url + 'theme-solarized_dark.js')
-#@+node:ekr.20181121040901.1: *4*  top-level functions
-#@+node:ekr.20181121091633.1: *5* dump_event
+# @+node:ekr.20181121040901.1: *4*  top-level functions
+# @+node:ekr.20181121091633.1: *5* dump_event
 def dump_event(ev):
     """Print a description of the event."""
     id_ = ev.source.title or ev.source.text
@@ -693,7 +693,7 @@ def dump_event(ev):
     s = kind + ev.type
     message = '%s: %s' % (s.rjust(15), id_)
     print('dump_event: ' + message)
-#@+node:ekr.20181121040857.1: *5* get_root
+# @+node:ekr.20181121040857.1: *5* get_root
 def get_root():
     """
     Return the LeoBrowserApp instance.
@@ -704,7 +704,7 @@ def get_root():
     root = flx.loop.get_active_component().root
     assert isinstance(root, LeoBrowserApp), repr(root)
     return root
-#@+node:ekr.20181112165240.1: *5* info (deprecated)
+# @+node:ekr.20181112165240.1: *5* info (deprecated)
 def info(s):
     """Send the string s to the flex logger, at level info."""
     if not isinstance(s, str):
@@ -712,10 +712,10 @@ def info(s):
     # A hack: automatically add the "Leo" prefix so
     # the top-level suppression logic will not delete this message.
     flx.logger.info('Leo: ' + s)
-#@+node:ekr.20181103151350.1: *5* init
+# @+node:ekr.20181103151350.1: *5* init
 def init():
     return flx
-#@+node:ekr.20181203151314.1: *5* make_editor_function
+# @+node:ekr.20181203151314.1: *5* make_editor_function
 def make_editor_function(name, node):
     """
     Instantiate the ace editor.
@@ -732,7 +732,7 @@ def make_editor_function(name, node):
     if name == 'minibuffer':
         pass  # To do: Disable line numbers.
     return ace
-#@+node:ekr.20181113041410.1: *5* suppress_unwanted_log_messages (not used)
+# @+node:ekr.20181113041410.1: *5* suppress_unwanted_log_messages (not used)
 def suppress_unwanted_log_messages():
     """
     Suppress the "Automatically scrolling cursor into view" messages by
@@ -741,8 +741,8 @@ def suppress_unwanted_log_messages():
     allowed = r'(Traceback|Critical|Error|Leo|Session|Starting|Stopping|Warning)'
     pattern = re.compile(allowed, re.IGNORECASE)
     flx.set_log_level('INFO', pattern)
-#@+node:ekr.20181115071559.1: *4* Py side: App & wrapper classes
-#@+node:ekr.20181127151027.1: *5* class API_Wrapper (StringTextWrapper)
+# @+node:ekr.20181115071559.1: *4* Py side: App & wrapper classes
+# @+node:ekr.20181127151027.1: *5* class API_Wrapper (StringTextWrapper)
 class API_Wrapper(StringTextWrapper):
     """
     A wrapper class that implements the high-level interface.
@@ -768,7 +768,7 @@ class API_Wrapper(StringTextWrapper):
 
     # No need to override getters.
     @others
-#@+node:ekr.20181128101421.1: *6* API_Wrapper.Selection Setters
+# @+node:ekr.20181128101421.1: *6* API_Wrapper.Selection Setters
 def finish_set_insert(self, tag):
     """Common helper for selection setters."""
     if 'select' in g.app.debug:
@@ -790,7 +790,7 @@ def setInsertPoint(self, pos, s=None):
 def setSelectionRange(self, i: int, j: int, insert: Optional[int] = None):
     super().setSelectionRange(i, j, insert)
     self.finish_set_insert('setSelectionRange')
-#@+node:ekr.20181127121642.1: *6* API_Wrapper.Text Setters
+# @+node:ekr.20181127121642.1: *6* API_Wrapper.Text Setters
 @language rest
 @wrap
 @
@@ -843,7 +843,7 @@ def setAllText(self, s):
     # Called by set_body_text_after_select.
     super().setAllText(s)
     self.finish_setter('insert')
-#@+node:ekr.20181206153831.1: *5* class DummyFrame
+# @+node:ekr.20181206153831.1: *5* class DummyFrame
 class DummyFrame(leoFrame.NullFrame):
     """
     A frame to keep Leo's core happy until we can call app.finish_create.
@@ -854,7 +854,7 @@ class DummyFrame(leoFrame.NullFrame):
 
     __str__ = __repr__
 
-#@+node:ekr.20181107052522.1: *5* class LeoBrowserApp
+# @+node:ekr.20181107052522.1: *5* class LeoBrowserApp
 # pscript never converts flx.PyComponents to JS.
 
 class LeoBrowserApp(flx.PyComponent):
@@ -869,8 +869,8 @@ class LeoBrowserApp(flx.PyComponent):
     main_window = flx.ComponentProp(settable=True)
 
     @others
-#@+node:ekr.20181126103604.1: *6*  app.Initing
-#@+node:ekr.20181114015356.1: *7* app.create_all_data
+# @+node:ekr.20181126103604.1: *6*  app.Initing
+# @+node:ekr.20181114015356.1: *7* app.create_all_data
 def create_gnx_to_vnode(self):
     t1 = time.process_time()
     # This is likely the only data that ever will be needed.
@@ -879,7 +879,7 @@ def create_gnx_to_vnode(self):
         print('app.create_all_data: %5.3f sec. %s entries' % (
             (time.process_time() - t1), len(list(self.gnx_to_vnode.keys()))))
     self.test_round_trip_positions()
-#@+node:ekr.20181124133513.1: *7* app.finish_create (leoflexx.py) (patches c.request_focus)
+# @+node:ekr.20181124133513.1: *7* app.finish_create (leoflexx.py) (patches c.request_focus)
 @flx.action
 def finish_create(self):
     """
@@ -922,7 +922,7 @@ def finish_create(self):
         w.body.set_focus()
     # Set the inited flag *last*.
     self.inited = True
-#@+node:ekr.20181216042806.1: *7* app.init (leoflexx.py)
+# @+node:ekr.20181216042806.1: *7* app.init (leoflexx.py)
 def init(self):
     # Set the ivars.
     global g  # Always use the imported g.
@@ -959,12 +959,12 @@ def init(self):
     # The main window will be created (much) later.
     main_window = LeoFlexxMainWindow()
     self._mutate('main_window', main_window)
-#@+node:ekr.20190507110902.1: *6* app.action.cls
+# @+node:ekr.20190507110902.1: *6* app.action.cls
 @flx.action
 def cls(self):
     """Clear the console"""
     g.cls()
-#@+node:ekr.20181117163223.1: *6* app.action.do_key
+# @+node:ekr.20181117163223.1: *6* app.action.do_key
 # https://flexx.readthedocs.io/en/stable/ui/widget.html#flexx.ui.Widget.key_down
 # See Widget._create_key_event in flexx/ui/_widget.py:
 
@@ -994,7 +994,7 @@ def do_key(self, ev, ivar):
     binding = '%s%s' % (''.join(['%s+' % (z) for z in mods]), char)
     << create key_event >>
     c.k.masterKeyHandler(key_event)
-#@+node:ekr.20181129073812.1: *7* << check browser_wrapper >>
+# @+node:ekr.20181129073812.1: *7* << check browser_wrapper >>
 assert isinstance(browser_wrapper, (
     LeoBrowserBody,
     LeoBrowserLog,
@@ -1002,7 +1002,7 @@ assert isinstance(browser_wrapper, (
     LeoBrowserStatusLine,
     LeoBrowserTree,
 )), repr(browser_wrapper)
-#@+node:ekr.20181129073905.1: *7* << set char to the translated key name >>
+# @+node:ekr.20181129073905.1: *7* << set char to the translated key name >>
 d = {
     'ArrowDown': 'Down',
     'ArrowLeft': 'Left',
@@ -1016,7 +1016,7 @@ char = d.get(key, key)
 if 'Ctrl' in mods:
     mods.remove('Ctrl')
     mods.append('Control')
-#@+node:ekr.20181129073734.1: *7* << create key_event >>
+# @+node:ekr.20181129073734.1: *7* << create key_event >>
 # create the key event, but don't bother tracing it.
 old_debug = g.app.debug
 try:
@@ -1029,7 +1029,7 @@ try:
     )
 finally:
     g.app.debug = old_debug
-#@+node:ekr.20181124054536.1: *6* app.action.dump_dict
+# @+node:ekr.20181124054536.1: *6* app.action.dump_dict
 @flx.action
 def dump_dict(self, obj, tag):
     # Note: flexx has problems with keyword args.
@@ -1038,7 +1038,7 @@ def dump_dict(self, obj, tag):
 # def message(self, s):
     # """For testing."""
     # print('app.message: %s' % s)
-#@+node:ekr.20181207080933.1: *6* app.action.set_body_text & set_status
+# @+node:ekr.20181207080933.1: *6* app.action.set_body_text & set_status
 # These must be separate because they are called from the tree logic.
 
 @flx.action
@@ -1053,8 +1053,8 @@ def set_status(self):
     c, w = self.c, self.main_window
     lt, rt = c.frame.statusLine.update(c.p.b, 0)
     w.status_line.update(lt, rt)
-#@+node:ekr.20181122132345.1: *6* app.Drawing...
-#@+node:ekr.20181113042549.1: *7* app.action.redraw
+# @+node:ekr.20181122132345.1: *6* app.Drawing...
+# @+node:ekr.20181113042549.1: *7* app.action.redraw
 @flx.action
 def redraw(self, p):
     """
@@ -1086,7 +1086,7 @@ def redraw(self, p):
     # Do not call c.setChanged() here.
     if trace:
         print('app.redraw: %5.3f sec.' % (time.process_time() - t1))
-#@+node:ekr.20181111095640.1: *7* app.action.send_children_to_tree
+# @+node:ekr.20181111095640.1: *7* app.action.send_children_to_tree
 @flx.action
 def send_children_to_tree(self, parent_ap):
     """
@@ -1121,7 +1121,7 @@ def send_children_to_tree(self, parent_ap):
             # For compatibility with flx.tree.create_item_with_parent.
         ],
     })
-#@+node:ekr.20181111203114.1: *7* app.ap_to_p
+# @+node:ekr.20181111203114.1: *7* app.ap_to_p
 def ap_to_p(self, ap):
     """Convert an archived position to a true Leo position."""
     childIndex = ap['childIndex']
@@ -1131,7 +1131,7 @@ def ap_to_p(self, ap):
             for d in ap['stack']
     ]
     return leoNodes.Position(v, childIndex, stack)
-#@+node:ekr.20181124071215.1: *7* app.dump_top_level
+# @+node:ekr.20181124071215.1: *7* app.dump_top_level
 def dump_top_level(self):
     """Dump the top-level nodes."""
     if 0:
@@ -1144,7 +1144,7 @@ def dump_top_level(self):
         for p in c.rootPosition().self_and_siblings():
             print('  %5s %s' % (p.isExpanded(), p.h))
         print('')
-#@+node:ekr.20181113043539.1: *7* app.make_redraw_dict & helper
+# @+node:ekr.20181113043539.1: *7* app.make_redraw_dict & helper
 def make_redraw_dict(self, p=None):
     """
     Return a **recursive**, archivable, list of lists describing all the
@@ -1168,7 +1168,7 @@ def make_redraw_dict(self, p=None):
         print('app.make_redraw_dict: %s direct children %5.3f sec.' % (
             len(list(c.rootPosition().self_and_siblings())), (t2 - t1)))
     return d
-#@+node:ekr.20181113044701.1: *8* app.make_dict_for_position
+# @+node:ekr.20181113044701.1: *8* app.make_dict_for_position
 def make_dict_for_position(self, p):
     """
     Recursively add a sublist for p and all its visible nodes.
@@ -1195,8 +1195,8 @@ def make_dict_for_position(self, p):
         'gnx': p.v.gnx,
         'headline': p.v.h,
     }
-#@+node:ekr.20190511091601.1: *6* app.Editing
-#@+node:ekr.20181129122147.1: *7* app.edit_headline & helper
+# @+node:ekr.20190511091601.1: *6* app.Editing
+# @+node:ekr.20181129122147.1: *7* app.edit_headline & helper
 def edit_headline(self):
     """Simulate editing the headline in the minibuffer."""
     w = self.root.main_window
@@ -1206,7 +1206,7 @@ def edit_headline(self):
 
 def edit_headline_completer(self, headline):
     print('app.edit_headline_completer')
-#@+node:ekr.20190512081356.1: *6* app.request_focus
+# @+node:ekr.20190512081356.1: *6* app.request_focus
 def request_focus(self, w):
     """Monkey-patched c.request_focus."""
     tag = 'py.app.request_focus'
@@ -1231,8 +1231,8 @@ def request_focus(self, w):
             return
     if trace:
         print('%30s: FAIL %r' % (tag, w))
-#@+node:ekr.20190511091236.1: *6* app.Minibuffer
-#@+node:ekr.20181127070903.1: *7* app.execute_minibuffer_command
+# @+node:ekr.20190511091236.1: *6* app.Minibuffer
+# @+node:ekr.20181127070903.1: *7* app.execute_minibuffer_command
 def execute_minibuffer_command(self, commandName, char, mods):
     """Start the execution of a minibuffer command."""
     # Called by app.do_command.
@@ -1244,7 +1244,7 @@ def execute_minibuffer_command(self, commandName, char, mods):
         'headline': c.p.h,  # Debugging.
         'mods': mods,
     })
-#@+node:ekr.20190510133737.1: *7* app.action.complete_minibuffer_command
+# @+node:ekr.20190510133737.1: *7* app.action.complete_minibuffer_command
 @flx.action
 def complete_minibuffer_command(self, d):
     """Complete the minibuffer command using d."""
@@ -1301,9 +1301,9 @@ def complete_minibuffer_command(self, d):
             k.setStatusLabel('Command does not exist: %s' % commandName)
             c.bodyWantsFocus()
     return False
-#@+node:ekr.20190511102058.1: *6* app.Save commands
+# @+node:ekr.20190511102058.1: *6* app.Save commands
 # These all monkey-patch the corresponding c.fileCommands methods.
-#@+node:ekr.20190511100908.1: *7* app.save_file
+# @+node:ekr.20190511100908.1: *7* app.save_file
 def save_file(self, fileName):
     """
     Monkey-patched override of c.fileCommands.save.
@@ -1330,7 +1330,7 @@ def complete_save_file(self, d):
         tag = 'py.app.complete_save_file'
         print('%30s: %s' % (tag, fn))
     self.old_save_file(fn)
-#@+node:ekr.20190511102119.1: *7* app.save_file_as
+# @+node:ekr.20190511102119.1: *7* app.save_file_as
 def save_file_as(self, fileName):
     """
     Monkey-patched override of c.fileCommands.saveAs.
@@ -1357,7 +1357,7 @@ def complete_save_file_as(self, d):
         tag = 'py.app.complete_save_file'
         print('%30s: %s' % (tag, fn))
     self.old_save_file_as(fn)
-#@+node:ekr.20190511102120.1: *7* app.save_file_to
+# @+node:ekr.20190511102120.1: *7* app.save_file_to
 def save_file_to(self, fileName):
     """
     Monkey-patched override of c.fileCommands.saveTo.
@@ -1384,15 +1384,15 @@ def complete_save_file_to(self, d):
         tag = 'py.app.complete_save_file'
         print('%30s: %s' % (tag, fn))
     self.old_save_file_to(fn)
-#@+node:ekr.20181124095316.1: *6* app.Selecting...
-#@+node:ekr.20181216051109.1: *7* app.action.complete_select
+# @+node:ekr.20181124095316.1: *6* app.Selecting...
+# @+node:ekr.20181216051109.1: *7* app.action.complete_select
 @flx.action
 def complete_select(self, d):
     """Complete the selection of the d['new_ap']"""
     self.update_body_from_dict(d)
     # tree.complete_select has direct ivars to tree ivars.
     self.c.frame.tree.complete_select(d)
-#@+node:ekr.20181111202747.1: *7* app.action.select_ap
+# @+node:ekr.20181111202747.1: *7* app.action.select_ap
 @flx.action
 def select_ap(self, ap):
     """
@@ -1410,14 +1410,14 @@ def select_ap(self, ap):
     w.tree.select_ap(ap)
     # call LeoTree.select, but not self.select_p.
     c.frame.tree.super_select(p)
-#@+node:ekr.20190506100026.1: *7* app.action.select_minibuffer
+# @+node:ekr.20190506100026.1: *7* app.action.select_minibuffer
 @flx.action
 def select_minibuffer(self):
     """Select the minibuffer in response to user click."""
     c = self.c
     event = g.app.gui.create_key_event(c, w=c.frame.body.wrapper)
     c.k.fullCommand(event)
-#@+node:ekr.20181118061020.1: *7* app.action.select_p
+# @+node:ekr.20181118061020.1: *7* app.action.select_p
 @flx.action
 def select_p(self, p):
     """
@@ -1439,7 +1439,7 @@ def select_p(self, p):
     body = c.frame.body.wrapper
     w.body.set_text(body.s)
     w.body.set_insert_point(body.ins, body.sel)
-#@+node:ekr.20190510053112.1: *7* app.action.select_tree_using_ap
+# @+node:ekr.20190510053112.1: *7* app.action.select_tree_using_ap
 @flx.action
 def select_tree_using_ap(self, ap):
     """A helper action, called from flx_tree.on_selected_event."""
@@ -1447,7 +1447,7 @@ def select_tree_using_ap(self, ap):
     # print(tag, ap ['headline'])
     p = self.ap_to_p(ap)
     self.c.frame.tree.select(p)
-#@+node:ekr.20181111204659.1: *7* app.p_to_ap (updates dict)
+# @+node:ekr.20181111204659.1: *7* app.p_to_ap (updates dict)
 def p_to_ap(self, p):
     """
     Convert a true Leo position to a serializable archived position.
@@ -1474,7 +1474,7 @@ def p_to_ap(self, p):
             'headline': stack_v.h,
         } for (stack_v, stack_childIndex) in p.stack],
     }
-#@+node:ekr.20181215154640.1: *7* app.update_body_from_dict & helper
+# @+node:ekr.20181215154640.1: *7* app.update_body_from_dict & helper
 def update_body_from_dict(self, d):
     """
     Update the *old* p.b from d.
@@ -1497,7 +1497,7 @@ def update_body_from_dict(self, d):
         print('%30s: p.b: %s d.s: %s' % (tag, len(p.b), len(d_s)))
         # self.dump_dict(d, tag)
     self.update_body_from_dict_helper(d)
-#@+node:ekr.20190511094352.1: *8* app.update_body_from_dict_helper
+# @+node:ekr.20190511094352.1: *8* app.update_body_from_dict_helper
 def update_body_from_dict_helper(self, d):
     """Update the body dict, without checks."""
     c, v = self.c, self.c.p.v
@@ -1525,8 +1525,8 @@ def update_body_from_dict_helper(self, d):
         # Besides, we are about to change nodes.
         w = c.frame.body.wrapper
         w.ins, w.sel, w.s = ins, sel, d_s
-#@+node:ekr.20181122132009.1: *6* app.Testing...
-#@+node:ekr.20181111142921.1: *7* app.action: do_command & helpers
+# @+node:ekr.20181122132009.1: *6* app.Testing...
+# @+node:ekr.20181111142921.1: *7* app.action: do_command & helpers
 @flx.action
 def do_command(self, command, key, mods):
     c = self.c
@@ -1550,14 +1550,14 @@ def do_command(self, command, key, mods):
     self.execute_minibuffer_command(command, key, mods)
     c.k.keyboardQuit()
     w.body.set_focus()
-#@+node:ekr.20181210054910.1: *8* app.do_cls
+# @+node:ekr.20181210054910.1: *8* app.do_cls
 def do_cls(self):
     c = self.c
     w = self.root.main_window
     g.cls()
     c.k.keyboardQuit()
     w.body.set_focus()
-#@+node:ekr.20181210055704.1: *8* app.do_find & helpers
+# @+node:ekr.20181210055704.1: *8* app.do_find & helpers
 def do_find(self):
     c = self.c
     event = leoGui.LeoKeyEvent(c,
@@ -1574,7 +1574,7 @@ def do_find(self):
 
 def terminate_do_find(self):
     """Never called."""
-#@+node:ekr.20181210092900.1: *9* app.end_find
+# @+node:ekr.20181210092900.1: *9* app.end_find
 def end_find(self, pattern):
     c = self.c
     fc = c.findCommands
@@ -1611,7 +1611,7 @@ def end_find(self, pattern):
         c.k.keyboardQuit()
         c.redraw()
         w.body.set_focus()
-#@+node:ekr.20181119103144.1: *8* app.do_focus
+# @+node:ekr.20181119103144.1: *8* app.do_focus
 def do_focus(self):
     c = self.c
     old_debug = g.app.debug
@@ -1624,7 +1624,7 @@ def do_focus(self):
 
 
 
-#@+node:ekr.20181210055648.1: *8* app.do_head & helpers
+# @+node:ekr.20181210055648.1: *8* app.do_head & helpers
 def do_head(self):
     c = self.c
     event = leoGui.LeoKeyEvent(c,
@@ -1641,7 +1641,7 @@ def do_head(self):
 
 def terminate_do_head(self, args, c, event):
     """never actually called."""
-#@+node:ekr.20181210092817.1: *9* app.end_set_headline (leoflexx.py)
+# @+node:ekr.20181210092817.1: *9* app.end_set_headline (leoflexx.py)
 def end_set_headline(self, h):
     c, k, p, u = self.c, self.c.k, self.c.p, self.c.undoer
     w = self.root.main_window
@@ -1656,11 +1656,11 @@ def end_set_headline(self, h):
     k.keyboardQuit()
     c.redraw()
     w.body.set_focus()
-#@+node:ekr.20181210054631.1: *8* app.do_redraw
+# @+node:ekr.20181210054631.1: *8* app.do_redraw
 def do_redraw(self):
     print('testing redraw...')
     self.redraw(None)
-#@+node:ekr.20181210054631.2: *8* app.do_select
+# @+node:ekr.20181210054631.2: *8* app.do_select
 def do_select(self):
     print('testing select...')
     c = self.c
@@ -1671,7 +1671,7 @@ def do_select(self):
         # LeoBrowserTree.select.
     else:
         print('app.do_select: not found: %s' % h)
-#@+node:ekr.20181210054516.1: *8* app.do_test
+# @+node:ekr.20181210054516.1: *8* app.do_test
 def do_test(self):
     c = self.c
     w = self.root.main_window
@@ -1682,7 +1682,7 @@ def do_test(self):
     c.redraw()
     w.body.set_focus()
 
-#@+node:ekr.20181126104843.1: *7* app.test_full_outline
+# @+node:ekr.20181126104843.1: *7* app.test_full_outline
 def test_full_outline(self, p):
     """Exercise the new diff-based redraw code on a fully-expanded outline."""
     c = self.c
@@ -1696,7 +1696,7 @@ def test_full_outline(self, p):
     for p2 in c.all_positions(copy=False):
         p2.contract()
     c.expandAllAncestors(p)  # Does not do a redraw.
-#@+node:ekr.20181113180246.1: *7* app.test_round_trip_positions
+# @+node:ekr.20181113180246.1: *7* app.test_round_trip_positions
 def test_round_trip_positions(self):
     """Test the round tripping of p_to_ap and ap_to_p."""
     c = self.c
@@ -1712,7 +1712,7 @@ def test_round_trip_positions(self):
     new_len = len(list(self.gnx_to_vnode.keys()))
     assert old_len == new_len, (old_len, new_len)
     # print('app.test_round_trip_positions: %5.3f sec' % (time.process_time()-t1))
-#@+node:ekr.20181115092337.3: *5* class LeoBrowserBody
+# @+node:ekr.20181115092337.3: *5* class LeoBrowserBody
 class LeoBrowserBody(leoFrame.NullBody):
 
     def __init__(self, frame):
@@ -1733,7 +1733,7 @@ class LeoBrowserBody(leoFrame.NullBody):
     def getName(self):
         return 'body'  # Required for proper pane bindings.
 
-#@+node:ekr.20181115092337.6: *5* class LeoBrowserFrame
+# @+node:ekr.20181115092337.6: *5* class LeoBrowserFrame
 class LeoBrowserFrame(leoFrame.NullFrame):
 
     def __init__(self, c, title, gui):
@@ -1762,7 +1762,7 @@ class LeoBrowserFrame(leoFrame.NullFrame):
         # Do not call self.createFirstTreeNode.
 
     @others
-#@+node:ekr.20181113041113.1: *5* class LeoBrowserGui
+# @+node:ekr.20181113041113.1: *5* class LeoBrowserGui
 class LeoBrowserGui(leoGui.NullGui):
 
     def __init__(self, gui_name='browser'):
@@ -1789,7 +1789,7 @@ class LeoBrowserGui(leoGui.NullGui):
         assert False, g.callers()
 
     @others
-#@+node:ekr.20181206153033.1: *6* gui.createLeoFrame
+# @+node:ekr.20181206153033.1: *6* gui.createLeoFrame
 def createLeoFrame(self, c, title):
     """
     Override NullGui.createLeoFrame.
@@ -1804,7 +1804,7 @@ def createLeoFrame(self, c, title):
     # LM.doPostPluginsInit tests g.app.windowList, maybe when it shouldn't.
     g.app.windowList.append(self.lastFrame)
     return self.lastFrame
-#@+node:ekr.20181119141542.1: *6* gui.isTextWrapper
+# @+node:ekr.20181119141542.1: *6* gui.isTextWrapper
 def isTextWrapper(self, w):
     """Return True if w is supposedly a text widget."""
     # isinstance is much more pythonic than using getName.
@@ -1820,7 +1820,7 @@ def isTextWrapper(self, w):
     if g.unitTesting and isinstance(w, StringTextWrapper):
         return True
     return False
-#@+node:ekr.20181119153936.1: *6* gui.focus...
+# @+node:ekr.20181119153936.1: *6* gui.focus...
 def get_focus(self, *args, **kwargs):
     w = self.focusWidget
     # print('%s: get_focus: %r' % (self.tag, w.tag))
@@ -1853,7 +1853,7 @@ def set_focus(self, commander, widget):
         c.frame.body.wrapper.setFocus()
     else:
         print('gui.set_focus: unknown widget', repr(widget), g.callers(6))
-#@+node:ekr.20181206090210.1: *6* gui.writeWaitingLog1/2
+# @+node:ekr.20181206090210.1: *6* gui.writeWaitingLog1/2
 def writeWaitingLog1(self, c=None):
     """Monkey-patched do-nothing version of g.app.writeWaitingLog."""
 
@@ -1881,14 +1881,14 @@ def writeWaitingLog2(self, c=None):
         w.log.put(s.rstrip())
     g.app.logWaiting = []
     g.app.setLog(None)  # Essential when opening multiple files...
-#@+node:ekr.20181202083305.1: *6* gui.runMainLoop
+# @+node:ekr.20181202083305.1: *6* gui.runMainLoop
 def runMainLoop(self):
     """Run the main loop from within Leo's core."""
     runtime = self.specific_browser or 'webruntime'
     flx.launch(LeoBrowserApp, runtime)
     flx.set_log_level('ERROR')  #  'INFO'
     flx.run()
-#@+node:ekr.20181115092337.21: *5* class LeoBrowserIconBar
+# @+node:ekr.20181115092337.21: *5* class LeoBrowserIconBar
 class LeoBrowserIconBar(leoFrame.NullIconBarClass):
 
     def __init__(self, c, parentFrame):
@@ -1898,7 +1898,7 @@ class LeoBrowserIconBar(leoFrame.NullIconBarClass):
         self.tag = 'py.icon bar.wrap'
 
     @others
-#@+node:ekr.20181115092337.22: *5* class LeoBrowserLog
+# @+node:ekr.20181115092337.22: *5* class LeoBrowserLog
 class LeoBrowserLog(leoFrame.NullLog):
 
     def __init__(self, frame, parentFrame=None):
@@ -1923,17 +1923,17 @@ class LeoBrowserLog(leoFrame.NullLog):
         return 'log'  # Required for proper pane bindings.
 
     @others
-#@+node:ekr.20181120063043.1: *6* log_wrapper.setFocus
+# @+node:ekr.20181120063043.1: *6* log_wrapper.setFocus
 def setFocus(self):
     w = self.root.main_window
     w.log.set_focus()
-#@+node:ekr.20181120063111.1: *6* log_wrapper.put & putnl
+# @+node:ekr.20181120063111.1: *6* log_wrapper.put & putnl
 def put(self, s, color=None, tabName='Log', from_redirect=False, nodeLink=None):
     self.root.main_window.log.put(s)
 
 def putnl(self, tabName='Log'):
     self.root.main_window.log.put('')
-#@+node:ekr.20181115092337.31: *5* class LeoBrowserMenu
+# @+node:ekr.20181115092337.31: *5* class LeoBrowserMenu
 class LeoBrowserMenu(leoMenu.NullMenu):
     """Browser wrapper for menus."""
 
@@ -1942,9 +1942,9 @@ class LeoBrowserMenu(leoMenu.NullMenu):
         # self.root = get_root()
         # self.tag = '(py.menu.wrap)'
 
-    #@verbatim
+    # @verbatim
     # @others
-#@+node:ekr.20181115120317.1: *5* class LeoBrowserMinibuffer (StringTextWrapper)
+# @+node:ekr.20181115120317.1: *5* class LeoBrowserMinibuffer (StringTextWrapper)
 # Leo's core doesn't define a NullMinibuffer class.
 
 class LeoBrowserMinibuffer(StringTextWrapper):
@@ -1973,7 +1973,7 @@ class LeoBrowserMinibuffer(StringTextWrapper):
         self.root.main_window.minibuffer.set_focus()
 
     @others
-#@+node:ekr.20181208062449.1: *6* mini.called by k.minibuffer
+# @+node:ekr.20181208062449.1: *6* mini.called by k.minibuffer
 # Override the methods called by k.minibuffer:
 
 last_ins = None
@@ -2025,7 +2025,7 @@ def setStyleClass(self, name):
         # print('%30s: %r' % (tag, name))
     w.minibuffer.set_style(name)
     self.update('setStyleClass:%r' % name)
-#@+node:ekr.20181115092337.32: *5* class LeoBrowserStatusLine
+# @+node:ekr.20181115092337.32: *5* class LeoBrowserStatusLine
 class LeoBrowserStatusLine(leoFrame.NullStatusLineClass):
 
     def __init__(self, c, parentFrame):
@@ -2042,14 +2042,14 @@ class LeoBrowserStatusLine(leoFrame.NullStatusLineClass):
         return g.NullObject()
 
     @others
-#@+node:ekr.20181119045430.1: *6* status_line_wrapper.clear & get
+# @+node:ekr.20181119045430.1: *6* status_line_wrapper.clear & get
 def clear(self):
     pass
 
 def get(self):
     print('status_line.get: NOT READY')
     return ''
-#@+node:ekr.20181119045343.1: *6* status_line_wrapper.put and put1
+# @+node:ekr.20181119045343.1: *6* status_line_wrapper.put and put1
 def put(self, s, bg=None, fg=None):
     w = self.root.main_window
     # Be careful during startup.
@@ -2061,10 +2061,10 @@ def put1(self, s, bg=None, fg=None):
     # Be careful during startup.
     if w and w.status_line:
         w.status_line.put2(s, bg, fg)
-#@+node:ekr.20181119154422.1: *6* status_line_wrapper.setFocus
+# @+node:ekr.20181119154422.1: *6* status_line_wrapper.setFocus
 def setFocus(self):
     self.root.status_line.set_focus()
-#@+node:ekr.20181119042937.1: *6* status_line_wrapper.update
+# @+node:ekr.20181119042937.1: *6* status_line_wrapper.update
 def update(self, body_text='', insert_point=0):
     """
     Update the status line, based on the contents of the body.
@@ -2090,7 +2090,7 @@ def update(self, body_text='', insert_point=0):
     self.put(lt_part)
     self.put1(rt_part)
     return lt_part, rt_part
-#@+node:ekr.20181115092337.57: *5* class LeoBrowserTree
+# @+node:ekr.20181115092337.57: *5* class LeoBrowserTree
 class LeoBrowserTree(leoFrame.NullTree):
 
     def __init__(self, frame):
@@ -2105,10 +2105,10 @@ class LeoBrowserTree(leoFrame.NullTree):
         return 'canvas(tree)'  # Required for proper pane bindings.
 
     @others
-#@+node:ekr.20181116081421.1: *6* tree.selection...
+# @+node:ekr.20181116081421.1: *6* tree.selection...
 
 
-#@+node:ekr.20190508121417.1: *7* tree.complete_select
+# @+node:ekr.20190508121417.1: *7* tree.complete_select
 def complete_select(self, d):
     """Complete the selection of the tree."""
     trace = 'select' in g.app.debug
@@ -2130,7 +2130,7 @@ def complete_select(self, d):
     # Make everything official in Leo's core.
     super().select(p)  # Call LeoTree.select.
     self.root.select_p(p)  # Call app.select_position.
-#@+node:ekr.20190508121510.1: *7* tree.endEditLabel
+# @+node:ekr.20190508121510.1: *7* tree.endEditLabel
 def endEditLabel(self):
     """
     End editing.
@@ -2138,7 +2138,7 @@ def endEditLabel(self):
     This must be a do-nothing, because app.end_set_headline takes its place.
     """
     # print(flx.tree.endEditLabel')
-#@+node:ekr.20190508121414.1: *7*  tree.select
+# @+node:ekr.20190508121414.1: *7*  tree.select
 # The lockout ensures that old_p never changes during the selection process.
 select_lockout = False
 old_p = None
@@ -2197,7 +2197,7 @@ def select(self, p):
         'old_ap': self.root.p_to_ap(old_p),
         'new_ap': self.root.p_to_ap(p),
     })
-#@+node:ekr.20190508121417.2: *7* tree.select_ap
+# @+node:ekr.20190508121417.2: *7* tree.select_ap
 def select_ap(self, ap):
     trace = 'select' in g.app.debug
     p = self.root.ap_to_p(ap)
@@ -2205,7 +2205,7 @@ def select_ap(self, ap):
         tag = 'py.tree.select_ap'
         print('%30s: %s %s' % (tag, p.v.fileIndex, p.v._headString))
     self.select(p)
-#@+node:ekr.20190508121417.3: *7* tree.super_select
+# @+node:ekr.20190508121417.3: *7* tree.super_select
 def super_select(self, p):
     """Call only LeoTree.select."""
     trace = 'select' in g.app.debug
@@ -2214,15 +2214,15 @@ def super_select(self, p):
         print('%30s %4s %s %s' % (tag, len(p.b), p.gnx, p.h))
     super().select(p)
 
-#@+node:ekr.20181118052203.1: *6* tree.redraw
+# @+node:ekr.20181118052203.1: *6* tree.redraw
 def redraw(self, p=None):
     """This is c.frame.tree.redraw!"""
     self.root.redraw(p)
-#@+node:ekr.20181120063844.1: *6* tree.setFocus
+# @+node:ekr.20181120063844.1: *6* tree.setFocus
 def setFocus(self):
     w = self.root.main_window
     w.tree.set_focus()
-#@+node:ekr.20181119094122.1: *5* class TracingNullObject (leoflexx.py)
+# @+node:ekr.20181119094122.1: *5* class TracingNullObject (leoflexx.py)
 @nobeautify
 
 class TracingNullObject:
@@ -2253,8 +2253,8 @@ class TracingNullObject:
     def __setattr__(self, attr, val):
         print('NullObject.__setattr__ %r %s' % (attr, g.callers()))
         return self
-#@+node:ekr.20181107052700.1: *4* Js side: flx.Widgets
-#@+node:ekr.20181201125953.1: *5* class JS_Editor (flx.Widget)
+# @+node:ekr.20181107052700.1: *4* Js side: flx.Widgets
+# @+node:ekr.20181201125953.1: *5* class JS_Editor (flx.Widget)
 class JS_Editor(flx.Widget):
     """
     The base class for the body and log panes.
@@ -2272,8 +2272,8 @@ class JS_Editor(flx.Widget):
         self.editor.resize()
 
     @others
-#@+node:ekr.20181121072246.1: *6* jse.Keys
-#@+node:ekr.20181215083729.1: *7* jse.key_press & on_key_press
+# @+node:ekr.20181121072246.1: *6* jse.Keys
+# @+node:ekr.20181215083729.1: *7* jse.key_press & on_key_press
 last_down = None
 ignore_up = False
 
@@ -2334,7 +2334,7 @@ def on_key_press(self, *events):
         if self.should_be_leo_key(ev):
             ivar = 'minibufferWidget' if self.name == 'minibuffer' else self.name
             self.root.do_key(ev, ivar)
-#@+node:ekr.20181201081444.1: *7* jse.should_be_leo_key
+# @+node:ekr.20181201081444.1: *7* jse.should_be_leo_key
 def should_be_leo_key(self, ev):
     """
     Return True if Leo should handle the key.
@@ -2364,7 +2364,7 @@ def should_be_leo_key(self, ev):
     if trace:
         print('%s: %r %r return: %s' % (tag, mods, key, bool(mods2)))
     return mods2
-#@+node:ekr.20181215083642.1: *6* jse.focus
+# @+node:ekr.20181215083642.1: *6* jse.focus
 @flx.action
 def see_insert_point(self):
     if 'focus' in g.app.debug:
@@ -2377,7 +2377,7 @@ def set_focus(self):
         tag = '%s.%s' % (self.tag, 'jse.set_focus')
         print('%30s:' % tag)
     self.editor.focus()
-#@+node:ekr.20181215061810.1: *6* jse.text getters
+# @+node:ekr.20181215061810.1: *6* jse.text getters
 def get_ins(self):
     d = self.editor.selection.getCursor()
     row, col = d['row'], d['column']
@@ -2403,7 +2403,7 @@ def get_text(self):
     s = editor.getValue()
     # print('%s: get_text: %s' % (self.tag, len(s)))
     return s
-#@+node:ekr.20181128061524.1: *6* jse.text setters
+# @+node:ekr.20181128061524.1: *6* jse.text setters
 @flx.action
 def insert(self, s):
     # print(self.tag, 'insert', repr(s))
@@ -2434,7 +2434,7 @@ def set_text(self, s):
     """Set the entire text"""
     # print('%s.set_text: len(s): %s' % (self.tag, len(s)))
     self.editor.setValue(s)
-#@+node:ekr.20181104082144.1: *5* class LeoFlexxBody (JS_Editor)
+# @+node:ekr.20181104082144.1: *5* class LeoFlexxBody (JS_Editor)
 class LeoFlexxBody(JS_Editor):
     """A CodeEditor widget based on Ace."""
 
@@ -2446,24 +2446,24 @@ class LeoFlexxBody(JS_Editor):
         self.editor = make_editor_function(self.name, self.node)
 
     @others
-#@+node:ekr.20181120055046.1: *6* << body css >>
+# @+node:ekr.20181120055046.1: *6* << body css >>
 CSS = """
 .flx-CodeEditor > .ace {
     width: 100%;
     height: 100%;
 }
 """
-#@+node:ekr.20190512094614.1: *6* flx_body.action.set_focus
+# @+node:ekr.20190512094614.1: *6* flx_body.action.set_focus
 @flx.action
 def set_focus(self):
     if 'focus' in g.app.debug:
         tag = 'flx.body.set_focus'
         print('%30s:' % tag)
     self.editor.focus()
-#@+node:ekr.20181215061402.1: *6* flx_body.action.sync*
+# @+node:ekr.20181215061402.1: *6* flx_body.action.sync*
 
 
-#@+node:ekr.20190511092226.1: *7* flx.body.action.sync_body_before_save_file
+# @+node:ekr.20190511092226.1: *7* flx.body.action.sync_body_before_save_file
 @flx.action
 def sync_body_before_save_file(self, d):
     """Update p.b, etc. before executing calling c.fileCommands.save."""
@@ -2472,7 +2472,7 @@ def sync_body_before_save_file(self, d):
         tag = 'flx.body.sync_body_before_save_file'
         print('%30s: %r' % (tag, d['s']))
     self.root.complete_save_file(d)
-#@+node:ekr.20190511102428.1: *7* flx.body.action.sync_body_before_save_file_as
+# @+node:ekr.20190511102428.1: *7* flx.body.action.sync_body_before_save_file_as
 @flx.action
 def sync_body_before_save_file_as(self, d):
     """Update p.b, etc. before executing calling c.fileCommands.saveAs."""
@@ -2481,7 +2481,7 @@ def sync_body_before_save_file_as(self, d):
         tag = 'flx.body.sync_body_before_save_file_as'
         print('%30s: %r' % (tag, d['s']))
     self.root.complete_save_file_as(d)
-#@+node:ekr.20190511102429.1: *7* flx.body.action.sync_body_before_save_file_to
+# @+node:ekr.20190511102429.1: *7* flx.body.action.sync_body_before_save_file_to
 @flx.action
 def sync_body_before_save_file_to(self, d):
     """Update p.b, etc. before executing calling c.fileCommands.saveTo."""
@@ -2490,7 +2490,7 @@ def sync_body_before_save_file_to(self, d):
         tag = 'flx.body.sync_body_before_save_file_to'
         print('%30s: %r' % (tag, d['s']))
     self.root.complete_save_file_to(d)
-#@+node:ekr.20190510070009.1: *7* flx.body.action.sync_body_before_select
+# @+node:ekr.20190510070009.1: *7* flx.body.action.sync_body_before_select
 @flx.action
 def sync_body_before_select(self, d):
     """
@@ -2509,7 +2509,7 @@ def sync_body_before_select(self, d):
     self.update_body_dict(d)
     self.root.complete_select(d)
 
-#@+node:ekr.20190510070010.1: *6* flx.body.update_body_dict
+# @+node:ekr.20190510070010.1: *6* flx.body.update_body_dict
 def update_body_dict(self, d):
     """
     Add keys to d describing flx.body.
@@ -2534,7 +2534,7 @@ def update_body_dict(self, d):
             for z in d_s.split('\n'):
                 print(repr(z))
             print('')
-#@+node:ekr.20181104082149.1: *5* class LeoFlexxLog (JS_Editor)
+# @+node:ekr.20181104082149.1: *5* class LeoFlexxLog (JS_Editor)
 class LeoFlexxLog(JS_Editor):
 
     << log css >>
@@ -2545,14 +2545,14 @@ class LeoFlexxLog(JS_Editor):
         self.editor = make_editor_function(self.name, self.node)
 
     @others
-#@+node:ekr.20181120060336.1: *6* << log css >>
+# @+node:ekr.20181120060336.1: *6* << log css >>
 CSS = """
 .flx-CodeEditor > .ace {
     width: 100%;
     height: 100%;
 }
 """
-#@+node:ekr.20181120060348.1: *6* flx.log.put & set_focus
+# @+node:ekr.20181120060348.1: *6* flx.log.put & set_focus
 @flx.action
 def put(self, s):
     prev = self.editor.getValue()
@@ -2567,7 +2567,7 @@ def set_focus(self):
         tag = 'flx.log.set_focus'
         print('%30s:' % tag)
     self.editor.focus()
-#@+node:ekr.20181104082130.1: *5* class LeoFlexxMainWindow
+# @+node:ekr.20181104082130.1: *5* class LeoFlexxMainWindow
 class LeoFlexxMainWindow(flx.Widget):
 
     """
@@ -2601,7 +2601,7 @@ class LeoFlexxMainWindow(flx.Widget):
     @flx.reaction('!do_init')
     def after_init(self):
         self.root.finish_create()
-#@+node:ekr.20181206044554.1: *6* << define unload action >>
+# @+node:ekr.20181206044554.1: *6* << define unload action >>
 RawJS("""\
 // Called from Mozilla, but not webruntime.
 window.onbeforeunload = function(){
@@ -2609,7 +2609,7 @@ window.onbeforeunload = function(){
     return "Are you sure?"
 };
 """)
-#@+node:ekr.20181104082154.1: *5* class LeoFlexxMiniBuffer (JS_Editor)
+# @+node:ekr.20181104082154.1: *5* class LeoFlexxMiniBuffer (JS_Editor)
 class MinibufferEditor(flx.Widget):
 
     def init(self):
@@ -2631,7 +2631,7 @@ class LeoFlexxMiniBuffer(JS_Editor):
         self.root.select_minibuffer()
 
     @others
-#@+node:ekr.20181127060810.1: *6* flx_minibuffer.high-level interface
+# @+node:ekr.20181127060810.1: *6* flx_minibuffer.high-level interface
 # The high-level interface methods, called from LeoBrowserMinibuffer.
 
 @flx.action
@@ -2663,7 +2663,7 @@ def set_text(self, s):
         tag = 'flx.mini.set_text'
         print('%30s: %r' % (tag, s))
     self.editor.setValue(s)
-#@+node:ekr.20181203150409.1: *6* flx_minibuffer.Key handling
+# @+node:ekr.20181203150409.1: *6* flx_minibuffer.Key handling
 @flx.emitter
 def key_press(self, e):
     """Pass *all* keys except Enter and F12 to Leo's core."""
@@ -2691,7 +2691,7 @@ def on_key_press(self, *events):
     for ev in events:
         # print('mini.on_key_press: %r %r' % (ev ['modifiers'], ev['key']))
         self.root.do_key(ev, 'minibufferWidget')
-#@+node:ekr.20181129174405.1: *6* flx_minibuffer.do_enter_key
+# @+node:ekr.20181129174405.1: *6* flx_minibuffer.do_enter_key
 def do_enter_key(self, key, mods):
     """
     Handle the enter key in the minibuffer.
@@ -2709,7 +2709,7 @@ def do_enter_key(self, key, mods):
             self.root.edit_headline_completer(headline)
         else:
             self.root.do_command(command, key, mods)
-#@+node:ekr.20181104082201.1: *5* class LeoFlexxStatusLine
+# @+node:ekr.20181104082201.1: *5* class LeoFlexxStatusLine
 class LeoFlexxStatusLine(flx.Widget):
 
     def init(self):
@@ -2722,12 +2722,12 @@ class LeoFlexxStatusLine(flx.Widget):
         self.widget2.apply_style('background: green')
 
     @others
-#@+node:ekr.20181123043015.1: *6* flx.status_line.action.update
+# @+node:ekr.20181123043015.1: *6* flx.status_line.action.update
 @flx.action
 def update(self, lt, rt):
     self.put(lt)
     self.put2(rt)
-#@+node:ekr.20181120060957.1: *6* flx_status_line.action.put & put2
+# @+node:ekr.20181120060957.1: *6* flx_status_line.action.put & put2
 @flx.action
 def put(self, s, bg=None, fg=None):
     self.widget.set_text(s)
@@ -2735,7 +2735,7 @@ def put(self, s, bg=None, fg=None):
 @flx.action
 def put2(self, s, bg=None, fg=None):
     self.widget2.set_text(s)
-#@+node:ekr.20181120060950.1: *6* flx_status_line.Key handling
+# @+node:ekr.20181120060950.1: *6* flx_status_line.Key handling
 @flx.emitter
 def key_press(self, e):
     """Allow only F-keys, Ctrl-C and Ctrl-S."""
@@ -2759,7 +2759,7 @@ def on_key_press(self, *events):
         if mods == ['Ctrl'] and key == 's':
             self.root.do_key(ev, 'statusLine')
         return ev
-#@+node:ekr.20181104082138.1: *5* class LeoFlexxTree
+# @+node:ekr.20181104082138.1: *5* class LeoFlexxTree
 class LeoFlexxTree(flx.Widget):
 
     << tree css >>
@@ -2783,7 +2783,7 @@ class LeoFlexxTree(flx.Widget):
         assert obj not in (undefined, None, {}), repr(obj)
 
     @others
-#@+node:ekr.20181120061118.1: *6*  << tree css >>
+# @+node:ekr.20181120061118.1: *6*  << tree css >>
 
 CSS = '''
 .flx-TreeWidget {
@@ -2794,8 +2794,8 @@ CSS = '''
     /* color: #afa; */
 }
 '''
-#@+node:ekr.20181121073246.1: *6* flx_tree.Drawing...
-#@+node:ekr.20181112163252.1: *7* flx_tree.action.clear_tree
+# @+node:ekr.20181121073246.1: *6* flx_tree.Drawing...
+# @+node:ekr.20181112163252.1: *7* flx_tree.action.clear_tree
 @flx.action
 def clear_tree(self):
     """
@@ -2821,7 +2821,7 @@ def clear_tree(self):
         if trace:
             print('  %r %s' % (item, item.text))
         item.dispose()
-#@+node:ekr.20181113043004.1: *7* flx_tree.action.redraw_with_dict & helper
+# @+node:ekr.20181113043004.1: *7* flx_tree.action.redraw_with_dict & helper
 @flx.action
 def redraw_with_dict(self, redraw_dict):
     """
@@ -2852,7 +2852,7 @@ def redraw_with_dict(self, redraw_dict):
     # Select c.p.
     self.select_ap(redraw_dict['c.p'])
     redraw_dict = {}  # #1127: Remove references to deleted items.
-#@+node:ekr.20181124194248.1: *8* tree.create_item_with_parent
+# @+node:ekr.20181124194248.1: *8* tree.create_item_with_parent
 def create_item_with_parent(self, item, parent):
     """Create a tree item for item and all its visible children."""
     # pylint: disable=no-member
@@ -2883,7 +2883,7 @@ def create_item_with_parent(self, item, parent):
     for child in item['children']:
         self.create_item_with_parent(child, tree_item)
     return tree_item  # Debugging
-#@+node:ekr.20181114072307.1: *7* flx_tree.ap_to_key
+# @+node:ekr.20181114072307.1: *7* flx_tree.ap_to_key
 def ap_to_key(self, ap):
     """Produce a key for the given ap."""
     self.assert_exists(ap)
@@ -2898,7 +2898,7 @@ def ap_to_key(self, ap):
     key = 'Tree key<childIndex: %s, gnx: %s, %s <stack: %s>>' % (
         childIndex, gnx, headline, stack_s or '[]')
     return key
-#@+node:ekr.20181113085722.1: *7* flx_tree.dump_ap
+# @+node:ekr.20181113085722.1: *7* flx_tree.dump_ap
 def dump_ap(self, ap, padding, tag):
     """Print an archived position fully."""
     stack = ap['stack']
@@ -2931,7 +2931,7 @@ def dump_ap(self, ap, padding, tag):
             ap['gnx'],
             ap['headline'],
         ))
-#@+node:ekr.20181104080854.3: *7* flx_tree.reaction: on_tree_event
+# @+node:ekr.20181104080854.3: *7* flx_tree.reaction: on_tree_event
 # actions: set_checked, set_collapsed, set_parent, set_selected, set_text, set_visible
 @flx.reaction(
     'tree.children**.checked',
@@ -2952,16 +2952,16 @@ def on_tree_event(self, *events):
                 ap['expanded'] = True
                 # Populate children, if necessary.
                 self.start_populating_children(ap, tree_item)
-#@+node:ekr.20181120063735.1: *6* flx_tree.Focus
+# @+node:ekr.20181120063735.1: *6* flx_tree.Focus
 @flx.action
 def set_focus(self):
     if 'focus' in g.app.debug:
         tag = 'flx.tree.set_focus'
         print('%30s:' % tag)
     self.node.focus()
-#@+node:ekr.20181123165819.1: *6* flx_tree.Incremental Drawing...
+# @+node:ekr.20181123165819.1: *6* flx_tree.Incremental Drawing...
 # This are not used, at present, but they may come back.
-#@+node:ekr.20181125051244.1: *7* flx_tree.populate_children
+# @+node:ekr.20181125051244.1: *7* flx_tree.populate_children
 def populate_children(self, children, parent_ap):
     """
     Populate the children of the given parent.
@@ -2978,7 +2978,7 @@ def populate_children(self, children, parent_ap):
     for child_ap in children:
         self.create_item_with_parent(child_ap, parent)
     self.populating_tree_item = False
-#@+node:ekr.20181111011928.1: *7* flx_tree.start_populating_children
+# @+node:ekr.20181111011928.1: *7* flx_tree.start_populating_children
 def start_populating_children(self, parent_ap, parent_tree_item):
     """
     Populate the parent tree item with the children if necessary.
@@ -2997,7 +2997,7 @@ def start_populating_children(self, parent_ap, parent_tree_item):
     #
     # Ask for the items.
     self.root.send_children_to_tree(parent_ap)
-#@+node:ekr.20181110175222.1: *7* flx_tree.action.receive_children
+# @+node:ekr.20181110175222.1: *7* flx_tree.action.receive_children
 @flx.action
 def receive_children(self, d):
     """
@@ -3014,7 +3014,7 @@ def receive_children(self, d):
     children = d['items']
     # print('flx.tree.receive_children: %s children' % (len(children)))
     self.populate_children(children, parent_ap)
-#@+node:ekr.20181120061140.1: *6* flx_tree.Key handling
+# @+node:ekr.20181120061140.1: *6* flx_tree.Key handling
 @flx.emitter
 def key_press(self, e):
     ev = self._create_key_event(e)
@@ -3037,15 +3037,15 @@ def on_key_press(self, *events):
     # print('flx.tree.on_key_press')
     for ev in events:
         self.root.do_key(ev, 'tree')
-#@+node:ekr.20181121195235.1: *6* flx_tree.Selecting...
-#@+node:ekr.20181123171958.1: *7* flx_tree.action.set_ap
+# @+node:ekr.20181121195235.1: *6* flx_tree.Selecting...
+# @+node:ekr.20181123171958.1: *7* flx_tree.action.set_ap
 @flx.action
 def set_ap(self, ap):
     """self.selected_ap. Called from app.select_ap."""
     assert ap
     self.selected_ap = ap
     self.select_ap(self.selected_ap)
-#@+node:ekr.20181116083916.1: *7* flx_tree.select_ap
+# @+node:ekr.20181116083916.1: *7* flx_tree.select_ap
 @flx.action
 def select_ap(self, ap):
     """
@@ -3061,7 +3061,7 @@ def select_ap(self, ap):
         self.selected_ap = ap  # Set the item's selected property.
     else:
         pass  # We may be in the middle of a redraw.
-#@+node:ekr.20181109083659.1: *7* flx_tree.reaction.on_selected_event
+# @+node:ekr.20181109083659.1: *7* flx_tree.reaction.on_selected_event
 @flx.reaction('tree.children**.selected')  # don't use mode="greedy" here!
 def on_selected_event(self, *events):
     """
@@ -3090,7 +3090,7 @@ def on_selected_event(self, *events):
             self.set_ap(ap)  # Sets self.selected_ap.
             # A helper action, calling tree.select.
             self.root.select_tree_using_ap(ap)
-#@+node:ekr.20181108233657.1: *5* class LeoFlexxTreeItem
+# @+node:ekr.20181108233657.1: *5* class LeoFlexxTreeItem
 class LeoFlexxTreeItem(flx.TreeItem):
 
     def init(self, leo_ap):
@@ -3102,9 +3102,9 @@ class LeoFlexxTreeItem(flx.TreeItem):
         return 'head'  # Required, for proper pane bindings.
 
     @others
-#@+node:ekr.20240404112831.1: *3* Import traces (do not delete)
+# @+node:ekr.20240404112831.1: *3* Import traces (do not delete)
 @nosearch
-#@+node:ekr.20240404112041.1: *4* Leo core module levels (by hand)
+# @+node:ekr.20240404112041.1: *4* Leo core module levels (by hand)
 @language python
 @nosearch
 
@@ -3206,7 +3206,7 @@ class LeoFlexxTreeItem(flx.TreeItem):
 4 leo.core.leoclient
     from leo.core import leoGlobals as g
     from leo.core import leoserver
-#@+node:ekr.20240404151915.1: *4* Leo commands module levels (by hand)
+# @+node:ekr.20240404151915.1: *4* Leo commands module levels (by hand)
 # Level 1: import only leoGlobals at top level.
 1 leo.commands.baseCommands
 1 leo.commands.checkerCommands
@@ -3249,8 +3249,8 @@ class LeoFlexxTreeItem(flx.TreeItem):
     from leo.core import leoGlobals as g
     from leo.core import leoCommands
     from leo.commands.baseCommands import BaseEditCommandsClass
-#@+node:ekr.20251214043555.1: *3* Various buttons (attic)
-#@+node:ekr.20251214043555.2: *4* @@button adoc
+# @+node:ekr.20251214043555.1: *3* Various buttons (attic)
+# @+node:ekr.20251214043555.2: *4* @@button adoc
 """A prototype of running adoc and asciidoctor."""
 import os
 p = g.findNodeAnywhere(c, r'@adoc ad_test.adoc')
@@ -3267,7 +3267,7 @@ if 0:
     g.execute_shell_commands([output_paths])
 @language python
 
-#@+node:ekr.20150413091056.1: *4* @@button check-clones
+# @+node:ekr.20150413091056.1: *4* @@button check-clones
 """Warn if leoProjects.txt or leoToDo.txt contain any clones."""
 
 clones,nodes,seen = 0,0,set()
@@ -3306,7 +3306,7 @@ print('done: %s nodes, %s clones' % (nodes,clones))
 
 @tabwidth -4
 @language python
-#@+node:ekr.20211011090013.1: *4* @@button cvt-comments
+# @+node:ekr.20211011090013.1: *4* @@button cvt-comments
 """
 Find and convert hanging comments.
 
@@ -3326,12 +3326,12 @@ max_line_length = 70  # Maximum line length for lines containing trailing commen
 for p in c.p.self_and_subtree():
     convert(p)
 print('done')
-#@+node:ekr.20220425184232.1: *5* compute_lws
+# @+node:ekr.20220425184232.1: *5* compute_lws
 def compute_lws(s: str) -> int:
     """Return the leading whitespace of s."""
     n = len(s) - len(s.lstrip())
     return s[:n]
-#@+node:ekr.20220425052306.1: *5* convert
+# @+node:ekr.20220425052306.1: *5* convert
 compound_statement = (
     # Leo doesn't use 'match'
     'async ', 'class ', 'def ', 'else:', 'elif ', 'except',
@@ -3403,7 +3403,7 @@ def convert(p: Any) -> None:
         print('Changed:', p.h)
         if replace:
             p.b = '\n'.join(result)
-#@+node:ekr.20251214043555.3: *4* @@button cycling syntax coloring
+# @+node:ekr.20251214043555.3: *4* @@button cycling syntax coloring
 @language python
 
 """Cycle syntax coloring when there are multiple @langauge directives in a node."""
@@ -3423,7 +3423,7 @@ while not p.isRoot():
 else:
     g.es("No ambiguous @language directive found")
 @language python
-#@+node:ekr.20251214043555.4: *4* @@button expand-section
+# @+node:ekr.20251214043555.4: *4* @@button expand-section
 """take a selected region,  convert each line to a section reference."""
 # For Eric S. Johansson
 current = c.p
@@ -3458,7 +3458,7 @@ if preserveSel:
 c.updateBodyPane(head, ''.join(lines_3), tail, undoType, oldSel, oldYview, preserveSel)
 u.afterChangeGroup(current, undoType)
 @language python
-#@+node:ekr.20251214043555.5: *4* @@button graalvm
+# @+node:ekr.20251214043555.5: *4* @@button graalvm
 """
 Run the Javascripot code in the node selected in the outline.
 """
@@ -3475,7 +3475,7 @@ result = run(cmd, capture_output=True, text=True, encoding='utf-8')
 print(result.stdout or 'no output')
 @language python
 
-#@+node:ekr.20201013034742.2: *4* @@button make-importer
+# @+node:ekr.20201013034742.2: *4* @@button make-importer
 g.cls()
 # define constants that describe the new language.
 name = 'php'  # The name of the file, and the prefix for classes.
@@ -3488,9 +3488,9 @@ state_ivar = 'self.curlies'
     # '(self, curlies, self.parens)' for more complex comparisons
 << define run & helpers >>
 run(extensions, language, name, state_ivar)
-#@+node:ekr.20201013034742.3: *5* << define run & helpers >>
+# @+node:ekr.20201013034742.3: *5* << define run & helpers >>
 @others
-#@+node:ekr.20201013034742.4: *6* copy_tree (make-importer)
+# @+node:ekr.20201013034742.4: *6* copy_tree (make-importer)
 def copy_tree(source, root, h):
     """Copy the source tree to the node after p, with headline h."""
     p2 = root.insertAfter()
@@ -3498,7 +3498,7 @@ def copy_tree(source, root, h):
     p2.h = h
     return p2
  
-#@+node:ekr.20201013034742.5: *6* make_substitutions
+# @+node:ekr.20201013034742.5: *6* make_substitutions
 def make_substitutions(destination, patterns):
     """Make all substitutions in the destination tree."""
     for p in destination.self_and_subtree():
@@ -3508,7 +3508,7 @@ def make_substitutions(destination, patterns):
         b = substitute(p.b, patterns)
         if p.b != b:
             p.b = b
-#@+node:ekr.20201013034742.6: *6* run
+# @+node:ekr.20201013034742.6: *6* run
 def run(extensions, language, name, state_ivar):
     """The driver for this script."""
     patterns = {
@@ -3529,7 +3529,7 @@ def run(extensions, language, name, state_ivar):
     make_substitutions(destination, patterns)
     c.contractAllHeadlines()
     c.redraw()
-#@+node:ekr.20201013034742.7: *6* substitue
+# @+node:ekr.20201013034742.7: *6* substitue
 def substitute(s, patterns):
     """Make all substitutions in s."""
     for pattern in patterns:
@@ -3544,7 +3544,7 @@ def substitute(s, patterns):
             i = j+len(replace)
             assert progress < i
     return s
-#@+node:ekr.20201013034742.8: *5* @@file importers/{{name}}.py
+# @+node:ekr.20201013034742.8: *5* @@file importers/{{name}}.py
 """The @auto importer for the {{name}} language."""
 import leo.plugins.importers.linescanner as linescanner
 Importer = linescanner.Importer
@@ -3557,7 +3557,7 @@ importer_dict = {
 @tabwidth -4
 
 
-#@+node:ekr.20201013034742.9: *6* class {{cap_name}}_Importer
+# @+node:ekr.20201013034742.9: *6* class {{cap_name}}_Importer
 class {{cap_name}}_Importer(Importer):
     """The importer for the {{name}} lanuage."""
 
@@ -3570,9 +3570,9 @@ class {{cap_name}}_Importer(Importer):
         )
         
     @others
-#@+node:ekr.20201013034742.10: *7* {{name}}.Overrides
+# @+node:ekr.20201013034742.10: *7* {{name}}.Overrides
 # These can be overridden in subclasses.
-#@+node:ekr.20201013034742.11: *8* {{name}}.clean_headline
+# @+node:ekr.20201013034742.11: *8* {{name}}.clean_headline
 # Define an override if desired...
 
 if 0: # The base class
@@ -3600,7 +3600,7 @@ if 0: # A more complex example, for the C language.
             return '%s%s%s' % (prefix1, prefix2, h)
         else:
             return s
-#@+node:ekr.20201013034742.12: *8* {{name}}.clean_nodes
+# @+node:ekr.20201013034742.12: *8* {{name}}.clean_nodes
 def clean_nodes(self, parent):
     """
     Clean all nodes in parent's tree.
@@ -3608,7 +3608,7 @@ def clean_nodes(self, parent):
     See perl_i.clean_nodes for an examplle.
     """
     pass
-#@+node:ekr.20201013034742.13: *6* class {{cap_name}}_ScanState
+# @+node:ekr.20201013034742.13: *6* class {{cap_name}}_ScanState
 class {{cap_name}}_ScanState:
     """A class representing the state of the {{name}} line-oriented scan."""
     
@@ -3633,7 +3633,7 @@ class {{cap_name}}_ScanState:
     __str__ = __repr__
 
     @others
-#@+node:ekr.20251214043555.6: *4* @@button print-gnx
+# @+node:ekr.20251214043555.6: *4* @@button print-gnx
 """@button (ekr.leo) print the gnx."""
 # g.cls()
 print('timestamp: %s lastIndex: %s' % (g.app.nodeIndices.timeString,g.app.nodeIndices.lastIndex))
@@ -3647,14 +3647,14 @@ for p in c.p.self_and_subtree():
 # print('done')
 
 @language python
-#@+node:ekr.20251214043555.7: *4* @@button print-ua
+# @+node:ekr.20251214043555.7: *4* @@button print-ua
 d = p.v.u
 if d:
     for key in sorted(d):
         print('%10s %s' % (key, d.get(key)))
 
 @language python
-#@+node:ekr.20251214043555.8: *4* @@button save-clipboard
+# @+node:ekr.20251214043555.8: *4* @@button save-clipboard
 """
 Save an image on the clipboard to .leo/screen_captures.
 Use Alt-PrintScn to copy the active window to the clipboard.
@@ -3672,7 +3672,7 @@ if not image.isNull():
     g.es_print('saved: %s' % path)
 
 @language python
-#@+node:ekr.20251214043555.9: *4* @@button screen-shot @key=ctrl-1
+# @+node:ekr.20251214043555.9: *4* @@button screen-shot @key=ctrl-1
 """Create a screenshot of the present Leo outline and save it to .leo/screen_captures."""
 #  --window-size=682x1264 is recommended.
 from leo.core.leoQt import isQt5, QtGui
@@ -3687,7 +3687,7 @@ w.save(path, 'png')
 g.es_print('saved: %s' % path)
 
 @language python
-#@+node:ekr.20220527065937.1: *4* @@command json-to-outline
+# @+node:ekr.20220527065937.1: *4* @@command json-to-outline
 g.cls()
 import json
 import os
@@ -3723,6 +3723,6 @@ make_outline(d, top, topFlag=True)
 top.b = f"{{\n{textwrap.indent(top.b.strip(),' '*4)}\n}}\n"
 c.redraw(top)
     
-#@-all
-#@@nosearch
-#@-leo
+# @-all
+# @@nosearch
+# @-leo

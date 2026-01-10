@@ -1,8 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20171123095353.1: * @file ../commands/commanderFileCommands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20171123095353.1: * @file ../commands/commanderFileCommands.py
 """File commands that used to be defined in leoCommands.py"""
-#@+<< commanderFileCommands imports & annotations >>
-#@+node:ekr.20220826120852.1: ** << commanderFileCommands imports & annotations >>
+
+# @+<< commanderFileCommands imports & annotations >>
+# @+node:ekr.20220826120852.1: ** << commanderFileCommands imports & annotations >>
 from __future__ import annotations
 import os
 import sys
@@ -17,12 +18,14 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoGui import LeoGui
     from leo.core.leoNodes import Position
-    Self = Cmdr  # For @g.commander_command.
-#@-<< commanderFileCommands imports & annotations >>
 
-#@+others
-#@+node:ekr.20231008163009.1: **  top-level helper functions
-#@+node:ekr.20231008163338.1: *3* function: do_error_dialogs
+    Self = Cmdr  # For @g.commander_command.
+# @-<< commanderFileCommands imports & annotations >>
+
+
+# @+others
+# @+node:ekr.20231008163009.1: **  top-level helper functions
+# @+node:ekr.20231008163338.1: *3* function: do_error_dialogs
 def do_error_dialogs(c: Cmdr) -> None:
     """
     Raise error dialogs.
@@ -31,7 +34,9 @@ def do_error_dialogs(c: Cmdr) -> None:
     """
     c.syntaxErrorDialog()
     c.raise_error_dialogs(kind='write')
-#@+node:ekr.20231008163048.1: *3* function: set_name_and_title
+
+
+# @+node:ekr.20231008163048.1: *3* function: set_name_and_title
 def set_name_and_title(c: Cmdr, fileName: str) -> str:
     """
     Compute the finalized name for c.mFileName. Set related ivars.
@@ -56,7 +61,9 @@ def set_name_and_title(c: Cmdr, fileName: str) -> str:
     except AttributeError:
         pass
     return c.mFileName
-#@+node:ekr.20170221033738.1: ** c_file.reloadSettings
+
+
+# @+node:ekr.20170221033738.1: ** c_file.reloadSettings
 @g.commander_command('reload-settings')
 def reloadSettings(self: Self, event: LeoKeyEvent = None) -> None:
     """Reload settings in all commanders, saving all existing opened files first"""
@@ -76,7 +83,9 @@ def reloadSettings(self: Self, event: LeoKeyEvent = None) -> None:
         c.initConfigSettings()
         # Reload settings in all configurable classes
         c.reloadConfigurableSettings()
-#@+node:ekr.20200422075655.1: ** c_file.restartLeo
+
+
+# @+node:ekr.20200422075655.1: ** c_file.restartLeo
 @g.commander_command('restart-leo')
 def restartLeo(self: Self, event: LeoKeyEvent = None) -> None:
     """Restart Leo, reloading all presently open outlines."""
@@ -138,19 +147,23 @@ def restartLeo(self: Self, event: LeoKeyEvent = None) -> None:
             restart_paths = [z.replace('/', os.sep) for z in restart_paths]
         # Warning: Python 3.9 does not allow newlines within f-strings.
         leo_editor_dir = os.path.normpath(os.path.join(g.app.loadDir, '..', '..'))
-        launchLeo_s = fr'{leo_editor_dir}{os.sep}launchLeo.py'
+        launchLeo_s = rf'{leo_editor_dir}{os.sep}launchLeo.py'
         args = [sys.executable, launchLeo_s] + restart_paths + ['--no-splash']
     args_s = 'subprocess.run([\n  ' + ',\n  '.join(args) + '\n])'
     print(args_s)
     print('')
     subprocess.run(args)  # pylint: disable=subprocess-run-check
-#@+node:ekr.20031218072017.2820: ** c_file.top level
-#@+node:ekr.20031218072017.2833: *3* c_file.close
+
+
+# @+node:ekr.20031218072017.2820: ** c_file.top level
+# @+node:ekr.20031218072017.2833: *3* c_file.close
 @g.commander_command('close-window')
 def close(self: Self, event: LeoKeyEvent = None, new_c: Cmdr = None) -> None:
     """Close the Leo window, prompting to save it if it has been changed."""
     g.app.closeLeoWindow(self.frame, new_c=new_c)
-#@+node:ekr.20110530124245.18245: *3* c_file.importAnyFile
+
+
+# @+node:ekr.20110530124245.18245: *3* c_file.importAnyFile
 @g.commander_command('import-any-file')
 @g.commander_command('import-file')
 def importAnyFile(self: Self, event: LeoKeyEvent = None) -> None:
@@ -191,8 +204,7 @@ def importAnyFile(self: Self, event: LeoKeyEvent = None) -> None:
         ("TypeScript files", "*.ts"),
         ("XML files", "*.xml"),
     ]
-    names = g.app.gui.runOpenFilesDialog(c,
-        title="Import File", filetypes=filetypes)
+    names = g.app.gui.runOpenFilesDialog(c, title="Import File", filetypes=filetypes)
     c.bringToFront()
     if names:
         g.chdir(names[0])
@@ -223,7 +235,7 @@ def importAnyFile(self: Self, event: LeoKeyEvent = None) -> None:
             ic.importJupytextFiles([fn])
         # Not useful. Use @auto x.json instead.
         # elif ext == 'json':
-            # ic.importJSON([fn])
+        # ic.importJSON([fn])
         elif fn.endswith('mm.html'):
             ic.importFreeMind([fn])
         elif ext in ('nw', 'noweb'):
@@ -246,6 +258,7 @@ def importAnyFile(self: Self, event: LeoKeyEvent = None) -> None:
             c.redraw()
     c.raise_error_dialogs(kind='read')
 
+
 g.command_alias('importAtFile', importAnyFile)
 g.command_alias('importAtRoot', importAnyFile)
 g.command_alias('importCWEBFiles', importAnyFile)
@@ -254,7 +267,9 @@ g.command_alias('importFlattenedOutline', importAnyFile)
 g.command_alias('importMOREFiles', importAnyFile)
 g.command_alias('importNowebFiles', importAnyFile)
 g.command_alias('importTabFiles', importAnyFile)
-#@+node:ekr.20200306043104.1: *3* c_file.import_txt_file
+
+
+# @+node:ekr.20200306043104.1: *3* c_file.import_txt_file
 @g.commander_command('import-text-file')
 def import_txt_file(self: Self, fn: str) -> None:
     """Import the .txt file into a new node."""
@@ -269,13 +284,16 @@ def import_txt_file(self: Self, fn: str) -> None:
     u.afterInsertNode(p, 'Import', undoData)
     c.setChanged()
     c.redraw(p)
-#@+node:ekr.20031218072017.1623: *3* c_file.new
+
+
+# @+node:ekr.20031218072017.1623: *3* c_file.new
 @g.commander_command('file-new')
 @g.commander_command('new')
 def new(self: Self, event: LeoKeyEvent = None, gui: LeoGui = None) -> Cmdr:
     """Create a new Leo window."""
     t1 = time.process_time()
     from leo.core import leoApp
+
     lm = g.app.loadManager
     old_c = self
 
@@ -308,7 +326,7 @@ def new(self: Self, event: LeoKeyEvent = None, gui: LeoGui = None) -> Cmdr:
         frame.setInitialWindowGeometry()
 
     # #1643: This doesn't work.
-        # g.app.restoreWindowState(c)
+    # g.app.restoreWindowState(c)
 
     frame.deiconify()
     frame.lift()
@@ -330,13 +348,15 @@ def new(self: Self, event: LeoKeyEvent = None, gui: LeoGui = None) -> Cmdr:
     if 'speed' in g.app.debug:
         g.trace()
         print(
-            f"    1: {t2-t1:5.2f}\n"  # 0.00 sec.
-            f"    2: {t3-t2:5.2f}\n"  # 0.36 sec: c.__init__
-            f"    3: {t4-t3:5.2f}\n"  # 0.17 sec: Everything else.
-            f"total: {t4-t1:5.2f}"
+            f"    1: {t2 - t1:5.2f}\n"  # 0.00 sec.
+            f"    2: {t3 - t2:5.2f}\n"  # 0.36 sec: c.__init__
+            f"    3: {t4 - t3:5.2f}\n"  # 0.17 sec: Everything else.
+            f"total: {t4 - t1:5.2f}"
         )
     return c  # For unit tests and scripts.
-#@+node:ekr.20031218072017.2821: *3* c_file.open_outline
+
+
+# @+node:ekr.20031218072017.2821: *3* c_file.open_outline
 @g.commander_command('open-file')
 @g.commander_command('open-outline')
 def open_outline(self: Self, event: LeoKeyEvent = None) -> None:
@@ -347,13 +367,15 @@ def open_outline(self: Self, event: LeoKeyEvent = None) -> None:
         ("Python files", "*.py"),
         ("All files", "*"),
     ]
-    fileName = g.app.gui.runOpenFileDialog(c,
-        title="Open", filetypes=filetypes)
+    fileName = g.app.gui.runOpenFileDialog(c, title="Open", filetypes=filetypes)
     if fileName:
         g.openWithFileName(fileName, old_c=c)  # type:ignore
-#@+node:ekr.20140717074441.17772: *3* c_file.refreshFromDisk
+
+
+# @+node:ekr.20140717074441.17772: *3* c_file.refreshFromDisk
 @g.commander_command('refresh-from-disk')
-def refreshFromDisk(self: Self,
+def refreshFromDisk(
+    self: Self,
     p: Position = None,  # For compatibility with existing scripts.
     *,
     event: LeoKeyEvent = None,  # Required for all commands.
@@ -392,9 +414,9 @@ def refreshFromDisk(self: Self,
     update_p = at.clone_all_changed_vnodes()
     if update_p:
         # Set the current position during initial redraws.
-        c.db['current_position'] = ','.join([
-            str(z) for z in update_p.archivedPosition()
-        ])
+        c.db['current_position'] = ','.join(
+            [str(z) for z in update_p.archivedPosition()]
+        )
         update_p.expand()
         c.selectPosition(update_p)
     else:
@@ -407,12 +429,16 @@ def refreshFromDisk(self: Self,
     c.setChanged()
     c.redraw()
     c.undoer.clearAndWarn('refresh-from-disk')
-#@+node:ekr.20210610083257.1: *3* c_file.pwd
+
+
+# @+node:ekr.20210610083257.1: *3* c_file.pwd
 @g.commander_command('pwd')
 def pwd_command(self: Self, event: LeoKeyEvent = None) -> None:
     """Print the current working directory."""
     g.es_print('pwd:', os.getcwd())
-#@+node:ekr.20031218072017.2834: *3* c_file.save
+
+
+# @+node:ekr.20031218072017.2834: *3* c_file.save
 @g.commander_command('save')
 @g.commander_command('file-save')
 @g.commander_command('save-file')
@@ -457,15 +483,18 @@ def save(self: Self, event: LeoKeyEvent = None, fileName: str = None) -> None:
             return
 
         # Prompt for fileName.
-        new_file_name = g.app.gui.runSaveFileDialog(c,
-            title="Save", filetypes=[("Leo files", "*.leo *.leojs *.db")])
+        new_file_name = g.app.gui.runSaveFileDialog(
+            c, title="Save", filetypes=[("Leo files", "*.leo *.leojs *.db")]
+        )
         if new_file_name:
             final_file_name = set_name_and_title(c, new_file_name)
             do_save(c, final_file_name)
 
     finally:
         do_error_dialogs(c)
-#@+node:ekr.20110228162720.13980: *3* c_file.saveAll
+
+
+# @+node:ekr.20110228162720.13980: *3* c_file.saveAll
 @g.commander_command('save-all')
 def saveAll(self: Self, event: LeoKeyEvent = None) -> None:
     """Save all open tabs windows/tabs."""
@@ -478,7 +507,9 @@ def saveAll(self: Self, event: LeoKeyEvent = None) -> None:
     # Restore the present tab.
     dw = c.frame.top  # A DynamicWindow
     dw.select(c)
-#@+node:ekr.20031218072017.2835: *3* c_file.saveAs
+
+
+# @+node:ekr.20031218072017.2835: *3* c_file.saveAs
 @g.commander_command('save-as')
 @g.commander_command('file-save-as')
 @g.commander_command('save-file-as')
@@ -518,20 +549,27 @@ def saveAs(self: Self, event: LeoKeyEvent = None, fileName: str = None) -> None:
             return
 
         # Prompt for fileName.
-        new_file_name = g.app.gui.runSaveFileDialog(c,
+        new_file_name = g.app.gui.runSaveFileDialog(
+            c,
             title="Save As",
-            filetypes=[("Leo files", "*.leo *.leojs *.db"),],
+            filetypes=[
+                ("Leo files", "*.leo *.leojs *.db"),
+            ],
         )
         if new_file_name:
             do_save_as(c, new_file_name)
 
     finally:
         do_error_dialogs(c)
-#@+node:ekr.20031218072017.2836: *3* c_file.saveTo
+
+
+# @+node:ekr.20031218072017.2836: *3* c_file.saveTo
 @g.commander_command('save-to')
 @g.commander_command('file-save-to')
 @g.commander_command('save-file-to')
-def saveTo(self: Self, event: LeoKeyEvent = None, fileName: str = None, silent: bool = False) -> None:
+def saveTo(
+    self: Self, event: LeoKeyEvent = None, fileName: str = None, silent: bool = False
+) -> None:
     """
     Save a copy of the Leo outline to a file, prompting for a new file name.
     Leave the file name of the Leo outline unchanged.
@@ -559,16 +597,21 @@ def saveTo(self: Self, event: LeoKeyEvent = None, fileName: str = None, silent: 
             do_save_to(c, fileName)
             return
 
-        new_file_name = g.app.gui.runSaveFileDialog(c,
+        new_file_name = g.app.gui.runSaveFileDialog(
+            c,
             title="Save To",
-            filetypes=[("Leo files", "*.leo *.leojs *.db"),],
+            filetypes=[
+                ("Leo files", "*.leo *.leojs *.db"),
+            ],
         )
         if new_file_name:
             do_save_to(c, new_file_name)
 
     finally:
         do_error_dialogs(c)
-#@+node:ekr.20031218072017.2837: *3* c_file.revert
+
+
+# @+node:ekr.20031218072017.2837: *3* c_file.revert
 @g.commander_command('revert')
 def revert(self: Self, event: LeoKeyEvent = None) -> None:
     """Revert the contents of a Leo outline to last saved contents."""
@@ -583,12 +626,15 @@ def revert(self: Self, event: LeoKeyEvent = None) -> None:
         g.es(f"Can not revert non-existent file: {fn}")
         return
     reply = g.app.gui.runAskYesNoDialog(
-        c, 'Revert', f"Revert to previous version of {fn}?")
+        c, 'Revert', f"Revert to previous version of {fn}?"
+    )
     c.bringToFront()
     if reply == "yes":
         g.app.loadManager.revertCommander(c)
         u.clearUndoState()
-#@+node:ekr.20210316075815.1: *3* c_file.save-as-leojs
+
+
+# @+node:ekr.20210316075815.1: *3* c_file.save-as-leojs
 @g.commander_command('file-save-as-leojs')
 @g.commander_command('save-file-as-leojs')
 def save_as_leojs(self: Self, event: LeoKeyEvent = None) -> None:
@@ -597,7 +643,8 @@ def save_as_leojs(self: Self, event: LeoKeyEvent = None) -> None:
     Leave the file name of the Leo outline unchanged.
     """
     c = self
-    fileName = g.app.gui.runSaveFileDialog(c,
+    fileName = g.app.gui.runSaveFileDialog(
+        c,
         title="Save As JSON (.leojs)",
         filetypes=[("Leo JSON files", "*.leojs")],
     )
@@ -608,7 +655,9 @@ def save_as_leojs(self: Self, event: LeoKeyEvent = None) -> None:
     # Leo 6.4: Using save-to instead of save-as allows two versions of the file.
     c.saveTo(fileName=fileName)
     c.fileCommands.putSavedMessage(fileName)
-#@+node:ekr.20070413045221: *3* c_file.save-as-zipped
+
+
+# @+node:ekr.20070413045221: *3* c_file.save-as-zipped
 @g.commander_command('file-save-as-db')
 @g.commander_command('save-file-as-db')
 def save_as_db(self: Self, event: LeoKeyEvent = None) -> None:
@@ -617,7 +666,8 @@ def save_as_db(self: Self, event: LeoKeyEvent = None) -> None:
     Leave the file name of the Leo outline unchanged.
     """
     c = self
-    fileName = g.app.gui.runSaveFileDialog(c,
+    fileName = g.app.gui.runSaveFileDialog(
+        c,
         title="Save As DB",
         filetypes=[("Leo files", "*.db")],
     )
@@ -628,7 +678,9 @@ def save_as_db(self: Self, event: LeoKeyEvent = None) -> None:
     # Leo 6.4: Using save-to instead of save-as allows two versions of the file.
     c.saveTo(fileName=fileName)
     c.fileCommands.putSavedMessage(fileName)
-#@+node:ekr.20210316075357.1: *3* c_file.save-as-xml
+
+
+# @+node:ekr.20210316075357.1: *3* c_file.save-as-xml
 @g.commander_command('file-save-as-xml')
 @g.commander_command('save-file-as-xml')
 def save_as_xml(self: Self, event: LeoKeyEvent = None) -> None:
@@ -638,7 +690,8 @@ def save_as_xml(self: Self, event: LeoKeyEvent = None) -> None:
     Useful for converting a .leo.db file to a .leo file.
     """
     c = self
-    fileName = g.app.gui.runSaveFileDialog(c,
+    fileName = g.app.gui.runSaveFileDialog(
+        c,
         title="Save As XML",
         filetypes=[("Leo files", "*.leo")],
     )
@@ -649,7 +702,9 @@ def save_as_xml(self: Self, event: LeoKeyEvent = None) -> None:
     # Leo 6.4: Using save-to instead of save-as allows two versions of the file.
     c.saveTo(fileName=fileName)
     c.fileCommands.putSavedMessage(fileName)
-#@+node:tom.20220310092720.1: *3* c_file.save-node-as-xml
+
+
+# @+node:tom.20220310092720.1: *3* c_file.save-node-as-xml
 @g.commander_command('save-node-as-xml')
 def save_node_as_xml_outline(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -659,28 +714,36 @@ def save_node_as_xml_outline(self: Self, event: LeoKeyEvent = None) -> None:
     c = event.c
     xml = c.fileCommands.outline_to_clipboard_string()
 
-    fileName = g.app.gui.runSaveFileDialog(c,
+    fileName = g.app.gui.runSaveFileDialog(
+        c,
         title="Save To",
-        filetypes=[("Leo files", "*.leo"),],
+        filetypes=[
+            ("Leo files", "*.leo"),
+        ],
     )
     if fileName:
         with open(fileName, 'w', encoding='utf-8') as f:
             f.write(xml)
-#@+node:ekr.20031218072017.2849: ** Export
-#@+node:ekr.20031218072017.2850: *3* c_file.exportHeadlines
+
+
+# @+node:ekr.20031218072017.2849: ** Export
+# @+node:ekr.20031218072017.2850: *3* c_file.exportHeadlines
 @g.commander_command('export-headlines')
 def exportHeadlines(self: Self, event: LeoKeyEvent = None) -> None:
     """Export headlines for c.p and its subtree to an external file."""
     c = self
     filetypes = [("Text files", "*.txt"), ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(c,
-        title="Export Headlines", filetypes=filetypes)
+    fileName = g.app.gui.runSaveFileDialog(
+        c, title="Export Headlines", filetypes=filetypes
+    )
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
         g.chdir(fileName)
         c.importCommands.exportHeadlines(fileName)
-#@+node:ekr.20031218072017.2851: *3* c_file.flattenOutline
+
+
+# @+node:ekr.20031218072017.2851: *3* c_file.flattenOutline
 @g.commander_command('flatten-outline')
 def flattenOutline(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -689,14 +752,17 @@ def flattenOutline(self: Self, event: LeoKeyEvent = None) -> None:
     """
     c = self
     filetypes = [("Text files", "*.txt"), ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(c,
-        title="Flatten Selected Outline", filetypes=filetypes)
+    fileName = g.app.gui.runSaveFileDialog(
+        c, title="Flatten Selected Outline", filetypes=filetypes
+    )
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
         g.chdir(fileName)
         c.importCommands.flattenOutline(fileName)
-#@+node:ekr.20141030120755.12: *3* c_file.flattenOutlineToNode
+
+
+# @+node:ekr.20141030120755.12: *3* c_file.flattenOutlineToNode
 @g.commander_command('flatten-outline-to-node')
 def flattenOutlineToNode(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -722,7 +788,9 @@ def flattenOutlineToNode(self: Self, event: LeoKeyEvent = None) -> None:
     u.afterChangeGroup(current, undoType)
     c.selectPosition(p)
     c.redraw(p)
-#@+node:ekr.20031218072017.2857: *3* c_file.outlineToCWEB
+
+
+# @+node:ekr.20031218072017.2857: *3* c_file.outlineToCWEB
 @g.commander_command('outline-to-cweb')
 def outlineToCWEB(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -730,18 +798,18 @@ def outlineToCWEB(self: Self, event: LeoKeyEvent = None) -> None:
     The outline is represented in CWEB format.
     """
     c = self
-    filetypes = [
-        ("CWEB files", "*.w"),
-        ("Text files", "*.txt"),
-        ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(c,
-        title="Outline To CWEB", filetypes=filetypes)
+    filetypes = [("CWEB files", "*.w"), ("Text files", "*.txt"), ("All files", "*")]
+    fileName = g.app.gui.runSaveFileDialog(
+        c, title="Outline To CWEB", filetypes=filetypes
+    )
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
         g.chdir(fileName)
         c.importCommands.outlineToWeb(fileName, "cweb")
-#@+node:ekr.20031218072017.2858: *3* c_file.outlineToNoweb
+
+
+# @+node:ekr.20031218072017.2858: *3* c_file.outlineToNoweb
 @g.commander_command('outline-to-noweb')
 def outlineToNoweb(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -749,19 +817,19 @@ def outlineToNoweb(self: Self, event: LeoKeyEvent = None) -> None:
     The outline is represented in noweb format.
     """
     c = self
-    filetypes = [
-        ("Noweb files", "*.nw"),
-        ("Text files", "*.txt"),
-        ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(c,
-        title="Outline To Noweb", filetypes=filetypes)
+    filetypes = [("Noweb files", "*.nw"), ("Text files", "*.txt"), ("All files", "*")]
+    fileName = g.app.gui.runSaveFileDialog(
+        c, title="Outline To Noweb", filetypes=filetypes
+    )
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
         g.chdir(fileName)
         c.importCommands.outlineToWeb(fileName, "noweb")
         c.outlineToNowebDefaultFileName = fileName
-#@+node:ekr.20031218072017.2859: *3* c_file.removeSentinels
+
+
+# @+node:ekr.20031218072017.2859: *3* c_file.removeSentinels
 @g.commander_command('remove-sentinels')
 def removeSentinels(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -777,18 +845,22 @@ def removeSentinels(self: Self, event: LeoKeyEvent = None) -> None:
         ("Pascal files", "*.pas"),
         ("Python files", "*.py"),
     ]
-    names = g.app.gui.runOpenFilesDialog(c,
-        title="Remove Sentinels", filetypes=filetypes)
+    names = g.app.gui.runOpenFilesDialog(
+        c, title="Remove Sentinels", filetypes=filetypes
+    )
     c.bringToFront()
     if names:
         g.chdir(names[0])
         c.importCommands.removeSentinelsCommand(names)
-#@+node:ekr.20031218072017.2860: *3* c_file.weave
+
+
+# @+node:ekr.20031218072017.2860: *3* c_file.weave
 @g.commander_command('weave')
 def weave(self: Self, event: LeoKeyEvent = None) -> None:
     """Simulate a literate-programming weave operation by writing the outline to a text file."""
     c = self
-    fileName = g.app.gui.runSaveFileDialog(c,
+    fileName = g.app.gui.runSaveFileDialog(
+        c,
         title="Weave",
         filetypes=[("Text files", "*.txt"), ("All files", "*")],
     )
@@ -797,8 +869,10 @@ def weave(self: Self, event: LeoKeyEvent = None) -> None:
         g.setGlobalOpenDir(fileName)
         g.chdir(fileName)
         c.importCommands.weave(fileName)
-#@+node:ekr.20031218072017.2838: ** Read/Write
-#@+node:ekr.20070806105721.1: *3* c_file.readAtAutoNodes
+
+
+# @+node:ekr.20031218072017.2838: ** Read/Write
+# @+node:ekr.20070806105721.1: *3* c_file.readAtAutoNodes
 @g.commander_command('read-at-auto-nodes')
 def readAtAutoNodes(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -813,7 +887,9 @@ def readAtAutoNodes(self: Self, event: LeoKeyEvent = None) -> None:
     c.redraw()
     c.raise_error_dialogs(kind='read')
     c.undoer.clearAndWarn('read-at-auto-nodes')
-#@+node:ekr.20031218072017.1839: *3* c_file.readAtFileNodes
+
+
+# @+node:ekr.20031218072017.1839: *3* c_file.readAtFileNodes
 @g.commander_command('read-at-file-nodes')
 def readAtFileNodes(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -830,7 +906,9 @@ def readAtFileNodes(self: Self, event: LeoKeyEvent = None) -> None:
     c.setBodyString(p, p.b)  # Not a do-nothing!
     c.redraw()
     c.undoer.clearAndWarn('read-at-file-nodes')
-#@+node:ekr.20080801071227.4: *3* c_file.readAtShadowNodes
+
+
+# @+node:ekr.20080801071227.4: *3* c_file.readAtShadowNodes
 @g.commander_command('read-at-shadow-nodes')
 def readAtShadowNodes(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -845,7 +923,9 @@ def readAtShadowNodes(self: Self, event: LeoKeyEvent = None) -> None:
     c.redraw()
     c.raise_error_dialogs(kind='read')
     c.undoer.clearAndWarn('read-at-shadow-nodes')
-#@+node:ekr.20070915134101: *3* c_file.readFileIntoNode
+
+
+# @+node:ekr.20070915134101: *3* c_file.readFileIntoNode
 @g.commander_command('read-file-into-node')
 def readFileIntoNode(self: Self, event: LeoKeyEvent = None) -> None:
     """Read a file into a single node."""
@@ -858,8 +938,9 @@ def readFileIntoNode(self: Self, event: LeoKeyEvent = None) -> None:
         ("Python files", "*.py"),
         ("Leo files", "*.leo *.leojs"),
     ]
-    fileName = g.app.gui.runOpenFileDialog(c,
-        title="Read File Into Node", filetypes=filetypes)
+    fileName = g.app.gui.runOpenFileDialog(
+        c, title="Read File Into Node", filetypes=filetypes
+    )
     if not fileName:
         return
     if isinstance(fileName, list):
@@ -877,7 +958,9 @@ def readFileIntoNode(self: Self, event: LeoKeyEvent = None) -> None:
     u.afterInsertNode(p, undoType, undoData)
     w.setAllText(s)
     c.redraw(p)
-#@+node:ekr.20070915142635: *3* c_file.writeFileFromNode
+
+
+# @+node:ekr.20070915142635: *3* c_file.writeFileFromNode
 @g.commander_command('write-file-from-node')
 def writeFileFromNode(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -894,7 +977,8 @@ def writeFileFromNode(self: Self, event: LeoKeyEvent = None) -> None:
     else:
         fileName = None
     if not fileName:
-        fileName = g.app.gui.runSaveFileDialog(c,
+        fileName = g.app.gui.runSaveFileDialog(
+            c,
             title='Write File From Node',
             filetypes=[
                 ("All files", "*"),
@@ -913,7 +997,9 @@ def writeFileFromNode(self: Self, event: LeoKeyEvent = None) -> None:
                 g.blue('wrote:', fileName)
         except IOError:
             g.error('can not write %s', fileName)
-#@+node:tom.20230201124905.1: *3* c_file.writeFileFromSubtree
+
+
+# @+node:tom.20230201124905.1: *3* c_file.writeFileFromSubtree
 @g.commander_command('write-file-from-subtree')
 def writeFileFromSubtree(self: Self, event: LeoKeyEvent = None) -> None:
     """Write the entire tree from the selected node as text to a file.
@@ -933,7 +1019,8 @@ def writeFileFromSubtree(self: Self, event: LeoKeyEvent = None) -> None:
     else:
         fileName = None
     if not fileName:
-        fileName = g.app.gui.runSaveFileDialog(c,
+        fileName = g.app.gui.runSaveFileDialog(
+            c,
             title='Write File From Node',
             filetypes=[
                 ("All files", "*"),
@@ -952,8 +1039,10 @@ def writeFileFromSubtree(self: Self, event: LeoKeyEvent = None) -> None:
                 g.blue('wrote:', fileName)
         except IOError:
             g.error('can not write %s', fileName)
-#@+node:ekr.20031218072017.2079: ** Recent Files
-#@+node:tbrown.20080509212202.6: *3* c_file.cleanRecentFiles
+
+
+# @+node:ekr.20031218072017.2079: ** Recent Files
+# @+node:tbrown.20080509212202.6: *3* c_file.cleanRecentFiles
 @g.commander_command('clean-recent-files')
 def cleanRecentFiles(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -964,25 +1053,33 @@ def cleanRecentFiles(self: Self, event: LeoKeyEvent = None) -> None:
     """
     c = self
     g.app.recentFilesManager.cleanRecentFiles(c)
-#@+node:ekr.20031218072017.2080: *3* c_file.clearRecentFiles
+
+
+# @+node:ekr.20031218072017.2080: *3* c_file.clearRecentFiles
 @g.commander_command('clear-recent-files')
 def clearRecentFiles(self: Self, event: LeoKeyEvent = None) -> None:
     """Clear the recent files list, then add the present file."""
     c = self
     g.app.recentFilesManager.clearRecentFiles(c)
-#@+node:vitalije.20170703115710.1: *3* c_file.editRecentFiles
+
+
+# @+node:vitalije.20170703115710.1: *3* c_file.editRecentFiles
 @g.commander_command('edit-recent-files')
 def editRecentFiles(self: Self, event: LeoKeyEvent = None) -> None:
     """Opens recent files list in a new node for editing."""
     c = self
     g.app.recentFilesManager.editRecentFiles(c)
-#@+node:tbrown.20080509212202.8: *3* c_file.sortRecentFiles
+
+
+# @+node:tbrown.20080509212202.8: *3* c_file.sortRecentFiles
 @g.commander_command('sort-recent-files')
 def sortRecentFiles(self: Self, event: LeoKeyEvent = None) -> None:
     """Sort the recent files list."""
     c = self
     g.app.recentFilesManager.sortRecentFiles(c)
-#@+node:vitalije.20170703115710.2: *3* c_file.writeEditedRecentFiles
+
+
+# @+node:vitalije.20170703115710.2: *3* c_file.writeEditedRecentFiles
 @g.commander_command('write-edited-recent-files')
 def writeEditedRecentFiles(self: Self, event: LeoKeyEvent = None) -> None:
     """
@@ -991,8 +1088,10 @@ def writeEditedRecentFiles(self: Self, event: LeoKeyEvent = None) -> None:
     """
     c = self
     g.app.recentFilesManager.writeEditedRecentFiles(c)
-#@+node:ekr.20180312043352.1: ** Themes
-#@+node:ekr.20180312043352.2: *3* c_file.open_theme_file
+
+
+# @+node:ekr.20180312043352.1: ** Themes
+# @+node:ekr.20180312043352.2: *3* c_file.open_theme_file
 @g.commander_command('open-theme-file')
 def open_theme_file(self: Self, event: LeoKeyEvent) -> None:
     """Open a theme file in a new session and apply the theme."""
@@ -1001,7 +1100,8 @@ def open_theme_file(self: Self, event: LeoKeyEvent) -> None:
         return
     # Get the file name.
     themes_dir = g.finalize_join(g.app.loadDir, '..', 'themes')
-    fn = g.app.gui.runOpenFileDialog(c,
+    fn = g.app.gui.runOpenFileDialog(
+        c,
         title="Open Theme File",
         filetypes=[
             ("Leo files", "*.leo *.leojs *.db"),
@@ -1020,5 +1120,7 @@ def open_theme_file(self: Self, event: LeoKeyEvent) -> None:
     command = f'"{g.sys.executable}" "{g.app.loadDir}/runLeo.py" "{fn}"'
     g.execute_shell_commands(command)
     os.chdir(leo_dir)
-#@-others
-#@-leo
+
+
+# @-others
+# @-leo

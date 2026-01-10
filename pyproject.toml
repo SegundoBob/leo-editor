@@ -235,8 +235,8 @@ packages = [
 ]
 
 [project]
-requires-python = ">= 3.9"
-version = "6.8.7"  # No space.
+requires-python = ">= 3.10"
+version = "6.8.8"  # No space.
 name = "leo"
 
 #@+<< developer info >>
@@ -359,5 +359,11 @@ Issues = "https://github.com/leo-editor/leo-editor/issues"
 #@-<< urls >>
 
 [tool.ruff]
-line-length = 120
+line-length = 88
+
+[tool.ruff.format]
+docstring-code-format = false
+indent-style = "space"
+line-ending = "native"
+quote-style = "preserve"
 #@-leo

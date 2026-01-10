@@ -1,14 +1,18 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210904022712.2: * @file ../unittests/commands/test_checkerCommands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210904022712.2: * @file ../unittests/commands/test_checkerCommands.py
 """Tests of leo.commands.leoCheckerCommands."""
+
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
-#@+others
-#@+node:ekr.20210904022712.3: ** class TestChecker(LeoUnitTest):
+
+
+# @+others
+# @+node:ekr.20210904022712.3: ** class TestChecker(LeoUnitTest):
 class TestChecker(LeoUnitTest):
     """Test cases for leoCheckerCommands.py"""
-    #@+others
-    #@+node:ekr.20210904031436.1: *3* test_regex_for_pylint
+
+    # @+others
+    # @+node:ekr.20210904031436.1: *3* test_regex_for_pylint
     def test_regex_for_pylint(self):
         pattern = g.pylint_pat
         table = (
@@ -24,10 +28,12 @@ class TestChecker(LeoUnitTest):
             message = message.replace('\\', '/')
             m = pattern.match(message)
             self.assertTrue(m, msg=message)
-    #@+node:ekr.20230221104054.1: *3* test_check_nodes
+
+    # @+node:ekr.20230221104054.1: *3* test_check_nodes
     def test_check_nodes(self):
         c = self.c
         from leo.commands import checkerCommands
+
         x = checkerCommands.CheckNodes(c)
         x.ok_head_patterns = []
         table = (
@@ -47,7 +53,10 @@ class TestChecker(LeoUnitTest):
             p.b = s
             x.get_data()
             assert x.is_dubious_node(p)
-    #@-others
-#@-others
 
-#@-leo
+    # @-others
+
+
+# @-others
+
+# @-leo

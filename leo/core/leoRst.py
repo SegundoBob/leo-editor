@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20090502071837.3: * @file leoRst.py
-#@+<< leoRst docstring >>
-#@+node:ekr.20090502071837.4: ** << leoRst docstring >>
+# @+leo-ver=5-thin
+# @+node:ekr.20090502071837.3: * @file leoRst.py
+# @+<< leoRst docstring >>
+# @+node:ekr.20090502071837.4: ** << leoRst docstring >>
 """
 Support for restructured text (rST).
 
@@ -10,9 +10,10 @@ Documentation: https://leo-editor.github.io/leo-editor/tutorial-rst3.html
 Requires python's docutils_ module to generate documents from rST files.
 https://pypi.org/project/docutils/
 """
-#@-<< leoRst docstring >>
-#@+<< leoRst imports >>
-#@+node:ekr.20100908120927.5971: ** << leoRst imports >>
+
+# @-<< leoRst docstring >>
+# @+<< leoRst imports >>
+# @+node:ekr.20100908120927.5971: ** << leoRst imports >>
 from __future__ import annotations
 from collections.abc import Callable
 import io
@@ -20,6 +21,7 @@ import os
 import re
 import time
 from typing import Generator, Optional, TYPE_CHECKING
+
 # Third-part imports...
 try:
     import docutils
@@ -30,34 +32,44 @@ except Exception:
     docutils = None  # type:ignore
 # Leo imports.
 from leo.core import leoGlobals as g
+
 # Aliases & traces.
 StringIO = io.StringIO
 if 'plugins' in getattr(g.app, 'debug', []):
     print('leoRst.py: docutils:', bool(docutils))
     print('leoRst.py:  parsers:', bool(parsers))
     print('leoRst.py:      rst:', bool(rst))
-#@-<< leoRst imports >>
-#@+<< leoRst annotations >>
-#@+node:ekr.20220901082236.1: ** << leoRst annotations >>
+# @-<< leoRst imports >>
+# @+<< leoRst annotations >>
+# @+node:ekr.20220901082236.1: ** << leoRst annotations >>
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position, VNode
-#@-<< leoRst annotations >>
+# @-<< leoRst annotations >>
+
 
 def cmd(name: str) -> Callable:
     """Command decorator for the RstCommands class."""
-    return g.new_cmd_decorator(name, ['c', 'rstCommands',])
+    return g.new_cmd_decorator(
+        name,
+        [
+            'c',
+            'rstCommands',
+        ],
+    )
 
-#@+others
-#@+node:ekr.20090502071837.33: ** class RstCommands
+
+# @+others
+# @+node:ekr.20090502071837.33: ** class RstCommands
 class RstCommands:
     """
     A class to convert @rst nodes to rST markup.
     """
-    #@+others
-    #@+node:ekr.20090502071837.34: *3* rst: Birth
-    #@+node:ekr.20090502071837.35: *4* rst.__init__
+
+    # @+others
+    # @+node:ekr.20090502071837.34: *3* rst: Birth
+    # @+node:ekr.20090502071837.35: *4* rst.__init__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for the RstCommand class."""
         self.c = c
@@ -67,8 +79,12 @@ class RstCommands:
         self.n_docutils = 0  # Number of docutils files written.
 
         # Http support for HtmlParserClass.  See http_addNodeMarker.
-        self.anchor_map: dict[str, Position] = {}  # Keys are anchors. Values are positions
-        self.http_map: dict[str, Position] = {}  # Keys are named hyperlink targets.  Value are positions.
+        self.anchor_map: dict[
+            str, Position
+        ] = {}  # Keys are anchors. Values are positions
+        self.http_map: dict[
+            str, Position
+        ] = {}  # Keys are named hyperlink targets.  Value are positions.
         self.nodeNumber = 0  # Unique node number.
 
         # For writing.
@@ -89,7 +105,8 @@ class RstCommands:
 
         # Complete the init.
         self.reloadSettings()
-    #@+node:ekr.20210326084034.1: *4* rst.reloadSettings
+
+    # @+node:ekr.20210326084034.1: *4* rst.reloadSettings
     def reloadSettings(self) -> None:
         """RstCommand.reloadSettings"""
         c = self.c
@@ -105,26 +122,39 @@ class RstCommands:
 
         # Http options.
         self.http_server_support = getBool('rst3-http-server-support', default=False)
-        self.node_begin_marker = getString('rst3-node-begin-marker') or 'http-node-marker-'
+        self.node_begin_marker = (
+            getString('rst3-node-begin-marker') or 'http-node-marker-'
+        )
 
         # Output options.
         self.default_path = getString('rst3-default-path') or ''
-        self.generate_rst_header_comment = getBool('rst3-generate-rst-header-comment', default=True)
-        self.remove_leo_directives = getBool('rst3-remove-leo-directives', default=False)
+        self.generate_rst_header_comment = getBool(
+            'rst3-generate-rst-header-comment', default=True
+        )
+        self.remove_leo_directives = getBool(
+            'rst3-remove-leo-directives', default=False
+        )
         self.underline_characters = (
-            getString('rst3-underline-characters')
-            or self.default_underline_characters)
-        self.write_intermediate_file = getBool('rst3-write-intermediate-file', default=True)
-        self.write_intermediate_extension = getString('rst3-write-intermediate-extension') or '.txt'
+            getString('rst3-underline-characters') or self.default_underline_characters
+        )
+        self.write_intermediate_file = getBool(
+            'rst3-write-intermediate-file', default=True
+        )
+        self.write_intermediate_extension = (
+            getString('rst3-write-intermediate-extension') or '.txt'
+        )
 
         # Docutils options.
         self.call_docutils = getBool('rst3-call-docutils', default=True)
-        self.publish_argv_for_missing_stylesheets = getString('rst3-publish-argv-for-missing-stylesheets') or ''
+        self.publish_argv_for_missing_stylesheets = (
+            getString('rst3-publish-argv-for-missing-stylesheets') or ''
+        )
         self.stylesheet_embed = getBool('rst3-stylesheet-embed', default=False)
         self.stylesheet_name = getString('rst3-stylesheet-name') or 'default.css'
         self.stylesheet_path = getString('rst3-stylesheet-path') or ''
-    #@+node:ekr.20100813041139.5920: *3* rst: Entry points
-    #@+node:ekr.20210403150303.1: *4* rst.rst-convert-legacy-outline
+
+    # @+node:ekr.20100813041139.5920: *3* rst: Entry points
+    # @+node:ekr.20210403150303.1: *4* rst.rst-convert-legacy-outline
     @cmd('rst-convert-legacy-outline')
     @cmd('convert-legacy-rst-outline')
     def convert_legacy_outline(self, event: LeoKeyEvent = None) -> None:
@@ -136,7 +166,8 @@ class RstCommands:
             if g.match_word(p.h, 0, '@rst-preformat'):
                 self.preformat(p)
             self.convert_rst_options(p)
-    #@+node:ekr.20210403153112.1: *5* rst.convert_rst_options
+
+    # @+node:ekr.20210403153112.1: *5* rst.convert_rst_options
     options_pat = re.compile(r'^@ @rst-options', re.MULTILINE)
     default_pat = re.compile(r'^default_path\s*=(.*)$', re.MULTILINE)
 
@@ -152,18 +183,20 @@ class RstCommands:
                 old_h = p.h
                 p.h = f"@path {fn}"
                 print(f"{old_h} => {p.h}")
-    #@+node:ekr.20210403151958.1: *5* rst.preformat
+
+    # @+node:ekr.20210403151958.1: *5* rst.preformat
     def preformat(self, p: Position) -> None:
         """Convert p.b as if preformatted. Change headline to @rst-no-head"""
         if not p.b.strip():
             return
         p.b = '::\n\n' + ''.join(
-            f"    {s}" if s.strip() else '\n'
-                for s in g.splitLines(p.b))
+            f"    {s}" if s.strip() else '\n' for s in g.splitLines(p.b)
+        )
         old_h = p.h
         p.h = '@rst-no-head'
         print(f"{old_h} => {p.h}")
-    #@+node:ekr.20090511055302.5793: *4* rst.rst3 command & helpers
+
+    # @+node:ekr.20090511055302.5793: *4* rst.rst3 command & helpers
     @cmd('rst3')
     def rst3(self, event: LeoKeyEvent = None) -> int:
         """Write all @rst nodes."""
@@ -175,9 +208,11 @@ class RstCommands:
             f"rst3: wrote...\n"
             f"{self.n_intermediate:4} intermediate file{g.plural(self.n_intermediate)}\n"
             f"{self.n_docutils:4} docutils file{g.plural(self.n_docutils)}\n"
-            f"in {t2 - t1:4.2f} sec.")
+            f"in {t2 - t1:4.2f} sec."
+        )
         return self.n_intermediate
-    #@+node:ekr.20230113050522.1: *5* rst.do_actions & helper
+
+    # @+node:ekr.20230113050522.1: *5* rst.do_actions & helper
     def do_actions(self) -> None:
         """Handle actions specified by @string rst3-action."""
         c = self.c
@@ -197,7 +232,8 @@ class RstCommands:
             c.redraw(organizer)
         else:
             g.es_print(f"Can not happen: bad action: {action!r}")
-    #@+node:ekr.20230113053351.1: *6* rst.clone_action_nodes
+
+    # @+node:ekr.20230113053351.1: *6* rst.clone_action_nodes
     def clone_action_nodes(self) -> Position:
         """
         Create an organizer node as the last node of the outline.
@@ -217,7 +253,8 @@ class RstCommands:
             n = organizer.numberOfChildren()
             p2._linkCopiedAsNthChild(organizer, n)
         return organizer
-    #@+node:ekr.20090502071837.62: *5* rst.processTopTree
+
+    # @+node:ekr.20090502071837.62: *5* rst.processTopTree
     def processTopTree(self, p: Position) -> None:
         """Call processTree for @rst and @slides node p's subtree or p's ancestors."""
 
@@ -233,7 +270,8 @@ class RstCommands:
             self.do_actions()
         else:
             g.warning('No @rst or @slides nodes in', p.h)
-    #@+node:ekr.20090502071837.63: *5* rst.processTree
+
+    # @+node:ekr.20090502071837.63: *5* rst.processTree
     def processTree(self, root: Position) -> None:
         """Process all @rst nodes in a tree."""
         for p in root.self_and_subtree():
@@ -252,7 +290,7 @@ class RstCommands:
                 else:
                     self.write_slides(p)
 
-    #@+node:ekr.20090502071837.64: *5* rst.write_rst_tree (sets self.root)
+    # @+node:ekr.20090502071837.64: *5* rst.write_rst_tree (sets self.root)
     def write_rst_tree(self, p: Position, fn: str) -> str:
         """Convert p's tree to rst sources."""
         c = self.c
@@ -269,7 +307,7 @@ class RstCommands:
         source = self.compute_result()
         return source
 
-    #@+node:ekr.20100822092546.5835: *5* rst.write_slides & helper
+    # @+node:ekr.20100822092546.5835: *5* rst.write_slides & helper
     def write_slides(self, p: Position) -> None:
         """Convert p's children to slides."""
         c = self.c
@@ -297,15 +335,18 @@ class RstCommands:
             self.result_list.append(child.b)
             source = self.compute_result()
             self.write_docutils_files(fn2, p, source)
-    #@+node:ekr.20100822174725.5836: *6* rst.writeSlideTitle
+
+    # @+node:ekr.20100822174725.5836: *6* rst.writeSlideTitle
     def writeSlideTitle(self, title: str, n: int, n_tot: int) -> None:
         """Write the title, underlined with the '#' character."""
         if n != 1:
             title = f"{title} ({n} of {n_tot})"
-        width = max(4, len(g.toEncodedString(title,
-            encoding=self.encoding, reportErrors=False)))
+        width = max(
+            4, len(g.toEncodedString(title, encoding=self.encoding, reportErrors=False))
+        )
         self.result_list.append(f"{title}\n{'#' * width}")
-    #@+node:ekr.20090502071837.85: *5* rst.writeNode & helper
+
+    # @+node:ekr.20090502071837.85: *5* rst.writeNode & helper
     def writeNode(self, p: Position) -> None:
         """Append the rst sources to self.result_list."""
         c = self.c
@@ -318,7 +359,8 @@ class RstCommands:
             if p != self.root:
                 self.result_list.append(self.underline(p, self.filter_h(c, p)))
             self.result_list.append(self.filter_b(c, p))
-    #@+node:ekr.20090502071837.96: *6* rst.http_addNodeMarker
+
+    # @+node:ekr.20090502071837.96: *6* rst.http_addNodeMarker
     def http_addNodeMarker(self, p: Position) -> None:
         """
         Add a node marker for the mod_http plugin (HtmlParserClass class).
@@ -339,7 +381,8 @@ class RstCommands:
             anchorname = f"{self.node_begin_marker}{self.nodeNumber}"
             self.result_list.append(f".. _{anchorname}:")
             self.http_map[anchorname] = p.copy()
-    #@+node:ekr.20100813041139.5919: *4* rst.write_docutils_files & helpers
+
+    # @+node:ekr.20100813041139.5919: *4* rst.write_docutils_files & helpers
     def write_docutils_files(self, fn: str, p: Position, source: str) -> None:
         """Write source to the intermediate file and write the output from docutils.."""
         assert p == self.root, (repr(p), repr(self.root))
@@ -355,7 +398,14 @@ class RstCommands:
         # Should we call docutils?
         if not self.call_docutils:
             return
-        if ext not in ('.htm', '.html', '.tex', '.pdf', '.s5', '.odt'):  # #1884: test now.
+        if ext not in (
+            '.htm',
+            '.html',
+            '.tex',
+            '.pdf',
+            '.s5',
+            '.odt',
+        ):  # #1884: test now.
             return
         # Write the result from docutils.
         s = self.writeToDocutils(source, ext)
@@ -370,7 +420,8 @@ class RstCommands:
             if self.root.v not in self.changed_vnodes:
                 self.changed_positions.append(self.root.copy())
                 self.changed_vnodes.add(self.root.v)
-    #@+node:ekr.20100813041139.5913: *5* rst.addTitleToHtml
+
+    # @+node:ekr.20100813041139.5913: *5* rst.addTitleToHtml
     def addTitleToHtml(self, s: str) -> str:
         """
         Replace an empty <title> element by the contents of the first <h1>
@@ -379,15 +430,14 @@ class RstCommands:
         i = s.find('<title></title>')
         if i == -1:
             return s
-        m = (
-            re.search(r'<h1>([^<]*)</h1>', s) or
-            re.search(r'<h1><[^>]+>([^<]*)</a></h1>', s)
+        m = re.search(r'<h1>([^<]*)</h1>', s) or re.search(
+            r'<h1><[^>]+>([^<]*)</a></h1>', s
         )
         if m:
-            s = s.replace('<title></title>',
-                f"<title>{m.group(1)}</title>")
+            s = s.replace('<title></title>', f"<title>{m.group(1)}</title>")
         return s
-    #@+node:ekr.20090502071837.89: *5* rst.computeOutputFileName
+
+    # @+node:ekr.20090502071837.89: *5* rst.computeOutputFileName
     def computeOutputFileName(self, fn: str) -> str:
         """Return the full path to the output file."""
         c = self.c
@@ -401,7 +451,8 @@ class RstCommands:
         else:
             path = g.finalize_join(fn)
         return path
-    #@+node:ekr.20100813041139.5914: *5* rst.createDirectoryForFile
+
+    # @+node:ekr.20100813041139.5914: *5* rst.createDirectoryForFile
     def createDirectoryForFile(self, fn: str) -> bool:
         """
         Create the directory for fn if
@@ -415,14 +466,19 @@ class RstCommands:
         theDir = g.finalize(theDir)
         if g.os_path_exists(theDir):
             return True
-        if c and c.config and c.config.getBool('create-nonexistent-directories', default=False):
+        if (
+            c
+            and c.config
+            and c.config.getBool('create-nonexistent-directories', default=False)
+        ):
             theDir = c.expand_path_expression(theDir)
             ok: str = g.makeAllNonExistentDirectories(theDir)
             if not ok:
                 g.error('did not create:', theDir)
             return bool(ok)
         return False  # Does not exist and wasn't made.
-    #@+node:ekr.20100813041139.5912: *5* rst.writeIntermediateFile
+
+    # @+node:ekr.20100813041139.5912: *5* rst.writeIntermediateFile
     def writeIntermediateFile(self, fn: str, s: str) -> bool:
         """
         Write s to to the file whose name is fn.
@@ -443,7 +499,8 @@ class RstCommands:
                 self.changed_positions.append(self.root.copy())
                 self.changed_vnodes.add(self.root.v)
         return changed
-    #@+node:ekr.20090502071837.65: *5* rst.writeToDocutils & helper
+
+    # @+node:ekr.20090502071837.65: *5* rst.writeToDocutils & helper
     def writeToDocutils(self, s: str, ext: str) -> Optional[str]:
         """Send s to docutils using the writer implied by ext and return the result."""
         c = self.c
@@ -507,12 +564,14 @@ class RstCommands:
                 g.es_print('relative path:', rel_stylesheet_path)
         try:
             result = None
-            result = docutils.core.publish_string(source=s,
-                    reader_name='standalone',
-                    parser_name='restructuredtext',
-                    writer=writer,
-                    writer_name=writer_name,
-                    settings_overrides=overrides)
+            result = docutils.core.publish_string(
+                source=s,
+                reader_name='standalone',
+                parser_name='restructuredtext',
+                writer=writer,
+                writer_name=writer_name,
+                settings_overrides=overrides,
+            )
             if isinstance(result, bytes):
                 result = g.toUnicode(result)
         except docutils.ApplicationError as error:
@@ -522,7 +581,8 @@ class RstCommands:
             g.es_print('Unexpected docutils exception')
             g.es_exception()
         return result
-    #@+node:ekr.20090502071837.66: *6* rst.handleMissingStyleSheetArgs
+
+    # @+node:ekr.20090502071837.66: *6* rst.handleMissingStyleSheetArgs
     def handleMissingStyleSheetArgs(self, s: str = None) -> dict[str, str]:
         """
         Parse the publish_argv_for_missing_stylesheets option,
@@ -583,8 +643,11 @@ class RstCommands:
                 val = '1'
             d[str(key)] = str(val)
         return d
-    #@+node:ekr.20090512153903.5803: *4* rst.writeAtAutoFile & helpers
-    def writeAtAutoFile(self, p: Position, fileName: str, outputFile: io.TextIOBase) -> bool:
+
+    # @+node:ekr.20090512153903.5803: *4* rst.writeAtAutoFile & helpers
+    def writeAtAutoFile(
+        self, p: Position, fileName: str, outputFile: io.TextIOBase
+    ) -> bool:
         """
         at.writeAtAutoContents calls this method to write an @auto tree
         containing imported rST code.
@@ -610,7 +673,8 @@ class RstCommands:
         finally:
             self.at_auto_write = False
         return ok
-    #@+node:ekr.20090513073632.5733: *5* rst.initAtAutoWrite
+
+    # @+node:ekr.20090513073632.5733: *5* rst.initAtAutoWrite
     def initAtAutoWrite(self, p: Position) -> None:
         """Init underlining for for an @auto write."""
         # User-defined underlining characters make no sense in @auto-rst.
@@ -634,7 +698,8 @@ class RstCommands:
         self.at_auto_underlines = underlines2 + underlines1
         self.underlines1 = underlines1
         self.underlines2 = underlines2
-    #@+node:ekr.20210401155057.7: *5* rst.isSafeWrite
+
+    # @+node:ekr.20210401155057.7: *5* rst.isSafeWrite
     def isSafeWrite(self, p: Position) -> bool:
         """
         Return True if node p contributes nothing but
@@ -648,7 +713,8 @@ class RstCommands:
                 g.es('body text will be ignored in\n', p.h)
                 return False
         return True
-    #@+node:ekr.20090502071837.67: *4* rst.writeNodeToString
+
+    # @+node:ekr.20090502071837.67: *4* rst.writeNodeToString
     def writeNodeToString(self, p: Position) -> str:
         """
         rst.writeNodeToString: A utility for scripts. Not used in Leo.
@@ -657,8 +723,9 @@ class RstCommands:
         Return the string.
         """
         return self.write_rst_tree(p, fn=p.h)
-    #@+node:ekr.20210329105456.1: *3* rst: Filters
-    #@+node:ekr.20210329105948.1: *4* rst.filter_b
+
+    # @+node:ekr.20210329105456.1: *3* rst: Filters
+    # @+node:ekr.20210329105948.1: *4* rst.filter_b
     def filter_b(self, c: Cmdr, p: Position) -> str:
         """
         Filter p.b with user_filter_b function.
@@ -673,13 +740,16 @@ class RstCommands:
                 return p.b
         if self.remove_leo_directives:
             # Only remove a few directives, and only if they start the line.
-            return ''.join([
-                z for z in g.splitLines(p.b)
+            return ''.join(
+                [
+                    z
+                    for z in g.splitLines(p.b)
                     if not z.startswith(('@language ', '@others', '@wrap'))
-            ])
+                ]
+            )
         return p.b
 
-    #@+node:ekr.20230205101652.1: *4* rst.filter_h
+    # @+node:ekr.20230205101652.1: *4* rst.filter_h
     def filter_h(self, c: Cmdr, p: Position) -> str:
         """
         Filter p.h with user_filter_h function.
@@ -692,7 +762,8 @@ class RstCommands:
                 g.es_exception()
                 self.user_filter_h = None
         return p.h
-    #@+node:ekr.20210329111528.1: *4* rst.register_*_filter
+
+    # @+node:ekr.20210329111528.1: *4* rst.register_*_filter
     def register_body_filter(self, f: Callable) -> None:
         """Register the user body filter."""
         self.user_filter_b = f
@@ -700,10 +771,12 @@ class RstCommands:
     def register_headline_filter(self, f: Callable) -> None:
         """Register the user headline filter."""
         self.user_filter_h = f
-    #@+node:ekr.20210331084407.1: *3* rst: Predicates
+
+    # @+node:ekr.20210331084407.1: *3* rst: Predicates
     def in_ignore_tree(self, p: Position) -> bool:
-        return any(g.match_word(p2.h, 0, '@rst-ignore-tree')
-            for p2 in self.rst_parents(p))
+        return any(
+            g.match_word(p2.h, 0, '@rst-ignore-tree') for p2 in self.rst_parents(p)
+        )
 
     def in_rst_tree(self, p: Position) -> bool:
         return any(self.is_rst_node(p2) for p2 in self.rst_parents(p))
@@ -722,31 +795,36 @@ class RstCommands:
             if p2 == self.root:
                 return
             yield p2
-    #@+node:ekr.20090502071837.88: *3* rst: Utils
-    #@+node:ekr.20210326165315.1: *4* rst.compute_result
+
+    # @+node:ekr.20090502071837.88: *3* rst: Utils
+    # @+node:ekr.20210326165315.1: *4* rst.compute_result
     def compute_result(self) -> str:
         """Concatenate all strings in self.result, ensuring exactly one blank line between strings."""
         return ''.join(f"{s.rstrip()}\n\n" for s in self.result_list if s.strip())
-    #@+node:ekr.20090502071837.43: *4* rst.dumpDict
+
+    # @+node:ekr.20090502071837.43: *4* rst.dumpDict
     def dumpDict(self, d: dict[str, str], tag: str) -> None:
         """Dump the given settings dict."""
         g.pr(tag + '...')
         for key in sorted(d):
             g.pr(f"  {key:20} {d.get(key)}")
-    #@+node:ekr.20090502071837.90: *4* rst.encode
+
+    # @+node:ekr.20090502071837.90: *4* rst.encode
     # def encode(self, s: str) -> bytes:
-        # """return s converted to an encoded string."""
-        # return g.toEncodedString(s, encoding=self.encoding, reportErrors=True)
-    #@+node:ekr.20090502071837.91: *4* rst.report
+    # """return s converted to an encoded string."""
+    # return g.toEncodedString(s, encoding=self.encoding, reportErrors=True)
+    # @+node:ekr.20090502071837.91: *4* rst.report
     def report(self, name: str) -> None:
         """Issue a report to the log pane."""
         if self.silent:
             return
         g.pr(f"wrote: {g.finalize(name)}")
-    #@+node:ekr.20090502071837.92: *4* rst.rstComment
+
+    # @+node:ekr.20090502071837.92: *4* rst.rstComment
     def rstComment(self, s: str) -> str:
         return f".. {s}"
-    #@+node:ekr.20090502071837.93: *4* rst.underline
+
+    # @+node:ekr.20090502071837.93: *4* rst.underline
     def underline(self, p: Position, s: str) -> str:
         """
         Return the underlining string to be used at the given level for string s.
@@ -784,13 +862,18 @@ class RstCommands:
         # The user is responsible for top-level overlining.
         u = self.underline_characters  # '''#=+*^~"'`-:><_'''
         level = max(0, p.level() - self.root.level())
-        level = min(level + 1, len(u) - 1)  # Reserve the first character for explicit titles.
+        level = min(
+            level + 1, len(u) - 1
+        )  # Reserve the first character for explicit titles.
         ch = u[level]
         n = max(4, len(encoded_s))
         return f"{s.strip()}\n{ch * n}"
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

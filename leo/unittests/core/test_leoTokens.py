@@ -1,15 +1,14 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240105151507.1: * @file ../unittests/core/test_leoTokens.py
+# @+leo-ver=5-thin
+# @+node:ekr.20240105151507.1: * @file ../unittests/core/test_leoTokens.py
 """Tests of leoTokens.py"""
-#@+<< test_leoTokens imports >>
-#@+node:ekr.20240105151507.2: ** << test_leoTokens imports >>
+# @+<< test_leoTokens imports >>
+# @+node:ekr.20240105151507.2: ** << test_leoTokens imports >>
 import os
 import sys
 import textwrap
 import unittest
 import warnings
 
-# warnings.simplefilter("ignore")
 try:
     # Suppress a warning about imp being deprecated.
     with warnings.catch_warnings():
@@ -24,12 +23,14 @@ from leo.core.leoTokens import InputToken, Tokenizer, TokenBasedOrange
 
 # Utility functions.
 from leo.core.leoTokens import dump_contents, dump_tokens, input_tokens_to_string
-#@-<< test_leoTokens imports >>
+
+warnings.simplefilter("ignore")
+# @-<< test_leoTokens imports >>
 v1, v2, junk1, junk2, junk3 = sys.version_info
 py_version = (v1, v2)
 
-#@+others
-#@+node:ekr.20240105153420.2: ** class BaseTest (TestCase)
+# @+others
+# @+node:ekr.20240105153420.2: ** class BaseTest (TestCase)
 # Do *not* use LeoUnitTest as the base class.
 # Doing so slows downt testing considerably.
 
@@ -44,8 +45,8 @@ class BaseTest(unittest.TestCase):
     def setUp(self) -> None:
         g.unitTesting = True
 
-    #@+others
-    #@+node:ekr.20240105153420.13: *3* BaseTest.beautify
+    # @+others
+    # @+node:ekr.20240105153420.13: *3* BaseTest.beautify
     def beautify(self,
         contents,
         tokens,
@@ -63,7 +64,7 @@ class BaseTest(unittest.TestCase):
         result_s = orange.beautify(contents, filename, tokens)
         self.output_list = orange.output_list
         return result_s
-    #@+node:ekr.20240105153420.4: *3* BaseTest.check_roundtrip
+    # @+node:ekr.20240105153420.4: *3* BaseTest.check_roundtrip
     def check_roundtrip(self, contents, *, debug_list: list[str] = None):
         """Check that the tokenizer round-trips the given contents."""
         # Several unit tests call this method.
@@ -71,7 +72,7 @@ class BaseTest(unittest.TestCase):
         contents, tokens = self.make_data(contents, debug_list=debug_list)
         results = input_tokens_to_string(tokens)
         self.assertEqual(contents, results)
-    #@+node:ekr.20240105153425.44: *3* BaseTest.make_data (test_leoTokens.py)
+    # @+node:ekr.20240105153425.44: *3* BaseTest.make_data (test_leoTokens.py)
     def make_data(self,
         contents: str,
         *,
@@ -112,7 +113,7 @@ class BaseTest(unittest.TestCase):
         if 'tokens' in self.debug_list:
             dump_tokens(tokens)
         return contents, tokens
-    #@+node:ekr.20240105153420.6: *3* BaseTest.make_file_data
+    # @+node:ekr.20240105153420.6: *3* BaseTest.make_file_data
     def make_file_data(self, filename: str) -> tuple[str, list[InputToken]]:
         """Return (contents, tokens, tree) from the given file."""
         directory = os.path.dirname(__file__)
@@ -121,7 +122,7 @@ class BaseTest(unittest.TestCase):
         contents = g.readFileIntoUnicodeString(filename)
         contents, tokens = self.make_data(contents, description=filename)
         return contents, tokens
-    #@+node:ekr.20240205025458.1: *3* BaseTest.prep
+    # @+node:ekr.20240205025458.1: *3* BaseTest.prep
     def prep(self, s: str) -> str:
         """
         Return the "prepped" version of s.
@@ -129,8 +130,8 @@ class BaseTest(unittest.TestCase):
         This should eliminate the need for backslashes in tests.
         """
         return textwrap.dedent(s).strip() + '\n'
-    #@-others
-#@+node:ekr.20240105153425.2: ** class Optional_TestFiles (BaseTest)
+    # @-others
+# @+node:ekr.20240105153425.2: ** class Optional_TestFiles (BaseTest)
 class Optional_TestFiles(BaseTest):
     """
     Tests for the TokenOrderGenerator class that act on files.
@@ -140,116 +141,45 @@ class Optional_TestFiles(BaseTest):
 
     All of these tests failed at one time.
     """
-    #@+others
-    #@+node:ekr.20240105153425.3: *3* TestFiles.test_leoApp
+    # @+others
+    # @+node:ekr.20240105153425.3: *3* TestFiles.test_leoApp
     def test_leoApp(self):
 
         self.make_file_data('leoApp.py')
-    #@+node:ekr.20240105153425.4: *3* TestFiles.test_leoAst
+    # @+node:ekr.20240105153425.4: *3* TestFiles.test_leoAst
     def test_leoAst(self):
 
         self.make_file_data('leoAst.py')
-    #@+node:ekr.20240105153425.5: *3* TestFiles.test_leoDebugger
+    # @+node:ekr.20240105153425.5: *3* TestFiles.test_leoDebugger
     def test_leoDebugger(self):
 
         self.make_file_data('leoDebugger.py')
-    #@+node:ekr.20240105153425.6: *3* TestFiles.test_leoFind
+    # @+node:ekr.20240105153425.6: *3* TestFiles.test_leoFind
     def test_leoFind(self):
 
         self.make_file_data('leoFind.py')
-    #@+node:ekr.20240105153425.7: *3* TestFiles.test_leoGlobals
+    # @+node:ekr.20240105153425.7: *3* TestFiles.test_leoGlobals
     def test_leoGlobals(self):
 
         self.make_file_data('leoGlobals.py')
-    #@+node:ekr.20240105153425.8: *3* TestFiles.test_leoTips
+    # @+node:ekr.20240105153425.8: *3* TestFiles.test_leoTips
     def test_leoTips(self):
 
         self.make_file_data('leoTips.py')
-    #@+node:ekr.20240105153425.9: *3* TestFiles.test_runLeo
+    # @+node:ekr.20240105153425.9: *3* TestFiles.test_runLeo
     def test_runLeo(self):
 
         self.make_file_data('runLeo.py')
-    #@-others
-#@+node:ekr.20240105153425.85: ** class TestTokens (BaseTest)
-class TestTokens(BaseTest):
-    """Unit tests for tokenizing."""
-
-    #@+others
-    #@+node:ekr.20240105153425.93: *3* TT.show_example_dump
-    def show_example_dump(self):  # pragma: no cover
-
-        # Will only be run when enabled explicitly.
-
-        contents = """
-    print('line 1')
-    print('line 2')
-    print('line 3')
-    """
-        contents, tokens = self.make_data(contents)
-        dump_contents(contents)
-        dump_tokens(tokens)
-    #@+node:ekr.20240105153425.94: *3* TT.test_bs_nl_tokens
-    def test_bs_nl_tokens(self):
-        # Test https://bugs.python.org/issue38663.
-
-        contents = """
-    print \
-        ('abc')
-    """
-        self.check_roundtrip(contents)
-    #@+node:ekr.20240105153425.95: *3* TT.test_continuation_1
-    def test_continuation_1(self):
-
-        contents = """
-    a = (3,4,
-        5,6)
-    y = [3, 4,
-        5]
-    z = {'a': 5,
-        'b':15, 'c':True}
-    x = len(y) + 5 - a[
-        3] - a[2] + len(z) - z[
-        'b']
-    """
-        self.check_roundtrip(contents)
-    #@+node:ekr.20240105153425.96: *3* TT.test_continuation_2
-    def test_continuation_2(self):
-        # Backslash means line continuation, except for comments
-        contents = (
-            'x=1+\\\n    2'
-            '# This is a comment\\\n    # This also'
-        )
-        self.check_roundtrip(contents)
-    #@+node:ekr.20240105153425.97: *3* TT.test_continuation_3
-    def test_continuation_3(self):
-
-        contents = """
-    # Comment \\\n
-    x = 0
-    """
-        self.check_roundtrip(contents)
-    #@+node:ekr.20240105153425.98: *3* TT.test_string_concatenation_1
-    def test_string_concatentation_1(self):
-        # Two *plain* string literals on the same line
-        self.check_roundtrip("""'abc' 'xyz'""")
-    #@+node:ekr.20240105153425.99: *3* TT.test_string_concatenation_2
-    def test_string_concatentation_2(self):
-        # f-string followed by plain string on the same line
-        self.check_roundtrip("""f'abc' 'xyz'""")
-    #@+node:ekr.20240105153425.100: *3* TT.test_string_concatenation_3
-    def test_string_concatentation_3(self):
-        # plain string followed by f-string on the same line
-        self.check_roundtrip("""'abc' f'xyz'""")
-    #@-others
-#@+node:ekr.20240105153425.42: ** class TestTokenBasedOrange (BaseTest)
+    # @-others
+# @+node:ekr.20240105153425.42: ** class TestTokenBasedOrange (BaseTest)
 class TestTokenBasedOrange(BaseTest):
     """
     Tests for the TokenBasedOrange class.
 
     Note: TokenBasedOrange never inserts or deletes lines.
     """
-    #@+others
-    #@+node:ekr.20240105153425.43: *3* TestTBO.blacken
+    # @+others
+    # @+node:ekr.20240105153425.43: *3* TestTBO.blacken
     def blacken(self, contents):
         """Return the results of running black on contents"""
         if not black:
@@ -262,7 +192,7 @@ class TestTokenBasedOrange(BaseTest):
         except TypeError:  # pragma: no cover
             self.skipTest('Requires newer version of Black')
         return black.format_str(contents, mode=mode)
-    #@+node:ekr.20240116104552.1: *3* TestTBO.slow_test_leoColorizer
+    # @+node:ekr.20240116104552.1: *3* TestTBO.slow_test_leoColorizer
     def slow_test_leoApp(self) -> None:  # pragma: no cover
 
         # This test is no longer needed.
@@ -289,7 +219,7 @@ class TestTokenBasedOrange(BaseTest):
                 tbo.show_diffs(regularized_expected, regularized_results)
 
             assert regularized_expected == regularized_results
-    #@+node:ekr.20240105153425.45: *3* TestTBO.test_annotations
+    # @+node:ekr.20240105153425.45: *3* TestTBO.test_annotations
     def test_annotations(self):  # Required for full coverage.
 
         table = (
@@ -316,13 +246,13 @@ class TestTokenBasedOrange(BaseTest):
                 g.printObj(results, tag='Results')
             self.assertEqual(results, expected)
 
-    #@+node:ekr.20240105153425.46: *3* TestTBO.test_at_doc_part
+    # @+node:ekr.20240105153425.46: *3* TestTBO.test_at_doc_part
     def test_at_doc_part(self):
 
         contents = """
-    #@+at Line 1
+    # @+at Line 1
     # Line 2
-    #@@c
+    # @@c
 
     print('hi')
     """
@@ -330,7 +260,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents.rstrip() + '\n'
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.47: *3* TestTBO.test_backslash_newline
+    # @+node:ekr.20240105153425.47: *3* TestTBO.test_backslash_newline
     def test_backslash_newline(self):
         """
         This test is necessarily different from black, because orange doesn't
@@ -349,7 +279,7 @@ class TestTokenBasedOrange(BaseTest):
         # g.printObj(tokens, tag='Tokens')
         # g.printObj(results, tag='Results')
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.48: *3* TestTBO.test_blank_lines_after_function
+    # @+node:ekr.20240105153425.48: *3* TestTBO.test_blank_lines_after_function
     def test_blank_lines_after_function(self):
 
         contents = """
@@ -371,7 +301,7 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.49: *3* TestTBO.test_blank_lines_after_function_2
+    # @+node:ekr.20240105153425.49: *3* TestTBO.test_blank_lines_after_function_2
     def test_blank_lines_after_function_2(self):
 
         contents = """
@@ -388,7 +318,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.50: *3* TestTBO.test_blank_lines_after_function_3
+    # @+node:ekr.20240105153425.50: *3* TestTBO.test_blank_lines_after_function_3
     def test_blank_lines_after_function_3(self):
 
         # From leoAtFile.py.
@@ -412,7 +342,7 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.53: *3* TestTBO.test_comment_indented
+    # @+node:ekr.20240105153425.53: *3* TestTBO.test_comment_indented
     def test_comment_indented(self):
 
         table = (
@@ -439,7 +369,7 @@ class TestTokenBasedOrange(BaseTest):
                 g.printObj(results, tag='Results')
                 g.printObj(expected, tag='Expected')
         assert not fails, fails
-    #@+node:ekr.20240105153425.54: *3* TestTBO.test_comment_space_after_delim
+    # @+node:ekr.20240105153425.54: *3* TestTBO.test_comment_space_after_delim
     def test_comment_space_after_delim(self):
 
         table = (
@@ -472,7 +402,7 @@ class TestTokenBasedOrange(BaseTest):
                 fails += 1
                 print(f"Fail: {fails}\n{message}")
         assert not fails, fails
-    #@+node:ekr.20240105153425.55: *3* TestTBO.test_decorators
+    # @+node:ekr.20240105153425.55: *3* TestTBO.test_decorators
     def test_decorators(self):
 
         table = (
@@ -505,7 +435,7 @@ class TestTokenBasedOrange(BaseTest):
                 g.printObj(contents, tag='Contents')
                 g.printObj(results, tag='Results')
             self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.56: *3* TestTBO.test_dont_delete_blank_lines
+    # @+node:ekr.20240105153425.56: *3* TestTBO.test_dont_delete_blank_lines
     def test_dont_delete_blank_lines(self):
 
         contents = """
@@ -521,7 +451,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents.rstrip() + '\n'
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20250506092303.1: *3* TestTBO.test_flake8_errors
+    # @+node:ekr.20250506092303.1: *3* TestTBO.test_flake8_errors
     def test_flake8_errors(self):
 
         tag = 'test_flake8_errors'
@@ -571,7 +501,7 @@ class TestTokenBasedOrange(BaseTest):
                 g.printObj(expected, tag='Expected')
                 g.printObj(results, tag='Results')
             self.assertEqual(results, expected, msg=description)
-    #@+node:ekr.20240105153425.65: *3* TestTBO.test_leo_sentinels
+    # @+node:ekr.20240105153425.65: *3* TestTBO.test_leo_sentinels
     def test_leo_sentinels_1(self):
 
         # Careful: don't put a sentinel into the file directly.
@@ -586,7 +516,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents.rstrip() + '\n'
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.66: *3* TestTBO.test_leo_sentinels_2
+    # @+node:ekr.20240105153425.66: *3* TestTBO.test_leo_sentinels_2
     def test_leo_sentinels_2(self):
 
         # Careful: don't put a sentinel into the file directly.
@@ -601,7 +531,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents.rstrip() + '\n'
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.67: *3* TestTBO.test_lines_before_class
+    # @+node:ekr.20240105153425.67: *3* TestTBO.test_lines_before_class
     def test_lines_before_class(self):
 
         contents = """
@@ -613,7 +543,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20240128181802.1: *3* TestTBO.test_multi_line_imports
+    # @+node:ekr.20240128181802.1: *3* TestTBO.test_multi_line_imports
     def test_multi_line_imports(self):
 
         # The space between 'import' and '(' is correct.
@@ -639,7 +569,7 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.68: *3* TestTBO.test_multi_line_pet_peeves
+    # @+node:ekr.20240105153425.68: *3* TestTBO.test_multi_line_pet_peeves
     def test_multi_line_pet_peeves(self):
 
         contents = """
@@ -671,7 +601,7 @@ class TestTokenBasedOrange(BaseTest):
         contents, tokens = self.make_data(contents)
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20240420050005.1: *3* TestTBO.test_multi_line_statement
+    # @+node:ekr.20240420050005.1: *3* TestTBO.test_multi_line_statement
     def test_multi_line_statements(self):
 
         contents = """
@@ -702,7 +632,7 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         self.assertEqual(results, expected)
-    #@+node:ekr.20250202043822.1: *3* TestTBO.test_nested_fstrings
+    # @+node:ekr.20250202043822.1: *3* TestTBO.test_nested_fstrings
     def test_nested_fstrings(self):
 
         # https://github.com/leo-editor/leo-editor/issues/4289
@@ -718,7 +648,7 @@ class TestTokenBasedOrange(BaseTest):
         self.assertEqual(results, expected)
 
 
-    #@+node:ekr.20240105153425.69: *3* TestTBO.test_one_line_pet_peeves
+    # @+node:ekr.20240105153425.69: *3* TestTBO.test_one_line_pet_peeves
     def test_one_line_pet_peeves(self):
 
         # One-line pet peeves, except those involving slices and unary ops.
@@ -782,7 +712,7 @@ class TestTokenBasedOrange(BaseTest):
                     f"     black: {expected.rstrip()}\n"
                     f"    orange: {results.rstrip() if results else 'None'}")
             self.assertEqual(results, expected, msg=description)
-    #@+node:ekr.20240128002403.1: *3* TestTBO.test_percent_op
+    # @+node:ekr.20240128002403.1: *3* TestTBO.test_percent_op
     def test_percent_op(self):
 
         # leo/plugins/writers/basewriter.py, line 38
@@ -791,7 +721,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = self.blacken(contents).rstrip() + '\n'
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20240105153425.70: *3* TestTBO.test_relative_imports
+    # @+node:ekr.20240105153425.70: *3* TestTBO.test_relative_imports
     def test_relative_imports(self):
 
         # #2533.
@@ -827,7 +757,7 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         self.assertEqual(expected, results)
-    #@+node:ekr.20240109090653.1: *3* TestTBO.test_slice
+    # @+node:ekr.20240109090653.1: *3* TestTBO.test_slice
     def test_slice(self):
 
         # Test one-line pet peeves involving slices.
@@ -909,7 +839,7 @@ class TestTokenBasedOrange(BaseTest):
                 g.printObj(expected, tag='Expected (Black)')
                 g.printObj(results, tag='Results')
             self.assertEqual(expected, results)
-    #@+node:ekr.20250505153051.1: *3* TestTBO.test_spaces_after_keyword
+    # @+node:ekr.20250505153051.1: *3* TestTBO.test_spaces_after_keyword
     def test_spaces_after_keyword(self):
 
         contents = """return  ''\n"""
@@ -921,7 +851,7 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         assert results == expected
-    #@+node:ekr.20240105153425.76: *3* TestTBO.test_star_star_operator
+    # @+node:ekr.20240105153425.76: *3* TestTBO.test_star_star_operator
     def test_star_star_operator(self):
 
         # Don't rely on black for this test.
@@ -930,7 +860,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected)
-    #@+node:ekr.20250505152406.1: *3* TestTBO.test_trailing_ws_in_docstring
+    # @+node:ekr.20250505152406.1: *3* TestTBO.test_trailing_ws_in_docstring
     def test_trailing_ws_in_docstring(self):
 
         expected = textwrap.dedent('''\
@@ -948,7 +878,7 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         assert results == expected
-    #@+node:ekr.20240109070553.1: *3* TestTBO.test_unary_ops
+    # @+node:ekr.20240109070553.1: *3* TestTBO.test_unary_ops
     def test_unary_ops(self):
 
         # One-line pet peeves involving unary ops but *not* slices.
@@ -988,11 +918,11 @@ class TestTokenBasedOrange(BaseTest):
                     f"     black: {expected.rstrip()}\n"
                     f"    orange: {results.rstrip() if results else 'None'}")
             self.assertEqual(results, expected, msg=description)
-    #@+node:ekr.20240105153425.79: *3* TestTBO.test_verbatim
+    # @+node:ekr.20240105153425.79: *3* TestTBO.test_verbatim
     def test_verbatim(self):
 
         contents = """
-    #@@nobeautify
+    # @@nobeautify
 
     def addOptionsToParser(self, parser, trace_m):
 
@@ -1014,13 +944,14 @@ class TestTokenBasedOrange(BaseTest):
     allDirective    =  2 # at-all (4.2)
     docDirective    =  3 # @doc.
 
-    #@@beautify
+
     """
         contents, tokens = self.make_data(contents)
         expected = contents
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected, msg=contents)
-    #@+node:ekr.20240105153425.80: *3* TestTBO.test_verbatim_with_pragma
+
+    # @+node:ekr.20240105153425.80: *3* TestTBO.test_verbatim_with_pragma
     def test_verbatim_with_pragma(self):
 
         contents = """
@@ -1048,7 +979,7 @@ class TestTokenBasedOrange(BaseTest):
         expected = contents
         results = self.beautify(contents, tokens)
         self.assertEqual(results, expected, msg=contents)
-    #@+node:ekr.20250505231955.1: *3* TestTBO.test_ws_in_blank_line
+    # @+node:ekr.20250505231955.1: *3* TestTBO.test_ws_in_blank_line
     def test_ws_in_blank_line(self):
 
         contents = 'line 1\n   \nline 2\n'
@@ -1060,17 +991,17 @@ class TestTokenBasedOrange(BaseTest):
             g.printObj(results, tag='Results')
             g.printObj(expected, tag='Expected')
         assert results == expected
-    #@+node:ekr.20240105153425.81: *3* TestTBO.verbatim2
+    # @+node:ekr.20240105153425.81: *3* TestTBO.verbatim2
     def test_verbatim2(self):
 
         # We *do* want this test to contain verbatim sentinels.
         contents = """
-    #@@beautify
-    #@@nobeautify
-    #@+at Starts doc part
+    # @@beautify
+    ###@nobeautify
+    # @+at Starts doc part
     # More doc part.
     # The @c ends the doc part.
-    #@@c
+    # @@c
         """
         contents, tokens = self.make_data(contents)
         expected = contents
@@ -1078,6 +1009,77 @@ class TestTokenBasedOrange(BaseTest):
         # g.printObj(results, tag='Results')
         # g.printObj(expected, tag='Expected')
         self.assertEqual(results, expected, msg=contents)
-    #@-others
-#@-others
-#@-leo
+    # @-others
+# @+node:ekr.20240105153425.85: ** class TestTokens (BaseTest)
+class TestTokens(BaseTest):
+    """Unit tests for tokenizing."""
+
+    # @+others
+    # @+node:ekr.20240105153425.93: *3* TT.show_example_dump
+    def show_example_dump(self):  # pragma: no cover
+
+        # Will only be run when enabled explicitly.
+
+        contents = """
+    print('line 1')
+    print('line 2')
+    print('line 3')
+    """
+        contents, tokens = self.make_data(contents)
+        dump_contents(contents)
+        dump_tokens(tokens)
+    # @+node:ekr.20240105153425.94: *3* TT.test_bs_nl_tokens
+    def test_bs_nl_tokens(self):
+        # Test https://bugs.python.org/issue38663.
+
+        contents = """
+    print \
+        ('abc')
+    """
+        self.check_roundtrip(contents)
+    # @+node:ekr.20240105153425.95: *3* TT.test_continuation_1
+    def test_continuation_1(self):
+
+        contents = """
+    a = (3,4,
+        5,6)
+    y = [3, 4,
+        5]
+    z = {'a': 5,
+        'b':15, 'c':True}
+    x = len(y) + 5 - a[
+        3] - a[2] + len(z) - z[
+        'b']
+    """
+        self.check_roundtrip(contents)
+    # @+node:ekr.20240105153425.96: *3* TT.test_continuation_2
+    def test_continuation_2(self):
+        # Backslash means line continuation, except for comments
+        contents = (
+            'x=1+\\\n    2'
+            '# This is a comment\\\n    # This also'
+        )
+        self.check_roundtrip(contents)
+    # @+node:ekr.20240105153425.97: *3* TT.test_continuation_3
+    def test_continuation_3(self):
+
+        contents = """
+    # Comment \\\n
+    x = 0
+    """
+        self.check_roundtrip(contents)
+    # @+node:ekr.20240105153425.98: *3* TT.test_string_concatenation_1
+    def test_string_concatentation_1(self):
+        # Two *plain* string literals on the same line
+        self.check_roundtrip("""'abc' 'xyz'""")
+    # @+node:ekr.20240105153425.99: *3* TT.test_string_concatenation_2
+    def test_string_concatentation_2(self):
+        # f-string followed by plain string on the same line
+        self.check_roundtrip("""f'abc' 'xyz'""")
+    # @+node:ekr.20240105153425.100: *3* TT.test_string_concatenation_3
+    def test_string_concatentation_3(self):
+        # plain string followed by f-string on the same line
+        self.check_roundtrip("""'abc' f'xyz'""")
+    # @-others
+# @-others
+# @-leo

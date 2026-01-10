@@ -1,9 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240323051724.1: * @file ../scripts/full_test_leo.py
+# @+leo-ver=5-thin
+# @+node:ekr.20240323051724.1: * @file ../scripts/full_test_leo.py
 """
 full_test_leo.py: Run all these tests scripts in this order:
 
-- beautify_leo.py.
+- beautify_all_leo.py.
 - run_test_leo.py.
 - flake8_leo.py.
 - pyflakes_leo.py
@@ -40,14 +40,14 @@ isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
 for command in [
-    fr'{python} -m leo.scripts.beautify_all_leo',
-    fr'{python} -m leo.scripts.flake8_leo',
-    fr'{python} -m leo.scripts.pyflakes_leo',
-    fr'{python} -m leo.scripts.run_test_leo',
-    fr'{python} -m leo.scripts.mypy_leo',
-    fr'{python} -m leo.scripts.ruff_leo',
-    fr'{python} -m leo.scripts.check_leo',
-    fr'{python} -m leo.scripts.pylint_leo',
+    rf'{python} -m leo.scripts.beautify_all_leo',
+    rf'{python} -m leo.scripts.flake8_leo',
+    rf'{python} -m leo.scripts.pyflakes_leo',
+    rf'{python} -m leo.scripts.run_test_leo',
+    rf'{python} -m leo.scripts.mypy_leo',
+    rf'{python} -m leo.scripts.ruff_leo',
+    rf'{python} -m leo.scripts.check_leo',
+    rf'{python} -m leo.scripts.pylint_leo',
 ]:
     subprocess.Popen(command, shell=True).communicate()
-#@-leo
+# @-leo

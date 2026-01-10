@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240321122413.8: * @file ../scripts/mypy_leo.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240321122413.8: * @file ../scripts/mypy_leo.py
+# @@language python
 
 """
 mypy_leo.py: Run mypy on Leo's files.
@@ -27,6 +27,6 @@ args = ' '.join(sys.argv[1:])
 isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
-command = fr'{python} -m mypy --debug-cache leo'
+command = rf'{python} -m mypy --debug-cache leo'
 subprocess.Popen(command, shell=True).communicate()
-#@-leo
+# @-leo

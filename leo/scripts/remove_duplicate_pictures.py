@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20220126054240.1: * @file ../scripts/remove_duplicate_pictures.py
-#@+<< docstring (remove_duplicate_pictures.py) >>
-#@+node:ekr.20220126054240.2: ** << docstring (remove_duplicate_pictures.py) >>
+# @+leo-ver=5-thin
+# @+node:ekr.20220126054240.1: * @file ../scripts/remove_duplicate_pictures.py
+# @+<< docstring (remove_duplicate_pictures.py) >>
+# @+node:ekr.20220126054240.2: ** << docstring (remove_duplicate_pictures.py) >>
 """
 Remove duplicate files.
 
@@ -43,9 +43,10 @@ This plugin requires the following third-party packages::
 The algorithm used is a faster version of the code here:
 https://medium.com/@somilshah112/how-to-find-duplicate-or-similar-images-quickly-with-python-2d636af9452f
 """
-#@-<< docstring (remove_duplicate_pictures.py) >>
-#@+<< imports (remove_duplicate_pictures.py) >>
-#@+node:ekr.20220126054240.3: ** << imports (remove_duplicate_pictures.py) >>
+
+# @-<< docstring (remove_duplicate_pictures.py) >>
+# @+<< imports (remove_duplicate_pictures.py) >>
+# @+node:ekr.20220126054240.3: ** << imports (remove_duplicate_pictures.py) >>
 import argparse
 from collections import defaultdict
 import os
@@ -53,6 +54,7 @@ import pathlib
 import sys
 import time
 from typing import Any
+
 # Third party
 try:
     from PIL import Image
@@ -80,54 +82,60 @@ try:
 except Exception:
     print('remove_duplicate_pictures.py: Qt required')
     print('pip install pyqt6')
-#@-<< imports (remove_duplicate_pictures.py) >>
+# @-<< imports (remove_duplicate_pictures.py) >>
 
 # Globals to retain references to objects.
 gApp = None
 gWindow = None
 
-#@+others
-#@+node:ekr.20220126054240.5: ** get_args & checkers
+
+# @+others
+# @+node:ekr.20220126054240.5: ** get_args & checkers
 def get_args():
     # Automatically implements the --help option.
     description = "usage: python -m remove_duplicate_pictures [options]"
     parser = argparse.ArgumentParser(
-        description=description,
-        formatter_class=argparse.RawTextHelpFormatter)
+        description=description, formatter_class=argparse.RawTextHelpFormatter
+    )
     # Add args.
     add = parser.add_argument
-    add('--extensions', dest='extensions', nargs='*', metavar='TYPES',
-        help='List of image file extensions')
-        # Default: .jpeg,.jpg,.png  (no spaces allowed)
-    add('--hash-size', dest='hash_size', metavar='INT',
-        help='hash_size, default 8')
-    add('--height', dest='height', metavar='PIXELS',
-        help='Height of window')
-    add('--path', dest='path', metavar='DIR',
-        help='Path to root directory')
-    add('--starting-dir', dest='starting_dir', metavar='DIR',
-        help='Starting directory of dialog if no path given')
+    add(
+        '--extensions',
+        dest='extensions',
+        nargs='*',
+        metavar='TYPES',
+        help='List of image file extensions',
+    )
+    # Default: .jpeg,.jpg,.png  (no spaces allowed)
+    add('--hash-size', dest='hash_size', metavar='INT', help='hash_size, default 8')
+    add('--height', dest='height', metavar='PIXELS', help='Height of window')
+    add('--path', dest='path', metavar='DIR', help='Path to root directory')
+    add(
+        '--starting-dir',
+        dest='starting_dir',
+        metavar='DIR',
+        help='Starting directory of dialog if no path given',
+    )
     # Parse the options, and remove them from sys.argv.
     args = parser.parse_args()
     # Check and return the args.
     return {
-         'extensions': get_extensions(args.extensions),
-         'hash_size': get_int('hash_size', args.hash_size),
-         'height': get_int('height', args.height),
-         'path': get_path(args.path),
-         'starting_directory': get_path(args.starting_dir)
+        'extensions': get_extensions(args.extensions),
+        'hash_size': get_int('hash_size', args.hash_size),
+        'height': get_int('height', args.height),
+        'path': get_path(args.path),
+        'starting_directory': get_path(args.starting_dir),
     }
-#@+node:ekr.20220126054240.7: *3* get_extensions
+
+
+# @+node:ekr.20220126054240.7: *3* get_extensions
 def get_extensions(aList):
-
     # Ensure extensions start with '.'
-    return [
-        z if z.startswith('.') else f".{z}"
-            for z in aList or []
-    ]
-#@+node:ekr.20220126054240.9: *3* get_int
-def get_int(kind, n):
+    return [z if z.startswith('.') else f".{z}" for z in aList or []]
 
+
+# @+node:ekr.20220126054240.9: *3* get_int
+def get_int(kind, n):
     if n is None:
         return None
     try:
@@ -135,14 +143,17 @@ def get_int(kind, n):
     except ValueError:
         print(f"Bad --{kind} value: {n!r}")
         return None
-#@+node:ekr.20220126054240.8: *3* get_path
-def get_path(path):
 
+
+# @+node:ekr.20220126054240.8: *3* get_path
+def get_path(path):
     if path and not os.path.exists(path):
         print(f"--path: not found: {path!r}")
         path = None
     return path
-#@+node:ekr.20220126054240.12: ** main
+
+
+# @+node:ekr.20220126054240.12: ** main
 def main():
     global gApp
     gApp = QtWidgets.QApplication(sys.argv)
@@ -150,17 +161,20 @@ def main():
     ok = RemoveDuplicates().run(**args)
     if ok:
         sys.exit(gApp.exec())
-#@+node:ekr.20220126054240.13: ** class RemoveDuplicates
-class RemoveDuplicates:
 
+
+# @+node:ekr.20220126054240.13: ** class RemoveDuplicates
+class RemoveDuplicates:
     dup_list: list[str] = []
     filename_dict: dict[str, Any] = {}  # Keys are filenames, values are hashes.
-    hash_dict: dict[Any, list[Any]] = defaultdict(list)  # Keys are hashes, values are lists of filenames.
+    hash_dict: dict[Any, list[Any]] = defaultdict(
+        list
+    )  # Keys are hashes, values are lists of filenames.
     hash_size = 8
     window_height = 900
 
-    #@+others
-    #@+node:ekr.20220126063935.1: *3* Dups.compute_dicts
+    # @+others
+    # @+node:ekr.20220126063935.1: *3* Dups.compute_dicts
     def compute_dicts(self, filenames):
         for i, filename in enumerate(filenames):
             try:
@@ -172,9 +186,9 @@ class RemoveDuplicates:
                 # g.es_exception()
                 if filename in filenames:
                     filenames.remove(filename)
-    #@+node:ekr.20220126064207.1: *3* Dups.create_frame
-    def create_frame(self, filename, filenames, window):
 
+    # @+node:ekr.20220126064207.1: *3* Dups.create_frame
+    def create_frame(self, filename, filenames, window):
         QLabel = QtWidgets.QLabel
         # Create the frame.
         frame = QtWidgets.QFrame(parent=window)
@@ -216,7 +230,9 @@ class RemoveDuplicates:
         pixmap = QtGui.QPixmap(filename)
         try:
             TransformationMode = QtCore.Qt.TransformationMode
-            image = pixmap.scaledToHeight(self.window_height, TransformationMode.SmoothTransformation)
+            image = pixmap.scaledToHeight(
+                self.window_height, TransformationMode.SmoothTransformation
+            )
             picture.setPixmap(image)
             picture.adjustSize()
             return frame
@@ -224,7 +240,8 @@ class RemoveDuplicates:
             g.trace('Bad image')
             g.es_exception()
             return None
-    #@+node:ekr.20220126062304.1: *3* Dups.create_window
+
+    # @+node:ekr.20220126062304.1: *3* Dups.create_window
     def create_window(self, filenames):
         # Create the widget.
         global gWindow
@@ -260,6 +277,7 @@ class RemoveDuplicates:
             frame = self.create_frame(filename, filenames[:], window)
             if frame:
                 frame_layout.addWidget(frame)
+
         # Handle close events.
         def closeEvent(*args, **kwargs):
             window.close()
@@ -268,7 +286,8 @@ class RemoveDuplicates:
         window.closeEvent = closeEvent
         # Show the window.
         window.show()
-    #@+node:ekr.20220126064335.1: *3* Dups.delete_file
+
+    # @+node:ekr.20220126064335.1: *3* Dups.delete_file
     send_to_trash_warning_given = False
 
     def delete_file(self, filename):
@@ -289,7 +308,8 @@ class RemoveDuplicates:
                 gWindow.close()
         else:
             print('Not found', filename)
-    #@+node:ekr.20220126064032.1: *3* Dups.find_duplicates
+
+    # @+node:ekr.20220126064032.1: *3* Dups.find_duplicates
     def find_duplicates(self):
         """Find duplicates."""
         duplicates = []
@@ -299,15 +319,16 @@ class RemoveDuplicates:
                 duplicates.append(aList)
         return duplicates
 
-    #@+node:ekr.20220126060911.1: *3* Dups.get_files
+    # @+node:ekr.20220126060911.1: *3* Dups.get_files
     def get_files(self, path):
         """Return all files in path, including all subdirectories."""
         return [
-            str(z) for z in pathlib.Path(path).rglob('*')
-                if z.is_file()
-                and os.path.splitext(str(z))[1].lower() in self.extensions
+            str(z)
+            for z in pathlib.Path(path).rglob('*')
+            if z.is_file() and os.path.splitext(str(z))[1].lower() in self.extensions
         ]
-    #@+node:ekr.20220126121116.1: *3* Dups.next_window
+
+    # @+node:ekr.20220126121116.1: *3* Dups.next_window
     def next_window(self):
         """Show the next set of duplicates in a new window."""
         if self.duplicates:
@@ -315,7 +336,8 @@ class RemoveDuplicates:
             self.create_window(self.dup_list)
         else:
             self.quit()
-    #@+node:ekr.20220126120555.1: *3* Dups.quit
+
+    # @+node:ekr.20220126120555.1: *3* Dups.quit
     def quit(self):
         global gApp, gWindow
         if gApp:  # Running externally.
@@ -325,8 +347,10 @@ class RemoveDuplicates:
             gWindow.destroy()
             gWindow = None
         print('picture_viewer: done')
-    #@+node:ekr.20220126060646.1: *3* Dups.run
-    def run(self,
+
+    # @+node:ekr.20220126060646.1: *3* Dups.run
+    def run(
+        self,
         extensions=None,  # List of file extensions.
         hash_size=8,  # Size of compressed image.
         height=None,  # Window height (default 1500 pixels) when not in full screen mode.
@@ -355,7 +379,9 @@ class RemoveDuplicates:
             print(f"No pictures found in {path!r}")
             return False
         print(f"{len(filenames)} file{g.plural(len(filenames))} in {path}")
-        print(f"\nPreprocessing with hash size {self.hash_size}. This may take awhile...")
+        print(
+            f"\nPreprocessing with hash size {self.hash_size}. This may take awhile..."
+        )
         # Compute the hash dicts.
         self.compute_dicts(filenames)
         # Find the duplicates.
@@ -365,9 +391,12 @@ class RemoveDuplicates:
         if self.duplicates:
             self.next_window()
         return ok
-    #@-others
-#@-others
+
+    # @-others
+
+
+# @-others
 
 if __name__ == '__main__':
     main()
-#@-leo
+# @-leo

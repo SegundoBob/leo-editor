@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240321122413.9: * @file ../scripts/pylint_leo.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240321122413.9: * @file ../scripts/pylint_leo.py
+# @@language python
 
 """
 pylint_leo.py: Run pylint on Leo's core files.
@@ -12,6 +12,7 @@ EKR's pylint-leo.cmd:
     cd {path-to-leo-editor}
     python -m leo.scripts.pylint_leo
 """
+
 import os
 import subprocess
 import sys
@@ -32,7 +33,7 @@ rc_file = rf"--rcfile {rc_file_name}"
 # print(__file__, rc_file)
 extensions = 'PyQt6.QtCore,PyQt6.QtGui,PyQt6.QtWidgets,PyQt6.QtWebEngineWidgets'
 extension_pkg = f"--extension-pkg-allow-list={extensions}"
-command = fr"{python} -m pylint leo {rc_file} {extension_pkg}"
+command = rf"{python} -m pylint leo {rc_file} {extension_pkg}"
 
 subprocess.Popen(command, shell=True).communicate()
-#@-leo
+# @-leo

@@ -1,8 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20161026193447.1: * @file leoBackground.py
+# @+leo-ver=5-thin
+# @+node:ekr.20161026193447.1: * @file leoBackground.py
 """Handling background processes"""
-#@+<< leoBackground imports & annotations >>
-#@+node:ekr.20220410202718.1: ** << leoBackground imports & annotations >>
+
+# @+<< leoBackground imports & annotations >>
+# @+node:ekr.20220410202718.1: ** << leoBackground imports & annotations >>
 from __future__ import annotations
 from collections.abc import Callable
 import subprocess
@@ -16,15 +17,18 @@ if TYPE_CHECKING:  # pragma: no cover
     from subprocess import Popen
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-#@-<< leoBackground imports & annotations >>
+# @-<< leoBackground imports & annotations >>
 
-#@+others
-#@+node:ekr.20220415160700.1: ** bpm-status
+
+# @+others
+# @+node:ekr.20220415160700.1: ** bpm-status
 @g.command('bpm-status')
 def bpm_status(event: LeoKeyEvent) -> None:
     bpm = g.app.backgroundProcessManager
     bpm.show_status()
-#@+node:ekr.20161028090624.1: **  class BPM.ProcessData
+
+
+# @+node:ekr.20161028090624.1: **  class BPM.ProcessData
 class ProcessData:
     """A class to hold data about running or queued processes."""
 
@@ -44,12 +48,16 @@ class ProcessData:
         )
 
     __str__ = __repr__
-#@+node:ekr.20161026193609.1: ** class BackgroundProcessManager
+
+
+# @+node:ekr.20161026193609.1: ** class BackgroundProcessManager
 class BackgroundProcessManager:
-    #@+<< BPM docstring>>
-    #@+node:ekr.20161029063227.1: *3*  << BPM docstring>>
+    # @+<< BPM docstring>>
+    # @+node:ekr.20161029063227.1: *3*  << BPM docstring>>
     """
+    # @verbatim
     #@@language rest
+    # @verbatim
     #@@wrap
 
     The BackgroundProcessManager (BPM) class runs background processes,
@@ -84,10 +92,11 @@ class BackgroundProcessManager:
     You can run as many of these process as you like, without involving the BPM
     in any way.
     """
-    #@-<< BPM docstring>>
 
-    #@+others
-    #@+node:ekr.20180522085807.1: *3* bpm.__init__
+    # @-<< BPM docstring>>
+
+    # @+others
+    # @+node:ekr.20180522085807.1: *3* bpm.__init__
     def __init__(self) -> None:
         """Ctor for the base BackgroundProcessManager class."""
         self.data: ProcessData = None  # a ProcessData instance.
@@ -100,7 +109,8 @@ class BackgroundProcessManager:
         if QtCore:
             self.timer = QtCore.QTimer()
             self.timer.timeout.connect(self.on_idle)
-    #@+node:tom.20220409203519.1: *3* bpm.thrd_pipe_proc
+
+    # @+node:tom.20220409203519.1: *3* bpm.thrd_pipe_proc
     def thrd_pipe_proc(self) -> None:
         """The threaded procedure to handle the Popen pipe.
 
@@ -119,7 +129,8 @@ class BackgroundProcessManager:
         self.lock.acquire()
         self.process_return_data = result_lines
         self.lock.release()
-    #@+node:ekr.20161028063557.1: *3* bpm.end
+
+    # @+node:ekr.20161028063557.1: *3* bpm.end
     def end(self) -> None:
         """End the present process."""
         try:
@@ -128,7 +139,8 @@ class BackgroundProcessManager:
             pass
         self.timer.stop()
         self.pid = None
-    #@+node:ekr.20161026193609.3: *3* bpm.kill
+
+    # @+node:ekr.20161026193609.3: *3* bpm.kill
     def kill(self, kind: str = None) -> None:
         """Kill the presently running process, if any."""
         if kind is None:
@@ -146,7 +158,8 @@ class BackgroundProcessManager:
             self.pid = None
         self.put_log(f"{kind}: done")
         self.timer.stop()
-    #@+node:ekr.20161026193609.4: *3* bpm.on_idle
+
+    # @+node:ekr.20161026193609.4: *3* bpm.on_idle
     def on_idle(self) -> None:
         """The idle-time callback for leo.commands.checkerCommands."""
         try:
@@ -169,7 +182,8 @@ class BackgroundProcessManager:
                 self.put_log(s)
             self.end()  # End this process.
             self.start_next()  # Start the next process.
-    #@+node:ekr.20161028095553.1: *3* bpm.put_log
+
+    # @+node:ekr.20161028095553.1: *3* bpm.put_log
     unknown_path_names: list[str] = []
 
     def put_log(self, s: str) -> None:
@@ -199,7 +213,8 @@ class BackgroundProcessManager:
         log = c.frame.log
         if not log.put_html_links(s):
             log.put(s)
-    #@+node:ekr.20220415161133.1: *3* bpm.show_status
+
+    # @+node:ekr.20220415161133.1: *3* bpm.show_status
     def show_status(self) -> None:
         """Show status for debugging."""
         g.trace('BPM.pid', repr(self.pid))
@@ -208,7 +223,8 @@ class BackgroundProcessManager:
         g.printObj(self.data, tag='BPM.data')
         g.printObj(self.process_queue, tag='BPM.process_queue')
         g.printObj(self.process_return_data, tag='BPM.process_return_data')
-    #@+node:ekr.20161028063800.1: *3* bpm.start_next
+
+    # @+node:ekr.20161028063800.1: *3* bpm.start_next
     def start_next(self) -> None:
         """The previous process has finished. Start the next one."""
         if self.process_queue:
@@ -223,11 +239,12 @@ class BackgroundProcessManager:
             self.pid = None
             self.timer.stop()
 
-    #@+node:ekr.20161026193609.5: *3* bpm.start_process (creates callback)
+    # @+node:ekr.20161026193609.5: *3* bpm.start_process (creates callback)
     def start_process(self, c: Cmdr, command: str, kind: str, fn: str = None) -> None:
         """
         Start or queue a process described by command and fn.
         """
+
         # Note: we can't set shell=True (at least on Windows) because the process
         #       terminates immediately.
         #
@@ -271,9 +288,12 @@ class BackgroundProcessManager:
             self.kind = kind
             self.pid = open_process(data)
             start_timer()
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 60
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 60
+# @-leo
