@@ -5324,8 +5324,6 @@ class Commands:
         if n_changed:
             u.afterChangeGroup(root, undoType)
             c.redraw(root)
-            if not g.unitTesting:
-                g.es_print(f"Beautified {n_changed} node{g.plural(n_changed)}")
 
     # @+node:ekr.20260110084856.1: *5* c.beautify_script_node
     def beautify_script_node(self, root: Position) -> bool:
