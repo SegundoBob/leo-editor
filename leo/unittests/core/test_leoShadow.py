@@ -12,6 +12,7 @@ from leo.core.leoNodes import Position
 from leo.core.leoShadow import ShadowController
 from leo.core.leoTest2 import LeoUnitTest
 
+
 # @+others
 # @+node:ekr.20080709062932.2: ** class TestAtShadow (LeoUnitTest)
 class TestAtShadow(LeoUnitTest):
@@ -38,6 +39,7 @@ class TestAtShadow(LeoUnitTest):
                 os.unlink(z)
         os.rmdir(shadow_dir)
         self.assertFalse(os.path.exists(shadow_dir), msg=shadow_dir)
+
     # @+node:ekr.20210908053444.1: *4* TestAtShadow.make_lines
     def make_lines(self, old, new):
         """Make all lines and return the result of propagating changed lines."""
@@ -47,11 +49,11 @@ class TestAtShadow(LeoUnitTest):
         new_private_lines = self.makePrivateLines(new)
         old_public_lines = self.makePublicLines(old_private_lines)
         new_public_lines = self.makePublicLines(new_private_lines)
-        expected_private_lines = self.mungePrivateLines(
-            new_private_lines, 'node:new', 'node:old')
+        expected_private_lines = self.mungePrivateLines(new_private_lines, 'node:new', 'node:old')
         # Return the propagated results.
         results = self.shadow_controller.propagate_changed_lines(
-            new_public_lines, old_private_lines, self.marker, p=c.p)
+            new_public_lines, old_private_lines, self.marker, p=c.p
+        )
         if 0:  # To verify that sentinels are as expected.
             print('')
             print(g.callers(1))
@@ -60,6 +62,7 @@ class TestAtShadow(LeoUnitTest):
             g.printObj(old_public_lines, tag='old_public_lines')
             g.printObj(new_public_lines, tag='new_public_lines')
         return results, expected_private_lines
+
     # @+node:ekr.20080709062932.21: *4* TestAtShadow.makePrivateLines
     def makePrivateLines(self, p):
         """Return a list of the lines of p containing sentinels."""
@@ -72,11 +75,13 @@ class TestAtShadow(LeoUnitTest):
         finally:
             at.at_shadow_test_hack = False
         return g.splitLines(s)
+
     # @+node:ekr.20080709062932.22: *4* TestAtShadow.makePublicLines
     def makePublicLines(self, lines):
         """Return the public lines in lines."""
         lines, junk = self.shadow_controller.separate_sentinels(lines, self.marker)
         return lines
+
     # @+node:ekr.20080709062932.23: *4* TestAtShadow.mungePrivateLines
     def mungePrivateLines(self, lines, find, replace):
         """Change the 'find' the 'replace' pattern in sentinel lines."""
@@ -98,6 +103,7 @@ class TestAtShadow(LeoUnitTest):
                 results.append(line)
             i += 1
         return results
+
     # @+node:ekr.20250710075101.1: *4* TestAtShadow.prep
     def prep(self, s: str) -> str:
         """
@@ -106,6 +112,7 @@ class TestAtShadow(LeoUnitTest):
         This should eliminate the need for backslashes in tests.
         """
         return textwrap.dedent(s).strip().replace('AT', '@') + '\n'
+
     # @+node:ekr.20210908160006.1: *3* test update algorithm...
     # @+node:ekr.20210908134131.16: *4* TestAtShadow.test_change_end_of_prev_node
     def test_change_end_of_prev_node(self):
@@ -114,27 +121,30 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             ATothers
             node 1 line 1
             node 1 line 2
             node 2 line 1
             node 2 line 2
-        """).replace('AT', '@')
+        """
+        ).replace('AT', '@')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             ATothers
             node 1 line 1
             node 1 line 1 changed
             node 2 line 1
             node 2 line 2
-        """).replace('AT', '@')
+        """
+        ).replace('AT', '@')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.4: *4* TestAtShadow.test_change_first_line
     def test_change_first_line(self):
         p = self.c.p
@@ -142,23 +152,26 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1 changed
             line 2
             line 3
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.5: *4* TestAtShadow.test_change_last_line
     def test_change_last_line(self):
         p = self.c.p
@@ -166,23 +179,26 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3 changed
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.3: *4* TestAtShadow.test_change_middle_line
     def test_change_middle_line(self):
         p = self.c.p
@@ -190,23 +206,26 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1
             line 2 changed
             line 3
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.17: *4* TestAtShadow.test_change_start_of_next_node
     def test_change_start_of_next_node(self):
         p = self.c.p
@@ -214,27 +233,30 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 2 line 1 changed
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.14: *4* TestAtShadow.test_delete_between_nodes_at_end_of_prev_node
     def test_delete_between_nodes_at_end_of_prev_node(self):
         p = self.c.p
@@ -242,26 +264,29 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.15: *4* TestAtShadow.test_delete_between_nodes_at_start_of_next_node
     def test_delete_between_nodes_at_start_of_next_node(self):
         p = self.c.p
@@ -269,24 +294,27 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.6: *4* TestAtShadow.test_delete_first_line
     def test_delete_first_line(self):
         p = self.c.p
@@ -294,22 +322,25 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 2
             line 3
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.8: *4* TestAtShadow.test_delete_last_line
     def test_delete_last_line(self):
         p = self.c.p
@@ -317,22 +348,25 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1
             line 2
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.7: *4* TestAtShadow.test_delete_middle_line
     def test_delete_middle_line(self):
         p = self.c.p
@@ -340,22 +374,25 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1
             line 3
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.12: *4* TestAtShadow.test_insert_after_last_line
     def test_insert_after_last_line(self):
         p = self.c.p
@@ -363,24 +400,27 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
             inserted line
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.9: *4* TestAtShadow.test_insert_before_first_line
     def test_insert_before_first_line(self):
         p = self.c.p
@@ -388,24 +428,27 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             inserted line
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.10: *4* TestAtShadow.test_insert_middle_line_after_first_line_
     def test_insert_middle_line_after_first_line_(self):
         p = self.c.p
@@ -413,24 +456,27 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1
             inserted line
             line 2
             line 3
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.11: *4* TestAtShadow.test_insert_middle_line_before_last_line_
     def test_insert_middle_line_before_last_line_(self):
         p = self.c.p
@@ -438,24 +484,27 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line 1
             line 2
             line 3
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line 1
             line 2
             inserted line
             line 3
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.13: *4* TestAtShadow.test_lax_insert_between_nodes_at_end_of_prev_node
     def test_lax_insert_between_nodes_at_end_of_prev_node(self):
         p = self.c.p
@@ -463,24 +512,27 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 1
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             inserted node at end of node 1
             node 2 line 1
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.18: *4* TestAtShadow.test_lax_multiple_line_insert_between_nodes_at_end_of_prev_node
     def test_lax_multiple_line_insert_between_nodes_at_end_of_prev_node(self):
         p = self.c.p
@@ -488,25 +540,28 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             inserted node 1 at end of node 1
             inserted node 2 at end of node 1
             node 2 line 1
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 1
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.19: *4* TestAtShadow.test_multiple_line_change_end_of_prev_node
     def test_multiple_line_change_end_of_prev_node(self):
         p = self.c.p
@@ -514,29 +569,32 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 1 line 3
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2 changed
             node 1 line 3 changed
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.20: *4* TestAtShadow.test_multiple_line_change_start_of_next_node
     def test_multiple_line_change_start_of_next_node(self):
         p = self.c.p
@@ -544,27 +602,30 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 2 line 1 changed
             node 2 line 2 changed
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.22: *4* TestAtShadow.test_multiple_line_delete_between_nodes_at_end_of_prev_node
     def test_multiple_line_delete_between_nodes_at_end_of_prev_node(self):
         p = self.c.p
@@ -572,27 +633,30 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 1 line 3
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.23: *4* TestAtShadow.test_multiple_line_delete_between_nodes_at_start_of_next_node
     def test_multiple_line_delete_between_nodes_at_start_of_next_node(self):
         p = self.c.p
@@ -600,25 +664,28 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 1
             node 2 line 2
             node 2 line 3
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 3
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.21: *4* TestAtShadow.test_multiple_node_changes
     def test_multiple_node_changes(self):
         p = self.c.p
@@ -626,27 +693,30 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 2 line 1
             node 2 line 2
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2 changed
             node 2 line 1 changed
             node 2 line 2 changed
-        """).replace('at-others', '@others')
+        """
+        ).replace('at-others', '@others')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.29: *4* TestAtShadow.test_no_change_no_ending_newline
     def test_no_change_no_ending_newline(self):
         p = self.c.p
@@ -654,19 +724,22 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             line
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             line
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210907162104.2: *4* TestAtShadow.test_replace_in_node_new_gt_new_old
     def test_replace_in_node_new_gt_new_old(self):
         p = self.c.p
@@ -676,27 +749,30 @@ class TestAtShadow(LeoUnitTest):
         old_node1 = old.insertAsLastChild()
         old_node1.h = 'node1'
         old_node1.b = self.prep(
-        """
+            """
             node 1 line 1
             node 1 old line 1
             node 1 old line 2
             node 1 line 2
-        """)
+        """
+        )
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = '@others\n'
         new_node1 = new.insertAsLastChild()
         new_node1.h = 'node1'
         new_node1.b = self.prep(
-        """
+            """
             node 1 line 1
             node 1 new line 1
             node 1 new line 2
             node 1 new line 3
             node 1 line 2
-        """)
+        """
+        )
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908134131.2: *4* TestAtShadow.test_replace_in_node_new_lt_old
     def test_replace_in_node_new_lt_old(self):
         p = self.c.p
@@ -707,14 +783,15 @@ class TestAtShadow(LeoUnitTest):
         old_node1 = old.insertAsLastChild()
         old_node1.h = 'node1'
         old_node1.b = self.prep(
-        """
+            """
             node 1 line 1
             node 1 old line 1
             node 1 old line 2
             node 1 old line 3
             node 1 old line 4
             node 1 line 2
-        """)
+        """
+        )
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
@@ -722,15 +799,17 @@ class TestAtShadow(LeoUnitTest):
         new_node1 = new.insertAsLastChild()
         new_node1.h = 'node1'
         new_node1.b = self.prep(
-        """
+            """
             node 1 line 1
             node 1 new line 1
             node 1 new line 2
             node 1 line 2
-        """)
+        """
+        )
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908140242.6: *4* TestAtShadow.test_verbatim_sentinels_add_verbatim_line
     def test_verbatim_sentinels_add_verbatim_line(self):
         p = self.c.p
@@ -738,18 +817,19 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 1 line 2
             node 2 line 1
             node 2 line 2
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             at-verbatim
@@ -757,10 +837,12 @@ class TestAtShadow(LeoUnitTest):
             node 1 line 2
             node 2 line 1
             node 2 line 2
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908140242.2: *4* TestAtShadow.test_verbatim_sentinels_delete_verbatim_line
     def test_verbatim_sentinels_delete_verbatim_line(self):
         p = self.c.p
@@ -768,7 +850,7 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             at-verbatim
@@ -777,22 +859,25 @@ class TestAtShadow(LeoUnitTest):
             node 2 line 1
             node 2 line 2
             node 2 line 3
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             line 1 line 3
             node 2 line 1
             node 2 line 2
             node 2 line 3
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908140242.5: *4* TestAtShadow.test_verbatim_sentinels_delete_verbatim_line_at_end_of_node
     def test_verbatim_sentinels_delete_verbatim_line_at_end_of_node(self):
         p = self.c.p
@@ -800,27 +885,30 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             at-verbatim
             #  at- should be handled by verbatim
             node 2 line 1
             node 2 line 2
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 1
             node 2 line 2
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908140242.3: *4* TestAtShadow.test_verbatim_sentinels_delete_verbatim_line_at_start_of_node
     def test_verbatim_sentinels_delete_verbatim_line_at_start_of_node(self):
         p = self.c.p
@@ -828,25 +916,28 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             at-verbatim
             #  at- should be handled by verbatim
             node 2 line 2
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             node 2 line 2
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908140242.4: *4* TestAtShadow.test_verbatim_sentinels_no_change
     def test_verbatim_sentinels_no_change(self):
         p = self.c.p
@@ -854,7 +945,7 @@ class TestAtShadow(LeoUnitTest):
         old = p.insertAsLastChild()
         old.h = 'old'
         old.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             at-verbatim
@@ -863,12 +954,13 @@ class TestAtShadow(LeoUnitTest):
             node 2 line 1
             node 2 line 2
             node 2 line 3
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Create the 'new' node.
         new = p.insertAsLastChild()
         new.h = 'new'
         new.b = self.prep(
-        """
+            """
             at-others
             node 1 line 1
             at-verbatim
@@ -877,10 +969,12 @@ class TestAtShadow(LeoUnitTest):
             node 2 line 1
             node 2 line 2
             node 2 line 3
-        """).replace('at-', '@')
+        """
+        ).replace('at-', '@')
         # Run the test.
         results, expected = self.make_lines(old, new)
         self.assertEqual(results, expected)
+
     # @+node:ekr.20210908160020.1: *3* test utils...
     # @+node:ekr.20210902210552.2: *4* TestAtShadow.test_marker_getDelims
     def test_marker_getDelims(self):
@@ -898,6 +992,7 @@ class TestAtShadow(LeoUnitTest):
             result = marker.getDelims()
             expected = delim1, delim2
             self.assertEqual(result, expected, msg=language)
+
     # @+node:ekr.20210902210552.3: *4* TestAtShadow.test_marker_isSentinel
     def test_marker_isSentinel(self):
         c = self.c
@@ -916,13 +1011,14 @@ class TestAtShadow(LeoUnitTest):
             ('html', '<!--abc-->', False),
             ('html', '<!--@ abc -->', True),
             ('html', '<!--@ abc ->', False),
-            ('xxxx', '#--unknown-language--@', True)
+            ('xxxx', '#--unknown-language--@', True),
         )
         for language, s, expected in table:
             delims = g.set_delims_from_language(language)
             marker = x.Marker(delims)
             result = marker.isSentinel(s)
             self.assertEqual(result, expected)
+
     # @+node:ekr.20210902210552.4: *4* TestAtShadow.test_marker_isVerbatimSentinel
     def test_marker_isVerbatimSentinel(self):
         c = self.c
@@ -938,13 +1034,14 @@ class TestAtShadow(LeoUnitTest):
             ('html', '#@abc', False),
             ('html', '<!--abc-->', False),
             ('html', '<!--@verbatim -->', True),
-            ('xxxx', '#--unknown-language--@verbatim', True)
+            ('xxxx', '#--unknown-language--@verbatim', True),
         )
         for language, s, expected in table:
             delims = g.set_delims_from_language(language)
             marker = x.Marker(delims)
             result = marker.isVerbatimSentinel(s)
             self.assertEqual(result, expected)
+
     # @+node:ekr.20210902210552.5: *4* TestAtShadow.test_x_baseDirName
     def test_x_baseDirName(self):
         c = self.c
@@ -952,15 +1049,16 @@ class TestAtShadow(LeoUnitTest):
         path = x.baseDirName()
         expected = g.os_path_dirname(g.os_path_abspath(g.os_path_join(c.fileName())))
         self.assertEqual(path, expected)
+
     # @+node:ekr.20210902210552.6: *4* TestAtShadow.test_x_dirName
     def test_x_dirName(self):
         c = self.c
         x = c.shadowController
         filename = 'xyzzy'
         path = x.dirName(filename)
-        expected = g.os_path_dirname(g.os_path_abspath(
-            g.os_path_join(g.os_path_dirname(c.fileName()), filename)))
+        expected = g.os_path_dirname(g.os_path_abspath(g.os_path_join(g.os_path_dirname(c.fileName()), filename)))
         self.assertEqual(path, expected)
+
     # @+node:ekr.20210902210552.7: *4* TestAtShadow.test_x_findAtLeoLine
     def test_x_findAtLeoLine(self):
         c = self.c
@@ -979,6 +1077,7 @@ class TestAtShadow(LeoUnitTest):
         for language, lines, expected in table:
             result = x.findLeoLine(lines)
             self.assertEqual(expected, result)
+
     # @+node:ekr.20210902210552.8: *4* TestAtShadow.test_x_makeShadowDirectory
     def test_x_makeShadowDirectory(self):
         c = self.c
@@ -990,6 +1089,7 @@ class TestAtShadow(LeoUnitTest):
         x.makeShadowDirectory(shadow_dir)
         self.assertTrue(os.path.exists(shadow_dir))
         self.deleteShadowDir(shadow_dir)
+
     # @+node:ekr.20210902210552.9: *4* TestAtShadow.test_x_markerFromFileLines
     def test_x_markerFromFileLines(self):
         c = self.c
@@ -1013,12 +1113,17 @@ class TestAtShadow(LeoUnitTest):
             result1, result2 = marker.getDelims()
             self.assertEqual(delim1, result1, msg=f"language: {language} {lines_s}")
             self.assertEqual(delim2, result2, msg=f"language: {language} {lines_s}")
+
     # @+node:ekr.20210902210552.10: *4* TestAtShadow.test_x_markerFromFileName
     def test_x_markerFromFileName(self):
         c = self.c
         x = c.shadowController
         table = (
-            ('ini', ';', '',),
+            (
+                'ini',
+                ';',
+                '',
+            ),
             ('c', '//', ''),
             ('h', '//', ''),
             ('py', '#', ''),
@@ -1030,6 +1135,7 @@ class TestAtShadow(LeoUnitTest):
             result1, result2 = marker.getDelims()
             self.assertEqual(delim1, result1)
             self.assertEqual(delim2, result2)
+
     # @+node:ekr.20210902210552.11: *4* TestAtShadow.test_x_pathName
     def test_x_pathName(self):
         c = self.c
@@ -1038,6 +1144,7 @@ class TestAtShadow(LeoUnitTest):
         path = x.pathName(filename)
         expected = g.os_path_abspath(g.os_path_join(x.baseDirName(), filename))
         self.assertEqual(path, expected)
+
     # @+node:ekr.20210902210552.13: *4* TestAtShadow.test_x_replaceFileWithString_2
     def test_x_replaceFileWithString_2(self):
         c = self.c
@@ -1046,6 +1153,7 @@ class TestAtShadow(LeoUnitTest):
         fn = 'does/not/exist'
         assert not g.os_path_exists(fn)
         assert not x.replaceFileWithString(encoding, fn, 'abc')
+
     # @+node:ekr.20210902210552.14: *4* TestAtShadow.test_x_shadowDirName
     def test_x_shadowDirName(self):
         c = self.c
@@ -1053,9 +1161,9 @@ class TestAtShadow(LeoUnitTest):
         subdir = c.config.getString('shadow_subdir') or '.leo_shadow'
         filename = 'xyzzy'
         path = x.shadowDirName(filename)
-        expected = g.os_path_abspath(g.os_path_join(
-            g.os_path_dirname(c.fileName()), subdir))
+        expected = g.os_path_abspath(g.os_path_join(g.os_path_dirname(c.fileName()), subdir))
         self.assertEqual(path, expected)
+
     # @+node:ekr.20210902210552.15: *4* TestAtShadow.test_x_shadowPathName
     def test_x_shadowPathName(self):
         c = self.c
@@ -1064,9 +1172,9 @@ class TestAtShadow(LeoUnitTest):
         prefix = c.config.getString('shadow_prefix') or ''
         filename = 'xyzzy'
         path = x.shadowPathName(filename)
-        expected = g.os_path_abspath(g.os_path_join(
-            g.os_path_dirname(c.fileName()), subdir, prefix + filename))
+        expected = g.os_path_abspath(g.os_path_join(g.os_path_dirname(c.fileName()), subdir, prefix + filename))
         self.assertEqual(path, expected)
+
     # @+node:ekr.20250710065413.1: *3* TestAtShadow.readOneAtCleanNode
     def readOneAtCleanNode(self, root: Position, new_contents: str) -> None:
         """
@@ -1075,6 +1183,7 @@ class TestAtShadow(LeoUnitTest):
         c = self.c
         at = c.atFileCommands
         at.readOneAtCleanNode(root, new_contents=new_contents)
+
     # @+node:ekr.20250710064702.1: *3* TestAtShadow.test_changed_vnodes
     def test_changed_vnodes(self):
         c = self.c
@@ -1090,7 +1199,8 @@ class TestAtShadow(LeoUnitTest):
 
                 def eggs():
                     pass
-            """)
+            """
+        )
 
         # Define the new contents.
         new_contents = self.prep(
@@ -1100,13 +1210,17 @@ class TestAtShadow(LeoUnitTest):
 
                 def eggs():
                     pass  # Changed.
-            """)
+            """
+        )
 
         # Run the test.
         self.readOneAtCleanNode(test_p, new_contents)
         assert test_p.b == new_contents
         assert p.v.isDirty(), p
         assert test_p.isDirty(), test_p
+
     # @-others
+
+
 # @-others
 # @-leo

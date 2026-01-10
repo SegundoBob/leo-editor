@@ -4,7 +4,9 @@
 
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
+
 assert g
+
 
 # @+others
 # @+node:ekr.20210910072917.2: ** class TestVim (LeoUnitTest)
@@ -29,6 +31,7 @@ class TestVim(LeoUnitTest):
             i1, i2 = s.find(a), s.find(b)
             result = vc.on_same_line(s, i1, i2)
             self.assertEqual(result, expected, msg=s[i1:i2])
+
     # @+node:ekr.20210909194336.59: *3* TestVim.test_vc_to_bol
     def test_vc_to_bol(self):
         c = self.c
@@ -37,15 +40,15 @@ class TestVim(LeoUnitTest):
             abc
             xyz
         """)
-        table = (
-            ('a', 'a'),
-            ('a', 'b'),
-            ('a', '\nx')
-        )
-        for a, b, in table:
+        table = (('a', 'a'), ('a', 'b'), ('a', '\nx'))
+        for (
+            a,
+            b,
+        ) in table:
             i1, i2 = s.find(a), s.find(b)
             result = vc.to_bol(s, i2)
             self.assertEqual(result, i1, msg=s[i1:i2])
+
     # @+node:ekr.20210909194336.60: *3* TestVim.test_vc_to_eol
     def test_vc_to_eol(self):
         c = self.c
@@ -60,10 +63,16 @@ class TestVim(LeoUnitTest):
             ('c', '\nx'),
             ('\nx', '\nx'),
         )
-        for a, b, in table:
+        for (
+            a,
+            b,
+        ) in table:
             i1, i2 = s.find(a), s.find(b)
             result = vc.to_eol(s, i1)
             self.assertEqual(result, i2, msg=s[i1:i2])
+
     # @-others
+
+
 # @-others
 # @-leo

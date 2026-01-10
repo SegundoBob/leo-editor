@@ -11,6 +11,7 @@ from leo.core.leoTest2 import LeoUnitTest
 
 assert leoRst
 
+
 # @+others
 # @+node:ekr.20210327072030.1: ** class TestRst (LeoUnitTest)
 class TestRst(LeoUnitTest):
@@ -33,19 +34,21 @@ class TestRst(LeoUnitTest):
         child.h = '@rst-no-head section'
         # Insert the body texts.  Overindent to eliminate @verbatim sentinels.
         root.b = self.prep(
-        """
+            """
             #####
             Title
             #####
 
             This is test.html
-        """)
+        """
+        )
 
         child.b = """This is the body of the section.\n"""
 
         # Define the expected output.
-        expected = self.prep(
-        f"""
+        expected = (
+            self.prep(
+                f"""
             .. rst3: filename: {fn}
 
             .. _http-node-marker-1:
@@ -57,7 +60,10 @@ class TestRst(LeoUnitTest):
             This is test.html
 
             This is the body of the section.
-        """) + '\n'  # Required.
+        """
+            )
+            + '\n'
+        )  # Required.
         # Get and check the rst result.
         rc.nodeNumber = 0
         rc.http_server_support = True  # Override setting for testing.
@@ -67,6 +73,7 @@ class TestRst(LeoUnitTest):
         html = rc.writeToDocutils(source, ext='.html')
         # Don't bother testing the html. It will depend on docutils.
         assert html and html.startswith('<?xml') and html.strip().endswith('</html>')
+
     # @+node:ekr.20210902211919.9: *3* TestRst.test_handleMissingStyleSheetArgs
     def test_handleMissingStyleSheetArgs(self):
         c = self.c
@@ -85,6 +92,7 @@ class TestRst(LeoUnitTest):
         ):
             result = x.handleMissingStyleSheetArgs(s=s)
             self.assertEqual(result, expected)
+
     # @+node:ekr.20210902211919.11: *3* TestRst.test_unicode_characters
     def test_unicode_characters(self):
         c = self.c
@@ -94,15 +102,17 @@ class TestRst(LeoUnitTest):
         root.h = fn = '@rst unicode_test.html'
         # Insert the body text.  Overindent to eliminate @verbatim sentinels.
         root.b = self.prep(
-        """
+            """
             Test of unicode characters: ÀǋϢﻙ
 
             End of test.
-        """)
+        """
+        )
 
         # Define the expected output.
-        expected = self.prep(
-        f"""
+        expected = (
+            self.prep(
+                f"""
             .. rst3: filename: {fn}
 
             .. _http-node-marker-1:
@@ -110,7 +120,10 @@ class TestRst(LeoUnitTest):
             Test of unicode characters: ÀǋϢﻙ
 
             End of test.
-        """) + '\n'  # Required.
+        """
+            )
+            + '\n'
+        )  # Required.
 
         # Get and check the rst result.
         rc.nodeNumber = 0
@@ -121,6 +134,7 @@ class TestRst(LeoUnitTest):
         html = rc.writeToDocutils(source, ext='.html')
         # Don't bother testing the html. It will depend on docutils.
         assert html and html.startswith('<?xml') and html.strip().endswith('</html>')
+
     # @+node:ekr.20210327092009.1: *3* TestRst.write_logic
     def test_write_to_docutils(self):
         c = self.c
@@ -132,7 +146,7 @@ class TestRst(LeoUnitTest):
         child.h = 'section'
         # Insert the body texts.  Overindent to eliminate @verbatim sentinels.
         root.b = self.prep(
-        """
+            """
             @language rest
 
             #####
@@ -140,17 +154,20 @@ class TestRst(LeoUnitTest):
             #####
 
             This is test.html
-        """)
-        child.b = self.prep(
         """
+        )
+        child.b = self.prep(
+            """
             @ This is a doc part
             it has two lines.
             @c
             This is the body of the section.
-        """)
+        """
+        )
         # Define the expected output.
-        expected = self.prep(
-        f"""
+        expected = (
+            self.prep(
+                f"""
             .. rst3: filename: {fn}
 
             .. _http-node-marker-1:
@@ -172,7 +189,10 @@ class TestRst(LeoUnitTest):
             it has two lines.
             @c
             This is the body of the section.
-        """) + '\n'  # Required.
+        """
+            )
+            + '\n'
+        )  # Required.
 
         # Get and check the rst result.
         rc.nodeNumber = 0
@@ -183,6 +203,9 @@ class TestRst(LeoUnitTest):
         html = rc.writeToDocutils(source, ext='.html')
         # Don't bother testing the html. It will depend on docutils.
         assert html and html.startswith('<?xml') and html.strip().endswith('</html>')
+
     # @-others
+
+
 # @-others
 # @-leo

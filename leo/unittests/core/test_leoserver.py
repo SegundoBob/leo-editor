@@ -12,11 +12,14 @@ g = None
 g_leoserver = None
 g_server = None
 
+
 # @+others
 # @+node:ekr.20210901070918.1: ** class TestLeoServer(LeoUnitTest)
 class TestLeoServer(LeoUnitTest):
     """Tests of LeoServer class."""
+
     request_number = 0
+
     # @+others
     # @+node:felix.20210621233316.99: *3* TestLeoServer: Setup and TearDown
     @classmethod
@@ -54,10 +57,7 @@ class TestLeoServer(LeoUnitTest):
         log_flag = param.get("log")
         # Direct server commands require an exclamation mark '!' prefix
         # to distinguish them from Leo's commander's own methods.
-        d = {
-            "action": action,
-            "id": self.request_number
-        }
+        d = {"action": action, "id": self.request_number}
         if param:
             d["param"] = param
         response = server._do_message(d)
@@ -66,6 +66,7 @@ class TestLeoServer(LeoUnitTest):
         if log_flag:
             g.printObj(answer, tag=f"response to {action!r}")  # pragma: no cover
         return answer
+
     # @+node:felix.20210621233316.102: *3* TestLeoServer.test_most_public_server_methods
     def test_most_public_server_methods(self):
         server = self.server
@@ -83,23 +84,37 @@ class TestLeoServer(LeoUnitTest):
         # g.printObj(methods, tag=methods)
         exclude = [
             # Find methods...
-            'change_all', 'change_then_find',
-            'clone_find_all', 'clone_find_all_flattened', 'clone_find_tag',
-            'find_all', 'find_def', 'find_next', 'find_previous', 'find_var',
+            'change_all',
+            'change_then_find',
+            'clone_find_all',
+            'clone_find_all_flattened',
+            'clone_find_tag',
+            'find_all',
+            'find_def',
+            'find_next',
+            'find_previous',
+            'find_var',
             'goto_script',
             'tag_children',
             'insert_file_node',
             'goto_line_in_leo_outline',
             # Other methods
             'finishCreate',
-            'remove_tag', 'tag_node',
-            'delete_node', 'cut_node',  # dangerous.
-            'click_button', 'get_buttons', 'remove_button',  # Require plugins.
-            'paste_node', 'paste_as_clone_node',  # New exclusion.
+            'remove_tag',
+            'tag_node',
+            'delete_node',
+            'cut_node',  # dangerous.
+            'click_button',
+            'get_buttons',
+            'remove_button',  # Require plugins.
+            'paste_node',
+            'paste_as_clone_node',  # New exclusion.
             'paste_as_template',  # New exclusion.
             'save_file',  # way too dangerous!
             # 'set_selection',  # Not ready yet.
-            'open_file', 'close_file', 'open_at_leo_file',  # Done by hand.
+            'open_file',
+            'close_file',
+            'open_at_leo_file',  # Done by hand.
             'import_any_file',
             'insert_child_named_node',
             'insert_named_node',
@@ -151,6 +166,7 @@ class TestLeoServer(LeoUnitTest):
                             print(f"Exception in {tag}: {method_name!r} {e}")  # pragma:no cover
         finally:
             server.close_file({"forced": True})
+
     # @+node:felix.20210621233316.103: *3* TestLeoServer.test_open_and_close
     def test_open_and_close(self):
         # server = self.server
@@ -165,17 +181,15 @@ class TestLeoServer(LeoUnitTest):
             # Open again. This should be valid.
             ("!open_file", {"log": False, "filename": test_dot_leo}),
             # This test depends too much on the contents of test.leo.
-
-                # Better test of _ap_to_p.
-                # ("!set_current_position", {
-                    # "ap": {
-                        # "gnx": "ekr.20180311131424.1",  # Recent
-                        # "childIndex": 1,
-                        # "stack": [],
-                    # }
-                # }),
-                # ("!get_ua", {"log": log}),
-
+            # Better test of _ap_to_p.
+            # ("!set_current_position", {
+            # "ap": {
+            # "gnx": "ekr.20180311131424.1",  # Recent
+            # "childIndex": 1,
+            # "stack": [],
+            # }
+            # }),
+            # ("!get_ua", {"log": log}),
             # Close the second file.
             ("!close_file", {"log": log, "forced": True}),
             # Close the first file.
@@ -183,9 +197,9 @@ class TestLeoServer(LeoUnitTest):
         ]
         for action, package in table:
             self._request(action, package)
+
     # @+node:felix.20210621233316.104: *3* TestLeoServer.test_find_commands
     def test_find_commands(self):
-
         tag = 'test_find_commands'
         test_dot_leo = g.finalize_join(g.app.loadDir, '..', 'test', 'test.leo')
         assert os.path.exists(test_dot_leo), repr(test_dot_leo)
@@ -218,6 +232,8 @@ class TestLeoServer(LeoUnitTest):
                 g.printObj(answer, tag=f"{tag}:{method}: answer")  # pragma: no cover
 
     # @-others
+
+
 # @-others
 
 # @-leo

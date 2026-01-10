@@ -1,14 +1,18 @@
 # @+leo-ver=5-thin
 # @+node:ekr.20210901170451.1: * @file ../unittests/core/test_leoApp.py
 """Tests of leoApp.py"""
+
 import os
 import sys
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
+
+
 # @+others
 # @+node:ekr.20210901170531.1: ** class TestApp(LeoUnitTest)
 class TestApp(LeoUnitTest):
     """Test cases for leoApp.py"""
+
     # @+others
     # @+node:ekr.20210901140645.11: *3* TestApp.test_official_g_app_directories
     def test_official_g_app_directories(self):
@@ -19,25 +23,33 @@ class TestApp(LeoUnitTest):
             assert val is not None, 'null g.app directory: %s' % ivar
             assert g.os_path_exists(g.os_path_abspath(val)), 'non-existent g.app directory: %s' % ivar
         assert hasattr(g.app, 'homeDir')  # May well be None.
+
     # @+node:ekr.20210901140645.12: *3* TestApp.test_official_g_app_ivars
     def test_official_g_app_ivars(self):
         ivars = (
             # Global managers.
             'config',
             # 'externalFilesController',
-            'loadManager', 'pluginsController', 'recentFilesManager',
+            'loadManager',
+            'pluginsController',
+            'recentFilesManager',
             # Official ivars.
             'gui',
-            'initing', 'killed', 'quitting',
+            'initing',
+            'killed',
+            'quitting',
             'leoID',
-            'log', 'logIsLocked', 'logWaiting',
+            'log',
+            'logIsLocked',
+            'logWaiting',
             'nodeIndices',
             'windowList',
             # Less-official and might be removed...
             'batchMode',
             # 'debugSwitch',
             'disableSave',
-            'hookError', 'hookFunction',
+            'hookError',
+            'hookFunction',
             'numberOfUntitledWindows',
             'realMenuNameDict',
             # 'searchDict',
@@ -58,6 +70,7 @@ class TestApp(LeoUnitTest):
         for ext in ext_d:
             lang = ext_d.get(ext)
             assert lang in lang_d, lang
+
     # @+node:ekr.20210909194336.4: *3* TestApp.test_rfm_writeRecentFilesFileHelper
     def test_rfm_writeRecentFilesFileHelper(self):
         fn = 'ффф.leo'
@@ -65,33 +78,54 @@ class TestApp(LeoUnitTest):
         assert g.os_path_exists(fn), fn
         os.remove(fn)
         assert not g.os_path_exists(fn), fn
+
     # @+node:ekr.20230617065356.1: *3* TestApp.test_LM_scanOptions
     def test_LM_scanOptions(self):
-
         bad_table = (
-            '-h', '--help',
-            '--gui', '--gui=xxx',
+            '-h',
+            '--help',
+            '--gui',
+            '--gui=xxx',
             '--listen-to-log=',
-            '--screen-shot', '--screen-shot=', '--screen-shot-',
+            '--screen-shot',
+            '--screen-shot=',
+            '--screen-shot-',
             '--screen-shot=xyzzy',
             '--script=xyzzy.py',
-            '--trace', '--trace-', 'trace=', '--trace=xxx',
-            '--trace-binding', '--trace-binding-', '--trace-binding=',
-            '--window-', 'window=',
-            '--window-size', '--window-size=', '--window-size=100',
-            '--window-spot', '--window-spot=', '--window-spot=50',
+            '--trace',
+            '--trace-',
+            'trace=',
+            '--trace=xxx',
+            '--trace-binding',
+            '--trace-binding-',
+            '--trace-binding=',
+            '--window-',
+            'window=',
+            '--window-size',
+            '--window-size=',
+            '--window-size=100',
+            '--window-spot',
+            '--window-spot=',
+            '--window-spot=50',
             '--yyy',
         )
         good_table = (
-            '-b', '--black-sentinels',
+            '-b',
+            '--black-sentinels',
             '--diff',
             '--fail-fast',
             '--fullscreen',
-            '--gui=console', '--gui=curses', '--gui=null', '--gui=qt', '--gui=text',
+            '--gui=console',
+            '--gui=curses',
+            '--gui=null',
+            '--gui=qt',
+            '--gui=text',
             '--ipython',  # Obsolete, but does not cause a crash.
             '--listen-to-log',
-            '--maximized', '--minimized',
-            '--no-plugins', '--no-splash',
+            '--maximized',
+            '--minimized',
+            '--no-plugins',
+            '--no-splash',
             '--quit',
             '--script-window',
             '--select=whatever',
@@ -100,7 +134,8 @@ class TestApp(LeoUnitTest):
             '--trace-binding=whatever',
             '--trace-setting=whatever',
             '--trace=coloring',
-            '-v', '--version',
+            '-v',
+            '--version',
             '--window-size=100x200',
             '--window-spot=50x60',
         )
@@ -121,6 +156,9 @@ class TestApp(LeoUnitTest):
         finally:
             sys.argv = old_argv
             sys.stdout = old_stdout
+
     # @-others
+
+
 # @-others
 # @-leo

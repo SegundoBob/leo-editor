@@ -6,10 +6,12 @@ import os
 from leo.core.leoTest2 import LeoUnitTest
 import leo.core.leoBridge as leoBridge
 
+
 # @+others
 # @+node:ekr.20210903153138.2: ** class TestBridge(LeoUnitTest)
 class TestBridge(LeoUnitTest):
     """Test cases for leoBridge.py"""
+
     # @+others
     # @+node:ekr.20210903153548.1: *3* TestBridge.test_bridge
     def test_bridge(self):
@@ -29,6 +31,9 @@ class TestBridge(LeoUnitTest):
         self.assertTrue(os.path.exists(test_dot_leo), msg=test_dot_leo)
         c = controller.openLeoFile(test_dot_leo)
         self.assertTrue(c)
+
     # @-others
+
+
 # @-others
 # @-leo
