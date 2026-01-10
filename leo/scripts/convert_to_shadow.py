@@ -81,9 +81,7 @@ if __name__ == '__main__':
             rest, extension = os.path.splitext(filename)
 
             if extension == '.py':
-                if extension not in ['.leo', '.pyc'] and not filename.startswith(
-                    "convert"
-                ):
+                if extension not in ['.leo', '.pyc'] and not filename.startswith("convert"):
                     if os.path.isfile(filename):
                         convert(filename, leoFolder, prefix)
 

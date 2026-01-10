@@ -32,29 +32,36 @@ keywordsDictDict = {
 
 # Rules for embperl_main ruleset.
 
+
 def embperl_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="[#", end="#]")
 
+
 def embperl_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="[+", end="+]",
-          delegate="perl::main")
+    return colorer.match_span(s, i, kind="literal3", begin="[+", end="+]", delegate="perl::main")
+
 
 def embperl_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="[-", end="-]",
-          delegate="perl::main")
+    return colorer.match_span(s, i, kind="literal3", begin="[-", end="-]", delegate="perl::main")
+
 
 def embperl_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="[$", end="$]",
-          delegate="perl::main")
+    return colorer.match_span(s, i, kind="literal3", begin="[$", end="$]", delegate="perl::main")
+
 
 def embperl_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="[!", end="!]",
-          delegate="perl::main")
+    return colorer.match_span(s, i, kind="literal3", begin="[!", end="!]", delegate="perl::main")
 
 
 # Rules dict for embperl_main ruleset.
 rulesDict1 = {
-    "[": [embperl_rule0, embperl_rule1, embperl_rule2, embperl_rule3, embperl_rule4,],
+    "[": [
+        embperl_rule0,
+        embperl_rule1,
+        embperl_rule2,
+        embperl_rule3,
+        embperl_rule4,
+    ],
 }
 
 # x.rulesDictDict for embperl mode.
@@ -64,5 +71,7 @@ rulesDictDict = {
 
 # Import dict for embperl mode.
 importDict = {
-    "embperl_main": ["html::main",],
+    "embperl_main": [
+        "html::main",
+    ],
 }

@@ -1,38 +1,41 @@
 #!/usr/bin/python
 # coding=utf-8
-#@+leo-ver=5-thin
-#@+node:bob.20180206123613.1: * @file ../plugins/leo_babel/tests/idle_time.py
-#@@first
-#@@first
-#@@language python
-#@@tabwidth -4
+# @+leo-ver=5-thin
+# @+node:bob.20180206123613.1: * @file ../plugins/leo_babel/tests/idle_time.py
+# @@first
+# @@first
+# @@language python
+# @@tabwidth -4
 
-#@+<< imports >>
-#@+node:bob.20180206123613.2: ** << imports >>
+# @+<< imports >>
+# @+node:bob.20180206123613.2: ** << imports >>
 import os
 import time
 
 from leo.core import leoGlobals as leoG
-assert leoG
-#@-<< imports >>
-#@+<< version >>
-#@+node:bob.20180206123613.3: ** << version >>
-version = '1.0'
-#@-<< version >>
 
-#@+others
-#@+node:bob.20180206123725.1: ** class IdleTime (leo_babel)
+assert leoG
+# @-<< imports >>
+# @+<< version >>
+# @+node:bob.20180206123613.3: ** << version >>
+version = '1.0'
+# @-<< version >>
+
+
+# @+others
+# @+node:bob.20180206123725.1: ** class IdleTime (leo_babel)
 class IdleTime:
-    """ This is an implementation of the Leo-Editor
+    """This is an implementation of the Leo-Editor
     class IdleTime() for use with Leo-Bridge.
     """
+
     list_active: list = list()
     list_inactive: list = list()
 
-    #@+others
-    #@+node:bob.20180206123842.1: *3* IdleTime.__init__
+    # @+others
+    # @+node:bob.20180206123842.1: *3* IdleTime.__init__
     def __init__(self, handler, delay=500, tag=None):
-        """ Create an Idle Time Object Instance
+        """Create an Idle Time Object Instance
 
         Arguments:
             handler: Function to execute when idle
@@ -45,16 +48,17 @@ class IdleTime:
         """
 
         self._handler = handler
-        self._delay = delay / 1000.
+        self._delay = delay / 1000.0
         self._tag = tag
         self._active = False
         IdleTime.list_inactive.append(self)
         # traceStk = [lix.strip() for lix in traceback.format_stack()]
         # leoG.trace('Trace: {0}'.format(traceStk[-2]))
         # leoG.trace('IdleTime() {0}'.format(id(self)))
-    #@+node:bob.20180206124140.1: *3* IdleTime.start()
+
+    # @+node:bob.20180206124140.1: *3* IdleTime.start()
     def start(self):
-        """ Start an Idle Time Instance
+        """Start an Idle Time Instance
 
         Arguments:
             self:  IdleTime instance
@@ -68,9 +72,10 @@ class IdleTime:
         self._nexttime = time.process_time()
         IdleTime.list_active.insert(0, self)
         self._active = True
-    #@+node:bob.20180206125022.1: *3* IdleTime.stop()
+
+    # @+node:bob.20180206125022.1: *3* IdleTime.stop()
     def stop(self):
-        """ Stop an Idle Time Instance
+        """Stop an Idle Time Instance
 
         Arguments:
             self:  IdleTime instance
@@ -84,10 +89,11 @@ class IdleTime:
             IdleTime.list_active.remove(self)
             IdleTime.list_inactive.append(self)
             self._active = False
-    #@+node:bob.20180206123934.1: *3* IdelTime.idle (classmethod)
+
+    # @+node:bob.20180206123934.1: *3* IdelTime.idle (classmethod)
     @classmethod
     def idle(cls):
-        """ Application idle -- Except for Idle Time
+        """Application idle -- Except for Idle Time
         handler execution
 
         Arguments:
@@ -126,15 +132,19 @@ class IdleTime:
             else:
                 # Nothing to run yet
                 cls.list_active.insert(0, idleTimeObj)
-    #@-others
-#@+node:bob.20180206123613.16: ** main()
+
+    # @-others
+
+
+# @+node:bob.20180206123613.16: ** main()
 def main():
-    """ Command Line Program Entry point
-    """
+    """Command Line Program Entry point"""
 
     raise NotImplementedError('{0} is not a command line program.'.format(__file__))
-#@-others
+
+
+# @-others
 
 if __name__ == "__main__":
     main()
-#@-leo
+# @-leo

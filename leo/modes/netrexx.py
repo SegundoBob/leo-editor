@@ -349,164 +349,353 @@ keywordsDictDict = {
 
 # Rules for netrexx_main ruleset.
 
+
 def netrexx_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/",
-          delegate="java::javadoc")
+    return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/", delegate="java::javadoc")
+
 
 def netrexx_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def netrexx_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def netrexx_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def netrexx_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--")
 
+
 def netrexx_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def netrexx_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
+
 def netrexx_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def netrexx_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
 
+
 def netrexx_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def netrexx_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def netrexx_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def netrexx_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=".*")
 
+
 def netrexx_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def netrexx_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def netrexx_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def netrexx_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def netrexx_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def netrexx_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def netrexx_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def netrexx_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def netrexx_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def netrexx_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def netrexx_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for netrexx_main ruleset.
 rulesDict1 = {
-    "!": [netrexx_rule6,],
-    "\"": [netrexx_rule2,],
-    "%": [netrexx_rule16,],
-    "&": [netrexx_rule17,],
-    "'": [netrexx_rule3,],
-    "*": [netrexx_rule13,],
-    "+": [netrexx_rule9,],
-    "-": [netrexx_rule4, netrexx_rule10,],
-    ".": [netrexx_rule12,],
-    "/": [netrexx_rule0, netrexx_rule1, netrexx_rule11,],
-    "0": [netrexx_rule23,],
-    "1": [netrexx_rule23,],
-    "2": [netrexx_rule23,],
-    "3": [netrexx_rule23,],
-    "4": [netrexx_rule23,],
-    "5": [netrexx_rule23,],
-    "6": [netrexx_rule23,],
-    "7": [netrexx_rule23,],
-    "8": [netrexx_rule23,],
-    "9": [netrexx_rule23,],
-    "<": [netrexx_rule8, netrexx_rule15,],
-    "=": [netrexx_rule5,],
-    ">": [netrexx_rule7, netrexx_rule14,],
-    "@": [netrexx_rule23,],
-    "A": [netrexx_rule23,],
-    "B": [netrexx_rule23,],
-    "C": [netrexx_rule23,],
-    "D": [netrexx_rule23,],
-    "E": [netrexx_rule23,],
-    "F": [netrexx_rule23,],
-    "G": [netrexx_rule23,],
-    "H": [netrexx_rule23,],
-    "I": [netrexx_rule23,],
-    "J": [netrexx_rule23,],
-    "K": [netrexx_rule23,],
-    "L": [netrexx_rule23,],
-    "M": [netrexx_rule23,],
-    "N": [netrexx_rule23,],
-    "O": [netrexx_rule23,],
-    "P": [netrexx_rule23,],
-    "Q": [netrexx_rule23,],
-    "R": [netrexx_rule23,],
-    "S": [netrexx_rule23,],
-    "T": [netrexx_rule23,],
-    "U": [netrexx_rule23,],
-    "V": [netrexx_rule23,],
-    "W": [netrexx_rule23,],
-    "X": [netrexx_rule23,],
-    "Y": [netrexx_rule23,],
-    "Z": [netrexx_rule23,],
-    "^": [netrexx_rule19,],
-    "a": [netrexx_rule23,],
-    "b": [netrexx_rule23,],
-    "c": [netrexx_rule23,],
-    "d": [netrexx_rule23,],
-    "e": [netrexx_rule23,],
-    "f": [netrexx_rule23,],
-    "g": [netrexx_rule23,],
-    "h": [netrexx_rule23,],
-    "i": [netrexx_rule23,],
-    "j": [netrexx_rule23,],
-    "k": [netrexx_rule23,],
-    "l": [netrexx_rule23,],
-    "m": [netrexx_rule23,],
-    "n": [netrexx_rule23,],
-    "o": [netrexx_rule23,],
-    "p": [netrexx_rule23,],
-    "q": [netrexx_rule23,],
-    "r": [netrexx_rule23,],
-    "s": [netrexx_rule23,],
-    "t": [netrexx_rule23,],
-    "u": [netrexx_rule23,],
-    "v": [netrexx_rule23,],
-    "w": [netrexx_rule23,],
-    "x": [netrexx_rule23,],
-    "y": [netrexx_rule23,],
-    "z": [netrexx_rule23,],
-    "{": [netrexx_rule22,],
-    "|": [netrexx_rule18,],
-    "}": [netrexx_rule21,],
-    "~": [netrexx_rule20,],
+    "!": [
+        netrexx_rule6,
+    ],
+    "\"": [
+        netrexx_rule2,
+    ],
+    "%": [
+        netrexx_rule16,
+    ],
+    "&": [
+        netrexx_rule17,
+    ],
+    "'": [
+        netrexx_rule3,
+    ],
+    "*": [
+        netrexx_rule13,
+    ],
+    "+": [
+        netrexx_rule9,
+    ],
+    "-": [
+        netrexx_rule4,
+        netrexx_rule10,
+    ],
+    ".": [
+        netrexx_rule12,
+    ],
+    "/": [
+        netrexx_rule0,
+        netrexx_rule1,
+        netrexx_rule11,
+    ],
+    "0": [
+        netrexx_rule23,
+    ],
+    "1": [
+        netrexx_rule23,
+    ],
+    "2": [
+        netrexx_rule23,
+    ],
+    "3": [
+        netrexx_rule23,
+    ],
+    "4": [
+        netrexx_rule23,
+    ],
+    "5": [
+        netrexx_rule23,
+    ],
+    "6": [
+        netrexx_rule23,
+    ],
+    "7": [
+        netrexx_rule23,
+    ],
+    "8": [
+        netrexx_rule23,
+    ],
+    "9": [
+        netrexx_rule23,
+    ],
+    "<": [
+        netrexx_rule8,
+        netrexx_rule15,
+    ],
+    "=": [
+        netrexx_rule5,
+    ],
+    ">": [
+        netrexx_rule7,
+        netrexx_rule14,
+    ],
+    "@": [
+        netrexx_rule23,
+    ],
+    "A": [
+        netrexx_rule23,
+    ],
+    "B": [
+        netrexx_rule23,
+    ],
+    "C": [
+        netrexx_rule23,
+    ],
+    "D": [
+        netrexx_rule23,
+    ],
+    "E": [
+        netrexx_rule23,
+    ],
+    "F": [
+        netrexx_rule23,
+    ],
+    "G": [
+        netrexx_rule23,
+    ],
+    "H": [
+        netrexx_rule23,
+    ],
+    "I": [
+        netrexx_rule23,
+    ],
+    "J": [
+        netrexx_rule23,
+    ],
+    "K": [
+        netrexx_rule23,
+    ],
+    "L": [
+        netrexx_rule23,
+    ],
+    "M": [
+        netrexx_rule23,
+    ],
+    "N": [
+        netrexx_rule23,
+    ],
+    "O": [
+        netrexx_rule23,
+    ],
+    "P": [
+        netrexx_rule23,
+    ],
+    "Q": [
+        netrexx_rule23,
+    ],
+    "R": [
+        netrexx_rule23,
+    ],
+    "S": [
+        netrexx_rule23,
+    ],
+    "T": [
+        netrexx_rule23,
+    ],
+    "U": [
+        netrexx_rule23,
+    ],
+    "V": [
+        netrexx_rule23,
+    ],
+    "W": [
+        netrexx_rule23,
+    ],
+    "X": [
+        netrexx_rule23,
+    ],
+    "Y": [
+        netrexx_rule23,
+    ],
+    "Z": [
+        netrexx_rule23,
+    ],
+    "^": [
+        netrexx_rule19,
+    ],
+    "a": [
+        netrexx_rule23,
+    ],
+    "b": [
+        netrexx_rule23,
+    ],
+    "c": [
+        netrexx_rule23,
+    ],
+    "d": [
+        netrexx_rule23,
+    ],
+    "e": [
+        netrexx_rule23,
+    ],
+    "f": [
+        netrexx_rule23,
+    ],
+    "g": [
+        netrexx_rule23,
+    ],
+    "h": [
+        netrexx_rule23,
+    ],
+    "i": [
+        netrexx_rule23,
+    ],
+    "j": [
+        netrexx_rule23,
+    ],
+    "k": [
+        netrexx_rule23,
+    ],
+    "l": [
+        netrexx_rule23,
+    ],
+    "m": [
+        netrexx_rule23,
+    ],
+    "n": [
+        netrexx_rule23,
+    ],
+    "o": [
+        netrexx_rule23,
+    ],
+    "p": [
+        netrexx_rule23,
+    ],
+    "q": [
+        netrexx_rule23,
+    ],
+    "r": [
+        netrexx_rule23,
+    ],
+    "s": [
+        netrexx_rule23,
+    ],
+    "t": [
+        netrexx_rule23,
+    ],
+    "u": [
+        netrexx_rule23,
+    ],
+    "v": [
+        netrexx_rule23,
+    ],
+    "w": [
+        netrexx_rule23,
+    ],
+    "x": [
+        netrexx_rule23,
+    ],
+    "y": [
+        netrexx_rule23,
+    ],
+    "z": [
+        netrexx_rule23,
+    ],
+    "{": [
+        netrexx_rule22,
+    ],
+    "|": [
+        netrexx_rule18,
+    ],
+    "}": [
+        netrexx_rule21,
+    ],
+    "~": [
+        netrexx_rule20,
+    ],
 }
 
 # x.rulesDictDict for netrexx mode.

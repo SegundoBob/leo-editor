@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20140723122936.18150: * @file ../plugins/importers/otl.py
+# @+leo-ver=5-thin
+# @+node:ekr.20140723122936.18150: * @file ../plugins/importers/otl.py
 """The @auto importer for vim-outline files."""
+
 from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
@@ -11,15 +12,16 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position, VNode
 
-#@+others
-#@+node:ekr.20161124034614.2: ** class Otl_Importer(Importer)
+
+# @+others
+# @+node:ekr.20161124034614.2: ** class Otl_Importer(Importer)
 class Otl_Importer(Importer):
     """The importer for the otl language."""
 
     language = 'otl'
 
-    #@+others
-    #@+node:ekr.20230530052911.1: *3* otl_i.check_blanks_and_tabs
+    # @+others
+    # @+node:ekr.20230530052911.1: *3* otl_i.check_blanks_and_tabs
     def check_blanks_and_tabs(self, lines: list[str]) -> bool:  # pragma: no cover (missing test)
         """
         Otl_Importer.check_blanks_and_tabs.
@@ -29,7 +31,8 @@ class Otl_Importer(Importer):
         Tabs are part of the otl format. Never complain.
         """
         return True
-    #@+node:ekr.20230529071351.1: *3* otl_i.gen_block
+
+    # @+node:ekr.20230529071351.1: *3* otl_i.gen_block
     # Must match body pattern first.
     otl_body_pattern = re.compile(r'^: (.*)$')
     otl_node_pattern = re.compile(r'^[ ]*(\t*)(.*)$')
@@ -75,7 +78,8 @@ class Otl_Importer(Importer):
         assert parent == self.root
         for p in self.root.self_and_subtree():
             p.b = ''.join(lines_dict[p.v])
-    #@+node:ekr.20220803162645.1: *3* otl_i.regularize_whitespace
+
+    # @+node:ekr.20220803162645.1: *3* otl_i.regularize_whitespace
     def regularize_whitespace(self, lines: list[str]) -> list[str]:
         """
         Otl_Importer.regularize_whitespace.
@@ -85,18 +89,28 @@ class Otl_Importer(Importer):
         """
         # Should never be called: otl.check_blanks_and_tabs always returns True
         return lines  # pragma: no cover
-    #@-others
-#@-others
+
+    # @-others
+
+
+# @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for .otl files."""
     Otl_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    '@auto': ['@auto-otl', '@auto-vim-outline',],
-    'extensions': ['.otl',],
+    '@auto': [
+        '@auto-otl',
+        '@auto-vim-outline',
+    ],
+    'extensions': [
+        '.otl',
+    ],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:TL.20090225102340.32: * @file ../plugins/nodeActions.py
-#@+<< docstring >>
-#@+node:TL.20080507213950.3: ** << docstring >> (nodeActions.py)
-r""" Allows the definition of double-click actions.
+# @+leo-ver=5-thin
+# @+node:TL.20090225102340.32: * @file ../plugins/nodeActions.py
+# @+<< docstring >>
+# @+node:TL.20080507213950.3: ** << docstring >> (nodeActions.py)
+r"""Allows the definition of double-click actions.
 
 Calling the nodeaction-act command or double-clicking a node causes this plugin
 checks for a match of the clicked node's headline text with a list of
@@ -193,23 +193,24 @@ execute a command in the first line of the body of a double-clicked node::
      g.os.system('"Start /b ' + pClicked.bodyString() + '"')
 
 """
-#@-<< docstring >>
+# @-<< docstring >>
 
 # Written by TL.
 # Derived from the fileActions plugin.
 # Distributed under the same licence as Leo.
 
-#@+<< imports >>
-#@+node:ekr.20040915110738.1: ** << imports >>
+# @+<< imports >>
+# @+node:ekr.20040915110738.1: ** << imports >>
 import fnmatch
 import os
 import re
 from typing import Any
 from leo.core import leoGlobals as g
-#@-<< imports >>
+# @-<< imports >>
 
-#@+others
-#@+node:TL.20080507213950.7: ** init (nodeActions.py)
+
+# @+others
+# @+node:TL.20080507213950.7: ** init (nodeActions.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     if not g.app.batchMode:
@@ -219,7 +220,9 @@ def init():
         g.registerHandler("headdclick1", onIconDoubleClickNA)
         g.plugin_signon(__name__)
     return ok
-#@+node:TL.20080507213950.8: ** onIconDoubleClickNA
+
+
+# @+node:TL.20080507213950.8: ** onIconDoubleClickNA
 def onIconDoubleClickNA(tag, keywords):
     c = keywords.get("c")
     p = keywords.get("p")
@@ -230,7 +233,9 @@ def onIconDoubleClickNA(tag, keywords):
     if doNodeAction(p, c):
         return True
     return None
-#@+node:caminhante.20200802125556.1: ** nodeaction-act
+
+
+# @+node:caminhante.20200802125556.1: ** nodeaction-act
 @g.command('nodeaction-act')
 def cmd_nodeaction_act(event):
     c = event.get('c')
@@ -240,9 +245,10 @@ def cmd_nodeaction_act(event):
     if doNodeAction(p, c):
         return True
     return None
-#@+node:TL.20080507213950.9: ** doNodeAction
-def doNodeAction(pClicked, c):
 
+
+# @+node:TL.20080507213950.9: ** doNodeAction
+def doNodeAction(pClicked, c):
     hClicked = pClicked.h.strip()
 
     # Display messages based on 'messageLevel'.  Valid values:
@@ -272,7 +278,6 @@ def doNodeAction(pClicked, c):
         passEventExternal = False  # No pass to next plugin after pattern matched
         # Check entire subtree under the "nodeActions" node for pattern
         for pScript in pNA.subtree():
-
             # Nodes with subnodes are not tested for a match
             if pScript.hasChildren():
                 continue
@@ -326,8 +331,14 @@ def doNodeAction(pClicked, c):
                 if messageLevel >= 1:
                     g.blue("nA: Matched pattern '" + patternOriginal + "'")
                 if messageLevel >= 4:
-                    g.blue("nA:    Directives: X=", useRegEx, "V=", passEventInternal,
-                          ">=", passEventExternal,)
+                    g.blue(
+                        "nA:    Directives: X=",
+                        useRegEx,
+                        "V=",
+                        passEventInternal,
+                        ">=",
+                        passEventExternal,
+                    )
                 # if @file type node, save node to disk (if configured)
                 if clickedAtFileTypeNode:
                     if saveAtFile:
@@ -351,7 +362,7 @@ def doNodeAction(pClicked, c):
         if not foundPattern:
             # no match to any pattern, always pass event to next plugin
             if messageLevel >= 1:
-                g.blue("nA: No patterns matched to " "" + hClicked + '"')
+                g.blue("nA: No patterns matched to " + hClicked + '"')
             return False  # TL - Inform onIconDoubleClick that no action was taken
         if passEventExternal:
             # last matched pattern has directive to pass event to next plugin
@@ -368,9 +379,10 @@ def doNodeAction(pClicked, c):
     if messageLevel >= 4:
         g.blue("nA: The nodeActions node does not exist")
     return False  # TL - Inform onIconDoubleClick that no action was taken
-#@+node:TL.20080507213950.10: ** applyNodeAction
-def applyNodeAction(pScript, pClicked, c):
 
+
+# @+node:TL.20080507213950.10: ** applyNodeAction
+def applyNodeAction(pScript, pClicked, c):
     script = g.getScript(c, pScript)
     redirect = c.config.getBool('redirect-execute-script-output-to-log_pane')
     if script:
@@ -383,10 +395,7 @@ def applyNodeAction(pScript, pClicked, c):
             g.redirectStdout()  # Redirect stdout
             g.redirectStderr()  # Redirect stderr
         try:
-            namespace = {
-                'c': c, 'g': g,
-                'pClicked': pClicked,
-                'pScript': pScript}
+            namespace = {'c': c, 'g': g, 'pClicked': pClicked, 'pScript': pScript}
             # exec script in namespace
             exec(script, namespace)
         except Exception:
@@ -398,8 +407,10 @@ def applyNodeAction(pScript, pClicked, c):
                 g.restoreStderr()
                 g.restoreStdout()
         os.chdir(working_directory)
-#@-others
-#@@language python
-#@@tabwidth -4
 
-#@-leo
+
+# @-others
+# @@language python
+# @@tabwidth -4
+
+# @-leo

@@ -186,10 +186,7 @@ class LeoUnitTest(unittest.TestCase):
         print('')
         for p in c.all_positions():
             head_s = f"{' ' * p.level()}{p.h}"
-            print(
-                f"clone? {int(p.isCloned())} id(v): {id(p.v)} gnx: {p.gnx:30}: "
-                f"{head_s:<10} parents: {p.v.parents}"
-            )
+            print(f"clone? {int(p.isCloned())} id(v): {id(p.v)} gnx: {p.gnx:30}: {head_s:<10} parents: {p.v.parents}")
 
     # @+node:ekr.20220805071838.1: *4* LeoUnitTest.dump_headlines
     def dump_headlines(self, c: Cmdr, tag: str = None) -> None:  # pragma: no cover
@@ -207,9 +204,7 @@ class LeoUnitTest(unittest.TestCase):
         g.printObj([f"{i:2} {z.rstrip()}" for i, z in enumerate(g.splitLines(s))])
 
     # @+node:ekr.20211129062220.1: *4* LeoUnitTest.dump_tree
-    def dump_tree(
-        self, root: Position = None, tag: str = None
-    ) -> None:  # pragma: no cover
+    def dump_tree(self, root: Position = None, tag: str = None) -> None:  # pragma: no cover
         """
         Dump root's tree, or the entire tree if root is None.
         """

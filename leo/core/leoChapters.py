@@ -43,15 +43,11 @@ class ChapterController:
         """Ctor for ChapterController class."""
         self.c = c
         # Note: chapter names never change, even if their @chapter node changes.
-        self.chaptersDict: dict[
-            str, Chapter
-        ] = {}  # Keys are chapter names, values are chapters.
+        self.chaptersDict: dict[str, Chapter] = {}  # Keys are chapter names, values are chapters.
         self.initing = True  # #31: True: suppress undo when creating chapters.
         self.re_chapter: re.Pattern = None  # Set where used.
         self.selectedChapter: Optional[Chapter] = None
-        self.selectChapterLockout = (
-            False  # True: cc.selectChapterForPosition does nothing.
-        )
+        self.selectChapterLockout = False  # True: cc.selectChapterForPosition does nothing.
         self.tt: LeoQtTreeTab = None  # May be set in createChaptersIcon.
         self.reloadSettings()
 
@@ -189,9 +185,7 @@ class ChapterController:
             cc.selectChapterLockout = False
 
     # @+node:ekr.20090306060344.2: *4* cc.selectChapterByNameHelper
-    def selectChapterByNameHelper(
-        self, chapter: Chapter, collapse: bool = True
-    ) -> None:
+    def selectChapterByNameHelper(self, chapter: Chapter, collapse: bool = True) -> None:
         """Select the chapter."""
         cc, c = self, self.c
         if not cc.selectedChapter and chapter.name == 'main':
@@ -393,9 +387,7 @@ class Chapter:
 
     # @+others
     # @+node:ekr.20070317085708.1: *3* chapter.__init__
-    def __init__(
-        self, c: Cmdr, chapterController: ChapterController, name: str
-    ) -> None:
+    def __init__(self, c: Cmdr, chapterController: ChapterController, name: str) -> None:
         self.c = c
         self.cc = cc = chapterController
         self.name: str = g.checkUnicode(name)
@@ -468,9 +460,7 @@ class Chapter:
         g.doHook('hoist-changed', c=c)
 
     # @+node:ekr.20070317131708: *4* chapter.findPositionInChapter
-    def findPositionInChapter(
-        self, p1: Position, strict: bool = False
-    ) -> Optional[Position]:
+    def findPositionInChapter(self, p1: Position, strict: bool = False) -> Optional[Position]:
         """Return a valid position p such that p.v == v."""
         c, name = self.c, self.name
         # Bug fix: 2012/05/24: Search without root arg in the main chapter.

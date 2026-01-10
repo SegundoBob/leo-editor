@@ -298,9 +298,7 @@ class EditFileCommandsClass(BaseEditCommandsClass):
                 ("Leo files", "*.leo *.leojs *.db"),
                 ("All files", "*"),
             ]
-            fileName = g.app.gui.runOpenFileDialog(
-                c, title="Compare Leo Files", filetypes=filetypes
-            )
+            fileName = g.app.gui.runOpenFileDialog(c, title="Compare Leo Files", filetypes=filetypes)
             if not fileName:
                 return
             # Read the file into the hidden commander.
@@ -377,9 +375,7 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         c.redraw()
 
     # @+node:ekr.20170806094317.12: *5* efc.createCompareClones
-    def createCompareClones(
-        self, d: dict[str, str], kind: str, parent: Position
-    ) -> None:
+    def createCompareClones(self, d: dict[str, str], kind: str, parent: Position) -> None:
         if d:
             c = self.c  # Use the visible commander.
             parent = parent.insertAsLastChild()
@@ -750,9 +746,7 @@ class GitDiffController:
                 c2 = self.make_at_clean_outline(fn, root, s2, rev2)
         if c1 and c2:
             self.make_diff_outlines(c1, c2, fn, rev1, rev2)
-            self.file_node.b = (
-                f"{self.file_node.b.rstrip()}\n@language {c2.target_language}\n"
-            )
+            self.file_node.b = f"{self.file_node.b.rstrip()}\n@language {c2.target_language}\n"
 
     # @+node:ekr.20201208115447.1: *4* gdc.diff_pull_request
     def diff_pull_request(self) -> None:
@@ -812,9 +806,7 @@ class GitDiffController:
                 c1 = c2 = None
         if c1 and c2:
             self.make_diff_outlines(c1, c2, fn)
-            self.file_node.b = (
-                f"{self.file_node.b.rstrip()}\n@language {c2.target_language}\n"
-            )
+            self.file_node.b = f"{self.file_node.b.rstrip()}\n@language {c2.target_language}\n"
         u.afterInsertNode(self.root, undoType, undoData)
         self.finish()
 
@@ -925,9 +917,7 @@ class GitDiffController:
         i: int,  # The index into contents_list and revs_list
         path: str,
         contents_list: list[list[str]],  # Lines for each contents.
-        node_patterns: list[
-            tuple[str, re.Pattern]
-        ],  # Patterns matching @+node sentinels for each gnx.
+        node_patterns: list[tuple[str, re.Pattern]],  # Patterns matching @+node sentinels for each gnx.
         revs_list: list[str],
     ) -> Optional[g.Bunch]:
         """
@@ -945,9 +935,7 @@ class GitDiffController:
         for index in (0, 1):
             rev_i = i + index
             for gnx, pattern in node_patterns:
-                node_info = self._find_node(
-                    contents_list[rev_i], pattern, gnx, revs_list[rev_i]
-                )
+                node_info = self._find_node(contents_list[rev_i], pattern, gnx, revs_list[rev_i])
                 if node_info:
                     nodes[index].append((rev_i, gnx, node_info))
 
@@ -1058,9 +1046,7 @@ class GitDiffController:
             gnxs_s = gnx0_s if b.gnx0 == b.gnx1 else f"{gnx0_s} {gnx1_s}"
             p.h = f"{b.i:>4} {b.kind}"  # {gnx0_s} {gnx1_s}"
             if b.kind == 'diff':
-                diff = list(
-                    difflib.unified_diff(b.body0 or [], b.body1 or [], b.rev0, b.rev1)
-                )
+                diff = list(difflib.unified_diff(b.body0 or [], b.body1 or [], b.rev0, b.rev1))
                 p.b = f"diff {gnxs_s}\n\n{''.join(diff)}"
                 child1 = p.insertAsLastChild()
                 child1.h = 'old'
@@ -1339,9 +1325,7 @@ class GitDiffController:
             c.redraw(self.root)
         else:
             # Writing the outline would create an invalid outline.
-            g.es_print(
-                'Deleting the diff. It would create an invalid outline!', color='red'
-            )
+            g.es_print('Deleting the diff. It would create an invalid outline!', color='red')
             c.selectPosition(self.root)
             c.deleteOutline()
             last = c.lastTopLevel()
@@ -1496,9 +1480,7 @@ class GitDiffController:
         old_public_lines, junk = x.separate_sentinels(old_private_lines, marker)
         if old_public_lines:
             # Fix #1136: The old lines might not exist.
-            new_private_lines = x.propagate_changed_lines(
-                new_public_lines, old_private_lines, marker, p=hidden_root
-            )
+            new_private_lines = x.propagate_changed_lines(new_public_lines, old_private_lines, marker, p=hidden_root)
             at.fast_read_into_root(
                 c=hidden_c,
                 contents=''.join(new_private_lines),

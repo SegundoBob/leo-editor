@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20231012163843.1: * @file ../modes/scheme.py
+# @+leo-ver=5-thin
+# @+node:ekr.20231012163843.1: * @file ../modes/scheme.py
 # Leo colorizer control file for scheme mode.
 # This file is in the public domain.
 
@@ -236,116 +236,285 @@ keywordsDictDict = {
 
 # Rules for scheme_main ruleset.
 
+
 def scheme_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="#|", end="|#")
+
 
 def scheme_rule1(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="'(")
 
+
 def scheme_rule2(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="'")
+
 
 def scheme_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#\\")
 
+
 def scheme_rule4(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#b")
+
 
 def scheme_rule5(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#d")
 
+
 def scheme_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#o")
+
 
 def scheme_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="#x")
 
+
 def scheme_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
+
 
 def scheme_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def scheme_rule10(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for scheme_main ruleset.
 rulesDict1 = {
-    "!": [scheme_rule10,],
-    "\"": [scheme_rule9,],
-    "#": [scheme_rule0, scheme_rule3, scheme_rule4, scheme_rule5, scheme_rule6, scheme_rule7, scheme_rule10,],
-    "'": [scheme_rule1, scheme_rule2,],
-    "*": [scheme_rule10,],
-    "-": [scheme_rule10,],
-    "/": [scheme_rule10,],
-    "0": [scheme_rule10,],
-    "1": [scheme_rule10,],
-    "2": [scheme_rule10,],
-    "3": [scheme_rule10,],
-    "4": [scheme_rule10,],
-    "5": [scheme_rule10,],
-    "6": [scheme_rule10,],
-    "7": [scheme_rule10,],
-    "8": [scheme_rule10,],
-    "9": [scheme_rule10,],
-    ";": [scheme_rule8,],
-    "<": [scheme_rule10,],
-    "=": [scheme_rule10,],
-    ">": [scheme_rule10,],
-    "?": [scheme_rule10,],
-    "@": [scheme_rule10,],
-    "A": [scheme_rule10,],
-    "B": [scheme_rule10,],
-    "C": [scheme_rule10,],
-    "D": [scheme_rule10,],
-    "E": [scheme_rule10,],
-    "F": [scheme_rule10,],
-    "G": [scheme_rule10,],
-    "H": [scheme_rule10,],
-    "I": [scheme_rule10,],
-    "J": [scheme_rule10,],
-    "K": [scheme_rule10,],
-    "L": [scheme_rule10,],
-    "M": [scheme_rule10,],
-    "N": [scheme_rule10,],
-    "O": [scheme_rule10,],
-    "P": [scheme_rule10,],
-    "Q": [scheme_rule10,],
-    "R": [scheme_rule10,],
-    "S": [scheme_rule10,],
-    "T": [scheme_rule10,],
-    "U": [scheme_rule10,],
-    "V": [scheme_rule10,],
-    "W": [scheme_rule10,],
-    "X": [scheme_rule10,],
-    "Y": [scheme_rule10,],
-    "Z": [scheme_rule10,],
-    "a": [scheme_rule10,],
-    "b": [scheme_rule10,],
-    "c": [scheme_rule10,],
-    "d": [scheme_rule10,],
-    "e": [scheme_rule10,],
-    "f": [scheme_rule10,],
-    "g": [scheme_rule10,],
-    "h": [scheme_rule10,],
-    "i": [scheme_rule10,],
-    "j": [scheme_rule10,],
-    "k": [scheme_rule10,],
-    "l": [scheme_rule10,],
-    "m": [scheme_rule10,],
-    "n": [scheme_rule10,],
-    "o": [scheme_rule10,],
-    "p": [scheme_rule10,],
-    "q": [scheme_rule10,],
-    "r": [scheme_rule10,],
-    "s": [scheme_rule10,],
-    "t": [scheme_rule10,],
-    "u": [scheme_rule10,],
-    "v": [scheme_rule10,],
-    "w": [scheme_rule10,],
-    "x": [scheme_rule10,],
-    "y": [scheme_rule10,],
-    "z": [scheme_rule10,],
+    "!": [
+        scheme_rule10,
+    ],
+    "\"": [
+        scheme_rule9,
+    ],
+    "#": [
+        scheme_rule0,
+        scheme_rule3,
+        scheme_rule4,
+        scheme_rule5,
+        scheme_rule6,
+        scheme_rule7,
+        scheme_rule10,
+    ],
+    "'": [
+        scheme_rule1,
+        scheme_rule2,
+    ],
+    "*": [
+        scheme_rule10,
+    ],
+    "-": [
+        scheme_rule10,
+    ],
+    "/": [
+        scheme_rule10,
+    ],
+    "0": [
+        scheme_rule10,
+    ],
+    "1": [
+        scheme_rule10,
+    ],
+    "2": [
+        scheme_rule10,
+    ],
+    "3": [
+        scheme_rule10,
+    ],
+    "4": [
+        scheme_rule10,
+    ],
+    "5": [
+        scheme_rule10,
+    ],
+    "6": [
+        scheme_rule10,
+    ],
+    "7": [
+        scheme_rule10,
+    ],
+    "8": [
+        scheme_rule10,
+    ],
+    "9": [
+        scheme_rule10,
+    ],
+    ";": [
+        scheme_rule8,
+    ],
+    "<": [
+        scheme_rule10,
+    ],
+    "=": [
+        scheme_rule10,
+    ],
+    ">": [
+        scheme_rule10,
+    ],
+    "?": [
+        scheme_rule10,
+    ],
+    "@": [
+        scheme_rule10,
+    ],
+    "A": [
+        scheme_rule10,
+    ],
+    "B": [
+        scheme_rule10,
+    ],
+    "C": [
+        scheme_rule10,
+    ],
+    "D": [
+        scheme_rule10,
+    ],
+    "E": [
+        scheme_rule10,
+    ],
+    "F": [
+        scheme_rule10,
+    ],
+    "G": [
+        scheme_rule10,
+    ],
+    "H": [
+        scheme_rule10,
+    ],
+    "I": [
+        scheme_rule10,
+    ],
+    "J": [
+        scheme_rule10,
+    ],
+    "K": [
+        scheme_rule10,
+    ],
+    "L": [
+        scheme_rule10,
+    ],
+    "M": [
+        scheme_rule10,
+    ],
+    "N": [
+        scheme_rule10,
+    ],
+    "O": [
+        scheme_rule10,
+    ],
+    "P": [
+        scheme_rule10,
+    ],
+    "Q": [
+        scheme_rule10,
+    ],
+    "R": [
+        scheme_rule10,
+    ],
+    "S": [
+        scheme_rule10,
+    ],
+    "T": [
+        scheme_rule10,
+    ],
+    "U": [
+        scheme_rule10,
+    ],
+    "V": [
+        scheme_rule10,
+    ],
+    "W": [
+        scheme_rule10,
+    ],
+    "X": [
+        scheme_rule10,
+    ],
+    "Y": [
+        scheme_rule10,
+    ],
+    "Z": [
+        scheme_rule10,
+    ],
+    "a": [
+        scheme_rule10,
+    ],
+    "b": [
+        scheme_rule10,
+    ],
+    "c": [
+        scheme_rule10,
+    ],
+    "d": [
+        scheme_rule10,
+    ],
+    "e": [
+        scheme_rule10,
+    ],
+    "f": [
+        scheme_rule10,
+    ],
+    "g": [
+        scheme_rule10,
+    ],
+    "h": [
+        scheme_rule10,
+    ],
+    "i": [
+        scheme_rule10,
+    ],
+    "j": [
+        scheme_rule10,
+    ],
+    "k": [
+        scheme_rule10,
+    ],
+    "l": [
+        scheme_rule10,
+    ],
+    "m": [
+        scheme_rule10,
+    ],
+    "n": [
+        scheme_rule10,
+    ],
+    "o": [
+        scheme_rule10,
+    ],
+    "p": [
+        scheme_rule10,
+    ],
+    "q": [
+        scheme_rule10,
+    ],
+    "r": [
+        scheme_rule10,
+    ],
+    "s": [
+        scheme_rule10,
+    ],
+    "t": [
+        scheme_rule10,
+    ],
+    "u": [
+        scheme_rule10,
+    ],
+    "v": [
+        scheme_rule10,
+    ],
+    "w": [
+        scheme_rule10,
+    ],
+    "x": [
+        scheme_rule10,
+    ],
+    "y": [
+        scheme_rule10,
+    ],
+    "z": [
+        scheme_rule10,
+    ],
 }
 
 # x.rulesDictDict for scheme mode.
@@ -355,4 +524,4 @@ rulesDictDict = {
 
 # Import dict for scheme mode.
 importDict = {}
-#@-leo
+# @-leo

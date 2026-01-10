@@ -226,9 +226,7 @@ class TestIndentedTypeScript(LeoUnitTest):
 
         # Set p.h and p.b.
         unittest_dir = os.path.dirname(__file__)
-        path = os.path.abspath(
-            os.path.join(unittest_dir, 'indented_typescript_test.ts')
-        )
+        path = os.path.abspath(os.path.join(unittest_dir, 'indented_typescript_test.ts'))
         assert os.path.exists(path), repr(path)
         p.h = f"@file {path}"
         p.b = contents

@@ -246,9 +246,7 @@ class SqlitePickleShare:
         """db['key'] = 5"""
         try:
             data = self.dumper(value)
-            self.conn.execute(
-                '''replace into cachevalues(key, data) values(?,?);''', (key, data)
-            )
+            self.conn.execute('''replace into cachevalues(key, data) values(?,?);''', (key, data))
         except sqlite3.OperationalError:
             g.es_exception()
 
@@ -362,9 +360,7 @@ class SqlitePickleShare:
         self.conn.isolation_level = 'DEFERRED'
 
         sql0 = '''select key, data from cachevalues order by key limit 50'''
-        sql1 = (
-            '''select key, data from cachevalues where key > ? order by key limit 50'''
-        )
+        sql1 = '''select key, data from cachevalues where key > ? order by key limit 50'''
 
         block = self.conn.execute(sql0)
         lk = do_block(block)

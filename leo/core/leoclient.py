@@ -120,11 +120,7 @@ def _get_action_list():
     # Add all remaining methods to the middle.
     tests = inspect.getmembers(server, inspect.ismethod)
     test_names = sorted([name for (name, value) in tests if not name.startswith('_')])
-    middle: list = [
-        ("!" + z, {})
-        for z in test_names
-        if z not in head_names + tail_names + exclude_names
-    ]
+    middle: list = [("!" + z, {}) for z in test_names if z not in head_names + tail_names + exclude_names]
     middle_names = [name for (name, package) in middle]  # type:ignore
     all_tests = head + middle + tail  # type:ignore
     if 0:

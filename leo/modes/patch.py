@@ -29,56 +29,75 @@ keywordsDictDict = {
 
 # Rules for patch_main ruleset.
 
+
 def patch_rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal1", seq="+++",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="literal1", seq="+++", at_line_start=True)
+
 
 def patch_rule1(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal2", seq="---",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="literal2", seq="---", at_line_start=True)
+
 
 def patch_rule2(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword3", seq="Index:",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword3", seq="Index:", at_line_start=True)
+
 
 def patch_rule3(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword1", seq="+",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword1", seq="+", at_line_start=True)
+
 
 def patch_rule4(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword1", seq=">",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword1", seq=">", at_line_start=True)
+
 
 def patch_rule5(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword2", seq="-",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword2", seq="-", at_line_start=True)
+
 
 def patch_rule6(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword2", seq="<",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword2", seq="<", at_line_start=True)
+
 
 def patch_rule7(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword3", seq="!",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword3", seq="!", at_line_start=True)
+
 
 def patch_rule8(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword3", seq="@@",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword3", seq="@@", at_line_start=True)
+
 
 def patch_rule9(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="keyword3", seq="*",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="keyword3", seq="*", at_line_start=True)
+
 
 # Rules dict for patch_main ruleset.
 rulesDict1 = {
-    "!": [patch_rule7,],
-    "*": [patch_rule9,],
-    "+": [patch_rule0, patch_rule3,],
-    "-": [patch_rule1, patch_rule5,],
-    "<": [patch_rule6,],
-    ">": [patch_rule4,],
-    "@": [patch_rule8,],
-    "I": [patch_rule2,],
+    "!": [
+        patch_rule7,
+    ],
+    "*": [
+        patch_rule9,
+    ],
+    "+": [
+        patch_rule0,
+        patch_rule3,
+    ],
+    "-": [
+        patch_rule1,
+        patch_rule5,
+    ],
+    "<": [
+        patch_rule6,
+    ],
+    ">": [
+        patch_rule4,
+    ],
+    "@": [
+        patch_rule8,
+    ],
+    "I": [
+        patch_rule2,
+    ],
 }
 
 # x.rulesDictDict for patch mode.

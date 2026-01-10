@@ -157,9 +157,7 @@ def find_long_lines(event: LeoKeyEvent) -> None:
                     g.es_print(p.h)
                     print(short_s)
                     unl = p.get_UNL()
-                    log.put(
-                        short_s.strip() + '\n', nodeLink=f"{unl}::{i + 1}"
-                    )  # Local line.
+                    log.put(short_s.strip() + '\n', nodeLink=f"{unl}::{i + 1}")  # Local line.
                 break
     g.es_print(
         f"found {count} long line{g.plural(count)} "
@@ -198,9 +196,7 @@ def find_missing_docstrings(event: LeoKeyEvent) -> None:
         # By Виталије Милошевић.
         # It may be useful to skip __init__ methods because their docstring
         # is usually docstring of the class
-        return line.startswith(('def ', 'class ')) and not line.partition(' ')[
-            2
-        ].startswith('__init__')
+        return line.startswith(('def ', 'class ')) and not line.partition(' ')[2].startswith('__init__')
 
     # @+node:ekr.20190615182754.1: *4* function: is_root
     def is_root(p: Position) -> bool:
@@ -228,9 +224,7 @@ def find_missing_docstrings(event: LeoKeyEvent) -> None:
                         g.es_print(root.h)
                     print(line)
                     unl = p.get_UNL()
-                    log.put(
-                        line.strip() + '\n', nodeLink=f"{unl}::{i + 1}"
-                    )  # Local line.
+                    log.put(line.strip() + '\n', nodeLink=f"{unl}::{i + 1}")  # Local line.
                     break
     g.es_print('')
     g.es_print(
@@ -367,9 +361,7 @@ class CheckNodes:
     def check(self, event: LeoKeyEvent) -> None:
         c = self.c
         self.get_data()
-        self.clones = [
-            z.copy() for z in c.all_unique_positions() if self.is_dubious_node(z)
-        ]
+        self.clones = [z.copy() for z in c.all_unique_positions() if self.is_dubious_node(z)]
         # Report.
         self.count = count = len(self.clones)
         g.es(f"{count} dubious node{g.plural(count)}")
@@ -429,16 +421,10 @@ class CheckNodes:
         )
         leading_blank_line = p.b.strip() and not lines[0].strip()
         empty_body = (
-            not p.b.strip()
-            and not p.hasChildren()
-            and not any(p.h.startswith(z) for z in self.ok_head_prefixes)
+            not p.b.strip() and not p.hasChildren() and not any(p.h.startswith(z) for z in self.ok_head_prefixes)
         )
-        trailing_class_or_def = len(stripped_lines) > 1 and stripped_lines[
-            -1
-        ].startswith(('class ', 'def '))
-        return any(
-            (too_many_defs, leading_blank_line, empty_body, trailing_class_or_def)
-        )
+        trailing_class_or_def = len(stripped_lines) > 1 and stripped_lines[-1].startswith(('class ', 'def '))
+        return any((too_many_defs, leading_blank_line, empty_body, trailing_class_or_def))
 
     # @-others
 
@@ -648,9 +634,7 @@ class PylintCommand:
 
     # @+others
     # @+node:ekr.20150514125218.11: *3* 1. pylint.run
-    def run(
-        self, root: Position, *, last_path: str = None
-    ) -> Optional[tuple[str, Position]]:
+    def run(self, root: Position, *, last_path: str = None) -> Optional[tuple[str, Position]]:
         """Run Pylint on all Python @<file> nodes in root's tree."""
         c = self.c
         if not lint:
@@ -669,9 +653,7 @@ class PylintCommand:
             for parent in p.self_and_parents():
                 if g.match_word(parent.h, 0, '@nopylint'):
                     return False
-            return p.isAnyAtFileNode() and p.h.strip().endswith(
-                ('.py', '.pyw')
-            )  # #2354.
+            return p.isAnyAtFileNode() and p.h.strip().endswith(('.py', '.pyw'))  # #2354.
 
         data: list[tuple[str, Position]] = []
         is_at_file = False

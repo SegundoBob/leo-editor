@@ -227,179 +227,459 @@ keywordsDictDict = {
 
 # Rules for rib_main ruleset.
 
+
 def rib_rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="#",
-          at_whitespace_end=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="#", at_whitespace_end=True)
+
 
 def rib_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#")
 
+
 def rib_rule2(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def rib_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def rib_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
+
 
 def rib_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
 
+
 def rib_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          delegate="rib::literals",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="rib::literals", no_line_break=True)
+
 
 def rib_rule7(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for rib_main ruleset.
 rulesDict1 = {
-    "\"": [rib_rule6,],
-    "#": [rib_rule0, rib_rule1,],
-    "+": [rib_rule3,],
-    "-": [rib_rule2, rib_rule7,],
-    "0": [rib_rule7,],
-    "1": [rib_rule7,],
-    "2": [rib_rule7,],
-    "3": [rib_rule7,],
-    "4": [rib_rule7,],
-    "5": [rib_rule7,],
-    "6": [rib_rule7,],
-    "7": [rib_rule7,],
-    "8": [rib_rule7,],
-    "9": [rib_rule7,],
-    "@": [rib_rule7,],
-    "A": [rib_rule7,],
-    "B": [rib_rule7,],
-    "C": [rib_rule7,],
-    "D": [rib_rule7,],
-    "E": [rib_rule7,],
-    "F": [rib_rule7,],
-    "G": [rib_rule7,],
-    "H": [rib_rule7,],
-    "I": [rib_rule7,],
-    "J": [rib_rule7,],
-    "K": [rib_rule7,],
-    "L": [rib_rule7,],
-    "M": [rib_rule7,],
-    "N": [rib_rule7,],
-    "O": [rib_rule7,],
-    "P": [rib_rule7,],
-    "Q": [rib_rule7,],
-    "R": [rib_rule7,],
-    "S": [rib_rule7,],
-    "T": [rib_rule7,],
-    "U": [rib_rule7,],
-    "V": [rib_rule7,],
-    "W": [rib_rule7,],
-    "X": [rib_rule7,],
-    "Y": [rib_rule7,],
-    "Z": [rib_rule7,],
-    "[": [rib_rule4,],
-    "]": [rib_rule5,],
-    "_": [rib_rule7,],
-    "a": [rib_rule7,],
-    "b": [rib_rule7,],
-    "c": [rib_rule7,],
-    "d": [rib_rule7,],
-    "e": [rib_rule7,],
-    "f": [rib_rule7,],
-    "g": [rib_rule7,],
-    "h": [rib_rule7,],
-    "i": [rib_rule7,],
-    "j": [rib_rule7,],
-    "k": [rib_rule7,],
-    "l": [rib_rule7,],
-    "m": [rib_rule7,],
-    "n": [rib_rule7,],
-    "o": [rib_rule7,],
-    "p": [rib_rule7,],
-    "q": [rib_rule7,],
-    "r": [rib_rule7,],
-    "s": [rib_rule7,],
-    "t": [rib_rule7,],
-    "u": [rib_rule7,],
-    "v": [rib_rule7,],
-    "w": [rib_rule7,],
-    "x": [rib_rule7,],
-    "y": [rib_rule7,],
-    "z": [rib_rule7,],
+    "\"": [
+        rib_rule6,
+    ],
+    "#": [
+        rib_rule0,
+        rib_rule1,
+    ],
+    "+": [
+        rib_rule3,
+    ],
+    "-": [
+        rib_rule2,
+        rib_rule7,
+    ],
+    "0": [
+        rib_rule7,
+    ],
+    "1": [
+        rib_rule7,
+    ],
+    "2": [
+        rib_rule7,
+    ],
+    "3": [
+        rib_rule7,
+    ],
+    "4": [
+        rib_rule7,
+    ],
+    "5": [
+        rib_rule7,
+    ],
+    "6": [
+        rib_rule7,
+    ],
+    "7": [
+        rib_rule7,
+    ],
+    "8": [
+        rib_rule7,
+    ],
+    "9": [
+        rib_rule7,
+    ],
+    "@": [
+        rib_rule7,
+    ],
+    "A": [
+        rib_rule7,
+    ],
+    "B": [
+        rib_rule7,
+    ],
+    "C": [
+        rib_rule7,
+    ],
+    "D": [
+        rib_rule7,
+    ],
+    "E": [
+        rib_rule7,
+    ],
+    "F": [
+        rib_rule7,
+    ],
+    "G": [
+        rib_rule7,
+    ],
+    "H": [
+        rib_rule7,
+    ],
+    "I": [
+        rib_rule7,
+    ],
+    "J": [
+        rib_rule7,
+    ],
+    "K": [
+        rib_rule7,
+    ],
+    "L": [
+        rib_rule7,
+    ],
+    "M": [
+        rib_rule7,
+    ],
+    "N": [
+        rib_rule7,
+    ],
+    "O": [
+        rib_rule7,
+    ],
+    "P": [
+        rib_rule7,
+    ],
+    "Q": [
+        rib_rule7,
+    ],
+    "R": [
+        rib_rule7,
+    ],
+    "S": [
+        rib_rule7,
+    ],
+    "T": [
+        rib_rule7,
+    ],
+    "U": [
+        rib_rule7,
+    ],
+    "V": [
+        rib_rule7,
+    ],
+    "W": [
+        rib_rule7,
+    ],
+    "X": [
+        rib_rule7,
+    ],
+    "Y": [
+        rib_rule7,
+    ],
+    "Z": [
+        rib_rule7,
+    ],
+    "[": [
+        rib_rule4,
+    ],
+    "]": [
+        rib_rule5,
+    ],
+    "_": [
+        rib_rule7,
+    ],
+    "a": [
+        rib_rule7,
+    ],
+    "b": [
+        rib_rule7,
+    ],
+    "c": [
+        rib_rule7,
+    ],
+    "d": [
+        rib_rule7,
+    ],
+    "e": [
+        rib_rule7,
+    ],
+    "f": [
+        rib_rule7,
+    ],
+    "g": [
+        rib_rule7,
+    ],
+    "h": [
+        rib_rule7,
+    ],
+    "i": [
+        rib_rule7,
+    ],
+    "j": [
+        rib_rule7,
+    ],
+    "k": [
+        rib_rule7,
+    ],
+    "l": [
+        rib_rule7,
+    ],
+    "m": [
+        rib_rule7,
+    ],
+    "n": [
+        rib_rule7,
+    ],
+    "o": [
+        rib_rule7,
+    ],
+    "p": [
+        rib_rule7,
+    ],
+    "q": [
+        rib_rule7,
+    ],
+    "r": [
+        rib_rule7,
+    ],
+    "s": [
+        rib_rule7,
+    ],
+    "t": [
+        rib_rule7,
+    ],
+    "u": [
+        rib_rule7,
+    ],
+    "v": [
+        rib_rule7,
+    ],
+    "w": [
+        rib_rule7,
+    ],
+    "x": [
+        rib_rule7,
+    ],
+    "y": [
+        rib_rule7,
+    ],
+    "z": [
+        rib_rule7,
+    ],
 }
 
 # Rules for rib_literals ruleset.
 
+
 def rib_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for rib_literals ruleset.
 rulesDict2 = {
-    "-": [rib_rule8,],
-    "0": [rib_rule8,],
-    "1": [rib_rule8,],
-    "2": [rib_rule8,],
-    "3": [rib_rule8,],
-    "4": [rib_rule8,],
-    "5": [rib_rule8,],
-    "6": [rib_rule8,],
-    "7": [rib_rule8,],
-    "8": [rib_rule8,],
-    "9": [rib_rule8,],
-    "@": [rib_rule8,],
-    "A": [rib_rule8,],
-    "B": [rib_rule8,],
-    "C": [rib_rule8,],
-    "D": [rib_rule8,],
-    "E": [rib_rule8,],
-    "F": [rib_rule8,],
-    "G": [rib_rule8,],
-    "H": [rib_rule8,],
-    "I": [rib_rule8,],
-    "J": [rib_rule8,],
-    "K": [rib_rule8,],
-    "L": [rib_rule8,],
-    "M": [rib_rule8,],
-    "N": [rib_rule8,],
-    "O": [rib_rule8,],
-    "P": [rib_rule8,],
-    "Q": [rib_rule8,],
-    "R": [rib_rule8,],
-    "S": [rib_rule8,],
-    "T": [rib_rule8,],
-    "U": [rib_rule8,],
-    "V": [rib_rule8,],
-    "W": [rib_rule8,],
-    "X": [rib_rule8,],
-    "Y": [rib_rule8,],
-    "Z": [rib_rule8,],
-    "_": [rib_rule8,],
-    "a": [rib_rule8,],
-    "b": [rib_rule8,],
-    "c": [rib_rule8,],
-    "d": [rib_rule8,],
-    "e": [rib_rule8,],
-    "f": [rib_rule8,],
-    "g": [rib_rule8,],
-    "h": [rib_rule8,],
-    "i": [rib_rule8,],
-    "j": [rib_rule8,],
-    "k": [rib_rule8,],
-    "l": [rib_rule8,],
-    "m": [rib_rule8,],
-    "n": [rib_rule8,],
-    "o": [rib_rule8,],
-    "p": [rib_rule8,],
-    "q": [rib_rule8,],
-    "r": [rib_rule8,],
-    "s": [rib_rule8,],
-    "t": [rib_rule8,],
-    "u": [rib_rule8,],
-    "v": [rib_rule8,],
-    "w": [rib_rule8,],
-    "x": [rib_rule8,],
-    "y": [rib_rule8,],
-    "z": [rib_rule8,],
+    "-": [
+        rib_rule8,
+    ],
+    "0": [
+        rib_rule8,
+    ],
+    "1": [
+        rib_rule8,
+    ],
+    "2": [
+        rib_rule8,
+    ],
+    "3": [
+        rib_rule8,
+    ],
+    "4": [
+        rib_rule8,
+    ],
+    "5": [
+        rib_rule8,
+    ],
+    "6": [
+        rib_rule8,
+    ],
+    "7": [
+        rib_rule8,
+    ],
+    "8": [
+        rib_rule8,
+    ],
+    "9": [
+        rib_rule8,
+    ],
+    "@": [
+        rib_rule8,
+    ],
+    "A": [
+        rib_rule8,
+    ],
+    "B": [
+        rib_rule8,
+    ],
+    "C": [
+        rib_rule8,
+    ],
+    "D": [
+        rib_rule8,
+    ],
+    "E": [
+        rib_rule8,
+    ],
+    "F": [
+        rib_rule8,
+    ],
+    "G": [
+        rib_rule8,
+    ],
+    "H": [
+        rib_rule8,
+    ],
+    "I": [
+        rib_rule8,
+    ],
+    "J": [
+        rib_rule8,
+    ],
+    "K": [
+        rib_rule8,
+    ],
+    "L": [
+        rib_rule8,
+    ],
+    "M": [
+        rib_rule8,
+    ],
+    "N": [
+        rib_rule8,
+    ],
+    "O": [
+        rib_rule8,
+    ],
+    "P": [
+        rib_rule8,
+    ],
+    "Q": [
+        rib_rule8,
+    ],
+    "R": [
+        rib_rule8,
+    ],
+    "S": [
+        rib_rule8,
+    ],
+    "T": [
+        rib_rule8,
+    ],
+    "U": [
+        rib_rule8,
+    ],
+    "V": [
+        rib_rule8,
+    ],
+    "W": [
+        rib_rule8,
+    ],
+    "X": [
+        rib_rule8,
+    ],
+    "Y": [
+        rib_rule8,
+    ],
+    "Z": [
+        rib_rule8,
+    ],
+    "_": [
+        rib_rule8,
+    ],
+    "a": [
+        rib_rule8,
+    ],
+    "b": [
+        rib_rule8,
+    ],
+    "c": [
+        rib_rule8,
+    ],
+    "d": [
+        rib_rule8,
+    ],
+    "e": [
+        rib_rule8,
+    ],
+    "f": [
+        rib_rule8,
+    ],
+    "g": [
+        rib_rule8,
+    ],
+    "h": [
+        rib_rule8,
+    ],
+    "i": [
+        rib_rule8,
+    ],
+    "j": [
+        rib_rule8,
+    ],
+    "k": [
+        rib_rule8,
+    ],
+    "l": [
+        rib_rule8,
+    ],
+    "m": [
+        rib_rule8,
+    ],
+    "n": [
+        rib_rule8,
+    ],
+    "o": [
+        rib_rule8,
+    ],
+    "p": [
+        rib_rule8,
+    ],
+    "q": [
+        rib_rule8,
+    ],
+    "r": [
+        rib_rule8,
+    ],
+    "s": [
+        rib_rule8,
+    ],
+    "t": [
+        rib_rule8,
+    ],
+    "u": [
+        rib_rule8,
+    ],
+    "v": [
+        rib_rule8,
+    ],
+    "w": [
+        rib_rule8,
+    ],
+    "x": [
+        rib_rule8,
+    ],
+    "y": [
+        rib_rule8,
+    ],
+    "z": [
+        rib_rule8,
+    ],
 }
 
 # x.rulesDictDict for rib mode.

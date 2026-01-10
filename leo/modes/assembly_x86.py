@@ -821,158 +821,340 @@ keywordsDictDict = {
 
 # Rules for assembly_x86_main ruleset.
 
+
 def assembly_x86_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
 
+
 def assembly_x86_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def assembly_x86_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def assembly_x86_rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="%%",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_following(s, i, kind="label", pattern="%%", at_line_start=True, exclude_match=True)
+
 
 def assembly_x86_rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%",
-          at_line_start=True)
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="%", at_line_start=True)
+
 
 def assembly_x86_rule5(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+
 
 def assembly_x86_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def assembly_x86_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def assembly_x86_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def assembly_x86_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def assembly_x86_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def assembly_x86_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def assembly_x86_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def assembly_x86_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def assembly_x86_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def assembly_x86_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def assembly_x86_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def assembly_x86_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def assembly_x86_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def assembly_x86_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for assembly_x86_main ruleset.
 rulesDict1 = {
-    "!": [assembly_x86_rule15,],
-    "\"": [assembly_x86_rule2,],
-    "%": [assembly_x86_rule3, assembly_x86_rule4, assembly_x86_rule10,],
-    "&": [assembly_x86_rule13,],
-    "'": [assembly_x86_rule1,],
-    "*": [assembly_x86_rule9,],
-    "+": [assembly_x86_rule6,],
-    "-": [assembly_x86_rule7,],
-    ".": [assembly_x86_rule19,],
-    "/": [assembly_x86_rule8,],
-    "0": [assembly_x86_rule19,],
-    "1": [assembly_x86_rule19,],
-    "2": [assembly_x86_rule19,],
-    "3": [assembly_x86_rule19,],
-    "4": [assembly_x86_rule19,],
-    "5": [assembly_x86_rule19,],
-    "6": [assembly_x86_rule19,],
-    "7": [assembly_x86_rule19,],
-    "8": [assembly_x86_rule19,],
-    "9": [assembly_x86_rule19,],
-    ":": [assembly_x86_rule5,],
-    ";": [assembly_x86_rule0,],
-    "<": [assembly_x86_rule17,],
-    "=": [assembly_x86_rule16,],
-    ">": [assembly_x86_rule18,],
-    "?": [assembly_x86_rule19,],
-    "@": [assembly_x86_rule19,],
-    "A": [assembly_x86_rule19,],
-    "B": [assembly_x86_rule19,],
-    "C": [assembly_x86_rule19,],
-    "D": [assembly_x86_rule19,],
-    "E": [assembly_x86_rule19,],
-    "F": [assembly_x86_rule19,],
-    "G": [assembly_x86_rule19,],
-    "H": [assembly_x86_rule19,],
-    "I": [assembly_x86_rule19,],
-    "J": [assembly_x86_rule19,],
-    "K": [assembly_x86_rule19,],
-    "L": [assembly_x86_rule19,],
-    "M": [assembly_x86_rule19,],
-    "N": [assembly_x86_rule19,],
-    "O": [assembly_x86_rule19,],
-    "P": [assembly_x86_rule19,],
-    "Q": [assembly_x86_rule19,],
-    "R": [assembly_x86_rule19,],
-    "S": [assembly_x86_rule19,],
-    "T": [assembly_x86_rule19,],
-    "U": [assembly_x86_rule19,],
-    "V": [assembly_x86_rule19,],
-    "W": [assembly_x86_rule19,],
-    "X": [assembly_x86_rule19,],
-    "Y": [assembly_x86_rule19,],
-    "Z": [assembly_x86_rule19,],
-    "^": [assembly_x86_rule12,],
-    "_": [assembly_x86_rule19,],
-    "a": [assembly_x86_rule19,],
-    "b": [assembly_x86_rule19,],
-    "c": [assembly_x86_rule19,],
-    "d": [assembly_x86_rule19,],
-    "e": [assembly_x86_rule19,],
-    "f": [assembly_x86_rule19,],
-    "g": [assembly_x86_rule19,],
-    "h": [assembly_x86_rule19,],
-    "i": [assembly_x86_rule19,],
-    "j": [assembly_x86_rule19,],
-    "k": [assembly_x86_rule19,],
-    "l": [assembly_x86_rule19,],
-    "m": [assembly_x86_rule19,],
-    "n": [assembly_x86_rule19,],
-    "o": [assembly_x86_rule19,],
-    "p": [assembly_x86_rule19,],
-    "q": [assembly_x86_rule19,],
-    "r": [assembly_x86_rule19,],
-    "s": [assembly_x86_rule19,],
-    "t": [assembly_x86_rule19,],
-    "u": [assembly_x86_rule19,],
-    "v": [assembly_x86_rule19,],
-    "w": [assembly_x86_rule19,],
-    "x": [assembly_x86_rule19,],
-    "y": [assembly_x86_rule19,],
-    "z": [assembly_x86_rule19,],
-    "|": [assembly_x86_rule11,],
-    "~": [assembly_x86_rule14,],
+    "!": [
+        assembly_x86_rule15,
+    ],
+    "\"": [
+        assembly_x86_rule2,
+    ],
+    "%": [
+        assembly_x86_rule3,
+        assembly_x86_rule4,
+        assembly_x86_rule10,
+    ],
+    "&": [
+        assembly_x86_rule13,
+    ],
+    "'": [
+        assembly_x86_rule1,
+    ],
+    "*": [
+        assembly_x86_rule9,
+    ],
+    "+": [
+        assembly_x86_rule6,
+    ],
+    "-": [
+        assembly_x86_rule7,
+    ],
+    ".": [
+        assembly_x86_rule19,
+    ],
+    "/": [
+        assembly_x86_rule8,
+    ],
+    "0": [
+        assembly_x86_rule19,
+    ],
+    "1": [
+        assembly_x86_rule19,
+    ],
+    "2": [
+        assembly_x86_rule19,
+    ],
+    "3": [
+        assembly_x86_rule19,
+    ],
+    "4": [
+        assembly_x86_rule19,
+    ],
+    "5": [
+        assembly_x86_rule19,
+    ],
+    "6": [
+        assembly_x86_rule19,
+    ],
+    "7": [
+        assembly_x86_rule19,
+    ],
+    "8": [
+        assembly_x86_rule19,
+    ],
+    "9": [
+        assembly_x86_rule19,
+    ],
+    ":": [
+        assembly_x86_rule5,
+    ],
+    ";": [
+        assembly_x86_rule0,
+    ],
+    "<": [
+        assembly_x86_rule17,
+    ],
+    "=": [
+        assembly_x86_rule16,
+    ],
+    ">": [
+        assembly_x86_rule18,
+    ],
+    "?": [
+        assembly_x86_rule19,
+    ],
+    "@": [
+        assembly_x86_rule19,
+    ],
+    "A": [
+        assembly_x86_rule19,
+    ],
+    "B": [
+        assembly_x86_rule19,
+    ],
+    "C": [
+        assembly_x86_rule19,
+    ],
+    "D": [
+        assembly_x86_rule19,
+    ],
+    "E": [
+        assembly_x86_rule19,
+    ],
+    "F": [
+        assembly_x86_rule19,
+    ],
+    "G": [
+        assembly_x86_rule19,
+    ],
+    "H": [
+        assembly_x86_rule19,
+    ],
+    "I": [
+        assembly_x86_rule19,
+    ],
+    "J": [
+        assembly_x86_rule19,
+    ],
+    "K": [
+        assembly_x86_rule19,
+    ],
+    "L": [
+        assembly_x86_rule19,
+    ],
+    "M": [
+        assembly_x86_rule19,
+    ],
+    "N": [
+        assembly_x86_rule19,
+    ],
+    "O": [
+        assembly_x86_rule19,
+    ],
+    "P": [
+        assembly_x86_rule19,
+    ],
+    "Q": [
+        assembly_x86_rule19,
+    ],
+    "R": [
+        assembly_x86_rule19,
+    ],
+    "S": [
+        assembly_x86_rule19,
+    ],
+    "T": [
+        assembly_x86_rule19,
+    ],
+    "U": [
+        assembly_x86_rule19,
+    ],
+    "V": [
+        assembly_x86_rule19,
+    ],
+    "W": [
+        assembly_x86_rule19,
+    ],
+    "X": [
+        assembly_x86_rule19,
+    ],
+    "Y": [
+        assembly_x86_rule19,
+    ],
+    "Z": [
+        assembly_x86_rule19,
+    ],
+    "^": [
+        assembly_x86_rule12,
+    ],
+    "_": [
+        assembly_x86_rule19,
+    ],
+    "a": [
+        assembly_x86_rule19,
+    ],
+    "b": [
+        assembly_x86_rule19,
+    ],
+    "c": [
+        assembly_x86_rule19,
+    ],
+    "d": [
+        assembly_x86_rule19,
+    ],
+    "e": [
+        assembly_x86_rule19,
+    ],
+    "f": [
+        assembly_x86_rule19,
+    ],
+    "g": [
+        assembly_x86_rule19,
+    ],
+    "h": [
+        assembly_x86_rule19,
+    ],
+    "i": [
+        assembly_x86_rule19,
+    ],
+    "j": [
+        assembly_x86_rule19,
+    ],
+    "k": [
+        assembly_x86_rule19,
+    ],
+    "l": [
+        assembly_x86_rule19,
+    ],
+    "m": [
+        assembly_x86_rule19,
+    ],
+    "n": [
+        assembly_x86_rule19,
+    ],
+    "o": [
+        assembly_x86_rule19,
+    ],
+    "p": [
+        assembly_x86_rule19,
+    ],
+    "q": [
+        assembly_x86_rule19,
+    ],
+    "r": [
+        assembly_x86_rule19,
+    ],
+    "s": [
+        assembly_x86_rule19,
+    ],
+    "t": [
+        assembly_x86_rule19,
+    ],
+    "u": [
+        assembly_x86_rule19,
+    ],
+    "v": [
+        assembly_x86_rule19,
+    ],
+    "w": [
+        assembly_x86_rule19,
+    ],
+    "x": [
+        assembly_x86_rule19,
+    ],
+    "y": [
+        assembly_x86_rule19,
+    ],
+    "z": [
+        assembly_x86_rule19,
+    ],
+    "|": [
+        assembly_x86_rule11,
+    ],
+    "~": [
+        assembly_x86_rule14,
+    ],
 }
 
 # x.rulesDictDict for assembly_x86 mode.

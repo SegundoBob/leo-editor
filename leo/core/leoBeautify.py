@@ -96,9 +96,7 @@ def orange_files(event: LeoKeyEvent) -> None:
             g.es_print(f"file not found: {filename}")
     t2 = time.process_time()
     print('')
-    g.es_print(
-        f"total files: {len(roots)}, changed files: {n_changed}, in {t2 - t1:5.2f} sec."
-    )
+    g.es_print(f"total files: {len(roots)}, changed files: {n_changed}, in {t2 - t1:5.2f} sec.")
 
 
 # @+node:ekr.20200103055814.1: *4* blacken-files
@@ -117,9 +115,7 @@ def blacken_files(event: LeoKeyEvent) -> None:
         path = c.fullPath(root)
         if path and os.path.exists(path):
             g.es_print(f"{tag}: {path}")
-            g.execute_shell_commands(
-                f'&"{python}" -m black --skip-string-normalization "{path}"'
-            )
+            g.execute_shell_commands(f'&"{python}" -m black --skip-string-normalization "{path}"')
         else:
             print(f"{tag}: file not found:{path}")
             g.es(f"{tag}: file not found:\n{path}")
@@ -144,9 +140,7 @@ def blacken_files_diff(event: LeoKeyEvent) -> None:
         path = c.fullPath(root)
         if path and os.path.exists(path):
             g.es_print(f"{tag}: {path}")
-            g.execute_shell_commands(
-                f'&"{python}" -m black --skip-string-normalization --diff "{path}"'
-            )
+            g.execute_shell_commands(f'&"{python}" -m black --skip-string-normalization --diff "{path}"')
         else:
             print(f"{tag}: file not found:{path}")
             g.es(f"{tag}: file not found:\n{path}")
@@ -180,9 +174,7 @@ def fstringify_files(event: LeoKeyEvent) -> None:
             g.es(f"File not found:\n{filename}")
     t2 = time.process_time()
     print('')
-    g.es_print(
-        f"total files: {len(roots)}, changed files: {n_changed}, in {t2 - t1:5.2f} sec."
-    )
+    g.es_print(f"total files: {len(roots)}, changed files: {n_changed}, in {t2 - t1:5.2f} sec.")
 
 
 # @+node:ekr.20200103055858.1: *4* fstringify-files-diff
@@ -253,9 +245,7 @@ def fstringify_files_silent(event: LeoKeyEvent) -> None:
 # @+node:ekr.20200108045048.1: *4* orange_settings
 def orange_settings(c: Cmdr) -> dict[str, object]:
     """Return a dictionary of settings for the leo.core.leoAst.Orange class."""
-    allow_joined_strings = c.config.getBool(
-        'beautify-allow-joined-strings', default=False
-    )
+    allow_joined_strings = c.config.getBool('beautify-allow-joined-strings', default=False)
     n_max_join = c.config.getInt('beautify-max-join-line-length')
     max_join_line_length = 88 if n_max_join is None else n_max_join
     n_max_split = c.config.getInt('beautify-max-split-line-length')
@@ -359,9 +349,7 @@ class CPrettyPrinter:
         c.bodyWantsFocus()
 
     # @+node:ekr.20110917174948.6911: *3* cpp.indent & helpers
-    def indent(
-        self, p: Position, toList: bool = False, giveWarnings: bool = True
-    ) -> Union[str, list[str]]:
+    def indent(self, p: Position, toList: bool = False, giveWarnings: bool = True) -> Union[str, list[str]]:
         """Beautify a node with @language C in effect."""
         if not should_beautify(p):
             return [] if toList else ''  # #2271

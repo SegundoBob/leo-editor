@@ -68,9 +68,7 @@ class ShadowController:
 
     # @+others
     # @+node:ekr.20080708094444.79: *3*  x.ctor & x.reloadSettings
-    def __init__(
-        self, c: Cmdr, trace: bool = False, trace_writers: bool = False
-    ) -> None:
+    def __init__(self, c: Cmdr, trace: bool = False, trace_writers: bool = False) -> None:
         """Ctor for ShadowController class."""
         self.c = c
         # Opcode dispatch dict.
@@ -126,9 +124,7 @@ class ShadowController:
         This tells the AtFile.read logic whether to import a public file
         or use an existing public file.
         """
-        return bool(
-            g.os_path_exists(fn) and g.os_path_isfile(fn) and g.os_path_getsize(fn) > 10
-        )
+        return bool(g.os_path_exists(fn) and g.os_path_isfile(fn) and g.os_path_getsize(fn) > 10)
 
     # @+node:ekr.20080710082231.19: *4* x.makeShadowDirectory
     def makeShadowDirectory(self, fn: str) -> bool:
@@ -195,9 +191,7 @@ class ShadowController:
         # 2011/01/26: bogomil: redirect shadow dir
         if self.shadow_in_home_dir:
             # Each .leo file has a separate shadow_cache in base dir
-            fname = "_".join(
-                [os.path.splitext(os.path.basename(c.mFileName))[0], "shadow_cache"]
-            )
+            fname = "_".join([os.path.splitext(os.path.basename(c.mFileName))[0], "shadow_cache"])
             # On Windows incorporate the drive letter to the private file path
             if os.name == "nt":
                 fileDir = fileDir.replace(':', '%')
@@ -413,9 +407,7 @@ class ShadowController:
         x, at = self, self.c.atFileCommands
         at.errors = 0
         self.encoding = at.encoding
-        s = at.readFileToUnicode(
-            old_private_file
-        )  # Sets at.encoding and inits at.readLines.
+        s = at.readFileToUnicode(old_private_file)  # Sets at.encoding and inits at.readLines.
         old_private_lines = g.splitLines(s or '')  # #1466.
         s = at.readFileToUnicode(old_public_file)
         if at.encoding != self.encoding:
@@ -430,9 +422,7 @@ class ShadowController:
             for s in old_public_lines:
                 g.trace(type(s), isinstance(s, str), repr(s))
         marker = x.markerFromFileLines(old_private_lines, old_private_file)
-        new_private_lines = x.propagate_changed_lines(
-            old_public_lines, old_private_lines, marker
-        )
+        new_private_lines = x.propagate_changed_lines(old_public_lines, old_private_lines, marker)
         # Never create the private file here!
         fn = old_private_file
         exists = g.os_path_exists(fn)
@@ -445,9 +435,7 @@ class ShadowController:
         return copy
 
     # @+node:bwmulder.20041231170726: *4* x.updatePublicAndPrivateFiles
-    def updatePublicAndPrivateFiles(
-        self, root: Position, fn: str, shadow_fn: str
-    ) -> None:
+    def updatePublicAndPrivateFiles(self, root: Position, fn: str, shadow_fn: str) -> None:
         """handle crucial @shadow read logic.
 
         This will be called only if the public and private files both exist."""
@@ -517,9 +505,7 @@ class ShadowController:
         return marker
 
     # @+node:ekr.20080708094444.29: *4* x.separate_sentinels
-    def separate_sentinels(
-        self, lines: list[str], marker: Marker
-    ) -> tuple[list[str], list[str]]:
+    def separate_sentinels(self, lines: list[str], marker: Marker) -> tuple[list[str], list[str]]:
         """
         Separates regular lines from sentinel lines.
         Do not return @verbatim sentinels.
@@ -609,9 +595,7 @@ class ShadowController:
             if self.delim1 and s.startswith(self.delim1):
                 return s.startswith(self.delim1 + '@' + suffix)
             if self.delim2:
-                return s.startswith(self.delim2 + '@' + suffix) and s.endswith(
-                    self.delim3
-                )
+                return s.startswith(self.delim2 + '@' + suffix) and s.endswith(self.delim3)
             return False
 
         # @+node:ekr.20090529061522.6260: *4* isVerbatimSentinel

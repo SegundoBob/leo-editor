@@ -263,18 +263,14 @@ class Position:
             return False
         if p2 is None or p2.v is None:
             return p1.v is None
-        return (
-            p1.v == p2.v and p1._childIndex == p2._childIndex and p1.stack == p2.stack
-        )
+        return p1.v == p2.v and p1._childIndex == p2._childIndex and p1.stack == p2.stack
 
     def __ne__(self, p2: object) -> bool:  # Use object, not Position.
         """Return True if two positions are not equivalent."""
         return not self.__eq__(p2)
 
     # @+node:ekr.20080416161551.190: *4*  p.__init__
-    def __init__(
-        self, v: VNode, childIndex: int = 0, stack: Optional[list] = None
-    ) -> None:
+    def __init__(self, v: VNode, childIndex: int = 0, stack: Optional[list] = None) -> None:
         """Create a new position with the given childIndex and parent stack."""
         self._childIndex = childIndex
         self.v = v
@@ -339,15 +335,7 @@ class Position:
     def __str__(self) -> str:  # pragma: no cover
         p = self
         if p.v:
-            return (
-                "<"
-                f"pos {id(p)} "
-                f"childIndex: {p._childIndex} "
-                f"lvl: {p.level()} "
-                f"key: {p.key()} "
-                f"{p.h}"
-                ">"
-            )
+            return f"<pos {id(p)} childIndex: {p._childIndex} lvl: {p.level()} key: {p.key()} {p.h}>"
         return f"<pos {id(p)} [{len(p.stack)}] None>"
 
     __repr__ = __str__
@@ -533,9 +521,7 @@ class Position:
     following_siblings_iter = following_siblings
 
     # @+node:ekr.20161120105707.1: *4* p.nearest_roots
-    def nearest_roots(
-        self, copy: bool = True, predicate: Optional[Callable] = None
-    ) -> Generator:
+    def nearest_roots(self, copy: bool = True, predicate: Optional[Callable] = None) -> Generator:
         """
         A generator yielding all the root positions "near" p1 = self that
         satisfy the given predicate. p.isAnyAtFileNode is the default
@@ -570,9 +556,7 @@ class Position:
                 p.moveToThreadNext()
 
     # @+node:ekr.20161120163203.1: *4* p.nearest_unique_roots (aka p.nearest)
-    def nearest_unique_roots(
-        self, copy: bool = True, predicate: Callable = None
-    ) -> Generator:
+    def nearest_unique_roots(self, copy: bool = True, predicate: Callable = None) -> Generator:
         """
         A generator yielding all unique root positions "near" p1 = self that
         satisfy the given predicate. p.isAnyAtFileNode is the default
@@ -792,9 +776,7 @@ class Position:
         """
         p = self
         c = p.v.context
-        path_part = '-->'.join(
-            list(reversed([z.h for z in self.self_and_parents(copy=False)]))
-        )
+        path_part = '-->'.join(list(reversed([z.h for z in self.self_and_parents(copy=False)])))
         return 'unl:' + f"//{c.fileName()}#{path_part}"
 
     # @+node:ekr.20230628173542.1: *5* p.get_legacy_UNL
@@ -835,9 +817,7 @@ class Position:
         p = self
         c = p.v.context
         file_part = os.path.basename(c.fileName())
-        path_part = '-->'.join(
-            list(reversed([z.h for z in self.self_and_parents(copy=False)]))
-        )
+        path_part = '-->'.join(list(reversed([z.h for z in self.self_and_parents(copy=False)])))
         return 'unl:' + f"//{file_part}#{path_part}"
 
     # @+node:ekr.20230624171452.1: *5* p.get_UNL
@@ -1364,9 +1344,7 @@ class Position:
             self.badUnlink(parent_v, n, child)  # pragma: no cover
 
     # @+node:ekr.20090706171333.6226: *5* p.badUnlink
-    def badUnlink(
-        self, parent_v: VNode, n: int, child: VNode
-    ) -> None:  # pragma: no cover
+    def badUnlink(self, parent_v: VNode, n: int, child: VNode) -> None:  # pragma: no cover
         if 0 <= n < len(parent_v.children):
             g.trace(f"**can not happen: children[{n}] != p.v")
             g.trace('parent_v.children...\n', g.listToString(parent_v.children))
@@ -1377,10 +1355,7 @@ class Position:
             if g.unitTesting:
                 assert False, 'children[%s] != p.v'  # noqa
         else:
-            g.trace(
-                f"**can not happen: bad child index: {n}, "
-                f"len(children): {len(parent_v.children)}"
-            )
+            g.trace(f"**can not happen: bad child index: {n}, len(children): {len(parent_v.children)}")
             g.trace('parent_v.children...\n', g.listToString(parent_v.children))
             g.trace('parent_v', parent_v, 'child', child)
             g.trace('** callers:', g.callers())
@@ -1597,9 +1572,7 @@ class Position:
         return p
 
     # @+node:ekr.20090715145956.6167: *5* checkVisNextLimit
-    def checkVisNextLimit(
-        self, limit: Position, p: Position
-    ) -> bool:  # pragma: no cover
+    def checkVisNextLimit(self, limit: Position, p: Position) -> bool:  # pragma: no cover
         """Return True is p is outside limit of visible nodes."""
         return limit != p and not limit.isAncestorOf(p)
 
@@ -1862,13 +1835,9 @@ class Position:
             p.invalidOutline("Invalid parent link: " + repr(parent))  # pragma: no cover
         if pv:
             if childIndex < 0:
-                p.invalidOutline(
-                    f"missing childIndex: {childIndex!r}"
-                )  # pragma: no cover
+                p.invalidOutline(f"missing childIndex: {childIndex!r}")  # pragma: no cover
             elif childIndex >= pv.numberOfChildren():
-                p.invalidOutline(
-                    "missing children entry for index: {childIndex!r}"
-                )  # pragma: no cover
+                p.invalidOutline("missing children entry for index: {childIndex!r}")  # pragma: no cover
         elif childIndex < 0:
             p.invalidOutline("negative childIndex: {childIndex!r}")  # pragma: no cover
         if not p.v and pv:
@@ -1936,9 +1905,7 @@ class Position:
             c.setHeadString(p, val)
             # Warning: c.setHeadString is *expensive*.
 
-    h = property(
-        __get_h, __set_h, doc="position property returning the headline string"
-    )
+    h = property(__get_h, __set_h, doc="position property returning the headline string")
 
     # @+node:ekr.20090215165030.3: *4* p.gnx property
     def __get_gnx(self) -> str:
@@ -2138,9 +2105,7 @@ class Position:
     def is_at_all(self) -> bool:
         """Return True if p.b contains an @all directive."""
         p = self
-        return p.isAnyAtFileNode() and any(
-            g.match_word(s, 0, '@all') for s in g.splitLines(p.b)
-        )
+        return p.isAnyAtFileNode() and any(g.match_word(s, 0, '@all') for s in g.splitLines(p.b))
 
     def in_at_all_tree(self) -> bool:
         """Return True if p or one of p's ancestors is an @all node."""
@@ -2235,13 +2200,9 @@ class VNode:
         # Required so we can compute top-level siblings.
         # It is named .context rather than .c to emphasize its limited usage.
         self.context: Cmdr = context
-        self.expandedPositions: list[
-            Position
-        ] = []  # Positions that should be expanded.
+        self.expandedPositions: list[Position] = []  # Positions that should be expanded.
         self.insertSpot: Optional[int] = None  # Location of previous insert point.
-        self.scrollBarSpot: Optional[int] = (
-            None  # Previous value of scrollbar position.
-        )
+        self.scrollBarSpot: Optional[int] = None  # Previous value of scrollbar position.
         self.selectionLength = 0  # The length of the selected body text.
         self.selectionStart = 0  # The start of the selected body text.
 
@@ -2260,9 +2221,7 @@ class VNode:
     # @+node:ekr.20031218072017.3345: *4* v.__repr__ & v.__str__
     def __repr__(self) -> str:  # pragma: no cover
         return (
-            '<VNode: hidden root>'
-            if self.gnx == 'hidden-root-vnode-gnx'
-            else f"<VNode {self.gnx} {self.headString()}>"
+            '<VNode: hidden root>' if self.gnx == 'hidden-root-vnode-gnx' else f"<VNode {self.gnx} {self.headString()}>"
         )
 
     __str__ = __repr__
@@ -2308,11 +2267,7 @@ class VNode:
     def anyAtFileNodeName(self) -> str:
         """Return the file name following an @file node or an empty string."""
         v = self
-        return (
-            v.findAtFileName(g.app.atAutoNames)
-            or v.findAtFileName(g.app.atFileNames)
-            or v.atLeoNodeName()
-        )
+        return v.findAtFileName(g.app.atAutoNames) or v.findAtFileName(g.app.atFileNames) or v.atLeoNodeName()
 
     # @+node:ekr.20031218072017.3348: *4* v.at...FileNodeName
     # These return the filename following @xxx, in v.headString.

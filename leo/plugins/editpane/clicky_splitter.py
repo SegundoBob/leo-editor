@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20171029210211.1: * @file ../plugins/editpane/clicky_splitter.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:tbrown.20171029210211.1: * @file ../plugins/editpane/clicky_splitter.py
+# @@language python
 """
 clicky_splitter.py - a QSplitter which allows flipping / rotating of
 content by clicking on the splitter handle
@@ -47,4 +47,6 @@ class ClickySplitter(QtWidgets.QSplitter):
             vertical, horizontal = Orientation.Vertical, Orientation.Horizontal
             self.setOrientation(vertical if self.orientation() == horizontal else vertical)
             self._click_state = 'flip'
-#@-leo
+
+
+# @-leo

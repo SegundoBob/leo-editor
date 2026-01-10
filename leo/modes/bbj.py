@@ -294,147 +294,322 @@ keywordsDictDict = {
 
 # Rules for bbj_main ruleset.
 
+
 def bbj_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def bbj_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def bbj_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//")
 
+
 def bbj_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="REM")
+
 
 def bbj_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def bbj_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def bbj_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
 
+
 def bbj_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def bbj_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def bbj_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def bbj_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def bbj_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def bbj_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def bbj_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<>")
+
 
 def bbj_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def bbj_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="and")
+
 
 def bbj_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="or")
 
+
 def bbj_rule17(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+
 
 def bbj_rule18(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def bbj_rule19(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for bbj_main ruleset.
 rulesDict1 = {
-    "\"": [bbj_rule1,],
-    "(": [bbj_rule18,],
-    "*": [bbj_rule10,],
-    "+": [bbj_rule7,],
-    "-": [bbj_rule8,],
-    "/": [bbj_rule0, bbj_rule2, bbj_rule9,],
-    "0": [bbj_rule19,],
-    "1": [bbj_rule19,],
-    "2": [bbj_rule19,],
-    "3": [bbj_rule19,],
-    "4": [bbj_rule19,],
-    "5": [bbj_rule19,],
-    "6": [bbj_rule19,],
-    "7": [bbj_rule19,],
-    "8": [bbj_rule19,],
-    "9": [bbj_rule19,],
-    ":": [bbj_rule17,],
-    "<": [bbj_rule6, bbj_rule12, bbj_rule13,],
-    "=": [bbj_rule4,],
-    ">": [bbj_rule5, bbj_rule11,],
-    "@": [bbj_rule19,],
-    "A": [bbj_rule19,],
-    "B": [bbj_rule19,],
-    "C": [bbj_rule19,],
-    "D": [bbj_rule19,],
-    "E": [bbj_rule19,],
-    "F": [bbj_rule19,],
-    "G": [bbj_rule19,],
-    "H": [bbj_rule19,],
-    "I": [bbj_rule19,],
-    "J": [bbj_rule19,],
-    "K": [bbj_rule19,],
-    "L": [bbj_rule19,],
-    "M": [bbj_rule19,],
-    "N": [bbj_rule19,],
-    "O": [bbj_rule19,],
-    "P": [bbj_rule19,],
-    "Q": [bbj_rule19,],
-    "R": [bbj_rule3, bbj_rule19,],
-    "S": [bbj_rule19,],
-    "T": [bbj_rule19,],
-    "U": [bbj_rule19,],
-    "V": [bbj_rule19,],
-    "W": [bbj_rule19,],
-    "X": [bbj_rule19,],
-    "Y": [bbj_rule19,],
-    "Z": [bbj_rule19,],
-    "^": [bbj_rule14,],
-    "_": [bbj_rule19,],
-    "a": [bbj_rule15, bbj_rule19,],
-    "b": [bbj_rule19,],
-    "c": [bbj_rule19,],
-    "d": [bbj_rule19,],
-    "e": [bbj_rule19,],
-    "f": [bbj_rule19,],
-    "g": [bbj_rule19,],
-    "h": [bbj_rule19,],
-    "i": [bbj_rule19,],
-    "j": [bbj_rule19,],
-    "k": [bbj_rule19,],
-    "l": [bbj_rule19,],
-    "m": [bbj_rule19,],
-    "n": [bbj_rule19,],
-    "o": [bbj_rule16, bbj_rule19,],
-    "p": [bbj_rule19,],
-    "q": [bbj_rule19,],
-    "r": [bbj_rule19,],
-    "s": [bbj_rule19,],
-    "t": [bbj_rule19,],
-    "u": [bbj_rule19,],
-    "v": [bbj_rule19,],
-    "w": [bbj_rule19,],
-    "x": [bbj_rule19,],
-    "y": [bbj_rule19,],
-    "z": [bbj_rule19,],
+    "\"": [
+        bbj_rule1,
+    ],
+    "(": [
+        bbj_rule18,
+    ],
+    "*": [
+        bbj_rule10,
+    ],
+    "+": [
+        bbj_rule7,
+    ],
+    "-": [
+        bbj_rule8,
+    ],
+    "/": [
+        bbj_rule0,
+        bbj_rule2,
+        bbj_rule9,
+    ],
+    "0": [
+        bbj_rule19,
+    ],
+    "1": [
+        bbj_rule19,
+    ],
+    "2": [
+        bbj_rule19,
+    ],
+    "3": [
+        bbj_rule19,
+    ],
+    "4": [
+        bbj_rule19,
+    ],
+    "5": [
+        bbj_rule19,
+    ],
+    "6": [
+        bbj_rule19,
+    ],
+    "7": [
+        bbj_rule19,
+    ],
+    "8": [
+        bbj_rule19,
+    ],
+    "9": [
+        bbj_rule19,
+    ],
+    ":": [
+        bbj_rule17,
+    ],
+    "<": [
+        bbj_rule6,
+        bbj_rule12,
+        bbj_rule13,
+    ],
+    "=": [
+        bbj_rule4,
+    ],
+    ">": [
+        bbj_rule5,
+        bbj_rule11,
+    ],
+    "@": [
+        bbj_rule19,
+    ],
+    "A": [
+        bbj_rule19,
+    ],
+    "B": [
+        bbj_rule19,
+    ],
+    "C": [
+        bbj_rule19,
+    ],
+    "D": [
+        bbj_rule19,
+    ],
+    "E": [
+        bbj_rule19,
+    ],
+    "F": [
+        bbj_rule19,
+    ],
+    "G": [
+        bbj_rule19,
+    ],
+    "H": [
+        bbj_rule19,
+    ],
+    "I": [
+        bbj_rule19,
+    ],
+    "J": [
+        bbj_rule19,
+    ],
+    "K": [
+        bbj_rule19,
+    ],
+    "L": [
+        bbj_rule19,
+    ],
+    "M": [
+        bbj_rule19,
+    ],
+    "N": [
+        bbj_rule19,
+    ],
+    "O": [
+        bbj_rule19,
+    ],
+    "P": [
+        bbj_rule19,
+    ],
+    "Q": [
+        bbj_rule19,
+    ],
+    "R": [
+        bbj_rule3,
+        bbj_rule19,
+    ],
+    "S": [
+        bbj_rule19,
+    ],
+    "T": [
+        bbj_rule19,
+    ],
+    "U": [
+        bbj_rule19,
+    ],
+    "V": [
+        bbj_rule19,
+    ],
+    "W": [
+        bbj_rule19,
+    ],
+    "X": [
+        bbj_rule19,
+    ],
+    "Y": [
+        bbj_rule19,
+    ],
+    "Z": [
+        bbj_rule19,
+    ],
+    "^": [
+        bbj_rule14,
+    ],
+    "_": [
+        bbj_rule19,
+    ],
+    "a": [
+        bbj_rule15,
+        bbj_rule19,
+    ],
+    "b": [
+        bbj_rule19,
+    ],
+    "c": [
+        bbj_rule19,
+    ],
+    "d": [
+        bbj_rule19,
+    ],
+    "e": [
+        bbj_rule19,
+    ],
+    "f": [
+        bbj_rule19,
+    ],
+    "g": [
+        bbj_rule19,
+    ],
+    "h": [
+        bbj_rule19,
+    ],
+    "i": [
+        bbj_rule19,
+    ],
+    "j": [
+        bbj_rule19,
+    ],
+    "k": [
+        bbj_rule19,
+    ],
+    "l": [
+        bbj_rule19,
+    ],
+    "m": [
+        bbj_rule19,
+    ],
+    "n": [
+        bbj_rule19,
+    ],
+    "o": [
+        bbj_rule16,
+        bbj_rule19,
+    ],
+    "p": [
+        bbj_rule19,
+    ],
+    "q": [
+        bbj_rule19,
+    ],
+    "r": [
+        bbj_rule19,
+    ],
+    "s": [
+        bbj_rule19,
+    ],
+    "t": [
+        bbj_rule19,
+    ],
+    "u": [
+        bbj_rule19,
+    ],
+    "v": [
+        bbj_rule19,
+    ],
+    "w": [
+        bbj_rule19,
+    ],
+    "x": [
+        bbj_rule19,
+    ],
+    "y": [
+        bbj_rule19,
+    ],
+    "z": [
+        bbj_rule19,
+    ],
 }
 
 # x.rulesDictDict for bbj mode.

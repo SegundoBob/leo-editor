@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20130930160706.23451: * @file ../plugins/markup_inline.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:tbrown.20130930160706.23451: * @file ../plugins/markup_inline.py
+# @@language python
 """
 Commands to go with keybindings in @settings-->@keys-->@shortcuts
 to implement Ctrl-B,I,U Bold Italic Underline markup in plain text.
@@ -17,15 +17,15 @@ Key bindings would be something like::
 from typing import Any
 from leo.core import leoGlobals as g
 
+
 def init():
     g.plugin_signon(__name__)
     return True
 
-def markup_inline(c, kind='unknown'):
 
+def markup_inline(c, kind='unknown'):
     # find out if last action was open or close, creates entry if needed
-    last_type = c.user_dict.setdefault(
-        'markup_inline', {'last': 'close'})['last']
+    last_type = c.user_dict.setdefault('markup_inline', {'last': 'close'})['last']
 
     p = c.p
     delim: Any = {  # Hard to annotate.
@@ -38,13 +38,15 @@ def markup_inline(c, kind='unknown'):
         c.user_dict['markup_inline']['last'] = 'close'
         i, j = c.frame.body.bodyCtrl.getSelectionRange()
         txt = c.frame.body.bodyCtrl.getAllText()
-        p.b = "".join([
-            txt[:i],
-            delim[0],
-            txt[i:j],
-            delim[1],
-            txt[j:],
-        ])
+        p.b = "".join(
+            [
+                txt[:i],
+                delim[0],
+                txt[i:j],
+                delim[1],
+                txt[j:],
+            ]
+        )
         c.frame.body.bodyCtrl.setAllText(p.b)
         c.frame.body.bodyCtrl.setInsertPoint(j + len(delim[0]) + len(delim[1]))
     else:
@@ -56,11 +58,7 @@ def markup_inline(c, kind='unknown'):
         else:
             delim = delim[1]
             c.user_dict['markup_inline']['last'] = 'close'
-        p.b = "".join([
-            txt[:i],
-            delim,
-            txt[i:]
-        ])
+        p.b = "".join([txt[:i], delim, txt[i:]])
         c.frame.body.bodyCtrl.setAllText(p.b)
         c.frame.body.bodyCtrl.setInsertPoint(i + len(delim))
     c.setChanged()
@@ -68,12 +66,17 @@ def markup_inline(c, kind='unknown'):
     c.redraw()
     c.bodyWantsFocusNow()
 
+
 def cmd_bold(c):
     markup_inline(c, kind='bold')
+
 
 def cmd_italic(c):
     markup_inline(c, kind='italic')
 
+
 def cmd_underline(c):
     markup_inline(c, kind='underline')
-#@-leo
+
+
+# @-leo

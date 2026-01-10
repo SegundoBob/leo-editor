@@ -1,15 +1,17 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170428084207.370: * @file ../external/npyscreen/npyssafewrapper.py
+# @+leo-ver=5-thin
+# @+node:ekr.20170428084207.370: * @file ../external/npyscreen/npyssafewrapper.py
 #!/usr/bin/env python
 # encoding: utf-8
-#@+others
-#@+node:ekr.20170428084207.371: ** Declarations
+# @+others
+# @+node:ekr.20170428084207.371: ** Declarations
 import curses
+
 # import _curses
-#import curses.wrapper
+# import curses.wrapper
 import locale
 import os
-#import pty
+
+# import pty
 import subprocess
 import sys
 import warnings
@@ -17,13 +19,15 @@ import warnings
 _NEVER_RUN_INITSCR = True
 _SCREEN = None
 
-#@+node:ekr.20170428084207.372: ** wrapper_basic
+
+# @+node:ekr.20170428084207.372: ** wrapper_basic
 def wrapper_basic(call_function):
-    #set the locale properly
+    # set the locale properly
     locale.setlocale(locale.LC_ALL, '')
     return curses.wrapper(call_function)
 
-#def wrapper(call_function):
+
+# def wrapper(call_function):
 #   locale.setlocale(locale.LC_ALL, '')
 #   screen = curses.initscr()
 #   curses.noecho()
@@ -35,7 +39,8 @@ def wrapper_basic(call_function):
 #   curses.echo()
 #   curses.endwin()
 
-#@+node:ekr.20170428084207.373: ** wrapper
+
+# @+node:ekr.20170428084207.373: ** wrapper
 def wrapper(call_function, fork=None, reset=True):
     global _NEVER_RUN_INITSCR
     if fork:
@@ -48,7 +53,8 @@ def wrapper(call_function, fork=None, reset=True):
         else:
             wrapper_fork(call_function, reset=reset)
 
-#@+node:ekr.20170428084207.374: ** wrapper_fork
+
+# @+node:ekr.20170428084207.374: ** wrapper_fork
 def wrapper_fork(call_function, reset=True):
     pid = os.fork()
     if pid:
@@ -75,11 +81,13 @@ def wrapper_fork(call_function, reset=True):
         curses.endwin()
         sys.exit(0)
 
-#@+node:ekr.20170428084207.375: ** external_reset
+
+# @+node:ekr.20170428084207.375: ** external_reset
 def external_reset():
     subprocess.call(['reset', '-Q'])
 
-#@+node:ekr.20170428084207.376: ** wrapper_no_fork
+
+# @+node:ekr.20170428084207.376: ** wrapper_no_fork
 def wrapper_no_fork(call_function, reset=False):
     global _NEVER_RUN_INITSCR
     if not _NEVER_RUN_INITSCR:
@@ -113,8 +121,10 @@ def wrapper_no_fork(call_function, reset=False):
         if reset:
             external_reset()
     return return_code
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@nobeautify
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@nobeautify
+# @-leo

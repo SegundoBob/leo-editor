@@ -96,9 +96,7 @@ def adoc_command(event: LeoKeyEvent = None, verbose: bool = True) -> File_List:
 
 
 @g.command('adoc-with-preview')
-def adoc_with_preview_command(
-    event: LeoKeyEvent = None, verbose: bool = True
-) -> File_List:
+def adoc_with_preview_command(event: LeoKeyEvent = None, verbose: bool = True) -> File_List:
     """Run the adoc command, then show the result in the browser."""
     c = event and event.get('c')
     if not c:
@@ -286,9 +284,7 @@ class MarkupCommands:
                 i_path = c.expand_path_expression(i_path)
                 n_path = c.getPath(c.p)  # node path
                 i_path = g.finalize_join(n_path, i_path)
-                with open(
-                    i_path, 'w', encoding='utf-8', errors='replace'
-                ) as self.output_file:
+                with open(i_path, 'w', encoding='utf-8', errors='replace') as self.output_file:
                     self.write_root(p)
                     i_paths.append(i_path)
             except IOError:
@@ -515,9 +511,7 @@ class MarkupCommands:
     ) -> File_List:
         # global asciidoctor_exec, asciidoc3_exec
         if asciidoctor_exec or asciidoc3_exec:
-            return self.command_helper(
-                event, kind='adoc', preview=preview, verbose=verbose
-            )
+            return self.command_helper(event, kind='adoc', preview=preview, verbose=verbose)
         name = 'adoc-with-preview' if preview else 'adoc'
         g.es_print(f"{name} requires either asciidoctor or asciidoc3")
         return []
@@ -530,9 +524,7 @@ class MarkupCommands:
     ) -> File_List:
         # global pandoc_exec
         if pandoc_exec:
-            return self.command_helper(
-                event, kind='pandoc', preview=preview, verbose=verbose
-            )
+            return self.command_helper(event, kind='pandoc', preview=preview, verbose=verbose)
         name = 'pandoc-with-preview' if preview else 'pandoc'
         g.es_print(f"{name} requires pandoc")
         return []
@@ -545,9 +537,7 @@ class MarkupCommands:
     ) -> File_List:
         # global sphinx_build
         if sphinx_build:
-            return self.command_helper(
-                event, kind='sphinx', preview=preview, verbose=verbose
-            )
+            return self.command_helper(event, kind='sphinx', preview=preview, verbose=verbose)
         name = 'sphinx-with-preview' if preview else 'sphinx'
         g.es_print(f"{name} requires sphinx")
         return []

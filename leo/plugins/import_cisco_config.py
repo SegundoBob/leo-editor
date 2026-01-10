@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:edream.110203113231.669: * @file ../plugins/import_cisco_config.py
-#@+<< docstring >>
-#@+node:ekr.20050912180321: ** << docstring >>
-""" Allows the user to import Cisco configuration files.
+# @+leo-ver=5-thin
+# @+node:edream.110203113231.669: * @file ../plugins/import_cisco_config.py
+# @+<< docstring >>
+# @+node:ekr.20050912180321: ** << docstring >>
+"""Allows the user to import Cisco configuration files.
 
 Adds the "File:Import:Import Cisco Configuration" menu item. The plugin will:
 
@@ -26,20 +26,23 @@ Adds the "File:Import:Import Cisco Configuration" menu item. The plugin will:
 All created sections are alphabetically ordered.
 
 """
-#@-<< docstring >>
+
+# @-<< docstring >>
 from leo.core import leoGlobals as g
 
-#@+others
-#@+node:ekr.20050311102853.1: ** init
+
+# @+others
+# @+node:ekr.20050311102853.1: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     # This plugin is gui-independent.
     g.registerHandler(('new', 'menu2'), create_import_cisco_menu)
     g.plugin_signon(__name__)
     return True
-#@+node:edream.110203113231.671: ** create_import_cisco_menu
-def create_import_cisco_menu(tag, keywords):
 
+
+# @+node:edream.110203113231.671: ** create_import_cisco_menu
+def create_import_cisco_menu(tag, keywords):
     c = keywords.get('c')
     if not c or not c.exists:
         return
@@ -49,21 +52,23 @@ def create_import_cisco_menu(tag, keywords):
     def importCiscoConfigCallback(event=None, c=c):
         importCiscoConfig(c)
 
-    table = (
-        ("-", None, None),
-        ("Import C&isco Configuration", "Shift+Ctrl+I", importCiscoConfigCallback))
+    table = (("-", None, None), ("Import C&isco Configuration", "Shift+Ctrl+I", importCiscoConfigCallback))
     c.frame.menu.createMenuEntries(importMenu, table)
-#@+node:edream.110203113231.672: ** importCiscoConfig
-def importCiscoConfig(c):
 
+
+# @+node:edream.110203113231.672: ** importCiscoConfig
+def importCiscoConfig(c):
     if not c or not c.exists:
         return
     current = c.p
-    #@+<< open file >>
-    #@+node:edream.110203113231.673: *3* << open file >>
-    name = g.app.gui.runOpenFileDialog(c,
+    # @+<< open file >>
+    # @+node:edream.110203113231.673: *3* << open file >>
+    name = g.app.gui.runOpenFileDialog(
+        c,
         title="Import Cisco Configuration File",
-        filetypes=[("All files", "*"),],
+        filetypes=[
+            ("All files", "*"),
+        ],
     )
     if not name:
         return
@@ -80,13 +85,23 @@ def importCiscoConfig(c):
     except IOError as msg:
         g.es("error reading %s: %s" % (name, msg))
         return
-    #@-<< open file >>
+    # @-<< open file >>
 
     # define which additional child nodes will be created
     # these keywords must NOT be followed by indented blocks
-    customBlocks = ['aaa', 'ip as-path', 'ip prefix-list', 'ip route',
-                    'ip community-list', 'access-list', 'snmp-server', 'ntp',
-                    'boot', 'service', 'logging']
+    customBlocks = [
+        'aaa',
+        'ip as-path',
+        'ip prefix-list',
+        'ip route',
+        'ip community-list',
+        'access-list',
+        'snmp-server',
+        'ntp',
+        'boot',
+        'service',
+        'logging',
+    ]
     out = []
     blocks: dict = {}
     children = []
@@ -96,11 +111,9 @@ def importCiscoConfig(c):
     # create level-0 and level-1 children
     while i < (lines - 1):
         for customLine in customBlocks:
-            if (linelist[i].startswith(customLine) or
-                linelist[i].startswith('no %s' % customLine)
-            ):
-                #@+<< process custom line >>
-                #@+node:edream.110203113231.674: *3* << process custom line >> (import_cisco_config.py)
+            if linelist[i].startswith(customLine) or linelist[i].startswith('no %s' % customLine):
+                # @+<< process custom line >>
+                # @+node:edream.110203113231.674: *3* << process custom line >> (import_cisco_config.py)
                 if customLine not in blocks:
                     blocks[customLine] = []
                     out.append(g.angleBrackets(customLine))
@@ -110,15 +123,15 @@ def importCiscoConfig(c):
                     children.append(child)
 
                 blocks[customLine].append(linelist[i])
-                #@-<< process custom line >>
+                # @-<< process custom line >>
                 skipToNextLine = 1
                 break
         if skipToNextLine:
             skipToNextLine = 0
         else:
             if linelist[i + 1].startswith(' '):
-                #@+<< process indented block >>
-                #@+node:edream.110203113231.675: *3* << process indented block >> (import_cisco_config.py)
+                # @+<< process indented block >>
+                # @+node:edream.110203113231.675: *3* << process indented block >> (import_cisco_config.py)
                 space = linelist[i].find(' ')
                 if space == -1:
                     space = len(linelist[i])
@@ -144,15 +157,15 @@ def importCiscoConfig(c):
                 i = i - 1  # restore index
                 # now add the value to the dictionary
                 blocks[key].append(value)
-                #@-<< process indented block >>
+                # @-<< process indented block >>
             else:
                 out.append(linelist[i])
         i = i + 1
     # process last line
     out.append(linelist[i])
 
-    #@+<< complete outline >>
-    #@+node:edream.110203113231.676: *3* << complete outline >>
+    # @+<< complete outline >>
+    # @+node:edream.110203113231.676: *3* << complete outline >>
     # first print the level-0 text
     outClean = []
     prev = ''
@@ -167,8 +180,7 @@ def importCiscoConfig(c):
     # scan through the created outline and add children
     for child in children:
         # extract the key from the headline. Uhm... :)
-        key = child.h.split('<<'
-            )[1].split('>>')[0].strip()
+        key = child.h.split('<<')[1].split('>>')[0].strip()
         if key in blocks:
             if isinstance(blocks[key][0], str):
                 # it's a string, no sub-children, so just print the text
@@ -185,8 +197,10 @@ def importCiscoConfig(c):
             g.es("Unknown key: %s" % key)
     current.expand()
     c.redraw()
-    #@-<< complete outline >>
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+    # @-<< complete outline >>
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

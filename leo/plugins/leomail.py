@@ -1,7 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ville.20110125222411.10536: * @file ../plugins/leomail.py
-#@+<< docstring >>
-#@+node:ekr.20170228181049.1: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:ville.20110125222411.10536: * @file ../plugins/leomail.py
+# @+<< docstring >>
+# @+node:ekr.20170228181049.1: ** << docstring >>
 """
 Sync local mailbox files over to Leo.
 
@@ -13,20 +13,24 @@ The command parses the .mbox file and creates a separate node for each thread.
 
 Replies to the original messages become children of that message.
 """
-#@-<< docstring >>
-#@+<< imports >>
-#@+node:ville.20110125222411.10539: ** << imports >>
+
+# @-<< docstring >>
+# @+<< imports >>
+# @+node:ville.20110125222411.10539: ** << imports >>
 from html.parser import HTMLParser
 import mailbox
 from leo.core import leoGlobals as g
-#@-<< imports >>
+# @-<< imports >>
 
-#@+others
-#@+node:ville.20110125222411.10540: ** init
+
+# @+others
+# @+node:ville.20110125222411.10540: ** init
 def init():
     g.plugin_signon(__name__)
     return True
-#@+node:ville.20110125222411.10546: ** mail_refresh & helpers
+
+
+# @+node:ville.20110125222411.10546: ** mail_refresh & helpers
 @g.command('mail-refresh')
 def mail_refresh(event):
     c = event['c']
@@ -43,15 +47,15 @@ def mail_refresh(event):
                 n += 1
                 parent = emit_message(c, parent, root, message)
             c.redraw()
-            g.es_print('created %s messages in %s threads' % (
-                n, root.numberOfChildren()))
+            g.es_print('created %s messages in %s threads' % (n, root.numberOfChildren()))
         else:
             g.trace('not found', mb)
     else:
         g.es_print('Please select an @mbox node.')
-#@+node:ekr.20170228150606.1: *3* class MLStripper
-class MLStripper(HTMLParser):
 
+
+# @+node:ekr.20170228150606.1: *3* class MLStripper
+class MLStripper(HTMLParser):
     # pylint: disable=abstract-method
 
     def __init__(self):
@@ -64,7 +68,9 @@ class MLStripper(HTMLParser):
 
     def get_data(self):
         return ''.join(self.fed)
-#@+node:ekr.20170228150717.1: *3* emit_message
+
+
+# @+node:ekr.20170228150717.1: *3* emit_message
 def emit_message(c, parent, root, message):
     """Create all the children of p."""
     for part in message.walk():
@@ -80,7 +86,9 @@ def emit_message(c, parent, root, message):
         p.h = '%s [%s]' % (subject, from_)
         p.b = g.toUnicode(strip_tags(payload))
         return parent
-#@+node:ekr.20170228150636.1: *3* strip_tags
+
+
+# @+node:ekr.20170228150636.1: *3* strip_tags
 def strip_tags(obj):
     stripper = MLStripper()
     if isinstance(obj, list):
@@ -92,6 +100,8 @@ def strip_tags(obj):
         s = obj
     stripper.feed(s)
     return stripper.get_data()
-#@-others
 
-#@-leo
+
+# @-others
+
+# @-leo

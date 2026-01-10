@@ -31,22 +31,30 @@ keywordsDictDict = {
 
 # Rules for nsi_main ruleset.
 
+
 def nsi_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
 
+
 def nsi_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin='"', end='"',
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin='"', end='"', no_line_break=True)
+
 
 def nsi_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 # Rules dict for nsi_main ruleset.
 rulesDict1 = {
-    ";": [nsi_rule0,],
-    '"': [nsi_rule1,],
-    "'": [nsi_rule2,],
+    ";": [
+        nsi_rule0,
+    ],
+    '"': [
+        nsi_rule1,
+    ],
+    "'": [
+        nsi_rule2,
+    ],
 }
 
 # x.rulesDictDict for nsi mode.

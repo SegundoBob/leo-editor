@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20140806084727.30174: * @file ../plugins/livecode.py
+# @+leo-ver=5-thin
+# @+node:tbrown.20140806084727.30174: * @file ../plugins/livecode.py
 """
 Show results of code in another pane as it's edited.
 
@@ -14,19 +14,22 @@ The livecode pane shows the results of each line.
 
 import ast
 from collections import namedtuple
+
 try:
     from meta import asttools
 except ImportError:
     asttools = None
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtWidgets
+
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 
-#@+others
-#@+node:tbrown.20140806084727.30178: ** init
+# @+others
+# @+node:tbrown.20140806084727.30178: ** init
 warning_given = False
+
 
 def init():
     """Return True if the plugin has loaded successfully."""
@@ -42,22 +45,24 @@ def init():
     g.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
     return True
-#@+node:tbrown.20140806084727.30179: ** onCreate
-def onCreate(tag, keys):
 
+
+# @+node:tbrown.20140806084727.30179: ** onCreate
+def onCreate(tag, keys):
     c = keys.get('c')
 
     LiveCodeDisplayProvider(c)
-#@+node:tbrown.20140806084727.30187: ** class LiveCodeDisplay
+
+
+# @+node:tbrown.20140806084727.30187: ** class LiveCodeDisplay
 class LiveCodeDisplay:
     """Manage a pane showing livecode"""
 
     CodeBlock = namedtuple('CodeBlock', 'code, result')
 
-    #@+others
-    #@+node:tbrown.20140806084727.30188: *3* __init__ (livecode.py)
+    # @+others
+    # @+node:tbrown.20140806084727.30188: *3* __init__ (livecode.py)
     def __init__(self, c):
-
         self.c = c
         c._livecode = self
         self.v = c.p.v
@@ -69,9 +74,9 @@ class LiveCodeDisplay:
 
         self._build_gui()
 
-
         g.registerHandler('idle', self.update)
-    #@+node:tbrown.20140806084727.39166: *3* _build_gui
+
+    # @+node:tbrown.20140806084727.39166: *3* _build_gui
     def _build_gui(self):
         self.w = w = QtWidgets.QWidget()
 
@@ -98,30 +103,27 @@ class LiveCodeDisplay:
         b = QtWidgets.QPushButton("Dump")
         b.setToolTip("AST dump to stdout (devel. option)")
         h.addWidget(b)
-        b.clicked.connect(lambda checked, self=self:
-                          setattr(self, 'dump', True))
-    #@+node:tbrown.20140806084727.31745: *3* goto_node
-    def goto_node(self):
+        b.clicked.connect(lambda checked, self=self: setattr(self, 'dump', True))
 
+    # @+node:tbrown.20140806084727.31745: *3* goto_node
+    def goto_node(self):
         self.c.selectPosition(self.c.vnode2position(self.v))
 
-    #@+node:tbrown.20140806084727.31747: *3* run_here
+    # @+node:tbrown.20140806084727.31747: *3* run_here
     def run_here(self):
-
         self.codeblocks = []
         self.v = self.c.p.v
         self.active = True
 
-    #@+node:tbrown.20140806084727.31744: *3* toggle_active
+    # @+node:tbrown.20140806084727.31744: *3* toggle_active
     def toggle_active(self):
-
         self.active = not self.active
         self.status.setText("ACTIVE" if self.active else "(paused)")
         self.activate.setText("STOP" if self.active else "START")
-    #@+node:tbrown.20140806084727.31743: *3* update
+
+    # @+node:tbrown.20140806084727.31743: *3* update
     def update(self, tag, kwargs):
-        """update - Return
-        """
+        """update - Return"""
         c = self.c
         if kwargs['c'] != c:
             return
@@ -157,9 +159,7 @@ class LiveCodeDisplay:
         result = []
         for n, node in enumerate(nodes):
             node_result = None
-            if (n < len(self.codeblocks) and
-                self.codeblocks[n].code == block[n]
-            ):
+            if n < len(self.codeblocks) and self.codeblocks[n].code == block[n]:
                 # same code, assume same result
                 node_result = self.codeblocks[n].result
             else:
@@ -175,8 +175,7 @@ class LiveCodeDisplay:
                         # EKR: Python 3 compatibility.
                         exec(block[n], self.scope)
                 except Exception:
-                    self.status.setText("ACTIVE: fail at %s" %
-                        block[n].split('\n')[0])
+                    self.status.setText("ACTIVE: fail at %s" % block[n].split('\n')[0])
                     break
                 if isinstance(node, ast.Expr):
                     pass  # already handled above
@@ -193,8 +192,7 @@ class LiveCodeDisplay:
                             continue
                         code = asttools.dump_python_source(target)
                         # pylint: disable=eval-used
-                        node_result.append("%s = %r" %
-                            (code.strip(), eval(code, self.scope)))
+                        node_result.append("%s = %r" % (code.strip(), eval(code, self.scope)))
                     node_result = ''.join(node_result)  # was '\n'.join
             assert node_result is None or isinstance(node_result, str)
             if node_result is None:
@@ -205,17 +203,22 @@ class LiveCodeDisplay:
         self.text.setText('\n'.join(result))
         if run_count:
             self.status.setText("ACTIVE: %d blocks" % run_count)
-    #@-others
-#@+node:tbrown.20140806084727.30203: ** class LiveCodeDisplayProvider
+
+    # @-others
+
+
+# @+node:tbrown.20140806084727.30203: ** class LiveCodeDisplayProvider
 class LiveCodeDisplayProvider:
-    #@+others
-    #@+node:tbrown.20140806084727.30204: *3* __init__ (livecode.py)
+    # @+others
+    # @+node:tbrown.20140806084727.30204: *3* __init__ (livecode.py)
     def __init__(self, c):
         self.c = c
-    #@+node:tbrown.20140806084727.30205: *3* ns_provides
+
+    # @+node:tbrown.20140806084727.30205: *3* ns_provides
     def ns_provides(self):
         return [('Live Code', '_leo_livecode_show')]
-    #@+node:tbrown.20140806084727.30206: *3* ns_provide
+
+    # @+node:tbrown.20140806084727.30206: *3* ns_provide
     def ns_provide(self, id_):
         if id_.startswith('_leo_livecode_show'):
             c = self.c
@@ -223,9 +226,12 @@ class LiveCodeDisplayProvider:
                 c._livecode = LiveCodeDisplay(self.c)
             return c._livecode.w
         return None
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
 
-#@-leo
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+
+# @-leo

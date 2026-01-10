@@ -1721,200 +1721,415 @@ keywordsDictDict = {
 
 # Rules for foxpro_main ruleset.
 
+
 def foxpro_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def foxpro_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def foxpro_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#if")
 
+
 def foxpro_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#else")
+
 
 def foxpro_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#end")
 
+
 def foxpro_rule5(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#define")
+
 
 def foxpro_rule6(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#include")
 
+
 def foxpro_rule7(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Elif")
+
 
 def foxpro_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Else")
 
+
 def foxpro_rule9(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Endif")
+
 
 def foxpro_rule10(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#If")
 
+
 def foxpro_rule11(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Itsexpression")
+
 
 def foxpro_rule12(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Readclauses")
 
+
 def foxpro_rule13(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Region")
+
 
 def foxpro_rule14(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Section")
 
+
 def foxpro_rule15(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Undef")
+
 
 def foxpro_rule16(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#Wname")
 
+
 def foxpro_rule17(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="&&")
 
+
 def foxpro_rule18(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="*",
-          at_whitespace_end=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="*", at_whitespace_end=True)
+
 
 def foxpro_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def foxpro_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def foxpro_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def foxpro_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def foxpro_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def foxpro_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<>")
+
 
 def foxpro_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
 
+
 def foxpro_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def foxpro_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def foxpro_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def foxpro_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def foxpro_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="\\")
+
 
 def foxpro_rule31(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def foxpro_rule32(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def foxpro_rule33(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+
 
 def foxpro_rule34(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for foxpro_main ruleset.
 rulesDict1 = {
-    "\"": [foxpro_rule0,],
-    "#": [foxpro_rule2, foxpro_rule3, foxpro_rule4, foxpro_rule5, foxpro_rule6, foxpro_rule7, foxpro_rule8, foxpro_rule9, foxpro_rule10, foxpro_rule11, foxpro_rule12, foxpro_rule13, foxpro_rule14, foxpro_rule15, foxpro_rule16,],
-    "&": [foxpro_rule17,],
-    "'": [foxpro_rule1,],
-    "*": [foxpro_rule18, foxpro_rule28,],
-    "+": [foxpro_rule26, foxpro_rule32,],
-    "-": [foxpro_rule27,],
-    ".": [foxpro_rule25,],
-    "/": [foxpro_rule29,],
-    "0": [foxpro_rule34,],
-    "1": [foxpro_rule34,],
-    "2": [foxpro_rule34,],
-    "3": [foxpro_rule34,],
-    "4": [foxpro_rule34,],
-    "5": [foxpro_rule34,],
-    "6": [foxpro_rule34,],
-    "7": [foxpro_rule34,],
-    "8": [foxpro_rule34,],
-    "9": [foxpro_rule34,],
-    ":": [foxpro_rule33,],
-    "<": [foxpro_rule19, foxpro_rule20, foxpro_rule24,],
-    "=": [foxpro_rule23,],
-    ">": [foxpro_rule21, foxpro_rule22,],
-    "?": [foxpro_rule34,],
-    "@": [foxpro_rule34,],
-    "A": [foxpro_rule34,],
-    "B": [foxpro_rule34,],
-    "C": [foxpro_rule34,],
-    "D": [foxpro_rule34,],
-    "E": [foxpro_rule34,],
-    "F": [foxpro_rule34,],
-    "G": [foxpro_rule34,],
-    "H": [foxpro_rule34,],
-    "I": [foxpro_rule34,],
-    "J": [foxpro_rule34,],
-    "K": [foxpro_rule34,],
-    "L": [foxpro_rule34,],
-    "M": [foxpro_rule34,],
-    "N": [foxpro_rule34,],
-    "O": [foxpro_rule34,],
-    "P": [foxpro_rule34,],
-    "Q": [foxpro_rule34,],
-    "R": [foxpro_rule34,],
-    "S": [foxpro_rule34,],
-    "T": [foxpro_rule34,],
-    "U": [foxpro_rule34,],
-    "V": [foxpro_rule34,],
-    "W": [foxpro_rule34,],
-    "X": [foxpro_rule34,],
-    "Y": [foxpro_rule34,],
-    "Z": [foxpro_rule34,],
-    "[": [foxpro_rule34,],
-    "\\": [foxpro_rule30,],
-    "]": [foxpro_rule34,],
-    "^": [foxpro_rule31, foxpro_rule34,],
-    "_": [foxpro_rule34,],
-    "a": [foxpro_rule34,],
-    "b": [foxpro_rule34,],
-    "c": [foxpro_rule34,],
-    "d": [foxpro_rule34,],
-    "e": [foxpro_rule34,],
-    "f": [foxpro_rule34,],
-    "g": [foxpro_rule34,],
-    "h": [foxpro_rule34,],
-    "i": [foxpro_rule34,],
-    "j": [foxpro_rule34,],
-    "k": [foxpro_rule34,],
-    "l": [foxpro_rule34,],
-    "m": [foxpro_rule34,],
-    "n": [foxpro_rule34,],
-    "o": [foxpro_rule34,],
-    "p": [foxpro_rule34,],
-    "q": [foxpro_rule34,],
-    "r": [foxpro_rule34,],
-    "s": [foxpro_rule34,],
-    "t": [foxpro_rule34,],
-    "u": [foxpro_rule34,],
-    "v": [foxpro_rule34,],
-    "w": [foxpro_rule34,],
-    "x": [foxpro_rule34,],
-    "y": [foxpro_rule34,],
-    "z": [foxpro_rule34,],
+    "\"": [
+        foxpro_rule0,
+    ],
+    "#": [
+        foxpro_rule2,
+        foxpro_rule3,
+        foxpro_rule4,
+        foxpro_rule5,
+        foxpro_rule6,
+        foxpro_rule7,
+        foxpro_rule8,
+        foxpro_rule9,
+        foxpro_rule10,
+        foxpro_rule11,
+        foxpro_rule12,
+        foxpro_rule13,
+        foxpro_rule14,
+        foxpro_rule15,
+        foxpro_rule16,
+    ],
+    "&": [
+        foxpro_rule17,
+    ],
+    "'": [
+        foxpro_rule1,
+    ],
+    "*": [
+        foxpro_rule18,
+        foxpro_rule28,
+    ],
+    "+": [
+        foxpro_rule26,
+        foxpro_rule32,
+    ],
+    "-": [
+        foxpro_rule27,
+    ],
+    ".": [
+        foxpro_rule25,
+    ],
+    "/": [
+        foxpro_rule29,
+    ],
+    "0": [
+        foxpro_rule34,
+    ],
+    "1": [
+        foxpro_rule34,
+    ],
+    "2": [
+        foxpro_rule34,
+    ],
+    "3": [
+        foxpro_rule34,
+    ],
+    "4": [
+        foxpro_rule34,
+    ],
+    "5": [
+        foxpro_rule34,
+    ],
+    "6": [
+        foxpro_rule34,
+    ],
+    "7": [
+        foxpro_rule34,
+    ],
+    "8": [
+        foxpro_rule34,
+    ],
+    "9": [
+        foxpro_rule34,
+    ],
+    ":": [
+        foxpro_rule33,
+    ],
+    "<": [
+        foxpro_rule19,
+        foxpro_rule20,
+        foxpro_rule24,
+    ],
+    "=": [
+        foxpro_rule23,
+    ],
+    ">": [
+        foxpro_rule21,
+        foxpro_rule22,
+    ],
+    "?": [
+        foxpro_rule34,
+    ],
+    "@": [
+        foxpro_rule34,
+    ],
+    "A": [
+        foxpro_rule34,
+    ],
+    "B": [
+        foxpro_rule34,
+    ],
+    "C": [
+        foxpro_rule34,
+    ],
+    "D": [
+        foxpro_rule34,
+    ],
+    "E": [
+        foxpro_rule34,
+    ],
+    "F": [
+        foxpro_rule34,
+    ],
+    "G": [
+        foxpro_rule34,
+    ],
+    "H": [
+        foxpro_rule34,
+    ],
+    "I": [
+        foxpro_rule34,
+    ],
+    "J": [
+        foxpro_rule34,
+    ],
+    "K": [
+        foxpro_rule34,
+    ],
+    "L": [
+        foxpro_rule34,
+    ],
+    "M": [
+        foxpro_rule34,
+    ],
+    "N": [
+        foxpro_rule34,
+    ],
+    "O": [
+        foxpro_rule34,
+    ],
+    "P": [
+        foxpro_rule34,
+    ],
+    "Q": [
+        foxpro_rule34,
+    ],
+    "R": [
+        foxpro_rule34,
+    ],
+    "S": [
+        foxpro_rule34,
+    ],
+    "T": [
+        foxpro_rule34,
+    ],
+    "U": [
+        foxpro_rule34,
+    ],
+    "V": [
+        foxpro_rule34,
+    ],
+    "W": [
+        foxpro_rule34,
+    ],
+    "X": [
+        foxpro_rule34,
+    ],
+    "Y": [
+        foxpro_rule34,
+    ],
+    "Z": [
+        foxpro_rule34,
+    ],
+    "[": [
+        foxpro_rule34,
+    ],
+    "\\": [
+        foxpro_rule30,
+    ],
+    "]": [
+        foxpro_rule34,
+    ],
+    "^": [
+        foxpro_rule31,
+        foxpro_rule34,
+    ],
+    "_": [
+        foxpro_rule34,
+    ],
+    "a": [
+        foxpro_rule34,
+    ],
+    "b": [
+        foxpro_rule34,
+    ],
+    "c": [
+        foxpro_rule34,
+    ],
+    "d": [
+        foxpro_rule34,
+    ],
+    "e": [
+        foxpro_rule34,
+    ],
+    "f": [
+        foxpro_rule34,
+    ],
+    "g": [
+        foxpro_rule34,
+    ],
+    "h": [
+        foxpro_rule34,
+    ],
+    "i": [
+        foxpro_rule34,
+    ],
+    "j": [
+        foxpro_rule34,
+    ],
+    "k": [
+        foxpro_rule34,
+    ],
+    "l": [
+        foxpro_rule34,
+    ],
+    "m": [
+        foxpro_rule34,
+    ],
+    "n": [
+        foxpro_rule34,
+    ],
+    "o": [
+        foxpro_rule34,
+    ],
+    "p": [
+        foxpro_rule34,
+    ],
+    "q": [
+        foxpro_rule34,
+    ],
+    "r": [
+        foxpro_rule34,
+    ],
+    "s": [
+        foxpro_rule34,
+    ],
+    "t": [
+        foxpro_rule34,
+    ],
+    "u": [
+        foxpro_rule34,
+    ],
+    "v": [
+        foxpro_rule34,
+    ],
+    "w": [
+        foxpro_rule34,
+    ],
+    "x": [
+        foxpro_rule34,
+    ],
+    "y": [
+        foxpro_rule34,
+    ],
+    "z": [
+        foxpro_rule34,
+    ],
 }
 
 # x.rulesDictDict for foxpro mode.

@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20101110092851.5812: * @file ../plugins/initinclass.py
-#@+<< docstring >>
-#@+node:ekr.20101112180523.5421: ** << docstring >>
-""" Modifies the Python @auto importer so that the importer
+# @+leo-ver=5-thin
+# @+node:ekr.20101110092851.5812: * @file ../plugins/initinclass.py
+# @+<< docstring >>
+# @+node:ekr.20101112180523.5421: ** << docstring >>
+"""Modifies the Python @auto importer so that the importer
 puts the __init__ method (ctor) into the body of the class node.
 
 This makes it easier to keep the instance variable docs in the class
@@ -13,17 +13,18 @@ Note that this is done *after* the consistency checks by the @auto
 import code, so using this plugin is at your own risk.  It will change
 the order of declarations if other methods are declared before __init__.
 """
-#@-<< docstring >>
+# @-<< docstring >>
 
 __plugin_name__ = "__init__ in class"
 
 from leo.core import leoGlobals as g
 from leo.core import leoPlugins
 
-#@@language python
-#@@tabwidth -4
-#@+others
-#@+node:ekr.20101110093301.5816: ** InitInClass
+
+# @@language python
+# @@tabwidth -4
+# @+others
+# @+node:ekr.20101110093301.5816: ** InitInClass
 def InitInClass(tag, keywords):
     """Move __init__ into the class node body in python @auto imports"""
 
@@ -36,8 +37,7 @@ def InitInClass(tag, keywords):
             if '__init__' in p.headString():
                 cull.append(p.copy())
                 old = parent.bodyString().strip().split('\n')
-                new = '\n'.join(['    ' + i if i.strip() else ''
-                    for i in p.bodyString().strip().split('\n')])
+                new = '\n'.join(['    ' + i if i.strip() else '' for i in p.bodyString().strip().split('\n')])
                 new = '\n%s\n' % new
 
                 # insert before @others
@@ -59,11 +59,15 @@ def InitInClass(tag, keywords):
     cull.reverse()  # leaves first
     for i in cull:
         i._unlink()
-#@+node:ekr.20101110093301.5817: ** init
+
+
+# @+node:ekr.20101110093301.5817: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     leoPlugins.registerHandler("after-auto", InitInClass)
     g.plugin_signon(__name__)
     return True
-#@-others
-#@-leo
+
+
+# @-others
+# @-leo

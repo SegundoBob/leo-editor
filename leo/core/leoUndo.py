@@ -81,9 +81,7 @@ class Undoer:
     # @+node:ekr.20031218072017.3606: *4* u.__init__
     def __init__(self, c: Cmdr) -> None:
         self.c = c
-        self.p: Position = (
-            None  # The position/node being operated upon for undo and redo.
-        )
+        self.p: Position = None  # The position/node being operated upon for undo and redo.
         self.granularity = None  # Set in reloadSettings.
         self.max_undo_stack_size = c.config.getInt('max-undo-stack-size') or 0
         # State ivars...
@@ -289,9 +287,7 @@ class Undoer:
             else:
                 underline = realLabel.find("&")
             realLabel = realLabel.replace("&", "")
-            frame.menu.setMenuLabel(
-                menu, u.realRedoMenuLabel, realLabel, underline=underline
-            )
+            frame.menu.setMenuLabel(menu, u.realRedoMenuLabel, realLabel, underline=underline)
             u.redoMenuLabel = name
             u.realRedoMenuLabel = realLabel
 
@@ -313,9 +309,7 @@ class Undoer:
             else:
                 underline = realLabel.find("&")
             realLabel = realLabel.replace("&", "")
-            frame.menu.setMenuLabel(
-                menu, u.realUndoMenuLabel, realLabel, underline=underline
-            )
+            frame.menu.setMenuLabel(menu, u.realUndoMenuLabel, realLabel, underline=underline)
             u.undoType = theType
             u.undoMenuLabel = name
             u.realUndoMenuLabel = realLabel
@@ -451,9 +445,7 @@ class Undoer:
         u.setUndoTypes()
 
     # @+node:ekr.20050315134017.2: *5* u.afterChangeNodeContents
-    def afterChangeNodeContents(
-        self, p: Position, command: str, bunch: g.Bunch
-    ) -> None:
+    def afterChangeNodeContents(self, p: Position, command: str, bunch: g.Bunch) -> None:
         """Create an undo node using d created by beforeChangeNode."""
         u = self
         c = self.c
@@ -764,9 +756,7 @@ class Undoer:
     # @+node:ekr.20050315134017.7: *5* u.beforeChangeGroup
     changeGroupWarning = False
 
-    def beforeChangeGroup(
-        self, p: Position, command: str, verboseUndoGroup: bool = False
-    ) -> None:
+    def beforeChangeGroup(self, p: Position, command: str, verboseUndoGroup: bool = False) -> None:
         """Prepare to undo a group of undoable operations."""
         c, u = self.c, self
         if p != c.p:  # Prepare to ignore p argument.
@@ -1134,10 +1124,7 @@ class Undoer:
         else:
             assert granularity in ('line', 'word')
             # Replace the previous bead if only the middle lines have changed.
-            newBead = (
-                old_d.get('leading', 0) != u.leading
-                or old_d.get('trailing', 0) != u.trailing
-            )
+            newBead = old_d.get('leading', 0) != u.leading or old_d.get('trailing', 0) != u.trailing
             if granularity == 'word' and not newBead:
                 # Protect the method that may be changed by the user
                 try:
@@ -1158,15 +1145,9 @@ class Undoer:
                         newBead = True
                     else:
                         # 2011/04/01: Patch by Sam Hartsfield
-                        old_row, old_col = g.convertPythonIndexToRowCol(
-                            oldText, old_start
-                        )
-                        new_row, new_col = g.convertPythonIndexToRowCol(
-                            newText, new_start
-                        )
-                        prev_row, prev_col = g.convertPythonIndexToRowCol(
-                            oldText, prev_start
-                        )
+                        old_row, old_col = g.convertPythonIndexToRowCol(oldText, old_start)
+                        new_row, new_col = g.convertPythonIndexToRowCol(newText, new_start)
+                        prev_row, prev_col = g.convertPythonIndexToRowCol(oldText, prev_start)
                         old_lines = g.splitLines(oldText)
                         new_lines = g.splitLines(newText)
                         # Recognize backspace, del, etc. as contiguous.
@@ -1342,9 +1323,7 @@ class Undoer:
                 if g.unitTesting:
                     assert p.b == all, (w, g.callers())
                 elif p.b != all:
-                    g.trace(
-                        f"\np.b != w.getAllText() p: {p.h} \nw: {w!r} \n{g.callers()}\n"
-                    )
+                    g.trace(f"\np.b != w.getAllText() p: {p.h} \nw: {w!r} \n{g.callers()}\n")
             p.v.insertSpot = ins = w.getInsertPoint()
             # From u.doTyping.
             newSel = w.getSelectionRange()
@@ -1614,9 +1593,7 @@ class Undoer:
         # Remember these values.
         newSel = u.newSel
         p = u.p.copy()  # u.p must exist now.
-        newP = (
-            u.newP.copy() if u.newP else c.p.copy()
-        )  # #4373: u.newP might not exist now.
+        newP = u.newP.copy() if u.newP else c.p.copy()  # #4373: u.newP might not exist now.
         if g.unitTesting:
             assert c.positionExists(p), repr(p)
         u.groupCount += 1

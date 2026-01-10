@@ -196,9 +196,7 @@ class TestOutlineCommands(LeoUnitTest):
                     seen.add(p.v)
                     if p.h == cloned_headline and p.gnx in gnx_dict.values():
                         assert p.isCloned(), f"{tag_s}: not cloned: {p.h}"
-                        assert p.gnx in gnx_dict.get(p.h), (
-                            f"{tag_s}: not in gnx_dict: {p.h}"
-                        )
+                        assert p.gnx in gnx_dict.get(p.h), f"{tag_s}: not in gnx_dict: {p.h}"
                     else:
                         assert not p.isCloned(), f"{tag_s}: is cloned: {p.h}"
             except Exception as e:
@@ -216,11 +214,7 @@ class TestOutlineCommands(LeoUnitTest):
 
         # All nodes except cc and its children itself are valid targets.
         valid_target_headlines = list(
-            sorted(
-                z.h
-                for z in c.all_unique_positions()
-                if z.h not in ('cc', 'cc:child1', 'cc:child2')
-            )
+            sorted(z.h for z in c.all_unique_positions() if z.h not in ('cc', 'cc:child1', 'cc:child2'))
         )
         # g.printObj(valid_target_headlines, tag='valid_target_headlines')
         for target_headline in valid_target_headlines:
@@ -298,18 +292,14 @@ class TestOutlineCommands(LeoUnitTest):
             if test_kind == 'cut':
                 cloned_headlines = ('cc:child1',) if pasted_flag else ()
             else:
-                cloned_headlines = (
-                    ('cc:child1', 'cc') if pasted_flag else ('cc:child1',)
-                )
+                cloned_headlines = ('cc:child1', 'cc') if pasted_flag else ('cc:child1',)
             try:
                 tag_s = f"{tag} kind: {test_kind} pasted? {int(pasted_flag)}"
                 for p in c.all_positions():
                     seen.add(p.v)
                     if p.h in cloned_headlines:
                         assert p.isCloned(), f"{tag_s}: not cloned: {p.h}"
-                        assert p.b, (
-                            f"{tag_s} {p.h}: unexpected empty body text: {p.b!r}"
-                        )
+                        assert p.b, f"{tag_s} {p.h}: unexpected empty body text: {p.b!r}"
                     else:
                         assert not p.isCloned(), f"{tag_s}: is cloned: {p.h}"
                     message = f"{tag}: p.gnx: {p.gnx} != expected {gnx_dict.get(p.h)}"

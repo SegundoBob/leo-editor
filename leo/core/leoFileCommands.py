@@ -180,9 +180,7 @@ class FastRead:
 
     bad_path_dict: dict[str, bool] = {}
 
-    def readWithElementTree(
-        self, path: str, s_or_b: Union[str, bytes]
-    ) -> tuple[VNode, Value]:
+    def readWithElementTree(self, path: str, s_or_b: Union[str, bytes]) -> tuple[VNode, Value]:
         contents = g.toUnicode(s_or_b)
         table = contents.maketrans(self.translate_dict)  # type:ignore #1510.
         contents = contents.translate(table)  # #1036, #1046.
@@ -331,9 +329,7 @@ class FastRead:
         }
 
     # @+node:ekr.20180602062323.8: *4* fast.scanTnodes
-    def scanTnodes(
-        self, t_elements: Element
-    ) -> tuple[dict[str, str], dict[str, Value]]:
+    def scanTnodes(self, t_elements: Element) -> tuple[dict[str, str], dict[str, Value]]:
         gnx2body: dict[str, str] = {}
         gnx2ua: dict[str, dict] = defaultdict(dict)
         for e in t_elements:
@@ -466,9 +462,7 @@ class FastRead:
             v_elements: Element = d.get('vnodes')
             t_elements: Element = d.get('tnodes')
             gnx2ua: dict = defaultdict(dict)
-            gnx2ua.update(
-                d.get('uas', {})
-            )  # User attributes in their own dict for leojs files
+            gnx2ua.update(d.get('uas', {}))  # User attributes in their own dict for leojs files
             gnx2body = self.scanJsonTnodes(t_elements)
             hidden_v = self.scanJsonVnodes(gnx2body, self.gnx2vnode, gnx2ua, v_elements)
             self.handleBits()
@@ -495,9 +489,7 @@ class FastRead:
         windowSpot = g.app.loadManager.options.get('windowSpot')
         #
         # Priority 2: The cache.
-        db_top, db_left, db_height, db_width = c.db.get(
-            'window_position', (None, None, None, None)
-        )
+        db_top, db_left, db_height, db_width = c.db.get('window_position', (None, None, None, None))
         #
         # Priority 3: The globals dict in the .leojs file.
         #             Leo doesn't write the globals element, but leoInteg might.
@@ -726,9 +718,7 @@ class FileCommands:
             directory = os.environ['LEO_ARCHIVE']
             if not os.path.exists(directory):
                 g.es_print(f"Not found: {directory!r}")
-                archive_name = (
-                    rf"{directory}{os.sep}{g.shortFileName(leo_file)}-{time_s}.zip"
-                )
+                archive_name = rf"{directory}{os.sep}{g.shortFileName(leo_file)}-{time_s}.zip"
         except KeyError:
             pass
         if not archive_name:
@@ -789,9 +779,7 @@ class FileCommands:
             g.es_exception()
 
     # @+node:ekr.20100119145629.6108: *4* fc.handleWriteLeoFileException
-    def handleWriteLeoFileException(
-        self, fileName: str, backupName: str, f: IO
-    ) -> None:
+    def handleWriteLeoFileException(self, fileName: str, backupName: str, f: IO) -> None:
         """Report an exception. f is an open file, or None."""
         # c = self.c
         g.es("exception writing:", fileName)
@@ -974,17 +962,13 @@ class FileCommands:
         else:
             v = fc._getLeoFileByName(path, readAtFileNodesFlag)
         if v:
-            c.frame.resizePanesToRatio(
-                c.frame.compute_ratio(), c.frame.compute_secondary_ratio()
-            )
+            c.frame.resizePanesToRatio(c.frame.compute_ratio(), c.frame.compute_secondary_ratio())
             if checkOpenFiles:
                 g.app.checkForOpenFile(c, path)
         return v
 
     # @+node:ekr.20230910154358.1: *6* fc._getLeoDBFileByName
-    def _getLeoDBFileByName(
-        self, path: str, readAtFileNodesFlag: bool
-    ) -> Optional[VNode]:
+    def _getLeoDBFileByName(self, path: str, readAtFileNodesFlag: bool) -> Optional[VNode]:
         """
         Open, read, and close a .db file.
 
@@ -1031,9 +1015,7 @@ class FileCommands:
             c.loading = False  # reenable c.changed
 
     # @+node:ekr.20230910160254.1: *6* fc._getLeoFileByName
-    def _getLeoFileByName(
-        self, path: str, readAtFileNodesFlag: bool
-    ) -> Optional[VNode]:
+    def _getLeoFileByName(self, path: str, readAtFileNodesFlag: bool) -> Optional[VNode]:
         """
         Open, read, and close a .leo or .leojs file.
 
@@ -1556,9 +1538,7 @@ class FileCommands:
                 statusBits,
                 ua);''',
         )
-        conn.execute(
-            '''create table if not exists extra_infos(name primary key, value)'''
-        )
+        conn.execute('''create table if not exists extra_infos(name primary key, value)''')
 
     # @+node:vitalije.20170701161851.1: *6* fc.exportVnodesToSqlite
     def exportVnodesToSqlite(self, conn: Conn, rows: Iterable) -> None:
@@ -1594,9 +1574,7 @@ class FileCommands:
 
     # @+node:vitalije.20170811130559.1: *6* fc.exportDbVersion
     def exportDbVersion(self, conn: Conn) -> None:
-        conn.execute(
-            "replace into extra_infos(name, value) values('dbversion', ?)", ('1.0',)
-        )
+        conn.execute("replace into extra_infos(name, value) values('dbversion', ?)", ('1.0',))
 
     # @+node:vitalije.20170701162204.1: *6* fc.exportHashesToSqlite
     def exportHashesToSqlite(self, conn: Conn) -> None:
@@ -1750,16 +1728,10 @@ class FileCommands:
             sp = p or c.p  # Selected Position: sp
             # build uas dict
             for p in sp.self_and_subtree():
-                if hasattr(p.v, 'unknownAttributes') and len(
-                    p.v.unknownAttributes.keys()
-                ):
+                if hasattr(p.v, 'unknownAttributes') and len(p.v.unknownAttributes.keys()):
                     try:
-                        json.dumps(
-                            p.v.unknownAttributes, skipkeys=True, cls=SetJSONEncoder
-                        )  # If this test passes ok
-                        uas[p.v.gnx] = (
-                            p.v.unknownAttributes
-                        )  # Valid UA's as-is. UA's are NOT encoded.
+                        json.dumps(p.v.unknownAttributes, skipkeys=True, cls=SetJSONEncoder)  # If this test passes ok
+                        uas[p.v.gnx] = p.v.unknownAttributes  # Valid UA's as-is. UA's are NOT encoded.
                     except TypeError:
                         g.trace(f"Can not serialize uA for {p.h}", g.callers(6))
                         g.printObj(p.v.unknownAttributes)
@@ -1768,11 +1740,7 @@ class FileCommands:
             result = {
                 'leoHeader': {'fileFormat': 2},
                 'vnodes': [self.leojs_vnode(sp, gnxSet)],
-                'tnodes': {
-                    p.v.gnx: p.v._bodyString
-                    for p in sp.self_and_subtree()
-                    if p.v._bodyString
-                },
+                'tnodes': {p.v.gnx: p.v._bodyString for p in sp.self_and_subtree() if p.v._bodyString},
             }
 
         else:  # write everything from the top node 'c.rootPosition()'
@@ -1781,9 +1749,7 @@ class FileCommands:
                 if hasattr(v, 'unknownAttributes') and len(v.unknownAttributes.keys()):
                     try:
                         # If this passes, the (unencoded) uAs are valid json.
-                        json.dumps(
-                            v.unknownAttributes, skipkeys=True, cls=SetJSONEncoder
-                        )
+                        json.dumps(v.unknownAttributes, skipkeys=True, cls=SetJSONEncoder)
                         uas[v.gnx] = v.unknownAttributes
                     except TypeError:
                         g.trace(f"Can not serialize uA for {v.h}", g.callers(6))
@@ -1792,15 +1758,8 @@ class FileCommands:
             # result for whole outline
             result = {
                 'leoHeader': {'fileFormat': 2},
-                'vnodes': [
-                    self.leojs_vnode(p, gnxSet)
-                    for p in c.rootPosition().self_and_siblings()
-                ],
-                'tnodes': {
-                    v.gnx: v._bodyString
-                    for v in c.all_unique_nodes()
-                    if (v._bodyString and v.isWriteBit())
-                },
+                'vnodes': [self.leojs_vnode(p, gnxSet) for p in c.rootPosition().self_and_siblings()],
+                'tnodes': {v.gnx: v._bodyString for v in c.all_unique_nodes() if (v._bodyString and v.isWriteBit())},
             }
         self.leojs_globals()  # Call only to set db like non-json save file.
         # uas could be empty. Only add it if needed
@@ -1824,9 +1783,7 @@ class FileCommands:
             g.trace('set window_position:', c.db['window_position'], c.shortFileName())
 
     # @+node:ekr.20210316085413.2: *6* fc.leojs_vnodes
-    def leojs_vnode(
-        self, p: Position, gnxSet: set[Value], isIgnore: bool = False
-    ) -> dict[str, Value]:
+    def leojs_vnode(self, p: Position, gnxSet: set[Value], isIgnore: bool = False) -> dict[str, Value]:
         """Return a jsonized vnode."""
         # c = self.c
         fc = self
@@ -1940,13 +1897,9 @@ class FileCommands:
     def writeZipFile(self, s: str) -> None:
         """Write string s as a .zip file."""
         # The name of the file in the archive.
-        contentsName = g.toEncodedString(
-            g.shortFileName(self.mFileName), self.leo_file_encoding, reportErrors=True
-        )
+        contentsName = g.toEncodedString(g.shortFileName(self.mFileName), self.leo_file_encoding, reportErrors=True)
         # The name of the archive itself.
-        fileName = g.toEncodedString(
-            self.mFileName, self.leo_file_encoding, reportErrors=True
-        )
+        fileName = g.toEncodedString(self.mFileName, self.leo_file_encoding, reportErrors=True)
         # Write the archive.
         # These mypy complaints look valid.
         theFile = zipfile.ZipFile(fileName, 'w', zipfile.ZIP_DEFLATED)  # type:ignore
@@ -2071,9 +2024,7 @@ class FileCommands:
         tag = 'https://leo-editor.github.io/leo-editor/namespaces/leo-python-editor/1.1'
         self.putXMLLine()
         # Put "created by Leo" line.
-        self.put(
-            '<!-- Created by Leo: https://leo-editor.github.io/leo-editor/leo_toc.html -->\n'
-        )
+        self.put('<!-- Created by Leo: https://leo-editor.github.io/leo-editor/leo_toc.html -->\n')
         self.putStyleSheetLine()
         # Put the namespace
         self.put(f'<leo_file xmlns:leo="{tag}" >\n')
@@ -2164,9 +2115,7 @@ class FileCommands:
         # Support JSON encoded attributes
         if key.startswith('json_'):
             try:
-                val = json.dumps(
-                    val, ensure_ascii=False, separators=(',', ':'), sort_keys=True
-                )
+                val = json.dumps(val, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
             except TypeError:
                 # fall back to pickle
                 g.trace(type(val), repr(val))
@@ -2183,9 +2132,7 @@ class FileCommands:
             return ''
         attrDict = v.unknownAttributes
         if isinstance(attrDict, dict):
-            val = ''.join(
-                [self.putUaHelper(v, key, val) for key, val in sorted(attrDict.items())]
-            )
+            val = ''.join([self.putUaHelper(v, key, val) for key, val in sorted(attrDict.items())])
             return val
         g.warning("ignoring non-dictionary unknownAttributes for", v)
         return ''
@@ -2297,11 +2244,7 @@ class FileCommands:
     def putXMLLine(self) -> None:
         """Put the **properly encoded** <?xml> element."""
         # Use self.leo_file_encoding encoding.
-        self.put(
-            f"{g.app.prolog_prefix_string}"
-            f'"{self.leo_file_encoding}"'
-            f"{g.app.prolog_postfix_string}\n"
-        )
+        self.put(f"{g.app.prolog_prefix_string}\"{self.leo_file_encoding}\"{g.app.prolog_postfix_string}\n")
 
     # @-others
 

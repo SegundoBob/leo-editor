@@ -1,34 +1,36 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170428084207.111: * @file ../external/npyscreen/eveventhandler.py
-#@+others
-#@+node:ekr.20170428084207.112: ** Declarations
+# @+leo-ver=5-thin
+# @+node:ekr.20170428084207.111: * @file ../external/npyscreen/eveventhandler.py
+# @+others
+# @+node:ekr.20170428084207.112: ** Declarations
 import weakref
 
-#@+node:ekr.20170428084207.113: ** class Event
+
+# @+node:ekr.20170428084207.113: ** class Event
 class Event:
     # a basic event class
-    #@+others
-    #@+node:ekr.20170428084207.114: *3* __init__
+    # @+others
+    # @+node:ekr.20170428084207.114: *3* __init__
     def __init__(self, name, payload=None):
         self.name = name
         self.payload = payload
 
+    # @-others
 
-    #@-others
-#@+node:ekr.20170428084207.115: ** class EventHandler
+
+# @+node:ekr.20170428084207.115: ** class EventHandler
 class EventHandler:
     # This partial base class provides the framework to handle events.
 
-    #@+others
-    #@+node:ekr.20170428084207.116: *3* initialize_event_handling
+    # @+others
+    # @+node:ekr.20170428084207.116: *3* initialize_event_handling
     def initialize_event_handling(self):
         self.event_handlers = {}
 
-    #@+node:ekr.20170428084207.117: *3* add_event_hander
+    # @+node:ekr.20170428084207.117: *3* add_event_hander
     def add_event_hander(self, event_name, handler):
         if not event_name in self.event_handlers:
             self.event_handlers[event_name] = set()
-                # weakref.WeakSet() #Why doesn't the WeakSet work?
+            # weakref.WeakSet() #Why doesn't the WeakSet work?
         self.event_handlers[event_name].add(handler)
 
         parent_app = self.find_parent_app()
@@ -42,15 +44,14 @@ class EventHandler:
             except AttributeError:
                 pass
 
-    #@+node:ekr.20170428084207.118: *3* remove_event_handler
+    # @+node:ekr.20170428084207.118: *3* remove_event_handler
     def remove_event_handler(self, event_name, handler):
         if event_name in self.event_handlers:
             self.event_handlers[event_name].remove(handler)
         if not self.event_handlers[event_name]:
             self.event_handlers.pop({})
 
-
-    #@+node:ekr.20170428084207.119: *3* handle_event
+    # @+node:ekr.20170428084207.119: *3* handle_event
     def handle_event(self, event):
         "return True if the event was handled.  Return False if the application should stop sending this event."
         if event.name not in self.event_handlers:
@@ -66,7 +67,7 @@ class EventHandler:
                 self.event_handlers[event.name].remove(handler)
             return True
 
-    #@+node:ekr.20170428084207.120: *3* find_parent_app
+    # @+node:ekr.20170428084207.120: *3* find_parent_app
     def find_parent_app(self):
         if hasattr(self, "parentApp"):
             return self.parentApp
@@ -75,9 +76,11 @@ class EventHandler:
         else:
             return None
 
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@nobeautify
-#@-leo
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@nobeautify
+# @-leo

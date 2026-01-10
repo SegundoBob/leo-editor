@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20221129095254.1: * @file ../modes/batch.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20221129095254.1: * @file ../modes/batch.py
+# @@language python
 
 # Leo colorizer control file for batch mode.
 # This file is in the public domain.
@@ -109,129 +109,150 @@ keywordsDictDict = {
 
 # Rules for batch_main ruleset.
 
-#@+others
-#@+node:ekr.20221129095311.1: ** batch_rule0
+
+# @+others
+# @+node:ekr.20221129095311.1: ** batch_rule0
 def batch_rule0(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword3", seq="@")
-#@+node:ekr.20221129095311.2: ** batch_rule1
+
+
+# @+node:ekr.20221129095311.2: ** batch_rule1
 def batch_rule1(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
-#@+node:ekr.20221129095311.3: ** batch_rule2
+
+
+# @+node:ekr.20221129095311.3: ** batch_rule2
 def batch_rule2(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
-#@+node:ekr.20221129095311.4: ** batch_rule3
+
+# @+node:ekr.20221129095311.4: ** batch_rule3
 def batch_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
 
-#@+node:ekr.20221129095311.5: ** batch_rule4
+# @+node:ekr.20221129095311.5: ** batch_rule4
 def batch_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
 
-#@+node:ekr.20221129095311.6: ** batch_rule5
+# @+node:ekr.20221129095311.6: ** batch_rule5
 def batch_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
-#@+node:ekr.20221129095311.7: ** batch_rule6
+
+# @+node:ekr.20221129095311.7: ** batch_rule6
 def batch_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
 
-#@+node:ekr.20221129095311.8: ** batch_rule7
+# @+node:ekr.20221129095311.8: ** batch_rule7
 def batch_rule7(colorer, s, i):
     # Labels.
-    return colorer.match_eol_span(s, i, kind="label", seq=":",
-        at_line_start=True)
-#@+node:ekr.20221129095311.9: ** batch_rule8
+    return colorer.match_eol_span(s, i, kind="label", seq=":", at_line_start=True)
+
+
+# @+node:ekr.20221129095311.9: ** batch_rule8
 def batch_rule8(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="REM",
-        at_line_start=True, at_whitespace_end=True, at_word_start=True)
+    return colorer.match_eol_span(
+        s, i, kind="comment1", seq="REM", at_line_start=True, at_whitespace_end=True, at_word_start=True
+    )
+
 
 def batch_rule8a(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="rem",
-        at_line_start=True, at_whitespace_end=True, at_word_start=True)
+    return colorer.match_eol_span(
+        s, i, kind="comment1", seq="rem", at_line_start=True, at_whitespace_end=True, at_word_start=True
+    )
 
 
-
-#@+node:ekr.20221129095311.10: ** batch_rule9
+# @+node:ekr.20221129095311.10: ** batch_rule9
 def batch_rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-        no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
 
-#@+node:ekr.20221129095311.11: ** batch_rule10
+
+# @+node:ekr.20221129095311.11: ** batch_rule10
 def batch_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%0")
 
 
-#@+node:ekr.20221129095311.12: ** batch_rule11
+# @+node:ekr.20221129095311.12: ** batch_rule11
 def batch_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%1")
 
 
-#@+node:ekr.20221129095311.13: ** batch_rule12
+# @+node:ekr.20221129095311.13: ** batch_rule12
 def batch_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%2")
 
 
-#@+node:ekr.20221129095311.14: ** batch_rule13
+# @+node:ekr.20221129095311.14: ** batch_rule13
 def batch_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%3")
 
 
-#@+node:ekr.20221129095311.15: ** batch_rule14
+# @+node:ekr.20221129095311.15: ** batch_rule14
 def batch_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%4")
 
 
-#@+node:ekr.20221129095311.16: ** batch_rule15
+# @+node:ekr.20221129095311.16: ** batch_rule15
 def batch_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%5")
 
 
-#@+node:ekr.20221129095311.17: ** batch_rule16
+# @+node:ekr.20221129095311.17: ** batch_rule16
 def batch_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%6")
 
 
-#@+node:ekr.20221129095311.18: ** batch_rule17
+# @+node:ekr.20221129095311.18: ** batch_rule17
 def batch_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%7")
 
 
-#@+node:ekr.20221129095311.19: ** batch_rule18
+# @+node:ekr.20221129095311.19: ** batch_rule18
 def batch_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%8")
 
 
-#@+node:ekr.20221129095311.20: ** batch_rule19
+# @+node:ekr.20221129095311.20: ** batch_rule19
 def batch_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%9")
 
 
-#@+node:ekr.20221129095311.21: ** batch_rule20
+# @+node:ekr.20221129095311.21: ** batch_rule20
 def batch_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="keyword2", begin="%[", end="]")
 
 
-#@+node:ekr.20221129095311.22: ** batch_rule21
+# @+node:ekr.20221129095311.22: ** batch_rule21
 def batch_rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="%", end="%",
-        no_line_break=True)
-#@+node:ekr.20221129095311.23: ** batch_rule22
+    return colorer.match_span(s, i, kind="keyword2", begin="%", end="%", no_line_break=True)
+
+
+# @+node:ekr.20221129095311.23: ** batch_rule22
 def batch_rule22(colorer, s, i):
     return colorer.match_keywords(s, i)
 
-#@-others
+
+# @-others
 # Rules dict for batch_main ruleset.
 rulesDict1 = {
     "!": [batch_rule4],
     "\"": [batch_rule9],
     "%": [
-        batch_rule10, batch_rule11, batch_rule12, batch_rule13, batch_rule14,
-        batch_rule15, batch_rule16, batch_rule17, batch_rule18, batch_rule19,
-        batch_rule20, batch_rule21
+        batch_rule10,
+        batch_rule11,
+        batch_rule12,
+        batch_rule13,
+        batch_rule14,
+        batch_rule15,
+        batch_rule16,
+        batch_rule17,
+        batch_rule18,
+        batch_rule19,
+        batch_rule20,
+        batch_rule21,
     ],
     "&": [batch_rule3],
     "+": [batch_rule1],
@@ -312,6 +333,6 @@ rulesDictDict = {
 
 # Import dict for batch mode.
 importDict = {}
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

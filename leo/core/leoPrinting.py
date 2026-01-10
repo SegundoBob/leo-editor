@@ -53,9 +53,7 @@ class PrintingController:
     def reload_settings(self) -> None:
         c = self.c
         self.font_size = c.config.getString('printing-font-size') or '12'
-        self.font_family = (
-            c.config.getString('printing-font-family') or 'DejaVu Sans Mono'
-        )
+        self.font_family = c.config.getString('printing-font-family') or 'DejaVu Sans Mono'
         self.stylesheet = self.construct_stylesheet()
 
     reloadSettings = reload_settings
@@ -73,9 +71,7 @@ class PrintingController:
 
     # @+node:ekr.20150420072955.1: *3* pr.Doc constructors
     # @+node:ekr.20150419124739.11: *4* pr.complex document
-    def complex_document(
-        self, nodes: list[VNode], heads: bool = False
-    ) -> QtGui.QTextDocument:
+    def complex_document(self, nodes: list[VNode], heads: bool = False) -> QtGui.QTextDocument:
         """Create a complex document."""
         doc = QtGui.QTextDocument()
         doc.setDefaultStyleSheet(self.stylesheet)

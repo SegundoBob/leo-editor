@@ -313,9 +313,7 @@ class DefaultWrapper(BaseSpellWrapper):
                 ('user', self.user_fn),
             )
         for kind, fn in table:
-            g.es_print(
-                f"{kind} dictionary: {(g.os_path_normpath(fn) if fn else 'None')}"
-            )
+            g.es_print(f"{kind} dictionary: {(g.os_path_normpath(fn) if fn else 'None')}")
 
     # @-others
 
@@ -385,9 +383,7 @@ class EnchantWrapper(BaseSpellWrapper):
         self.language = language
 
     # @+node:ekr.20180207102856.1: *3* enchant.open_dict_file
-    def open_dict_file(
-        self, fn: str
-    ) -> SpellDict:  # A pyenchant dict or a DefaultDict.
+    def open_dict_file(self, fn: str) -> SpellDict:  # A pyenchant dict or a DefaultDict.
         """Open or create the dict with the given fn."""
         language = self.language
         if not fn or not language:
@@ -647,9 +643,7 @@ class SpellTabHandler:
         self.body = c.frame.body
         self.currentWord: str = None
         self.outerScrolledFrame = None
-        self.seen: set[str] = (
-            set()
-        )  # Adding a word to seen will ignore it until restart.
+        self.seen: set[str] = set()  # Adding a word to seen will ignore it until restart.
         # A text widget for scanning. Must have a parent frame.
         self.workCtrl = g.app.gui.plainTextWidget(c.frame.top)
         if enchant:
@@ -822,11 +816,7 @@ class SpellTabHandler:
                         alts2 = sc.process_word(alt_word)
                         if alts2:
                             # Add the top three *new* suggestions to the top of alts.
-                            new_alts = [
-                                alts2[i]
-                                for i in range(3)
-                                if i < len(alts2) and alts2[i] not in alts
-                            ]
+                            new_alts = [alts2[i] for i in range(3) if i < len(alts2) and alts2[i] not in alts]
                             for z in reversed(new_alts):
                                 alts.insert(0, z)
                         else:

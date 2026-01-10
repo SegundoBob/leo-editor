@@ -1,21 +1,25 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20110605121601.17996: * @file ../plugins/qt_commands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20110605121601.17996: * @file ../plugins/qt_commands.py
 """Leo's Qt-related commands defined by @g.command."""
+
 from __future__ import annotations
 from typing import Any, TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.core import leoColor
 from leo.core import leoConfig
 from leo.core.leoQt import QtGui, QtWidgets
+
 if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
+
     Args = Any
     KWargs = Any
     QWidget = QtWidgets.QWidget
 
-#@+others
-#@+node:ekr.20110605121601.18000: ** init
+
+# @+others
+# @+node:ekr.20110605121601.18000: ** init
 def init() -> bool:
     """Top-level init function for qt_commands.py."""
     if g.app.gui.guiName() != "qt":
@@ -23,15 +27,19 @@ def init() -> bool:
     g.plugin_signon(__name__)
     g.registerHandler("select2", onSelect)
     return True
-#@+node:ekr.20250330060728.1: ** onSelect
+
+
+# @+node:ekr.20250330060728.1: ** onSelect
 def onSelect(tag: str, keywords: Any) -> None:
     c: Cmdr = keywords.get('c') or keywords.get('new_c')
     wdg: QWidget = c.frame.top.leo_body_frame
     wdg.setWindowTitle(c.p.h)
-#@+node:ekr.20110605121601.18001: ** qt: detach-editor-toggle & helpers
+
+
+# @+node:ekr.20110605121601.18001: ** qt: detach-editor-toggle & helpers
 @g.command('detach-editor-toggle')
 def detach_editor_toggle(event: LeoKeyEvent) -> None:
-    """ Detach or undetach body editor """
+    """Detach or undetach body editor"""
     c: Cmdr = event['c']
     detach = True
     try:
@@ -44,15 +52,18 @@ def detach_editor_toggle(event: LeoKeyEvent) -> None:
     else:
         undetach_editor(c)
 
+
 @g.command('detach-editor-toggle-max')
 def detach_editor_toggle_max(event: LeoKeyEvent) -> None:
-    """ Detach editor, maximize """
+    """Detach editor, maximize"""
     c: Cmdr = event['c']
     detach_editor_toggle(event)
     if c.frame.detached_body_info is not None:
         wdg: QWidget = c.frame.top.leo_body_frame
         wdg.showMaximized()
-#@+node:ekr.20170324145714.1: *3* qt: detach_editor
+
+
+# @+node:ekr.20170324145714.1: *3* qt: detach_editor
 def detach_editor(c: Cmdr) -> None:
     wdg: QWidget = c.frame.top.leo_body_frame
     parent = wdg.parent()
@@ -67,7 +78,9 @@ def detach_editor(c: Cmdr) -> None:
             sheet = '\n'.join(sheets)
             wdg.setStyleSheet(sheet)
         wdg.show()
-#@+node:ekr.20170324145716.1: *3* qt: undetach_editor
+
+
+# @+node:ekr.20170324145716.1: *3* qt: undetach_editor
 def undetach_editor(c: Cmdr) -> None:
     wdg: QWidget = c.frame.top.leo_body_frame
     parent, sizes = c.frame.detached_body_info
@@ -75,7 +88,9 @@ def undetach_editor(c: Cmdr) -> None:
     wdg.show()
     parent.setSizes(sizes)
     c.frame.detached_body_info = None
-#@+node:ekr.20170324143944.2: ** qt: show-color-names
+
+
+# @+node:ekr.20170324143944.2: ** qt: show-color-names
 @g.command('show-color-names')
 def showColorNames(event: LeoKeyEvent) -> None:
     """Put up a dialog showing color names."""
@@ -116,7 +131,9 @@ def showColorNames(event: LeoKeyEvent) -> None:
         setattr(c, ivar, True)
         # Do this last, so errors don't prevent re-execution.
         g.es('created color picker in icon area')
-#@+node:ekr.20170324142416.1: ** qt: show-color-wheel
+
+
+# @+node:ekr.20170324142416.1: ** qt: show-color-wheel
 @g.command('show-color-wheel')
 def showColorWheel(self: Any, event: LeoKeyEvent = None) -> None:
     """Show a Qt color dialog."""
@@ -129,7 +146,7 @@ def showColorWheel(self: Any, event: LeoKeyEvent = None) -> None:
             text = p.h.split('=', 1)[1].strip()
         color = QtGui.QColor(text)
         picker.setCurrentColor(color)
-    except(ValueError, IndexError) as e:
+    except (ValueError, IndexError) as e:
         g.trace('error caught', e)
 
     result = picker.exec()
@@ -143,7 +160,9 @@ def showColorWheel(self: Any, event: LeoKeyEvent = None) -> None:
         text = picker.selectedColor().name()
         g.es("copied to clipboard:", text)
         QtWidgets.QApplication.clipboard().setText(text)
-#@+node:ekr.20170324143944.3: ** qt: show-fonts
+
+
+# @+node:ekr.20170324143944.3: ** qt: show-fonts
 @g.command('show-fonts')
 def showFonts(self: Any, event: LeoKeyEvent = None) -> None:
     """Open a tab in the log pane showing a font picker."""
@@ -180,18 +199,22 @@ def showFonts(self: Any, event: LeoKeyEvent = None) -> None:
             f"{name}_family = {font.family()}\n",
             f"{name}_weight = {'bold' if font.bold() else 'normal'}\n",
             f"{name}_slant = {'italic' if font.italic() else 'roman'}\n",
-            f"{name}_size = {font.pointSizeF()}\n"
+            f"{name}_size = {font.pointSizeF()}\n",
         ]
         p.b = ''.join(comments + defs)
         c.undoer.afterChangeNodeContents(p, 'change-font', udata)
-#@+node:ekr.20140918124632.17893: ** qt: show-style-sheet
+
+
+# @+node:ekr.20140918124632.17893: ** qt: show-style-sheet
 @g.command('show-style-sheet')
 def print_style_sheet(event: LeoKeyEvent = None) -> None:
     """show-style-sheet command."""
     c: Cmdr = event.get('c')
     if c:
         c.styleSheetManager.print_style_sheet()
-#@+node:ekr.20140918124632.17891: ** qt: style-reload
+
+
+# @+node:ekr.20140918124632.17891: ** qt: style-reload
 @g.command('style-reload')
 @g.command('reload-style-sheets')
 def style_reload(event: LeoKeyEvent) -> None:
@@ -205,15 +228,19 @@ def style_reload(event: LeoKeyEvent) -> None:
     if c and c.styleSheetManager:
         # Call ssm.reload_settings after reloading all settings.
         c.reloadSettings()
-#@+node:ekr.20140918124632.17892: ** qt: style-set-selected
+
+
+# @+node:ekr.20140918124632.17892: ** qt: style-set-selected
 @g.command('style-set-selected')
 def style_set_selected(event: LeoKeyEvent) -> None:
     """style-set-selected command. Set the global stylesheet to c.p.b. (For testing)"""
     c: Cmdr = event.get('c')
     if c:
         c.styleSheetManager.set_selected_style_sheet()
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

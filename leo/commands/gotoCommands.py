@@ -69,9 +69,7 @@ class GoToCommands:
                 return p, 0
             # #4355: Print a warning once.
             if not g.unitTesting:
-                g.es_print_unique_message(
-                    'goto-global-line works only for @file, @clean, @edit and single @asis nodes'
-                )
+                g.es_print_unique_message('goto-global-line works only for @file, @clean, @edit and single @asis nodes')
             return None, -1
         # Step 1: Get the lines of external files *with* sentinels,
         #         even if the actual external file actually contains no sentinels.
@@ -111,9 +109,7 @@ class GoToCommands:
         # Init.
         delim1, delim2 = self.get_delims(root)
         delims = self.get_3_delims(root)
-        remove_sentinels = (
-            not root.isAtFileNode()
-        )  # Same as in self.find_file_line_helper.
+        remove_sentinels = not root.isAtFileNode()  # Same as in self.find_file_line_helper.
 
         # Get the file with sentinels.
         contents_s = self.get_external_file_with_sentinels(root) if s is None else s
@@ -184,9 +180,7 @@ class GoToCommands:
         return None, -1
 
     # @+node:ekr.20181003080042.1: *3* goto.node_offset_to_file_line
-    def node_offset_to_file_line(
-        self, target_offset: int, target_p: Position, root: Position
-    ) -> int:
+    def node_offset_to_file_line(self, target_offset: int, target_p: Position, root: Position) -> int:
         """
         Given a zero-based target_offset within target_p.b, return the line
         number of the corresponding line within root's file.
@@ -232,9 +226,7 @@ class GoToCommands:
         return None
 
     # @+node:ekr.20150624085605.1: *3* goto.scan_nonsentinel_lines
-    def scan_nonsentinel_lines(
-        self, lines: list[str], n: int, root: Position
-    ) -> tuple[str, str, int]:
+    def scan_nonsentinel_lines(self, lines: list[str], n: int, root: Position) -> tuple[str, str, int]:
         """
         Scan a list of lines containing sentinels, looking for the node and
         offset within the node of the n'th (one-based) line.
@@ -294,9 +286,7 @@ class GoToCommands:
         return gnx, h, offset
 
     # @+node:ekr.20150623175314.1: *3* goto.scan_sentinel_lines
-    def scan_sentinel_lines(
-        self, lines: list[str], n: int, root: Position
-    ) -> tuple[str, str, int]:
+    def scan_sentinel_lines(self, lines: list[str], n: int, root: Position) -> tuple[str, str, int]:
         """
         Scan a list of lines containing sentinels, looking for the node and
         offset within the node of the n'th (one-based) line.
@@ -360,9 +350,7 @@ class GoToCommands:
         w.seeInsertPoint()
 
     # @+node:ekr.20100216141722.5626: *4* goto.find_gnx & find_gnx2
-    def find_gnx(
-        self, root: Position, gnx: str, vnodeName: str
-    ) -> tuple[Position, bool]:
+    def find_gnx(self, root: Position, gnx: str, vnodeName: str) -> tuple[Position, bool]:
         """
         Scan the outline for a node with the given gnx and vnodeName.
         return (p, True) if found or (None, False) otherwise.

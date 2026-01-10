@@ -2553,7 +2553,7 @@ class TestEditCommands(LeoUnitTest):
     def test_move_lines_up_into_docstring(self):
         """Test case for move-lines-up (into docstring)"""
         before_b = '''\
-    #@@language python
+    # @@language python
     def test():
         """ a
         b
@@ -2564,7 +2564,7 @@ class TestEditCommands(LeoUnitTest):
         print 2
     '''
         after_b = '''\
-    #@@language python
+    # @@language python
     def test():
         """ a
         b
@@ -3133,13 +3133,13 @@ class TestEditCommands(LeoUnitTest):
     def test_reformat_paragraph_new_code_1_of_8(self):
         """Test case for reformat-paragraph new code 1 of 8"""
         before_b = """\
-    #@@pagewidth 40
+    # @@pagewidth 40
     '''
     docstring.
     '''
     """
         after_b = """\
-    #@@pagewidth 40
+    # @@pagewidth 40
     '''
     docstring.
     '''
@@ -3157,13 +3157,13 @@ class TestEditCommands(LeoUnitTest):
     def test_reformat_paragraph_new_code_2_of_8(self):
         """Test case for reformat-paragraph new code 2 of 8"""
         before_b = """\
-    #@@pagewidth 40
+    # @@pagewidth 40
     '''
     docstring.
     '''
     """
         after_b = """\
-    #@@pagewidth 40
+    # @@pagewidth 40
     '''
     docstring.
     '''
@@ -3181,14 +3181,14 @@ class TestEditCommands(LeoUnitTest):
     def test_reformat_paragraph_new_code_3_of_8(self):
         """Test case for reformat-paragraph new code 3 of 8"""
         before_b = """\
-    #@@pagewidth 40
+    # @@pagewidth 40
     '''
     docstring.
     more docstring.
     '''
     """
         after_b = """\
-    #@@pagewidth 40
+    # @@pagewidth 40
     '''
     docstring. more docstring.
     '''
@@ -4244,9 +4244,7 @@ class TestEditCommands(LeoUnitTest):
         # A totally wimpy test.
         # And it somehow prints a newline to the console.
         if 0:
-            c.abbrevCommands.dynamicExpandHelper(
-                event=None, prefix='', aList=[], w=None
-            )
+            c.abbrevCommands.dynamicExpandHelper(event=None, prefix='', aList=[], w=None)
 
     # @+node:ekr.20210905064816.6: *4* TestEditCommands.test_extendHelper
     def test_extendHelper(self):

@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210902164946.1: * @file ../unittests/core/test_leoGlobals.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210902164946.1: * @file ../unittests/core/test_leoGlobals.py
 """Tests of leoGlobals.py"""
 
 import io
@@ -10,12 +10,12 @@ import sys
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
 
-#@+others
-#@+node:ekr.20210902165045.1: ** class TestGlobals(LeoUnitTest)
-class TestGlobals(LeoUnitTest):
 
-    #@+<< TestGlobals: declare all data >>
-    #@+node:ekr.20230701083715.1: *3* << TestGlobals: declare all data >>
+# @+others
+# @+node:ekr.20210902165045.1: ** class TestGlobals(LeoUnitTest)
+class TestGlobals(LeoUnitTest):
+    # @+<< TestGlobals: declare all data >>
+    # @+node:ekr.20230701083715.1: *3* << TestGlobals: declare all data >>
     absolute_paths: list[str]
     error_lines: dict[str, int]
     error_messages: dict[str, list[str]]
@@ -25,11 +25,11 @@ class TestGlobals(LeoUnitTest):
     invalid_unls: tuple[str]
     tools = ['flake8', 'mypy', 'pyflakes', 'pylint', 'python']
     valid_unls: tuple[str]
-    #@-<< TestGlobals: declare all data >>
-    #@+<< TestGlboals: define unchanging data >>
-    #@+node:ekr.20230701083918.1: *3* << TestGlboals: define unchanging data >>
-    #@+<< define files data >>
-    #@+node:ekr.20230701060241.1: *4* << define files data >>
+    # @-<< TestGlobals: declare all data >>
+    # @+<< TestGlboals: define unchanging data >>
+    # @+node:ekr.20230701083918.1: *3* << TestGlboals: define unchanging data >>
+    # @+<< define files data >>
+    # @+node:ekr.20230701060241.1: *4* << define files data >>
     # All these paths appear in @file or @clean nodes in LeoPyRef.leo.
 
     # kind: @clean, @edit, @file,
@@ -47,9 +47,9 @@ class TestGlobals(LeoUnitTest):
         ('@file', '../external/log_listener.py'),
         ('@file', '../plugins/cursesGui2.py'),
     )
-    #@-<< define files data >>
-    #@+<< define error_patterns >>
-    #@+node:ekr.20230701060854.1: *4* << define error_patterns >>
+    # @-<< define files data >>
+    # @+<< define error_patterns >>
+    # @+node:ekr.20230701060854.1: *4* << define error_patterns >>
     # m.group(1) is the filename and m.group(2) is the line number.
     error_patterns = {
         'flake8': g.flake8_pat,  # r'(.+?):([0-9]+):[0-9]+:.*$'
@@ -58,9 +58,9 @@ class TestGlobals(LeoUnitTest):
         'pylint': g.pylint_pat,  # r'^(.*):\s*([0-9]+)[,:]\s*[0-9]+:.*?\(.*\)\s*$'
         'python': g.python_pat,  # r'^\s*File\s+"(.*?)",\s*line\s*([0-9]+)\s*$'
     }
-    #@-<< define error_patterns >>
-    #@+<< define error_templates >>
-    #@+node:ekr.20230701071240.1: *4* << define error_templates >>
+    # @-<< define error_patterns >>
+    # @+<< define error_templates >>
+    # @+node:ekr.20230701071240.1: *4* << define error_templates >>
     # Error message templates.
     error_templates = {
         'flake8': 'FILE:LINE:COL:ERR',
@@ -69,52 +69,44 @@ class TestGlobals(LeoUnitTest):
         'pylint': 'FILE:LINE:COL: (ERR)',
         'python': 'File "FILE", line LINE',
     }
-    #@-<< define error_templates >>
-    #@+<< define invalid_unls >>
-    #@+node:ekr.20230701084458.1: *4* << define invalid_unls >>
+    # @-<< define error_templates >>
+    # @+<< define invalid_unls >>
+    # @+node:ekr.20230701084458.1: *4* << define invalid_unls >>
     # Syntactically invalid unls.
     invalid_unls = (
         'unl:gnx:xyzzy#.20230622112649.1',  # Missing '//'
         'unl:gnx://xyzzy.20230622112649.1',  # Missing '#'
         'unl:gnx//xyzzy#.20230622112649.1',  # Missing ':'
         'unl//xyzzy#.20230622112649.1',  # Missing ':'
-
     )
 
-    #@-<< define invalid_unls >>
-    #@+<< define missing_unls >>
-    #@+node:ekr.20230701090956.1: *4* << define missing_unls >>
+    # @-<< define invalid_unls >>
+    # @+<< define missing_unls >>
+    # @+node:ekr.20230701090956.1: *4* << define missing_unls >>
     # Define unls with files parts that refer to non-existent files.
     # These should be syntactically valid.
     missing_unls = (
         'unl:gnx://xyzzy#.20230622112649.1',
         'unl://xyzzy#does-->not-->exist',
     )
-    #@-<< define missing_unls >>
-    #@+<< define valid_unl_templates >>
-    #@+node:ekr.20230701090956.2: *4* << define valid_unl_templates >>
+    # @-<< define missing_unls >>
+    # @+<< define valid_unl_templates >>
+    # @+node:ekr.20230701090956.2: *4* << define valid_unl_templates >>
     # These links are functional only if an @data unl-path-prefixes contains the proper file part.
     valid_unls = (
-
         'unl:gnx://#ekr.20180311131424.1',
-
         # test.leo:Error messages (copy to log)
         'unl:gnx://#ekr.20230622112649.1',
-
         # test.leo:Recent
         'unl:gnx://test.leo#ekr.20180311131424.1',
         'unl:gnx://#ekr.20180311131424.1',
-
         # test.leo: Error messages (copy to log)
         'unl:gnx://test.leo#ekr.20230622112649.1',
         'unl:gnx://#ekr.20230622112649.1',
-
         # In LeoDocs.leo: Leo 6.7.3 release notes
         'unl:gnx://LeoDocs.leo#ekr.20230409052507.1',
-
         # In LeoDocs.leo: ** Read me first **
         'unl:gnx://LeoDocs.leo#ekr.20050831195449',
-
         # Legacy unls in test.leo.
         'unl://#Coloring tests-->Syntax coloring template',
         'unl://#@file ../plugins/importers/__init__.py',
@@ -124,16 +116,15 @@ class TestGlobals(LeoUnitTest):
         'unl://#Viewrendered examples',
         'unl://C:/Repos/leo-editor/leo/test/test.leo#Viewrendered examples-->Python code',
         'unl://#Viewrendered examples-->Python code',
-
         # Absolute file: valid, but can't be resolved in a unit test.
         'unl://C:/Repos/leo-editor/leo/test/test.leo#@file ../plugins/importers/__init__.py',
     )
-    #@-<< define valid_unl_templates >>
-    #@-<< TestGlboals: define unchanging data >>
+    # @-<< define valid_unl_templates >>
+    # @-<< TestGlboals: define unchanging data >>
 
-    #@+others
-    #@+node:ekr.20230701061343.1: *3*  TestGlobals: setup helpers and related tests
-    #@+node:ekr.20230701065318.1: *4* TestGlobals._define_per_commander_data
+    # @+others
+    # @+node:ekr.20230701061343.1: *3*  TestGlobals: setup helpers and related tests
+    # @+node:ekr.20230701065318.1: *4* TestGlobals._define_per_commander_data
     def _define_per_commander_data(self):
         """Define data that depends on c."""
         c = self.c
@@ -142,7 +133,7 @@ class TestGlobals(LeoUnitTest):
         self.assertTrue(c.fileName)
         self.absolute_paths = [
             g.os_path_finalize_join(os.path.dirname(c.fileName()), relative_path)
-                for _, relative_path in self.files_data
+            for _, relative_path in self.files_data
         ]
 
         # The error line for each absolute path. Default all lines to 0.
@@ -162,7 +153,8 @@ class TestGlobals(LeoUnitTest):
                     .replace('COL', f"{self.error_lines[path]!s}")
                     .replace('ERR', f"{tool} error")
                 )
-    #@+node:ekr.20230701061355.1: *4* TestGlobals._test_per_commander_data
+
+    # @+node:ekr.20230701061355.1: *4* TestGlobals._test_per_commander_data
     def _test_per_commander_data(self) -> None:
         """Test the test data."""
         c = self.c
@@ -182,11 +174,15 @@ class TestGlobals(LeoUnitTest):
             pattern = self.error_patterns[tool]
             messages = self.error_messages[tool]
             for message in messages:
-                self.assertTrue(pattern.match(message), msg=(
-                    'Error message does not match error pattern:\n'
-                    f"    tool: {tool!r}\n"
-                    f" message: {message!r}\n"
-                    f" pattern: {pattern!r}"))
+                self.assertTrue(
+                    pattern.match(message),
+                    msg=(
+                        'Error message does not match error pattern:\n'
+                        f"    tool: {tool!r}\n"
+                        f" message: {message!r}\n"
+                        f" pattern: {pattern!r}"
+                    ),
+                )
 
         # More tests...
         for data in self.files_data:  # <@file> <filename>
@@ -200,7 +196,8 @@ class TestGlobals(LeoUnitTest):
             full_path = c.fullPath(test_p)
             self.assertEqual(full_path, absolute_path, msg=msg)
             self.assertTrue(test_p, msg=msg)
-    #@+node:ekr.20230330042647.1: *4* TestGlobals._make_tree
+
+    # @+node:ekr.20230330042647.1: *4* TestGlobals._make_tree
     def _make_tree(self, c, root_h=None):
         """Make a test tree for c."""
         root = c.rootPosition()
@@ -222,10 +219,7 @@ class TestGlobals(LeoUnitTest):
         def make_top(n, sib):
             p = sib.insertAfter()
             p.h = f"Node {n}"
-            p.b = (
-                f"def top{n}():\n:"
-                f"    v{n} = 3\n"
-            )
+            p.b = f"def top{n}():\n:    v{n} = 3\n"
             return p
 
         for n in range(0, 4, 3):
@@ -239,7 +233,8 @@ class TestGlobals(LeoUnitTest):
 
         # Always start with the root selected.
         c.selectPosition(c.rootPosition())
-    #@+node:ekr.20230702165040.1: *4* TestGlobals._patch_at_data_unl_path_prefixes
+
+    # @+node:ekr.20230702165040.1: *4* TestGlobals._patch_at_data_unl_path_prefixes
     def _patch_at_data_unl_path_prefixes(self):
         """
         Create a new outline, linked into g.app.windowList.
@@ -250,6 +245,7 @@ class TestGlobals(LeoUnitTest):
         Return the commander for the *second* new outline.
         """
         from leo.core.leoCommands import Commands
+
         c = c1 = self.c
 
         # Create the new commander, linked into g.app.windowList.
@@ -267,13 +263,14 @@ class TestGlobals(LeoUnitTest):
         self.assertEqual(c1_name, os.path.basename(c.fileName()))
         self.assertEqual(c2_name, os.path.basename(c2.fileName()))
         return c2
-    #@+node:ekr.20230701084035.1: *4* TestGlobals.test_per_commander_data
-    def test_per_commander_data(self):
 
+    # @+node:ekr.20230701084035.1: *4* TestGlobals.test_per_commander_data
+    def test_per_commander_data(self):
         # Test the data only here.
         self._define_per_commander_data()
         self._test_per_commander_data()
-    #@+node:ekr.20230702165813.1: *4* TestGlobals.test_patch_at_data_unl_path_prefixes
+
+    # @+node:ekr.20230702165813.1: *4* TestGlobals.test_patch_at_data_unl_path_prefixes
     def test_patch_at_data_unl_path_prefixes(self):
         # Test the helper, _patch_at_data_unl_path_prefixes.
         c1 = self.c
@@ -286,8 +283,9 @@ class TestGlobals(LeoUnitTest):
         self.assertTrue(c2 in g.app.commanders())
         self.assertTrue(c1.frame in g.app.windowList)
         self.assertTrue(c2.frame in g.app.windowList)
-    #@+node:ekr.20230701085717.1: *3* --- legacy tests
-    #@+node:ekr.20210905203541.4: *4* TestGlobals.test_g_checkVersion
+
+    # @+node:ekr.20230701085717.1: *3* --- legacy tests
+    # @+node:ekr.20210905203541.4: *4* TestGlobals.test_g_checkVersion
     def test_g_checkVersion(self):
         # for condition in ('<','<=','>','>='):
         for v1, condition, v2 in (
@@ -300,12 +298,14 @@ class TestGlobals(LeoUnitTest):
             ('1', '<', '1.1'),
         ):
             assert g.CheckVersion(v1, v2, condition=condition, trace=False)
-    #@+node:ekr.20210905203541.5: *4* TestGlobals.test_g_CheckVersionToInt
+
+    # @+node:ekr.20210905203541.5: *4* TestGlobals.test_g_CheckVersionToInt
     def test_g_CheckVersionToInt(self):
         self.assertEqual(g.CheckVersionToInt('12'), 12)
         self.assertEqual(g.CheckVersionToInt('2a5'), 2)
         self.assertEqual(g.CheckVersionToInt('b2'), 0)
-    #@+node:ekr.20210905203541.6: *4* TestGlobals.test_g_comment_delims_from_extension
+
+    # @+node:ekr.20210905203541.6: *4* TestGlobals.test_g_comment_delims_from_extension
     def test_g_comment_delims_from_extension(self):
         # New in Leo 4.6, set_delims_from_language returns '' instead of None.
         table = (
@@ -317,7 +317,8 @@ class TestGlobals(LeoUnitTest):
         for ext, expected in table:
             result = g.comment_delims_from_extension(ext)
             self.assertEqual(result, expected, msg=repr(ext))
-    #@+node:ekr.20210905203541.7: *4* TestGlobals.test_g_convertPythonIndexToRowCol
+
+    # @+node:ekr.20210905203541.7: *4* TestGlobals.test_g_convertPythonIndexToRowCol
     def test_g_convertPythonIndexToRowCol(self):
         s1 = 'abc\n\np\nxy'
         table1 = (
@@ -353,7 +354,8 @@ class TestGlobals(LeoUnitTest):
                 row, col = g.convertPythonIndexToRowCol(s, i)
                 self.assertEqual(row, result[0], msg=f"n: {n}, i: {i}")
                 self.assertEqual(col, result[1], msg=f"n: {n}, i: {i}")
-    #@+node:ekr.20210905203541.8: *4* TestGlobals.test_g_convertRowColToPythonIndex
+
+    # @+node:ekr.20210905203541.8: *4* TestGlobals.test_g_convertRowColToPythonIndex
     def test_g_convertRowColToPythonIndex(self):
         s1 = 'abc\n\np\nxy'
         s2 = 'abc\n\np\nxy\n'
@@ -379,7 +381,8 @@ class TestGlobals(LeoUnitTest):
                 row, col = data
                 result = g.convertRowColToPythonIndex(s, row, col)
                 self.assertEqual(i, result, msg=f"row: {row}, col: {col}, i: {i}")
-    #@+node:ekr.20210905203541.9: *4* TestGlobals.test_g_create_temp_file
+
+    # @+node:ekr.20210905203541.9: *4* TestGlobals.test_g_create_temp_file
     def test_g_create_temp_file(self):
         theFile = None
         try:
@@ -389,7 +392,8 @@ class TestGlobals(LeoUnitTest):
         finally:
             if theFile:
                 theFile.close()
-    #@+node:ekr.20210905203541.10: *4* TestGlobals.test_g_ensureLeadingNewlines
+
+    # @+node:ekr.20210905203541.10: *4* TestGlobals.test_g_ensureLeadingNewlines
     def test_g_ensureLeadingNewlines(self):
         s = ' \n \n\t\naa bc'
         s2 = 'aa bc'
@@ -397,7 +401,8 @@ class TestGlobals(LeoUnitTest):
             result = g.ensureLeadingNewlines(s, i)
             val = ('\n' * i) + s2
             self.assertEqual(result, val)
-    #@+node:ekr.20210905203541.11: *4* TestGlobals.test_g_ensureTrailingNewlines
+
+    # @+node:ekr.20210905203541.11: *4* TestGlobals.test_g_ensureTrailingNewlines
     def test_g_ensureTrailingNewlines(self):
         s = 'aa bc \n \n\t\n'
         s2 = 'aa bc'
@@ -405,7 +410,8 @@ class TestGlobals(LeoUnitTest):
             result = g.ensureTrailingNewlines(s, i)
             val = s2 + ('\n' * i)
             self.assertEqual(result, val)
-    #@+node:ekr.20210905203541.12: *4* TestGlobals.test_g_find_word
+
+    # @+node:ekr.20210905203541.12: *4* TestGlobals.test_g_find_word
     def test_g_find_word(self):
         table = (
             ('abc a bc x', 'bc', 0, 6),
@@ -415,7 +421,8 @@ class TestGlobals(LeoUnitTest):
         for s, word, i, expected in table:
             actual = g.find_word(s, word, i)
             self.assertEqual(actual, expected)
-    #@+node:ekr.20210905203541.14: *4* TestGlobals.test_g_fullPath
+
+    # @+node:ekr.20210905203541.14: *4* TestGlobals.test_g_fullPath
     def test_g_fullPath(self):
         c = self.c
         child = c.rootPosition().insertAfter()
@@ -428,6 +435,7 @@ class TestGlobals(LeoUnitTest):
 
         # Test 2: Create a commander for an outline outside of g.app.loadDir and its parents.
         from leo.core.leoCommands import Commands
+
         c = Commands(fileName='~/LeoPyRef.leo', gui=g.app.gui)
         child = c.rootPosition().insertAfter()
         child.h = '@path abc2'
@@ -436,19 +444,22 @@ class TestGlobals(LeoUnitTest):
         path = g.fullPath(c, grand)
         end = g.os_path_normpath('abc2/xyz2')
         assert path.endswith(end), repr(path)
-    #@+node:ekr.20210905203541.17: *4* TestGlobals.test_g_getDocString
+
+    # @+node:ekr.20210905203541.17: *4* TestGlobals.test_g_getDocString
     def test_g_getDocString(self):
         s1 = 'no docstring'
         s2 = self.prep(
-        '''
+            '''
             # comment
             """docstring2."""
-        ''')
-        s3 = self.prep(
         '''
+        )
+        s3 = self.prep(
+            '''
             """docstring3."""
             \'\'\'docstring2.\'\'\'
-        ''')
+        '''
+        )
         table = (
             (s1, ''),
             (s2, 'docstring2.'),
@@ -457,32 +468,38 @@ class TestGlobals(LeoUnitTest):
         for s, result in table:
             s2 = g.getDocString(s)
             self.assertEqual(s2, result)
-    #@+node:ekr.20210905203541.18: *4* TestGlobals.test_g_getLine
+
+    # @+node:ekr.20210905203541.18: *4* TestGlobals.test_g_getLine
     def test_g_getLine(self):
         s = 'a\ncd\n\ne'
         for i, result in (
             (-1, (0, 2)),  # One too few.
-            (0, (0, 2)), (1, (0, 2)),
-            (2, (2, 5)), (3, (2, 5)), (4, (2, 5)),
+            (0, (0, 2)),
+            (1, (0, 2)),
+            (2, (2, 5)),
+            (3, (2, 5)),
+            (4, (2, 5)),
             (5, (5, 6)),
             (6, (6, 7)),
             (7, (6, 7)),  # One too many.
         ):
             j, k = g.getLine(s, i)
             self.assertEqual((j, k), result, msg=f"i: {i}, j: {j}, k: {k}")
-    #@+node:ekr.20210905203541.20: *4* TestGlobals.test_g_getWord
+
+    # @+node:ekr.20210905203541.20: *4* TestGlobals.test_g_getWord
     def test_g_getWord(self):
         s = 'abc xy_z5 pdq'
         i, j = g.getWord(s, 5)
         self.assertEqual(s[i:j], 'xy_z5')
-    #@+node:ekr.20210905203541.21: *4* TestGlobals.test_g_guessExternalEditor
+
+    # @+node:ekr.20210905203541.21: *4* TestGlobals.test_g_guessExternalEditor
     def test_g_guessExternalEditor(self):
         c = self.c
         val = g.guessExternalEditor(c)
         assert val, 'no val'  # This can be different on different platforms.
-    #@+node:ekr.20230221153849.1: *4* TestGlobals.test_g_handleScriptException
-    def test_g_handleScriptException(self):
 
+    # @+node:ekr.20230221153849.1: *4* TestGlobals.test_g_handleScriptException
+    def test_g_handleScriptException(self):
         c = self.c
         table = (
             'test_leoGlobals.py", line',
@@ -506,11 +523,13 @@ class TestGlobals(LeoUnitTest):
                 for s in table:
                     assert s in report, repr(s)
                 raise  # Must reraise
-    #@+node:ekr.20210905203541.23: *4* TestGlobals.test_g_import_module
+
+    # @+node:ekr.20210905203541.23: *4* TestGlobals.test_g_import_module
     def test_g_import_module(self):
         assert g.import_module('leo.core.leoAst')
-            # Top-level .py file.
-    #@+node:ekr.20210905203541.24: *4* TestGlobals.test_g_isDirective
+        # Top-level .py file.
+
+    # @+node:ekr.20210905203541.24: *4* TestGlobals.test_g_isDirective
     def test_g_isDirective(self):
         table = (
             (True, '@language python\n'),
@@ -525,7 +544,8 @@ class TestGlobals(LeoUnitTest):
         for expected, s in table:
             result = g.isDirective(s)
             self.assertEqual(expected, bool(result), msg=s)
-    #@+node:ekr.20210905203541.25: *4* TestGlobals.test_g_match_word
+
+    # @+node:ekr.20210905203541.25: *4* TestGlobals.test_g_match_word
     def test_g_match_word(self):
         table = (
             (True, 0, 'a', 'a'),
@@ -556,11 +576,11 @@ class TestGlobals(LeoUnitTest):
                     line = line.upper()
                 got = g.match_word(line + '\n', i, word, ignore_case=ignore_case)
                 assert expected == got, (word, line[i:])
-    #@+node:ekr.20230131234527.1: *4* TestGlobals.test_g_objToString
-    def test_g_objToString(self):
 
-        #@+<< define s >>
-        #@+node:ekr.20230131234637.1: *5* << define s >>
+    # @+node:ekr.20230131234527.1: *4* TestGlobals.test_g_objToString
+    def test_g_objToString(self):
+        # @+<< define s >>
+        # @+node:ekr.20230131234637.1: *5* << define s >>
         s = """g.cls()
 
         def f1():
@@ -594,14 +614,15 @@ class TestGlobals(LeoUnitTest):
 
         f1()
         """
-        #@-<< define s >>
-        #@+<< define class TestClass >>
-        #@+node:ekr.20230131234648.1: *5* << define class TestClass >>
-        class TestClass:
 
+        # @-<< define s >>
+        # @+<< define class TestClass >>
+        # @+node:ekr.20230131234648.1: *5* << define class TestClass >>
+        class TestClass:
             def test_function(self):
                 pass
-        #@-<< define class TestClass >>
+
+        # @-<< define class TestClass >>
         table = (
             (s, 'String1'),
             ('This is a test', "String2"),
@@ -612,7 +633,7 @@ class TestGlobals(LeoUnitTest):
             (TestClass, "Class"),
             (TestClass(), "Instance"),
             (TestClass.test_function, 'unbound method'),
-            (TestClass().test_function, 'bound method')
+            (TestClass().test_function, 'bound method'),
         )
         for data, tag in table:
             result = g.objToString(data, tag=tag)
@@ -620,46 +641,69 @@ class TestGlobals(LeoUnitTest):
             self.assertTrue(isinstance(result, str))
             result2 = g.objToString(data)
             self.assertTrue(isinstance(result2, str))
-    #@+node:ekr.20230617065929.1: *4* TestGlobals.test_g_OptionsUtils
-    def test_g_OptionsUtils(self):
 
+    # @+node:ekr.20230617065929.1: *4* TestGlobals.test_g_OptionsUtils
+    def test_g_OptionsUtils(self):
         if any(z in sys.argv for z in ('--cov', '--cov-report')):
             self.skipTest('Running coverage')
 
-        usage = (
-    """
+        usage = """
     options:
       -h, --help            show this help message and exit
       -b, --black-sentinels write black-compatible sentinel comments
       --diff                use Leo as an external git diff
       --fail-fast           stop unit tests after the first failure
-    """)
+    """
 
         # Create the class.
         obsolete_options = [
-            '--dock', '--global-docks', '--init-docks', '--no-cache',
-            '--no-dock', '--session-restore', '--session-save', '--use-docks',
+            '--dock',
+            '--global-docks',
+            '--init-docks',
+            '--no-cache',
+            '--no-dock',
+            '--session-restore',
+            '--session-save',
+            '--use-docks',
         ]
         x = g.OptionsUtils(usage, obsolete_options)
 
         # Test x.compute_valid_options.
         expected_valid_options = [
-            '--black-sentinels', '--diff', '--fail-fast', '--help',
-            '-?', '-b', '-h',
+            '--black-sentinels',
+            '--diff',
+            '--fail-fast',
+            '--help',
+            '-?',
+            '-b',
+            '-h',
         ]
         self.assertEqual(x.compute_valid_options(), expected_valid_options)
 
         # Test x.option_error and x.check_options.
         bad_options = (
             '--listen-to-log=',
-            '--load-type=@auto', '--load-type=@clean',
-            '--screen-shot', '--screen-shot=', '--screen-shot-',
+            '--load-type=@auto',
+            '--load-type=@clean',
+            '--screen-shot',
+            '--screen-shot=',
+            '--screen-shot-',
             '--script=xyzzy.py',
-            '--trace', '--trace-', 'trace=', '--trace=xxx',
-            '--trace-binding', '--trace-binding-', '--trace-binding=',
-            '--window-', 'window=',
-            '--window-size', '--window-size=', '--window-size=100',
-            '--window-spot', '--window-spot=', '--window-spot=50',
+            '--trace',
+            '--trace-',
+            'trace=',
+            '--trace=xxx',
+            '--trace-binding',
+            '--trace-binding-',
+            '--trace-binding=',
+            '--window-',
+            'window=',
+            '--window-size',
+            '--window-size=',
+            '--window-size=100',
+            '--window-spot',
+            '--window-spot=',
+            '--window-spot=50',
             '--yyy',
         )
         old_argv = sys.argv
@@ -681,7 +725,8 @@ class TestGlobals(LeoUnitTest):
         finally:
             sys.stdout = old_stdout
             sys.argv = old_argv
-    #@+node:ekr.20210905203541.26: *4* TestGlobals.test_g_os_path_finalize_join_with_thumb_drive
+
+    # @+node:ekr.20210905203541.26: *4* TestGlobals.test_g_os_path_finalize_join_with_thumb_drive
     def test_g_os_path_finalize_join_with_thumb_drive(self):
         path1 = r'C:\Python32\Lib\site-packages\leo-editor\leo\core'
         path2 = r'\N:Home\PTC_Creo\Creo.wmv'
@@ -691,9 +736,9 @@ class TestGlobals(LeoUnitTest):
         if 0:
             print(path12, g.os.path.abspath(path12))
             print(path13, g.os.path.abspath(path13))
-    #@+node:ekr.20250616080611.1: *4* TestGlobals.test_g_relativeDirectory
-    def test_g_relativeDirectory(self):
 
+    # @+node:ekr.20250616080611.1: *4* TestGlobals.test_g_relativeDirectory
+    def test_g_relativeDirectory(self):
         if g.isWindows:
             table = (
                 # g.relativeDirectory lowers all results.
@@ -710,11 +755,12 @@ class TestGlobals(LeoUnitTest):
                 ('/home/folder1', '/home/folder2/test3.py', '../folder2/test3.py'),
                 # Unsaved outlines.
                 ('', '/home/test4.py', '/home/test4.py'),
-        )
+            )
         for base, fn, expected in table:
             actual = g.relativeDirectory(base, fn)
             self.assertEqual(actual, expected)
-    #@+node:ekr.20210905203541.28: *4* TestGlobals.test_g_removeBlankLines
+
+    # @+node:ekr.20210905203541.28: *4* TestGlobals.test_g_removeBlankLines
     def test_g_removeBlankLines(self):
         for s, expected in (
             ('a\nb', 'a\nb'),
@@ -723,7 +769,8 @@ class TestGlobals(LeoUnitTest):
         ):
             result = g.removeBlankLines(s)
             self.assertEqual(result, expected, msg=repr(s))
-    #@+node:ekr.20210905203541.30: *4* TestGlobals.test_g_removeLeadingBlankLines
+
+    # @+node:ekr.20210905203541.30: *4* TestGlobals.test_g_removeLeadingBlankLines
     def test_g_removeLeadingBlankLines(self):
         for s, expected in (
             ('a\nb', 'a\nb'),
@@ -732,7 +779,8 @@ class TestGlobals(LeoUnitTest):
         ):
             result = g.removeLeadingBlankLines(s)
             self.assertEqual(result, expected, msg=repr(s))
-    #@+node:ekr.20210905203541.31: *4* TestGlobals.test_g_removeTrailing
+
+    # @+node:ekr.20210905203541.31: *4* TestGlobals.test_g_removeTrailing
     def test_g_removeTrailing(self):
         s = 'aa bc \n \n\t\n'
         table = (
@@ -743,7 +791,8 @@ class TestGlobals(LeoUnitTest):
         for arg, val in table:
             result = g.removeTrailing(s, arg)
             self.assertEqual(result, val)
-    #@+node:ekr.20210905203541.32: *4* TestGlobals.test_g_sanitize_filename
+
+    # @+node:ekr.20210905203541.32: *4* TestGlobals.test_g_sanitize_filename
     def test_g_sanitize_filename(self):
         table = (
             ('A25&()', 'A'),  # Non-alpha characters.
@@ -757,7 +806,8 @@ class TestGlobals(LeoUnitTest):
         for s, expected in table:
             got = g.sanitize_filename(s)
             self.assertEqual(got, expected, msg=repr(s))
-    #@+node:ekr.20210905203541.48: *4* TestGlobals.test_g_set_delims_from_language
+
+    # @+node:ekr.20210905203541.48: *4* TestGlobals.test_g_set_delims_from_language
     def test_g_set_delims_from_language(self):
         table = (
             ('c', ('//', '/*', '*/')),
@@ -767,7 +817,8 @@ class TestGlobals(LeoUnitTest):
         for language, expected in table:
             result = g.set_delims_from_language(language)
             self.assertEqual(result, expected, msg=language)
-    #@+node:ekr.20210905203541.49: *4* TestGlobals.test_g_set_delims_from_string
+
+    # @+node:ekr.20210905203541.49: *4* TestGlobals.test_g_set_delims_from_string
     def test_g_set_delims_from_string(self):
         table = (
             ('c', '@comment // /* */', ('//', '/*', '*/')),
@@ -780,7 +831,8 @@ class TestGlobals(LeoUnitTest):
         for language, s, expected in table:
             result = g.set_delims_from_string(s)
             self.assertEqual(result, expected, msg=language)
-    #@+node:ekr.20210905203541.50: *4* TestGlobals.test_g_skip_blank_lines
+
+    # @+node:ekr.20210905203541.50: *4* TestGlobals.test_g_skip_blank_lines
     def test_g_skip_blank_lines(self):
         end = g.skip_blank_lines("", 0)
         self.assertEqual(end, 0)
@@ -794,36 +846,42 @@ class TestGlobals(LeoUnitTest):
         self.assertEqual(end, 2)
         end = g.skip_blank_lines("\n\n a\n", 0)
         self.assertEqual(end, 2)
-    #@+node:ekr.20210905203541.51: *4* TestGlobals.test_g_skip_line
+
+    # @+node:ekr.20210905203541.51: *4* TestGlobals.test_g_skip_line
     def test_g_skip_line(self):
         s = 'a\n\nc'
         for i, result in (
             (-1, 2),  # One too few.
-            (0, 2), (1, 2),
+            (0, 2),
+            (1, 2),
             (2, 3),
             (3, 4),
             (4, 4),  # One too many.
         ):
             j = g.skip_line(s, i)
             self.assertEqual(j, result, msg=i)
-    #@+node:ekr.20210905203541.52: *4* TestGlobals.test_g_skip_to_end_of_line
+
+    # @+node:ekr.20210905203541.52: *4* TestGlobals.test_g_skip_to_end_of_line
     def test_g_skip_to_end_of_line(self):
         s = 'a\n\nc'
         for i, result in (
             (-1, 1),  # One too few.
-            (0, 1), (1, 1),
+            (0, 1),
+            (1, 1),
             (2, 2),
             (3, 4),
             (4, 4),  # One too many.
         ):
             j = g.skip_to_end_of_line(s, i)
             self.assertEqual(j, result, msg=i)
-    #@+node:ekr.20210905203541.53: *4* TestGlobals.test_g_skip_to_start_of_line
+
+    # @+node:ekr.20210905203541.53: *4* TestGlobals.test_g_skip_to_start_of_line
     def test_g_skip_to_start_of_line(self):
         s1 = 'a\n\nc'
         table1 = (
             (-1, 0),  # One too few.
-            (0, 0), (1, 0),
+            (0, 0),
+            (1, 0),
             (2, 2),
             (3, 3),
             (4, 4),  # One too many.
@@ -837,7 +895,8 @@ class TestGlobals(LeoUnitTest):
             for i, result in table:
                 j = g.skip_to_start_of_line(s, i)
                 self.assertEqual(j, result, msg=i)
-    #@+node:ekr.20250113053113.1: *4* TestGlobals.test_g_splitLinesAtNewline
+
+    # @+node:ekr.20250113053113.1: *4* TestGlobals.test_g_splitLinesAtNewline
     def test_g_splitLinesAtNewline(self):
         for s, expected in (
             (None, []),
@@ -854,14 +913,14 @@ class TestGlobals(LeoUnitTest):
         ):
             result = g.splitLinesAtNewline(s)
             self.assertEqual(result, expected, msg=repr(s))
-    #@+node:ekr.20210905203541.54: *4* TestGlobals.test_g_splitLongFileName
+
+    # @+node:ekr.20210905203541.54: *4* TestGlobals.test_g_splitLongFileName
     def test_g_splitLongFileName(self):
-        table = (
-            r'abcd/xy\pdqabc/aaa.py',
-        )
+        table = (r'abcd/xy\pdqabc/aaa.py',)
         for s in table:
             g.splitLongFileName(s, limit=3)
-    #@+node:ekr.20210905203541.55: *4* TestGlobals.test_g_stripPathCruft
+
+    # @+node:ekr.20210905203541.55: *4* TestGlobals.test_g_stripPathCruft
     def test_g_stripPathCruft(self):
         table = (
             (None, None),  # Retain empty paths for warnings.
@@ -874,7 +933,8 @@ class TestGlobals(LeoUnitTest):
         for path, expected in table:
             result = g.stripPathCruft(path)
             self.assertEqual(result, expected)
-    #@+node:ekr.20210905203541.56: *4* TestGlobals.test_g_warnOnReadOnlyFile
+
+    # @+node:ekr.20210905203541.56: *4* TestGlobals.test_g_warnOnReadOnlyFile
     def test_g_warnOnReadOnlyFile(self):
         c = self.c
         fc = c.fileCommands
@@ -885,7 +945,8 @@ class TestGlobals(LeoUnitTest):
             assert fc.read_only
         else:  # pragma: no cover
             fc.warnOnReadOnlyFiles(path)
-    #@+node:ekr.20210901140645.19: *4* TestGlobals.test_getLastTracebackFileAndLineNumber
+
+    # @+node:ekr.20210901140645.19: *4* TestGlobals.test_getLastTracebackFileAndLineNumber
     def test_getLastTracebackFileAndLineNumber(self):
         fn = ''
         try:
@@ -894,8 +955,8 @@ class TestGlobals(LeoUnitTest):
             fn, n = g.getLastTracebackFileAndLineNumber()
         self.assertEqual(fn.lower(), __file__.lower())
 
-    #@+node:ekr.20231228234020.1: *3* --- gnx tests
-    #@+node:ekr.20230325055810.1: *4* TestGlobals.test_g_findGnx
+    # @+node:ekr.20231228234020.1: *3* --- gnx tests
+    # @+node:ekr.20230325055810.1: *4* TestGlobals.test_g_findGnx
     def test_g_findGnx(self):
         c = self.c
 
@@ -918,9 +979,9 @@ class TestGlobals(LeoUnitTest):
         for p in c.all_positions():
             for gnx in (f"{p.gnx}", f"{p.gnx}::0"):
                 self.assertEqual(p, g.findGnx(gnx, c), msg=gnx)
-    #@+node:ekr.20230703175743.1: *4* TestGlobals.test_g_findUnl (legacy)
-    def test_g_findUnl(self):
 
+    # @+node:ekr.20230703175743.1: *4* TestGlobals.test_g_findUnl (legacy)
+    def test_g_findUnl(self):
         c = self.c
 
         # Create the test tree.
@@ -937,16 +998,16 @@ class TestGlobals(LeoUnitTest):
             if 0:  # I don't understand the old-style format!
                 aList2 = [f"{z}:0" for z in headlines]
                 self.assertEqual(p, g.findUnl(aList2, c), msg=','.join(aList2))
-    #@+node:ekr.20230701085746.1: *4* TestGlobals.test_g_isValidUnl
-    def test_g_isValidUnl(self):
 
+    # @+node:ekr.20230701085746.1: *4* TestGlobals.test_g_isValidUnl
+    def test_g_isValidUnl(self):
         for unl in self.valid_unls + self.missing_unls:
             self.assertTrue(g.isValidUnl(unl), msg=unl)
         for unl in self.invalid_unls:
             self.assertFalse(g.isValidUnl(unl), msg=unl)
-    #@+node:ekr.20230701171707.1: *4* TestGlobals.test_g_getUNLFilePart
-    def test_g_getUNLFilePart(self):
 
+    # @+node:ekr.20230701171707.1: *4* TestGlobals.test_g_getUNLFilePart
+    def test_g_getUNLFilePart(self):
         table = (
             ('unl:' + 'gnx://a.leo#whatever', 'a.leo'),
             ('unl:' + '//b.leo#whatever', 'b.leo'),
@@ -955,9 +1016,9 @@ class TestGlobals(LeoUnitTest):
         )
         for unl, expected in table:
             self.assertEqual(expected, g.getUNLFilePart(unl), msg=unl)
-    #@+node:ekr.20230701101300.1: *4* TestGlobals.test_g_isValidUrl
-    def test_g_isValidUrl(self):
 
+    # @+node:ekr.20230701101300.1: *4* TestGlobals.test_g_isValidUrl
+    def test_g_isValidUrl(self):
         bad_table = ('@whatever',)
         good_table = (
             'http://leo-editor.github.io/leo-editor/preface.html',
@@ -967,9 +1028,9 @@ class TestGlobals(LeoUnitTest):
             self.assertTrue(g.isValidUrl(unl), msg=unl)
         for unl in self.invalid_unls + bad_table:
             self.assertFalse(g.isValidUrl(unl), msg=unl)
-    #@+node:ekr.20230701095636.1: *4* TestGlobals.test_g_findAnyUnl
-    def test_g_findAnyUnl(self):
 
+    # @+node:ekr.20230701095636.1: *4* TestGlobals.test_g_findAnyUnl
+    def test_g_findAnyUnl(self):
         c = self.c
         # Create a sibling after the root position.
         self._make_tree(c, root_h='root')
@@ -1011,9 +1072,9 @@ class TestGlobals(LeoUnitTest):
                 self.assertEqual(None, g.findAnyUnl(unl, c), msg=unl)
         finally:
             sys.stdout = old_stdout
-    #@+node:ekr.20230701113123.1: *4* TestGlobals.test_p_get_star_UNL
-    def test_p_get_star_UNL(self):
 
+    # @+node:ekr.20230701113123.1: *4* TestGlobals.test_p_get_star_UNL
+    def test_p_get_star_UNL(self):
         # Test 11 p.get_*_UNL methods.
         c = self.c
         self._make_tree(c)
@@ -1084,9 +1145,9 @@ class TestGlobals(LeoUnitTest):
                 ):
                     msg = f"{f.__name__}: kind: {kind} full: {full}"
                     self.assertEqual(expected, f(), msg=msg)
-    #@+node:ekr.20230703175447.1: *4* TestGlobals.test_g_openUNLFile
-    def test_g_openUNLFile(self):
 
+    # @+node:ekr.20230703175447.1: *4* TestGlobals.test_g_openUNLFile
+    def test_g_openUNLFile(self):
         # Create a new commander
         c1 = self.c
         c2 = self._patch_at_data_unl_path_prefixes()
@@ -1101,21 +1162,22 @@ class TestGlobals(LeoUnitTest):
         # Test of short file names.
         c5 = g.openUNLFile(c1, c1.shortFileName())
         self.assertEqual(c5, c1)
-    #@+node:ekr.20230701103509.1: *4* TestGlobals.test_g_parsePathData
-    def test_g_parsePathData(self) -> None:
 
+    # @+node:ekr.20230701103509.1: *4* TestGlobals.test_g_parsePathData
+    def test_g_parsePathData(self) -> None:
         c = self.c
 
         # Set @data unl-path-prefixes
 
         s = self.prep(
-        """
+            """
             # lines have the form:
             # x.leo: <absolute path to x.leo>
 
             test.leo:    c:/Repos/leo-editor/leo/test
             LeoDocs.leo: c:/Repos/leo-editor/leo/doc
-        """)
+        """
+        )
         lines = g.splitLines(s)
         self._set_setting(c, kind='data', name='unl-path-prefixes', val=lines)
         lines2 = c.config.getData('unl-path-prefixes')
@@ -1128,6 +1190,9 @@ class TestGlobals(LeoUnitTest):
         paths = ['c:/Repos/leo-editor/leo/test', 'c:/Repos/leo-editor/leo/doc']
         expected_paths = [os.path.normpath(z) for z in paths]
         self.assertEqual(list(sorted(d.values())), list(sorted(expected_paths)))
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

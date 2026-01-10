@@ -24,7 +24,7 @@ ruby_main_attributes_dict = {
 # Attributes dict for ruby_doublequoteliteral ruleset.
 ruby_doublequoteliteral_attributes_dict = {
     "default": "LITERAL1",
-        # Fix https://github.com/leo-editor/leo-editor/issues/47
+    # Fix https://github.com/leo-editor/leo-editor/issues/47
     "digit_re": "",
     "escape": "\\",
     "highlight_digits": "true",
@@ -95,222 +95,446 @@ keywordsDictDict = {
 
 # Rules for ruby_main ruleset.
 
+
 def ruby_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="=begin", end="=end")
 
+
 def ruby_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="#{", end="}",
-          exclude_match=True)
+    return colorer.match_span(s, i, kind="literal2", begin="#{", end="}", exclude_match=True)
+
 
 def ruby_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          delegate="ruby::doublequoteliteral",
-          no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="ruby::doublequoteliteral", no_line_break=True
+    )
+
 
 def ruby_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def ruby_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
 
+
 def ruby_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
+
 
 def ruby_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
 
+
 def ruby_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="(")
+
 
 def ruby_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=")")
 
+
 def ruby_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="::")
+
 
 def ruby_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="===")
 
+
 def ruby_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def ruby_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">>")
 
+
 def ruby_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<<")
+
 
 def ruby_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
 
+
 def ruby_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def ruby_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def ruby_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def ruby_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="**")
 
+
 def ruby_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def ruby_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def ruby_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def ruby_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def ruby_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def ruby_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def ruby_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def ruby_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def ruby_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def ruby_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="...")
 
+
 def ruby_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="..")
+
 
 def ruby_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
 
+
 def ruby_rule31(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
+
 
 def ruby_rule32(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
 
+
 def ruby_rule33(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_whitespace_end=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+
 
 def ruby_rule34(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def ruby_rule35(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for ruby_main ruleset.
 rulesDict1 = {
-    "!": [ruby_rule23,],
-    "\"": [ruby_rule2,],
-    "#": [ruby_rule1, ruby_rule4,],
-    "%": [ruby_rule20,],
-    "&": [ruby_rule21,],
-    "'": [ruby_rule3,],
-    "(": [ruby_rule7,],
-    ")": [ruby_rule8,],
-    "*": [ruby_rule18, ruby_rule19,],
-    "+": [ruby_rule15,],
-    "-": [ruby_rule16,],
-    ".": [ruby_rule28, ruby_rule29,],
-    "/": [ruby_rule17,],
-    "0": [ruby_rule35,],
-    "1": [ruby_rule35,],
-    "2": [ruby_rule35,],
-    "3": [ruby_rule35,],
-    "4": [ruby_rule35,],
-    "5": [ruby_rule35,],
-    "6": [ruby_rule35,],
-    "7": [ruby_rule35,],
-    "8": [ruby_rule35,],
-    "9": [ruby_rule35,],
-    ":": [ruby_rule9, ruby_rule33, ruby_rule34,],
-    "<": [ruby_rule13, ruby_rule14, ruby_rule25,],
-    "=": [ruby_rule0, ruby_rule10, ruby_rule11,],
-    ">": [ruby_rule12, ruby_rule24,],
-    "?": [ruby_rule32,],
-    "@": [ruby_rule35,],
-    "A": [ruby_rule35,],
-    "B": [ruby_rule35,],
-    "C": [ruby_rule35,],
-    "D": [ruby_rule35,],
-    "E": [ruby_rule35,],
-    "F": [ruby_rule35,],
-    "G": [ruby_rule35,],
-    "H": [ruby_rule35,],
-    "I": [ruby_rule35,],
-    "J": [ruby_rule35,],
-    "K": [ruby_rule35,],
-    "L": [ruby_rule35,],
-    "M": [ruby_rule35,],
-    "N": [ruby_rule35,],
-    "O": [ruby_rule35,],
-    "P": [ruby_rule35,],
-    "Q": [ruby_rule35,],
-    "R": [ruby_rule35,],
-    "S": [ruby_rule35,],
-    "T": [ruby_rule35,],
-    "U": [ruby_rule35,],
-    "V": [ruby_rule35,],
-    "W": [ruby_rule35,],
-    "X": [ruby_rule35,],
-    "Y": [ruby_rule35,],
-    "Z": [ruby_rule35,],
-    "[": [ruby_rule31,],
-    "]": [ruby_rule30,],
-    "^": [ruby_rule26,],
-    "_": [ruby_rule35,],
-    "a": [ruby_rule35,],
-    "b": [ruby_rule35,],
-    "c": [ruby_rule35,],
-    "d": [ruby_rule35,],
-    "e": [ruby_rule35,],
-    "f": [ruby_rule35,],
-    "g": [ruby_rule35,],
-    "h": [ruby_rule35,],
-    "i": [ruby_rule35,],
-    "j": [ruby_rule35,],
-    "k": [ruby_rule35,],
-    "l": [ruby_rule35,],
-    "m": [ruby_rule35,],
-    "n": [ruby_rule35,],
-    "o": [ruby_rule35,],
-    "p": [ruby_rule35,],
-    "q": [ruby_rule35,],
-    "r": [ruby_rule35,],
-    "s": [ruby_rule35,],
-    "t": [ruby_rule35,],
-    "u": [ruby_rule35,],
-    "v": [ruby_rule35,],
-    "w": [ruby_rule35,],
-    "x": [ruby_rule35,],
-    "y": [ruby_rule35,],
-    "z": [ruby_rule35,],
-    "{": [ruby_rule5,],
-    "|": [ruby_rule22,],
-    "}": [ruby_rule6,],
-    "~": [ruby_rule27,],
+    "!": [
+        ruby_rule23,
+    ],
+    "\"": [
+        ruby_rule2,
+    ],
+    "#": [
+        ruby_rule1,
+        ruby_rule4,
+    ],
+    "%": [
+        ruby_rule20,
+    ],
+    "&": [
+        ruby_rule21,
+    ],
+    "'": [
+        ruby_rule3,
+    ],
+    "(": [
+        ruby_rule7,
+    ],
+    ")": [
+        ruby_rule8,
+    ],
+    "*": [
+        ruby_rule18,
+        ruby_rule19,
+    ],
+    "+": [
+        ruby_rule15,
+    ],
+    "-": [
+        ruby_rule16,
+    ],
+    ".": [
+        ruby_rule28,
+        ruby_rule29,
+    ],
+    "/": [
+        ruby_rule17,
+    ],
+    "0": [
+        ruby_rule35,
+    ],
+    "1": [
+        ruby_rule35,
+    ],
+    "2": [
+        ruby_rule35,
+    ],
+    "3": [
+        ruby_rule35,
+    ],
+    "4": [
+        ruby_rule35,
+    ],
+    "5": [
+        ruby_rule35,
+    ],
+    "6": [
+        ruby_rule35,
+    ],
+    "7": [
+        ruby_rule35,
+    ],
+    "8": [
+        ruby_rule35,
+    ],
+    "9": [
+        ruby_rule35,
+    ],
+    ":": [
+        ruby_rule9,
+        ruby_rule33,
+        ruby_rule34,
+    ],
+    "<": [
+        ruby_rule13,
+        ruby_rule14,
+        ruby_rule25,
+    ],
+    "=": [
+        ruby_rule0,
+        ruby_rule10,
+        ruby_rule11,
+    ],
+    ">": [
+        ruby_rule12,
+        ruby_rule24,
+    ],
+    "?": [
+        ruby_rule32,
+    ],
+    "@": [
+        ruby_rule35,
+    ],
+    "A": [
+        ruby_rule35,
+    ],
+    "B": [
+        ruby_rule35,
+    ],
+    "C": [
+        ruby_rule35,
+    ],
+    "D": [
+        ruby_rule35,
+    ],
+    "E": [
+        ruby_rule35,
+    ],
+    "F": [
+        ruby_rule35,
+    ],
+    "G": [
+        ruby_rule35,
+    ],
+    "H": [
+        ruby_rule35,
+    ],
+    "I": [
+        ruby_rule35,
+    ],
+    "J": [
+        ruby_rule35,
+    ],
+    "K": [
+        ruby_rule35,
+    ],
+    "L": [
+        ruby_rule35,
+    ],
+    "M": [
+        ruby_rule35,
+    ],
+    "N": [
+        ruby_rule35,
+    ],
+    "O": [
+        ruby_rule35,
+    ],
+    "P": [
+        ruby_rule35,
+    ],
+    "Q": [
+        ruby_rule35,
+    ],
+    "R": [
+        ruby_rule35,
+    ],
+    "S": [
+        ruby_rule35,
+    ],
+    "T": [
+        ruby_rule35,
+    ],
+    "U": [
+        ruby_rule35,
+    ],
+    "V": [
+        ruby_rule35,
+    ],
+    "W": [
+        ruby_rule35,
+    ],
+    "X": [
+        ruby_rule35,
+    ],
+    "Y": [
+        ruby_rule35,
+    ],
+    "Z": [
+        ruby_rule35,
+    ],
+    "[": [
+        ruby_rule31,
+    ],
+    "]": [
+        ruby_rule30,
+    ],
+    "^": [
+        ruby_rule26,
+    ],
+    "_": [
+        ruby_rule35,
+    ],
+    "a": [
+        ruby_rule35,
+    ],
+    "b": [
+        ruby_rule35,
+    ],
+    "c": [
+        ruby_rule35,
+    ],
+    "d": [
+        ruby_rule35,
+    ],
+    "e": [
+        ruby_rule35,
+    ],
+    "f": [
+        ruby_rule35,
+    ],
+    "g": [
+        ruby_rule35,
+    ],
+    "h": [
+        ruby_rule35,
+    ],
+    "i": [
+        ruby_rule35,
+    ],
+    "j": [
+        ruby_rule35,
+    ],
+    "k": [
+        ruby_rule35,
+    ],
+    "l": [
+        ruby_rule35,
+    ],
+    "m": [
+        ruby_rule35,
+    ],
+    "n": [
+        ruby_rule35,
+    ],
+    "o": [
+        ruby_rule35,
+    ],
+    "p": [
+        ruby_rule35,
+    ],
+    "q": [
+        ruby_rule35,
+    ],
+    "r": [
+        ruby_rule35,
+    ],
+    "s": [
+        ruby_rule35,
+    ],
+    "t": [
+        ruby_rule35,
+    ],
+    "u": [
+        ruby_rule35,
+    ],
+    "v": [
+        ruby_rule35,
+    ],
+    "w": [
+        ruby_rule35,
+    ],
+    "x": [
+        ruby_rule35,
+    ],
+    "y": [
+        ruby_rule35,
+    ],
+    "z": [
+        ruby_rule35,
+    ],
+    "{": [
+        ruby_rule5,
+    ],
+    "|": [
+        ruby_rule22,
+    ],
+    "}": [
+        ruby_rule6,
+    ],
+    "~": [
+        ruby_rule27,
+    ],
 }
 
 # Rules for ruby_doublequoteliteral ruleset.
 
+
 def ruby_rule36(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="#{", end="}",
-          exclude_match=True)
+    return colorer.match_span(s, i, kind="literal2", begin="#{", end="}", exclude_match=True)
+
 
 # Rules dict for ruby_doublequoteliteral ruleset.
 rulesDict2 = {
-    "#": [ruby_rule36,],
+    "#": [
+        ruby_rule36,
+    ],
 }
 
 # x.rulesDictDict for ruby mode.

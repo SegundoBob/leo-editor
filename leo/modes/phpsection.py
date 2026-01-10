@@ -2545,465 +2545,892 @@ keywordsDictDict = {
 
 # Rules for phpsection_main ruleset.
 
+
 def phpsection_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php")
+
 
 def phpsection_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>", delegate="phpsection::php")
+
 
 def phpsection_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php")
+
 
 def phpsection_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->")
 
+
 def phpsection_rule4(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>",
-          delegate="phpsection::php")
+    return colorer.match_span_regexp(
+        s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>", delegate="phpsection::php"
+    )
+
 
 def phpsection_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>",
-          delegate="phpsection::javascript")
+    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="phpsection::javascript")
+
 
 def phpsection_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>",
-          delegate="html::css")
+    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css")
+
 
 def phpsection_rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
-          delegate="xml::dtd-tags")
+    return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">", delegate="xml::dtd-tags")
+
 
 def phpsection_rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
-          delegate="phpsection::tags")
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="phpsection::tags")
+
 
 def phpsection_rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
-          no_word_break=True)
+    return colorer.match_span(s, i, kind="literal2", begin="&", end=";", no_word_break=True)
+
 
 # Rules dict for phpsection_main ruleset.
 rulesDict1 = {
-    "&": [phpsection_rule9,],
-    "<": [phpsection_rule0, phpsection_rule1, phpsection_rule2, phpsection_rule3, phpsection_rule5, phpsection_rule6, phpsection_rule7, phpsection_rule8,],
-    "< ": [phpsection_rule4,],
+    "&": [
+        phpsection_rule9,
+    ],
+    "<": [
+        phpsection_rule0,
+        phpsection_rule1,
+        phpsection_rule2,
+        phpsection_rule3,
+        phpsection_rule5,
+        phpsection_rule6,
+        phpsection_rule7,
+        phpsection_rule8,
+    ],
+    "< ": [
+        phpsection_rule4,
+    ],
 }
 
 # Rules for phpsection_tags ruleset.
 
+
 def phpsection_rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php")
+
 
 def phpsection_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>", delegate="phpsection::php")
+
 
 def phpsection_rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php")
+
 
 def phpsection_rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          delegate="phpsection::tags_literal")
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="phpsection::tags_literal")
+
 
 def phpsection_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          delegate="phpsection::tags_literal")
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="phpsection::tags_literal")
+
 
 def phpsection_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 # Rules dict for phpsection_tags ruleset.
 rulesDict2 = {
-    "\"": [phpsection_rule13,],
-    "'": [phpsection_rule14,],
-    "<": [phpsection_rule10, phpsection_rule11, phpsection_rule12,],
-    "=": [phpsection_rule15,],
+    "\"": [
+        phpsection_rule13,
+    ],
+    "'": [
+        phpsection_rule14,
+    ],
+    "<": [
+        phpsection_rule10,
+        phpsection_rule11,
+        phpsection_rule12,
+    ],
+    "=": [
+        phpsection_rule15,
+    ],
 }
 
 # Rules for phpsection_tags_literal ruleset.
 
+
 def phpsection_rule16(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php")
+
 
 def phpsection_rule17(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>", delegate="phpsection::php")
+
 
 def phpsection_rule18(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
-          delegate="phpsection::php")
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php")
+
 
 # Rules dict for phpsection_tags_literal ruleset.
 rulesDict3 = {
-    "<": [phpsection_rule16, phpsection_rule17, phpsection_rule18,],
+    "<": [
+        phpsection_rule16,
+        phpsection_rule17,
+        phpsection_rule18,
+    ],
 }
 
 # Rules for phpsection_php ruleset.
 
+
 def phpsection_rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
-          delegate="phpsection::phpdoc")
+    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="phpsection::phpdoc")
+
 
 def phpsection_rule20(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def phpsection_rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          delegate="phpsection::php_literal")
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="phpsection::php_literal")
+
 
 def phpsection_rule22(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
 
+
 def phpsection_rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
-          delegate="phpsection::php_literal")
+    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", delegate="phpsection::php_literal")
+
 
 def phpsection_rule24(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//")
 
+
 def phpsection_rule25(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
 
+
 def phpsection_rule26(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*", end="$1",
-          delegate="phpsection::php_literal")
+    return colorer.match_span_regexp(
+        s,
+        i,
+        kind="literal1",
+        begin="<<<[[:space:]'\"]*([[:alnum:]_]+)[[:space:]'\"]*",
+        end="$1",
+        delegate="phpsection::php_literal",
+    )
+
 
 def phpsection_rule27(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$")
 
+
 def phpsection_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def phpsection_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="->")
 
+
 def phpsection_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def phpsection_rule31(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def phpsection_rule32(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def phpsection_rule33(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def phpsection_rule34(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def phpsection_rule35(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def phpsection_rule36(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def phpsection_rule37(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def phpsection_rule38(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def phpsection_rule39(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def phpsection_rule40(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
+
 
 def phpsection_rule41(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def phpsection_rule42(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def phpsection_rule43(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def phpsection_rule44(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def phpsection_rule45(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
 
+
 def phpsection_rule46(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def phpsection_rule47(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def phpsection_rule48(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
+
 
 def phpsection_rule49(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=";")
 
+
 def phpsection_rule50(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
+
 
 def phpsection_rule51(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
 
+
 def phpsection_rule52(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
+
 
 def phpsection_rule53(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="@")
 
+
 def phpsection_rule54(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def phpsection_rule55(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def phpsection_rule56(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for phpsection_php ruleset.
 rulesDict4 = {
-    "!": [phpsection_rule30,],
-    "\"": [phpsection_rule21,],
-    "#": [phpsection_rule25,],
-    "$": [phpsection_rule27,],
-    "%": [phpsection_rule40,],
-    "&": [phpsection_rule41,],
-    "'": [phpsection_rule22,],
-    "(": [phpsection_rule55,],
-    "*": [phpsection_rule37,],
-    "+": [phpsection_rule34,],
-    ",": [phpsection_rule48,],
-    "-": [phpsection_rule29, phpsection_rule35,],
-    ".": [phpsection_rule45,],
-    "/": [phpsection_rule19, phpsection_rule20, phpsection_rule24, phpsection_rule36,],
-    "0": [phpsection_rule56,],
-    "1": [phpsection_rule56,],
-    "2": [phpsection_rule56,],
-    "3": [phpsection_rule56,],
-    "4": [phpsection_rule56,],
-    "5": [phpsection_rule56,],
-    "6": [phpsection_rule56,],
-    "7": [phpsection_rule56,],
-    "8": [phpsection_rule56,],
-    "9": [phpsection_rule56,],
-    ":": [phpsection_rule54,],
-    ";": [phpsection_rule49,],
-    "<": [phpsection_rule32, phpsection_rule39,],
-    "< ": [phpsection_rule26,],
-    "=": [phpsection_rule28, phpsection_rule33,],
-    ">": [phpsection_rule31, phpsection_rule38,],
-    "?": [phpsection_rule52,],
-    "@": [phpsection_rule53, phpsection_rule56,],
-    "A": [phpsection_rule56,],
-    "B": [phpsection_rule56,],
-    "C": [phpsection_rule56,],
-    "D": [phpsection_rule56,],
-    "E": [phpsection_rule56,],
-    "F": [phpsection_rule56,],
-    "G": [phpsection_rule56,],
-    "H": [phpsection_rule56,],
-    "I": [phpsection_rule56,],
-    "J": [phpsection_rule56,],
-    "K": [phpsection_rule56,],
-    "L": [phpsection_rule56,],
-    "M": [phpsection_rule56,],
-    "N": [phpsection_rule56,],
-    "O": [phpsection_rule56,],
-    "P": [phpsection_rule56,],
-    "Q": [phpsection_rule56,],
-    "R": [phpsection_rule56,],
-    "S": [phpsection_rule56,],
-    "T": [phpsection_rule56,],
-    "U": [phpsection_rule56,],
-    "V": [phpsection_rule56,],
-    "W": [phpsection_rule56,],
-    "X": [phpsection_rule56,],
-    "Y": [phpsection_rule56,],
-    "Z": [phpsection_rule56,],
-    "[": [phpsection_rule51,],
-    "]": [phpsection_rule50,],
-    "^": [phpsection_rule43,],
-    "_": [phpsection_rule56,],
-    "`": [phpsection_rule23,],
-    "a": [phpsection_rule56,],
-    "b": [phpsection_rule56,],
-    "c": [phpsection_rule56,],
-    "d": [phpsection_rule56,],
-    "e": [phpsection_rule56,],
-    "f": [phpsection_rule56,],
-    "g": [phpsection_rule56,],
-    "h": [phpsection_rule56,],
-    "i": [phpsection_rule56,],
-    "j": [phpsection_rule56,],
-    "k": [phpsection_rule56,],
-    "l": [phpsection_rule56,],
-    "m": [phpsection_rule56,],
-    "n": [phpsection_rule56,],
-    "o": [phpsection_rule56,],
-    "p": [phpsection_rule56,],
-    "q": [phpsection_rule56,],
-    "r": [phpsection_rule56,],
-    "s": [phpsection_rule56,],
-    "t": [phpsection_rule56,],
-    "u": [phpsection_rule56,],
-    "v": [phpsection_rule56,],
-    "w": [phpsection_rule56,],
-    "x": [phpsection_rule56,],
-    "y": [phpsection_rule56,],
-    "z": [phpsection_rule56,],
-    "{": [phpsection_rule47,],
-    "|": [phpsection_rule42,],
-    "}": [phpsection_rule46,],
-    "~": [phpsection_rule44,],
+    "!": [
+        phpsection_rule30,
+    ],
+    "\"": [
+        phpsection_rule21,
+    ],
+    "#": [
+        phpsection_rule25,
+    ],
+    "$": [
+        phpsection_rule27,
+    ],
+    "%": [
+        phpsection_rule40,
+    ],
+    "&": [
+        phpsection_rule41,
+    ],
+    "'": [
+        phpsection_rule22,
+    ],
+    "(": [
+        phpsection_rule55,
+    ],
+    "*": [
+        phpsection_rule37,
+    ],
+    "+": [
+        phpsection_rule34,
+    ],
+    ",": [
+        phpsection_rule48,
+    ],
+    "-": [
+        phpsection_rule29,
+        phpsection_rule35,
+    ],
+    ".": [
+        phpsection_rule45,
+    ],
+    "/": [
+        phpsection_rule19,
+        phpsection_rule20,
+        phpsection_rule24,
+        phpsection_rule36,
+    ],
+    "0": [
+        phpsection_rule56,
+    ],
+    "1": [
+        phpsection_rule56,
+    ],
+    "2": [
+        phpsection_rule56,
+    ],
+    "3": [
+        phpsection_rule56,
+    ],
+    "4": [
+        phpsection_rule56,
+    ],
+    "5": [
+        phpsection_rule56,
+    ],
+    "6": [
+        phpsection_rule56,
+    ],
+    "7": [
+        phpsection_rule56,
+    ],
+    "8": [
+        phpsection_rule56,
+    ],
+    "9": [
+        phpsection_rule56,
+    ],
+    ":": [
+        phpsection_rule54,
+    ],
+    ";": [
+        phpsection_rule49,
+    ],
+    "<": [
+        phpsection_rule32,
+        phpsection_rule39,
+    ],
+    "< ": [
+        phpsection_rule26,
+    ],
+    "=": [
+        phpsection_rule28,
+        phpsection_rule33,
+    ],
+    ">": [
+        phpsection_rule31,
+        phpsection_rule38,
+    ],
+    "?": [
+        phpsection_rule52,
+    ],
+    "@": [
+        phpsection_rule53,
+        phpsection_rule56,
+    ],
+    "A": [
+        phpsection_rule56,
+    ],
+    "B": [
+        phpsection_rule56,
+    ],
+    "C": [
+        phpsection_rule56,
+    ],
+    "D": [
+        phpsection_rule56,
+    ],
+    "E": [
+        phpsection_rule56,
+    ],
+    "F": [
+        phpsection_rule56,
+    ],
+    "G": [
+        phpsection_rule56,
+    ],
+    "H": [
+        phpsection_rule56,
+    ],
+    "I": [
+        phpsection_rule56,
+    ],
+    "J": [
+        phpsection_rule56,
+    ],
+    "K": [
+        phpsection_rule56,
+    ],
+    "L": [
+        phpsection_rule56,
+    ],
+    "M": [
+        phpsection_rule56,
+    ],
+    "N": [
+        phpsection_rule56,
+    ],
+    "O": [
+        phpsection_rule56,
+    ],
+    "P": [
+        phpsection_rule56,
+    ],
+    "Q": [
+        phpsection_rule56,
+    ],
+    "R": [
+        phpsection_rule56,
+    ],
+    "S": [
+        phpsection_rule56,
+    ],
+    "T": [
+        phpsection_rule56,
+    ],
+    "U": [
+        phpsection_rule56,
+    ],
+    "V": [
+        phpsection_rule56,
+    ],
+    "W": [
+        phpsection_rule56,
+    ],
+    "X": [
+        phpsection_rule56,
+    ],
+    "Y": [
+        phpsection_rule56,
+    ],
+    "Z": [
+        phpsection_rule56,
+    ],
+    "[": [
+        phpsection_rule51,
+    ],
+    "]": [
+        phpsection_rule50,
+    ],
+    "^": [
+        phpsection_rule43,
+    ],
+    "_": [
+        phpsection_rule56,
+    ],
+    "`": [
+        phpsection_rule23,
+    ],
+    "a": [
+        phpsection_rule56,
+    ],
+    "b": [
+        phpsection_rule56,
+    ],
+    "c": [
+        phpsection_rule56,
+    ],
+    "d": [
+        phpsection_rule56,
+    ],
+    "e": [
+        phpsection_rule56,
+    ],
+    "f": [
+        phpsection_rule56,
+    ],
+    "g": [
+        phpsection_rule56,
+    ],
+    "h": [
+        phpsection_rule56,
+    ],
+    "i": [
+        phpsection_rule56,
+    ],
+    "j": [
+        phpsection_rule56,
+    ],
+    "k": [
+        phpsection_rule56,
+    ],
+    "l": [
+        phpsection_rule56,
+    ],
+    "m": [
+        phpsection_rule56,
+    ],
+    "n": [
+        phpsection_rule56,
+    ],
+    "o": [
+        phpsection_rule56,
+    ],
+    "p": [
+        phpsection_rule56,
+    ],
+    "q": [
+        phpsection_rule56,
+    ],
+    "r": [
+        phpsection_rule56,
+    ],
+    "s": [
+        phpsection_rule56,
+    ],
+    "t": [
+        phpsection_rule56,
+    ],
+    "u": [
+        phpsection_rule56,
+    ],
+    "v": [
+        phpsection_rule56,
+    ],
+    "w": [
+        phpsection_rule56,
+    ],
+    "x": [
+        phpsection_rule56,
+    ],
+    "y": [
+        phpsection_rule56,
+    ],
+    "z": [
+        phpsection_rule56,
+    ],
+    "{": [
+        phpsection_rule47,
+    ],
+    "|": [
+        phpsection_rule42,
+    ],
+    "}": [
+        phpsection_rule46,
+    ],
+    "~": [
+        phpsection_rule44,
+    ],
 }
 
 # Rules for phpsection_php_literal ruleset.
 
+
 def phpsection_rule57(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$")
 
+
 # Rules dict for phpsection_php_literal ruleset.
 rulesDict5 = {
-    "$": [phpsection_rule57,],
+    "$": [
+        phpsection_rule57,
+    ],
 }
 
 # Rules for phpsection_javascript ruleset.
 
+
 def phpsection_rule58(colorer, s, i):
-    return colorer.match_seq(s, i, kind="markup", seq=">",
-          delegate="phpsection::javascript+php")
+    return colorer.match_seq(s, i, kind="markup", seq=">", delegate="phpsection::javascript+php")
+
 
 def phpsection_rule59(colorer, s, i):
-    return colorer.match_seq(s, i, kind="markup", seq="SRC=",
-          delegate="phpsection::back_to_html")
+    return colorer.match_seq(s, i, kind="markup", seq="SRC=", delegate="phpsection::back_to_html")
+
 
 # Rules dict for phpsection_javascript ruleset.
 rulesDict6 = {
-    ">": [phpsection_rule58,],
-    "S": [phpsection_rule59,],
+    ">": [
+        phpsection_rule58,
+    ],
+    "S": [
+        phpsection_rule59,
+    ],
 }
 
 # Rules for phpsection_javascript_php ruleset.
 
+
 def phpsection_rule60(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>",
-          delegate="php::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>", delegate="php::php")
+
 
 def phpsection_rule61(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>",
-          delegate="php::php")
+    return colorer.match_span(s, i, kind="markup", begin="<?", end="?>", delegate="php::php")
+
 
 def phpsection_rule62(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>",
-          delegate="php::php")
+    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>", delegate="php::php")
 
 
 # Rules dict for phpsection_javascript_php ruleset.
 rulesDict7 = {
-    "<": [phpsection_rule60, phpsection_rule61, phpsection_rule62,],
+    "<": [
+        phpsection_rule60,
+        phpsection_rule61,
+        phpsection_rule62,
+    ],
 }
 
 # Rules for phpsection_phpdoc ruleset.
 
+
 def phpsection_rule63(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment3", seq="{")
+
 
 def phpsection_rule64(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment3", seq="*")
 
+
 def phpsection_rule65(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="<!--", end="-->")
+
 
 def phpsection_rule66(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment3", seq="<<")
 
+
 def phpsection_rule67(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment3", seq="<=")
+
 
 def phpsection_rule68(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment3", seq="< ")
 
+
 def phpsection_rule69(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
-          delegate="xml::tags",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True)
+
 
 def phpsection_rule70(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for phpsection_phpdoc ruleset.
 rulesDict8 = {
-    "*": [phpsection_rule64,],
-    "0": [phpsection_rule70,],
-    "1": [phpsection_rule70,],
-    "2": [phpsection_rule70,],
-    "3": [phpsection_rule70,],
-    "4": [phpsection_rule70,],
-    "5": [phpsection_rule70,],
-    "6": [phpsection_rule70,],
-    "7": [phpsection_rule70,],
-    "8": [phpsection_rule70,],
-    "9": [phpsection_rule70,],
-    "<": [phpsection_rule65, phpsection_rule66, phpsection_rule67, phpsection_rule68, phpsection_rule69,],
-    "@": [phpsection_rule70,],
-    "A": [phpsection_rule70,],
-    "B": [phpsection_rule70,],
-    "C": [phpsection_rule70,],
-    "D": [phpsection_rule70,],
-    "E": [phpsection_rule70,],
-    "F": [phpsection_rule70,],
-    "G": [phpsection_rule70,],
-    "H": [phpsection_rule70,],
-    "I": [phpsection_rule70,],
-    "J": [phpsection_rule70,],
-    "K": [phpsection_rule70,],
-    "L": [phpsection_rule70,],
-    "M": [phpsection_rule70,],
-    "N": [phpsection_rule70,],
-    "O": [phpsection_rule70,],
-    "P": [phpsection_rule70,],
-    "Q": [phpsection_rule70,],
-    "R": [phpsection_rule70,],
-    "S": [phpsection_rule70,],
-    "T": [phpsection_rule70,],
-    "U": [phpsection_rule70,],
-    "V": [phpsection_rule70,],
-    "W": [phpsection_rule70,],
-    "X": [phpsection_rule70,],
-    "Y": [phpsection_rule70,],
-    "Z": [phpsection_rule70,],
-    "_": [phpsection_rule70,],
-    "a": [phpsection_rule70,],
-    "b": [phpsection_rule70,],
-    "c": [phpsection_rule70,],
-    "d": [phpsection_rule70,],
-    "e": [phpsection_rule70,],
-    "f": [phpsection_rule70,],
-    "g": [phpsection_rule70,],
-    "h": [phpsection_rule70,],
-    "i": [phpsection_rule70,],
-    "j": [phpsection_rule70,],
-    "k": [phpsection_rule70,],
-    "l": [phpsection_rule70,],
-    "m": [phpsection_rule70,],
-    "n": [phpsection_rule70,],
-    "o": [phpsection_rule70,],
-    "p": [phpsection_rule70,],
-    "q": [phpsection_rule70,],
-    "r": [phpsection_rule70,],
-    "s": [phpsection_rule70,],
-    "t": [phpsection_rule70,],
-    "u": [phpsection_rule70,],
-    "v": [phpsection_rule70,],
-    "w": [phpsection_rule70,],
-    "x": [phpsection_rule70,],
-    "y": [phpsection_rule70,],
-    "z": [phpsection_rule70,],
-    "{": [phpsection_rule63,],
+    "*": [
+        phpsection_rule64,
+    ],
+    "0": [
+        phpsection_rule70,
+    ],
+    "1": [
+        phpsection_rule70,
+    ],
+    "2": [
+        phpsection_rule70,
+    ],
+    "3": [
+        phpsection_rule70,
+    ],
+    "4": [
+        phpsection_rule70,
+    ],
+    "5": [
+        phpsection_rule70,
+    ],
+    "6": [
+        phpsection_rule70,
+    ],
+    "7": [
+        phpsection_rule70,
+    ],
+    "8": [
+        phpsection_rule70,
+    ],
+    "9": [
+        phpsection_rule70,
+    ],
+    "<": [
+        phpsection_rule65,
+        phpsection_rule66,
+        phpsection_rule67,
+        phpsection_rule68,
+        phpsection_rule69,
+    ],
+    "@": [
+        phpsection_rule70,
+    ],
+    "A": [
+        phpsection_rule70,
+    ],
+    "B": [
+        phpsection_rule70,
+    ],
+    "C": [
+        phpsection_rule70,
+    ],
+    "D": [
+        phpsection_rule70,
+    ],
+    "E": [
+        phpsection_rule70,
+    ],
+    "F": [
+        phpsection_rule70,
+    ],
+    "G": [
+        phpsection_rule70,
+    ],
+    "H": [
+        phpsection_rule70,
+    ],
+    "I": [
+        phpsection_rule70,
+    ],
+    "J": [
+        phpsection_rule70,
+    ],
+    "K": [
+        phpsection_rule70,
+    ],
+    "L": [
+        phpsection_rule70,
+    ],
+    "M": [
+        phpsection_rule70,
+    ],
+    "N": [
+        phpsection_rule70,
+    ],
+    "O": [
+        phpsection_rule70,
+    ],
+    "P": [
+        phpsection_rule70,
+    ],
+    "Q": [
+        phpsection_rule70,
+    ],
+    "R": [
+        phpsection_rule70,
+    ],
+    "S": [
+        phpsection_rule70,
+    ],
+    "T": [
+        phpsection_rule70,
+    ],
+    "U": [
+        phpsection_rule70,
+    ],
+    "V": [
+        phpsection_rule70,
+    ],
+    "W": [
+        phpsection_rule70,
+    ],
+    "X": [
+        phpsection_rule70,
+    ],
+    "Y": [
+        phpsection_rule70,
+    ],
+    "Z": [
+        phpsection_rule70,
+    ],
+    "_": [
+        phpsection_rule70,
+    ],
+    "a": [
+        phpsection_rule70,
+    ],
+    "b": [
+        phpsection_rule70,
+    ],
+    "c": [
+        phpsection_rule70,
+    ],
+    "d": [
+        phpsection_rule70,
+    ],
+    "e": [
+        phpsection_rule70,
+    ],
+    "f": [
+        phpsection_rule70,
+    ],
+    "g": [
+        phpsection_rule70,
+    ],
+    "h": [
+        phpsection_rule70,
+    ],
+    "i": [
+        phpsection_rule70,
+    ],
+    "j": [
+        phpsection_rule70,
+    ],
+    "k": [
+        phpsection_rule70,
+    ],
+    "l": [
+        phpsection_rule70,
+    ],
+    "m": [
+        phpsection_rule70,
+    ],
+    "n": [
+        phpsection_rule70,
+    ],
+    "o": [
+        phpsection_rule70,
+    ],
+    "p": [
+        phpsection_rule70,
+    ],
+    "q": [
+        phpsection_rule70,
+    ],
+    "r": [
+        phpsection_rule70,
+    ],
+    "s": [
+        phpsection_rule70,
+    ],
+    "t": [
+        phpsection_rule70,
+    ],
+    "u": [
+        phpsection_rule70,
+    ],
+    "v": [
+        phpsection_rule70,
+    ],
+    "w": [
+        phpsection_rule70,
+    ],
+    "x": [
+        phpsection_rule70,
+    ],
+    "y": [
+        phpsection_rule70,
+    ],
+    "z": [
+        phpsection_rule70,
+    ],
+    "{": [
+        phpsection_rule63,
+    ],
 }
 
 # x.rulesDictDict for phpsection mode.
@@ -3020,5 +3447,7 @@ rulesDictDict = {
 
 # Import dict for phpsection mode.
 importDict = {
-    "phpsection_javascript_php": ["javascript::main",],
+    "phpsection_javascript_php": [
+        "javascript::main",
+    ],
 }

@@ -120,139 +120,311 @@ keywordsDictDict = {
 
 # Rules for ml_main ruleset.
 
+
 def ml_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="(*", end="*)")
 
+
 def ml_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="#\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="#\"", end="\"", no_line_break=True)
+
 
 def ml_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def ml_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def ml_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def ml_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def ml_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def ml_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def ml_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="::")
+
 
 def ml_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="@")
 
+
 def ml_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def ml_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<>")
 
+
 def ml_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def ml_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def ml_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def ml_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def ml_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":=")
+
 
 def ml_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for ml_main ruleset.
 rulesDict1 = {
-    "\"": [ml_rule2,],
-    "#": [ml_rule1,],
-    "(": [ml_rule0,],
-    "*": [ml_rule4,],
-    "+": [ml_rule5,],
-    "-": [ml_rule6,],
-    "/": [ml_rule3,],
-    "0": [ml_rule17,],
-    "1": [ml_rule17,],
-    "2": [ml_rule17,],
-    "3": [ml_rule17,],
-    "4": [ml_rule17,],
-    "5": [ml_rule17,],
-    "6": [ml_rule17,],
-    "7": [ml_rule17,],
-    "8": [ml_rule17,],
-    "9": [ml_rule17,],
-    ":": [ml_rule8, ml_rule16,],
-    "<": [ml_rule11, ml_rule12, ml_rule13,],
-    "=": [ml_rule10,],
-    ">": [ml_rule14, ml_rule15,],
-    "@": [ml_rule9, ml_rule17,],
-    "A": [ml_rule17,],
-    "B": [ml_rule17,],
-    "C": [ml_rule17,],
-    "D": [ml_rule17,],
-    "E": [ml_rule17,],
-    "F": [ml_rule17,],
-    "G": [ml_rule17,],
-    "H": [ml_rule17,],
-    "I": [ml_rule17,],
-    "J": [ml_rule17,],
-    "K": [ml_rule17,],
-    "L": [ml_rule17,],
-    "M": [ml_rule17,],
-    "N": [ml_rule17,],
-    "O": [ml_rule17,],
-    "P": [ml_rule17,],
-    "Q": [ml_rule17,],
-    "R": [ml_rule17,],
-    "S": [ml_rule17,],
-    "T": [ml_rule17,],
-    "U": [ml_rule17,],
-    "V": [ml_rule17,],
-    "W": [ml_rule17,],
-    "X": [ml_rule17,],
-    "Y": [ml_rule17,],
-    "Z": [ml_rule17,],
-    "^": [ml_rule7,],
-    "a": [ml_rule17,],
-    "b": [ml_rule17,],
-    "c": [ml_rule17,],
-    "d": [ml_rule17,],
-    "e": [ml_rule17,],
-    "f": [ml_rule17,],
-    "g": [ml_rule17,],
-    "h": [ml_rule17,],
-    "i": [ml_rule17,],
-    "j": [ml_rule17,],
-    "k": [ml_rule17,],
-    "l": [ml_rule17,],
-    "m": [ml_rule17,],
-    "n": [ml_rule17,],
-    "o": [ml_rule17,],
-    "p": [ml_rule17,],
-    "q": [ml_rule17,],
-    "r": [ml_rule17,],
-    "s": [ml_rule17,],
-    "t": [ml_rule17,],
-    "u": [ml_rule17,],
-    "v": [ml_rule17,],
-    "w": [ml_rule17,],
-    "x": [ml_rule17,],
-    "y": [ml_rule17,],
-    "z": [ml_rule17,],
+    "\"": [
+        ml_rule2,
+    ],
+    "#": [
+        ml_rule1,
+    ],
+    "(": [
+        ml_rule0,
+    ],
+    "*": [
+        ml_rule4,
+    ],
+    "+": [
+        ml_rule5,
+    ],
+    "-": [
+        ml_rule6,
+    ],
+    "/": [
+        ml_rule3,
+    ],
+    "0": [
+        ml_rule17,
+    ],
+    "1": [
+        ml_rule17,
+    ],
+    "2": [
+        ml_rule17,
+    ],
+    "3": [
+        ml_rule17,
+    ],
+    "4": [
+        ml_rule17,
+    ],
+    "5": [
+        ml_rule17,
+    ],
+    "6": [
+        ml_rule17,
+    ],
+    "7": [
+        ml_rule17,
+    ],
+    "8": [
+        ml_rule17,
+    ],
+    "9": [
+        ml_rule17,
+    ],
+    ":": [
+        ml_rule8,
+        ml_rule16,
+    ],
+    "<": [
+        ml_rule11,
+        ml_rule12,
+        ml_rule13,
+    ],
+    "=": [
+        ml_rule10,
+    ],
+    ">": [
+        ml_rule14,
+        ml_rule15,
+    ],
+    "@": [
+        ml_rule9,
+        ml_rule17,
+    ],
+    "A": [
+        ml_rule17,
+    ],
+    "B": [
+        ml_rule17,
+    ],
+    "C": [
+        ml_rule17,
+    ],
+    "D": [
+        ml_rule17,
+    ],
+    "E": [
+        ml_rule17,
+    ],
+    "F": [
+        ml_rule17,
+    ],
+    "G": [
+        ml_rule17,
+    ],
+    "H": [
+        ml_rule17,
+    ],
+    "I": [
+        ml_rule17,
+    ],
+    "J": [
+        ml_rule17,
+    ],
+    "K": [
+        ml_rule17,
+    ],
+    "L": [
+        ml_rule17,
+    ],
+    "M": [
+        ml_rule17,
+    ],
+    "N": [
+        ml_rule17,
+    ],
+    "O": [
+        ml_rule17,
+    ],
+    "P": [
+        ml_rule17,
+    ],
+    "Q": [
+        ml_rule17,
+    ],
+    "R": [
+        ml_rule17,
+    ],
+    "S": [
+        ml_rule17,
+    ],
+    "T": [
+        ml_rule17,
+    ],
+    "U": [
+        ml_rule17,
+    ],
+    "V": [
+        ml_rule17,
+    ],
+    "W": [
+        ml_rule17,
+    ],
+    "X": [
+        ml_rule17,
+    ],
+    "Y": [
+        ml_rule17,
+    ],
+    "Z": [
+        ml_rule17,
+    ],
+    "^": [
+        ml_rule7,
+    ],
+    "a": [
+        ml_rule17,
+    ],
+    "b": [
+        ml_rule17,
+    ],
+    "c": [
+        ml_rule17,
+    ],
+    "d": [
+        ml_rule17,
+    ],
+    "e": [
+        ml_rule17,
+    ],
+    "f": [
+        ml_rule17,
+    ],
+    "g": [
+        ml_rule17,
+    ],
+    "h": [
+        ml_rule17,
+    ],
+    "i": [
+        ml_rule17,
+    ],
+    "j": [
+        ml_rule17,
+    ],
+    "k": [
+        ml_rule17,
+    ],
+    "l": [
+        ml_rule17,
+    ],
+    "m": [
+        ml_rule17,
+    ],
+    "n": [
+        ml_rule17,
+    ],
+    "o": [
+        ml_rule17,
+    ],
+    "p": [
+        ml_rule17,
+    ],
+    "q": [
+        ml_rule17,
+    ],
+    "r": [
+        ml_rule17,
+    ],
+    "s": [
+        ml_rule17,
+    ],
+    "t": [
+        ml_rule17,
+    ],
+    "u": [
+        ml_rule17,
+    ],
+    "v": [
+        ml_rule17,
+    ],
+    "w": [
+        ml_rule17,
+    ],
+    "x": [
+        ml_rule17,
+    ],
+    "y": [
+        ml_rule17,
+    ],
+    "z": [
+        ml_rule17,
+    ],
 }
 
 # x.rulesDictDict for ml mode.

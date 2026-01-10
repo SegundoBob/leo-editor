@@ -49,9 +49,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # pylint: disable=super-init-not-called
         self.c = c
         # Set local ivars.
-        self.abbrevs: dict[
-            str, tuple[str, str]
-        ] = {}  # Keys are names, values are (abbrev,tag).
+        self.abbrevs: dict[str, tuple[str, str]] = {}  # Keys are names, values are (abbrev,tag).
         self.dynaregex = re.compile(  # For dynamic abbreviations
             r'[%s%s\-_]+' % (string.ascii_letters, string.digits)
         )
@@ -65,9 +63,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.save_ins = None  # Saved insert point.
         self.save_sel = None  # Saved selection range.
         self.store = {'rlist': [], 'stext': ''}  # For dynamic expansion.
-        self.tree_abbrevs_d: dict[
-            str, str
-        ] = {}  # Keys are names, values are (tree,tag).
+        self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w = None
 
     # @+node:ekr.20150514043850.5: *4* abbrev.finishCreate & helpers
@@ -121,8 +117,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # fake the next placeholder abbreviation
         if c.config.getString("abbreviations-next-placeholder"):
             self.addAbbrevHelper(
-                f'{c.config.getString("abbreviations-next-placeholder")}'
-                f'=__NEXT_PLACEHOLDER',
+                f'{c.config.getString("abbreviations-next-placeholder")}=__NEXT_PLACEHOLDER',
                 'global',
             )
 
@@ -154,9 +149,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 v = leoNodes.VNode(context=c)
                 root = leoNodes.Position(v)
             # Similar to g.getScript.
-            script = at.stringToString(
-                root=root, s=script, forcePythonSentinels=True, sentinels=False
-            )
+            script = at.stringToString(root=root, s=script, forcePythonSentinels=True, sentinels=False)
             script = script.replace("\r\n", "\n")
             try:
                 exec(script, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
@@ -183,9 +176,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         }
         c.abbrev_subst_start = c.config.getString('abbreviations-subst-start') or ''
         # Local settings.
-        self.enabled = c.config.getBool(
-            'scripting-at-script-nodes'
-        ) or c.config.getBool('scripting-abbreviations')
+        self.enabled = c.config.getBool('scripting-at-script-nodes') or c.config.getBool('scripting-abbreviations')
         self.globalDynamicAbbrevs = c.config.getBool('globalDynamicAbbrevs')
         # @verbatim
         # @data abbreviations-subst-env must *only* be defined in leoSettings.leo or myLeoSettings.leo!
@@ -489,9 +480,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return val, do_placeholder
 
     # @+node:ekr.20161121102113.1: *4* abbrev.make_script_substitutions_in_headline
-    def make_script_substitutions_in_headline(
-        self, i: int, p: Position, val: str
-    ) -> bool:
+    def make_script_substitutions_in_headline(self, i: int, p: Position, val: str) -> bool:
         """Make the first scripting substitution in p.h."""
         c = self.c
         c.endEditing()
@@ -518,9 +507,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return False
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
-    def match_prefix(
-        self, ch: str, i: int, j: int, prefix: str, s: str
-    ) -> tuple[int, str, str, str]:
+    def match_prefix(self, ch: str, i: int, j: int, prefix: str, s: str) -> tuple[int, str, str, str]:
         """A match helper."""
         i = j - len(prefix)
         word = g.checkUnicode(prefix) + g.checkUnicode(ch)
@@ -564,9 +551,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return s, None, None
         start = new_pos
         place_holder_delim = s[new_pos : new_end + len(c.abbrev_place_end)]
-        place_holder = place_holder_delim[
-            len(c.abbrev_place_start) : -len(c.abbrev_place_end)
-        ]
+        place_holder = place_holder_delim[len(c.abbrev_place_start) : -len(c.abbrev_place_end)]
         s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
         end = start + len(place_holder)
         return s2, start, end
@@ -613,11 +598,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if stroke:
             ch = d.get(stroke.s, stroke.s)
             if len(ch) > 1:
-                if (
-                    stroke.find('Ctrl+') > -1
-                    or stroke.find('Alt+') > -1
-                    or stroke.find('Meta+') > -1
-                ):
+                if stroke.find('Ctrl+') > -1 or stroke.find('Alt+') > -1 or stroke.find('Meta+') > -1:
                     ch = ''
                 else:
                     ch = event.char if event else ''
@@ -725,9 +706,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Protect only prefix2 so tab completion and backspace to work properly.
         k.setLabelBlue(prefix2, protect=True)
         k.setLabelBlue(prefix2 + prefix, protect=False)
-        k.get1Arg(
-            event, handler=self.dynamicExpandHelper1, tabList=aList, prefix=prefix
-        )
+        k.get1Arg(event, handler=self.dynamicExpandHelper1, tabList=aList, prefix=prefix)
 
     def dynamicExpandHelper1(self, event: LeoKeyEvent) -> None:
         """Finisher for dabbrev-expands."""

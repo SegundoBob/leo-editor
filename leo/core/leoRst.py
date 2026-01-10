@@ -79,12 +79,8 @@ class RstCommands:
         self.n_docutils = 0  # Number of docutils files written.
 
         # Http support for HtmlParserClass.  See http_addNodeMarker.
-        self.anchor_map: dict[
-            str, Position
-        ] = {}  # Keys are anchors. Values are positions
-        self.http_map: dict[
-            str, Position
-        ] = {}  # Keys are named hyperlink targets.  Value are positions.
+        self.anchor_map: dict[str, Position] = {}  # Keys are anchors. Values are positions
+        self.http_map: dict[str, Position] = {}  # Keys are named hyperlink targets.  Value are positions.
         self.nodeNumber = 0  # Unique node number.
 
         # For writing.
@@ -122,33 +118,19 @@ class RstCommands:
 
         # Http options.
         self.http_server_support = getBool('rst3-http-server-support', default=False)
-        self.node_begin_marker = (
-            getString('rst3-node-begin-marker') or 'http-node-marker-'
-        )
+        self.node_begin_marker = getString('rst3-node-begin-marker') or 'http-node-marker-'
 
         # Output options.
         self.default_path = getString('rst3-default-path') or ''
-        self.generate_rst_header_comment = getBool(
-            'rst3-generate-rst-header-comment', default=True
-        )
-        self.remove_leo_directives = getBool(
-            'rst3-remove-leo-directives', default=False
-        )
-        self.underline_characters = (
-            getString('rst3-underline-characters') or self.default_underline_characters
-        )
-        self.write_intermediate_file = getBool(
-            'rst3-write-intermediate-file', default=True
-        )
-        self.write_intermediate_extension = (
-            getString('rst3-write-intermediate-extension') or '.txt'
-        )
+        self.generate_rst_header_comment = getBool('rst3-generate-rst-header-comment', default=True)
+        self.remove_leo_directives = getBool('rst3-remove-leo-directives', default=False)
+        self.underline_characters = getString('rst3-underline-characters') or self.default_underline_characters
+        self.write_intermediate_file = getBool('rst3-write-intermediate-file', default=True)
+        self.write_intermediate_extension = getString('rst3-write-intermediate-extension') or '.txt'
 
         # Docutils options.
         self.call_docutils = getBool('rst3-call-docutils', default=True)
-        self.publish_argv_for_missing_stylesheets = (
-            getString('rst3-publish-argv-for-missing-stylesheets') or ''
-        )
+        self.publish_argv_for_missing_stylesheets = getString('rst3-publish-argv-for-missing-stylesheets') or ''
         self.stylesheet_embed = getBool('rst3-stylesheet-embed', default=False)
         self.stylesheet_name = getString('rst3-stylesheet-name') or 'default.css'
         self.stylesheet_path = getString('rst3-stylesheet-path') or ''
@@ -189,9 +171,7 @@ class RstCommands:
         """Convert p.b as if preformatted. Change headline to @rst-no-head"""
         if not p.b.strip():
             return
-        p.b = '::\n\n' + ''.join(
-            f"    {s}" if s.strip() else '\n' for s in g.splitLines(p.b)
-        )
+        p.b = '::\n\n' + ''.join(f"    {s}" if s.strip() else '\n' for s in g.splitLines(p.b))
         old_h = p.h
         p.h = '@rst-no-head'
         print(f"{old_h} => {p.h}")
@@ -341,9 +321,7 @@ class RstCommands:
         """Write the title, underlined with the '#' character."""
         if n != 1:
             title = f"{title} ({n} of {n_tot})"
-        width = max(
-            4, len(g.toEncodedString(title, encoding=self.encoding, reportErrors=False))
-        )
+        width = max(4, len(g.toEncodedString(title, encoding=self.encoding, reportErrors=False)))
         self.result_list.append(f"{title}\n{'#' * width}")
 
     # @+node:ekr.20090502071837.85: *5* rst.writeNode & helper
@@ -430,9 +408,7 @@ class RstCommands:
         i = s.find('<title></title>')
         if i == -1:
             return s
-        m = re.search(r'<h1>([^<]*)</h1>', s) or re.search(
-            r'<h1><[^>]+>([^<]*)</a></h1>', s
-        )
+        m = re.search(r'<h1>([^<]*)</h1>', s) or re.search(r'<h1><[^>]+>([^<]*)</a></h1>', s)
         if m:
             s = s.replace('<title></title>', f"<title>{m.group(1)}</title>")
         return s
@@ -466,11 +442,7 @@ class RstCommands:
         theDir = g.finalize(theDir)
         if g.os_path_exists(theDir):
             return True
-        if (
-            c
-            and c.config
-            and c.config.getBool('create-nonexistent-directories', default=False)
-        ):
+        if c and c.config and c.config.getBool('create-nonexistent-directories', default=False):
             theDir = c.expand_path_expression(theDir)
             ok: str = g.makeAllNonExistentDirectories(theDir)
             if not ok:
@@ -645,9 +617,7 @@ class RstCommands:
         return d
 
     # @+node:ekr.20090512153903.5803: *4* rst.writeAtAutoFile & helpers
-    def writeAtAutoFile(
-        self, p: Position, fileName: str, outputFile: io.TextIOBase
-    ) -> bool:
+    def writeAtAutoFile(self, p: Position, fileName: str, outputFile: io.TextIOBase) -> bool:
         """
         at.writeAtAutoContents calls this method to write an @auto tree
         containing imported rST code.
@@ -740,13 +710,7 @@ class RstCommands:
                 return p.b
         if self.remove_leo_directives:
             # Only remove a few directives, and only if they start the line.
-            return ''.join(
-                [
-                    z
-                    for z in g.splitLines(p.b)
-                    if not z.startswith(('@language ', '@others', '@wrap'))
-                ]
-            )
+            return ''.join([z for z in g.splitLines(p.b) if not z.startswith(('@language ', '@others', '@wrap'))])
         return p.b
 
     # @+node:ekr.20230205101652.1: *4* rst.filter_h
@@ -774,9 +738,7 @@ class RstCommands:
 
     # @+node:ekr.20210331084407.1: *3* rst: Predicates
     def in_ignore_tree(self, p: Position) -> bool:
-        return any(
-            g.match_word(p2.h, 0, '@rst-ignore-tree') for p2 in self.rst_parents(p)
-        )
+        return any(g.match_word(p2.h, 0, '@rst-ignore-tree') for p2 in self.rst_parents(p))
 
     def in_rst_tree(self, p: Position) -> bool:
         return any(self.is_rst_node(p2) for p2 in self.rst_parents(p))
@@ -862,9 +824,7 @@ class RstCommands:
         # The user is responsible for top-level overlining.
         u = self.underline_characters  # '''#=+*^~"'`-:><_'''
         level = max(0, p.level() - self.root.level())
-        level = min(
-            level + 1, len(u) - 1
-        )  # Reserve the first character for explicit titles.
+        level = min(level + 1, len(u) - 1)  # Reserve the first character for explicit titles.
         ch = u[level]
         n = max(4, len(encoded_s))
         return f"{s.strip()}\n{ch * n}"

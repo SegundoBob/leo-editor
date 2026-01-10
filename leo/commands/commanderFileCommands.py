@@ -140,9 +140,7 @@ def restartLeo(self: Self, event: LeoKeyEvent = None) -> None:
         args = [sys.executable] + sys_args
     else:
         # #3141: Remember all open outlines.
-        restart_paths: list[str] = [
-            c.fileName() for c in g.app.commanders() if c.fileName()
-        ]
+        restart_paths: list[str] = [c.fileName() for c in g.app.commanders() if c.fileName()]
         if g.isWindows:
             restart_paths = [z.replace('/', os.sep) for z in restart_paths]
         # Warning: Python 3.9 does not allow newlines within f-strings.
@@ -414,9 +412,7 @@ def refreshFromDisk(
     update_p = at.clone_all_changed_vnodes()
     if update_p:
         # Set the current position during initial redraws.
-        c.db['current_position'] = ','.join(
-            [str(z) for z in update_p.archivedPosition()]
-        )
+        c.db['current_position'] = ','.join([str(z) for z in update_p.archivedPosition()])
         update_p.expand()
         c.selectPosition(update_p)
     else:
@@ -483,9 +479,7 @@ def save(self: Self, event: LeoKeyEvent = None, fileName: str = None) -> None:
             return
 
         # Prompt for fileName.
-        new_file_name = g.app.gui.runSaveFileDialog(
-            c, title="Save", filetypes=[("Leo files", "*.leo *.leojs *.db")]
-        )
+        new_file_name = g.app.gui.runSaveFileDialog(c, title="Save", filetypes=[("Leo files", "*.leo *.leojs *.db")])
         if new_file_name:
             final_file_name = set_name_and_title(c, new_file_name)
             do_save(c, final_file_name)
@@ -567,9 +561,7 @@ def saveAs(self: Self, event: LeoKeyEvent = None, fileName: str = None) -> None:
 @g.commander_command('save-to')
 @g.commander_command('file-save-to')
 @g.commander_command('save-file-to')
-def saveTo(
-    self: Self, event: LeoKeyEvent = None, fileName: str = None, silent: bool = False
-) -> None:
+def saveTo(self: Self, event: LeoKeyEvent = None, fileName: str = None, silent: bool = False) -> None:
     """
     Save a copy of the Leo outline to a file, prompting for a new file name.
     Leave the file name of the Leo outline unchanged.
@@ -625,9 +617,7 @@ def revert(self: Self, event: LeoKeyEvent = None) -> None:
     if not g.os_path_exists(fn):
         g.es(f"Can not revert non-existent file: {fn}")
         return
-    reply = g.app.gui.runAskYesNoDialog(
-        c, 'Revert', f"Revert to previous version of {fn}?"
-    )
+    reply = g.app.gui.runAskYesNoDialog(c, 'Revert', f"Revert to previous version of {fn}?")
     c.bringToFront()
     if reply == "yes":
         g.app.loadManager.revertCommander(c)
@@ -733,9 +723,7 @@ def exportHeadlines(self: Self, event: LeoKeyEvent = None) -> None:
     """Export headlines for c.p and its subtree to an external file."""
     c = self
     filetypes = [("Text files", "*.txt"), ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(
-        c, title="Export Headlines", filetypes=filetypes
-    )
+    fileName = g.app.gui.runSaveFileDialog(c, title="Export Headlines", filetypes=filetypes)
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
@@ -752,9 +740,7 @@ def flattenOutline(self: Self, event: LeoKeyEvent = None) -> None:
     """
     c = self
     filetypes = [("Text files", "*.txt"), ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(
-        c, title="Flatten Selected Outline", filetypes=filetypes
-    )
+    fileName = g.app.gui.runSaveFileDialog(c, title="Flatten Selected Outline", filetypes=filetypes)
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
@@ -799,9 +785,7 @@ def outlineToCWEB(self: Self, event: LeoKeyEvent = None) -> None:
     """
     c = self
     filetypes = [("CWEB files", "*.w"), ("Text files", "*.txt"), ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(
-        c, title="Outline To CWEB", filetypes=filetypes
-    )
+    fileName = g.app.gui.runSaveFileDialog(c, title="Outline To CWEB", filetypes=filetypes)
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
@@ -818,9 +802,7 @@ def outlineToNoweb(self: Self, event: LeoKeyEvent = None) -> None:
     """
     c = self
     filetypes = [("Noweb files", "*.nw"), ("Text files", "*.txt"), ("All files", "*")]
-    fileName = g.app.gui.runSaveFileDialog(
-        c, title="Outline To Noweb", filetypes=filetypes
-    )
+    fileName = g.app.gui.runSaveFileDialog(c, title="Outline To Noweb", filetypes=filetypes)
     c.bringToFront()
     if fileName:
         g.setGlobalOpenDir(fileName)
@@ -845,9 +827,7 @@ def removeSentinels(self: Self, event: LeoKeyEvent = None) -> None:
         ("Pascal files", "*.pas"),
         ("Python files", "*.py"),
     ]
-    names = g.app.gui.runOpenFilesDialog(
-        c, title="Remove Sentinels", filetypes=filetypes
-    )
+    names = g.app.gui.runOpenFilesDialog(c, title="Remove Sentinels", filetypes=filetypes)
     c.bringToFront()
     if names:
         g.chdir(names[0])
@@ -938,9 +918,7 @@ def readFileIntoNode(self: Self, event: LeoKeyEvent = None) -> None:
         ("Python files", "*.py"),
         ("Leo files", "*.leo *.leojs"),
     ]
-    fileName = g.app.gui.runOpenFileDialog(
-        c, title="Read File Into Node", filetypes=filetypes
-    )
+    fileName = g.app.gui.runOpenFileDialog(c, title="Read File Into Node", filetypes=filetypes)
     if not fileName:
         return
     if isinstance(fileName, list):

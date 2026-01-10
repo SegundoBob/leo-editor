@@ -381,9 +381,7 @@ def pasteAsTemplate(self: Cmdr, event: LeoKeyEvent = None) -> None:
     # we generate new gnx for each node in the copied tree
     translation = {x: translate_gnx(x) for x in bodies}
 
-    seen = set(
-        outside
-    )  # required for the treatment of local clones inside the copied tree
+    seen = set(outside)  # required for the treatment of local clones inside the copied tree
 
     heads: dict[str, str] = {}
 
@@ -732,9 +730,7 @@ def fullCheckOutline(self: Cmdr, event: LeoKeyEvent = None) -> None:
     t1 = time.process_time()
     errors = c.checkOutline()
     t2 = time.process_time()
-    g.es_print(
-        f"check-outline: {errors} error{g.plural(errors)} in {t2 - t1:4.2f} sec."
-    )
+    g.es_print(f"check-outline: {errors} error{g.plural(errors)} in {t2 - t1:4.2f} sec.")
 
 
 # @+node:ekr.20031218072017.2913: ** c_oc.Goto commands
@@ -1206,9 +1202,7 @@ def cloneToLastNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20031218072017.1193: *3* c_oc.deleteOutline
 @g.commander_command('delete-node')
-def deleteOutline(
-    self: Cmdr, event: LeoKeyEvent = None, op_name: str = "Delete Node"
-) -> None:
+def deleteOutline(self: Cmdr, event: LeoKeyEvent = None, op_name: str = "Delete Node") -> None:
     """Deletes the selected outline."""
     c, u = self, self.undoer
     p = c.p
@@ -1302,9 +1296,7 @@ def insertHeadlineHelper(
     elif as_last_child:
         p = current.insertAsLastChild()
     elif (
-        as_child
-        or (current.hasChildren() and current.isExpanded())
-        or (c.hoistStack and current == c.hoistStack[-1].p)
+        as_child or (current.hasChildren() and current.isExpanded()) or (c.hoistStack and current == c.hoistStack[-1].p)
     ):
         # Make sure the new node is visible when hoisting.
         if c.config.getBool('insert-new-nodes-at-end'):
@@ -1723,13 +1715,7 @@ def moveOutlineDown(self: Cmdr, event: LeoKeyEvent = None) -> None:
             p.setDirty()
             p.moveAfter(next)
     # Patch by nh2: 0004-Add-bool-collapse_nodes_after_move-option.patch
-    if (
-        c.collapse_nodes_after_move
-        and moved
-        and c.sparse_move
-        and parent
-        and not parent.isAncestorOf(p)
-    ):
+    if c.collapse_nodes_after_move and moved and c.sparse_move and parent and not parent.isAncestorOf(p):
         # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
         parent.contract()
     # @-<< Move p down & set moved if successful >>
@@ -1851,13 +1837,7 @@ def moveOutlineUp(self: Cmdr, event: LeoKeyEvent = None) -> None:
             p.setDirty()
             p.moveAfter(back2)
     # Patch by nh2: 0004-Add-bool-collapse_nodes_after_move-option.patch
-    if (
-        c.collapse_nodes_after_move
-        and moved
-        and c.sparse_move
-        and parent
-        and not parent.isAncestorOf(p)
-    ):
+    if c.collapse_nodes_after_move and moved and c.sparse_move and parent and not parent.isAncestorOf(p):
         # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
         parent.contract()
     # @-<< Move p up >>
@@ -1971,9 +1951,7 @@ def reverseSortSiblings(self: Cmdr, event: LeoKeyEvent = None, key: str = None) 
 
 # @+node:ekr.20050415134809: *3* c_oc.sortChildren
 @g.commander_command('sort-children')
-def sortChildren(
-    self: Cmdr, event: LeoKeyEvent = None, key: Callable = None, reverse: bool = False
-) -> None:
+def sortChildren(self: Cmdr, event: LeoKeyEvent = None, key: Callable = None, reverse: bool = False) -> None:
     """Sort the children of a node."""
     # This method no longer supports the 'cmp' keyword arg.
     c, p = self, self.p

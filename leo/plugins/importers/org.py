@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20140723122936.18146: * @file ../plugins/importers/org.py
+# @+leo-ver=5-thin
+# @+node:ekr.20140723122936.18146: * @file ../plugins/importers/org.py
 """The @auto importer for the org language."""
+
 from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
@@ -10,15 +11,16 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position, VNode
 
-#@+others
-#@+node:ekr.20140723122936.18072: ** class Org_Importer(Importer)
+
+# @+others
+# @+node:ekr.20140723122936.18072: ** class Org_Importer(Importer)
 class Org_Importer(Importer):
     """The importer for the org language."""
 
     language = 'org'
 
-    #@+others
-    #@+node:ekr.20230529063312.1: *3* org_i.gen_block
+    # @+others
+    # @+node:ekr.20230529063312.1: *3* org_i.gen_block
     section_pat = re.compile(r'(\*+)\s(.*)')
 
     def gen_block(self, parent: Position) -> None:
@@ -60,19 +62,26 @@ class Org_Importer(Importer):
         assert parent == self.root
         for p in parent.self_and_subtree():
             p.b = ''.join(lines_dict[p.v])
-    #@-others
 
-#@-others
+    # @-others
+
+
+# @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for .org files."""
     Org_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    '@auto': ['@auto-org', '@auto-org-mode',],
+    '@auto': [
+        '@auto-org',
+        '@auto-org-mode',
+    ],
     'extensions': ['.org'],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

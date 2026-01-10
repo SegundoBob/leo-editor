@@ -1,11 +1,12 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170428084207.311: * @file ../external/npyscreen/fm_form_edit_loop.py
+# @+leo-ver=5-thin
+# @+node:ekr.20170428084207.311: * @file ../external/npyscreen/fm_form_edit_loop.py
 #!/usr/bin/env python
 # encoding: utf-8
 from leo.core import leoGlobals as g
+
 assert g
-#@+others
-#@+node:ekr.20170428084207.312: ** Declarations
+# @+others
+# @+node:ekr.20170428084207.312: ** Declarations
 """
 form_edit_loop.py
 
@@ -17,23 +18,26 @@ Copyright (c) 2008 __MyCompanyName__. All rights reserved.
 # import os
 import weakref
 
-#@+node:ekr.20170428084207.313: ** class FormNewEditLoop
+
+# @+node:ekr.20170428084207.313: ** class FormNewEditLoop
 class FormNewEditLoop:
     "Edit Fields .editing = False"
-    #@+others
-    #@+node:ekr.20170428084207.314: *3* pre_edit_loop
+
+    # @+others
+    # @+node:ekr.20170428084207.314: *3* pre_edit_loop
     def pre_edit_loop(self):
         pass
-    #@+node:ekr.20170428084207.315: *3* post_edit_loop
+
+    # @+node:ekr.20170428084207.315: *3* post_edit_loop
     def post_edit_loop(self):
         pass
-    #@+node:ekr.20170428084207.316: *3* _during_edit_loop
+
+    # @+node:ekr.20170428084207.316: *3* _during_edit_loop
     def _during_edit_loop(self):
         pass
 
-    #@+node:ekr.20170428084207.317: *3* FormNewEditLoop.edit_loop
+    # @+node:ekr.20170428084207.317: *3* FormNewEditLoop.edit_loop
     def edit_loop(self):
-
         # g.trace('===== (FormNewEditLoop)')
         self.editing = True
         self.display()
@@ -44,7 +48,8 @@ class FormNewEditLoop:
                 return False
 
         while self.editing:
-            if not self.ALL_SHOWN: self.on_screen()
+            if not self.ALL_SHOWN:
+                self.on_screen()
             self.while_editing(weakref.proxy(self._widgets__[self.editw]))
             self._during_edit_loop()
             if not self.editing:
@@ -54,21 +59,23 @@ class FormNewEditLoop:
 
             self.handle_exiting_widgets(self._widgets__[self.editw].how_exited)
 
-            if self.editw > len(self._widgets__) - 1: self.editw = len(self._widgets__) - 1
+            if self.editw > len(self._widgets__) - 1:
+                self.editw = len(self._widgets__) - 1
 
-    #@+node:ekr.20170428084207.318: *3* FormNewEditLoop.edit
+    # @+node:ekr.20170428084207.318: *3* FormNewEditLoop.edit
     def edit(self):
-
         # g.trace('===== (FormNewEditLoop)')
         self.pre_edit_loop()
         self.edit_loop()
         self.post_edit_loop()
 
-    #@-others
-#@+node:ekr.20170428084207.319: ** class FormDefaultEditLoop
+    # @-others
+
+
+# @+node:ekr.20170428084207.319: ** class FormDefaultEditLoop
 class FormDefaultEditLoop:
-    #@+others
-    #@+node:ekr.20170428084207.320: *3* FormDefaultEditLoop.edit (fm_form_edit_loop.py)
+    # @+others
+    # @+node:ekr.20170428084207.320: *3* FormDefaultEditLoop.edit (fm_form_edit_loop.py)
     def edit(self):
         """
         Edit the fields until the user selects the ok button added in the lower
@@ -81,17 +88,21 @@ class FormDefaultEditLoop:
         ok_button_text = self.__class__.OK_BUTTON_TEXT
         my -= self.__class__.OK_BUTTON_BR_OFFSET[0]
         mx -= len(ok_button_text) + self.__class__.OK_BUTTON_BR_OFFSET[1]
-        self.ok_button = self.add_widget(self.__class__.OKBUTTON_TYPE, name=ok_button_text, rely=my, relx=mx, use_max_space=True)
+        self.ok_button = self.add_widget(
+            self.__class__.OKBUTTON_TYPE, name=ok_button_text, rely=my, relx=mx, use_max_space=True
+        )
         ok_button_postion = len(self._widgets__) - 1
         self.ok_button.update()
         # End add buttons
         self.editing = True
-        if self.editw < 0: self.editw = 0
+        if self.editw < 0:
+            self.editw = 0
         if self.editw > len(self._widgets__) - 1:
             self.editw = len(self._widgets__) - 1
         if not self.preserve_selected_widget:
             self.editw = 0
-        if not self._widgets__[self.editw].editable: self.find_next_editable()
+        if not self._widgets__[self.editw].editable:
+            self.find_next_editable()
 
         self.display()
 
@@ -102,7 +113,8 @@ class FormDefaultEditLoop:
                 return False
 
         while self.editing:
-            if not self.ALL_SHOWN: self.on_screen()
+            if not self.ALL_SHOWN:
+                self.on_screen()
             self.while_editing(weakref.proxy(self._widgets__[self.editw]))
             if not self.editing:
                 break
@@ -122,13 +134,14 @@ class FormDefaultEditLoop:
         del self.ok_button
         self.nextrely, self.nextrelx = tmp_rely, tmp_relx
         self.display()
-        #try:
+        # try:
         #    self.parentApp._FORM_VISIT_LIST.pop()
-        #except:
+        # except:
         #    pass
         self.editing = False
         self.erase()
-    #@+node:ekr.20170428084207.321: *3* move_ok_button
+
+    # @+node:ekr.20170428084207.321: *3* move_ok_button
     def move_ok_button(self):
         if hasattr(self, 'ok_button'):
             my, mx = self.curses_pad.getmaxyx()
@@ -137,11 +150,11 @@ class FormDefaultEditLoop:
             self.ok_button.relx = mx
             self.ok_button.rely = my
 
+    # @-others
 
 
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@nobeautify
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@nobeautify
+# @-leo

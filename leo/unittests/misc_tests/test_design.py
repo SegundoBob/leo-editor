@@ -63,9 +63,7 @@ def load_files():
         return
 
     def compute_files(pattern, root_dir):
-        return [
-            g.finalize_join(root_dir, z) for z in glob.glob(pattern, root_dir=root_dir)
-        ]
+        return [g.finalize_join(root_dir, z) for z in glob.glob(pattern, root_dir=root_dir)]
 
     # Compute directories.
     unittests_dir = os.path.dirname(__file__)
@@ -108,9 +106,7 @@ class AnnotationsTraverser(NodeVisitor):
         (re.compile(r'\b(v[0-9]?|[\w_]+_v)\b'), 'VNode'),
     )
 
-    def test_annotation(
-        self, node: ast.AST, identifier: str, annotation: ast.Expr
-    ) -> None:
+    def test_annotation(self, node: ast.AST, identifier: str, annotation: ast.Expr) -> None:
         """Test the annotation of identifier."""
         exceptions = (
             # Problems annotating Cmdr in leoCommands.py have been solved.

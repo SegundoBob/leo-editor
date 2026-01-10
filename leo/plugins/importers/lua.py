@@ -1,10 +1,11 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170530024520.2: * @file ../plugins/importers/lua.py
+# @+leo-ver=5-thin
+# @+node:ekr.20170530024520.2: * @file ../plugins/importers/lua.py
 """
 The @auto importer for the lua language.
 
 Created 2017/05/30 by the `importer;;` abbreviation.
 """
+
 from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
@@ -14,8 +15,9 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
 
-#@+others
-#@+node:ekr.20170530024520.3: ** class Lua_Importer(Importer)
+
+# @+others
+# @+node:ekr.20170530024520.3: ** class Lua_Importer(Importer)
 class Lua_Importer(Importer):
     """The importer for the lua language."""
 
@@ -28,8 +30,8 @@ class Lua_Importer(Importer):
         ('function', re.compile(r'.*?([\w\.]+)\s*\(function\b\s*\(')),
     )
 
-    #@+others
-    #@+node:ekr.20230527120748.1: *3* lua_i.find_end_of_block
+    # @+others
+    # @+node:ekr.20230527120748.1: *3* lua_i.find_end_of_block
     def find_end_of_block(self, i: int, i2: int) -> int:
         """
         Lua_Importer.find_end_of_block.
@@ -42,7 +44,7 @@ class Lua_Importer(Importer):
         while i < i2:
             line = self.guide_lines[i]
             i += 1
-            for (kind, pat) in self.block_patterns:
+            for kind, pat in self.block_patterns:
                 if pat.match(line):
                     level += 1
                     break
@@ -52,19 +54,26 @@ class Lua_Importer(Importer):
                     if level == 0:
                         return i
         return i2
-    #@-others
-#@-others
+
+    # @-others
+
+
+# @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for lua."""
     Lua_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    'extensions': ['.lua',],
+    'extensions': [
+        '.lua',
+    ],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
+# @@language python
+# @@tabwidth -4
 
 
-#@-leo
+# @-leo

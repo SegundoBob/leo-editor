@@ -65,9 +65,7 @@ class PersistenceDataController:
         at_persistence = self.has_at_persistence_node()
         if not at_persistence:
             return
-        foreign_list = [
-            p.h.strip() for p in c.all_unique_positions() if self.is_foreign_file(p)
-        ]
+        foreign_list = [p.h.strip() for p in c.all_unique_positions() if self.is_foreign_file(p)]
         delete_list = []
         tag = '@data:'
         for child in at_persistence.children():
@@ -106,9 +104,7 @@ class PersistenceDataController:
                 aList.append(p.copy())
         # Create the @gnxs node
         at_gnxs = self.find_at_gnxs_node(root)
-        at_gnxs.b = ''.join(
-            [f"gnx: {p.v.gnx}\nunl: {self.relative_unl(p, root)}\n" for p in aList]
-        )
+        at_gnxs.b = ''.join([f"gnx: {p.v.gnx}\nunl: {self.relative_unl(p, root)}\n" for p in aList])
         # Create the @uas tree.
         uas = [p for p in aList if p.v.u]
         if uas:
@@ -186,9 +182,7 @@ class PersistenceDataController:
         return d
 
     # @+node:ekr.20140711111623.17809: *6* pd.restore_gnx
-    def restore_gnx(
-        self, d: dict[str, Position], gnx: str, root: Position, unl: str
-    ) -> None:
+    def restore_gnx(self, d: dict[str, Position], gnx: str, root: Position, unl: str) -> None:
         """
         d is an *outer* gnx dict, associating nodes *outside* the tree with positions.
         Let p1 be the position of the node *within* root's tree corresponding to unl.
@@ -240,9 +234,7 @@ class PersistenceDataController:
                         ua = self.unpickle(ua)
                         p.v.u = ua
                     else:
-                        g.trace(
-                            'Can not unpickle uA in', p.h, repr(unl), type(ua), ua[:40]
-                        )
+                        g.trace('Can not unpickle uA in', p.h, repr(unl), type(ua), ua[:40])
 
     # @+node:ekr.20140712105818.16750: *3* pd.Helpers
     # @+node:ekr.20140711111623.17845: *4* pd.at_data_body
@@ -349,9 +341,7 @@ class PersistenceDataController:
         return self.find_exact_match(root, unl_list)
 
     # @+node:ekr.20140716021139.17764: *6* pd.find_best_match
-    def find_best_match(
-        self, root: Position, unl_list: list[str]
-    ) -> Optional[Position]:
+    def find_best_match(self, root: Position, unl_list: list[str]) -> Optional[Position]:
         """Find the best partial matches of the tail in root's tree."""
         tail = unl_list[-1]
         matches = []
@@ -399,9 +389,7 @@ class PersistenceDataController:
         return parent
 
     # @+node:ekr.20140711111623.17862: *5* pd.find_representative_node
-    def find_representative_node(
-        self, root: Position, target: Position
-    ) -> Optional[Position]:
+    def find_representative_node(self, root: Position, target: Position) -> Optional[Position]:
         """
         root is a foreign node. target is a gnxs node within root's tree.
 
@@ -514,11 +502,7 @@ class PersistenceDataController:
 
     # @+node:ekr.20140712105644.16745: *5* pd.is_foreign_file
     def is_foreign_file(self, p: Position) -> bool:
-        return (
-            self.is_at_auto_node(p)
-            or g.match_word(p.h, 0, '@org-mode')
-            or g.match_word(p.h, 0, '@vim-outline')
-        )
+        return self.is_at_auto_node(p) or g.match_word(p.h, 0, '@org-mode') or g.match_word(p.h, 0, '@vim-outline')
 
     # @+node:ekr.20140713135856.17745: *4* pd.Pickling
     # @+node:ekr.20140713062552.17737: *5* pd.pickle
@@ -574,11 +558,7 @@ class PersistenceDataController:
     # @+node:ekr.20140711111623.17896: *5* pd.unl
     def unl(self, p: Position) -> str:
         """Return the unl corresponding to the given position."""
-        return '-->'.join(
-            reversed(
-                [self.expected_headline(p2) for p2 in p.self_and_parents(copy=False)]
-            )
-        )
+        return '-->'.join(reversed([self.expected_headline(p2) for p2 in p.self_and_parents(copy=False)]))
 
     # @+node:ekr.20140711111623.17885: *5* pd.unl_tail
     def unl_tail(self, unl: str) -> str:

@@ -166,172 +166,365 @@ keywordsDictDict = {
 
 # Rules for nqc_main ruleset.
 
+
 def nqc_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def nqc_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def nqc_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def nqc_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="keyword2", seq="#")
 
+
 def nqc_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//")
+
 
 def nqc_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def nqc_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def nqc_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def nqc_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def nqc_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def nqc_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def nqc_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def nqc_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def nqc_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def nqc_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def nqc_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def nqc_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def nqc_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def nqc_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def nqc_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def nqc_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def nqc_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def nqc_rule22(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_whitespace_end=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+
 
 def nqc_rule23(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def nqc_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for nqc_main ruleset.
 rulesDict1 = {
-    "!": [nqc_rule6,],
-    "\"": [nqc_rule1,],
-    "#": [nqc_rule3,],
-    "%": [nqc_rule15,],
-    "&": [nqc_rule16,],
-    "'": [nqc_rule2,],
-    "(": [nqc_rule23,],
-    "*": [nqc_rule12,],
-    "+": [nqc_rule9,],
-    "-": [nqc_rule10,],
-    "/": [nqc_rule0, nqc_rule4, nqc_rule11,],
-    "0": [nqc_rule24,],
-    "1": [nqc_rule24,],
-    "2": [nqc_rule24,],
-    "3": [nqc_rule24,],
-    "4": [nqc_rule24,],
-    "5": [nqc_rule24,],
-    "6": [nqc_rule24,],
-    "7": [nqc_rule24,],
-    "8": [nqc_rule24,],
-    "9": [nqc_rule24,],
-    ":": [nqc_rule22,],
-    "<": [nqc_rule8, nqc_rule14,],
-    "=": [nqc_rule5,],
-    ">": [nqc_rule7, nqc_rule13,],
-    "@": [nqc_rule24,],
-    "A": [nqc_rule24,],
-    "B": [nqc_rule24,],
-    "C": [nqc_rule24,],
-    "D": [nqc_rule24,],
-    "E": [nqc_rule24,],
-    "F": [nqc_rule24,],
-    "G": [nqc_rule24,],
-    "H": [nqc_rule24,],
-    "I": [nqc_rule24,],
-    "J": [nqc_rule24,],
-    "K": [nqc_rule24,],
-    "L": [nqc_rule24,],
-    "M": [nqc_rule24,],
-    "N": [nqc_rule24,],
-    "O": [nqc_rule24,],
-    "P": [nqc_rule24,],
-    "Q": [nqc_rule24,],
-    "R": [nqc_rule24,],
-    "S": [nqc_rule24,],
-    "T": [nqc_rule24,],
-    "U": [nqc_rule24,],
-    "V": [nqc_rule24,],
-    "W": [nqc_rule24,],
-    "X": [nqc_rule24,],
-    "Y": [nqc_rule24,],
-    "Z": [nqc_rule24,],
-    "^": [nqc_rule18,],
-    "_": [nqc_rule24,],
-    "a": [nqc_rule24,],
-    "b": [nqc_rule24,],
-    "c": [nqc_rule24,],
-    "d": [nqc_rule24,],
-    "e": [nqc_rule24,],
-    "f": [nqc_rule24,],
-    "g": [nqc_rule24,],
-    "h": [nqc_rule24,],
-    "i": [nqc_rule24,],
-    "j": [nqc_rule24,],
-    "k": [nqc_rule24,],
-    "l": [nqc_rule24,],
-    "m": [nqc_rule24,],
-    "n": [nqc_rule24,],
-    "o": [nqc_rule24,],
-    "p": [nqc_rule24,],
-    "q": [nqc_rule24,],
-    "r": [nqc_rule24,],
-    "s": [nqc_rule24,],
-    "t": [nqc_rule24,],
-    "u": [nqc_rule24,],
-    "v": [nqc_rule24,],
-    "w": [nqc_rule24,],
-    "x": [nqc_rule24,],
-    "y": [nqc_rule24,],
-    "z": [nqc_rule24,],
-    "{": [nqc_rule21,],
-    "|": [nqc_rule17,],
-    "}": [nqc_rule20,],
-    "~": [nqc_rule19,],
+    "!": [
+        nqc_rule6,
+    ],
+    "\"": [
+        nqc_rule1,
+    ],
+    "#": [
+        nqc_rule3,
+    ],
+    "%": [
+        nqc_rule15,
+    ],
+    "&": [
+        nqc_rule16,
+    ],
+    "'": [
+        nqc_rule2,
+    ],
+    "(": [
+        nqc_rule23,
+    ],
+    "*": [
+        nqc_rule12,
+    ],
+    "+": [
+        nqc_rule9,
+    ],
+    "-": [
+        nqc_rule10,
+    ],
+    "/": [
+        nqc_rule0,
+        nqc_rule4,
+        nqc_rule11,
+    ],
+    "0": [
+        nqc_rule24,
+    ],
+    "1": [
+        nqc_rule24,
+    ],
+    "2": [
+        nqc_rule24,
+    ],
+    "3": [
+        nqc_rule24,
+    ],
+    "4": [
+        nqc_rule24,
+    ],
+    "5": [
+        nqc_rule24,
+    ],
+    "6": [
+        nqc_rule24,
+    ],
+    "7": [
+        nqc_rule24,
+    ],
+    "8": [
+        nqc_rule24,
+    ],
+    "9": [
+        nqc_rule24,
+    ],
+    ":": [
+        nqc_rule22,
+    ],
+    "<": [
+        nqc_rule8,
+        nqc_rule14,
+    ],
+    "=": [
+        nqc_rule5,
+    ],
+    ">": [
+        nqc_rule7,
+        nqc_rule13,
+    ],
+    "@": [
+        nqc_rule24,
+    ],
+    "A": [
+        nqc_rule24,
+    ],
+    "B": [
+        nqc_rule24,
+    ],
+    "C": [
+        nqc_rule24,
+    ],
+    "D": [
+        nqc_rule24,
+    ],
+    "E": [
+        nqc_rule24,
+    ],
+    "F": [
+        nqc_rule24,
+    ],
+    "G": [
+        nqc_rule24,
+    ],
+    "H": [
+        nqc_rule24,
+    ],
+    "I": [
+        nqc_rule24,
+    ],
+    "J": [
+        nqc_rule24,
+    ],
+    "K": [
+        nqc_rule24,
+    ],
+    "L": [
+        nqc_rule24,
+    ],
+    "M": [
+        nqc_rule24,
+    ],
+    "N": [
+        nqc_rule24,
+    ],
+    "O": [
+        nqc_rule24,
+    ],
+    "P": [
+        nqc_rule24,
+    ],
+    "Q": [
+        nqc_rule24,
+    ],
+    "R": [
+        nqc_rule24,
+    ],
+    "S": [
+        nqc_rule24,
+    ],
+    "T": [
+        nqc_rule24,
+    ],
+    "U": [
+        nqc_rule24,
+    ],
+    "V": [
+        nqc_rule24,
+    ],
+    "W": [
+        nqc_rule24,
+    ],
+    "X": [
+        nqc_rule24,
+    ],
+    "Y": [
+        nqc_rule24,
+    ],
+    "Z": [
+        nqc_rule24,
+    ],
+    "^": [
+        nqc_rule18,
+    ],
+    "_": [
+        nqc_rule24,
+    ],
+    "a": [
+        nqc_rule24,
+    ],
+    "b": [
+        nqc_rule24,
+    ],
+    "c": [
+        nqc_rule24,
+    ],
+    "d": [
+        nqc_rule24,
+    ],
+    "e": [
+        nqc_rule24,
+    ],
+    "f": [
+        nqc_rule24,
+    ],
+    "g": [
+        nqc_rule24,
+    ],
+    "h": [
+        nqc_rule24,
+    ],
+    "i": [
+        nqc_rule24,
+    ],
+    "j": [
+        nqc_rule24,
+    ],
+    "k": [
+        nqc_rule24,
+    ],
+    "l": [
+        nqc_rule24,
+    ],
+    "m": [
+        nqc_rule24,
+    ],
+    "n": [
+        nqc_rule24,
+    ],
+    "o": [
+        nqc_rule24,
+    ],
+    "p": [
+        nqc_rule24,
+    ],
+    "q": [
+        nqc_rule24,
+    ],
+    "r": [
+        nqc_rule24,
+    ],
+    "s": [
+        nqc_rule24,
+    ],
+    "t": [
+        nqc_rule24,
+    ],
+    "u": [
+        nqc_rule24,
+    ],
+    "v": [
+        nqc_rule24,
+    ],
+    "w": [
+        nqc_rule24,
+    ],
+    "x": [
+        nqc_rule24,
+    ],
+    "y": [
+        nqc_rule24,
+    ],
+    "z": [
+        nqc_rule24,
+    ],
+    "{": [
+        nqc_rule21,
+    ],
+    "|": [
+        nqc_rule17,
+    ],
+    "}": [
+        nqc_rule20,
+    ],
+    "~": [
+        nqc_rule19,
+    ],
 }
 
 # x.rulesDictDict for nqc mode.

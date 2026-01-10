@@ -149,9 +149,7 @@ class JupytextManager:
         start = contents.find(prefix_marker)
         if start == -1:
             return i
-        end = contents.find(prefix_marker, start + len(prefix_marker)) + len(
-            prefix_marker
-        )
+        end = contents.find(prefix_marker, start + len(prefix_marker)) + len(prefix_marker)
         if end == -1:
             return i
         p = root.insertAsLastChild()

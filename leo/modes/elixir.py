@@ -162,221 +162,449 @@ keywordsDictDict = {
 
 # Rules for elixir_main ruleset.
 
+
 def elixir_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
+
 
 def elixir_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def elixir_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def elixir_rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def elixir_rule4(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="literal2", pattern=":",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="literal2", pattern=":", exclude_match=True)
+
 
 # Not used.
 def elixir_rule5(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal3", regexp="\\$.\\w*")
 
+
 def elixir_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="literal3", seq="badarg")
+
 
 def elixir_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="literal3", seq="nocookie")
 
+
 def elixir_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="literal3", seq="false")
+
 
 def elixir_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="literal3", seq="true")
 
+
 def elixir_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="->")
+
 
 def elixir_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<-")
 
+
 def elixir_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
+
 
 def elixir_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=";")
 
+
 def elixir_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def elixir_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def elixir_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def elixir_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="#")
 
+
 def elixir_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def elixir_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def elixir_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
+
 
 def elixir_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def elixir_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def elixir_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
 
+
 def elixir_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
+
 
 def elixir_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
 
+
 def elixir_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
+
 
 def elixir_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
+
 def elixir_rule28(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bdiv\\b")
+
 
 def elixir_rule29(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\brem\\b")
 
+
 def elixir_rule30(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bor\\b")
+
 
 def elixir_rule31(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bxor\\b")
 
+
 def elixir_rule32(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbor\\b")
+
 
 def elixir_rule33(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbxor\\b")
 
+
 def elixir_rule34(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbsl\\b")
+
 
 def elixir_rule35(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbsr\\b")
 
+
 def elixir_rule36(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\band\\b")
+
 
 def elixir_rule37(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bband\\b")
 
+
 def elixir_rule38(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bnot\\b")
+
 
 def elixir_rule39(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\bbnot\\b")
 
+
 def elixir_rule40(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for elixir_main ruleset.
 rulesDict1 = {
-    "!": [elixir_rule27,],
-    "\"": [elixir_rule1,],
-    "#": [elixir_rule0, elixir_rule17,],
+    "!": [
+        elixir_rule27,
+    ],
+    "\"": [
+        elixir_rule1,
+    ],
+    "#": [
+        elixir_rule0,
+        elixir_rule17,
+    ],
     # "$": [elixir_rule5,],
-    "'": [elixir_rule2,],
-    "(": [elixir_rule3,],
-    "*": [elixir_rule19,],
-    "+": [elixir_rule18,],
-    ",": [elixir_rule25,],
-    "-": [elixir_rule10, elixir_rule40,],
-    ".": [elixir_rule12,],
-    "/": [elixir_rule15,],
-    "0": [elixir_rule40,],
-    "1": [elixir_rule40,],
-    "2": [elixir_rule40,],
-    "3": [elixir_rule40,],
-    "4": [elixir_rule40,],
-    "5": [elixir_rule40,],
-    "6": [elixir_rule40,],
-    "7": [elixir_rule40,],
-    "8": [elixir_rule40,],
-    "9": [elixir_rule40,],
-    ":": [elixir_rule4, elixir_rule20,],
-    ";": [elixir_rule13,],
-    "<": [elixir_rule11,],
-    "=": [elixir_rule14,],
-    "?": [elixir_rule26,],
-    "@": [elixir_rule40,],
-    "A": [elixir_rule40,],
-    "B": [elixir_rule40,],
-    "C": [elixir_rule40,],
-    "D": [elixir_rule40,],
-    "E": [elixir_rule40,],
-    "F": [elixir_rule40,],
-    "G": [elixir_rule40,],
-    "H": [elixir_rule40,],
-    "I": [elixir_rule40,],
-    "J": [elixir_rule40,],
-    "K": [elixir_rule40,],
-    "L": [elixir_rule40,],
-    "M": [elixir_rule40,],
-    "N": [elixir_rule40,],
-    "O": [elixir_rule40,],
-    "P": [elixir_rule40,],
-    "Q": [elixir_rule40,],
-    "R": [elixir_rule40,],
-    "S": [elixir_rule40,],
-    "T": [elixir_rule40,],
-    "U": [elixir_rule40,],
-    "V": [elixir_rule40,],
-    "W": [elixir_rule40,],
-    "X": [elixir_rule40,],
-    "Y": [elixir_rule40,],
-    "Z": [elixir_rule40,],
-    "[": [elixir_rule23,],
-    "]": [elixir_rule24,],
-    "_": [elixir_rule40,],
-    "a": [elixir_rule36, elixir_rule40,],
-    "b": [elixir_rule6, elixir_rule32, elixir_rule33, elixir_rule34, elixir_rule35, elixir_rule37, elixir_rule39, elixir_rule40,],
-    "c": [elixir_rule40,],
-    "d": [elixir_rule28, elixir_rule40,],
-    "e": [elixir_rule40,],
-    "f": [elixir_rule8, elixir_rule40,],
-    "g": [elixir_rule40,],
-    "h": [elixir_rule40,],
-    "i": [elixir_rule40,],
-    "j": [elixir_rule40,],
-    "k": [elixir_rule40,],
-    "l": [elixir_rule40,],
-    "m": [elixir_rule40,],
-    "n": [elixir_rule7, elixir_rule38, elixir_rule40,],
-    "o": [elixir_rule30, elixir_rule40,],
-    "p": [elixir_rule40,],
-    "q": [elixir_rule40,],
-    "r": [elixir_rule29, elixir_rule40,],
-    "s": [elixir_rule40,],
-    "t": [elixir_rule9, elixir_rule40,],
-    "u": [elixir_rule40,],
-    "v": [elixir_rule40,],
-    "w": [elixir_rule40,],
-    "x": [elixir_rule31, elixir_rule40,],
-    "y": [elixir_rule40,],
-    "z": [elixir_rule40,],
-    "{": [elixir_rule21,],
-    "|": [elixir_rule16,],
-    "}": [elixir_rule22,],
+    "'": [
+        elixir_rule2,
+    ],
+    "(": [
+        elixir_rule3,
+    ],
+    "*": [
+        elixir_rule19,
+    ],
+    "+": [
+        elixir_rule18,
+    ],
+    ",": [
+        elixir_rule25,
+    ],
+    "-": [
+        elixir_rule10,
+        elixir_rule40,
+    ],
+    ".": [
+        elixir_rule12,
+    ],
+    "/": [
+        elixir_rule15,
+    ],
+    "0": [
+        elixir_rule40,
+    ],
+    "1": [
+        elixir_rule40,
+    ],
+    "2": [
+        elixir_rule40,
+    ],
+    "3": [
+        elixir_rule40,
+    ],
+    "4": [
+        elixir_rule40,
+    ],
+    "5": [
+        elixir_rule40,
+    ],
+    "6": [
+        elixir_rule40,
+    ],
+    "7": [
+        elixir_rule40,
+    ],
+    "8": [
+        elixir_rule40,
+    ],
+    "9": [
+        elixir_rule40,
+    ],
+    ":": [
+        elixir_rule4,
+        elixir_rule20,
+    ],
+    ";": [
+        elixir_rule13,
+    ],
+    "<": [
+        elixir_rule11,
+    ],
+    "=": [
+        elixir_rule14,
+    ],
+    "?": [
+        elixir_rule26,
+    ],
+    "@": [
+        elixir_rule40,
+    ],
+    "A": [
+        elixir_rule40,
+    ],
+    "B": [
+        elixir_rule40,
+    ],
+    "C": [
+        elixir_rule40,
+    ],
+    "D": [
+        elixir_rule40,
+    ],
+    "E": [
+        elixir_rule40,
+    ],
+    "F": [
+        elixir_rule40,
+    ],
+    "G": [
+        elixir_rule40,
+    ],
+    "H": [
+        elixir_rule40,
+    ],
+    "I": [
+        elixir_rule40,
+    ],
+    "J": [
+        elixir_rule40,
+    ],
+    "K": [
+        elixir_rule40,
+    ],
+    "L": [
+        elixir_rule40,
+    ],
+    "M": [
+        elixir_rule40,
+    ],
+    "N": [
+        elixir_rule40,
+    ],
+    "O": [
+        elixir_rule40,
+    ],
+    "P": [
+        elixir_rule40,
+    ],
+    "Q": [
+        elixir_rule40,
+    ],
+    "R": [
+        elixir_rule40,
+    ],
+    "S": [
+        elixir_rule40,
+    ],
+    "T": [
+        elixir_rule40,
+    ],
+    "U": [
+        elixir_rule40,
+    ],
+    "V": [
+        elixir_rule40,
+    ],
+    "W": [
+        elixir_rule40,
+    ],
+    "X": [
+        elixir_rule40,
+    ],
+    "Y": [
+        elixir_rule40,
+    ],
+    "Z": [
+        elixir_rule40,
+    ],
+    "[": [
+        elixir_rule23,
+    ],
+    "]": [
+        elixir_rule24,
+    ],
+    "_": [
+        elixir_rule40,
+    ],
+    "a": [
+        elixir_rule36,
+        elixir_rule40,
+    ],
+    "b": [
+        elixir_rule6,
+        elixir_rule32,
+        elixir_rule33,
+        elixir_rule34,
+        elixir_rule35,
+        elixir_rule37,
+        elixir_rule39,
+        elixir_rule40,
+    ],
+    "c": [
+        elixir_rule40,
+    ],
+    "d": [
+        elixir_rule28,
+        elixir_rule40,
+    ],
+    "e": [
+        elixir_rule40,
+    ],
+    "f": [
+        elixir_rule8,
+        elixir_rule40,
+    ],
+    "g": [
+        elixir_rule40,
+    ],
+    "h": [
+        elixir_rule40,
+    ],
+    "i": [
+        elixir_rule40,
+    ],
+    "j": [
+        elixir_rule40,
+    ],
+    "k": [
+        elixir_rule40,
+    ],
+    "l": [
+        elixir_rule40,
+    ],
+    "m": [
+        elixir_rule40,
+    ],
+    "n": [
+        elixir_rule7,
+        elixir_rule38,
+        elixir_rule40,
+    ],
+    "o": [
+        elixir_rule30,
+        elixir_rule40,
+    ],
+    "p": [
+        elixir_rule40,
+    ],
+    "q": [
+        elixir_rule40,
+    ],
+    "r": [
+        elixir_rule29,
+        elixir_rule40,
+    ],
+    "s": [
+        elixir_rule40,
+    ],
+    "t": [
+        elixir_rule9,
+        elixir_rule40,
+    ],
+    "u": [
+        elixir_rule40,
+    ],
+    "v": [
+        elixir_rule40,
+    ],
+    "w": [
+        elixir_rule40,
+    ],
+    "x": [
+        elixir_rule31,
+        elixir_rule40,
+    ],
+    "y": [
+        elixir_rule40,
+    ],
+    "z": [
+        elixir_rule40,
+    ],
+    "{": [
+        elixir_rule21,
+    ],
+    "|": [
+        elixir_rule16,
+    ],
+    "}": [
+        elixir_rule22,
+    ],
 }
 
 # x.rulesDictDict for elixir mode.

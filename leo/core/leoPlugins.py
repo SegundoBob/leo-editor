@@ -254,9 +254,7 @@ class BaseLeoPlugin:
         self.c.k.registerCommand(commandName, handler, pane=pane, verbose=verbose)
 
     # @+node:ekr.20100908125007.6014: *3* BaseLeoPlugin.setMenuItem
-    def setMenuItem(
-        self, menu: Wrapper, commandName: str = None, handler: Callable = None
-    ) -> None:
+    def setMenuItem(self, menu: Wrapper, commandName: str = None, handler: Callable = None) -> None:
         """Create a menu item in 'menu' using text 'commandName' calling handler 'handler'
         if commandName and handler are none, use the most recently defined values
         """
@@ -273,9 +271,7 @@ class BaseLeoPlugin:
         self.c.frame.menu.createMenuItemsFromTable(menu, table)
 
     # @+node:ekr.20100908125007.6015: *3* BaseLeoPlugin.setButton
-    def setButton(
-        self, buttonText: str = None, commandName: str = None, color: str = None
-    ) -> None:
+    def setButton(self, buttonText: str = None, commandName: str = None, color: str = None) -> None:
         """Associate an existing command with a 'button'"""
         if buttonText is None:
             buttonText = self.commandName
@@ -287,9 +283,7 @@ class BaseLeoPlugin:
         if color is None:
             color = 'grey'
         script = f"c.doCommandByName('{self.commandName}')"
-        g.app.gui.makeScriptButton(
-            self.c, args=None, script=script, buttonText=buttonText, bg=color
-        )
+        g.app.gui.makeScriptButton(self.c, args=None, script=script, buttonText=buttonText, bg=color)
 
     # @-others
 
@@ -323,9 +317,7 @@ class LeoPluginsController:
         self.reloadSettings()
 
     def reloadSettings(self) -> None:
-        self.warn_on_failure = g.app.config.getBool(
-            'warn_when_plugins_fail_to_load', default=True
-        )
+        self.warn_on_failure = g.app.config.getBool('warn_when_plugins_fail_to_load', default=True)
 
     # @+node:ekr.20100909065501.5952: *3* plugins.Event handlers
     # @+node:ekr.20161029060545.1: *4* plugins.on_idle
@@ -522,9 +514,7 @@ class LeoPluginsController:
                 self.loadOnePlugin(plugin.strip(), tag=tag)
 
     # @+node:ekr.20100908125007.6024: *4* plugins.loadOnePlugin & helper functions
-    def loadOnePlugin(
-        self, moduleOrFileName: str, tag: str = 'open0', verbose: bool = False
-    ) -> Any:
+    def loadOnePlugin(self, moduleOrFileName: str, tag: str = 'open0', verbose: bool = False) -> Any:
         """
         Load one plugin from a file name or module.
         Use extensive tracing if --trace-plugins is in effect.
@@ -554,9 +544,7 @@ class LeoPluginsController:
                     report(f"{moduleName}.init() did not return a bool")
                 if init_result:
                     self.loadedModules[moduleName] = result
-                    self.loadedModulesFilesDict[moduleName] = (
-                        g.app.config.enabledPluginsFileName
-                    )
+                    self.loadedModulesFilesDict[moduleName] = g.app.config.enabledPluginsFileName
                 else:
                     report(f"{moduleName}.init() returned False")
                     result = None
@@ -592,9 +580,7 @@ class LeoPluginsController:
                 # Look up through sys.modules, __import__ returns toplevel package
                 result = sys.modules[moduleName]
             except g.UiTypeException:
-                report(
-                    f"plugin {moduleName} does not support {g.app.gui.guiName()} gui"
-                )
+                report(f"plugin {moduleName} does not support {g.app.gui.guiName()} gui")
             except ImportError:
                 report(f"error importing plugin: {moduleName}")
             # except ModuleNotFoundError:
