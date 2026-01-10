@@ -65,9 +65,7 @@ def factorial(n):
 # @-others
 
 
-class TestDocTests(
-    unittest.TestCase
-):  # No need to be a subclass of leoTest2.LeoUnitTest.
+class TestDocTests(unittest.TestCase):  # No need to be a subclass of leoTest2.LeoUnitTest.
     def test_all_doctests(self):
         fails_list = []  # List of files with failing doctests.
         files_list = []  # List of files containing a doctest.
@@ -91,9 +89,7 @@ class TestDocTests(
                     print(f"{fails} failures in {g.shortFileName(f)}")
             self.assertEqual(fails_list, [])
         if 0:
-            g.trace(
-                f"{n} doctests found in {len(files_list)} file{g.plural(len(files_list))}"
-            )
+            g.trace(f"{n} doctests found in {len(files_list)} file{g.plural(len(files_list))}")
             g.printObj(files_list, tag="files containing any doctest")
             g.printObj(fails_list, tag="files containing a failed doctest")
 

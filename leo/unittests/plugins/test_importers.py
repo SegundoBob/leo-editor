@@ -87,9 +87,7 @@ class BaseTestImporter(LeoUnitTest):
             result_lines = [z.lstrip() for z in g.splitLines(result_s) if z.strip()]
         if s_lines != result_lines:
             g.trace('FAIL', g.caller(2))
-            g.printObj(
-                [f"{i:<4} {z}" for i, z in enumerate(s_lines)], tag=f"expected: {p.h}"
-            )
+            g.printObj([f"{i:<4} {z}" for i, z in enumerate(s_lines)], tag=f"expected: {p.h}")
             g.printObj(
                 [f"{i:<4} {z}" for i, z in enumerate(result_lines)],
                 tag=f"results: {p.h}",
@@ -117,9 +115,7 @@ class BaseTestImporter(LeoUnitTest):
         return '@file'
 
     # @+node:ekr.20230527075112.1: *3* BaseTestImporter.new_round_trip_test
-    def new_round_trip_test(
-        self, s: str, expected_s: str = None, strict: bool = True
-    ) -> None:
+    def new_round_trip_test(self, s: str, expected_s: str = None, strict: bool = True) -> None:
         if not expected_s:  # Leo 6.8.7.
             # Define the *strict* expected results.
             expected_s = textwrap.dedent(s).strip() + '\n'
@@ -127,9 +123,7 @@ class BaseTestImporter(LeoUnitTest):
         self.check_round_trip(p, expected_s, strict=strict)
 
     # @+node:ekr.20230526124600.1: *3* BaseTestImporter.new_run_test
-    def new_run_test(
-        self, s: str, expected_results: tuple, *, check: bool = True
-    ) -> None:
+    def new_run_test(self, s: str, expected_results: tuple, *, check: bool = True) -> None:
         """
         Run a unit test of an import scanner,
         i.e., create a tree from string s at location p.
@@ -277,20 +271,12 @@ class TestC(BaseTestImporter):
             (
                 2,
                 'func foo',
-                '    int foo (int a) {\n'
-                '// an underindented line.\n'
-                '        a = 2 ;\n'
-                '    }\n'
-                '\n',  # Leo 6.8.7
+                '    int foo (int a) {\n// an underindented line.\n        a = 2 ;\n    }\n\n',  # Leo 6.8.7
             ),
             (
                 2,
                 'func bar',
-                '    // This should go with the next function.\n'
-                '\n'
-                '    char bar (float c) {\n'
-                '        ;\n'
-                '    }\n',
+                '    // This should go with the next function.\n\n    char bar (float c) {\n        ;\n    }\n',
             ),
         )
         self.new_run_test(s, expected_results)
@@ -319,21 +305,12 @@ class TestC(BaseTestImporter):
             (
                 1,
                 'func doit',
-                'void\n'
-                'aaa::bbb::doit(awk* b)\n'
-                '{\n'
-                '    assert(false);\n'
-                '}\n'
-                '\n',  # Leo 6.8.7
+                'void\naaa::bbb::doit(awk* b)\n{\n    assert(false);\n}\n\n',  # Leo 6.8.7
             ),
             (
                 1,
                 'func dothat',
-                'bool\n'
-                'aaa::bbb::dothat(xyz *b) // trailing comment.\n'
-                '{\n'
-                '    return true;\n'
-                '} // comment\n',
+                'bool\naaa::bbb::dothat(xyz *b) // trailing comment.\n{\n    return true;\n} // comment\n',
             ),
         )
         self.new_run_test(s, expected_results)
@@ -810,11 +787,7 @@ class TestCython(BaseTestImporter):
             (
                 0,
                 '',  # check_outlines ignores the first headline.
-                'from libc.math cimport pow\n'
-                '\n'
-                '@others\n'
-                '@language cython\n'
-                '@tabwidth -4\n',
+                'from libc.math cimport pow\n\n@others\n@language cython\n@tabwidth -4\n',
             ),
             (
                 1,
@@ -875,12 +848,7 @@ class TestDart(BaseTestImporter):
             (
                 1,
                 'function hello',
-                "var name = 'Bob';\n"
-                '\n'
-                'hello() {\n'
-                "  print('Hello, World!');\n"
-                '}\n'
-                '\n',  # Leo 6.8.7
+                "var name = 'Bob';\n\nhello() {\n  print('Hello, World!');\n}\n\n",  # Leo 6.8.7
             ),
             (
                 1,
@@ -1019,9 +987,7 @@ class TestHtml(BaseTestImporter):
             (
                 2,
                 """<body onload="brython({debug:1, cache:'none'})">""",
-                '<body onload="brython({debug:1, cache:\'none\'})">\n'
-                '<!-- comment -->\n'
-                '</body>\n',
+                '<body onload="brython({debug:1, cache:\'none\'})">\n<!-- comment -->\n</body>\n',
             ),
         )
         self.new_run_test(s, expected_results)
@@ -1310,24 +1276,17 @@ class TestHtml(BaseTestImporter):
             (
                 1,
                 '<table cellspacing="0" cellpadding="0" width="600" border="0">',
-                '<table cellspacing="0" cellpadding="0" width="600" border="0">\n'
-                '@others\n'
-                '</table>\n',
+                '<table cellspacing="0" cellpadding="0" width="600" border="0">\n@others\n</table>\n',
             ),
             (
                 2,
                 '<table>',
-                '    <!-- The indentation of this element causes the problem. -->\n'
-                '    <table>\n'
-                '@others\n'
-                '</table>\n',
+                '    <!-- The indentation of this element causes the problem. -->\n    <table>\n@others\n</table>\n',
             ),
             (
                 3,
                 '<div align="center">',
-                '<div align="center">\n'
-                '<iframe src="http://www.amex.com/index.jsp"</iframe>\n'
-                '</div>\n',
+                '<div align="center">\n<iframe src="http://www.amex.com/index.jsp"</iframe>\n</div>\n',
             ),
         )
         self.new_run_test(s, expected_results)
@@ -1563,10 +1522,7 @@ class TestJava(BaseTestImporter):
             (
                 1,
                 'interface Bicycle',
-                'interface Bicycle {\n'
-                '    void changeCadence(int newValue);\n'
-                '    void changeGear(int newValue);\n'
-                '}\n',
+                'interface Bicycle {\n    void changeCadence(int newValue);\n    void changeGear(int newValue);\n}\n',
             ),
         )
         self.new_run_test(s, expected_results)
@@ -1588,10 +1544,7 @@ class TestJava(BaseTestImporter):
             (
                 1,
                 'interface Bicycle',
-                'interface Bicycle {\n'
-                'void changeCadence(int newValue);\n'
-                'void changeGear(int newValue);\n'
-                '}\n',
+                'interface Bicycle {\nvoid changeCadence(int newValue);\nvoid changeGear(int newValue);\n}\n',
             ),
         )
         self.new_run_test(s, expected_results)
@@ -1779,9 +1732,7 @@ class TestJupytext(BaseTestImporter):
 
     # @+others
     # @+node:ekr.20241029093840.1: *3* TestJupytext.run_jupytext_test
-    def run_jupytext_test(
-        self, s: str, expected_results: tuple, brief: bool = False
-    ) -> None:
+    def run_jupytext_test(self, s: str, expected_results: tuple, brief: bool = False) -> None:
         c = self.c
         p = c.p
 
@@ -1916,11 +1867,7 @@ class TestLua(BaseTestImporter):
             (
                 1,
                 'function foo',
-                'function foo (a)\n'
-                '  print("foo", a)\n'
-                '  return coroutine.yield(2*a)\n'
-                'end\n'
-                '\n',  # Leo 6.8.7
+                'function foo (a)\n  print("foo", a)\n  return coroutine.yield(2*a)\nend\n\n',  # Leo 6.8.7
             ),
             (
                 1,
@@ -1985,9 +1932,7 @@ class TestMarkdown(BaseTestImporter):
             (
                 4,
                 'Section 2.1.1',
-                'section 2.2.1 line 1\n'
-                'The next section is empty. It must not be deleted.\n'
-                '\n',
+                'section 2.2.1 line 1\nThe next section is empty. It must not be deleted.\n\n',
             ),
             (3, 'Section 2.2', '\n'),
             (2, 'Section 3', 'Section 3, line 1\n'),
@@ -2146,13 +2091,7 @@ class TestMarkdown(BaseTestImporter):
             (
                 1,
                 'Header',
-                '\n'
-                '```python\n'
-                'loads.init = {\n'
-                '    Chloride: 11.5,\n'
-                '    TotalP: 0.002,\n'
-                '}\n'
-                '```\n',
+                '\n```python\nloads.init = {\n    Chloride: 11.5,\n    TotalP: 0.002,\n}\n```\n',
             ),
             (1, 'Last header', ''),
         )
@@ -2788,10 +2727,7 @@ class TestPerl(BaseTestImporter):
             (
                 1,
                 'sub Test',
-                '            sub Test{\n'
-                '               print "Test!\n'
-                '";\n'
-                '            }\n',
+                '            sub Test{\n               print "Test!\n";\n            }\n',
             ),
         )
         self.new_run_test(s, expected_results)
@@ -3337,11 +3273,7 @@ class TestPython(BaseTestImporter):
             (
                 1,
                 'class Class2',
-                '# An outer comment\n'
-                '@myClassDecorator\n'
-                'class Class2:\n'
-                '    @others\n'
-                '\n',  # Leo 6.8.7
+                '# An outer comment\n@myClassDecorator\nclass Class2:\n    @others\n\n',  # Leo 6.8.7
             ),
             (
                 2,
@@ -3655,9 +3587,7 @@ class TestPython(BaseTestImporter):
             (
                 1,
                 'class TestCopyFile',
-                'class TestCopyFile(unittest.TestCase):\n    ATothers\n'.replace(
-                    'AT', '@'
-                ),
+                'class TestCopyFile(unittest.TestCase):\n    ATothers\n'.replace('AT', '@'),
             ),
             (
                 2,
@@ -3854,14 +3784,7 @@ class TestPython(BaseTestImporter):
             (
                 0,
                 '',  # Ignore the first headline.
-                '@others\n'
-                '\n'
-                "if __name__ == '__main__':\n"
-                '    main()\n'
-                '\n'
-                '\n'
-                '@language python\n'
-                '@tabwidth -4\n',
+                '@others\n\nif __name__ == \'__main__\':\n    main()\n\n\n@language python\n@tabwidth -4\n',
             ),
             (
                 1,
@@ -3872,12 +3795,7 @@ class TestPython(BaseTestImporter):
             (
                 2,
                 'MyClass.f2',
-                'def f2(\n'
-                '    self, arg1\n'
-                '):\n'
-                '    a = 1\n'
-                '    def inner_def():\n'
-                '        pass\n',
+                'def f2(\n    self, arg1\n):\n    a = 1\n    def inner_def():\n        pass\n',
             ),
             (1, 'function: main', '# About main\ndef main():\n    pass\n'),
         )
@@ -3985,10 +3903,7 @@ class TestPython(BaseTestImporter):
             (
                 2,
                 'Class3.u1',
-                '# Outer underindented comment\n'
-                '    def u1():\n'
-                '    # Underindented comment in u1.\n'
-                '        pass\n',
+                '# Outer underindented comment\n    def u1():\n    # Underindented comment in u1.\n        pass\n',
             ),
             (1, 'function: main', '# About main.\n\ndef main():\n    pass\n'),
         )
@@ -4830,11 +4745,7 @@ class TestXML(BaseTestImporter):
             (
                 1,
                 '<html>',
-                '<?xml version="1.0" encoding="UTF-8"?>\n'
-                '<!DOCTYPE note SYSTEM "Note.dtd">\n'
-                '<html>\n'
-                '@others\n'
-                '</html>\n',
+                '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE note SYSTEM "Note.dtd">\n<html>\n@others\n</html>\n',
             ),
             (2, '<head>', '<head>\n    <title>Bodystring</title>\n</head>\n'),
             (

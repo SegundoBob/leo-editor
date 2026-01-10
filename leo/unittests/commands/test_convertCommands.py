@@ -316,23 +316,13 @@ class TestPythonToTypeRust(LeoUnitTest):
         tests = (
             # Test 1.
             (
-                (
-                    'if not should_beautify(p):\n'
-                    "    return [] if toList else ''  # #2271\n"
-                ),
+                ('if not should_beautify(p):\n    return [] if toList else \'\'  # #2271\n'),
                 # Replace operators, but not single quotes.
-                (
-                    'if ! should_beautify(p) {\n'
-                    "    return [] if toList else ''  # #2271\n"
-                    '}\n'
-                ),
+                ('if ! should_beautify(p) {\n    return [] if toList else \'\'  # #2271\n}\n'),
             ),
             # Test 2
             (
-                (
-                    'if TYPE_CHECKING:  # pragma: no cover\n'
-                    '    from leo.core.leoCommands import Commands as Cmdr\n'
-                ),
+                ('if TYPE_CHECKING:  # pragma: no cover\n    from leo.core.leoCommands import Commands as Cmdr\n'),
                 (
                     'if TYPE_CHECKING { // # pragma: no cover\n'
                     '    from leo.core.leoCommands import Commands as Cmdr\n'

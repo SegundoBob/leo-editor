@@ -84,9 +84,7 @@ class TestGotoCommands(LeoUnitTest):
                 if p.h.startswith('@clean'):
                     if offset == 0:
                         assert line == 'before\n', (offset, repr(p.h), repr(line))
-                        assert g.splitLines(p.b)[0] == '@language python\n', repr(
-                            p.b[0]
-                        )
+                        assert g.splitLines(p.b)[0] == '@language python\n', repr(p.b[0])
                 else:
                     # print(f"{p.h:10} {offset:3} {line}")
                     assert p.h in line, (offset, repr(p.h), repr(line))

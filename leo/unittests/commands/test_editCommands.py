@@ -4244,9 +4244,7 @@ class TestEditCommands(LeoUnitTest):
         # A totally wimpy test.
         # And it somehow prints a newline to the console.
         if 0:
-            c.abbrevCommands.dynamicExpandHelper(
-                event=None, prefix='', aList=[], w=None
-            )
+            c.abbrevCommands.dynamicExpandHelper(event=None, prefix='', aList=[], w=None)
 
     # @+node:ekr.20210905064816.6: *4* TestEditCommands.test_extendHelper
     def test_extendHelper(self):

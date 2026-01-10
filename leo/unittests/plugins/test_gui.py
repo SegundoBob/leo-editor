@@ -225,9 +225,7 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.append(QtIconBarClass)
         for cls in classes:
-            self.assertFalse(
-                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
-            )
+            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
 
     # @+node:ekr.20220911101304.1: *3* test_status_line_api
     def test_status_line_api(self):
@@ -241,9 +239,7 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.append(QtStatusLineClass)
         for cls in classes:
-            self.assertFalse(
-                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
-            )
+            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
 
     # @+node:ekr.20220911101329.1: *3* test_tree_api
     def test_tree_api(self):
@@ -257,9 +253,7 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.extend([LeoQtTree, LeoTree])
         for cls in classes:
-            self.assertFalse(
-                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
-            )
+            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
 
     # @+node:ekr.20220911101330.1: *3* test_text_api
     def test_text_api(self):
@@ -273,9 +267,7 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.extend([QLineEditWrapper, QTextEditWrapper, QScintillaWrapper])
         for cls in classes:
-            self.assertFalse(
-                get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods"
-            )
+            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
 
     # @-others
 
