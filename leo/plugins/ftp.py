@@ -11,9 +11,12 @@ from ftplib import FTP
 from leo.core import leoGlobals as g
 from leo.core import leoPlugins
 from leo.core.leoQt import QAction
+
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
+
+
 # @-<< ftp imports >>
 # @+others
 # @+node:ekr.20110110105526.5467: ** init
@@ -25,6 +28,8 @@ def init():
     leoPlugins.registerHandler("after-create-leo-frame", onCreate)
     g.plugin_signon(__name__)
     return True
+
+
 # @+node:ekr.20110110105526.5468: ** onCreate
 def onCreate(tag, keys):
     c = keys.get('c')
@@ -34,9 +39,10 @@ def onCreate(tag, keys):
         p = g.findTopLevelNode(c, '@data ftp')
         if p:
             pluginController(c)
+
+
 # @+node:ekr.20110110105526.5469: ** class pluginController
 class pluginController:
-
     # @+others
     # @+node:ekr.20110110105526.5470: *3* __init__(pluginController, ftp.py)
     def __init__(self, c):
@@ -44,7 +50,6 @@ class pluginController:
         ib_w = self.c.frame.iconBar.w
         action = QAction('Upload', ib_w)
         self.c.frame.iconBar.add(qaction=action, command=self.upload)
-
 
     # @+node:ekr.20110110105526.5471: *3* upload
     def upload(self, event=None):
@@ -60,7 +65,6 @@ class pluginController:
             credentials = files[0]
 
             for element in credentials:
-
                 g.es(element[0])
                 ftp = FTP(element[0])
                 ftp.login(element[1], element[2])
@@ -68,7 +72,6 @@ class pluginController:
                 # @+node:ekr.20110110105526.5472: *4* <<upload all the modified files>>
                 # @@c
                 for i in range(1, len(files)):
-
                     file = files[i]
 
                     n = len(file)
@@ -88,7 +91,10 @@ class pluginController:
                 p.b = json.dumps(files)
 
             g.es("Upload complete")
+
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

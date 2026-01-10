@@ -22,6 +22,7 @@ empty_leo_file = """<?xml version="1.0" encoding="UTF-8"?>
 """
 # @-<< define minimal .leo file >>
 
+
 # @+others
 # @+node:ekr.20100128073941.5372: ** init
 def init():
@@ -31,9 +32,10 @@ def init():
         g.registerHandler("open1", onOpen)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:EKR.20040517080049.3: ** onOpen
 def onOpen(tag, keywords):
-
     file_name = keywords.get('fileName')
 
     if file_name and os.path.getsize(file_name) == 0:
@@ -43,6 +45,7 @@ def onOpen(tag, keywords):
         file.write(empty_leo_file)
         file.flush()
         file.close()
+
 
 # @-others
 # @-leo

@@ -25,6 +25,7 @@ patternAscDirectiveSkip = re.compile(r"^@ascskip")
 patternAscDirectiveSkipToggle = re.compile(r"^@ascskip\s*(\w+)+.*")
 # @-<< patterns >>
 
+
 # @+others
 # @+node:ekr.20140920145803.17999: ** init
 def init():
@@ -32,6 +33,8 @@ def init():
     leoPlugins.registerHandler(('new', 'menu2'), CreateAscMenu)
     g.plugin_signon(__name__)
     return True
+
+
 # @+node:ekr.20140920145803.18000: ** Functions
 # @+node:ekr.20101110094152.5837: *3* CodeChunk
 def CodeChunk(text, width=72):
@@ -65,6 +68,8 @@ def CodeChunk(text, width=72):
                     chunkList.append(prefix + text[chunkStart:chunkEnd] + ' \\')
                     chunkStart = chunkEnd
     return chunkList
+
+
 # @+node:ekr.20101110094152.5847: *3* CreateAscMenu
 def CreateAscMenu(tag, keywords):
     """Create the Outline to AsciiDoc menu item in the Export menu."""
@@ -79,6 +84,8 @@ def CreateAscMenu(tag, keywords):
         ("Log all root and ascfile to log pane", "Alt+Shift+L", WriteAllRoots),
     )
     c.frame.menu.createMenuEntries(exportMenu, table)
+
+
 # @+node:ekr.20101110094152.5836: *3* GetAscFilename
 def GetAscFilename(c, p):
     'Checks a node for a filename directive.'
@@ -91,12 +98,13 @@ def GetAscFilename(c, p):
             ascFileName = containsAscFileDirective.group(1)
             if ascFileName is not None:
                 base = os.path.split(c.mFileName)[0]  # linux or windows
-                if (((base[0] == "/") and (ascFileName[0] != "/")) or
-                   ((base[1] == ":") and (ascFileName[1] != ":"))):
+                if ((base[0] == "/") and (ascFileName[0] != "/")) or ((base[1] == ":") and (ascFileName[1] != ":")):
                     # no full pathname specified
                     ascFileName = os.path.join(base, ascFileName)
                 Conf.GetCurrentOptions(c, p)
     return ascFileName
+
+
 # @+node:ekr.20101110094152.5835: *3* SectionUnderline
 def SectionUnderline(h, level, v):
     'Return a section underline string.'
@@ -105,14 +113,14 @@ def SectionUnderline(h, level, v):
         g.es("Section level is less than 1:\n  %s" % v.headString())
         level = 1
     elif level > asciiDocSectionLevels - 1:
-        g.es("Section level is more than maximum Section Levels: %d\n  %s" % (
-            asciiDocSectionLevels, v.headString()))
+        g.es("Section level is more than maximum Section Levels: %d\n  %s" % (asciiDocSectionLevels, v.headString()))
         level = asciiDocSectionLevels - 1
     str = Conf.current["headingUnderlines"][level]
     return str * max(len(h), 1)
+
+
 # @+node:ekr.20101110094152.5843: *3* WriteAll
 def WriteAll(c):
-
     p = c.rootPosition()
     while p:
         ascFileN = GetAscFilename(c, p)
@@ -121,6 +129,8 @@ def WriteAll(c):
             p.moveToNodeAfterTree()
         else:
             p.moveToThreadNext()
+
+
 # @+node:ekr.20101110094152.5845: *3* WriteAllRoots
 def WriteAllRoots(c):
     "Writes @root directive and/or @ascfile directive to log pane."
@@ -142,6 +152,8 @@ def WriteAllRoots(c):
                     g.es(p.h)
                     printedHeading = True
                 g.es('  ' + line)
+
+
 # @+node:ekr.20101110094152.5839: *3* WriteNode
 def WriteNode(v, startinglevel, ascFile):
     'Writes the contents of the node v to the ascFile.'
@@ -232,10 +244,7 @@ def WriteNode(v, startinglevel, ascFile):
                 WriteOutputLine(SectionUnderline(h, v.level() - startinglevel, v))
                 lastLinePrintedType = CV.LINE_WAS_HEAD
         if pendinglineType == CV.LINE_PENDING_DOC:
-            if (
-                lastLinePrintedType != CV.LINE_WAS_DOC and
-                lastLinePrintedType != CV.LINE_WAS_HEAD
-            ):
+            if lastLinePrintedType != CV.LINE_WAS_DOC and lastLinePrintedType != CV.LINE_WAS_HEAD:
                 WriteOutputLine("%s" % Conf.current["delimiterForCodeEnd"])
                 if inCodeExtract:
                     WriteOutputLine("\n%s" % Conf.current["delimiterForCodeSectionDefinition"])
@@ -279,6 +288,8 @@ def WriteNode(v, startinglevel, ascFile):
     if containsAscIignore is not None:
         return CV.NODE_IGNORE  # flag ignore tree to caller
     return None
+
+
 # @+node:ekr.20101110094152.5838: *3* WriteTreeAsAsc
 def WriteTreeAsAsc(p, fn):
     'Writes the tree under p to the file ascFile'
@@ -300,9 +311,10 @@ def WriteTreeAsAsc(p, fn):
             p.moveToThreadNext()
     ascFile.close()
     g.es('wrote: %s' % fn)
+
+
 # @+node:ekr.20101110094152.5841: *3* WriteTreeOfCurrentNode (not used)
 def WriteTreeOfCurrentNode(c):
-
     p = c.p
     while p:
         ascFileN = GetAscFilename(c, p)
@@ -314,9 +326,11 @@ def WriteTreeOfCurrentNode(c):
         g.es("Sorry, there was no @ascfile directive in this outline tree.")
     else:
         WriteTreeAsAsc(p, ascFileN)
+
+
 # @+node:ekr.20101110094152.5824: ** class _AssignUniqueConstantValue
 class _AssignUniqueConstantValue:
-    """ Provide unique value to be used as a constant """
+    """Provide unique value to be used as a constant"""
 
     # @+others
     # @+node:ekr.20101110094152.5825: *3* __init__
@@ -327,13 +341,14 @@ class _AssignUniqueConstantValue:
     # @+node:ekr.20101110094152.5826: *3* class ConstError
     class ConstError(TypeError):
         pass
+
     # @+node:ekr.20101110094152.5827: *3* __setattr__
     def __setattr__(self, name, value):
-
         if name in self.__dict__:
             if name != "UniqueInternalValue":
                 raise self.ConstError("Can't rebind const(%s)" % name)
         self.__dict__[name] = value
+
     # @+node:ekr.20101110094152.5828: *3* Assign_at_start
     def Assign_at_start(self):
         self.END_PROGRAM = self.Next()  # signal abort
@@ -344,17 +359,23 @@ class _AssignUniqueConstantValue:
         self.LINE_PENDING_NONE = self.Next()  # describe next line to be printed
         self.LINE_PENDING_CODE = self.Next()
         self.LINE_PENDING_DOC = self.Next()
+
     # @+node:ekr.20101110094152.5829: *3* Next
     def Next(self):
         self.UniqueInternalValue += 1
         return self.UniqueInternalValue
+
     # @-others
+
 
 CV = _AssignUniqueConstantValue()
 CV.NODE_IGNORE = CV.Next()  # demo of adding in code
+
+
 # @+node:ekr.20101110094152.5830: ** class _ConfigOptions
 class _ConfigOptions:
     """Hold current configuration options."""
+
     # @+others
     # @+node:ekr.20101110094152.5831: *3* __init__
     def __init__(self):
@@ -392,6 +413,7 @@ class _ConfigOptions:
         self.__GetNodeOptions(p)
 
     # @-others
+
 
 Conf = _ConfigOptions()
 # @-others

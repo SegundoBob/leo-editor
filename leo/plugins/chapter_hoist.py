@@ -2,7 +2,7 @@
 # @+node:ekr.20060328125925: * @file ../plugins/chapter_hoist.py
 # @+<< docstring >>
 # @+node:ekr.20060328125925.1: ** << docstring >>
-""" Creates hoist buttons.
+"""Creates hoist buttons.
 
 This plugin puts two buttons in the icon area: a button called 'Save Hoist' and
 a button called 'Dehoist'. The 'Save Hoist' button hoists the presently selected
@@ -19,6 +19,7 @@ Requires at least version 0.19 of mod_scripting.
 from leo.core import leoGlobals as g
 from leo.plugins.mod_scripting import scriptingController
 
+
 # @+others
 # @+node:ekr.20060328125925.4: ** init
 def init():
@@ -28,6 +29,8 @@ def init():
     g.registerHandler(('new', 'open2'), onCreate)
     g.plugin_signon(__name__)
     return True
+
+
 # @+node:ekr.20060328125925.5: ** onCreate
 def onCreate(tag, keys):
     """Handle the onCreate event in the chapterHoist plugin."""
@@ -35,6 +38,8 @@ def onCreate(tag, keys):
     if c:
         sc = scriptingController(c)
         chapterHoist(sc, c)
+
+
 # @+node:ekr.20060328125925.6: ** class chapterHoist
 class chapterHoist:
     # @+others
@@ -42,23 +47,21 @@ class chapterHoist:
     def __init__(self, sc, c):
         self.createSaveHoistButton(sc, c)
         self.createDehoistButton(sc, c)
+
     # @+node:ekr.20060328125925.8: *3* createSaveHoistButton
     def createSaveHoistButton(self, sc, c):
-
         def saveHoistCallback(event=None, self=self, sc=sc, c=c):
             self.createChapterHoistButton(sc, c, c.p)
             c.hoist()
 
         b = sc.createIconButton(
-            args=None,
-            text='save-hoist',
-            command=saveHoistCallback,
-            statusLine='Create hoist button current node')
+            args=None, text='save-hoist', command=saveHoistCallback, statusLine='Create hoist button current node'
+        )
 
         return b
+
     # @+node:ekr.20060328125925.9: *3* createDehoistButton
     def createDehoistButton(self, sc, c):
-
         def dehoistCallback(event=None, c=c):
             c.dehoist()
             return 'break'
@@ -66,16 +69,12 @@ class chapterHoist:
         # Fix #426 with a kludge that satisfies k.registerCommand.
         dehoistCallback.__name__ = 'wrapper: dehoist'
 
-        b = sc.createIconButton(
-            args=None,
-            text='dehoist',
-            command=dehoistCallback,
-            statusLine='Dehoist')
+        b = sc.createIconButton(args=None, text='dehoist', command=dehoistCallback, statusLine='Dehoist')
 
         return b
+
     # @+node:ekr.20060328125925.10: *3* createChapterHoistButton
     def createChapterHoistButton(self, sc, c, p):
-
         """Generates a hoist button for the headline at the given position"""
         h = p.h
         buttonText = sc.getButtonText(h)
@@ -88,11 +87,10 @@ class chapterHoist:
             c.hoist()
             return 'break'
 
-        sc.createIconButton(
-            args=None,
-            text=buttonText,
-            command=hoistButtonCallback,
-            statusLine=statusLine)
+        sc.createIconButton(args=None, text=buttonText, command=hoistButtonCallback, statusLine=statusLine)
+
     # @-others
+
+
 # @-others
 # @-leo

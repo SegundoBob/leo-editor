@@ -2,7 +2,7 @@
 # @+node:ekr.20040910070811.1: * @file ../plugins/run_nodes.py
 # @+<< docstring >>
 # @+node:ekr.20050912181956: ** << docstring >> (run_nodes.py)
-r""" Runs a program and interface Leo through its input/output/error streams.
+r"""Runs a program and interface Leo through its input/output/error streams.
 
 The double-click-icon-box command on a node whose headlines is @run 'cmd args' will execute
 the command. There are several other features, including @arg and @input nodes.
@@ -46,6 +46,7 @@ import threading
 import time
 from typing import Any
 from leo.core import leoGlobals as g
+
 # @-<< imports >>
 # @+<< globals >>
 # @+node:ekr.20040910070811.5: ** << globals >>
@@ -71,6 +72,7 @@ ErrThread = None
 OwnIdleHook = False
 # @-<< globals >>
 
+
 # @+others
 # @+node:ekr.20060108160737: ** init (run_nodes.py)
 def init():
@@ -81,10 +83,11 @@ def init():
     g.registerHandler("idle", OnIdle)
     g.plugin_signon(__name__)
     return True  # Ok for unit testing.
+
+
 # @+node:ekr.20060108160737.1: ** Hooks
 # @+node:ekr.20040910070811.12: *3* OnBodyKey
 def OnBodyKey(tag, keywords):
-
     # global RunNode, In
 
     c = keywords.get('c')
@@ -104,9 +107,10 @@ def OnBodyKey(tag, keywords):
             g.error("[@run] IOError: " + str(ioerr))
             return
         c.setBodyText(p, "")
+
+
 # @+node:ekr.20040910070811.13: *3* OnIconDoubleClick
 def OnIconDoubleClick(tag, keywords):
-
     global ExitCode, OwnIdleHook, RunList  # RunNode
 
     c = keywords.get('c')
@@ -143,9 +147,10 @@ def OnIconDoubleClick(tag, keywords):
             except IOError as ioerr:
                 g.error("@run IOError: " + str(ioerr))
             # @-<< handle double click in @in icon >>
+
+
 # @+node:ekr.20040910070811.14: *3* OnIdle
 def OnIdle(tag, keywords):
-
     global OwnIdleHook
     # global ErrThread, ExitCode, OutThread, RunNode, RunList
 
@@ -167,9 +172,10 @@ def OnIdle(tag, keywords):
     else:
         OwnIdleHook = False
         g.disableIdleTimeHook()
+
+
 # @+node:ekr.20040910070811.15: *3* OnQuit (run_nodes.py)
 def OnQuit(tag, keywords=None):
-
     global RunList  # RunNode
 
     c = keywords.get('c')
@@ -179,9 +185,10 @@ def OnQuit(tag, keywords=None):
         if RunNode:
             CloseProcess(c)
         g.error("@run: forced quit!")
+
+
 # @+node:ekr.20040910070811.6: ** class readingThread
 class readingThread(threading.Thread):
-
     File = None
     TextLock = threading.Lock()
     TextLock.acquire()
@@ -190,7 +197,6 @@ class readingThread(threading.Thread):
     # @+others
     # @+node:ekr.20040910070811.7: *3* run
     def run(self):
-
         """Called automatically when the thread is created."""
 
         # global Encoding
@@ -209,10 +215,12 @@ class readingThread(threading.Thread):
                 self.TextLock.release()
             s = self.File.readline()
             time.sleep(0.01)
+
     # @-others
+
+
 # @+node:ekr.20040910070811.8: ** CloseProcess
 def CloseProcess(c):
-
     global RunNode, ExitCode, WorkDir
     # global In, OutThread, ErrThread
 
@@ -238,18 +246,20 @@ def CloseProcess(c):
 
     # Redraw.
     c.redraw()
+
+
 # @+node:ekr.20040910070811.9: ** FindRunChildren (no longer used)
 def FindRunChildren(p):
-
     # global RunList
 
     for child in p.children():
         if g.match_word(child.h, 0, "@run"):
             RunList.append(child)
         FindRunChildren(child)
+
+
 # @+node:ekr.20040910070811.10: ** OpenProcess
 def OpenProcess(p):
-
     global RunNode, WorkDir
     global In, OutThread, ErrThread  # ExitCode
 
@@ -295,11 +305,7 @@ def OpenProcess(p):
             arg = h[4:].strip()
             args.append(arg)
         else:
-            if (
-                not g.match_word(h, 0, "@run") and
-                not g.match_word(h, 0, "@in") and
-                not g.match_word(h, 0, "@input")
-            ):
+            if not g.match_word(h, 0, "@run") and not g.match_word(h, 0, "@in") and not g.match_word(h, 0, "@input"):
                 args.append(child.b.strip())
     # @-<< append arguments from child nodes to command >>
 
@@ -324,9 +330,10 @@ def OpenProcess(p):
     c.selectPosition(RunNode)
     if os.name in ("nt", "dos"):
         c.redraw()
+
+
 # @+node:ekr.20040910070811.11: ** UpdateText
 def UpdateText(t, wcolor="black"):
-
     # global RunNode, Encoding
 
     if t.TextLock.acquire(0) == 1:
@@ -340,6 +347,8 @@ def UpdateText(t, wcolor="black"):
         t.TextLock.release()
 
     return True
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

@@ -16,6 +16,7 @@ from contextlib import contextmanager
 import re
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtCore, QtWidgets
+
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
@@ -24,6 +25,7 @@ g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 LNT = 'line_number_translation'
 LNR = 'line_numbering_root'
 LNOFF = 'line_numbering_off'
+
 
 # @+others
 # @+node:vitalije.20170727203452.1: ** init
@@ -35,11 +37,13 @@ def init():
         g.registerHandler('start2', onSelect)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:vitalije.20170727222624.1: ** Commands
 @g.command('toggle-line-numbering-root')
 def toggleLineNumberingRoot(event):
     """Toggle state of current selected node to be treated as a
-       root of file for line numbering purposes."""
+    root of file for line numbering purposes."""
     c = event.get('c')
     if c and c.p and c.p.v:
         v = c.p.v
@@ -52,12 +56,15 @@ def toggleLineNumberingRoot(event):
         v.u[LNR] = not v.u.get(LNR, False) and not has_root
         renumber(c)
 
+
 @g.command('line-numbering-toggle')
 def toggleLineNumberingOff(event):
     """Toggle line numbering plugin off or on."""
     c = event.get('c')
     c.user_dict[LNOFF] = not c.user_dict.get(LNOFF, False)
     renumber(c)
+
+
 # @+node:vitalije.20170727204246.1: ** onSelect
 def onSelect(tag, keys):
     c = keys.get('c')
@@ -74,6 +81,8 @@ def onSelect(tag, keys):
             w.highest_line = nums[-1] if nums else 10
     else:
         c.user_dict[LNT] = tuple()
+
+
 # @+node:vitalije.20170811122518.1: ** number_bar_widget
 @contextmanager
 def number_bar_widget(c):
@@ -81,12 +90,17 @@ def number_bar_widget(c):
     if w:
         yield w
     else:
+
         class DummyWidget:
             def update(self):
                 pass
+
         yield DummyWidget()
+
+
 # @+node:vitalije.20170727214320.1: ** renumber
 NUMBERINGS = {}
+
 
 def renumber(c):
     if c.user_dict.get(LNOFF, False):
@@ -120,8 +134,11 @@ def renumber(c):
             w.highest_line = nums[-1] if nums else 10
             w.update()
     finish_update(c)
+
+
 # @+node:vitalije.20170727214225.1: ** request & finish_update
 REQUESTS: dict[str, bool] = {}
+
 
 def request_update(c):
     h = c.hash()
@@ -130,8 +147,11 @@ def request_update(c):
     REQUESTS[h] = True
     QtCore.QTimer.singleShot(200, lambda: renumber(c))
 
+
 def finish_update(c):
     REQUESTS[c.hash()] = False
+
+
 # @+node:vitalije.20170726090940.1: ** universal_line_numbers
 def universal_line_numbers(root, target_p, delim_st, delim_en):
     """Returns tuple of line numbers corresponding to lines of
@@ -153,11 +173,13 @@ def universal_line_numbers(root, target_p, delim_st, delim_en):
     code_pattern = re.compile('^(@code|@c)$')
     # @+node:vitalije.20170726120813.1: *3* vlines
     vlinescache: dict[str, tuple] = {}
+
     def vlines(p):
         if p.gnx in vlinescache:
             return vlinescache[p.gnx]
         vl = vlinescache[p.gnx] = tuple(g.splitLines(p.b))
         return vl
+
     # @+node:vitalije.20170726124959.1: *3* is_verbatim
     verbaline = delim_st + '@'
     if delim_st:
@@ -166,6 +188,7 @@ def universal_line_numbers(root, target_p, delim_st, delim_en):
     else:
         is_verbatim = lambda x: False
         inc = lambda x: x
+
     # @+node:vitalije.20170726110433.1: *3* others_iterator
     def others_iterator(p):
         after = p.nodeAfterTree()
@@ -179,6 +202,7 @@ def universal_line_numbers(root, target_p, delim_st, delim_en):
                     p1.moveToNodeAfterTree()
                 else:
                     p1.moveToThreadNext()
+
     # @+node:vitalije.20170726121426.1: *3* handle_first_and_last_lines
     def handle_first_and_last_lines():
         rlines = vlines(root)
@@ -191,6 +215,7 @@ def universal_line_numbers(root, target_p, delim_st, delim_en):
             last += 1
         vlinescache[root.gnx] = rlines
         return first, last
+
     # @+node:vitalije.20170726122226.1: *3* numerate_node
     def numerate_node(p, st):
         f_lines = []
@@ -202,6 +227,7 @@ def universal_line_numbers(root, target_p, delim_st, delim_en):
         f_lines.append(st)
         flines_data[pkey(p)] = tuple(f_lines), st
         return st
+
     # @+node:vitalije.20170726124944.1: *3* check_line
     def check_line(p, line, st):
         # every child node ends with return
@@ -261,11 +287,13 @@ def universal_line_numbers(root, target_p, delim_st, delim_en):
         # @-others
         # if we get here it is an ordinary line
         return 0, 1
+
     # @+node:vitalije.20170727202446.1: *3* pkey
     def pkey(p):
         # this is enough for short-term key inside this function
         # positions will never change its archivedPosition value
         return tuple(p.archivedPosition())
+
     # @-others
     vlinescache[root.gnx] = tuple(g.splitLines(root.b))
     first, last = handle_first_and_last_lines()
@@ -280,6 +308,8 @@ def universal_line_numbers(root, target_p, delim_st, delim_en):
         return tfirst + flines + tlast
     k = pkey(target_p)
     return flines_data.get(k, (tuple(),))[0]
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

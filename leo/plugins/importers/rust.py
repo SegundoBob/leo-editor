@@ -1,6 +1,7 @@
 # @+leo-ver=5-thin
 # @+node:ekr.20200316100818.1: * @file ../plugins/importers/rust.py
 """The @auto importer for rust."""
+
 # pylint: disable=undefined-loop-variable
 from __future__ import annotations
 import re
@@ -12,10 +13,10 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
 
+
 # @+others
 # @+node:ekr.20200316101240.2: ** class Rust_Importer(Importer)
 class Rust_Importer(Importer):
-
     language = 'rust'
     string_list: list[str] = []  # Not used.
     minimum_block_size = 0
@@ -23,35 +24,25 @@ class Rust_Importer(Importer):
     # @+node:ekr.20231111065650.1: *3* << define rust block patterns >>
 
     block_patterns: tuple = (
-
         # Patterns that *do* require '{' on the same line...
-
         ('enum', re.compile(r'\s*enum\s+(\w+)\s*\{')),
         ('enum', re.compile(r'\s*pub\s+enum\s+(\w+)\s*\{')),
         ('macro', re.compile(r'\s*(\w+)\!\s*\{')),
         ('use', re.compile(r'\s*use.*?\{')),  # No m.group(1).
-
         # https://doc.rust-lang.org/stable/reference/visibility-and-privacy.html
         # 2018 edition+, paths for pub(in path) must start with crate, self, or super.
-
         # Function patterns require *neither* '(' nor '{' on the same line...
-
         # Ruff starts some lines with  fn name< (!)
         ('fn', re.compile(r'\s*fn\s+(\w+)')),
         ('fn', re.compile(r'\s*pub\s+fn\s+(\w+)')),
-
         ('fn', re.compile(r'\s*pub\s*\(\s*crate\s*\)\s*fn\s+(\w+)')),
         ('fn', re.compile(r'\s*pub\s*\(\s*self\s*\)\s*fn\s+(\w+)')),
         ('fn', re.compile(r'\s*pub\s*\(\s*super\s*\)\s*fn\s+(\w+)')),
-
         ('fn', re.compile(r'\s*pub\s*\(\s*in\s*crate::.*?\)\s*fn\s+(\w+)')),
         ('fn', re.compile(r'\s*pub\s*\(\s*in\s*self::.*?\)\s*fn\s+(\w+)')),
         ('fn', re.compile(r'\s*pub\s*\(\s*in\s*super::.*?\)\s*fn\s+(\w+)')),
-
         ('impl', re.compile(r'\s*impl\b(.*?)$')),  # Use the rest of the line.
-
         ('mod', re.compile(r'\s*mod\s+(\w+)')),
-
         ('struct', re.compile(r'\s*struct\b(.*?)$')),
         ('struct', re.compile(r'\s*pub\s+struct\b(.*?)$')),
         ('trait', re.compile(r'\s*trait\b(.*?)$')),
@@ -70,6 +61,7 @@ class Rust_Importer(Importer):
         Ruff uses intermixed blanks and tabs.
         """
         return True
+
     # @+node:ekr.20231031033255.1: *3* rust_i.compute_headline
     def compute_headline(self, block: Block) -> str:
         """
@@ -90,6 +82,7 @@ class Rust_Importer(Importer):
         else:
             name_s = ''
         return f"{block.kind} {name_s}" if name_s else f"unnamed {block.kind}"
+
     # @+node:ekr.20231104195248.1: *3* rust_i.delete_comments_and_strings
     def delete_comments_and_strings(self, lines: list[str]) -> list[str]:
         """
@@ -118,6 +111,7 @@ class Rust_Importer(Importer):
                 assert False, full_message
             else:
                 print(full_message)
+
         # @+node:ekr.20250112060624.1: *4* rust_i function: skip_r
         def skip_r() -> None:
             """
@@ -158,6 +152,7 @@ class Rust_Importer(Importer):
 
             g.printObj(g.splitLines(s[i0:]), tag='run-on raw string literal')
             oops(f"Unterminated raw string literal: {s[i0:]!r}")
+
         # @+node:ekr.20250112061020.10: *4* rust_i function: skip_single_quote
         quote_patterns = (
             # '\u{7FFF}'
@@ -192,6 +187,7 @@ class Rust_Importer(Importer):
                 skip_n(len(m.group(1)))
                 return
             add()  # Not a character constant.
+
         # @+node:ekr.20231105043500.1: *4* rust_i function: skip_slash
         def skip_slash() -> None:
             nonlocal i
@@ -227,6 +223,7 @@ class Rust_Importer(Importer):
             else:
                 assert s[i] == '/', repr(s[i])
                 add()  # Just add the '/'
+
         # @+node:ekr.20231105043337.1: *4* rust_i function: skip_string_constant
         def skip_string_constant() -> None:
             assert s[i] == '"', repr(s[i])
@@ -245,6 +242,7 @@ class Rust_Importer(Importer):
             else:
                 g.printObj(g.splitLines(s[j:]), tag=f"{g.my_name()}: run-on string at")
                 oops(f"Run-on string! offset: {j} line number: {line_number}")
+
         # @+node:ekr.20231105042315.1: *4* rust_i functions: scanning
         def add() -> None:
             nonlocal i
@@ -277,6 +275,7 @@ class Rust_Importer(Importer):
             while n > 0:
                 n -= 1
                 skip()
+
         # @-others
 
         while i < len(s):
@@ -323,6 +322,7 @@ class Rust_Importer(Importer):
                     print(f"  Result line: {i:3} {result_line!r}")
                     break
         return result_lines
+
     # @+node:ekr.20231031020646.1: *3* rust_i.find_blocks
     def find_blocks(self, i1: int, i2: int) -> list[Block]:
         """
@@ -379,6 +379,7 @@ class Rust_Importer(Importer):
             assert i > progress, g.callers()
         # g.printObj(results, tag=f"{g.my_name()} {i1}:{i2}")
         return results
+
     # @+node:ekr.20231031131127.1: *3* rust_i.postprocess
     def postprocess(self, parent: Position) -> None:
         """
@@ -418,6 +419,7 @@ class Rust_Importer(Importer):
                     results.append('\n')
             results.append('@c\n')
             p.b = ''.join(results) + ''.join(tail)
+
         # @+node:ekr.20231031162142.1: *4* rust_i.function: move_module_preamble
         def move_module_preamble(lines: list[str], parent: Position) -> None:
             """
@@ -465,6 +467,7 @@ class Rust_Importer(Importer):
                 else:
                     parent.b += '\n'
                 child1.b = child1.b[1:]
+
         # @-others
 
         self.move_blank_lines(parent)  # Base-class method.
@@ -474,15 +477,22 @@ class Rust_Importer(Importer):
         if 0:
             for p in parent.self_and_subtree():
                 convert_docstring(p)
+
     # @-others
+
+
 # @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for rust."""
     Rust_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    'extensions': ['.rs',],
+    'extensions': [
+        '.rs',
+    ],
     'func': do_import,
 }
 # @@language python

@@ -28,6 +28,7 @@ from leo.core import leoGlobals as g
 
 language = 'english'  # Anything except 'french' uses english.
 
+
 # @+others
 # @+node:ekr.20050301083306.4: ** init
 def init():
@@ -36,9 +37,10 @@ def init():
     g.registerHandler(("new2", "menu2"), onCreate)
     g.plugin_signon(__name__)
     return True
+
+
 # @+node:ekr.20050301083306.5: ** onCreate
 def onCreate(tag, keywords):
-
     c = keywords.get('c')
     cc = controller(c)
     menu = c.frame.menu.getMenu('Outline')
@@ -51,17 +53,17 @@ def onCreate(tag, keywords):
         (mess1, "Shift+Ctrl+Alt+D", cc.readDir),
     )
     c.frame.menu.createMenuEntries(menu, table)
+
+
 # @+node:ekr.20050301083306.6: ** class controller
 class controller:
-
     # @+others
     # @+node:ekr.20050301083306.7: *3* ctor
     def __init__(self, c):
-
         self.c = c
+
     # @+node:ekr.20050301083306.8: *3* readDir
     def readDir(self, event=None):
-
         # fr - Modifier pour adapter à votre environnement
         # en - Change it to select the starting browsing directory
         c = self.c
@@ -86,10 +88,10 @@ class controller:
                 g.es(str(compteurglobal) + " fichiers traités.")
             else:
                 g.es(str(compteurglobal) + " files outlined.")
+
     # @+node:ekr.20050301083306.10: *3* importDir
     def importDir(self, dir, compteurglobal):
-
-        """ La routine récursive de lecture des fichiers """
+        """La routine récursive de lecture des fichiers"""
 
         if not g.os_path_exists(dir):
             if language == 'french':
@@ -114,7 +116,7 @@ class controller:
                     path = g.os_path_join(dir, f)
                     # est-ce un fichier ?
                     if g.os_path_isfile(path):
-                        body += (f + "\n")
+                        body += f + "\n"
                     else:
                         # c'est alors un répertoire
                         dossiers.append(path)
@@ -142,6 +144,9 @@ class controller:
             g.es_exception()
 
         return compteurglobal
+
     # @-others
+
+
 # @-others
 # @-leo

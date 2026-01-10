@@ -15,12 +15,15 @@ import sys
 import datetime
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtCore, QtWidgets
+
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 
+
 def init():
     return True  # For unit tests.
+
 
 class QNCalendarWidget(QtWidgets.QCalendarWidget):  # type:ignore
     def __init__(self, n=3, columns=3, year=None, month=None):
@@ -39,7 +42,6 @@ class QNCalendarWidget(QtWidgets.QCalendarWidget):  # type:ignore
         self.build(n, columns, year=year, month=month)
 
     def build(self, n=3, columns=3, year=None, month=None):
-
         self.calendars = []
 
         if year is None:
@@ -66,8 +68,8 @@ class QNCalendarWidget(QtWidgets.QCalendarWidget):  # type:ignore
                 year += 1
                 month = 1
             calendar.currentPageChanged.connect(
-                lambda year, month, cal=calendar:
-                    self.currentPageChanged(year, month, cal))
+                lambda year, month, cal=calendar: self.currentPageChanged(year, month, cal)
+            )
             calendar.clicked.connect(self.return_result)
             calendar.activated.connect(self.return_result)
             self.calendars.append(calendar)
@@ -113,6 +115,7 @@ class QNCalendarWidget(QtWidgets.QCalendarWidget):  # type:ignore
             i.blockSignals(old)
         self.activated.emit(date)
 
+
 class QNDateEdit(QtWidgets.QDateEdit):  # type:ignore
     def __init__(self, parent=None, n=3, columns=3):
         """set up
@@ -127,6 +130,7 @@ class QNDateEdit(QtWidgets.QDateEdit):  # type:ignore
         self.setCalendarPopup(True)
         self.cw = QNCalendarWidget(n=n, columns=columns)
         self.setCalendarWidget(self.cw)
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
@@ -151,6 +155,7 @@ def main():
 
     win.show()
     sys.exit(app.exec())
+
 
 if __name__ == '__main__':
     main()

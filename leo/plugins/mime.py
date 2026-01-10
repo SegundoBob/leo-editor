@@ -2,7 +2,7 @@
 # @+node:dan.20090217132953.1: * @file ../plugins/mime.py
 # @+<< docstring >>
 # @+node:dan.20090203174248.27: ** << docstring >> (mime.py)
-r""" Opens files with their default platform program.
+r"""Opens files with their default platform program.
 
 The double-click-icon-box command on @mime nodes will attempt to open the
 named file as if opened from a file manager. \@path parent nodes are used
@@ -45,6 +45,7 @@ import subprocess
 import sys
 from leo.core import leoGlobals as g
 
+
 # @+others
 # @+node:dan.20090210183435.1: ** exec_full_cmd
 def exec_full_cmd(cmd):
@@ -55,6 +56,8 @@ def exec_full_cmd(cmd):
         return subprocess.Popen(cmd, shell=True)
 
     return f
+
+
 # @+node:dan.20090210180636.27: ** exec_string_cmd
 def exec_string_cmd(cmd):
     """Accept a command string and return a function which opens executes the command,
@@ -68,6 +71,8 @@ def exec_string_cmd(cmd):
         return subprocess.Popen(s, shell=True)
 
     return f
+
+
 # @+node:dan.20090203174248.30: ** init (mime.py)
 def init():
     """Return True if the plugin has loaded successfully."""
@@ -77,6 +82,8 @@ def init():
         g.registerHandler('icondclick1', open_mimetype)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:dan.20090203174248.31: ** open_mimetype
 def open_mimetype(tag, keywords, val=None):
     """Simulate double-clicking on the filename in a file manager.
@@ -123,6 +130,8 @@ def open_mimetype(tag, keywords, val=None):
 
     # block execution of e.g. vim plugin
     return True
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

@@ -1,6 +1,7 @@
 # @+leo-ver=5-thin
 # @+node:ekr.20211209153303.1: * @file ../plugins/importers/python.py
 """The new, tokenize based, @auto importer for Python."""
+
 from __future__ import annotations
 import re
 import textwrap
@@ -12,6 +13,7 @@ if TYPE_CHECKING:
     assert g
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
+
 
 # @+others
 # @+node:ekr.20220720043557.1: ** class Python_Importer
@@ -79,10 +81,7 @@ class Python_Importer(Importer):
                 ch = line[i]
                 if ch in '#\n':
                     break
-                m = (
-                    self.string_pat1.match(line, i) or
-                    self.string_pat2.match(line, i)
-                )
+                m = self.string_pat1.match(line, i) or self.string_pat2.match(line, i)
                 if m:
                     # Start skipping the string.
                     prefix, delim = m.group(1), m.group(2)
@@ -105,6 +104,7 @@ class Python_Importer(Importer):
         assert len(result) == len(lines)  # A crucial invariant.
         assert textwrap.dedent(''.join(result)) == ''.join(result)  # A crucial check.
         return result
+
     # @+node:ekr.20230514140918.1: *3* python_i.find_blocks
     def find_blocks(self, i1: int, i2: int) -> list[Block]:
         """
@@ -134,14 +134,14 @@ class Python_Importer(Importer):
                     assert i1 + 1 <= end <= i2, (i1, end, i2)
 
                     # #3517: Don't generate nested defs.
-                    if (kind == 'def'
+                    if (
+                        kind == 'def'
                         and prev_block_line.strip().startswith('def ')
                         and self.lws_n(prev_block_line) < self.lws_n(s)
                     ):
                         i = end
                     else:
-                        block = Block(kind, name,
-                            start=prev_i, start_body=i, end=end, lines=self.lines)
+                        block = Block(kind, name, start=prev_i, start_body=i, end=end, lines=self.lines)
                         if trace:
                             g.printObj(block, tag=f"{g.my_name()}")
                         results.append(block)
@@ -149,6 +149,7 @@ class Python_Importer(Importer):
                     break
             assert i > progress, g.callers()
         return results
+
     # @+node:ekr.20230514140918.4: *3* python_i.find_end_of_block
     def find_end_of_block(self, i: int, i2: int) -> int:
         """
@@ -225,6 +226,7 @@ class Python_Importer(Importer):
                 tail_lines = 0
             i += 1
         return i2
+
     # @+node:ekr.20230825095926.1: *3* python_i.postprocess & helpers
     def postprocess(self, parent: Position) -> None:
         """Python_Importer.postprocess."""
@@ -237,6 +239,7 @@ class Python_Importer(Importer):
         self.move_module_preamble(parent)
         self.move_class_docstrings(parent)
         self.adjust_at_others(parent)
+
     # @+node:ekr.20230830113521.1: *4* python_i.adjust_at_others
     def adjust_at_others(self, parent: Position) -> None:
         """
@@ -251,6 +254,7 @@ class Python_Importer(Importer):
                         p.b = ''.join(lines[:i]) + '\n' + ''.join(lines[i:])
                         child.b = child.b[1:]
                         break
+
     # @+node:ekr.20230825100219.1: *4* python_i.adjust_headlines
     def adjust_headlines(self, parent: Position) -> None:
         """
@@ -277,6 +281,7 @@ class Python_Importer(Importer):
                 if not found:
                     # Replace 'def ' by 'function'
                     child.h = f"function: {child.h[4:].strip()}"
+
     # @+node:ekr.20230825164231.1: *4* python_i.find_docstring
     def find_docstring(self, p: Position) -> Optional[str]:
         """Creating a regex that returns a docstring is too tricky."""
@@ -334,11 +339,9 @@ class Python_Importer(Importer):
             at_others_indent = 4  # Default
 
         # Add the indentation of the @others statement in class body.
-        docstring_lines = [
-            f"{' '*at_others_indent}{z}" if z.strip() else '\n'
-            for z in g.splitLines(docstring)
-        ]
+        docstring_lines = [f"{' ' * at_others_indent}{z}" if z.strip() else '\n' for z in g.splitLines(docstring)]
         class_p.b = ''.join(class_lines[:n] + docstring_lines + class_lines[n:])
+
     # @+node:ekr.20230825111112.1: *4* python_i.move_class_docstrings
     def move_class_docstrings(self, parent: Position) -> None:
         """
@@ -351,6 +354,7 @@ class Python_Importer(Importer):
                     docstring = self.find_docstring(child1)
                     if docstring:
                         self.move_class_docstring(docstring, child1, p)
+
     # @+node:ekr.20230930181855.1: *4* python_i.move_module_preamble
     def move_module_preamble(self, parent: Position) -> None:
         """Move the preamble lines from the parent's first child to the start of parent.b."""
@@ -374,12 +378,17 @@ class Python_Importer(Importer):
                 parent.b = preamble_s + parent.b
                 child1.b = child1.b.replace(preamble_s, '')
                 return
+
     # @-others
+
+
 # @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for python."""
     Python_Importer(c).import_from_string(parent, s)
+
 
 importer_dict = {
     'extensions': ['.py', '.pyw', '.pyi', '.codon'],  # mypy uses .pyi extension.

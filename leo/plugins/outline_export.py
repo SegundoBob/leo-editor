@@ -7,6 +7,7 @@
 
 from leo.core import leoGlobals as g
 
+
 # @+others
 # @+node:ekr.20100128073941.5375: ** init
 def init():
@@ -16,11 +17,13 @@ def init():
         g.registerHandler("start2", onStart)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:edream.110203113231.721: ** newMoreHead
 # Returns the headline string in MORE format.
 
-def newMoreHead(self, firstLevel, useVerticalBar=True):
 
+def newMoreHead(self, firstLevel, useVerticalBar=True):
     useVerticalBar = True  # Force the vertical bar
 
     v = self
@@ -35,11 +38,14 @@ def newMoreHead(self, firstLevel, useVerticalBar=True):
     s += "+ " if v.hasChildren() else "- "
     s += v.h
     return s
+
+
 # @+node:ekr.20100128073941.5376: ** onStart
 def onStart(tag, keywords):
-
     from leo.core import leoNodes
 
     g.funcToMethod(newMoreHead, leoNodes.VNode, "moreHead")
+
+
 # @-others
 # @-leo

@@ -70,6 +70,7 @@ machines easily too. Like this:
 "just works", so now your shortcuts etc. can be stored on a central
 server.
 """
+
 # @-<< docstring >>
 # @+<< imports >>
 # @+node:ekr.20210518113710.1: ** << imports >>
@@ -87,6 +88,7 @@ from hashlib import sha1
 from leo.core import leoGlobals as g
 from leo.core.leoNodes import vnode
 from leo.core.leoQt import QtCore  # see QTimer in LeoCloud.__init__
+
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
@@ -94,6 +96,7 @@ g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 
 # for 'key: value' lines in body text
 KWARG_RE = re.compile(r"^([A-Za-z][A-Za-z0-9_]*): (.*)")
+
 
 # @+others
 # @+node:ekr.20201012111338.3: ** init (leo_cloud.py)
@@ -103,24 +106,25 @@ def init():
     g.plugin_signon(__name__)
     return True
 
+
 # @+node:ekr.20201012111338.4: ** onCreate (leo_cloud.py)
 def onCreate(tag, keys):
-
     c = keys.get('c')
     if not c:
         return
 
     c._leo_cloud = LeoCloud(c)
 
+
 # @+node:ekr.20201012111338.5: ** onSave (leo_cloud.py)
 def onSave(tag, keys):
-
     c = keys.get('c')
     if not c:
         return None
     if getattr(c, '_leo_cloud'):
         c._leo_cloud.save_clouds()
     return None  # explicitly not stopping save1 hook
+
 
 # @+node:ekr.20201012111338.6: ** lc_read_current (leo_cloud.py)
 @g.command("lc-read-current")
@@ -131,6 +135,7 @@ def lc_read_current(event):
         return
     c._leo_cloud.read_current()
 
+
 # @+node:ekr.20201012111338.7: ** lc_write_current (leo_cloud.py)
 @g.command("lc-write-current")
 def lc_write_current(event):
@@ -140,6 +145,7 @@ def lc_write_current(event):
         return
     c._leo_cloud.write_current()
 
+
 # @+node:ekr.20201012111338.8: ** class LeoCloudIOBase
 class LeoCloudIOBase:
     """Leo Cloud IO layer Base Class
@@ -147,6 +153,7 @@ class LeoCloudIOBase:
     LeoCloudIO layer sits between LeoCloud plugin and backends,
     which might be leo_cloud_server.py or Google Drive etc. etc.
     """
+
     # @+others
     # @+node:ekr.20201012111338.9: *3* LeoCloudIOBase.__init__
     def __init__(self, c, p, kwargs):
@@ -181,14 +188,16 @@ class LeoCloudIOBase:
         """
         self.put_data(lc_id, LeoCloud.to_dict(v))  # pylint: disable=no-member
 
-
     # @-others
+
+
 # @+node:ekr.20201012111338.12: ** class LeoCloudIOFileSystem(LeoCloudIOBase)
 class LeoCloudIOFileSystem(LeoCloudIOBase):
     """Leo Cloud IO layer that just loads / saves local files.
 
     i.e it's just for development / testing
     """
+
     # @+others
     # @+node:ekr.20201012111338.13: *3* LeoCloudIOFileSystem(LeoCloudIOBase).__init__
     def __init__(self, c, p, kwargs):
@@ -227,14 +236,16 @@ class LeoCloudIOFileSystem(LeoCloudIOBase):
         with open(filepath, 'w') as out:
             return out.write(LeoCloud.to_json(data))
 
-
     # @-others
+
+
 # @+node:ekr.20201012111338.16: ** class LeoCloudIOGit(LeoCloudIOBase)
 class LeoCloudIOGit(LeoCloudIOBase):
     """Leo Cloud IO layer that just loads / saves local files.
 
     i.e it's just for development / testing
     """
+
     # @+others
     # @+node:ekr.20201012111338.17: *3* LeoCloudIOGit(LeoCloudIOBase).__init__
     def __init__(self, c, p, kwargs):
@@ -291,8 +302,9 @@ class LeoCloudIOGit(LeoCloudIOBase):
         self._run_git('git -C "%s" commit -mupdates' % self.local)
         self._run_git('git -C "%s" push' % self.local)
 
-
     # @-others
+
+
 # @+node:ekr.20201012111338.21: ** class LeoCloud
 class LeoCloud:
     # @+others
@@ -300,7 +312,7 @@ class LeoCloud:
     def __init__(self, c):
         """
         Args:
-            c (context): Leo context    """
+            c (context): Leo context"""
         self.c = c
         self.bg_finished = False  # used for background thread
         self.bg_results = []  # results from background thread
@@ -344,6 +356,7 @@ class LeoCloud:
                     out.write(self.to_json(self.to_dict(subtree)))
 
         self.bg_finished = True
+
     # @+node:ekr.20201012111338.24: *3* LeoCloud.bg_post_process
     def bg_post_process(self, timer):
         """
@@ -383,6 +396,7 @@ class LeoCloud:
             g.es("No @leo_cloud node found", color='red')
             return None
         return p
+
     # @+node:ekr.20201012111338.26: *3* LeoCloud._find_clouds_recursive
     def _find_clouds_recursive(self, v, found):
         """see find_clouds()"""
@@ -482,10 +496,7 @@ class LeoCloud:
         background = []  # things to check in background
         for lc_v in self.find_clouds():
             kwargs = self.kw_from_node(lc_v)
-            if (
-                from_background
-                and (kwargs['remote'], kwargs['ID']) not in from_background
-            ):
+            if from_background and (kwargs['remote'], kwargs['ID']) not in from_background:
                 # only process nodes from the background checking
                 continue
             read = False
@@ -497,36 +508,38 @@ class LeoCloud:
                 read = True
             elif read_on_load == 'ask':
                 try:
-                    last_read = datetime.strptime(
-                        lc_v.u['_leo_cloud']['last_read'], "%Y-%m-%dT%H:%M:%S.%f")
+                    last_read = datetime.strptime(lc_v.u['_leo_cloud']['last_read'], "%Y-%m-%dT%H:%M:%S.%f")
                 except KeyError:
                     last_read = None
                 message = "Read cloud data '%s', overwriting local nodes?" % kwargs['ID']
                 if last_read:
                     delta = datetime.now() - last_read
                     message = "%s\n%s, %sh:%sm:%ss ago" % (
-                        message, last_read.strftime("%a %b %d %H:%M"),
+                        message,
+                        last_read.strftime("%a %b %d %H:%M"),
                         24 * delta.days + int(delta.seconds / 3600),
                         int(delta.seconds / 60) % 60,
-                        delta.seconds % 60)
-                read = g.app.gui.runAskYesNoCancelDialog(self.c, "Read cloud data?",
-                    message=message)
+                        delta.seconds % 60,
+                    )
+                read = g.app.gui.runAskYesNoCancelDialog(self.c, "Read cloud data?", message=message)
                 read = str(read).lower() == 'yes'
             if read:
                 self.read_current(p=self.c.vnode2position(lc_v))
             elif read_on_load == 'background':
                 # second time round, with from_background data, this will
                 # have been changed to 'ask' (above), so no infinite loop
-                background.append((lc_v, kwargs,
-                    self.recursive_hash(lc_v, [], include_current=False)))
+                background.append((lc_v, kwargs, self.recursive_hash(lc_v, [], include_current=False)))
             elif read_on_load == 'no':
                 g.es("NOTE: not reading '%s' from cloud" % kwargs['ID'])
             elif read_on_load != 'ask':
                 skipped.append(kwargs['ID'])
         if skipped:
-            g.app.gui.runAskOkDialog(self.c, "Unloaded cloud data",
+            g.app.gui.runAskOkDialog(
+                self.c,
+                "Unloaded cloud data",
                 message="There is unloaded (possibly stale) cloud data, use\nread_on_load: yes|no|ask\n"
-                  "in @leo_cloud nodes to avoid this message.\nUnloaded data:\n%s" % ', '.join(skipped))
+                "in @leo_cloud nodes to avoid this message.\nUnloaded data:\n%s" % ', '.join(skipped),
+            )
 
         if background:
             # send to background thread for checking
@@ -536,10 +549,10 @@ class LeoCloud:
             thread.start()
             # start watching for results
             g.IdleTime(self.bg_post_process).start()
+
     # @+node:ekr.20201012111338.33: *3* LeoCloud.read_current
     def read_current(self, p=None):
-        """read_current - read current tree from cloud
-        """
+        """read_current - read current tree from cloud"""
         if p is None:
             p = self.find_at_leo_cloud(self.c.p)
         if not p:
@@ -565,7 +578,6 @@ class LeoCloud:
         # so just ignore top node dirtiness in self.subtree_changed()
         self.c.setChanged()
         p.v.u.setdefault('_leo_cloud', {})['last_read'] = datetime.now().isoformat()
-
 
     # @+node:ekr.20201012111338.34: *3* LeoCloud.recursive_hash
     @staticmethod
@@ -595,6 +607,7 @@ class LeoCloud:
         whole_hash = sha1(''.join(hashes).encode('utf-8')).hexdigest()
         tree.append([whole_hash, childs])
         return whole_hash
+
     # @+node:ekr.20201012111338.35: *3* LeoCloud.save_clouds
     def save_clouds(self):
         """check for clouds to save when outline is saved"""
@@ -610,8 +623,11 @@ class LeoCloud:
             if write_on_save == 'yes':
                 write = True
             elif write_on_save == 'ask':
-                write = g.app.gui.runAskYesNoCancelDialog(self.c, "Write cloud data?",
-                    message="Write cloud data '%s', overwriting remote version?" % kwargs['ID'])
+                write = g.app.gui.runAskYesNoCancelDialog(
+                    self.c,
+                    "Write cloud data?",
+                    message="Write cloud data '%s', overwriting remote version?" % kwargs['ID'],
+                )
                 write = str(write).lower() == 'yes'
             if write:
                 self.write_current(p=self.c.vnode2position(lc_v))
@@ -622,9 +638,12 @@ class LeoCloud:
             elif write_on_save != 'ask':
                 skipped.append(kwargs['ID'])
         if skipped:
-            g.app.gui.runAskOkDialog(self.c, "Unsaved cloud data",
+            g.app.gui.runAskOkDialog(
+                self.c,
+                "Unsaved cloud data",
                 message="There is unsaved cloud data, use\nwrite_on_save: yes|no|ask\n"
-                  "in @leo_cloud nodes to avoid this message.\nUnsaved data:\n%s" % ', '.join(skipped))
+                "in @leo_cloud nodes to avoid this message.\nUnsaved data:\n%s" % ', '.join(skipped),
+            )
         if unchanged:
             g.es("Unchanged cloud data: %s" % ', '.join(unchanged))
         if no:
@@ -674,7 +693,7 @@ class LeoCloud:
             data,
             sort_keys=True,  # prevent unnecessary diffs
             indent=0,  # make json readable on cloud web pages
-            default=LeoCloud._to_json_serial
+            default=LeoCloud._to_json_serial,
         )
 
     # @+node:ekr.20201012111338.39: *3* LeoCloud._to_dict_recursive
@@ -733,8 +752,7 @@ class LeoCloud:
 
     # @+node:ekr.20201012111338.42: *3* LeoCloud.write_current
     def write_current(self, p=None):
-        """write_current - write current tree to cloud
-        """
+        """write_current - write current tree to cloud"""
         if p is None:
             p = self.find_at_leo_cloud(self.c.p)
         if not p:
@@ -746,11 +764,9 @@ class LeoCloud:
         # writing counts as reading, last read time msg. confusing otherwise
         p.v.u.setdefault('_leo_cloud', {})['last_read'] = datetime.now().isoformat()
 
-
-
-
-
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

@@ -2,11 +2,12 @@
 # @+node:ekr.20100103093121.5339: * @file ../plugins/stickynotes_plus.py
 # @+<< docstring >>
 # @+node:ekr.20100103100944.5389: ** << docstring >>
-""" Adds simple "sticky notes" feature (popout editors) for Qt gui.
+"""Adds simple "sticky notes" feature (popout editors) for Qt gui.
 
 alt-x stickynote to pop out current node as a note.
 
 """
+
 # @-<< docstring >>
 # These are valid complaints.
 # pylint: disable=no-member
@@ -17,6 +18,7 @@ import webbrowser
 from leo.core import leoGlobals as g
 from leo.core.leoQt import Qt, QtCore, QtGui, QtWidgets
 from leo.core.leoQt import QAction, KeyboardModifier, Weight
+
 # Third-party tools.
 try:
     import markdown
@@ -60,11 +62,13 @@ QPlainTextEdit {
 }
 """
 
+
 def decorate_window(w):
     w.setStyleSheet(stickynote_stylesheet)
     # w.setWindowIcon(QIcon(g.app.leoDir + "/Icons/leoapp32.png"))
     g.app.gui.attachLeoIcon(w)
     w.resize(600, 300)
+
 
 # @+node:ekr.20100103100944.5393: ** init
 def init():
@@ -74,9 +78,10 @@ def init():
         g.plugin_signon(__name__)
     g.app.stickynotes = {}
     return ok
+
+
 # @+node:ekr.20100103100944.5394: ** class FocusingPlainTextEdit
 class FocusingPlaintextEdit(QPlainTextEdit):
-
     def __init__(self, focusin, focusout):
         super().__init__()
         self.focusin = focusin
@@ -106,7 +111,6 @@ class SimpleRichText(QTextEdit):
 
     def focusInEvent(self, event):
         self.focusin()
-
 
     def closeEvent(self, event):
         event.accept()
@@ -161,12 +165,9 @@ class SimpleRichText(QTextEdit):
         print("italic")
 
 
-
 # @+node:ekr.20100103100944.5396: ** class notetextedit
 class notetextedit(QTextEdit):
-
-    (Bold, Italic, Pre, List, Remove,
-     Plain, Code, H1, H2, H3, Anchor, Save) = range(12)
+    (Bold, Italic, Pre, List, Remove, Plain, Code, H1, H2, H3, Anchor, Save) = range(12)
 
     # @+others
     # @+node:ekr.20100103100944.5397: *3* __init__
@@ -185,9 +186,9 @@ class notetextedit(QTextEdit):
         document = self.document()
         document.setDefaultFont(font)
         self.font = font
-        document.setDefaultStyleSheet(
-            "pre{margin-top:0px; margin-bottom:0px} li{margin-top:0px; margin-bottom:0px}")
+        document.setDefaultStyleSheet("pre{margin-top:0px; margin-bottom:0px} li{margin-top:0px; margin-bottom:0px}")
         QTimer.singleShot(0, get_markdown)
+
     # @+node:ekr.20100103100944.5398: *3* focusOutEvent
     def focusOutEvent__(self, event):
         self.focusout()
@@ -287,11 +288,11 @@ class notetextedit(QTextEdit):
         #
         # The below works but doesn't pick up highlighting of an anchor
         # would have to do the underlining and blue color
-            # format = QTextCharFormat()
-            # format.setAnchor(True)
-            # format.setAnchorHref(text)
-            # cursor.setCharFormat(format)
-            # self.setTextCursor(cursor)
+        # format = QTextCharFormat()
+        # format.setAnchor(True)
+        # format.setAnchorHref(text)
+        # cursor.setCharFormat(format)
+        # self.setTextCursor(cursor)
         #
         # This also works and generates highlighting
         cursor.deleteChar()
@@ -374,7 +375,6 @@ class notetextedit(QTextEdit):
         ps = char_format.font().pointSize()
         return {20: 'H1', 15: 'H2', 12: 'H3'}.get(ps)
 
-
     # @+node:ekr.20100103100944.5414: *3* textEffectMenu
     def textEffectMenu(self):
         # format = self.currentCharFormat()
@@ -382,14 +382,10 @@ class notetextedit(QTextEdit):
         # blockformat = cursor.blockFormat()
         menu = QMenu("Text Effect")
         for text, shortcut, data, checked in (
-                ("&Bold", "Ctrl+B", notetextedit.Bold,
-                 self.fontWeight() > Weight.Normal),
-                ("&Italic", "Ctrl+I", notetextedit.Italic,
-                 self.fontItalic()),
-                ("&Monospaced", None, notetextedit.Code,
-                 self.fontFixedPitch())
-                ):
-
+            ("&Bold", "Ctrl+B", notetextedit.Bold, self.fontWeight() > Weight.Normal),
+            ("&Italic", "Ctrl+I", notetextedit.Italic, self.fontItalic()),
+            ("&Monospaced", None, notetextedit.Code, self.fontFixedPitch()),
+        ):
             action = menu.addAction(text, self.setTextEffect)
             action.setData(QVariant(data))
             action.setCheckable(True)
@@ -436,6 +432,7 @@ class notetextedit(QTextEdit):
 
         global_point = self.viewport().mapToGlobal(self.cursorRect().center())
         menu.exec(global_point)
+
     # @+node:ekr.20100103100944.5415: *3* setTextEffect
     def setTextEffect(self):
         action = self.sender()
@@ -476,7 +473,6 @@ class notetextedit(QTextEdit):
 
     # @+node:ekr.20100103100944.5416: *3* mouseMoveEvent (stickynotes_plus.py)
     def mouseMoveEvent(self, event):
-
         pos = event.pos()
         anch = self.anchorAt(pos)
         self.viewport().setCursor(Qt.PointingHandCursor if anch else Qt.IBeamCursor)
@@ -484,7 +480,6 @@ class notetextedit(QTextEdit):
 
     # @+node:ekr.20100103100944.5417: *3* mouseReleaseEvent
     def mouseReleaseEvent(self, event):
-
         pos = event.pos()
         url = self.anchorAt(pos)
         if url:
@@ -493,20 +488,15 @@ class notetextedit(QTextEdit):
             webbrowser.open(url, new=2, autoraise=True)
         else:
             QTextEdit.mouseReleaseEvent(self, event)
+
     # @+node:ekr.20100103100944.5418: *3* insertFromMimeData
     def insertFromMimeData(self, source):
         # not sure really necessary since it actually appears to paste URLs correctly
         # I am stripping the http
         print("Paste")
         text = source.text()
-        if (
-            len(text.split()) == 1
-            and (
-                text.startswith('http://')
-                or 'www' in text
-                or '.com' in text
-                or '.html' in text
-            )
+        if len(text.split()) == 1 and (
+            text.startswith('http://') or 'www' in text or '.com' in text or '.html' in text
         ):
             if text.startswith('http://'):
                 text = '<a href="{0}">{1}</a> '.format(text, text[7:])
@@ -563,10 +553,12 @@ class notetextedit(QTextEdit):
         return doc + references
 
     # @-others
+
+
 # @+node:ekr.20100103100944.5420: ** g.command('stickynote')
 @g.command('stickynote')
 def stickynote_f(event):
-    """ Launch editable 'sticky note' for the node """
+    """Launch editable 'sticky note' for the node"""
 
     c = event['c']
     p = c.p
@@ -602,21 +594,23 @@ def stickynote_f(event):
     nf.textChanged.connect(textchanged_cb)
     nf.show()
     g.app.stickynotes[p.gnx] = nf
+
+
 # @+node:ekr.20100103100944.5421: ** g.command('stickynoter')
 @g.command('stickynoter')
 def stickynoter_f(event):
-    """ Launch editable 'sticky note' for the node """
+    """Launch editable 'sticky note' for the node"""
 
     c = event['c']
     p = c.p
     v = p.v
+
     def focusin():
         print("focus in")
         if v is c.p.v:
             nf.setHtml(v.b)
             nf.setWindowTitle(p.h)
             nf.dirty = False
-
 
     def focusout():
         print("focus out")
@@ -643,20 +637,22 @@ def stickynoter_f(event):
     nf.textChanged.connect(textchanged_cb)
     nf.show()
     g.app.stickynotes[p.gnx] = nf
+
+
 # @+node:ekr.20100103100944.5422: ** g.command('stickynoteplus')
 @g.command('stickynoteplus')
 def stickynoteplus_f(event):
-    """ Launch editable 'sticky note' for the node """
+    """Launch editable 'sticky note' for the node"""
     c = event['c']
     p = c.p
     v = p.v
+
     def get_markdown():  # focusin():
         print("focus in")
         if v is c.p.v:
             nf.setHtml(markdown.markdown(v.b))
             nf.setWindowTitle(p.h)
             nf.dirty = False
-
 
     def save():  # focusout():
         print("focus out")
@@ -668,7 +664,6 @@ def stickynoteplus_f(event):
         p = c.p
         if p.v is v:
             c.selectPosition(c.p)
-
 
     nf = notetextedit(get_markdown, save)
     nf.dirty = False
@@ -684,6 +679,8 @@ def stickynoteplus_f(event):
     nf.textChanged.connect(textchanged_cb)
     nf.show()
     g.app.stickynotes[p.gnx] = nf
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

@@ -105,7 +105,7 @@ class TestEditFileCommands(LeoUnitTest):
         self.assertTrue(c.lastTopLevel().h.startswith(expected_last_headline))
 
     # @+node:ekr.20230714160049.1: *3* TestEditFileCommands.test_diff_two_revs
-    def test_diff_two_revs(self):
+    def slow_test_diff_two_revs(self):
         c = self.c
         u = c.undoer
         x = GitDiffController(c=c)

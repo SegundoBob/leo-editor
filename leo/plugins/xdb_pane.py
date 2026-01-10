@@ -5,18 +5,21 @@
 Creates a Debug tab in the log pane, containing buttons for common xdb
 commands, and an input area in which the user can type other commands.
 """
+
 # @+<< imports: xdb_pane.py >>
 # @+node:ekr.20220424085736.1: ** << imports: xdb_pane.py >>
 from typing import Any
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtGui, QtWidgets
 from leo.core.leoQt import ScrollBarPolicy, WrapMode
+
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 # @-<< imports: xdb_pane.py >>
 
 # Globals.
 controllers: dict[str, Any] = {}
+
 
 # @+others
 # @+node:ekr.20181005051820.1: ** Top-level functions
@@ -32,11 +35,15 @@ def init():
     g.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
     return True
+
+
 # @+node:ekr.20181004143535.5: *3* onCreate (xdb_pane.py)
 def onCreate(tag, key):
     c = key.get('c')
     c.xpd_pane = w = XdbPane(c)
     c.frame.log.createTab('Debug', widget=w)
+
+
 # @+node:ekr.20181004143535.7: ** class XdbPane
 if g.app.gui.guiName() == "qt":
 
@@ -62,6 +69,7 @@ if g.app.gui.guiName() == "qt":
                 self.output_area = None
             layout.addStretch()
             self.setLayout(layout)
+
         # @+node:ekr.20181004182608.1: *4* create_buttons
         def create_buttons(self, layout):
             """Create two rows of buttons."""
@@ -89,9 +97,9 @@ if g.app.gui.guiName() == "qt":
                     hlayout.addWidget(w)
                 vlayout.addLayout(hlayout)
             layout.addLayout(vlayout)
+
         # @+node:ekr.20181005054101.1: *4* create_input_area
         def create_input_area(self, layout):
-
             # Create the Label
             label = QtWidgets.QLabel()
             label.setText('Debugger command:')
@@ -104,9 +112,9 @@ if g.app.gui.guiName() == "qt":
             layout2.addWidget(label)
             layout2.addWidget(w)
             layout.addLayout(layout2)
+
         # @+node:ekr.20181006154605.1: *4* create_output_area
         def create_output_area(self, layout):
-
             # Create the Label
             label = QtWidgets.QLabel()
             label.setText('Debugger outpuit:')
@@ -120,11 +128,13 @@ if g.app.gui.guiName() == "qt":
             vlayout.addWidget(label)
             vlayout.addWidget(w)
             layout.addLayout(vlayout)
+
         # @+node:ekr.20181004143535.20: *4* get_icon
         def get_icon(self, fn):
             """return the icon from Icons/debug_icons"""
             path = g.finalize_join(g.app.loadDir, '..', 'Icons', 'debug_icons', fn)
             return QtGui.QIcon(g.app.gui.getImageImage(path))
+
         # @+node:ekr.20181005042637.1: *3* debug_*
         def debug_break(self, checked):
             self.c.doCommandByName('db-b')
@@ -163,6 +173,7 @@ if g.app.gui.guiName() == "qt":
 
         def debug_xdb(self, *args):
             self.c.doCommandByName('xdb')
+
         # @+node:ekr.20181006161938.1: *3* write & clear
         def clear(self):
             """Clear the output area."""
@@ -178,6 +189,7 @@ if g.app.gui.guiName() == "qt":
                 w.moveCursor(QtGui.QTextCursor.End)
             else:
                 print(s.rstrip())
+
         # @-others
 # @-others
 # @@language python

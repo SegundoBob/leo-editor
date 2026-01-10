@@ -265,6 +265,7 @@ Leo themes.
 
 # @-<< docstring >>
 """
+
 # pylint: disable=invalid-name
 # @+<< imports >>
 # @+node:tom.20210527153415.1: ** << imports >> (freewin.py)
@@ -283,6 +284,7 @@ try:
     from leo.core.leoQt import QtCore, QtWidgets, QtGui
     from leo.core.leoQt import KeyboardModifier
     from leo.core.leoQt import QtWebEngineWidgets
+
     qt_imports_ok = True
 except ImportError as e:
     g.trace(e)
@@ -299,6 +301,7 @@ got_docutils = False
 try:
     from docutils.core import publish_string
     from docutils.utils import SystemMessage
+
     got_docutils = True
 except ModuleNotFoundError as e:
     print('Freewin:', e)
@@ -523,11 +526,14 @@ RST_STYLESHEET_LIGHT: str = '''body {
 # @-others
 # @-<< Stylesheets >>
 
+
 # @+others
 # @+node:ekr.20210617074439.1: ** init
 def init() -> bool:
     """Return True if the plugin has loaded successfully."""
     return True
+
+
 # @+node:tom.20210527153848.1: ** z-commands
 @g.command('z-open-freewin')
 def open_z_window(event: LeoKeyEvent) -> None:
@@ -545,6 +551,8 @@ def open_z_window(event: LeoKeyEvent) -> None:
 
     zwin.show()
     zwin.activateWindow()
+
+
 # @+node:tom.20210625145842.1: ** getGnx
 def getGnx(line: str) -> str:
     """Find and return a gnx in a line of text, or None.
@@ -555,6 +563,8 @@ def getGnx(line: str) -> str:
     matched = GNX1.match(line) or GNX.match(line)
     target = matched[1] if matched else None
     return target
+
+
 # @+node:tom.20210625145905.1: ** getLine
 def getLine(text_edit: QtWidgets.QTextEdit) -> str:
     """Return line of text at cursor position.
@@ -578,6 +588,8 @@ def getLine(text_edit: QtWidgets.QTextEdit) -> str:
     after = text[pos:]
     line = before.split('\n')[-1] + after.split('\n')[0]
     return line
+
+
 # @+node:tom.20210625161018.1: ** gotoHostGnx
 def gotoHostGnx(c: Cmdr, target: str) -> bool:
     """Change host node selection to target gnx.
@@ -599,9 +611,13 @@ def gotoHostGnx(c: Cmdr, target: str) -> bool:
             c.selectPosition(p)
             return True
     return False
+
+
 # @+node:tom.20210628002321.1: ** copy2clip
 def copy2clip(text: str) -> None:
     clipboard.setText(text)
+
+
 # @+node:tom.20220329145952.1: ** change_css_prop
 def change_css_prop(css: str, prop: str, newval: str) -> str:
     """Change the value of a named property in a css stylesheet fragment.
@@ -621,6 +637,7 @@ def change_css_prop(css: str, prop: str, newval: str) -> str:
 
     return css.replace(val, newval, 1)
 
+
 # @+node:tom.20240810173532.1: ** get_body_css
 def get_body_css(c):
     """Return the text of Leo's top-level CSS stylesheet."""
@@ -628,6 +645,8 @@ def get_body_css(c):
     w = ssm.get_master_widget()
     sheet = w.styleSheet()
     return sheet
+
+
 # @+node:tom.20220329150105.1: ** get_body_colors
 # Get current colors from the body editor widget
 def get_body_colors(c: Cmdr) -> tuple[str, str]:
@@ -635,12 +654,14 @@ def get_body_colors(c: Cmdr) -> tuple[str, str]:
     w: LeoQTextBrowser = wrapper.widget
 
     pallete: QtGui.QPalette = w.viewport().palette()
-    fg_hex: int = pallete.text().color().rgb() & 0x00ffffff
-    bg_hex: int = pallete.window().color().rgb() & 0x00ffffff
+    fg_hex: int = pallete.text().color().rgb() & 0x00FFFFFF
+    bg_hex: int = pallete.window().color().rgb() & 0x00FFFFFF
     fg: str = f'#{fg_hex:06x}'
     bg: str = f'#{bg_hex:06x}'
 
     return fg, bg
+
+
 # @+node:tom.20220329231604.1: ** is_body_dark
 def is_body_dark(c: Cmdr) -> bool:
     """Return True if host's body appears to have a dark theme."""
@@ -650,9 +671,12 @@ def is_body_dark(c: Cmdr) -> bool:
     bg_color = QColor(bg)
     h, s, vbg, a = bg_color.getHsv()
     return vbg < 90
+
+
 # @+node:tom.20210527153906.1: ** class ZEditorWin
 class ZEditorWin(QtWidgets.QMainWindow):
     """An editing window that echos the contents of an outline node."""
+
     # @+others
     # @+node:tom.20210527185804.1: *3* ctor
     def __init__(self, c: Cmdr, title: str = 'Z-editor') -> None:
@@ -835,6 +859,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
         }}
         """
         return color_style
+
     # @+node:tom.20210625205847.1: *3* reload settings
     def reloadSettings(self):
         c = self.c
@@ -872,6 +897,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
             else:
                 hl = bg.lighter(140)
         return hl
+
     # @+node:tom.20240811185449.1: *3* fw.highlightCurrentLine
     # @@language python
     def highlightCurrentLine(self) -> None:
@@ -880,8 +906,8 @@ class ZEditorWin(QtWidgets.QMainWindow):
         blocknum = curs.blockNumber()
 
         # Some cursor movements don't change the line: ignore them
-            #    if blocknum == params['lastblock'] and blocknum > 0:
-            #        return
+        #    if blocknum == params['lastblock'] and blocknum > 0:
+        #        return
 
         if blocknum == 0:  # invalid position
             blocknum = 1
@@ -898,16 +924,17 @@ class ZEditorWin(QtWidgets.QMainWindow):
         selection.cursor.clearSelection()
 
         self.editor.setExtraSelections([selection])
+
     # @+node:tom.20210528090313.1: *3* update
     # Must have this signature: called by leoPlugins.callTagHandler.
     def update(self, tag: str, keywords: Any) -> None:
         """Update host node if this card's text has changed.
 
-           Otherwise if the host node's text has changed, update
-           the card's text with the host's changed text.
-           Render as plain text or RsT.
+        Otherwise if the host node's text has changed, update
+        the card's text with the host's changed text.
+        Render as plain text or RsT.
 
-           If the host node does not exist any more, delete ourself.
+        If the host node does not exist any more, delete ourself.
         """
         if self.closing:
             return
@@ -975,6 +1002,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
         instances[id_] = None  # Not sure if we need this
         del instances[id_]
         self.deleteLater()
+
     # @+node:tom.20210619000302.1: *3* keyPressEvent
     def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:  # pylint:disable=method-hidden
         """Take action on keypresses.
@@ -1003,10 +1031,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
                     found_gnx = gotoHostGnx(self.c, gnx)
                     if not found_gnx:
                         g.es(f'Could not find gnx "{gnx}"')
-            elif (
-                self.render_kind == BROWSER
-                and self.render_pane_type == BROWSER_VIEW
-            ):
+            elif self.render_kind == BROWSER and self.render_pane_type == BROWSER_VIEW:
                 # Zoom/unzoom
                 if bare_key == '=':
                     _zf = w.zoomFactor()
@@ -1054,6 +1079,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
 
     def switch_and_render(self):
         self.set_and_render(True)
+
     # @+node:tom.20210602174838.1: *3* render_rst
     def render_rst(self, text):
         """Render text of the editor widget as HTML and display it."""
@@ -1062,16 +1088,16 @@ class ZEditorWin(QtWidgets.QMainWindow):
 
         # Call docutils to get the html rendering.
         _html = ''
-        args = {'output_encoding': 'unicode',  # return a string, not a byte array
-                'report_level': RST_NO_WARNINGS,
-               }
+        args = {
+            'output_encoding': 'unicode',  # return a string, not a byte array
+            'report_level': RST_NO_WARNINGS,
+        }
 
         if self.rst_stylesheet:
             args['stylesheet_path'] = None  # omit stylesheet, we will insert one
 
         try:
-            _html = publish_string(text, writer_name='html',
-                                   settings_overrides=args)
+            _html = publish_string(text, writer_name='html', settings_overrides=args)
         except SystemMessage as sm:
             msg = sm.args[0]
             if 'SEVERE' in msg or 'FATAL' in msg:
@@ -1080,10 +1106,12 @@ class ZEditorWin(QtWidgets.QMainWindow):
         # Insert stylesheet if our rendering view is a web browser widget
         if self.render_pane_type == BROWSER_VIEW:
             if self.rst_stylesheet:
-                style_insert = ("<style type='text/css'>\n"
-                        f'{self.rst_stylesheet}\n</style>\n</head>\n')
+                style_insert = f"<style type='text/css'>\n{self.rst_stylesheet}\n</style>\n</head>\n"
                 _html = _html.replace('</head>', style_insert, 1)
         return _html
+
     # @-others
+
+
 # @-others
 # @-leo

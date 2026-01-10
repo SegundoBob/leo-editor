@@ -30,14 +30,18 @@ Settings
 
 Terry Brown, Terry_N_Brown@yahoo.com, Fri Apr 19 16:33:45 2013
 """
+
 # @-<< docstring >>
 import os
 import time
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtCore, QtGui
+
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
+
+
 # @+others
 # @+node:tbrown.20130419143128.29676: ** init
 def init():
@@ -47,6 +51,8 @@ def init():
     ok = g.app.gui.guiName() == 'qt'
     g.plugin_signon(__name__)
     return ok
+
+
 # @+node:tbrown.20130419143128.29669: ** class Recorder
 class Recorder:
     """Recorder - record video of Leo
@@ -60,6 +66,7 @@ class Recorder:
         vcodec=mpeg4:mbd=2:trell -oac copy -o output.avi
     rm -k /tmp/image*.ppm /tmp/image*.png
     """
+
     # @+others
     # @+node:tbrown.20130419143128.29670: *3* __init__
     def __init__(self):
@@ -76,9 +83,9 @@ class Recorder:
         self.widget = w
         self.winId = w.winId()
         # re-enable this to restore video function
-            # self.timer = QtCore.QTimer()
-            # self.timer.setInterval(25)
-            # self.timer.timeout.connect(self.grab_frame)
+        # self.timer = QtCore.QTimer()
+        # self.timer.setInterval(25)
+        # self.timer.timeout.connect(self.grab_frame)
         # performance testing
         self.times = []
 
@@ -118,26 +125,31 @@ class Recorder:
 
         pm.save(filename)
         self.frame += 1
+
     # @+node:tbrown.20130419143128.29672: *3* make_pointer
     def make_pointer(self):
         """Return a pixmap for a pointer."""
         path = g.computeLeoDir()
         path = g.os_path_join(path, 'Icons', 'recorder', 'pointer.png')
         return QtGui.QPixmap(path)
+
     # @+node:tbrown.20130419143128.29673: *3* run
     def run(self):
         """Start recording."""
         self.recording = True
         self.last_time = time.time()
         # self.timer.start()
+
     # @+node:tbrown.20130419143128.29674: *3* stop
     def stop(self):
         """Stop recording"""
         # self.timer.stop()
         mean = sum(self.times) / float(len(self.times))
-        print("\nMean seconds: %0.3f = %0.3f fps" % (mean, 1. / mean))
+        print("\nMean seconds: %0.3f = %0.3f fps" % (mean, 1.0 / mean))
         self.times = []
+
     # @-others
+
 
 # @+node:tbrown.20130419143128.29677: ** screen_capture_now
 @g.command('screen-capture-now')
@@ -154,21 +166,16 @@ def screen_capture_now(kwargs=None):
     c = g.app.commanders()[0]
     dirname = c.config.getString("screen-capture-save-path")
     if not dirname:
-        dirname = g.os_path_join(
-            g.computeHomeDir(),
-            '.leo',
-            'screen_captures'
-        )
+        dirname = g.os_path_join(g.computeHomeDir(), '.leo', 'screen_captures')
     dirname = g.finalize(dirname)
     if not g.os_path_isdir(dirname):
         os.makedirs(dirname)
-    filename = g.os_path_join(
-        dirname,
-        time.strftime('%Y-%m-%dT%H-%M-%S') + '.png'
-    )
+    filename = g.os_path_join(dirname, time.strftime('%Y-%m-%dT%H-%M-%S') + '.png')
     g._recorder.grab_frame(filename=filename)
     # *only* print, don't want output messing up log view in screen shots
     print("Screenshot: %s" % filename)
+
+
 # @+node:tbrown.20130419143128.29679: ** screen_capture_5sec
 @g.command('screen-capture-5sec')
 def screen_capture_5sec(kwargs):
@@ -179,6 +186,8 @@ def screen_capture_5sec(kwargs):
     """
 
     QtCore.QTimer.singleShot(5000, screen_capture_now)
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

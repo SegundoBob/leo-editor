@@ -2,7 +2,7 @@
 # @+node:ekr.20040916084945: * @file ../plugins/macros.py
 # @+<< docstring >>
 # @+node:ekr.20061102090532: ** << docstring >>
-r""" Creates new nodes containing parameterized section reference.
+r"""Creates new nodes containing parameterized section reference.
 
 .. No longer available: http://sourceforge.net/forum/message.php?msg_id=2444117
 
@@ -62,10 +62,13 @@ Go to Outline Menu and select Parameterize Section Reference command.
 It's a lot easier to use than to explain!
 
 """
+
 # @-<< docstring >>
 # BobS & EKR.
 import re
 from leo.core import leoGlobals as g
+
+
 # @+others
 # @+node:ekr.20070302121133: ** init
 def init():
@@ -74,15 +77,18 @@ def init():
     g.registerHandler(('new', 'menu2'), onCreate)
     g.plugin_signon(__name__)
     return True
+
+
 # @+node:ekr.20040916091520.1: ** onCreate
 def onCreate(tag, keywords):
     """Create the per-commander instance of ParamClass."""
     c = keywords.get("c")
     if c:
         ParamClass(c)
+
+
 # @+node:ekr.20040916091520.2: ** class ParamClass
 class ParamClass:
-
     # @+others
     # @+node:ekr.20040916091520.3: *3* __init__
     def __init__(self, c):
@@ -91,9 +97,9 @@ class ParamClass:
         self.pattern = g.angleBrackets(r'\s*\w*?\s*\(\s*([^,]*?,)\s*?(\w+)\s*\)\s*') + '$'
         self.regex = re.compile(self.pattern)
         self.addMenu()  # Now gui-independent.
+
     # @+node:ekr.20040916084945.1: *3* parameterize
     def parameterize(self, event=None):
-
         c = self.c
         w = c.frame.body.wrapper
         # EKR: always search for parms.
@@ -134,6 +140,7 @@ class ParamClass:
             p.b = section
             p.h = g.angleBrackets(str(i + 1) + "$")
         c.redraw()
+
     # @+node:ekr.20040916084945.2: *3* findParameters
     def findParameters(self, p):
         """Find the parameterized nodes in p's parents.."""
@@ -144,15 +151,17 @@ class ParamClass:
                     return sib
         g.es('not found', tag)
         return None
+
     # @+node:ekr.20040916084945.3: *3* addMenu
     def addMenu(self):
         """Add a submenu in the outline menu."""
         c = self.c
-        table = (
-            ("Parameterize Section Reference", None, self.parameterize),
-        )
+        table = (("Parameterize Section Reference", None, self.parameterize),)
         c.frame.menu.createMenuItemsFromTable("Outline", table)
+
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

@@ -1,6 +1,6 @@
 # @+leo-ver=5-thin
 # @+node:ville.20120503224623.3574: * @file ../plugins/leomylyn.py
-""" Provides an experience like Mylyn:http://en.wikipedia.org/wiki/Mylyn for Leo.
+"""Provides an experience like Mylyn:http://en.wikipedia.org/wiki/Mylyn for Leo.
 
 It "scores" the nodes based on how interesting they probably are for you,
 allowing you to focus on your "working set".
@@ -11,6 +11,8 @@ Scoring is based on how much you edit the nodes.
 
 # By VMV.
 from leo.core import leoGlobals as g
+
+
 # @+others
 # @+node:ville.20120503224623.3578: ** init
 def init():
@@ -20,6 +22,7 @@ def init():
     g._mylyn = ctr = MylynController()
     ctr.set_handlers()
     return ok
+
 
 # @+node:ekr.20160519050823.1: ** class MylynController
 class MylynController:
@@ -50,7 +53,6 @@ class MylynController:
 
     # @+node:ekr.20160519050823.6: *3* set_handlers (leomylyn.py)
     def set_handlers(self):
-
         g.registerHandler("childrenModified", self.children_hnd)
         g.registerHandler("contentModified", self.content_hnd)
 
@@ -60,6 +62,8 @@ class MylynController:
                 g.es(str(k) + " " + str(v))
 
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

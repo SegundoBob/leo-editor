@@ -2,7 +2,7 @@
 # @+node:ekr.20090701111504.5294: * @file ../plugins/contextmenu.py
 # @+<< contextmenu docstring >>
 # @+node:ville.20090630210947.5460: ** << contextmenu docstring >>
-""" Defines various useful actions for context menus (Qt only).
+"""Defines various useful actions for context menus (Qt only).
 
 Examples are:
 
@@ -39,6 +39,7 @@ And call this in your plugin *once*::
     g.tree_popup_handlers.append(nextclone_rclick)
 
 """
+
 # @-<< contextmenu docstring >>
 # Original version by Ville M. Vainio.
 # @+<< contextmenu imports & annotations >>
@@ -63,13 +64,14 @@ g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 # Globals
 inited = False
 
+
 # @+others
 # @+node:ekr.20200304124610.1: ** Commands
 # @+node:ville.20090701224704.9805: *3* 'cm-external-editor'
 # cm is 'contextmenu' prefix
 @g.command('cm-external-editor')
 def cm_external_editor(event: LeoKeyEvent) -> None:
-    """ Open node in external editor
+    """Open node in external editor
 
     Set LEO_EDITOR/EDITOR environment variable to get the editor you want.
     """
@@ -84,11 +86,15 @@ def cm_external_editor(event: LeoKeyEvent) -> None:
 
     d = {'kind': 'subprocess.Popen', 'args': [editor], 'ext': None}
     c.openWith(d=d)
+
+
 # @+node:tbrown.20121123075838.19937: *3* 'context_menu_open'
 @g.command('context-menu-open')
 def context_menu_open(event: LeoKeyEvent) -> None:
     """Provide a command for key binding to open the context menu"""
     event.c.frame.tree.onContextMenu(QtCore.QPoint(0, 0))
+
+
 # @+node:ekr.20200304124723.1: ** startup
 # @+node:ville.20090630210947.5463: *3*  init (contextmenu.py)
 def init() -> bool:
@@ -102,9 +108,11 @@ def init() -> bool:
         inited = True
         install_handlers()
     return True
+
+
 # @+node:ville.20090630210947.10189: *3* install_handlers (contextmenu.py)
 def install_handlers() -> None:
-    """ Install all the wanted handlers (menu creators) """
+    """Install all the wanted handlers (menu creators)"""
     handlers = [
         # Add user-specified items first.
         configuredcommands_rclick,
@@ -120,6 +128,8 @@ def install_handlers() -> None:
         pylint_rclick,
     ]
     g.tree_popup_handlers.extend(handlers)
+
+
 # @+node:tom.20210717164029.1: ** getEditor
 def getEditor(c: Cmdr) -> tuple[str, str]:
     """Return system's best guess editor quoted.
@@ -136,6 +146,8 @@ def getEditor(c: Cmdr) -> tuple[str, str]:
             editor = editor + '"'
         return editor, basename
     return "", ""
+
+
 # @+node:ekr.20140724211116.19255: ** Handlers
 # @+node:ville.20091008192104.7691: *3* configuredcommands_rclick
 def configuredcommands_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
@@ -168,9 +180,10 @@ def configuredcommands_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
         configcmd_rclick_cb = create_callback(command_name)
         action.triggered.connect(configcmd_rclick_cb)
 
+
 # @+node:tbrown.20091203121808.15818: *3* deletenodes_rclick
 def deletenodes_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
-    """ Delete selected nodes """
+    """Delete selected nodes"""
 
     u = c.undoer
     pl = c.getSelectedPositions()
@@ -178,10 +191,10 @@ def deletenodes_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     if len(pl) > 1:
         undoType += 's'
     current = p.copy()
+
     # @+<< define deletenodes_rclick_cb >>
     # @+node:ekr.20140613141207.17673: *4* << define deletenodes_rclick_cb >>
     def deletenodes_rclick_cb() -> None:
-
         if len(pl) == 1:
             # sometimes this may leave the selected node in a more
             # convenient place than the generalized case below
@@ -219,15 +232,17 @@ def deletenodes_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
             # c.selectPosition(c.allNodes_iter().next())
             c.selectPosition(c.rootPosition())
         c.redraw()
+
     # @-<< define deletenodes_rclick_cb >>
     action = menu.addAction("Delete Node")
     action.triggered.connect(deletenodes_rclick_cb)
+
+
 # @+node:ville.20090701110830.10215: *3* editnode_rclick
 def editnode_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     """Provide "edit in EDITOR" context menu item.
 
     Opens file or node in external editor."""
-
 
     editor, basename = getEditor(c)
 
@@ -237,9 +252,11 @@ def editnode_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
 
     action = menu.addAction("Edit with " + basename)
     action.triggered.connect(editnode_rclick_cb)
+
+
 # @+node:ville.20090719202132.5248: *3* marknodes_rclick
 def marknodes_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
-    """ Mark selected nodes """
+    """Mark selected nodes"""
     pl = c.getSelectedPositions()
     if any(not p.isMarked() for p in pl):
 
@@ -259,9 +276,11 @@ def marknodes_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
 
         action = menu.addAction("Unmark")
         action.triggered.connect(unmarknodes_rclick_cb)
+
+
 # @+node:ville.20090702171015.5480: *3* nextclone_rclick
 def nextclone_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
-    """ Go to next clone """
+    """Go to next clone"""
 
     if p.isCloned():
 
@@ -270,9 +289,11 @@ def nextclone_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
 
         action = menu.addAction("Go to clone")
         action.triggered.connect(nextclone_rclick_cb)
+
+
 # @+node:ekr.20120311191905.9900: *3* openurl_rclick
 def openurl_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
-    """ open an url """
+    """open an url"""
     url = g.getUrlFromNode(p)
     if url:
 
@@ -283,6 +304,8 @@ def openurl_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
 
         action = menu.addAction("Open URL")
         action.triggered.connect(openurl_rclick_cb)
+
+
 # @+node:ville.20090630210947.5465: *3* openwith_rclick & callbacks
 def openwith_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     """
@@ -291,24 +314,24 @@ def openwith_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     This looks like "Edit contextmenu.py in scite"
 
     """
+
     # define callbacks
     # @+others
     # @+node:ekr.20140613141207.17667: *4* function: openfolder_rclick_cb
     def openfolder_rclick_cb() -> None:
-
         if g.os_path_exists(path):
             g.os_startfile(path)
         else:
             # #1257:
             g.es_print('file not found:', repr(path))
+
     # @+node:ekr.20140613141207.17668: *4* function: create_rclick_cb
     def create_rclick_cb() -> None:
-
         os.makedirs(absp)
         g.es("Created " + absp)
+
     # @+node:ekr.20140613141207.17669: *4* function: importfiles_rclick_cb
     def importfiles_rclick_cb() -> None:
-
         def shorten(pth: str, prefix: str) -> str:
             if not pth.startswith(prefix):
                 return pth
@@ -319,7 +342,8 @@ def openwith_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
             ("All files", "*"),
             ("Python files", "*.py"),
         ]
-        fnames = g.app.gui.runOpenFilesDialog(c,
+        fnames = g.app.gui.runOpenFilesDialog(
+            c,
             title="Import files",
             filetypes=filetypes,
             startpath=path,
@@ -329,6 +353,7 @@ def openwith_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
             chi = p.insertAsLastChild()
             chi.h = a
         c.readAtFileNodes()
+
     # @-others
 
     h = p.h
@@ -352,9 +377,10 @@ def openwith_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
         action.triggered.connect(importfiles_rclick_cb)
     action = menu.addAction("Open " + path)
     action.triggered.connect(openfolder_rclick_cb)
+
+
 # @+node:ville.20090630221949.5462: *3* refresh_rclick
 def refresh_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
-
     def refresh_rclick_cb() -> None:
         c.refreshFromDisk(p.copy())
 
@@ -362,9 +388,10 @@ def refresh_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     if len(split) >= 2 and (not p.isAtLeoNode() and p.anyAtFileNodeName()):
         action = menu.addAction("Refresh from disk")
         action.triggered.connect(refresh_rclick_cb)
+
+
 # @+node:felix.20250830151921.1: *3* openatleo_rclick
 def openatleo_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
-
     def openatleo_rclick_cb() -> None:
         path = c.fullPath(p)
         if g.os_path_exists(path):
@@ -376,6 +403,8 @@ def openatleo_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     if len(split) >= 2 and p.isAtLeoNode():
         action = menu.addAction("Open @leo file")
         action.triggered.connect(openatleo_rclick_cb)
+
+
 # @+node:ekr.20140724211116.19258: *3* pylint_rclick
 def pylint_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
     """Run pylint on the selected node."""
@@ -385,13 +414,16 @@ def pylint_rclick(c: Cmdr, p: Position, menu: Wrapper) -> None:
         c.doCommandByName('pylint')
 
     action.triggered.connect(pylint_rclick_cb)
+
+
 # @+node:ekr.20140724211116.19256: ** Helpers
 # @+node:ville.20110428163751.7685: *3* guess_file_type
 def guess_file_type(fname: str) -> str:
-
     base, ext = os.path.splitext(fname)
     if ext.lower in ['.txt']:
         return "@edit"
     return "@auto"
+
+
 # @-others
 # @-leo

@@ -38,6 +38,7 @@ Settings
     The first character of the pattern (not counting \b) is the **leadin character**.
     The pattern will be applied only for strings starting with the leadin character.
 """
+
 # @-<< docstring >>
 # @+<< imports >>
 # @+node:tbrown.20141101114322.3: ** << imports >>
@@ -45,9 +46,12 @@ import re
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtGui
 from leo.core.leoQt import MoveMode, MoveOperation
+
 #
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
+
+
 # @-<< imports >>
 # @+others
 # @+node:tbrown.20141101114322.4: ** init
@@ -58,11 +62,14 @@ def init():
     g.registerHandler('after-create-leo-frame', onCreate)
     g.plugin_signon(__name__)
     return True
+
+
 # @+node:tbrown.20141101114322.5: ** onCreate
 def onCreate(tag, keys):
-
     c = keys.get('c')
     WikiView(c)
+
+
 # @+node:tbrown.20141101114322.6: ** wikiview-toggle
 @g.command('wikiview-toggle')
 def cmd_toggle(event):
@@ -75,18 +82,24 @@ def cmd_toggle(event):
     else:
         g.es("WikiView inactive")
         cmd_show_all(event)
+
+
 # @+node:tbrown.20141101114322.7: ** wikiview-hide-all
 @g.command('wikiview-hide-all')
 def cmd_hide_all(event):
     """wikiview: re-apply hiding."""
     c = event.get('c')
     c._wikiview.hide(c._wikiview.select, {'c': c}, force=True)
+
+
 # @+node:tbrown.20141101114322.8: ** wikiview-show-all
 @g.command('wikiview-show-all')
 def cmd_show_all(event):
     """wikiview: undo hiding"""
     c = event.get('c')
     c._wikiview.unhide(all=True)
+
+
 # @+node:tbrown.20141101114322.9: ** class WikiView
 class WikiView:
     """Manage wikiview for an outline"""
@@ -123,6 +136,7 @@ class WikiView:
         c.registerReloadSettings(self)
         # This setting is True by default, so the redundancy is harmless.
         self.active = c.config.getBool('wikiview-active')
+
     # @+node:ekr.20170205071315.1: *3* parse_options
     leadin_pattern = re.compile(r'(\\b)?(\()*(.)')
 
@@ -141,6 +155,7 @@ class WikiView:
             else:
                 g.trace('bad leadin:', repr(s))
         return leadins, patterns
+
     # @+node:tbrown.20141101114322.11: *3* hide
     def hide(self, tag, kwargs, force=False):
         """Hide all wikiview tags. Now done in the colorizer."""
@@ -162,6 +177,7 @@ class WikiView:
                     cfmt.setFontLetterSpacing(self.pct)
                     # cfmt._is_hidden = True  # gets lost
                     cursor.setCharFormat(cfmt)  # Triggers a recolor.
+
     # @+node:tbrown.20141101114322.12: *3* unhide
     def unhide(self, all=False):
         c = self.c
@@ -176,16 +192,15 @@ class WikiView:
                 end = cursor.position()
                 # move left to find left end of range
                 while (
-                    cursor.movePosition(MoveOperation.PreviousCharacter) and
-                    cursor.charFormat().fontPointSize() == self.pts
+                    cursor.movePosition(MoveOperation.PreviousCharacter)
+                    and cursor.charFormat().fontPointSize() == self.pts
                 ):
                     pass
                 start = cursor.position()
                 # move right to find left end of range
                 cursor.setPosition(end)
                 while (
-                    cursor.movePosition(MoveOperation.NextCharacter) and
-                    cursor.charFormat().fontPointSize() == self.pts
+                    cursor.movePosition(MoveOperation.NextCharacter) and cursor.charFormat().fontPointSize() == self.pts
                 ):
                     pass
                 # select range and restore normal size
@@ -194,7 +209,10 @@ class WikiView:
             cfmt.setFontPointSize(self.size)
             cfmt.setFontLetterSpacing(100)
             cursor.setCharFormat(cfmt)  # Triggers a recolor.
+
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

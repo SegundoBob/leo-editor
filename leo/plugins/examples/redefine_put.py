@@ -4,6 +4,7 @@
 
 from leo.core import leoGlobals as g
 
+
 # @+others
 # @+node:ekr.20111104210837.9690: ** init
 def init():
@@ -13,9 +14,12 @@ def init():
         g.registerHandler("start2", onStart)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:edream.110203113231.922: ** onStart
 # This code illustrates how to redefine _any_ method of Leo.
 # Python makes this is almost too easy :-)
+
 
 def onStart(tag, keywords):
     """redefine methods when Leo starts."""
@@ -26,9 +30,12 @@ def onStart(tag, keywords):
         g.funcToMethod(newPut, log, "put")
         # Replace frame.putnl with newPutNl.
         g.funcToMethod(newPutNl, log, "putnl")
+
+
 # @+node:edream.110203113231.923: ** newPut and newPutNl
 # Contrived examples of how to redefine frame.put and frame.putnl
 # Same as frame.put except converts everything to upper case.
+
 
 def newPut(self, s, color="black"):
     g.pr("newPut", s, newline=False)
@@ -41,7 +48,10 @@ def newPut(self, s, color="black"):
         t.see(len(t.getAllText()))
     else:
         g.pr(s, newline=False)
+
+
 # Same as frame.putnl except writes two newlines.
+
 
 def newPutNl(self):
     g.pr("newPutNl")
@@ -53,6 +63,8 @@ def newPutNl(self):
         t.see(len(t.getAllText()))
     else:
         g.pr('')
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

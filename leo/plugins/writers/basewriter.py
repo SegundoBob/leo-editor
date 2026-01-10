@@ -5,6 +5,7 @@
 from leo.core.leoCommands import Commands as Cmdr
 from leo.core.leoNodes import Position
 
+
 # @+others
 # @+node:ekr.20231219152931.1: ** class  BaseWriter
 class BaseWriter:
@@ -23,6 +24,7 @@ class BaseWriter:
         at = self.at
         at.os(s[:-1] if s.endswith('\n') else s)
         at.onl()
+
     # @+node:ekr.20150626092140.1: *3* basewriter.put_node_sentinel
     def put_node_sentinel(self, p: Position, delim: str, delim2: str = '') -> None:
         """Put an @+node sentinel for node p."""
@@ -37,10 +39,14 @@ class BaseWriter:
         # Like at.putSentinel.
         at.os('%s@+node:%s%s' % (delim, s, delim2))
         at.onl()
+
     # @+node:ekr.20230913032143.1: *3* basewriter.write
     def write(self, root: Position) -> None:
         raise NotImplementedError('must be overridden in subclasses')
+
     # @-others
+
+
 # @-others
 
 # @@language python

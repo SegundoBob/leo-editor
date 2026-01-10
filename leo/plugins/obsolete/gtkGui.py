@@ -1,5 +1,5 @@
-#@+leo-ver=4-thin
-#@+node:ekr.20080112150934:@thin gtkGui.py
+# @+leo-ver=4-thin
+# @+node:ekr.20080112150934:@thin gtkGui.py
 '''The plugin part of the gtk gui code.'''
 
 import leoGlobals as g
@@ -11,10 +11,10 @@ except ImportError:
     gtk = None
     g.es_print('can not import gtk')
 
-#@+others
-#@+node:ekr.20080112150934.1:init
-def init():
 
+# @+others
+# @+node:ekr.20080112150934.1:init
+def init():
     if g.app.unitTesting:  # Not Ok for unit testing!
         return False
 
@@ -29,7 +29,9 @@ def init():
         g.app.gui.finishCreate()
         g.plugin_signon(__name__)
         return True
-#@-node:ekr.20080112150934.1:init
-#@-others
-#@-node:ekr.20080112150934:@thin gtkGui.py
-#@-leo
+
+
+# @-node:ekr.20080112150934.1:init
+# @-others
+# @-node:ekr.20080112150934:@thin gtkGui.py
+# @-leo

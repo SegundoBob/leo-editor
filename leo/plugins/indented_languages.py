@@ -1,9 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20230917013414.1: * @file ../plugins/indented_languages.py
-#@+<< docstring: indented_languages.py >>
-#@+node:ekr.20231023052313.1: ** << docstring: indented_languages.py >>
-#@@language rest
-#@@wrap
+# @+leo-ver=5-thin
+# @+node:ekr.20230917013414.1: * @file ../plugins/indented_languages.py
+# @+<< docstring: indented_languages.py >>
+# @+node:ekr.20231023052313.1: ** << docstring: indented_languages.py >>
+# @@language rest
+# @@wrap
 
 """
 A plugin defines three Leo commands that create **study outlines**:
@@ -42,7 +42,7 @@ will remain as it is. It would take lots more work to be useful.
 Working on this command reminds me why I never want to use or read Lisp!
 
 """
-#@-<< docstring: indented_languages.py >>
+# @-<< docstring: indented_languages.py >>
 
 import re
 from typing import Any, Callable, Optional, Union
@@ -51,16 +51,19 @@ from leo.core.leoNodes import Position
 from leo.plugins.importers.c import C_Importer
 from leo.plugins.importers.typescript import TS_Importer
 
-#@+others
-#@+node:ekr.20230917084259.1: ** top-level
-#@+node:ekr.20230917015308.1: *3* init (indented_languages.py)
+
+# @+others
+# @+node:ekr.20230917084259.1: ** top-level
+# @+node:ekr.20230917015308.1: *3* init (indented_languages.py)
 def init() -> bool:
     """Return True if the plugin has loaded successfully."""
     # g.registerHandler('after-create-leo-frame', onCreate)
     # g.registerHandler('after-reading-external-file', onAfterRead)
     # g.registerHandler('before-writing-external-file', onBeforeWrite)
     return True
-#@+node:ekr.20231022071443.1: *3* commands (indented_languages.py)
+
+
+# @+node:ekr.20231022071443.1: *3* commands (indented_languages.py)
 @g.command('import-to-indented-c')
 def import_to_indented_c(event: Any) -> None:
     """The import-to-indented-c command."""
@@ -68,12 +71,14 @@ def import_to_indented_c(event: Any) -> None:
     if c:
         Indented_C(c).do_import()
 
+
 @g.command('import-to-indented-lisp')
 def import_to_indented_elisp(event: Any) -> None:
     """The import-to-indented-lisp command."""
     c = event.get('c')
     if c:
         Indented_Lisp(c).do_import()
+
 
 @g.command('import-to-indented-typescript')
 def import_to_indented_typescript(event: Any) -> None:
@@ -83,7 +88,7 @@ def import_to_indented_typescript(event: Any) -> None:
         Indented_TypeScript(c).do_import()
 
 
-#@+node:ekr.20231022073438.1: **  class Indented_Importer
+# @+node:ekr.20231022073438.1: **  class Indented_Importer
 class Indented_Importer:
     """The base class for all indented importers."""
 
@@ -97,8 +102,8 @@ class Indented_Importer:
         if self.importer_class:
             self.importer = self.importer_class(c)  # pylint: disable=not-callable
 
-    #@+others
-    #@+node:ekr.20231022073537.1: *3* indented_i.do_import (driver)
+    # @+others
+    # @+node:ekr.20231022073537.1: *3* indented_i.do_import (driver)
     def do_import(self) -> Optional[Position]:
         """
         Base_Indented_Importer.do_import: Create a top-level node containing study outlines for all files in
@@ -138,7 +143,8 @@ class Indented_Importer:
                 p2.contract()
             c.redraw(parent)
         return parent
-    #@+node:ekr.20231022100000.1: *3* indented_i.import_one_file
+
+    # @+node:ekr.20231022100000.1: *3* indented_i.import_one_file
     def import_one_file(self, p: Position, parent: Position) -> None:
         """
         Indented_Importer.import_one_file: common setup code.
@@ -159,7 +165,7 @@ class Indented_Importer:
         # Indent the parallel outline.
         self.indent_outline(root)
 
-    #@+node:ekr.20231022073306.3: *3* indented_i.indent_outline (the pipeline)
+    # @+node:ekr.20231022073306.3: *3* indented_i.indent_outline (the pipeline)
     def indent_outline(self, root: Position) -> None:
         """
         Indent the body text of root and all its descendants.
@@ -181,7 +187,8 @@ class Indented_Importer:
         # Append @language.
         if '@language' not in root.b:
             root.b = root.b.rstrip() + f"\n\n@language {self.language}\n"
-    #@+node:ekr.20231022073306.6: *4* indented_i.indent_node
+
+    # @+node:ekr.20231022073306.6: *4* indented_i.indent_node
     curlies_pat = re.compile(r'{|}')
     close_curly_pat = re.compile(r'}')
     semicolon_pat = re.compile(r'}\s*;')
@@ -232,7 +239,7 @@ class Indented_Importer:
                     this_info = (curly, line_number, column_number)
                     info[top] = this_info
                     info[this_info] = top
-                level += (1 if curly == '{' else -1)
+                level += 1 if curly == '{' else -1
         if level != 0:
             oops(f"Unmatched brackets: {p.h} level: {level}")
             return
@@ -240,7 +247,6 @@ class Indented_Importer:
         # Pass 2: Make the substitutions when '}' is seen.
         result_lines = []  # Must be empty here.
         for line_number, line in enumerate(guide_lines):
-
             if '}' not in line:
                 # No substitution is possible.
                 result_lines.append(lines[line_number])
@@ -283,7 +289,8 @@ class Indented_Importer:
 
         # Set the result
         p.b = ''.join(result_lines).rstrip() + '\n'
-    #@+node:ekr.20231022150805.1: *4* indented_i.remove_blank_lines
+
+    # @+node:ekr.20231022150805.1: *4* indented_i.remove_blank_lines
     def remove_blank_lines(self, p: Position) -> None:
         """Replace multiple blank lines with a single blank line."""
         if not p.b.strip():
@@ -296,7 +303,8 @@ class Indented_Importer:
                 # A blank line preceded by a non-blank line.
                 result_lines.append('\n')
         p.b = ''.join(result_lines).rstrip() + '\n'
-    #@+node:ekr.20231023045225.1: *4* indented_i.remove_first_block_comment
+
+    # @+node:ekr.20231023045225.1: *4* indented_i.remove_first_block_comment
     def remove_first_block_comment(self, p: Position) -> None:
         """Remove the first block C comment."""
         if not p.b.strip():
@@ -309,7 +317,8 @@ class Indented_Importer:
                 tail = lines[i + 1 :]
                 p.b = ''.join(tail).lstrip('\n')
                 return
-    #@+node:ekr.20231023044845.1: *4* indented_i.remove_includes
+
+    # @+node:ekr.20231023044845.1: *4* indented_i.remove_includes
     def remove_includes(self, p: Position) -> None:
         """Remove #include lines."""
         if not p.b.strip():
@@ -317,9 +326,9 @@ class Indented_Importer:
         lines = g.splitLines(p.b)
         result_lines = [z for z in lines if not z.startswith('#include ')]
         p.b = p.b = ''.join(result_lines).rstrip() + '\n'
-    #@+node:ekr.20231022152015.1: *4* indented_i.remove_trailing_semicolons
-    def remove_trailing_semicolons(self, p: Position) -> None:
 
+    # @+node:ekr.20231022152015.1: *4* indented_i.remove_trailing_semicolons
+    def remove_trailing_semicolons(self, p: Position) -> None:
         if not p.b.strip():
             return
         lines = g.splitLines(p.b)
@@ -330,7 +339,8 @@ class Indented_Importer:
                 line = line_s[:-1] + '\n'
             result_lines.append(line)
         p.b = p.b = ''.join(result_lines).rstrip() + '\n'
-    #@+node:ekr.20231022150031.1: *3* indented_i.isAtFileNode & atFileName
+
+    # @+node:ekr.20231022150031.1: *3* indented_i.isAtFileNode & atFileName
     def isAtFileNode(self, p: Position) -> bool:
         h = p.h
         if h.startswith('@@'):
@@ -343,12 +353,16 @@ class Indented_Importer:
         i = p.h.find(' ')
         assert i > -1, p.h
         return p.h[i:].strip()
-    #@-others
-#@+node:ekr.20231024024201.1: **  class Token
+
+    # @-others
+
+
+# @+node:ekr.20231024024201.1: **  class Token
 class Token:
     """
     A class representing a Lisp token.
     """
+
     def __init__(self, kind, value):
         self.kind = kind
         self.value = value
@@ -357,14 +371,18 @@ class Token:
         return f"Token: {self.kind!r}: {self.value!r}"
 
     __str__ = __repr__
-#@+node:ekr.20231022080007.1: ** class Indented_C
+
+
+# @+node:ekr.20231022080007.1: ** class Indented_C
 class Indented_C(Indented_Importer):
     """A class to support indented C files."""
 
     extensions: list[str] = ['.c', '.cpp', '.cc']
     importer_class = C_Importer
     language = 'c'
-#@+node:ekr.20230917083456.1: ** class Indented_Lisp
+
+
+# @+node:ekr.20230917083456.1: ** class Indented_Lisp
 class Indented_Lisp(Indented_Importer):
     """
     A class to support indented Lisp files.
@@ -377,20 +395,28 @@ class Indented_Lisp(Indented_Importer):
     language = 'lisp'
     operators = (
         # From lowest to highest precedence.
-        'and', 'or',
-        'max', 'min',
-        '==', '<=', '>=', '!=',  # Tokenizer converts '/=' to '!=' and '=' to '=='
-        '<', '>',
-        '+', '-',
-        '*', '/',
+        'and',
+        'or',
+        'max',
+        'min',
+        '==',
+        '<=',
+        '>=',
+        '!=',  # Tokenizer converts '/=' to '!=' and '=' to '=='
+        '<',
+        '>',
+        '+',
+        '-',
+        '*',
+        '/',
         '%',
     )
 
     # For error messages only. Set in indent_outline.
     p: Position = None
 
-    #@+others
-    #@+node:ekr.20231024045727.1: *3* indented_lisp.find_matching_paren
+    # @+others
+    # @+node:ekr.20231024045727.1: *3* indented_lisp.find_matching_paren
     def find_matching_paren(self, i: int, tokens: list[Token]) -> int:
         """Return the index of the matching closing parenthesis."""
         assert tokens[i].kind == '(', tokens[i]
@@ -413,7 +439,8 @@ class Indented_Lisp(Indented_Importer):
             tail_s = ''.join(tail_values)[:20]
             g.trace('No matching close paren', start_i, tail_s, '\n')
         return None
-    #@+node:ekr.20231027085715.1: *3* indented_lisp.flatten
+
+    # @+node:ekr.20231027085715.1: *3* indented_lisp.flatten
     def flatten(self, obj: Union[list, Token]) -> list[Token]:
         """Flatten the given object."""
         if isinstance(obj, Token):
@@ -425,7 +452,8 @@ class Indented_Lisp(Indented_Importer):
         for z in results:
             assert isinstance(z, Token), (z.__class__.__name__, g.callers())
         return results
-    #@+node:ekr.20231024044536.1: *3* indented_lisp.indent_outline (top-level)
+
+    # @+node:ekr.20231024044536.1: *3* indented_lisp.indent_outline (top-level)
     def indent_outline(self, root: Position) -> None:
         """
         Indented_Lisp.indent_outline: Indent the body text of root and all its
@@ -449,7 +477,8 @@ class Indented_Lisp(Indented_Importer):
         # Append @language.
         if '@language' not in root.b:
             root.b = root.b.rstrip() + f"\n\n@language {self.language}\n"
-    #@+node:ekr.20231027084804.1: *3* indented_lisp.parse
+
+    # @+node:ekr.20231027084804.1: *3* indented_lisp.parse
     def parse(self, tokens: list[Token]) -> list[list[Token]]:
         """
         Parse the given tokens into a list of items, removing all blanks and parens.
@@ -494,7 +523,8 @@ class Indented_Lisp(Indented_Importer):
         for item in items:
             assert isinstance(item, list), repr(item)
         return items
-    #@+node:ekr.20231027042313.1: *3* indented_lisp.simplify_tokens
+
+    # @+node:ekr.20231027042313.1: *3* indented_lisp.simplify_tokens
     def simplify_tokens(self, tokens: list[Token]) -> list[Token]:
         """
         Simplify all the given items, moving parens and converting prefix operators to infix.
@@ -508,7 +538,8 @@ class Indented_Lisp(Indented_Importer):
             results.extend(self.flatten(simplified_item))
         ### g.printObj(results, tag='simplify_tokens')
         return results
-    #@+node:ekr.20231024103253.1: *3* indented_lisp.simplify_item
+
+    # @+node:ekr.20231024103253.1: *3* indented_lisp.simplify_item
     def simplify_item(self, item: list[Token]) -> list[Token]:
         """
         Remove as many parentheses as possible from the list of tokens,
@@ -525,21 +556,19 @@ class Indented_Lisp(Indented_Importer):
             assert isinstance(item, list), (repr(expression.__class__.__name__), g.callers())
             results.extend(self.to_infix(expression))
         return results
-    #@+node:ekr.20231027061647.1: *3* indented_lisp.to_infix
+
+    # @+node:ekr.20231027061647.1: *3* indented_lisp.to_infix
     def to_infix(self, item: list[Token], level: int = 0) -> list[Token]:
         """Convert the item to infix notation."""
         p = self.p
 
-        #@+<< to_infix: define predicates >>
-        #@+node:ekr.20231028050301.1: *4* << to_infix: define predicates >>
+        # @+<< to_infix: define predicates >>
+        # @+node:ekr.20231028050301.1: *4* << to_infix: define predicates >>
         def is_atom(item: list[Token]) -> bool:
             return len(item) == 1
 
         def is_known_op(op: Token) -> bool:
-            return (
-                op.kind in self.operators
-                or op.kind == 'symbol' and op.value in self.operators
-            )
+            return op.kind in self.operators or op.kind == 'symbol' and op.value in self.operators
 
         def is_newline(item: list[Token]) -> bool:
             return len(item) == 1 and item[0].kind == '\n'
@@ -549,19 +578,24 @@ class Indented_Lisp(Indented_Importer):
 
         def is_defun(op, args: list[list[Token]]) -> bool:
             return (
-                op.kind == 'symbol' and op.value == 'defun'
-                and bool(args) and len(args) > 1
+                op.kind == 'symbol'
+                and op.value == 'defun'
+                and bool(args)
+                and len(args) > 1
                 and args[0][0].kind == 'symbol'
                 and args[1][0].kind == '('
             )
 
         def is_setq(op, args: list[list[Token]]) -> bool:
             return (
-                op.kind == 'symbol' and op.value == 'setq'
-                and bool(args) and len(args) > 1
+                op.kind == 'symbol'
+                and op.value == 'setq'
+                and bool(args)
+                and len(args) > 1
                 and args[0][0].kind == 'symbol'
             )
-        #@-<< to_infix: define predicates >>
+
+        # @-<< to_infix: define predicates >>
 
         # Pre-checks.
         assert isinstance(item, list), repr(item)
@@ -663,7 +697,8 @@ class Indented_Lisp(Indented_Importer):
 
         # print(f"\nResults: op: {op}, level: {level}\n{self.to_string(results)}")
         return results
-    #@+node:ekr.20231026081944.1: *3* indented_lisp.to_string
+
+    # @+node:ekr.20231026081944.1: *3* indented_lisp.to_string
     def to_string(self, tokens: list[Token]) -> str:
         """Convert a list of tokens to a string."""
         if not tokens:
@@ -697,7 +732,8 @@ class Indented_Lisp(Indented_Importer):
                     # g.trace(repr(prev_kind), repr(token.value))
                     results.extend([' ', token.value])
         return ''.join(results).strip()
-    #@+node:ekr.20231024024109.1: *3* indented_lisp.tokenize
+
+    # @+node:ekr.20231024024109.1: *3* indented_lisp.tokenize
     def tokenize(self, p: Position) -> list[Token]:
         """Create p.b to a list of Lisp_Tokens."""
         # ; is the only comment delim.
@@ -793,17 +829,25 @@ class Indented_Lisp(Indented_Importer):
             assert i > progress, (repr(ch), i, repr(s[i : i + 20]))
         # g.printObj(tokens, tag='tokenize')
         return tokens
-    #@+node:ekr.20231027041906.1: *3* indented_lisp.tokens_to_body
+
+    # @+node:ekr.20231027041906.1: *3* indented_lisp.tokens_to_body
     def tokens_to_body(self, tokens: list[Token]) -> str:
         """Convert a list of tokens to body text."""
         return self.to_string(tokens).strip() + '\n'
-    #@-others
-#@+node:ekr.20231022073306.1: ** class Indented_TypeScript
+
+    # @-others
+
+
+# @+node:ekr.20231022073306.1: ** class Indented_TypeScript
 class Indented_TypeScript(Indented_Importer):
     """A class to support indented Typescript files."""
 
-    extensions: list[str] = ['.ts',]
+    extensions: list[str] = [
+        '.ts',
+    ]
     language = 'typescript'
     importer_class = TS_Importer
-#@-others
-#@-leo
+
+
+# @-others
+# @-leo

@@ -1,7 +1,7 @@
 # @+leo-ver=5-thin
 # @+node:ekr.20210223152423.1: * @file ../plugins/anki.py
 # @@language python
-""" Push @anki nodes.
+"""Push @anki nodes.
 
 - Download instructions here: https://apps.ankiweb.net/#linux
 
@@ -39,20 +39,24 @@ from leo.core import leoPlugins
 try:
     import json
     import urllib.request
+
     ok = True
     # TODO: check if AnkiConnect reachable here
 except ImportError:
     ok = False
 
+
 def init():
-    """ Return True if plugin has loaded successfully."""
+    """Return True if plugin has loaded successfully."""
     if ok:
         g.plugin_signon(__name__)
         g.act_on_node.add(anki_act_on_node, 50)
     return ok
 
+
 def _request(action, **params):
     return {'action': action, 'params': params, 'version': 6}
+
 
 def _invoke(action, **params):
     requestJson = json.dumps(_request(action, **params)).encode('utf-8')
@@ -71,9 +75,7 @@ def _invoke(action, **params):
 def anki_warn(deck, front, back):
     # AnkiConnect will anyway throw an error, warn user now?
     useful_msg = (
-        'No %s specified for this card. '
-        'Please create a child node to @anki called @anki %s '
-        'and populate with a %s name'
+        'No %s specified for this card. Please create a child node to @anki called @anki %s and populate with a %s name'
     )
     if deck is None:
         g.es(useful_msg % ("deck", "deck", "deck"))
@@ -85,12 +87,14 @@ def anki_warn(deck, front, back):
         g.es(useful_msg % ("back", "back", "back"))
         return
 
+
 def anki_deck_check(deck):
     result = _invoke('deckNames')
     if deck not in result:
         g.es('Specified deck is %s. But it is present in your list of desks. Creating now...' % (deck))
         result = _invoke('createDeck', deck=deck)
         g.es('Created %s with id %s' % (deck, str(result)))
+
 
 def anki_act_on_node(c, p, event):
     h = p.h
@@ -139,15 +143,15 @@ def anki_act_on_node(c, p, event):
         # check if deck needs to be created
         anki_deck_check(deck)
 
-        result = _invoke('addNote', note={
-            'deckName': deck,
-            'modelName': 'Basic',
-            'fields': {
-                'Front': front,
-                'Back': back
+        result = _invoke(
+            'addNote',
+            note={
+                'deckName': deck,
+                'modelName': 'Basic',
+                'fields': {'Front': front, 'Back': back},
+                'tags': tag.split(","),
             },
-            'tags': tag.split(",")
-        })
+        )
         # result id needs to be stored for future updates
         card_id_node = p.insertAsLastChild()
         card_id_node.h = '@anki id'
@@ -159,15 +163,16 @@ def anki_act_on_node(c, p, event):
 
         # front, back, deck all available
         # deck also will be present
-        result = _invoke('updateNoteFields', note={
-            'deckName': deck,
-            'modelName': 'Basic',
-            'id': int(card_id),
-            'fields': {
-                'Front': front,
-                'Back': back
+        result = _invoke(
+            'updateNoteFields',
+            note={
+                'deckName': deck,
+                'modelName': 'Basic',
+                'id': int(card_id),
+                'fields': {'Front': front, 'Back': back},
+                'tags': tag.split(","),
             },
-            'tags': tag.split(",")
-        })
+        )
+
 
 # @-leo

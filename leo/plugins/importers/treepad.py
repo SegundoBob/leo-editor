@@ -1,6 +1,7 @@
 # @+leo-ver=5-thin
 # @+node:ekr.20180201203240.2: * @file ../plugins/importers/treepad.py
 """The @auto importer for the TreePad file format."""
+
 from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
@@ -10,6 +11,7 @@ from leo.plugins.importers.base_importer import Importer
 if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position, VNode
+
 
 # @+others
 # @+node:ekr.20180201203240.3: ** class Treepad_Importer(Importer)
@@ -90,15 +92,22 @@ class Treepad_Importer(Importer):
         assert parent == self.root
         for p in parent.self_and_subtree():
             p.b = ''.join(lines_dict[p.v])
+
     # @-others
+
+
 # @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for treepad."""
     Treepad_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    'extensions': ['.hjt',],
+    'extensions': [
+        '.hjt',
+    ],
     'func': do_import,
 }
 # @@language python

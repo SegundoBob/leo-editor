@@ -18,6 +18,8 @@ This does not work on Linux, because os.startfile does not exist.
 
 import os
 from leo.core import leoGlobals as g
+
+
 # @+<< notes >>
 # @+node:ekr.20040828103325.2: ** << notes >>
 # @+at
@@ -44,18 +46,20 @@ def init():
     else:
         g.es_print('The startfile.py plugin requires os.startfile (Windows)')
     return ok
+
+
 # @+node:ekr.20040828103325.3: ** onIconDoubleClick
 def onIconDoubleClick(tag, keywords):
-
     p = keywords.get("p")
     c = keywords.get("c")
     if c and p:
         h = p.h.strip()
         if h and h[0] != '@':
             start_file(c, p)
+
+
 # @+node:ekr.20040828103325.4: ** start_file
 def start_file(c, p):
-
     # Set the base directory by searching for @folder directives in ancestors.
     h = p.h.strip()
     thisdir = os.path.abspath(os.curdir)  # remember the current dir
@@ -90,6 +94,8 @@ def start_file(c, p):
         else:
             g.warning('%s not found in %s' % (filename, startdir))
     os.chdir(thisdir)  # restore the original current dir.
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

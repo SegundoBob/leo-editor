@@ -2,7 +2,7 @@
 # @+node:ajones.20070122153625: * @file ../plugins/expfolder.py
 # @+<< docstring >>
 # @+node:ajones.20070122153625.1: ** << docstring >> (expfolder.py)
-""" Adds @expfolder nodes that represent folders in the file system.
+"""Adds @expfolder nodes that represent folders in the file system.
 
 The double-click-icon-box command on an @expfolder node reads the files in
 the directory at the path specified and creates child nodes for each file
@@ -32,6 +32,7 @@ from leo.plugins.textnode import savetextnode
 
 textexts = []
 
+
 # @+others
 # @+node:ajones.20070122154835: ** init (expfolder.py)
 def init():
@@ -47,6 +48,8 @@ def init():
     except ConfigParser.NoSectionError:
         pass
     return True
+
+
 # @+node:ajones.20070122153625.2: ** on_icondclick
 def on_icondclick(tag, keywords):
     c = keywords.get("c")
@@ -95,6 +98,8 @@ def on_icondclick(tag, keywords):
             c.setHeadString(pn, "@expfolder " + d)
         c.expandSubtree(p)
         c.redraw()
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

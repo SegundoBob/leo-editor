@@ -2,6 +2,7 @@
 # @+node:ekr.20080214092357: * @file ../plugins/test/ekr_test.py
 from leo.core import leoGlobals as g
 
+
 def init():
     """Return True if the plugin has loaded successfully."""
     if g.unitTesting:
@@ -11,16 +12,20 @@ def init():
     g.registerHandler('menu2', onmenu2)
     return True
 
+
 def ekrCommand1(self, event=None):
     g.trace(self, event)
 
+
 def ekrCommand2(self, event=None):
     g.trace(self, event)
+
 
 def onCreate(tag, keys):
     c = keys.get('c')
     if c:
         g.trace(c.k)
+
 
 def onmenu2(tag, keys):
     c = keys.get('c')
@@ -30,4 +35,6 @@ def onmenu2(tag, keys):
         g.funcToMethod(f=ekrCommand2, theClass=c, name=None)
         c.k.registerCommand('ekr-command1', c.ekrCommand1)
         c.k.registerCommand('ekr-command2', c.ekrCommand2)
+
+
 # @-leo

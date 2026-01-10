@@ -6,6 +6,7 @@ from leo.core import leoGlobals as g
 from leo.core import leoApp
 from leo.core import leoFrame
 
+
 # @+others
 # @+node:ekr.20111104210837.9692: ** init
 def init():
@@ -16,7 +17,6 @@ def init():
             # Override the LeoFrame class.
 
             class myLeoFrame(leoFrame.LeoFrame):
-
                 def __init__(self, c, title=None):
                     g.pr("myLeoFrame ctor", title)
                     super().__init__(c, gui=None)
@@ -34,6 +34,8 @@ def init():
             g.funcToMethod(myAppCloseLeoWindow, leoApp.LeoApp, "closeLeoWindow")
         g.plugin_signon(__name__)
     return ok
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

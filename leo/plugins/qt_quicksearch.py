@@ -6,11 +6,11 @@
 # WARNING! All changes made in this file will be lost!
 
 from leo.core.leoQt import QtCore, QtWidgets
+
 QtGui = QtWidgets
 
 
 class Ui_LeoQuickSearchWidget:
-
     def setupUi(self, LeoQuickSearchWidget):
         LeoQuickSearchWidget.setObjectName("LeoQuickSearchWidget")
         LeoQuickSearchWidget.resize(868, 572)
@@ -30,5 +30,4 @@ class Ui_LeoQuickSearchWidget:
         QtCore.QMetaObject.connectSlotsByName(LeoQuickSearchWidget)
 
     def retranslateUi(self, LeoQuickSearchWidget):
-        LeoQuickSearchWidget.setWindowTitle(
-            QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Form", None))
+        LeoQuickSearchWidget.setWindowTitle(QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Form", None))

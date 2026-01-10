@@ -2,7 +2,7 @@
 # @+node:EKR.20040517075715.12: * @file ../plugins/xemacs.py
 # @+<< docstring >>
 # @+node:ekr.20101112195628.5434: ** << docstring >> (xemacs.py)
-""" Allows you to edit nodes in emacs/xemacs.
+"""Allows you to edit nodes in emacs/xemacs.
 
 Provides the emacs-open-node command which passes the body
 text of the node to emacs.
@@ -41,6 +41,7 @@ elif sys.platform.startswith("linux"):
 else:
     _emacs_cmd = "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient"
 
+
 # @+others
 # @+node:ekr.20050218023308: ** xemacs.init
 def init():
@@ -49,8 +50,11 @@ def init():
     if ok:
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:ekr.20050313071202: ** xemacs.open_in_emacs
 contextmenu_message_given = False
+
 
 def open_in_emacs(tag, keywords):
     c = keywords.get('c')
@@ -58,6 +62,8 @@ def open_in_emacs(tag, keywords):
     if c:
         return open_in_emacs_helper(c, p or c.p)
     return None
+
+
 # @+node:ekr.20120315101404.9748: ** xemacs.open_in_emacs_helper
 def open_in_emacs_helper(c, p):
     global contextmenu_message_given
@@ -73,17 +79,12 @@ def open_in_emacs_helper(c, p):
     efc = g.app.externalFilesController
     path = efc and efc.find_path_for_node(p)
     emacs_cmd = c.config.getString('xemacs-exe') or _emacs_cmd
-    if (
-        not path or
-        not g.os_path_exists(path) or
-        not hasattr(v, 'OpenWithOldBody') or
-        v.b != v.OpenWithOldBody
-    ):
+    if not path or not g.os_path_exists(path) or not hasattr(v, 'OpenWithOldBody') or v.b != v.OpenWithOldBody:
         # Open a new temp file.
         if path:
             # Don't do this: it prevents efc from reopening paths.
-                # efc = g.app.externalFilesController
-                # if efc: efc.forget_path(path)
+            # efc = g.app.externalFilesController
+            # if efc: efc.forget_path(path)
             os.remove(path)
             os.system(emacs_cmd)
         v.OpenWithOldBody = v.b  # Remember the old contents
@@ -94,16 +95,20 @@ def open_in_emacs_helper(c, p):
     else:
         # Reopen the old temp file.
         os.system(emacs_cmd)
+
+
 # @+node:ekr.20120315101404.9747: ** g.command('emacs-open-node')
 @g.command('emacs-open-node')
 def open_in_emacs_command(event):
-    """ Open current node in (x)emacs
+    """Open current node in (x)emacs
 
     Provied by xemacs.py plugin
     """
     c = event.get('c')
     if c:
         open_in_emacs_helper(c, c.p)
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

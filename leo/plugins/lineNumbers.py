@@ -2,7 +2,7 @@
 # @+node:ekr.20040419105219: * @file ../plugins/lineNumbers.py
 # @+<< docstring >>
 # @+node:ekr.20101112180523.5423: ** << docstring >>
-""" Adds #line directives in perl and perlpod programs.
+"""Adds #line directives in perl and perlpod programs.
 
 Over-rides two methods in leoAtFile.py to write #line directives after node
 sentinels. This allows compilers to give locations of errors in relation to the
@@ -22,6 +22,7 @@ from leo.core import leoAtFile
 
 linere = re.compile("^#line 1 \".*\"$")
 
+
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = not g.unitTesting  # Not safe for unit testing.  Changes core class.
@@ -31,17 +32,16 @@ def init():
         oldOpenNodeSentinel = leoAtFile.AtFile.putOpenNodeSentinel
 
         def putLineNumberDirective(self, p, inAtAll=False):
-
             oldOpenNodeSentinel(self, p, inAtAll)
 
             if self.language in ("perl", "perlpod"):
-                line = 'line 1 "node:%s (%s)"' % (
-                    self.nodeSentinelText(p), self.shortFileName)
+                line = 'line 1 "node:%s (%s)"' % (self.nodeSentinelText(p), self.shortFileName)
                 self.putSentinel(line)
 
-        g.funcToMethod(putLineNumberDirective,
-            leoAtFile.AtFile, "putOpenNodeSentinel")
+        g.funcToMethod(putLineNumberDirective, leoAtFile.AtFile, "putOpenNodeSentinel")
         # @-<< override write methods >>
         g.plugin_signon(__name__)
     return ok
+
+
 # @-leo

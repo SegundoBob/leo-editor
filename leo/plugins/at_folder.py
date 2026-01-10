@@ -17,6 +17,7 @@ while keep every files in a flat/single directory on your computer.
 import os
 from leo.core import leoGlobals as g
 
+
 # @+others
 # @+node:ekr.20140920173002.17961: ** init
 def init():
@@ -25,6 +26,8 @@ def init():
     g.plugin_signon(__name__)
     # Fix https://bugs.launchpad.net/leo-editor/+bug/1335310
     return True
+
+
 # @+node:ekr.20140920173002.17960: ** onSelect
 def onSelect(tag, keywords):
     c = keywords.get('c') or keywords.get('new_c')
@@ -35,9 +38,9 @@ def onSelect(tag, keywords):
     if g.match_word(h, 0, "@folder"):
         sync_node_to_folder(c, v, h[8:])
 
+
 # @+node:edream.110203113231.875: ** sync_node_to_folder
 def sync_node_to_folder(c, parent, d):
-
     oldlist = {}
     newlist = []
     # get children info
@@ -63,6 +66,8 @@ def sync_node_to_folder(c, parent, d):
     # warn for orphan oldlist
     if oldlist:
         g.es('missing: ' + ','.join(oldlist.keys()))
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

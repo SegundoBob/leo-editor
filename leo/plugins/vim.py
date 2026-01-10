@@ -141,6 +141,8 @@ else:
 # Global message flags.
 contextmenu_message_given = False
 locationMessageGiven = False
+
+
 # @+others
 # @+node:ekr.20050226184624: ** init
 def init():
@@ -153,6 +155,8 @@ def init():
             os.system(_vim_cmd)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:ekr.20150326150910.1: ** g.command('vim-open-file')
 @g.command('vim-open-file')
 def vim_open_file_command(event):
@@ -160,6 +164,8 @@ def vim_open_file_command(event):
     c = event.get('c')
     if c:
         VimCommander(c, entire_file=True)
+
+
 # @+node:ekr.20120315101404.9745: ** g.command('vim-open-node')
 @g.command('vim-open-node')
 def vim_open_node_command(event):
@@ -167,9 +173,12 @@ def vim_open_node_command(event):
     c = event.get('c')
     if c:
         VimCommander(c, entire_file=False)
+
+
 # @+node:ekr.20150326153420.1: ** class VimCommander
 class VimCommander:
     """A class implementing the vim plugin."""
+
     # @+others
     # @+node:ekr.20150326155343.1: *3*  vim.ctor
     def __init__(self, c, entire_file):
@@ -190,10 +199,12 @@ class VimCommander:
             print('vim_cmd: %s' % self.vim_cmd)
             print('vim_exe: %s' % self.vim_exe)
         self.open_in_vim()
+
     # @+node:ekr.20150326183310.1: *3* vim.error
     def error(self, s):
         """Report an error."""
         g.es_print(s, color='red')
+
     # @+node:ekr.20120315101404.9746: *3* vim.open_in_vim & helpers
     def open_in_vim(self):
         """Open p in vim, or the entire enclosing file if entire_file is True."""
@@ -214,6 +225,7 @@ class VimCommander:
             if path:
                 self.forget_path(path)
             self.open_file(root)
+
     # @+node:ekr.20150326183613.1: *4* vim.check_args & helper
     def check_args(self):
         """Return True of basic checks pass."""
@@ -224,6 +236,7 @@ class VimCommander:
         if not self.open_url_nodes and p.h.startswith('@url'):
             return False
         return True
+
     # @+node:ekr.20150326154203.1: *5* vim.load_context_menu
     def load_context_menu(self):
         """Load the contextmenu plugin."""
@@ -233,12 +246,14 @@ class VimCommander:
             contextmenu_message_given = True
             self.error('can not load contextmenu.py')
         return contextMenu
+
     # @+node:ekr.20150326180515.1: *4* vim.find_path_for_node
     def find_path_for_node(self, p):
         """Search the open-files list for a file corresponding to p."""
         efc = g.app.externalFilesController
         path = efc.find_path_for_node(p)
         return path
+
     # @+node:ekr.20150326173414.1: *4* vim.find_root
     def find_root(self, p):
         """Return the nearest ancestor @auto or @clean node."""
@@ -248,6 +263,7 @@ class VimCommander:
                 return p2
         self.error('no parent @auto or @clean node: %s' % p.h)
         return None
+
     # @+node:ekr.20150326173301.1: *4* vim.forget_path
     def forget_path(self, path):
         """
@@ -257,13 +273,14 @@ class VimCommander:
         """
         assert path
         # Don't do this: it prevents efc from reopening paths.
-            # efc = g.app.externalFilesController
-            # if efc: efc.forget_path(path)
+        # efc = g.app.externalFilesController
+        # if efc: efc.forget_path(path)
         if 0:  # Dubious.
             if g.os_path_exists(path):
                 os.remove(path)
         cmd = self.vim_cmd + "--remote-send '<C-\\><C-N>:bd " + path + "<CR>'"
         os.system(cmd)
+
     # @+node:ekr.20150326181247.1: *4* vim.get_cursor_arg
     def get_cursor_arg(self):
         """Compute the cursor argument for vim."""
@@ -276,6 +293,7 @@ class VimCommander:
         # and
         # http://pubs.opengroup.org/onlinepubs/9699919799/utilities/ex.html#tag_20_40_13_02
         return "+" + str(row + 1)
+
     # @+node:ekr.20150326180928.1: *4* vim.open_file
     def open_file(self, root):
         """Open the the file in vim using c.openWith."""
@@ -304,14 +322,13 @@ class VimCommander:
         except OSError:
             g.es_print(command)
             g.es_exception()
+
     # @+node:ekr.20150326173000.1: *4* vim.should_open_old_file
     def should_open_old_file(self, path, root):
         """Return True if we should open the old temp file."""
         v = root.v
-        return (
-            path and g.os_path_exists(path) and
-            hasattr(v.b, '_vim_old_body') and v.b == v._vim_old_body
-        )
+        return path and g.os_path_exists(path) and hasattr(v.b, '_vim_old_body') and v.b == v._vim_old_body
+
     # @+node:ekr.20150326175258.1: *3* vim.write_root (not used)
     def write_root(self, root):
         """Return the concatenation of all bodies in p's tree."""
@@ -320,7 +337,10 @@ class VimCommander:
             s = p.b
             result.append(s if s.endswith('\n') else s.rstrip() + '\n')
         return ''.join(result)
+
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

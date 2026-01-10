@@ -2,7 +2,7 @@
 # @+node:ville.20091009202416.10040: * @file ../plugins/leoremote.py
 # @+<< docstring >>
 # @+node:ville.20091009202416.10041: ** << docstring >> (leoremote.py)
-""" Remote control for Leo.
+"""Remote control for Leo.
 
     NOTE: as of 2015-07-29 the http://localhostL:8130/_/exec/ mode of
     the mod_http plug-in is intended to replace this module's functionality.
@@ -29,6 +29,7 @@ Example client::
     pc.send('''c.doCommandByName('stickynote')''')
 
 """
+
 # @-<< docstring >>
 # @+<< imports >>
 # @+node:ekr.20160519045636.1: ** << imports >> (leoremote.py)
@@ -38,6 +39,8 @@ import tempfile
 from typing import Any
 from leo.external import lproto
 from leo.core import leoGlobals as g
+
+
 # @-<< imports >>
 # @+others
 # @+node:ville.20091009202416.10045: ** init
@@ -49,6 +52,8 @@ def init():
     # serve_thread()
     # g.app.remoteserver = ss = LeoSocketServer()
     return ok
+
+
 # @+node:ville.20091010231411.5262: ** g.command('leoserv-start')
 @g.command('leoserv-start')
 def leoserv_start(event):
@@ -82,13 +87,16 @@ def leoserv_start(event):
     open(socket_file, 'w').write(fullpath)
     print('leoremote.py: file:   %s' % socket_file)
     print('leoremote.py: server: %s' % fullpath)
+
+
 # @+node:ville.20091009211846.10039: ** script execution
 def run_remote_script(fname):
-
     # c and p are ambiguous for remote script
     print("rrs")
     d = {'g': g}
     g.exec_file(fname, d)
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

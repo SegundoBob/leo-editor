@@ -44,6 +44,7 @@ http://stackoverflow.com/questions/12431555/
 enabling-code-completion-in-an-embedded-python-interpreter,
 with some modifications made for Leo embedding.
 """
+
 # @-<< docstring >>
 # @+<< imports >>
 # @+node:peckj.20150428142729.2: ** << imports >>
@@ -69,10 +70,10 @@ else:
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 # @-<< imports >>
 
+
 # @+others
 # @+node:peckj.20150428142729.3: ** class MyInterpreter
 class MyInterpreter(QtWidgets.QWidget):  # type:ignore
-
     def __init__(self, parent, c):
         super().__init__(parent)
         hBox = QtWidgets.QHBoxLayout()
@@ -83,6 +84,8 @@ class MyInterpreter(QtWidgets.QWidget):  # type:ignore
         hBox.addWidget(self.textEdit)
         hBox.setContentsMargins(0, 0, 0, 0)
         hBox.setSpacing(0)
+
+
 # @+node:peckj.20150428142729.6: ** class InteractiveInterpreter (code.InteractiveInterpreter)
 class InteractiveInterpreter(code.InteractiveInterpreter):
     # @+others
@@ -96,11 +99,14 @@ class InteractiveInterpreter(code.InteractiveInterpreter):
         loc['g'] = g
         loc['p'] = self.c.p
         super().__init__(loc)
+
     # @+node:peckj.20150428142729.8: *3* InteractiveInterpreter.runIt
     def runIt(self, command):
-
         code.InteractiveInterpreter.runsource(self, command)
+
     # @-others
+
+
 # @+node:peckj.20150428142729.5: ** class PyInterp (QTextEdit)
 if QtWidgets:
 
@@ -134,26 +140,28 @@ if QtWidgets:
             #
             # update p when new node selected
             g.registerHandler('select2', self.select2_hook)
+
         # @+node:peckj.20150428142729.10: *3* PyInterp.select2_hook
         def select2_hook(self, tag, keywords):
             self.interpreter.runIt('p = c.p')
+
         # @+node:peckj.20150428142729.11: *3* PyInterp.printBanner
         def printBanner(self):
             banner = [
                 'Type !hist for a history view and !hist(n) history index recall\n',
-                'Type !clear to clear this pane\n'
+                'Type !clear to clear this pane\n',
             ]
             for msg in banner:
                 self.write(msg)
+
         # @+node:peckj.20150428142729.12: *3* PyInterp.insert_marker
         def insert_marker(self):
-
             # line = '... ' if self.multiLine else '>>> '
             line = '... ' if self.indent > 0 else '>>> '
             self.insertPlainText(line + ' ' * self.indent)
+
         # @+node:peckj.20150428142729.13: *3* PyInterp.initInterpreter
         def initInterpreter(self, interpreterLocals=None):
-
             if interpreterLocals:
                 # when we pass in locals, we don't want it to be named "self"
                 # so we rename it with the name of the class that did the passing
@@ -165,14 +173,17 @@ if QtWidgets:
                 self.interpreterLocals = interpreterLocals
 
             self.interpreter = InteractiveInterpreter(self.interpreterLocals, self.c)
+
         # @+node:peckj.20150428142729.14: *3* PyInterp.updateInterpreterLocals
         def updateInterpreterLocals(self, newLocals):
             className = newLocals.__class__.__name__
             self.interpreterLocals[className] = newLocals
+
         # @+node:peckj.20150428142729.15: *3* PyInterp.write
         def write(self, line):
             self.insertPlainText(line)
             self.ensureCursorVisible()
+
         # @+node:peckj.20150428142729.16: *3* PyInterp.clearCurrentBlock
         def clearCurrentBlock(self):
             # block being current row
@@ -185,6 +196,7 @@ if QtWidgets:
             for x in range(length):
                 self.textCursor().deletePreviousChar()
             return True
+
         # @+node:peckj.20150428142729.17: *3* PyInterp.recallHistory
         def recallHistory(self):
             # used when using the arrow keys to scroll through history
@@ -192,9 +204,9 @@ if QtWidgets:
             if self.historyIndex != -1:
                 self.insertPlainText(self.history[self.historyIndex])
             return True
+
         # @+node:peckj.20150428142729.18: *3* PyInterp.customCommands
         def customCommands(self, command):
-
             if command == '!hist':  # display history
                 self.append('')  # move down one line
                 # vars that are in the command are prefixed with ____CC and deleted
@@ -237,9 +249,9 @@ if QtWidgets:
                 return True
 
             return False
+
         # @+node:peckj.20150428142729.19: *3* PyInterp.keyPressEvent & helper
         def keyPressEvent(self, event):
-
             completer: Any
             try:
                 # #1212: Disable this by default.
@@ -293,6 +305,7 @@ if QtWidgets:
                 super().keyPressEvent(event)
             except Exception:
                 g.es_exception()
+
         # @+node:ekr.20180307132016.1: *4* PyInterp.doEnter & helpers
         def doEnter(self, event):
             """Handle the <return> key."""
@@ -308,6 +321,7 @@ if QtWidgets:
                 if line.endswith(':'):
                     indent += 4
                 return indent
+
             # @+node:ekr.20190619183908.1: *5* function: compile_lines
             def compile_lines(lines):
                 """Compile one or more lines, returning the compiled code."""
@@ -319,6 +333,7 @@ if QtWidgets:
                 except Exception:
                     interp.showtraceback()
                 return None
+
             # @+node:ekr.20190619190805.1: *5* function: compile_and_run_lines
             def compile_and_run_lines(lines):
                 """Compile and run code lines.  Return 1 if there are errors."""
@@ -327,6 +342,7 @@ if QtWidgets:
                 if the_code:
                     return run_code(the_code)
                 return None
+
             # @+node:ekr.20180525110907.1: *5* fucntion: run_code
             def run_code(the_code):
                 """Execute the compiled code. Return True if all went well."""
@@ -338,6 +354,7 @@ if QtWidgets:
                 except Exception:
                     interp.showtraceback()
                 return False
+
             # @-others
             #
             # Set cursor to end of line to avoid line splitting
@@ -399,6 +416,7 @@ if QtWidgets:
                 compile_and_run_lines(exec_lines)
             self.indent = 0
             self.insert_marker()
+
         # @+node:peckj.20150428142729.20: *3* PyInterp.focusInEvent
         def focusInEvent(self, event=None):
             # set stdout+stderr properly
@@ -406,13 +424,16 @@ if QtWidgets:
             sys.stdout = self  # type:ignore
             sys.stderr = self  # type:ignore
             self.ensureCursorVisible()
+
         # @+node:peckj.20150428142729.21: *3* PyInterp.focusOutEvent
         def focusOutEvent(self, event):
             # set stdout+stderr properly
             QtWidgets.QTextEdit.focusOutEvent(self, event)
             sys.stdout = g.user_dict['old_stdout']
             sys.stderr = g.user_dict['old_stderr']
+
         # @-others
+
 
 # @+node:peckj.20150428142633.4: ** init
 def init():
@@ -428,6 +449,8 @@ def init():
     else:
         g.es('Plugin %s not loaded.' % __name__, color='red')
     return ok
+
+
 # @+node:peckj.20150428142633.5: ** onCreate
 def onCreate(tag, keys):
     """python_terminal.py onCreate handler."""
@@ -435,6 +458,8 @@ def onCreate(tag, keys):
     if c:
         win = MyInterpreter(None, c)
         c.frame.log.createTab('Python Console', widget=win)
+
+
 # @-others
 
 

@@ -5,6 +5,7 @@ The @auto importer for restructured text.
 
 This module must **not** be named rst, so as not to conflict with docutils.
 """
+
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from leo.plugins.importers.base_importer import Importer
@@ -16,6 +17,7 @@ if TYPE_CHECKING:
 # Used by writers.leo_rst as well as in this file.
 # All valid rst underlines, with '#' *last*, so it is effectively reserved.
 underlines = '*=-^~"\'+!$%&(),./:;<>?@[\\]_`{|}#'
+
 
 # @+others
 # @+node:ekr.20161127192007.2: ** class Rst_Importer(Importer)
@@ -66,6 +68,7 @@ class Rst_Importer(Importer):
         assert parent == self.root
         for p in self.root.self_and_subtree():
             p.b = ''.join(self.lines_dict[p.v])
+
     # @+node:ekr.20230529072922.2: *4* rst_i.ch_level
     # # 430, per RagBlufThim. Was {'#': 1,}
     rst_seen: dict[str, int] = {}
@@ -80,6 +83,7 @@ class Rst_Importer(Importer):
         self.rst_level += 1
         d[ch] = self.rst_level
         return self.rst_level
+
     # @+node:ekr.20230529072922.3: *4* rst_i.is_lookahead_overline
     def is_lookahead_overline(self, i: int) -> bool:
         """True if lines[i:i+2] form an overlined/underlined line."""
@@ -98,6 +102,7 @@ class Rst_Importer(Importer):
             and len(line0) >= len(line1)
             and len(line2) >= len(line1)
         )
+
     # @+node:ekr.20230529072922.4: *4* rst_i.is_lookahead_underline
     def is_lookahead_underline(self, i: int) -> bool:
         """True if lines[i:i+1] form an underlined line."""
@@ -106,10 +111,8 @@ class Rst_Importer(Importer):
             return False
         line0 = lines[i]
         line1 = lines[i + 1]
-        return (
-            not line0.isspace() and len(line1) >= 4
-            and self.is_underline(line1) and not self.is_underline(line0)
-        )
+        return not line0.isspace() and len(line1) >= 4 and self.is_underline(line1) and not self.is_underline(line0)
+
     # @+node:ekr.20230529072922.5: *4* rst_i.is_underline
     def is_underline(self, line: str, extra: str = None) -> bool:
         """True if the line consists of nothing but the same underlining characters."""
@@ -125,6 +128,7 @@ class Rst_Importer(Importer):
             if ch != ch1:
                 return False
         return bool(ch1)
+
     # @+node:ekr.20230529072922.6: *4* rst_i.make_dummy_node
     def make_dummy_node(self, headline: str) -> Position:
         """Make a decls node."""
@@ -135,6 +139,7 @@ class Rst_Importer(Importer):
         self.lines_dict[child.v] = []
         self.stack.append(child)
         return child
+
     # @+node:ekr.20230529072922.7: *4* rst_i.make_rst_node
     def make_rst_node(self, level: int, headline: str) -> Position:
         """Create a new node, with the given headline."""
@@ -150,15 +155,22 @@ class Rst_Importer(Importer):
         self.lines_dict[child.v] = []
         self.stack.append(child)
         return self.stack[level]
+
     # @-others
+
+
 # @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for reStructureText."""
     Rst_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    '@auto': ['@auto-rst',],  # Fix #392: @auto-rst file.txt: -rst ignored on read
+    '@auto': [
+        '@auto-rst',
+    ],  # Fix #392: @auto-rst file.txt: -rst ignored on read
     'extensions': ['.rst', '.rest'],
     'func': do_import,
 }

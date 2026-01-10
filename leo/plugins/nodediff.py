@@ -92,6 +92,7 @@ from leo.core import leoGlobals as g
 from leo.external import leosax
 # @-<< imports >>
 
+
 # @+others
 # @+node:peckj.20140113131037.5795: ** init
 def init():
@@ -105,18 +106,20 @@ def init():
     else:
         g.es('Error loading plugin nodediff.py', color='red')
     return ok
+
+
 # @+node:peckj.20140113131037.5796: ** onCreate
 def onCreate(tag, keys):
-
     c = keys.get('c')
     if not c:
         return
 
     theNodeDiffController = NodeDiffController(c)
     c.theNodeDiffController = theNodeDiffController
+
+
 # @+node:peckj.20140113131037.5797: ** class NodeDiffController
 class NodeDiffController:
-
     # @+others
     # @+node:peckj.20140113131037.5798: *3* __init__ & reloadSettings (NodeDiffController, nodediff.py)
     def __init__(self, c):
@@ -143,19 +146,23 @@ class NodeDiffController:
         self.diff_style = c.config.getString('node-diff-style') or 'compare'
         if self.diff_style not in self.valid_styles.keys():
             self.diff_style = 'compare'
+
     # @+node:peckj.20140113131037.5802: *3* getters
     # @+node:peckj.20140113131037.5799: *4* get_selection
     def get_selection(self):
         s = self.c.getSelectedPositions()
         return s if len(s) == 2 else None
+
     # @+node:peckj.20140113131037.5800: *4* get_marked
     def get_marked(self):
         m = [n.copy() for n in self.c.all_positions() if n.isMarked()]
         return m if len(m) == 2 else None
+
     # @+node:peckj.20140113131037.5801: *4* get_subtree
     def get_subtree(self):
         st = [p.copy() for p in self.c.p.children()]
         return st if len(st) == 2 else None
+
     # @+node:peckj.20140113131037.5803: *3* differs
     # @+node:peckj.20140113131037.5804: *4* run_compare
     def run_compare(self, l):
@@ -178,6 +185,7 @@ class NodeDiffController:
                 g.es(l, color=color, tabName=self.tab_name)
             else:
                 g.es(l, tabName=self.tab_name)
+
     # @+node:peckj.20140113131037.5805: *4* run_ndiff
     def run_ndiff(self, l):
         g.app.log.deleteTab(self.tab_name)
@@ -198,6 +206,7 @@ class NodeDiffController:
                 g.es(l, color=color, tabName=self.tab_name)
             else:
                 g.es(l, tabName=self.tab_name)
+
     # @+node:peckj.20140113131037.5806: *4* run_unified_diff
     def run_unified_diff(self, l):
         g.app.log.deleteTab(self.tab_name)
@@ -216,9 +225,11 @@ class NodeDiffController:
                 g.es(l, color=color, tabName=self.tab_name)
             else:
                 g.es(l, tabName=self.tab_name)
+
     # @+node:peckj.20140113131037.5810: *4* run_appropriate_diff
     def run_appropriate_diff(self, ns):
         self.valid_styles[self.diff_style](ns)
+
     # @+node:peckj.20140113135910.5814: *3* commands
     # @+node:peckj.20140113131037.5807: *4* run_diff_on_marked
     # for command 'diff-marked'
@@ -229,6 +240,7 @@ class NodeDiffController:
             g.es('nodediff.py: Make sure that exactly two nodes are marked.', color='red')
             return
         self.run_appropriate_diff(ns)
+
     # @+node:peckj.20140113131037.5808: *4* run_diff_on_selected
     # for command 'diff-selected'
     def run_diff_on_selected(self, event=None):
@@ -238,6 +250,7 @@ class NodeDiffController:
             g.es('nodediff.py: Make sure that exactly two nodes are selected.', color='red')
             return
         self.run_appropriate_diff(ns)
+
     # @+node:peckj.20140113131037.5809: *4* run_diff_on_subtree
     # for command 'diff-subtree'
     def run_diff_on_subtree(self, event=None):
@@ -247,10 +260,10 @@ class NodeDiffController:
         """
         ns = self.get_subtree()
         if ns is None:
-            g.es('nodediff.py: Make sure that the selected node has exactly two children.',
-                color='red')
+            g.es('nodediff.py: Make sure that the selected node has exactly two children.', color='red')
             return
         self.run_appropriate_diff(ns)
+
     # @+node:tbrown.20140118145024.25546: *4* run_diff_on_saved
     def run_diff_on_saved(self, event=None):
         """run_diff_on_saved - compare current node content to saved
@@ -268,6 +281,7 @@ class NodeDiffController:
                 self.run_appropriate_diff([node, c.p])
                 return
         g.es("Node (gnx) not found in saved file")
+
     # @+node:tbrown.20140118145024.25562: *4* run_diff_on_vcs
     def run_diff_on_vcs(self, event=None):
         """run_diff_on_vcs - try and check out the previous version of the Leo
@@ -314,7 +328,8 @@ class NodeDiffController:
             ]
         elif mode == 'bzr':
             cmd = [
-                'bzr', 'cat',
+                'bzr',
+                'cat',
                 '--revision=revno:-1',
                 c.fileName(),  # path,
                 # g.os_path_join( *(relative_path + [filename]) ),
@@ -335,6 +350,8 @@ class NodeDiffController:
         g.es("Node (gnx) not found in previous version")
 
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

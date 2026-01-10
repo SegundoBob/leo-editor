@@ -8,8 +8,10 @@ Terry Brown, Terry_N_Brown@yahoo.com, Sat Feb  4 12:38:26 2017
 """
 
 from leo.core import leoGlobals as g
+
 assert g
 from leo.core.leoQt import QtGui, QtWidgets, Qsci
+
 
 # @+others
 # @+node:tbrown.20171028115501.2: ** DBG
@@ -20,13 +22,15 @@ def DBG(text):
         text (str): text to print
     """
     # print(f"LEP: {text}")
+
+
 # @+node:tbrown.20171028115501.3: ** class LEP_VanillaScintilla
 if Qsci:
-
 
     class LEP_VanillaScintilla(Qsci.QsciScintilla):
         lep_type = "EDITOR"
         lep_name = "Vanilla Scintilla"
+
         # @+others
         # @+node:tbrown.20171028115501.4: *3* __init__ (LEP_VanillaScintilla)
         def __init__(self, c=None, lep=None, *args, **kwargs):
@@ -48,15 +52,18 @@ if Qsci:
 
             self.setCaretLineVisible(True)
             self.setCaretLineBackgroundColor(QtGui.QColor("#ffe4e4"))
+
         # @+node:tbrown.20171028115501.5: *3* focusInEvent
         def focusInEvent(self, event):
             Qsci.QsciScintilla.focusInEvent(self, event)
             DBG("focusin()")
             self.lep.edit_widget_focus()
+
         # @+node:tbrown.20171028115501.6: *3* focusOutEvent
         def focusOutEvent(self, event):
             Qsci.QsciScintilla.focusOutEvent(self, event)
             DBG("focusout()")
+
         # @+node:tbrown.20171028115501.7: *3* new_text
         def new_text(self, text):
             """new_text - update for new text
@@ -65,6 +72,7 @@ if Qsci:
                 text (str): new text
             """
             self.setText(text)
+
         # @+node:tbrown.20171028115501.8: *3* text_changed
         def text_changed(self):
             """text_changed - text editor text changed"""
@@ -73,6 +81,7 @@ if Qsci:
                 self.lep.text_changed(self.text())
             else:
                 DBG("text changed, NOT focused")
+
         # @+node:tbrown.20171028115501.9: *3* update_text
         def update_text(self, text):
             """update_text - update for current text
@@ -82,6 +91,7 @@ if Qsci:
             """
             DBG("update editor text")
             self.setText(text)
+
         # @-others
 # @-others
 # @@language python

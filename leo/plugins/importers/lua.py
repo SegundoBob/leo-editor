@@ -5,6 +5,7 @@ The @auto importer for the lua language.
 
 Created 2017/05/30 by the `importer;;` abbreviation.
 """
+
 from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
@@ -13,6 +14,7 @@ from leo.plugins.importers.base_importer import Importer
 if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
+
 
 # @+others
 # @+node:ekr.20170530024520.3: ** class Lua_Importer(Importer)
@@ -42,7 +44,7 @@ class Lua_Importer(Importer):
         while i < i2:
             line = self.guide_lines[i]
             i += 1
-            for (kind, pat) in self.block_patterns:
+            for kind, pat in self.block_patterns:
                 if pat.match(line):
                     level += 1
                     break
@@ -52,15 +54,22 @@ class Lua_Importer(Importer):
                     if level == 0:
                         return i
         return i2
+
     # @-others
+
+
 # @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for lua."""
     Lua_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    'extensions': ['.lua',],
+    'extensions': [
+        '.lua',
+    ],
     'func': do_import,
 }
 # @@language python

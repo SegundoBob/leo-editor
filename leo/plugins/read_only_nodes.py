@@ -2,7 +2,7 @@
 # @+node:edream.110203113231.876: * @file ../plugins/read_only_nodes.py
 # @+<< docstring >>
 # @+node:ekr.20050912052854: ** << docstring >>
-""" Creates and updates @read-only nodes.
+"""Creates and updates @read-only nodes.
 
 Here's my first attempt at customizing leo. I wanted to have the ability to
 import files in "read-only" mode, that is, in a mode where files could only
@@ -67,11 +67,14 @@ from typing import Any
 import urllib.parse as urlparse
 from urllib.request import urlopen
 from leo.core import leoGlobals as g
+
 # Abbreviation.
 StringIO = io.StringIO
 # @-<< imports >>
 insertOnTime = None
 insertOffTime = None
+
+
 # @+others
 # @+node:ekr.20050311092840: ** init
 def init():
@@ -86,6 +89,8 @@ def init():
             g.registerHandler("select2", on_select2)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:edream.110203113231.879: ** class FTPurl
 class FTPurl:
     """An FTP wrapper class to store/retrieve files using an FTP URL.
@@ -109,7 +114,6 @@ class FTPurl:
     # @+others
     # @+node:edream.110203113231.880: *3* __init__
     def __init__(self, ftpURL, mode=''):
-
         parse = urlparse(ftpURL)  # type:ignore
         if parse[0] != 'ftp':
             raise IOError("error reading %s: malformed ftp URL" % ftpURL)
@@ -139,6 +143,7 @@ class FTPurl:
         self.dirname = os.path.dirname(self.path)
         self.isConnectionOpen = 1
         self.currentLine = 0
+
     # @+node:edream.110203113231.881: *3* Getters
     # @+node:edream.110203113231.882: *4* read
     def read(self):
@@ -179,6 +184,7 @@ class FTPurl:
             self.currentLine = self.currentLine + 1
             return s
         return ''
+
     # @+node:edream.110203113231.884: *3* Setters
     # @+node:edream.110203113231.885: *4* write
     def write(self, s):
@@ -198,13 +204,16 @@ class FTPurl:
         except Exception:
             exception, msg, tb = sys.exc_info()
             raise IOError(msg)
+
     # @+node:edream.110203113231.886: *3* Utilities
     # @+node:edream.110203113231.887: *4* seek
     def seek(self, offset=0):
         self.currentLine = 0  # we don't support fancy seeking via FTP
+
     # @+node:edream.110203113231.888: *4* flush
     def flush(self):
         pass  # no fancy stuff here.
+
     # @+node:edream.110203113231.889: *4* dir
     def dir(self, path=None):
         """Issue a LIST command passing the specified argument and return output as a string."""
@@ -219,6 +228,7 @@ class FTPurl:
         except Exception:
             exception, msg, tb = sys.exc_info()
             raise IOError(msg)
+
     # @+node:edream.110203113231.890: *4* exists
     def exists(self, path=None):
         """
@@ -230,12 +240,14 @@ class FTPurl:
         s = self.dir(path)
         # return s.lower().find('no such file') == -1
         return 'no such file' not in s.lower()
+
     # @+node:edream.110203113231.891: *4* checkParams
     def checkParams(self):
         if self.mode not in ('', 'b'):
             raise IOError('invalid mode: %s' % self.mode)
         if not self.isConnectionOpen:
             raise IOError('ftp connection closed')
+
     # @+node:edream.110203113231.892: *3* close
     def close(self):
         """Close an existing FTPurl connection."""
@@ -245,10 +257,14 @@ class FTPurl:
             self.ftp.close()
         del self.ftp
         self.isConnectionOpen = 0
+
     # @-others
+
+
 # @+node:edream.110203113231.893: ** enable/disable_body
 # Alas, these do not seem to work on XP:
 # disabling the body text _permanently_ stops the cursor from blinking.
+
 
 def enable_body(body):
     # global insertOnTime, insertOffTime
@@ -261,6 +277,7 @@ def enable_body(body):
         except Exception:
             g.es_exception()
 
+
 def disable_body(body):
     global insertOnTime, insertOffTime
     if body.cget("state") == "normal":
@@ -272,12 +289,15 @@ def disable_body(body):
             body.configure(state="disabled")
         except Exception:
             g.es_exception()
+
+
 # @+node:edream.110203113231.894: ** insert_read_only_node (FTP version)
 # Sets p's body text from the file with the given name.
 # Returns True if the body text changed.
 def insert_read_only_node(c, p, name):
     if name == "":
-        name = g.app.gui.runOpenFileDialog(c,
+        name = g.app.gui.runOpenFileDialog(
+            c,
             title="Open",
             filetypes=[("All files", "*")],
         )
@@ -327,14 +347,15 @@ def insert_read_only_node(c, p, name):
         # @-<< convert HTML to text >>
     previous = p.b
     p.b = new
-    changed = (g.toUnicode(new) != g.toUnicode(previous))
+    changed = g.toUnicode(new) != g.toUnicode(previous)
     if changed and previous != "":
         g.es("changed: %s" % name)  # A real change.
     return changed
+
+
 # @+node:edream.110203113231.896: ** on_open
 #  scan the outline and process @read-only nodes.
 def on_open(tag, keywords):
-
     c = keywords.get("c")
     if not c:
         return
@@ -353,11 +374,13 @@ def on_open(tag, keywords):
                     c.setChanged()
         p.moveToThreadNext()
     c.redraw()
+
+
 # @+node:edream.110203113231.897: ** on_bodykey1
 # override the body key handler if we are in an @read-only node.
 
-def on_bodykey1(tag, keywords):
 
+def on_bodykey1(tag, keywords):
     c = keywords.get("c")
     p = keywords.get("p")
     if g.match_word(p.h, 0, "@read-only"):
@@ -371,11 +394,13 @@ def on_bodykey1(tag, keywords):
             w.insert(0, p.b)
         return 1  # Override the body key event handler.
     return None
+
+
 # @+node:edream.110203113231.898: ** on_headkey2
 # update the body text when we press enter
 
-def on_headkey2(tag, keywords):
 
+def on_headkey2(tag, keywords):
     c = keywords.get("c")
     p = keywords.get("p")
     h = p.h
@@ -387,22 +412,26 @@ def on_headkey2(tag, keywords):
             c.setChanged()
         else:
             c.clearChanged()
+
+
 # @+node:edream.110203113231.899: ** on_select1
 def on_select1(tag, keywords):
-
     # Doesn't work: the cursor doesn't start blinking.
     # Enable the body text so select will work properly.
     c = keywords.get("c")
     enable_body(c.frame.body)
+
+
 # @+node:edream.110203113231.900: ** on_select2
 def on_select2(tag, keywords):
-
     c = keywords.get("c")
 
     if g.match_word(c.p.h, 0, "@read-only"):
         disable_body(c.frame.body)
     else:
         enable_body(c.frame.body)
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

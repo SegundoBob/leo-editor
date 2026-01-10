@@ -15,6 +15,7 @@ Note it may be practical to put this plugin before mod_scripting.py in
 the left side of toolbar.
 
 """
+
 # @-<< nav_qt docstring >>
 # @+<< nav_qt imports & annotations >>
 # @+node:ville.20090518182905.5422: ** << nav_qt imports & annotations >>
@@ -25,6 +26,7 @@ from leo.core.leoQt import QAction, StandardPixmap
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
+
     Action = Any
 
 # Fail fast, right after all imports.
@@ -32,6 +34,8 @@ g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 # @-<< nav_qt imports & annotations >>
 
 controllers: dict[str, Any] = {}  # keys are c.hash(), values are NavControllers
+
+
 # @+others
 # @+node:ville.20090518182905.5423: ** init
 def init() -> bool:
@@ -42,9 +46,10 @@ def init() -> bool:
         g.registerHandler('close-frame', onClose)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:ville.20090518182905.5424: ** onCreate
 def onCreate(tag: str, keys: Any) -> None:
-
     # global controllers
 
     c = keys.get('c')
@@ -56,6 +61,8 @@ def onCreate(tag: str, keys: Any) -> None:
     nc = controllers.get(h)
     if not nc:
         controllers[h] = NavController(c)
+
+
 # @+node:vitalije.20170712192502.1: ** onClose
 def onClose(tag: str, keys: Any) -> None:
     # global controllers
@@ -65,9 +72,10 @@ def onClose(tag: str, keys: Any) -> None:
     if nc:
         nc.removeButtons()
         del controllers[h]
+
+
 # @+node:ville.20090518182905.5425: ** class NavController
 class NavController:
-
     def __init__(self, c: Cmdr) -> None:
         self.c = c
         self._buttons: Optional[tuple[Action, Action]] = self.makeButtons()
@@ -75,7 +83,6 @@ class NavController:
     # @+others
     # @+node:ville.20090518182905.5427: *3* NavController.makeButtons
     def makeButtons(self) -> tuple[Action, Action]:
-
         c = self.c
         w = c.frame.iconBar.w
         if not w:
@@ -92,6 +99,7 @@ class NavController:
         self.c.frame.iconBar.add(qaction=act_l)
         self.c.frame.iconBar.add(qaction=act_r)
         return act_l, act_r
+
     # @+node:ekr.20220922085357.1: *3* NavController.removeButtons
     def removeButtons(self) -> None:
         if not self._buttons:
@@ -99,7 +107,10 @@ class NavController:
         for b in self._buttons:
             self.c.frame.iconBar.deleteButton(b)
         self._buttons = None
+
     # @-others
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

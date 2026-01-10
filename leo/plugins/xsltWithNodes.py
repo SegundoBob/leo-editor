@@ -2,7 +2,7 @@
 # @+node:mork.20041010095009: * @file ../plugins/xsltWithNodes.py
 # @+<< docstring >>
 # @+node:ekr.20050226120104: ** << docstring >>
-""" Adds the Outline:XSLT menu containing XSLT-related commands.
+"""Adds the Outline:XSLT menu containing XSLT-related commands.
 
 This menu contains the following items:
 
@@ -17,6 +17,7 @@ This menu contains the following items:
 Requires 4Suite 1.0a3 or better, downloadable from http://4Suite.org.
 
 """
+
 # @-<< docstring >>
 # @+<< imports >>
 # @+node:mork.20041025113509: ** << imports >>
@@ -24,6 +25,7 @@ import io
 import weakref
 from xml.dom import minidom
 from leo.core import leoGlobals as g
+
 # Third-part imports
 try:
     import Ft
@@ -38,6 +40,7 @@ StringIO = io.StringIO
 # @+<<parser problems>>
 # @+node:mork.20041024091024: ** <<parser problems>>
 # @@killcolor
+
 
 # @+at
 # 1. Having space before the start of the document caused it not to work. I fixed
@@ -61,49 +64,50 @@ def init():
         g.registerHandler(('menu2', "new"), addMenu)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:mork.20041025115037: ** xslt elements
 # This dict contains elements that go into a stylesheet
 xslt = {
-
-'apply-imports': '<xsl:apply-imports/>',
-'apply-templates': "<xsl:apply-templates select ='' mode='' />",
-'attribute': "<xsl:attribute name=''> </xsl:attribute>",
-'attribute-set': "<xsl:attribute-set name=''> </xsl:attribute-set>",
-'call-template': "<xsl:call-template name=''> </xsl:call-template>",
-'choose': "<xsl:choose> </xsl:choose>",
-'comment': "<xsl:comment> </xsl:comment>",
-'copy': "<xsl:copy> </xsl:copy>",
-'copy-of': "<xsl:copy-of select='' />",
-'decimal-format': "<xsl:decimal-format   />",
-'element': "<xsl:element name='' > </xsl:element>",
-'fallback': "<xsl:fallback> </xsl:fallback>",
-'for-each': "<xsl:for-each select='' >  </xsl:for-each>",
-'if': "<xsl:if test=''> </xsl:if>",
-'import': "<xsl:import href='' />",
-'include': "<xsl:include href='' />",
-'key': "<xsl:key name='' match='' use='' />",
-'message': "<xsl:message> </xsl:message>",
-'namespace-alias': "<xsl:namespace-alias stylesheet-prefix='' result-prefix='' />",
-'number': "<xsl:number />",
-'otherwise': "<xsl:otherwise> </xsl:otherwise>",
-'output': "<xsl:output />",
-'param': "<xsl:param name='' >  </xsl:param>",
-'preserve-space': "<xsl:preserve-space elements='' />",
-'processing-instruction': "<xsl:processing-instruction name='' > </xsl:processing-instruction>",
-'sort': "<xsl:sort />",
-'strip-space': "<xsl:strip-space elements='' />",
-'stylesheet': "<xsl:stylesheet xmlns:xsl='' version='' > </xsl:stylesheet>",
-'template': "<xsl:template > </xsl:template>",
-'text': "<xsl:text > </xsl:text>",
-'transform': "<xsl:transform >  </xsl:transform>",
-'value-of': "<xsl:value-of select='' />",
-'variable': "<xsl:variable name=''> </xsl:variable>",
-'when': "<xsl:when text='' > </xsl:when>",
-'with-param': "<xsl:with-param name=''> </xsl:with-param>",
-
+    'apply-imports': '<xsl:apply-imports/>',
+    'apply-templates': "<xsl:apply-templates select ='' mode='' />",
+    'attribute': "<xsl:attribute name=''> </xsl:attribute>",
+    'attribute-set': "<xsl:attribute-set name=''> </xsl:attribute-set>",
+    'call-template': "<xsl:call-template name=''> </xsl:call-template>",
+    'choose': "<xsl:choose> </xsl:choose>",
+    'comment': "<xsl:comment> </xsl:comment>",
+    'copy': "<xsl:copy> </xsl:copy>",
+    'copy-of': "<xsl:copy-of select='' />",
+    'decimal-format': "<xsl:decimal-format   />",
+    'element': "<xsl:element name='' > </xsl:element>",
+    'fallback': "<xsl:fallback> </xsl:fallback>",
+    'for-each': "<xsl:for-each select='' >  </xsl:for-each>",
+    'if': "<xsl:if test=''> </xsl:if>",
+    'import': "<xsl:import href='' />",
+    'include': "<xsl:include href='' />",
+    'key': "<xsl:key name='' match='' use='' />",
+    'message': "<xsl:message> </xsl:message>",
+    'namespace-alias': "<xsl:namespace-alias stylesheet-prefix='' result-prefix='' />",
+    'number': "<xsl:number />",
+    'otherwise': "<xsl:otherwise> </xsl:otherwise>",
+    'output': "<xsl:output />",
+    'param': "<xsl:param name='' >  </xsl:param>",
+    'preserve-space': "<xsl:preserve-space elements='' />",
+    'processing-instruction': "<xsl:processing-instruction name='' > </xsl:processing-instruction>",
+    'sort': "<xsl:sort />",
+    'strip-space': "<xsl:strip-space elements='' />",
+    'stylesheet': "<xsl:stylesheet xmlns:xsl='' version='' > </xsl:stylesheet>",
+    'template': "<xsl:template > </xsl:template>",
+    'text': "<xsl:text > </xsl:text>",
+    'transform': "<xsl:transform >  </xsl:transform>",
+    'value-of': "<xsl:value-of select='' />",
+    'variable': "<xsl:variable name=''> </xsl:variable>",
+    'when': "<xsl:when text='' > </xsl:when>",
+    'with-param': "<xsl:with-param name=''> </xsl:with-param>",
 }
 # @+node:mork.20041010095202: ** setStyleNode
 stylenodes: weakref.WeakKeyDictionary = weakref.WeakKeyDictionary()
+
 
 def setStyleNode(c):
     """this command sets what the current style node is"""
@@ -148,6 +152,8 @@ def processDocumentNode(c):
     except Exception as x:
         g.es('exception ' + str(x))
     c.redraw()
+
+
 # @+node:mork.20041025121608: ** addXSLTNode
 def addXSLTNode(c):
     """creates a node and inserts some xslt boilerplate"""
@@ -161,11 +167,15 @@ def addXSLTNode(c):
     p2.setBodyString(body)
     p2.setHeadString("xslt stylesheet")
     c.redraw()
+
+
 # @+node:mork.20041010110121: ** addXSLTElement
 def addXSLTElement(c, element):
     """adds some xslt to the text node"""
     w = c.frame.body.wrapper
     w.insert('insert', element)
+
+
 # @+node:mork.20041025113021: ** getString (xsltWithNodes.py)
 def getString(c):
     """
@@ -176,6 +186,8 @@ def getString(c):
     at.toString = True
     at.writeOpenFile(c.p, sentinels=False)
     return cleanString(at.stringOutput)
+
+
 # @+node:mork.20041025120706: ** doMinidomTest
 def doMinidomTest(c):
     """
@@ -190,13 +202,16 @@ def doMinidomTest(c):
         g.error("Minidom could not parse node because of:\n %s" % x)
         return
     g.blue("Minidom could parse the node")
+
+
 # @+node:mork.20041025090303: ** cleanString
 def cleanString(data):
     """This method cleans a string up for the processor.  It currently just removes
-       leading and trailing whitespace"""
+    leading and trailing whitespace"""
 
     val = data.strip()
     return val
+
 
 # @+node:mork.20041010125444: ** jumpToStyleNode
 def jumpToStyleNode(c):
@@ -219,7 +234,6 @@ def styleNodeSelected(c):
 
 # @+node:mork.20041010100633: ** addMenu
 def addMenu(tag, keywords):
-
     c = keywords.get('c')
     if not c:
         return
@@ -230,19 +244,11 @@ def addMenu(tag, keywords):
     # xmen = Tk.Menu(men,tearoff = False)
     xmen = mc.createNewMenu('XSLT', "Outline")
 
-    c.add_command(xmen,
-        label="Set Stylesheet Node",
-        command=lambda c=c: setStyleNode(c))
-    c.add_command(xmen,
-        label="Jump To Style Node",
-        command=lambda c=c: jumpToStyleNode(c))
-    c.add_command(xmen,
-        label="Process Node with Stylesheet Node",
-        command=lambda c=c: processDocumentNode(c))
+    c.add_command(xmen, label="Set Stylesheet Node", command=lambda c=c: setStyleNode(c))
+    c.add_command(xmen, label="Jump To Style Node", command=lambda c=c: jumpToStyleNode(c))
+    c.add_command(xmen, label="Process Node with Stylesheet Node", command=lambda c=c: processDocumentNode(c))
     xmen.add_separator(xmen)
-    c.add_command(xmen,
-        label="Create Stylesheet Node",
-        command=lambda c=c: addXSLTNode(c))
+    c.add_command(xmen, label="Create Stylesheet Node", command=lambda c=c: addXSLTNode(c))
 
     # elmen= Tk.Menu( xmen, tearoff = False )
     # xmen.add_cascade( label = "Insert XSL Element", menu = elmen )
@@ -251,15 +257,13 @@ def addMenu(tag, keywords):
     xsltkeys = list(xslt.keys())
     xsltkeys.sort()
     for z in xsltkeys:
-        c.add_command(menu2,
-            label=z,
-            command=lambda c=c, element=xslt[z]: addXSLTElement(c, element))
+        c.add_command(menu2, label=z, command=lambda c=c, element=xslt[z]: addXSLTElement(c, element))
 
     # men.add_cascade(menu = xmen, label = "XSLT-Node Commands")
     menu3 = mc.createNewMenu('XSLT-Node Commands', 'XSLT')
-    c.add_command(menu3,
-        label='Test Node with Minidom',
-        command=lambda c=c: doMinidomTest(c))
+    c.add_command(menu3, label='Test Node with Minidom', command=lambda c=c: doMinidomTest(c))
+
+
 # @+node:mork.20041025100716: ** examples/tests
 # @+at
 # table.leo contains the xml.  xslt is in the other node.

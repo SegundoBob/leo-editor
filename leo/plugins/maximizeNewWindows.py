@@ -12,6 +12,7 @@ from leo.core import leoPlugins
 
 # @-<< imports >>
 
+
 # @+others
 # @+node:Dmitry.20101128013501.1259: ** init
 def init():
@@ -20,15 +21,17 @@ def init():
     g.plugin_signon(__name__)
     return True
 
+
 # @+node:Dmitry.20101128013501.1260: ** maximize_window
 def maximize_window(tag, keywords):
-
     c = keywords.get('c')
 
     if c and c.exists and c.frame and not c.frame.isNullFrame:
         gui = g.app.gui.guiName()
         if gui == 'qt':
             c.frame.top.showMaximized()
+
+
 # @-others
 # @@language python
 # @@tabwidth -4

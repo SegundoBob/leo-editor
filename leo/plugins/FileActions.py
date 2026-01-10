@@ -2,7 +2,7 @@
 # @+node:ekr.20040915105758.13: * @file ../plugins/FileActions.py
 # @+<< docstring >>
 # @+node:ekr.20050912180106: ** << docstring >> (fileActions.py)
-r""" Defines actions taken when double-clicking on @<file> nodes and supports
+r"""Defines actions taken when double-clicking on @<file> nodes and supports
 @file-ref nodes.
 
 The double-click-icon-box command on any kind of @<file> node writes out
@@ -57,13 +57,21 @@ from leo.core import leoGlobals as g
 # @@c
 
 file_directives = [
-   "@file",
-   "@thin", "@file-thin", "@thinfile",
-   "@asis", "@file-asis", "@silentfile",
-   "@nosent", "@file-nosent", "@nosentinelsfile",
-   "@file-ref", "@shadow",
+    "@file",
+    "@thin",
+    "@file-thin",
+    "@thinfile",
+    "@asis",
+    "@file-asis",
+    "@silentfile",
+    "@nosent",
+    "@file-nosent",
+    "@nosentinelsfile",
+    "@file-ref",
+    "@shadow",
 ]
 # @-<< define the directives that are handled by this plugin >>
+
 
 # @+others
 # @+node:ekr.20060108162524: ** init (FileActions.py)
@@ -74,9 +82,10 @@ def init():
         g.registerHandler("icondclick1", onIconDoubleClick)
         g.plugin_signon(__name__)
     return ok
+
+
 # @+node:ekr.20040915105758.14: ** onIconDoubleClick
 def onIconDoubleClick(tag, keywords):
-
     c = keywords.get("c")
     p = keywords.get("p")
 
@@ -101,9 +110,9 @@ def onIconDoubleClick(tag, keywords):
     # No action taken - Let other double-click handlers run
     return None
 
+
 # @+node:ekr.20040915105758.15: ** doFileAction
 def doFileAction(filename, c):
-
     p = g.findNodeAnywhere(c, "FileActions")
     if p:
         done = False
@@ -120,9 +129,10 @@ def doFileAction(filename, c):
         return True  # TL - Inform onIconDoubleClick that action was taken
     g.warning("no FileActions node")
     return False  # TL - Inform onIconDoubleClick that no action was taken
+
+
 # @+node:ekr.20040915105758.16: ** applyFileAction
 def applyFileAction(p, filename, c):
-
     script = g.getScript(c, p)
     redirect = c.config.getBool('redirect-execute-script-output-to-log_pane')
     if script:
@@ -134,10 +144,7 @@ def applyFileAction(p, filename, c):
             g.redirectStdout()
             g.redirectStderr()
         try:
-            namespace = {
-                'c': c, 'g': g,
-                'filename': filename,
-                'shellScriptInWindow': shellScriptInWindow}
+            namespace = {'c': c, 'g': g, 'filename': filename, 'shellScriptInWindow': shellScriptInWindow}
             # exec script in namespace
             exec(script, namespace)
         except Exception:
@@ -148,9 +155,10 @@ def applyFileAction(p, filename, c):
                 g.restoreStderr()
                 g.restoreStdout()
         os.chdir(working_directory)
+
+
 # @+node:ekr.20040915105758.20: ** shellScriptInWindow
 def shellScriptInWindow(c, script):
-
     if sys.platform == 'darwin':
         # @+<< write script to temporary MacOS file >>
         # @+node:ekr.20040915105758.22: *3* << write script to temporary MacOS file >>
@@ -177,6 +185,8 @@ def shellScriptInWindow(c, script):
         os.chmod(path, 0x700)
         # @-<< write script to temporary Unix file >>
         os.system("xterm -e sh  " + path)
+
+
 # @-others
 # @@language python
 # @@tabwidth -4
