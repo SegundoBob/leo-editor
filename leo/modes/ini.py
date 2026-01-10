@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240227082119.1: * @file ../modes/ini.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240227082119.1: * @file ../modes/ini.py
+# @@language python
 
 # Leo's colorizer control file for .ini and .toml files.
 # This file is in the public domain.
@@ -35,21 +35,26 @@ keywordsDictDict = {
 
 # Rules for ini_main ruleset.
 
+
 def ini_list(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="[", end="]",
-          at_line_start=True)
+    return colorer.match_span(s, i, kind="keyword2", begin="[", end="]", at_line_start=True)
+
 
 def ini_semi_comment(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
 
+
 def ini_pound_comment(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
+
 
 def ini_equal_op(colorer, s, i):
     return colorer.match_seq(s, i, kind="keyword1", seq="=")
 
+
 def ini_string(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin='"', end='"')
+
 
 # Rules dict for ini_main ruleset.
 rulesDict1 = {
@@ -67,4 +72,4 @@ rulesDictDict = {
 
 # Import dict for ini mode.
 importDict = {}
-#@-leo
+# @-leo

@@ -2988,1170 +2988,2033 @@ keywordsDictDict = {
 
 # Rules for apdl_main ruleset.
 
+
 def apdl_rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="label", seq=":",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="label", seq=":", at_line_start=True)
+
 
 def apdl_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="!")
 
+
 def apdl_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def apdl_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ABBR")
 
+
 def apdl_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ABB")
+
 
 def apdl_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*AFUN")
 
+
 def apdl_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*AFU")
+
 
 def apdl_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ASK")
 
+
 def apdl_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CFCLOS")
+
 
 def apdl_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CFC")
 
+
 def apdl_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CFOPEN")
+
 
 def apdl_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CFO")
 
+
 def apdl_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CFWRITE")
+
 
 def apdl_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CFW")
 
+
 def apdl_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CREATE")
+
 
 def apdl_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CRE")
 
+
 def apdl_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CYCLE")
+
 
 def apdl_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*CYC")
 
+
 def apdl_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*DEL")
+
 
 def apdl_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*DIM")
 
+
 def apdl_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*DO")
+
 
 def apdl_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ELSEIF")
 
+
 def apdl_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ELSE")
+
 
 def apdl_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ENDDO")
 
+
 def apdl_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ENDIF")
+
 
 def apdl_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*END")
 
+
 def apdl_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*EVAL")
+
 
 def apdl_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*EVA")
 
+
 def apdl_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*EXIT")
+
 
 def apdl_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*EXI")
 
+
 def apdl_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*GET")
+
 
 def apdl_rule31(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*GO")
 
+
 def apdl_rule32(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*IF")
+
 
 def apdl_rule33(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*LIST")
 
+
 def apdl_rule34(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*LIS")
+
 
 def apdl_rule35(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MFOURI")
 
+
 def apdl_rule36(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MFO")
+
 
 def apdl_rule37(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MFUN")
 
+
 def apdl_rule38(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MFU")
+
 
 def apdl_rule39(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MOONEY")
 
+
 def apdl_rule40(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MOO")
+
 
 def apdl_rule41(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MOPER")
 
+
 def apdl_rule42(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MOP")
+
 
 def apdl_rule43(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*MSG")
 
+
 def apdl_rule44(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*REPEAT")
+
 
 def apdl_rule45(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*REP")
 
+
 def apdl_rule46(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*SET")
+
 
 def apdl_rule47(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*STATUS")
 
+
 def apdl_rule48(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*STA")
+
 
 def apdl_rule49(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*TREAD")
 
+
 def apdl_rule50(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*TRE")
+
 
 def apdl_rule51(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ULIB")
 
+
 def apdl_rule52(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*ULI")
+
 
 def apdl_rule53(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*USE")
 
+
 def apdl_rule54(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VABS")
+
 
 def apdl_rule55(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VAB")
 
+
 def apdl_rule56(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VCOL")
+
 
 def apdl_rule57(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VCO")
 
+
 def apdl_rule58(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VCUM")
+
 
 def apdl_rule59(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VCU")
 
+
 def apdl_rule60(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VEDIT")
+
 
 def apdl_rule61(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VED")
 
+
 def apdl_rule62(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VFACT")
+
 
 def apdl_rule63(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VFA")
 
+
 def apdl_rule64(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VFILL")
+
 
 def apdl_rule65(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VFI")
 
+
 def apdl_rule66(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VFUN")
+
 
 def apdl_rule67(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VFU")
 
+
 def apdl_rule68(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VGET")
+
 
 def apdl_rule69(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VGE")
 
+
 def apdl_rule70(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VITRP")
+
 
 def apdl_rule71(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VIT")
 
+
 def apdl_rule72(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VLEN")
+
 
 def apdl_rule73(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VLE")
 
+
 def apdl_rule74(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VMASK")
+
 
 def apdl_rule75(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VMA")
 
+
 def apdl_rule76(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VOPER")
+
 
 def apdl_rule77(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VOP")
 
+
 def apdl_rule78(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VPLOT")
+
 
 def apdl_rule79(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VPL")
 
+
 def apdl_rule80(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VPUT")
+
 
 def apdl_rule81(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VPU")
 
+
 def apdl_rule82(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VREAD")
+
 
 def apdl_rule83(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VRE")
 
+
 def apdl_rule84(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VSCFUN")
+
 
 def apdl_rule85(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VSC")
 
+
 def apdl_rule86(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VSTAT")
+
 
 def apdl_rule87(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VST")
 
+
 def apdl_rule88(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VWRITE")
+
 
 def apdl_rule89(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="*VWR")
 
+
 def apdl_rule90(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANFILE")
+
 
 def apdl_rule91(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANF")
 
+
 def apdl_rule92(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANGLE")
+
 
 def apdl_rule93(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANG")
 
+
 def apdl_rule94(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANNOT")
+
 
 def apdl_rule95(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANN")
 
+
 def apdl_rule96(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANUM")
+
 
 def apdl_rule97(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ANU")
 
+
 def apdl_rule98(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ASSIGN")
+
 
 def apdl_rule99(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ASS")
 
+
 def apdl_rule100(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/AUTO")
+
 
 def apdl_rule101(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/AUT")
 
+
 def apdl_rule102(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/AUX15")
+
 
 def apdl_rule103(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/AUX2")
 
+
 def apdl_rule104(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/AUX")
+
 
 def apdl_rule105(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/AXLAB")
 
+
 def apdl_rule106(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/AXL")
+
 
 def apdl_rule107(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/BATCH")
 
+
 def apdl_rule108(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/BAT")
+
 
 def apdl_rule109(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CLABEL")
 
+
 def apdl_rule110(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CLA")
+
 
 def apdl_rule111(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CLEAR")
 
+
 def apdl_rule112(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CLE")
+
 
 def apdl_rule113(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CLOG")
 
+
 def apdl_rule114(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CLO")
+
 
 def apdl_rule115(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CMAP")
 
+
 def apdl_rule116(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CMA")
+
 
 def apdl_rule117(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/COLOR")
 
+
 def apdl_rule118(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/COL")
+
 
 def apdl_rule119(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/COM")
 
+
 def apdl_rule120(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CONFIG")
+
 
 def apdl_rule121(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CONTOUR")
 
+
 def apdl_rule122(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CON")
+
 
 def apdl_rule123(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/COPY")
 
+
 def apdl_rule124(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/COP")
+
 
 def apdl_rule125(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CPLANE")
 
+
 def apdl_rule126(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CPL")
+
 
 def apdl_rule127(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CTYPE")
 
+
 def apdl_rule128(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CTY")
+
 
 def apdl_rule129(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CVAL")
 
+
 def apdl_rule130(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/CVA")
+
 
 def apdl_rule131(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DELETE")
 
+
 def apdl_rule132(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DEL")
+
 
 def apdl_rule133(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DEVDISP")
 
+
 def apdl_rule134(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DEVICE")
+
 
 def apdl_rule135(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DEV")
 
+
 def apdl_rule136(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DIST")
+
 
 def apdl_rule137(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DIS")
 
+
 def apdl_rule138(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DSCALE")
+
 
 def apdl_rule139(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DSC")
 
+
 def apdl_rule140(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DV3D")
+
 
 def apdl_rule141(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/DV3")
 
+
 def apdl_rule142(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EDGE")
+
 
 def apdl_rule143(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EDG")
 
+
 def apdl_rule144(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EFACET")
+
 
 def apdl_rule145(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EFA")
 
+
 def apdl_rule146(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EOF")
+
 
 def apdl_rule147(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ERASE")
 
+
 def apdl_rule148(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ERA")
+
 
 def apdl_rule149(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ESHAPE")
 
+
 def apdl_rule150(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ESH")
+
 
 def apdl_rule151(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EXIT")
 
+
 def apdl_rule152(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EXI")
+
 
 def apdl_rule153(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EXPAND")
 
+
 def apdl_rule154(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/EXP")
+
 
 def apdl_rule155(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FACET")
 
+
 def apdl_rule156(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FAC")
+
 
 def apdl_rule157(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FDELE")
 
+
 def apdl_rule158(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FDE")
+
 
 def apdl_rule159(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FILNAME")
 
+
 def apdl_rule160(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FIL")
+
 
 def apdl_rule161(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FOCUS")
 
+
 def apdl_rule162(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FOC")
+
 
 def apdl_rule163(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FORMAT")
 
+
 def apdl_rule164(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FOR")
+
 
 def apdl_rule165(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FTYPE")
 
+
 def apdl_rule166(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/FTY")
+
 
 def apdl_rule167(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GCMD")
 
+
 def apdl_rule168(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GCM")
+
 
 def apdl_rule169(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GCOLUMN")
 
+
 def apdl_rule170(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GCO")
+
 
 def apdl_rule171(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GFILE")
 
+
 def apdl_rule172(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GFI")
+
 
 def apdl_rule173(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GFORMAT")
 
+
 def apdl_rule174(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GFO")
+
 
 def apdl_rule175(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GLINE")
 
+
 def apdl_rule176(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GLI")
+
 
 def apdl_rule177(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GMARKER")
 
+
 def apdl_rule178(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GMA")
+
 
 def apdl_rule179(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GOLIST")
 
+
 def apdl_rule180(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GOL")
+
 
 def apdl_rule181(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GOPR")
 
+
 def apdl_rule182(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GOP")
+
 
 def apdl_rule183(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GO")
 
+
 def apdl_rule184(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRAPHICS")
+
 
 def apdl_rule185(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRA")
 
+
 def apdl_rule186(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRESUME")
+
 
 def apdl_rule187(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRE")
 
+
 def apdl_rule188(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRID")
+
 
 def apdl_rule189(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRI")
 
+
 def apdl_rule190(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GROPT")
+
 
 def apdl_rule191(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRO")
 
+
 def apdl_rule192(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRTYP")
+
 
 def apdl_rule193(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GRT")
 
+
 def apdl_rule194(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GSAVE")
+
 
 def apdl_rule195(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GSA")
 
+
 def apdl_rule196(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GST")
+
 
 def apdl_rule197(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GTHK")
 
+
 def apdl_rule198(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GTH")
+
 
 def apdl_rule199(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GTYPE")
 
+
 def apdl_rule200(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/GTY")
+
 
 def apdl_rule201(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/HEADER")
 
+
 def apdl_rule202(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/HEA")
+
 
 def apdl_rule203(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/INPUT")
 
+
 def apdl_rule204(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/INP")
+
 
 def apdl_rule205(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LARC")
 
+
 def apdl_rule206(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LAR")
+
 
 def apdl_rule207(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LIGHT")
 
+
 def apdl_rule208(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LIG")
+
 
 def apdl_rule209(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LINE")
 
+
 def apdl_rule210(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LIN")
+
 
 def apdl_rule211(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LSPEC")
 
+
 def apdl_rule212(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LSP")
+
 
 def apdl_rule213(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LSYMBOL")
 
+
 def apdl_rule214(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/LSY")
+
 
 def apdl_rule215(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MENU")
 
+
 def apdl_rule216(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MEN")
+
 
 def apdl_rule217(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MPLIB")
 
+
 def apdl_rule218(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MPL")
+
 
 def apdl_rule219(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MREP")
 
+
 def apdl_rule220(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MRE")
+
 
 def apdl_rule221(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MSTART")
 
+
 def apdl_rule222(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/MST")
+
 
 def apdl_rule223(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NERR")
 
+
 def apdl_rule224(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NER")
+
 
 def apdl_rule225(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NOERASE")
 
+
 def apdl_rule226(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NOE")
+
 
 def apdl_rule227(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NOLIST")
 
+
 def apdl_rule228(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NOL")
+
 
 def apdl_rule229(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NOPR")
 
+
 def apdl_rule230(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NOP")
+
 
 def apdl_rule231(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NORMAL")
 
+
 def apdl_rule232(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NOR")
+
 
 def apdl_rule233(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NUMBER")
 
+
 def apdl_rule234(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/NUM")
+
 
 def apdl_rule235(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/OPT")
 
+
 def apdl_rule236(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/OUTPUT")
+
 
 def apdl_rule237(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/OUt")
 
+
 def apdl_rule238(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PAGE")
+
 
 def apdl_rule239(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PAG")
 
+
 def apdl_rule240(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PBC")
+
 
 def apdl_rule241(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PBF")
 
+
 def apdl_rule242(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PCIRCLE")
+
 
 def apdl_rule243(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PCI")
 
+
 def apdl_rule244(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PCOPY")
+
 
 def apdl_rule245(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PCO")
 
+
 def apdl_rule246(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PLOPTS")
+
 
 def apdl_rule247(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PLO")
 
+
 def apdl_rule248(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PMACRO")
+
 
 def apdl_rule249(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PMA")
 
+
 def apdl_rule250(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PMETH")
+
 
 def apdl_rule251(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PME")
 
+
 def apdl_rule252(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PMORE")
+
 
 def apdl_rule253(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PMO")
 
+
 def apdl_rule254(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PNUM")
+
 
 def apdl_rule255(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PNU")
 
+
 def apdl_rule256(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/POLYGON")
+
 
 def apdl_rule257(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/POL")
 
+
 def apdl_rule258(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/POST26")
+
 
 def apdl_rule259(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/POST1")
 
+
 def apdl_rule260(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/POS")
+
 
 def apdl_rule261(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PREP7")
 
+
 def apdl_rule262(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PRE")
+
 
 def apdl_rule263(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSEARCH")
 
+
 def apdl_rule264(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSE")
+
 
 def apdl_rule265(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSF")
 
+
 def apdl_rule266(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSPEC")
+
 
 def apdl_rule267(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSP")
 
+
 def apdl_rule268(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSTATUS")
+
 
 def apdl_rule269(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PST")
 
+
 def apdl_rule270(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSYMB")
+
 
 def apdl_rule271(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PSY")
 
+
 def apdl_rule272(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PWEDGE")
+
 
 def apdl_rule273(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/PWE")
 
+
 def apdl_rule274(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/QUIT")
+
 
 def apdl_rule275(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/QUI")
 
+
 def apdl_rule276(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RATIO")
+
 
 def apdl_rule277(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RAT")
 
+
 def apdl_rule278(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RENAME")
+
 
 def apdl_rule279(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/REN")
 
+
 def apdl_rule280(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/REPLOT")
+
 
 def apdl_rule281(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/REP")
 
+
 def apdl_rule282(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RESET")
+
 
 def apdl_rule283(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RES")
 
+
 def apdl_rule284(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RGB")
+
 
 def apdl_rule285(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RUNST")
 
+
 def apdl_rule286(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/RUN")
+
 
 def apdl_rule287(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SECLIB")
 
+
 def apdl_rule288(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SEC")
+
 
 def apdl_rule289(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SEG")
 
+
 def apdl_rule290(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SHADE")
+
 
 def apdl_rule291(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SHA")
 
+
 def apdl_rule292(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SHOWDISP")
+
 
 def apdl_rule293(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SHOW")
 
+
 def apdl_rule294(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SHO")
+
 
 def apdl_rule295(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SHRINK")
 
+
 def apdl_rule296(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SHR")
+
 
 def apdl_rule297(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SOLU")
 
+
 def apdl_rule298(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SOL")
+
 
 def apdl_rule299(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SSCALE")
 
+
 def apdl_rule300(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SSC")
+
 
 def apdl_rule301(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/STATUS")
 
+
 def apdl_rule302(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/STA")
+
 
 def apdl_rule303(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/STITLE")
 
+
 def apdl_rule304(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/STI")
+
 
 def apdl_rule305(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SYP")
 
+
 def apdl_rule306(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/SYS")
+
 
 def apdl_rule307(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TITLE")
 
+
 def apdl_rule308(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TIT")
+
 
 def apdl_rule309(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TLABEL")
 
+
 def apdl_rule310(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TLA")
+
 
 def apdl_rule311(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TRIAD")
 
+
 def apdl_rule312(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TRI")
+
 
 def apdl_rule313(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TRLCY")
 
+
 def apdl_rule314(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TRL")
+
 
 def apdl_rule315(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TSPEC")
 
+
 def apdl_rule316(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TSP")
+
 
 def apdl_rule317(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TYPE")
 
+
 def apdl_rule318(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/TYP")
+
 
 def apdl_rule319(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/UCMD")
 
+
 def apdl_rule320(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/UCM")
+
 
 def apdl_rule321(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/UIS")
 
+
 def apdl_rule322(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/UI")
+
 
 def apdl_rule323(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/UNITS")
 
+
 def apdl_rule324(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/UNI")
+
 
 def apdl_rule325(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/USER")
 
+
 def apdl_rule326(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/USE")
+
 
 def apdl_rule327(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/VCONE")
 
+
 def apdl_rule328(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/VCO")
+
 
 def apdl_rule329(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/VIEW")
 
+
 def apdl_rule330(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/VIE")
+
 
 def apdl_rule331(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/VSCALE")
 
+
 def apdl_rule332(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/VSC")
+
 
 def apdl_rule333(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/VUP")
 
+
 def apdl_rule334(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/WAIT")
+
 
 def apdl_rule335(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/WAI")
 
+
 def apdl_rule336(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/WINDOW")
+
 
 def apdl_rule337(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/WIN")
 
+
 def apdl_rule338(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/XRANGE")
+
 
 def apdl_rule339(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/XRA")
 
+
 def apdl_rule340(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/YRANGE")
+
 
 def apdl_rule341(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/YRA")
 
+
 def apdl_rule342(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ZOOM")
+
 
 def apdl_rule343(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword1", seq="/ZOO")
 
+
 def apdl_rule344(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def apdl_rule345(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def apdl_rule346(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="$")
+
 
 def apdl_rule347(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def apdl_rule348(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="(")
+
 
 def apdl_rule349(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=")")
 
+
 def apdl_rule350(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
+
 
 def apdl_rule351(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=";")
 
+
 def apdl_rule352(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def apdl_rule353(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def apdl_rule354(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%C")
+
 
 def apdl_rule355(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%G")
 
+
 def apdl_rule356(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%I")
+
 
 def apdl_rule357(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="%/")
 
+
 def apdl_rule358(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="%", end="%",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="function", begin="%", end="%", no_line_break=True)
+
 
 def apdl_rule359(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for apdl_main ruleset.
 rulesDict1 = {
-    "!": [apdl_rule1,],
-    "$": [apdl_rule346,],
-    "%": [apdl_rule354, apdl_rule355, apdl_rule356, apdl_rule357, apdl_rule358,],
-    "'": [apdl_rule2,],
-    "(": [apdl_rule348,],
-    ")": [apdl_rule349,],
-    "*": [apdl_rule3, apdl_rule4, apdl_rule5, apdl_rule6, apdl_rule7, apdl_rule8, apdl_rule9, apdl_rule10, apdl_rule11, apdl_rule12, apdl_rule13, apdl_rule14, apdl_rule15, apdl_rule16, apdl_rule17, apdl_rule18, apdl_rule19, apdl_rule20, apdl_rule21, apdl_rule22, apdl_rule23, apdl_rule24, apdl_rule25, apdl_rule26, apdl_rule27, apdl_rule28, apdl_rule29, apdl_rule30, apdl_rule31, apdl_rule32, apdl_rule33, apdl_rule34, apdl_rule35, apdl_rule36, apdl_rule37, apdl_rule38, apdl_rule39, apdl_rule40, apdl_rule41, apdl_rule42, apdl_rule43, apdl_rule44, apdl_rule45, apdl_rule46, apdl_rule47, apdl_rule48, apdl_rule49, apdl_rule50, apdl_rule51, apdl_rule52, apdl_rule53, apdl_rule54, apdl_rule55, apdl_rule56, apdl_rule57, apdl_rule58, apdl_rule59, apdl_rule60, apdl_rule61, apdl_rule62, apdl_rule63, apdl_rule64, apdl_rule65, apdl_rule66, apdl_rule67, apdl_rule68, apdl_rule69, apdl_rule70, apdl_rule71, apdl_rule72, apdl_rule73, apdl_rule74, apdl_rule75, apdl_rule76, apdl_rule77, apdl_rule78, apdl_rule79, apdl_rule80, apdl_rule81, apdl_rule82, apdl_rule83, apdl_rule84, apdl_rule85, apdl_rule86, apdl_rule87, apdl_rule88, apdl_rule89, apdl_rule352,],
-    "+": [apdl_rule344,],
-    ",": [apdl_rule350, apdl_rule359,],
-    "-": [apdl_rule345, apdl_rule359,],
-    ".": [apdl_rule359,],
-    "/": [apdl_rule90, apdl_rule91, apdl_rule92, apdl_rule93, apdl_rule94, apdl_rule95, apdl_rule96, apdl_rule97, apdl_rule98, apdl_rule99, apdl_rule100, apdl_rule101, apdl_rule102, apdl_rule103, apdl_rule104, apdl_rule105, apdl_rule106, apdl_rule107, apdl_rule108, apdl_rule109, apdl_rule110, apdl_rule111, apdl_rule112, apdl_rule113, apdl_rule114, apdl_rule115, apdl_rule116, apdl_rule117, apdl_rule118, apdl_rule119, apdl_rule120, apdl_rule121, apdl_rule122, apdl_rule123, apdl_rule124, apdl_rule125, apdl_rule126, apdl_rule127, apdl_rule128, apdl_rule129, apdl_rule130, apdl_rule131, apdl_rule132, apdl_rule133, apdl_rule134, apdl_rule135, apdl_rule136, apdl_rule137, apdl_rule138, apdl_rule139, apdl_rule140, apdl_rule141, apdl_rule142, apdl_rule143, apdl_rule144, apdl_rule145, apdl_rule146, apdl_rule147, apdl_rule148, apdl_rule149, apdl_rule150, apdl_rule151, apdl_rule152, apdl_rule153, apdl_rule154, apdl_rule155, apdl_rule156, apdl_rule157, apdl_rule158, apdl_rule159, apdl_rule160, apdl_rule161, apdl_rule162, apdl_rule163, apdl_rule164, apdl_rule165, apdl_rule166, apdl_rule167, apdl_rule168, apdl_rule169, apdl_rule170, apdl_rule171, apdl_rule172, apdl_rule173, apdl_rule174, apdl_rule175, apdl_rule176, apdl_rule177, apdl_rule178, apdl_rule179, apdl_rule180, apdl_rule181, apdl_rule182, apdl_rule183, apdl_rule184, apdl_rule185, apdl_rule186, apdl_rule187, apdl_rule188, apdl_rule189, apdl_rule190, apdl_rule191, apdl_rule192, apdl_rule193, apdl_rule194, apdl_rule195, apdl_rule196, apdl_rule197, apdl_rule198, apdl_rule199, apdl_rule200, apdl_rule201, apdl_rule202, apdl_rule203, apdl_rule204, apdl_rule205, apdl_rule206, apdl_rule207, apdl_rule208, apdl_rule209, apdl_rule210, apdl_rule211, apdl_rule212, apdl_rule213, apdl_rule214, apdl_rule215, apdl_rule216, apdl_rule217, apdl_rule218, apdl_rule219, apdl_rule220, apdl_rule221, apdl_rule222, apdl_rule223, apdl_rule224, apdl_rule225, apdl_rule226, apdl_rule227, apdl_rule228, apdl_rule229, apdl_rule230, apdl_rule231, apdl_rule232, apdl_rule233, apdl_rule234, apdl_rule235, apdl_rule236, apdl_rule237, apdl_rule238, apdl_rule239, apdl_rule240, apdl_rule241, apdl_rule242, apdl_rule243, apdl_rule244, apdl_rule245, apdl_rule246, apdl_rule247, apdl_rule248, apdl_rule249, apdl_rule250, apdl_rule251, apdl_rule252, apdl_rule253, apdl_rule254, apdl_rule255, apdl_rule256, apdl_rule257, apdl_rule258, apdl_rule259, apdl_rule260, apdl_rule261, apdl_rule262, apdl_rule263, apdl_rule264, apdl_rule265, apdl_rule266, apdl_rule267, apdl_rule268, apdl_rule269, apdl_rule270, apdl_rule271, apdl_rule272, apdl_rule273, apdl_rule274, apdl_rule275, apdl_rule276, apdl_rule277, apdl_rule278, apdl_rule279, apdl_rule280, apdl_rule281, apdl_rule282, apdl_rule283, apdl_rule284, apdl_rule285, apdl_rule286, apdl_rule287, apdl_rule288, apdl_rule289, apdl_rule290, apdl_rule291, apdl_rule292, apdl_rule293, apdl_rule294, apdl_rule295, apdl_rule296, apdl_rule297, apdl_rule298, apdl_rule299, apdl_rule300, apdl_rule301, apdl_rule302, apdl_rule303, apdl_rule304, apdl_rule305, apdl_rule306, apdl_rule307, apdl_rule308, apdl_rule309, apdl_rule310, apdl_rule311, apdl_rule312, apdl_rule313, apdl_rule314, apdl_rule315, apdl_rule316, apdl_rule317, apdl_rule318, apdl_rule319, apdl_rule320, apdl_rule321, apdl_rule322, apdl_rule323, apdl_rule324, apdl_rule325, apdl_rule326, apdl_rule327, apdl_rule328, apdl_rule329, apdl_rule330, apdl_rule331, apdl_rule332, apdl_rule333, apdl_rule334, apdl_rule335, apdl_rule336, apdl_rule337, apdl_rule338, apdl_rule339, apdl_rule340, apdl_rule341, apdl_rule342, apdl_rule343, apdl_rule353,],
-    "0": [apdl_rule359,],
-    "1": [apdl_rule359,],
-    "2": [apdl_rule359,],
-    "3": [apdl_rule359,],
-    "4": [apdl_rule359,],
-    "5": [apdl_rule359,],
-    "6": [apdl_rule359,],
-    "7": [apdl_rule359,],
-    "8": [apdl_rule359,],
-    "9": [apdl_rule359,],
-    ":": [apdl_rule0,],
-    ";": [apdl_rule351,],
-    "=": [apdl_rule347,],
-    "@": [apdl_rule359,],
-    "A": [apdl_rule359,],
-    "B": [apdl_rule359,],
-    "C": [apdl_rule359,],
-    "D": [apdl_rule359,],
-    "E": [apdl_rule359,],
-    "F": [apdl_rule359,],
-    "G": [apdl_rule359,],
-    "H": [apdl_rule359,],
-    "I": [apdl_rule359,],
-    "J": [apdl_rule359,],
-    "K": [apdl_rule359,],
-    "L": [apdl_rule359,],
-    "M": [apdl_rule359,],
-    "N": [apdl_rule359,],
-    "O": [apdl_rule359,],
-    "P": [apdl_rule359,],
-    "Q": [apdl_rule359,],
-    "R": [apdl_rule359,],
-    "S": [apdl_rule359,],
-    "T": [apdl_rule359,],
-    "U": [apdl_rule359,],
-    "V": [apdl_rule359,],
-    "W": [apdl_rule359,],
-    "X": [apdl_rule359,],
-    "Y": [apdl_rule359,],
-    "Z": [apdl_rule359,],
-    "_": [apdl_rule359,],
-    "a": [apdl_rule359,],
-    "b": [apdl_rule359,],
-    "c": [apdl_rule359,],
-    "d": [apdl_rule359,],
-    "e": [apdl_rule359,],
-    "f": [apdl_rule359,],
-    "g": [apdl_rule359,],
-    "h": [apdl_rule359,],
-    "i": [apdl_rule359,],
-    "j": [apdl_rule359,],
-    "k": [apdl_rule359,],
-    "l": [apdl_rule359,],
-    "m": [apdl_rule359,],
-    "n": [apdl_rule359,],
-    "o": [apdl_rule359,],
-    "p": [apdl_rule359,],
-    "q": [apdl_rule359,],
-    "r": [apdl_rule359,],
-    "s": [apdl_rule359,],
-    "t": [apdl_rule359,],
-    "u": [apdl_rule359,],
-    "v": [apdl_rule359,],
-    "w": [apdl_rule359,],
-    "x": [apdl_rule359,],
-    "y": [apdl_rule359,],
-    "z": [apdl_rule359,],
+    "!": [
+        apdl_rule1,
+    ],
+    "$": [
+        apdl_rule346,
+    ],
+    "%": [
+        apdl_rule354,
+        apdl_rule355,
+        apdl_rule356,
+        apdl_rule357,
+        apdl_rule358,
+    ],
+    "'": [
+        apdl_rule2,
+    ],
+    "(": [
+        apdl_rule348,
+    ],
+    ")": [
+        apdl_rule349,
+    ],
+    "*": [
+        apdl_rule3,
+        apdl_rule4,
+        apdl_rule5,
+        apdl_rule6,
+        apdl_rule7,
+        apdl_rule8,
+        apdl_rule9,
+        apdl_rule10,
+        apdl_rule11,
+        apdl_rule12,
+        apdl_rule13,
+        apdl_rule14,
+        apdl_rule15,
+        apdl_rule16,
+        apdl_rule17,
+        apdl_rule18,
+        apdl_rule19,
+        apdl_rule20,
+        apdl_rule21,
+        apdl_rule22,
+        apdl_rule23,
+        apdl_rule24,
+        apdl_rule25,
+        apdl_rule26,
+        apdl_rule27,
+        apdl_rule28,
+        apdl_rule29,
+        apdl_rule30,
+        apdl_rule31,
+        apdl_rule32,
+        apdl_rule33,
+        apdl_rule34,
+        apdl_rule35,
+        apdl_rule36,
+        apdl_rule37,
+        apdl_rule38,
+        apdl_rule39,
+        apdl_rule40,
+        apdl_rule41,
+        apdl_rule42,
+        apdl_rule43,
+        apdl_rule44,
+        apdl_rule45,
+        apdl_rule46,
+        apdl_rule47,
+        apdl_rule48,
+        apdl_rule49,
+        apdl_rule50,
+        apdl_rule51,
+        apdl_rule52,
+        apdl_rule53,
+        apdl_rule54,
+        apdl_rule55,
+        apdl_rule56,
+        apdl_rule57,
+        apdl_rule58,
+        apdl_rule59,
+        apdl_rule60,
+        apdl_rule61,
+        apdl_rule62,
+        apdl_rule63,
+        apdl_rule64,
+        apdl_rule65,
+        apdl_rule66,
+        apdl_rule67,
+        apdl_rule68,
+        apdl_rule69,
+        apdl_rule70,
+        apdl_rule71,
+        apdl_rule72,
+        apdl_rule73,
+        apdl_rule74,
+        apdl_rule75,
+        apdl_rule76,
+        apdl_rule77,
+        apdl_rule78,
+        apdl_rule79,
+        apdl_rule80,
+        apdl_rule81,
+        apdl_rule82,
+        apdl_rule83,
+        apdl_rule84,
+        apdl_rule85,
+        apdl_rule86,
+        apdl_rule87,
+        apdl_rule88,
+        apdl_rule89,
+        apdl_rule352,
+    ],
+    "+": [
+        apdl_rule344,
+    ],
+    ",": [
+        apdl_rule350,
+        apdl_rule359,
+    ],
+    "-": [
+        apdl_rule345,
+        apdl_rule359,
+    ],
+    ".": [
+        apdl_rule359,
+    ],
+    "/": [
+        apdl_rule90,
+        apdl_rule91,
+        apdl_rule92,
+        apdl_rule93,
+        apdl_rule94,
+        apdl_rule95,
+        apdl_rule96,
+        apdl_rule97,
+        apdl_rule98,
+        apdl_rule99,
+        apdl_rule100,
+        apdl_rule101,
+        apdl_rule102,
+        apdl_rule103,
+        apdl_rule104,
+        apdl_rule105,
+        apdl_rule106,
+        apdl_rule107,
+        apdl_rule108,
+        apdl_rule109,
+        apdl_rule110,
+        apdl_rule111,
+        apdl_rule112,
+        apdl_rule113,
+        apdl_rule114,
+        apdl_rule115,
+        apdl_rule116,
+        apdl_rule117,
+        apdl_rule118,
+        apdl_rule119,
+        apdl_rule120,
+        apdl_rule121,
+        apdl_rule122,
+        apdl_rule123,
+        apdl_rule124,
+        apdl_rule125,
+        apdl_rule126,
+        apdl_rule127,
+        apdl_rule128,
+        apdl_rule129,
+        apdl_rule130,
+        apdl_rule131,
+        apdl_rule132,
+        apdl_rule133,
+        apdl_rule134,
+        apdl_rule135,
+        apdl_rule136,
+        apdl_rule137,
+        apdl_rule138,
+        apdl_rule139,
+        apdl_rule140,
+        apdl_rule141,
+        apdl_rule142,
+        apdl_rule143,
+        apdl_rule144,
+        apdl_rule145,
+        apdl_rule146,
+        apdl_rule147,
+        apdl_rule148,
+        apdl_rule149,
+        apdl_rule150,
+        apdl_rule151,
+        apdl_rule152,
+        apdl_rule153,
+        apdl_rule154,
+        apdl_rule155,
+        apdl_rule156,
+        apdl_rule157,
+        apdl_rule158,
+        apdl_rule159,
+        apdl_rule160,
+        apdl_rule161,
+        apdl_rule162,
+        apdl_rule163,
+        apdl_rule164,
+        apdl_rule165,
+        apdl_rule166,
+        apdl_rule167,
+        apdl_rule168,
+        apdl_rule169,
+        apdl_rule170,
+        apdl_rule171,
+        apdl_rule172,
+        apdl_rule173,
+        apdl_rule174,
+        apdl_rule175,
+        apdl_rule176,
+        apdl_rule177,
+        apdl_rule178,
+        apdl_rule179,
+        apdl_rule180,
+        apdl_rule181,
+        apdl_rule182,
+        apdl_rule183,
+        apdl_rule184,
+        apdl_rule185,
+        apdl_rule186,
+        apdl_rule187,
+        apdl_rule188,
+        apdl_rule189,
+        apdl_rule190,
+        apdl_rule191,
+        apdl_rule192,
+        apdl_rule193,
+        apdl_rule194,
+        apdl_rule195,
+        apdl_rule196,
+        apdl_rule197,
+        apdl_rule198,
+        apdl_rule199,
+        apdl_rule200,
+        apdl_rule201,
+        apdl_rule202,
+        apdl_rule203,
+        apdl_rule204,
+        apdl_rule205,
+        apdl_rule206,
+        apdl_rule207,
+        apdl_rule208,
+        apdl_rule209,
+        apdl_rule210,
+        apdl_rule211,
+        apdl_rule212,
+        apdl_rule213,
+        apdl_rule214,
+        apdl_rule215,
+        apdl_rule216,
+        apdl_rule217,
+        apdl_rule218,
+        apdl_rule219,
+        apdl_rule220,
+        apdl_rule221,
+        apdl_rule222,
+        apdl_rule223,
+        apdl_rule224,
+        apdl_rule225,
+        apdl_rule226,
+        apdl_rule227,
+        apdl_rule228,
+        apdl_rule229,
+        apdl_rule230,
+        apdl_rule231,
+        apdl_rule232,
+        apdl_rule233,
+        apdl_rule234,
+        apdl_rule235,
+        apdl_rule236,
+        apdl_rule237,
+        apdl_rule238,
+        apdl_rule239,
+        apdl_rule240,
+        apdl_rule241,
+        apdl_rule242,
+        apdl_rule243,
+        apdl_rule244,
+        apdl_rule245,
+        apdl_rule246,
+        apdl_rule247,
+        apdl_rule248,
+        apdl_rule249,
+        apdl_rule250,
+        apdl_rule251,
+        apdl_rule252,
+        apdl_rule253,
+        apdl_rule254,
+        apdl_rule255,
+        apdl_rule256,
+        apdl_rule257,
+        apdl_rule258,
+        apdl_rule259,
+        apdl_rule260,
+        apdl_rule261,
+        apdl_rule262,
+        apdl_rule263,
+        apdl_rule264,
+        apdl_rule265,
+        apdl_rule266,
+        apdl_rule267,
+        apdl_rule268,
+        apdl_rule269,
+        apdl_rule270,
+        apdl_rule271,
+        apdl_rule272,
+        apdl_rule273,
+        apdl_rule274,
+        apdl_rule275,
+        apdl_rule276,
+        apdl_rule277,
+        apdl_rule278,
+        apdl_rule279,
+        apdl_rule280,
+        apdl_rule281,
+        apdl_rule282,
+        apdl_rule283,
+        apdl_rule284,
+        apdl_rule285,
+        apdl_rule286,
+        apdl_rule287,
+        apdl_rule288,
+        apdl_rule289,
+        apdl_rule290,
+        apdl_rule291,
+        apdl_rule292,
+        apdl_rule293,
+        apdl_rule294,
+        apdl_rule295,
+        apdl_rule296,
+        apdl_rule297,
+        apdl_rule298,
+        apdl_rule299,
+        apdl_rule300,
+        apdl_rule301,
+        apdl_rule302,
+        apdl_rule303,
+        apdl_rule304,
+        apdl_rule305,
+        apdl_rule306,
+        apdl_rule307,
+        apdl_rule308,
+        apdl_rule309,
+        apdl_rule310,
+        apdl_rule311,
+        apdl_rule312,
+        apdl_rule313,
+        apdl_rule314,
+        apdl_rule315,
+        apdl_rule316,
+        apdl_rule317,
+        apdl_rule318,
+        apdl_rule319,
+        apdl_rule320,
+        apdl_rule321,
+        apdl_rule322,
+        apdl_rule323,
+        apdl_rule324,
+        apdl_rule325,
+        apdl_rule326,
+        apdl_rule327,
+        apdl_rule328,
+        apdl_rule329,
+        apdl_rule330,
+        apdl_rule331,
+        apdl_rule332,
+        apdl_rule333,
+        apdl_rule334,
+        apdl_rule335,
+        apdl_rule336,
+        apdl_rule337,
+        apdl_rule338,
+        apdl_rule339,
+        apdl_rule340,
+        apdl_rule341,
+        apdl_rule342,
+        apdl_rule343,
+        apdl_rule353,
+    ],
+    "0": [
+        apdl_rule359,
+    ],
+    "1": [
+        apdl_rule359,
+    ],
+    "2": [
+        apdl_rule359,
+    ],
+    "3": [
+        apdl_rule359,
+    ],
+    "4": [
+        apdl_rule359,
+    ],
+    "5": [
+        apdl_rule359,
+    ],
+    "6": [
+        apdl_rule359,
+    ],
+    "7": [
+        apdl_rule359,
+    ],
+    "8": [
+        apdl_rule359,
+    ],
+    "9": [
+        apdl_rule359,
+    ],
+    ":": [
+        apdl_rule0,
+    ],
+    ";": [
+        apdl_rule351,
+    ],
+    "=": [
+        apdl_rule347,
+    ],
+    "@": [
+        apdl_rule359,
+    ],
+    "A": [
+        apdl_rule359,
+    ],
+    "B": [
+        apdl_rule359,
+    ],
+    "C": [
+        apdl_rule359,
+    ],
+    "D": [
+        apdl_rule359,
+    ],
+    "E": [
+        apdl_rule359,
+    ],
+    "F": [
+        apdl_rule359,
+    ],
+    "G": [
+        apdl_rule359,
+    ],
+    "H": [
+        apdl_rule359,
+    ],
+    "I": [
+        apdl_rule359,
+    ],
+    "J": [
+        apdl_rule359,
+    ],
+    "K": [
+        apdl_rule359,
+    ],
+    "L": [
+        apdl_rule359,
+    ],
+    "M": [
+        apdl_rule359,
+    ],
+    "N": [
+        apdl_rule359,
+    ],
+    "O": [
+        apdl_rule359,
+    ],
+    "P": [
+        apdl_rule359,
+    ],
+    "Q": [
+        apdl_rule359,
+    ],
+    "R": [
+        apdl_rule359,
+    ],
+    "S": [
+        apdl_rule359,
+    ],
+    "T": [
+        apdl_rule359,
+    ],
+    "U": [
+        apdl_rule359,
+    ],
+    "V": [
+        apdl_rule359,
+    ],
+    "W": [
+        apdl_rule359,
+    ],
+    "X": [
+        apdl_rule359,
+    ],
+    "Y": [
+        apdl_rule359,
+    ],
+    "Z": [
+        apdl_rule359,
+    ],
+    "_": [
+        apdl_rule359,
+    ],
+    "a": [
+        apdl_rule359,
+    ],
+    "b": [
+        apdl_rule359,
+    ],
+    "c": [
+        apdl_rule359,
+    ],
+    "d": [
+        apdl_rule359,
+    ],
+    "e": [
+        apdl_rule359,
+    ],
+    "f": [
+        apdl_rule359,
+    ],
+    "g": [
+        apdl_rule359,
+    ],
+    "h": [
+        apdl_rule359,
+    ],
+    "i": [
+        apdl_rule359,
+    ],
+    "j": [
+        apdl_rule359,
+    ],
+    "k": [
+        apdl_rule359,
+    ],
+    "l": [
+        apdl_rule359,
+    ],
+    "m": [
+        apdl_rule359,
+    ],
+    "n": [
+        apdl_rule359,
+    ],
+    "o": [
+        apdl_rule359,
+    ],
+    "p": [
+        apdl_rule359,
+    ],
+    "q": [
+        apdl_rule359,
+    ],
+    "r": [
+        apdl_rule359,
+    ],
+    "s": [
+        apdl_rule359,
+    ],
+    "t": [
+        apdl_rule359,
+    ],
+    "u": [
+        apdl_rule359,
+    ],
+    "v": [
+        apdl_rule359,
+    ],
+    "w": [
+        apdl_rule359,
+    ],
+    "x": [
+        apdl_rule359,
+    ],
+    "y": [
+        apdl_rule359,
+    ],
+    "z": [
+        apdl_rule359,
+    ],
 }
 
 # x.rulesDictDict for apdl mode.

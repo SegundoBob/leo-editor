@@ -178,165 +178,362 @@ keywordsDictDict = {
 
 # Rules for verilog_main ruleset.
 
+
 def verilog_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
+
 
 def verilog_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//")
 
+
 def verilog_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
+
 
 def verilog_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="digit", seq="'d")
 
+
 def verilog_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="digit", seq="'h")
+
 
 def verilog_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="digit", seq="'b")
 
+
 def verilog_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="digit", seq="'o")
 
+
 def verilog_rule7(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def verilog_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def verilog_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def verilog_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def verilog_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def verilog_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def verilog_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def verilog_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def verilog_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def verilog_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def verilog_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def verilog_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def verilog_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def verilog_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def verilog_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def verilog_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def verilog_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for verilog_main ruleset.
 rulesDict1 = {
-    "!": [verilog_rule9,],
-    "\"": [verilog_rule2,],
-    "$": [verilog_rule23,],
-    "%": [verilog_rule16,],
-    "&": [verilog_rule17,],
-    "'": [verilog_rule3, verilog_rule4, verilog_rule5, verilog_rule6,],
-    "(": [verilog_rule7,],
-    "*": [verilog_rule13,],
-    "+": [verilog_rule10,],
-    "-": [verilog_rule11,],
-    "/": [verilog_rule0, verilog_rule1, verilog_rule12,],
-    "0": [verilog_rule23,],
-    "1": [verilog_rule23,],
-    "2": [verilog_rule23,],
-    "3": [verilog_rule23,],
-    "4": [verilog_rule23,],
-    "5": [verilog_rule23,],
-    "6": [verilog_rule23,],
-    "7": [verilog_rule23,],
-    "8": [verilog_rule23,],
-    "9": [verilog_rule23,],
-    "<": [verilog_rule15,],
-    "=": [verilog_rule8,],
-    ">": [verilog_rule14,],
-    "@": [verilog_rule23,],
-    "A": [verilog_rule23,],
-    "B": [verilog_rule23,],
-    "C": [verilog_rule23,],
-    "D": [verilog_rule23,],
-    "E": [verilog_rule23,],
-    "F": [verilog_rule23,],
-    "G": [verilog_rule23,],
-    "H": [verilog_rule23,],
-    "I": [verilog_rule23,],
-    "J": [verilog_rule23,],
-    "K": [verilog_rule23,],
-    "L": [verilog_rule23,],
-    "M": [verilog_rule23,],
-    "N": [verilog_rule23,],
-    "O": [verilog_rule23,],
-    "P": [verilog_rule23,],
-    "Q": [verilog_rule23,],
-    "R": [verilog_rule23,],
-    "S": [verilog_rule23,],
-    "T": [verilog_rule23,],
-    "U": [verilog_rule23,],
-    "V": [verilog_rule23,],
-    "W": [verilog_rule23,],
-    "X": [verilog_rule23,],
-    "Y": [verilog_rule23,],
-    "Z": [verilog_rule23,],
-    "^": [verilog_rule19,],
-    "_": [verilog_rule23,],
-    "`": [verilog_rule23,],
-    "a": [verilog_rule23,],
-    "b": [verilog_rule23,],
-    "c": [verilog_rule23,],
-    "d": [verilog_rule23,],
-    "e": [verilog_rule23,],
-    "f": [verilog_rule23,],
-    "g": [verilog_rule23,],
-    "h": [verilog_rule23,],
-    "i": [verilog_rule23,],
-    "j": [verilog_rule23,],
-    "k": [verilog_rule23,],
-    "l": [verilog_rule23,],
-    "m": [verilog_rule23,],
-    "n": [verilog_rule23,],
-    "o": [verilog_rule23,],
-    "p": [verilog_rule23,],
-    "q": [verilog_rule23,],
-    "r": [verilog_rule23,],
-    "s": [verilog_rule23,],
-    "t": [verilog_rule23,],
-    "u": [verilog_rule23,],
-    "v": [verilog_rule23,],
-    "w": [verilog_rule23,],
-    "x": [verilog_rule23,],
-    "y": [verilog_rule23,],
-    "z": [verilog_rule23,],
-    "{": [verilog_rule22,],
-    "|": [verilog_rule18,],
-    "}": [verilog_rule21,],
-    "~": [verilog_rule20,],
+    "!": [
+        verilog_rule9,
+    ],
+    "\"": [
+        verilog_rule2,
+    ],
+    "$": [
+        verilog_rule23,
+    ],
+    "%": [
+        verilog_rule16,
+    ],
+    "&": [
+        verilog_rule17,
+    ],
+    "'": [
+        verilog_rule3,
+        verilog_rule4,
+        verilog_rule5,
+        verilog_rule6,
+    ],
+    "(": [
+        verilog_rule7,
+    ],
+    "*": [
+        verilog_rule13,
+    ],
+    "+": [
+        verilog_rule10,
+    ],
+    "-": [
+        verilog_rule11,
+    ],
+    "/": [
+        verilog_rule0,
+        verilog_rule1,
+        verilog_rule12,
+    ],
+    "0": [
+        verilog_rule23,
+    ],
+    "1": [
+        verilog_rule23,
+    ],
+    "2": [
+        verilog_rule23,
+    ],
+    "3": [
+        verilog_rule23,
+    ],
+    "4": [
+        verilog_rule23,
+    ],
+    "5": [
+        verilog_rule23,
+    ],
+    "6": [
+        verilog_rule23,
+    ],
+    "7": [
+        verilog_rule23,
+    ],
+    "8": [
+        verilog_rule23,
+    ],
+    "9": [
+        verilog_rule23,
+    ],
+    "<": [
+        verilog_rule15,
+    ],
+    "=": [
+        verilog_rule8,
+    ],
+    ">": [
+        verilog_rule14,
+    ],
+    "@": [
+        verilog_rule23,
+    ],
+    "A": [
+        verilog_rule23,
+    ],
+    "B": [
+        verilog_rule23,
+    ],
+    "C": [
+        verilog_rule23,
+    ],
+    "D": [
+        verilog_rule23,
+    ],
+    "E": [
+        verilog_rule23,
+    ],
+    "F": [
+        verilog_rule23,
+    ],
+    "G": [
+        verilog_rule23,
+    ],
+    "H": [
+        verilog_rule23,
+    ],
+    "I": [
+        verilog_rule23,
+    ],
+    "J": [
+        verilog_rule23,
+    ],
+    "K": [
+        verilog_rule23,
+    ],
+    "L": [
+        verilog_rule23,
+    ],
+    "M": [
+        verilog_rule23,
+    ],
+    "N": [
+        verilog_rule23,
+    ],
+    "O": [
+        verilog_rule23,
+    ],
+    "P": [
+        verilog_rule23,
+    ],
+    "Q": [
+        verilog_rule23,
+    ],
+    "R": [
+        verilog_rule23,
+    ],
+    "S": [
+        verilog_rule23,
+    ],
+    "T": [
+        verilog_rule23,
+    ],
+    "U": [
+        verilog_rule23,
+    ],
+    "V": [
+        verilog_rule23,
+    ],
+    "W": [
+        verilog_rule23,
+    ],
+    "X": [
+        verilog_rule23,
+    ],
+    "Y": [
+        verilog_rule23,
+    ],
+    "Z": [
+        verilog_rule23,
+    ],
+    "^": [
+        verilog_rule19,
+    ],
+    "_": [
+        verilog_rule23,
+    ],
+    "`": [
+        verilog_rule23,
+    ],
+    "a": [
+        verilog_rule23,
+    ],
+    "b": [
+        verilog_rule23,
+    ],
+    "c": [
+        verilog_rule23,
+    ],
+    "d": [
+        verilog_rule23,
+    ],
+    "e": [
+        verilog_rule23,
+    ],
+    "f": [
+        verilog_rule23,
+    ],
+    "g": [
+        verilog_rule23,
+    ],
+    "h": [
+        verilog_rule23,
+    ],
+    "i": [
+        verilog_rule23,
+    ],
+    "j": [
+        verilog_rule23,
+    ],
+    "k": [
+        verilog_rule23,
+    ],
+    "l": [
+        verilog_rule23,
+    ],
+    "m": [
+        verilog_rule23,
+    ],
+    "n": [
+        verilog_rule23,
+    ],
+    "o": [
+        verilog_rule23,
+    ],
+    "p": [
+        verilog_rule23,
+    ],
+    "q": [
+        verilog_rule23,
+    ],
+    "r": [
+        verilog_rule23,
+    ],
+    "s": [
+        verilog_rule23,
+    ],
+    "t": [
+        verilog_rule23,
+    ],
+    "u": [
+        verilog_rule23,
+    ],
+    "v": [
+        verilog_rule23,
+    ],
+    "w": [
+        verilog_rule23,
+    ],
+    "x": [
+        verilog_rule23,
+    ],
+    "y": [
+        verilog_rule23,
+    ],
+    "z": [
+        verilog_rule23,
+    ],
+    "{": [
+        verilog_rule22,
+    ],
+    "|": [
+        verilog_rule18,
+    ],
+    "}": [
+        verilog_rule21,
+    ],
+    "~": [
+        verilog_rule20,
+    ],
 }
 
 # x.rulesDictDict for verilog mode.

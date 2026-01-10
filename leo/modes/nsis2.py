@@ -454,127 +454,292 @@ keywordsDictDict = {
 
 # Rules for nsis2_main ruleset.
 
+
 def nsis2_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
+
 
 def nsis2_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#")
 
+
 def nsis2_rule2(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$")
 
+
 def nsis2_rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="::",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="::", exclude_match=True)
+
 
 def nsis2_rule4(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", exclude_match=True)
+
 
 def nsis2_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          delegate="nsis2::nsis_literal")
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="nsis2::nsis_literal")
+
 
 def nsis2_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          delegate="nsis2::nsis_literal")
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="nsis2::nsis_literal")
+
 
 def nsis2_rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
-          delegate="nsis2::nsis_literal")
+    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", delegate="nsis2::nsis_literal")
+
 
 def nsis2_rule8(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for nsis2_main ruleset.
 rulesDict1 = {
-    "!": [nsis2_rule8,],
-    "\"": [nsis2_rule5,],
-    "#": [nsis2_rule1,],
-    "$": [nsis2_rule2, nsis2_rule8,],
-    "'": [nsis2_rule6,],
-    ".": [nsis2_rule8,],
-    "/": [nsis2_rule8,],
-    "0": [nsis2_rule8,],
-    "1": [nsis2_rule8,],
-    "2": [nsis2_rule8,],
-    "3": [nsis2_rule8,],
-    "4": [nsis2_rule8,],
-    "5": [nsis2_rule8,],
-    "6": [nsis2_rule8,],
-    "7": [nsis2_rule8,],
-    "8": [nsis2_rule8,],
-    "9": [nsis2_rule8,],
-    ":": [nsis2_rule3, nsis2_rule4,],
-    ";": [nsis2_rule0,],
-    "@": [nsis2_rule8,],
-    "A": [nsis2_rule8,],
-    "B": [nsis2_rule8,],
-    "C": [nsis2_rule8,],
-    "D": [nsis2_rule8,],
-    "E": [nsis2_rule8,],
-    "F": [nsis2_rule8,],
-    "G": [nsis2_rule8,],
-    "H": [nsis2_rule8,],
-    "I": [nsis2_rule8,],
-    "J": [nsis2_rule8,],
-    "K": [nsis2_rule8,],
-    "L": [nsis2_rule8,],
-    "M": [nsis2_rule8,],
-    "N": [nsis2_rule8,],
-    "O": [nsis2_rule8,],
-    "P": [nsis2_rule8,],
-    "Q": [nsis2_rule8,],
-    "R": [nsis2_rule8,],
-    "S": [nsis2_rule8,],
-    "T": [nsis2_rule8,],
-    "U": [nsis2_rule8,],
-    "V": [nsis2_rule8,],
-    "W": [nsis2_rule8,],
-    "X": [nsis2_rule8,],
-    "Y": [nsis2_rule8,],
-    "Z": [nsis2_rule8,],
-    "\\": [nsis2_rule8,],
-    "_": [nsis2_rule8,],
-    "`": [nsis2_rule7,],
-    "a": [nsis2_rule8,],
-    "b": [nsis2_rule8,],
-    "c": [nsis2_rule8,],
-    "d": [nsis2_rule8,],
-    "e": [nsis2_rule8,],
-    "f": [nsis2_rule8,],
-    "g": [nsis2_rule8,],
-    "h": [nsis2_rule8,],
-    "i": [nsis2_rule8,],
-    "j": [nsis2_rule8,],
-    "k": [nsis2_rule8,],
-    "l": [nsis2_rule8,],
-    "m": [nsis2_rule8,],
-    "n": [nsis2_rule8,],
-    "o": [nsis2_rule8,],
-    "p": [nsis2_rule8,],
-    "q": [nsis2_rule8,],
-    "r": [nsis2_rule8,],
-    "s": [nsis2_rule8,],
-    "t": [nsis2_rule8,],
-    "u": [nsis2_rule8,],
-    "v": [nsis2_rule8,],
-    "w": [nsis2_rule8,],
-    "x": [nsis2_rule8,],
-    "y": [nsis2_rule8,],
-    "z": [nsis2_rule8,],
-    "{": [nsis2_rule8,],
-    "}": [nsis2_rule8,],
+    "!": [
+        nsis2_rule8,
+    ],
+    "\"": [
+        nsis2_rule5,
+    ],
+    "#": [
+        nsis2_rule1,
+    ],
+    "$": [
+        nsis2_rule2,
+        nsis2_rule8,
+    ],
+    "'": [
+        nsis2_rule6,
+    ],
+    ".": [
+        nsis2_rule8,
+    ],
+    "/": [
+        nsis2_rule8,
+    ],
+    "0": [
+        nsis2_rule8,
+    ],
+    "1": [
+        nsis2_rule8,
+    ],
+    "2": [
+        nsis2_rule8,
+    ],
+    "3": [
+        nsis2_rule8,
+    ],
+    "4": [
+        nsis2_rule8,
+    ],
+    "5": [
+        nsis2_rule8,
+    ],
+    "6": [
+        nsis2_rule8,
+    ],
+    "7": [
+        nsis2_rule8,
+    ],
+    "8": [
+        nsis2_rule8,
+    ],
+    "9": [
+        nsis2_rule8,
+    ],
+    ":": [
+        nsis2_rule3,
+        nsis2_rule4,
+    ],
+    ";": [
+        nsis2_rule0,
+    ],
+    "@": [
+        nsis2_rule8,
+    ],
+    "A": [
+        nsis2_rule8,
+    ],
+    "B": [
+        nsis2_rule8,
+    ],
+    "C": [
+        nsis2_rule8,
+    ],
+    "D": [
+        nsis2_rule8,
+    ],
+    "E": [
+        nsis2_rule8,
+    ],
+    "F": [
+        nsis2_rule8,
+    ],
+    "G": [
+        nsis2_rule8,
+    ],
+    "H": [
+        nsis2_rule8,
+    ],
+    "I": [
+        nsis2_rule8,
+    ],
+    "J": [
+        nsis2_rule8,
+    ],
+    "K": [
+        nsis2_rule8,
+    ],
+    "L": [
+        nsis2_rule8,
+    ],
+    "M": [
+        nsis2_rule8,
+    ],
+    "N": [
+        nsis2_rule8,
+    ],
+    "O": [
+        nsis2_rule8,
+    ],
+    "P": [
+        nsis2_rule8,
+    ],
+    "Q": [
+        nsis2_rule8,
+    ],
+    "R": [
+        nsis2_rule8,
+    ],
+    "S": [
+        nsis2_rule8,
+    ],
+    "T": [
+        nsis2_rule8,
+    ],
+    "U": [
+        nsis2_rule8,
+    ],
+    "V": [
+        nsis2_rule8,
+    ],
+    "W": [
+        nsis2_rule8,
+    ],
+    "X": [
+        nsis2_rule8,
+    ],
+    "Y": [
+        nsis2_rule8,
+    ],
+    "Z": [
+        nsis2_rule8,
+    ],
+    "\\": [
+        nsis2_rule8,
+    ],
+    "_": [
+        nsis2_rule8,
+    ],
+    "`": [
+        nsis2_rule7,
+    ],
+    "a": [
+        nsis2_rule8,
+    ],
+    "b": [
+        nsis2_rule8,
+    ],
+    "c": [
+        nsis2_rule8,
+    ],
+    "d": [
+        nsis2_rule8,
+    ],
+    "e": [
+        nsis2_rule8,
+    ],
+    "f": [
+        nsis2_rule8,
+    ],
+    "g": [
+        nsis2_rule8,
+    ],
+    "h": [
+        nsis2_rule8,
+    ],
+    "i": [
+        nsis2_rule8,
+    ],
+    "j": [
+        nsis2_rule8,
+    ],
+    "k": [
+        nsis2_rule8,
+    ],
+    "l": [
+        nsis2_rule8,
+    ],
+    "m": [
+        nsis2_rule8,
+    ],
+    "n": [
+        nsis2_rule8,
+    ],
+    "o": [
+        nsis2_rule8,
+    ],
+    "p": [
+        nsis2_rule8,
+    ],
+    "q": [
+        nsis2_rule8,
+    ],
+    "r": [
+        nsis2_rule8,
+    ],
+    "s": [
+        nsis2_rule8,
+    ],
+    "t": [
+        nsis2_rule8,
+    ],
+    "u": [
+        nsis2_rule8,
+    ],
+    "v": [
+        nsis2_rule8,
+    ],
+    "w": [
+        nsis2_rule8,
+    ],
+    "x": [
+        nsis2_rule8,
+    ],
+    "y": [
+        nsis2_rule8,
+    ],
+    "z": [
+        nsis2_rule8,
+    ],
+    "{": [
+        nsis2_rule8,
+    ],
+    "}": [
+        nsis2_rule8,
+    ],
 }
 
 # Rules for nsis2_nsis_literal ruleset.
 
+
 def nsis2_rule9(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword3", pattern="$")
 
+
 # Rules dict for nsis2_nsis_literal ruleset.
 rulesDict2 = {
-    "$": [nsis2_rule9,],
+    "$": [
+        nsis2_rule9,
+    ],
 }
 
 # x.rulesDictDict for nsis2 mode.

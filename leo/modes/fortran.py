@@ -186,158 +186,338 @@ keywordsDictDict = {
 
 # Rules for fortran_main ruleset.
 
+
 def fortran_rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="c",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="c", at_line_start=True)
+
 
 def fortran_rule1(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="C",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="C", at_line_start=True)
+
 
 def fortran_rule2(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="!",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="!", at_line_start=True)
+
 
 def fortran_rule3(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="*",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="*", at_line_start=True)
+
 
 def fortran_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="!")
 
+
 def fortran_rule5(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment2", seq="D",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment2", seq="D", at_line_start=True)
+
 
 def fortran_rule6(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def fortran_rule7(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
+
 
 def fortran_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
 
+
 def fortran_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def fortran_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def fortran_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def fortran_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def fortran_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/=")
+
 
 def fortran_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="==")
 
+
 def fortran_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".lt.")
+
 
 def fortran_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".gt.")
 
+
 def fortran_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".eq.")
+
 
 def fortran_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".ne.")
 
+
 def fortran_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".le.")
+
 
 def fortran_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".ge.")
 
+
 def fortran_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".AND.")
+
 
 def fortran_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".OR.")
 
+
 def fortran_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for fortran_main ruleset.
 rulesDict1 = {
-    "!": [fortran_rule2, fortran_rule4,],
-    "\"": [fortran_rule6,],
-    "&": [fortran_rule12,],
-    "'": [fortran_rule7,],
-    "*": [fortran_rule3,],
-    ".": [fortran_rule15, fortran_rule16, fortran_rule17, fortran_rule18, fortran_rule19, fortran_rule20, fortran_rule21, fortran_rule22, fortran_rule23,],
-    "/": [fortran_rule13,],
-    "0": [fortran_rule23,],
-    "1": [fortran_rule23,],
-    "2": [fortran_rule23,],
-    "3": [fortran_rule23,],
-    "4": [fortran_rule23,],
-    "5": [fortran_rule23,],
-    "6": [fortran_rule23,],
-    "7": [fortran_rule23,],
-    "8": [fortran_rule23,],
-    "9": [fortran_rule23,],
-    "<": [fortran_rule8, fortran_rule11,],
-    "=": [fortran_rule14,],
-    ">": [fortran_rule9, fortran_rule10,],
-    "@": [fortran_rule23,],
-    "A": [fortran_rule23,],
-    "B": [fortran_rule23,],
-    "C": [fortran_rule1, fortran_rule23,],
-    "D": [fortran_rule5, fortran_rule23,],
-    "E": [fortran_rule23,],
-    "F": [fortran_rule23,],
-    "G": [fortran_rule23,],
-    "H": [fortran_rule23,],
-    "I": [fortran_rule23,],
-    "J": [fortran_rule23,],
-    "K": [fortran_rule23,],
-    "L": [fortran_rule23,],
-    "M": [fortran_rule23,],
-    "N": [fortran_rule23,],
-    "O": [fortran_rule23,],
-    "P": [fortran_rule23,],
-    "Q": [fortran_rule23,],
-    "R": [fortran_rule23,],
-    "S": [fortran_rule23,],
-    "T": [fortran_rule23,],
-    "U": [fortran_rule23,],
-    "V": [fortran_rule23,],
-    "W": [fortran_rule23,],
-    "X": [fortran_rule23,],
-    "Y": [fortran_rule23,],
-    "Z": [fortran_rule23,],
-    "a": [fortran_rule23,],
-    "b": [fortran_rule23,],
-    "c": [fortran_rule0, fortran_rule23,],
-    "d": [fortran_rule23,],
-    "e": [fortran_rule23,],
-    "f": [fortran_rule23,],
-    "g": [fortran_rule23,],
-    "h": [fortran_rule23,],
-    "i": [fortran_rule23,],
-    "j": [fortran_rule23,],
-    "k": [fortran_rule23,],
-    "l": [fortran_rule23,],
-    "m": [fortran_rule23,],
-    "n": [fortran_rule23,],
-    "o": [fortran_rule23,],
-    "p": [fortran_rule23,],
-    "q": [fortran_rule23,],
-    "r": [fortran_rule23,],
-    "s": [fortran_rule23,],
-    "t": [fortran_rule23,],
-    "u": [fortran_rule23,],
-    "v": [fortran_rule23,],
-    "w": [fortran_rule23,],
-    "x": [fortran_rule23,],
-    "y": [fortran_rule23,],
-    "z": [fortran_rule23,],
+    "!": [
+        fortran_rule2,
+        fortran_rule4,
+    ],
+    "\"": [
+        fortran_rule6,
+    ],
+    "&": [
+        fortran_rule12,
+    ],
+    "'": [
+        fortran_rule7,
+    ],
+    "*": [
+        fortran_rule3,
+    ],
+    ".": [
+        fortran_rule15,
+        fortran_rule16,
+        fortran_rule17,
+        fortran_rule18,
+        fortran_rule19,
+        fortran_rule20,
+        fortran_rule21,
+        fortran_rule22,
+        fortran_rule23,
+    ],
+    "/": [
+        fortran_rule13,
+    ],
+    "0": [
+        fortran_rule23,
+    ],
+    "1": [
+        fortran_rule23,
+    ],
+    "2": [
+        fortran_rule23,
+    ],
+    "3": [
+        fortran_rule23,
+    ],
+    "4": [
+        fortran_rule23,
+    ],
+    "5": [
+        fortran_rule23,
+    ],
+    "6": [
+        fortran_rule23,
+    ],
+    "7": [
+        fortran_rule23,
+    ],
+    "8": [
+        fortran_rule23,
+    ],
+    "9": [
+        fortran_rule23,
+    ],
+    "<": [
+        fortran_rule8,
+        fortran_rule11,
+    ],
+    "=": [
+        fortran_rule14,
+    ],
+    ">": [
+        fortran_rule9,
+        fortran_rule10,
+    ],
+    "@": [
+        fortran_rule23,
+    ],
+    "A": [
+        fortran_rule23,
+    ],
+    "B": [
+        fortran_rule23,
+    ],
+    "C": [
+        fortran_rule1,
+        fortran_rule23,
+    ],
+    "D": [
+        fortran_rule5,
+        fortran_rule23,
+    ],
+    "E": [
+        fortran_rule23,
+    ],
+    "F": [
+        fortran_rule23,
+    ],
+    "G": [
+        fortran_rule23,
+    ],
+    "H": [
+        fortran_rule23,
+    ],
+    "I": [
+        fortran_rule23,
+    ],
+    "J": [
+        fortran_rule23,
+    ],
+    "K": [
+        fortran_rule23,
+    ],
+    "L": [
+        fortran_rule23,
+    ],
+    "M": [
+        fortran_rule23,
+    ],
+    "N": [
+        fortran_rule23,
+    ],
+    "O": [
+        fortran_rule23,
+    ],
+    "P": [
+        fortran_rule23,
+    ],
+    "Q": [
+        fortran_rule23,
+    ],
+    "R": [
+        fortran_rule23,
+    ],
+    "S": [
+        fortran_rule23,
+    ],
+    "T": [
+        fortran_rule23,
+    ],
+    "U": [
+        fortran_rule23,
+    ],
+    "V": [
+        fortran_rule23,
+    ],
+    "W": [
+        fortran_rule23,
+    ],
+    "X": [
+        fortran_rule23,
+    ],
+    "Y": [
+        fortran_rule23,
+    ],
+    "Z": [
+        fortran_rule23,
+    ],
+    "a": [
+        fortran_rule23,
+    ],
+    "b": [
+        fortran_rule23,
+    ],
+    "c": [
+        fortran_rule0,
+        fortran_rule23,
+    ],
+    "d": [
+        fortran_rule23,
+    ],
+    "e": [
+        fortran_rule23,
+    ],
+    "f": [
+        fortran_rule23,
+    ],
+    "g": [
+        fortran_rule23,
+    ],
+    "h": [
+        fortran_rule23,
+    ],
+    "i": [
+        fortran_rule23,
+    ],
+    "j": [
+        fortran_rule23,
+    ],
+    "k": [
+        fortran_rule23,
+    ],
+    "l": [
+        fortran_rule23,
+    ],
+    "m": [
+        fortran_rule23,
+    ],
+    "n": [
+        fortran_rule23,
+    ],
+    "o": [
+        fortran_rule23,
+    ],
+    "p": [
+        fortran_rule23,
+    ],
+    "q": [
+        fortran_rule23,
+    ],
+    "r": [
+        fortran_rule23,
+    ],
+    "s": [
+        fortran_rule23,
+    ],
+    "t": [
+        fortran_rule23,
+    ],
+    "u": [
+        fortran_rule23,
+    ],
+    "v": [
+        fortran_rule23,
+    ],
+    "w": [
+        fortran_rule23,
+    ],
+    "x": [
+        fortran_rule23,
+    ],
+    "y": [
+        fortran_rule23,
+    ],
+    "z": [
+        fortran_rule23,
+    ],
 }
 
 # x.rulesDictDict for fortran mode.

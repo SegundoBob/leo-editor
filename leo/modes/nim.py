@@ -1,18 +1,19 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240202211600.1: * @file ../modes/nim.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240202211600.1: * @file ../modes/nim.py
+# @@language python
 # Leo colorizer control file for nim mode.
 # This file is in the public domain.
 
 import re
 import sys
 from leo.core import leoGlobals as g
+
 assert g
 
 v1, v2, junk1, junk2, junk3 = sys.version_info
 
-#@+<< Nim attributes dicts >>
-#@+node:ekr.20240202211600.2: ** << Nim attributes dicts >>
+# @+<< Nim attributes dicts >>
+# @+node:ekr.20240202211600.2: ** << Nim attributes dicts >>
 # Properties for nim mode.
 properties = {
     "indentNextLines": "\\s*[^#]{3,}:\\s*(#.*)?",
@@ -33,12 +34,12 @@ nim_main_attributes_dict = {
 attributesDictDict = {
     "nim_main": nim_main_attributes_dict,
 }
-#@-<< Nim attributes dicts >>
+# @-<< Nim attributes dicts >>
 
 # Keywords dict for nim_main ruleset.
 nim_main_keywords_dict = {
-    #@+<< Nim keywords >>
-    #@+node:ekr.20240203080736.1: ** << Nim keywords >> (keyword1)
+    # @+<< Nim keywords >>
+    # @+node:ekr.20240203080736.1: ** << Nim keywords >> (keyword1)
     # Some are reserved for future use.
     "addr": "keyword1",
     "and": "keyword1",
@@ -106,14 +107,12 @@ nim_main_keywords_dict = {
     "while": "keyword1",
     "xor": "keyword1",
     "yield": "keyword1",
-    #@-<< Nim keywords >>
-    #@+<< Nim type names >>
-    #@+node:ekr.20240203094444.1: ** << Nim type names >> (keyword1)
+    # @-<< Nim keywords >>
+    # @+<< Nim type names >>
+    # @+node:ekr.20240203094444.1: ** << Nim type names >> (keyword1)
     # Type names should be colorized like reserved words.
-
     # Defined in std/unicode.
     "Rune": "keyword1",
-
     # Defined in system module...
     "any": "keyword1",
     "array": "keyword1",
@@ -151,25 +150,23 @@ nim_main_keywords_dict = {
     "untyped": "keyword1",
     "varargs": "keyword1",
     "void": "keyword1",
-    #@-<< Nim type names >>
-    #@+<< Nim constants >>
-    #@+node:ekr.20240203093634.1: ** << Nim constants >> (keyword2)
+    # @-<< Nim type names >>
+    # @+<< Nim constants >>
+    # @+node:ekr.20240203093634.1: ** << Nim constants >> (keyword2)
     "false": "keyword2",
     "none": "keyword2",
     "true": "keyword2",
-    #@-<< Nim constants >>
+    # @-<< Nim constants >>
     # https://nim-lang.org/docs/system.html
-    #@+<< Nim upper-case constants >>
-    #@+node:ekr.20240203194744.1: ** << Nim upper-case constants >> (keyword3)
+    # @+<< Nim upper-case constants >>
+    # @+node:ekr.20240203194744.1: ** << Nim upper-case constants >> (keyword3)
     # Upper-case names are constants.
-
     "ATOMIC_ACQUIRE": "keyword3",
     "ATOMIC_ACQ_REL": "keyword3",
     "ATOMIC_CONSUME": "keyword3",
     "ATOMIC_RELAXED": "keyword3",
     "ATOMIC_RELEASE": "keyword3",
     "ATOMIC_SEQ_CST": "keyword3",
-
     "AccessViolationDefect": "keyword3",
     "AccessViolationError": "keyword3",
     "AllocStats": "keyword3",
@@ -179,29 +176,24 @@ nim_main_keywords_dict = {
     "AssertionError": "keyword3",
     "AtomMemModel": "keyword3",
     "AtomType": "keyword3",
-
     "BackwardsIndex": "keyword3",
     "BiggestFloat": "keyword3",
     "BiggestInt": "keyword3",
     "BiggestUInt": "keyword3",
     "ByteAddress": "keyword3",
-
     "CatchableError": "keyword3",
     "Channel": "keyword3",
     "CompileDate": "keyword3",
     "CompileTime": "keyword3",
-
     "DeadThreadDefect": "keyword3",
     "DeadThreadError": "keyword3",
     "Defect": "keyword3",
     "DivByZeroDefect": "keyword3",
     "DivByZeroError": "keyword3",
-
     "EOFError": "keyword3",
     "Endianness": "keyword3",
     "Exception": "keyword3",
     "ExecIOEffect": "keyword3",
-
     "FieldDefect": "keyword3",
     "FieldError": "keyword3",
     "File": "keyword3",
@@ -222,7 +214,6 @@ nim_main_keywords_dict = {
     "FloatingPointError": "keyword3",
     "ForLoopStmt": "keyword3",
     "ForeignCell": "keyword3",
-
     "GC_Strategy": "keyword3",
     "GC_collectZct": "keyword3",
     "GC_disable": "keyword3",
@@ -233,21 +224,15 @@ nim_main_keywords_dict = {
     "GC_getStatistics": "keyword3",
     "GC_ref": "keyword3",
     "GC_unref": "keyword3",
-
     "HSlice": "keyword3",
-
     "IOEffect": "keyword3",
     "IOError": "keyword3",
     "IndexDefect": "keyword3",
     "IndexError": "keyword3",
     "Inf": "keyword3",
-
     "JsRoot": "keyword3",
-
     "KeyError": "keyword3",
-
     "LibraryError": "keyword3",
-
     "NaN": "keyword3",
     "Natural": "keyword3",
     "NegInf": "keyword3",
@@ -258,7 +243,6 @@ nim_main_keywords_dict = {
     "NimNode": "keyword3",
     "NimPatch": "keyword3",
     "NimVersion": "keyword3",
-
     "OSError": "keyword3",
     "ObjectAssignmentDefect": "keyword3",
     "ObjectAssignmentError": "keyword3",
@@ -269,17 +253,14 @@ nim_main_keywords_dict = {
     "OutOfMemError": "keyword3",
     "OverflowDefect": "keyword3",
     "OverflowError": "keyword3",
-
     "PFloat32": "keyword3",
     "PFloat64": "keyword3",
     "PFrame": "keyword3",
     "PInt32": "keyword3",
     "PInt64": "keyword3",
     "Positive": "keyword3",
-
     "QuitFailure": "keyword3",
     "QuitSuccess": "keyword3",
-
     "RangeDefect": "keyword3",
     "RangeError": "keyword3",
     "ReadIOEffect": "keyword3",
@@ -289,7 +270,6 @@ nim_main_keywords_dict = {
     "RootEffect": "keyword3",
     "RootObj": "keyword3",
     "RootRef": "keyword3",
-
     "Slice": "keyword3",
     "SomeFloat": "keyword3",
     "SomeInteger": "keyword3",
@@ -300,26 +280,22 @@ nim_main_keywords_dict = {
     "StackOverflowDefect": "keyword3",
     "StackOverflowError": "keyword3",
     "StackTraceEntry": "keyword3",
-
     "TFrame": "keyword3",
     "TaintedString": "keyword3",
     "Thread": "keyword4",
     "TimeEffect": "keyword3",
     "TypeOfMode": "keyword3",
-
     "UncheckedArray": "keyword3",
     "Utf16Char": "keyword3",
     "ValueError": "keyword3",
-
     "WideCString": "keyword3",
     "WideCStringObj": "keyword3",
     "WriteIOEffect": "keyword3",
-    #@-<< Nim upper-case constants >>
-    #@+<< Nim lower-case functions >>
-    #@+node:ekr.20240203080936.1: ** << Nim lower-case functions >> (keyword4)
+    # @-<< Nim upper-case constants >>
+    # @+<< Nim lower-case functions >>
+    # @+node:ekr.20240203080936.1: ** << Nim lower-case functions >> (keyword4)
     # From the unitcode module.
     "runes": "keyword4",
-
     # From the system module...
     "abs": "keyword4",
     "add": "keyword4",
@@ -371,7 +347,6 @@ nim_main_keywords_dict = {
     "atomicTestAndSet": "keyword4",
     "atomicThreadFence": "keyword4",
     "atomicXorFetch": "keyword4",
-
     "capacity": "keyword4",
     "card": "keyword4",
     "cas": "keyword4",
@@ -412,7 +387,6 @@ nim_main_keywords_dict = {
     "culonglong": "keyword4",
     "currentSourcePath": "keyword4",
     "cushort": "keyword4",
-
     "dealloc": "keyword4",
     "deallocCStringArray": "keyword4",
     "deallocHeap": "keyword4",
@@ -433,14 +407,12 @@ nim_main_keywords_dict = {
     "doAssert": "keyword4",
     "doAssertRaises": "keyword4",
     "dumpAllocstats": "keyword4",
-
     "echo": "keyword4",
     "endOfFile": "keyword4",
     "ensureMove": "keyword4",
     "equalMem": "keyword4",
     "errorMessageWriter": "keyword4",
     "excl": "keyword4",
-
     "failedAssertImpl": "keyword4",
     "fence": "keyword4",
     "fieldPairs": "keyword4",
@@ -451,7 +423,6 @@ nim_main_keywords_dict = {
     "formatErrorIndexBound": "keyword4",
     "formatFieldDefect": "keyword4",
     "freeShared": "keyword4",
-
     "gcInvariant": "keyword4",
     "getAllocStats": "keyword4",
     "getCurrentException": "keyword4",
@@ -477,12 +448,10 @@ nim_main_keywords_dict = {
     "globalRaiseHook": "keyword4",
     "gorge": "keyword4",
     "gorgeEx": "keyword4",
-
     "handle": "keyword4",
     "high": "keyword4",
     "hostCPU": "keyword4",
     "hostOS": "keyword4",
-
     "inc": "keyword4",
     "incl": "keyword4",
     "insert": "keyword4",
@@ -493,24 +462,20 @@ nim_main_keywords_dict = {
     "isNotForeign": "keyword4",
     "items": "keyword4",
     "iterToProc": "keyword4",
-
     "joinThread": "keyword4",
     "joinThreads": "keyword4",
-
     "len": "keyword4",
     "likely": "keyword4",
     "lines": "keyword4",
     "localRaiseHook": "keyword4",
     "locals": "keyword4",
     "low": "keyword4",
-
     "max": "keyword4",
     "min": "keyword4",
     "mitems": "keyword4",
     "move": "keyword4",
     "moveMem": "keyword4",
     "mpairs": "keyword4",
-
     "new": "keyword4",
     "newException": "keyword4",
     "newSeq": "keyword4",
@@ -523,7 +488,6 @@ nim_main_keywords_dict = {
     "nimThreadDestructionHandlers": "keyword4",
     "nimThreadProcWrapperBody": "keyword4",
     "nimvm": "keyword4",
-
     "off": "keyword4",
     "offsetOf": "keyword4",
     "on": "keyword4",
@@ -534,7 +498,6 @@ nim_main_keywords_dict = {
     "open": "keyword4",
     "ord": "keyword4",
     "outOfMemHook": "keyword4",
-
     "pairs": "keyword4",
     "peek": "keyword4",
     "pinToCpu": "keyword4",
@@ -546,9 +509,7 @@ nim_main_keywords_dict = {
     "programResult": "keyword4",
     "protect": "keyword4",
     "pushGcFrame": "keyword4",
-
     "quit": "keyword4",
-
     "raiseAssert": "keyword4",
     "rangeCheck": "keyword4",
     "rawEnv": "keyword4",
@@ -579,7 +540,6 @@ nim_main_keywords_dict = {
     "resizeShared": "keyword4",
     "runnableExamples": "keyword4",
     "running": "keyword4",
-
     "send": "keyword4",
     "setControlCHook": "keyword4",
     "setCurrentException": "keyword4",
@@ -605,7 +565,6 @@ nim_main_keywords_dict = {
     "substr": "keyword4",
     "succ": "keyword4",
     "swap": "keyword4",
-
     "tearDownForeignThreadGc": "keyword4",
     "toBiggestFloat": "keyword4",
     "toBiggestInt": "keyword4",
@@ -616,16 +575,13 @@ nim_main_keywords_dict = {
     "tryRecv": "keyword4",
     "trySend": "keyword4",
     "typeof": "keyword4",
-
     "unhandledExceptionHook": "keyword4",
     "unlikely": "keyword4",
     "unown": "keyword4",
     "unsafeAddr": "keyword4",
     "unsafeNew": "keyword4",
     "unsetControlCHook": "keyword4",
-
     "varargsLen": "keyword4",
-
     "wasMoved": "keyword4",
     "write": "keyword4",
     "writeBuffer": "keyword4",
@@ -634,10 +590,9 @@ nim_main_keywords_dict = {
     "writeFile": "keyword4",
     "writeLine": "keyword4",
     "writeStackTrace": "keyword4",
-
     "zeroDefault": "keyword4",
     "zeroMem": "keyword4",
-    #@-<< Nim lower-case functions >>
+    # @-<< Nim lower-case functions >>
 }
 
 # Dictionary of keywords dictionaries for nim mode.
@@ -645,22 +600,26 @@ keywordsDictDict = {
     "nim_main": nim_main_keywords_dict,
 }
 
-#@+<< Nim rules >>
-#@+node:ekr.20240202211600.4: ** << Nim rules >>
-#@+others
-#@+node:ekr.20240207062639.1: *3* nim_character_literal
+
+# @+<< Nim rules >>
+# @+node:ekr.20240202211600.4: ** << Nim rules >>
+# @+others
+# @+node:ekr.20240207062639.1: *3* nim_character_literal
 def nim_character_literal(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
-#@+node:ekr.20240202211600.5: *3* nim_comment (comment1)
+
+
+# @+node:ekr.20240202211600.5: *3* nim_comment (comment1)
 def nim_comment(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
-#@+node:ekr.20240208152632.8: *3* nim_unusual_single_quote (keyword1)
+
+
+# @+node:ekr.20240208152632.8: *3* nim_unusual_single_quote (keyword1)
 # Note: The suffix comes *before* the single quote.
-lower_suffixes = [
-    z for z in ('b,e,f,o,x,i,i8,i16,i32,i64,u,u8,u16,u32,u64').split(',')
-]
+lower_suffixes = [z for z in ('b,e,f,o,x,i,i8,i16,i32,i64,u,u8,u16,u32,u64').split(',')]
 suffixes = tuple(lower_suffixes + [z.upper() for z in lower_suffixes])
 word_pattern = re.compile(r'\b(\w+)')
+
 
 def nim_unusual_single_quote(colorer, s, i):
     """
@@ -708,42 +667,58 @@ def nim_unusual_single_quote(colorer, s, i):
     word = m.group(0)
     colorer.colorRangeWithTag(s, i + 1, i + 1 + len(word), tag='literal1')
     return 1 + len(word)
-#@+node:ekr.20240202211600.26: *3* nim_keyword (keyword1)
+
+
+# @+node:ekr.20240202211600.26: *3* nim_keyword (keyword1)
 def nim_keyword(colorer, s, i):
     return colorer.match_keywords(s, i)
-#@+node:ekr.20240206040507.1: *3* nim_multi_line_comment (comment2)
-def nim_multi_line_comment(colorer, s, i):
 
-    return colorer.match_span(s, i,
-        kind="comment2", begin="#[", end="]#", nested=True)
-#@+node:ekr.20240206033640.1: *3* nim_number (do-nothing)
+
+# @+node:ekr.20240206040507.1: *3* nim_multi_line_comment (comment2)
+def nim_multi_line_comment(colorer, s, i):
+    return colorer.match_span(s, i, kind="comment2", begin="#[", end="]#", nested=True)
+
+
+# @+node:ekr.20240206033640.1: *3* nim_number (do-nothing)
 # Only an approximation.
 # Underscores are allowed in numbers.
 number_regex = re.compile(r'([0-9_]+)(b|B|d|D|f|F|i|I|u|U|x|X|32|64)*')
 
+
 def nim_number(colorer, s, i):
     # return colorer.match_compiled_regexp(s, i, 'literal2', regexp=number_regex)
     return 0
-#@+node:ekr.20240206051847.1: *3* nim_op (do-nothing)
+
+
+# @+node:ekr.20240206051847.1: *3* nim_op (do-nothing)
 def nim_op(colorer, s: str, i: int) -> int:
     # Don't color ordinary ops.
     return 0
-#@+node:ekr.20240202211600.8: *3* nim_string (literal1)
+
+
+# @+node:ekr.20240202211600.8: *3* nim_string (literal1)
 def nim_string(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
-#@+node:ekr.20240202211600.6: *3* nim_triple_quote (literal2)
+
+
+# @+node:ekr.20240202211600.6: *3* nim_triple_quote (literal2)
 def nim_triple_quote(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="\"\"\"", end="\"\"\"")
-#@+node:ekr.20240206062831.1: *3* nim_unary (do-nothing
+
+
+# @+node:ekr.20240206062831.1: *3* nim_unary (do-nothing
 unary_pattern = re.compile(r'(\+|\-)')
+
 
 def nim_unary(colorer, s, i):
     # return colorer.match_seq_regexp(s, i, kind="keyword1", regexp=unary_pattern)
     return 0
-#@-others
-#@-<< Nim rules >>
-#@+<< nim_rules_dict >>
-#@+node:ekr.20240202211600.29: ** << nim_rules_dict >>
+
+
+# @-others
+# @-<< Nim rules >>
+# @+<< nim_rules_dict >>
+# @+node:ekr.20240202211600.29: ** << nim_rules_dict >>
 # Rules dict for nim_main ruleset.
 nim_rules_dict = {
     '"': [nim_triple_quote, nim_string],
@@ -830,7 +805,7 @@ nim_rules_dict = {
     "|": [nim_op],
     "~": [nim_op],
 }
-#@-<< nim_rules_dict >>
+# @-<< nim_rules_dict >>
 
 rulesDictDict = {
     "nim_main": nim_rules_dict,
@@ -838,4 +813,4 @@ rulesDictDict = {
 
 # Import dict for nim mode.
 importDict = {}
-#@-leo
+# @-leo

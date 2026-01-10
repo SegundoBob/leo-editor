@@ -31,6 +31,7 @@ keywordsDictDict = {
 
 # Rules dict for plain_main ruleset.
 if 1:
+
     def plain_rule0(colorer, s, i):
         # print('plain_rule0',s[i:i+10])
         return colorer.match_eol_span(s, i, kind="null")
@@ -39,8 +40,10 @@ if 1:
     class RulesDict:
         def __init__(self):
             self.d = {}
+
         def get(self, ch, default_val):
             return self.d.get(ch) or [plain_rule0]
+
         def __setitem__(self, key, item):
             self.d[key] = item
 

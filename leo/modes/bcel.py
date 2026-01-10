@@ -265,121 +265,276 @@ keywordsDictDict = {
 
 # Rules for bcel_main ruleset.
 
+
 def bcel_rule0(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment1", seq="/**/")
 
+
 def bcel_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/",
-          delegate="bcel::javadoc")
+    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="bcel::javadoc")
+
 
 def bcel_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def bcel_rule3(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//")
 
+
 def bcel_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def bcel_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def bcel_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="%")
 
+
 def bcel_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword2", pattern="#")
 
+
 def bcel_rule8(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+
 
 def bcel_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def bcel_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def bcel_rule11(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for bcel_main ruleset.
 rulesDict1 = {
-    "\"": [bcel_rule5,],
-    "#": [bcel_rule7,],
-    "%": [bcel_rule6,],
-    "'": [bcel_rule4,],
-    "/": [bcel_rule0, bcel_rule1, bcel_rule2, bcel_rule3,],
-    "0": [bcel_rule11,],
-    "1": [bcel_rule11,],
-    "2": [bcel_rule11,],
-    "3": [bcel_rule11,],
-    "4": [bcel_rule11,],
-    "5": [bcel_rule11,],
-    "6": [bcel_rule11,],
-    "7": [bcel_rule11,],
-    "8": [bcel_rule11,],
-    "9": [bcel_rule11,],
-    ":": [bcel_rule8,],
-    "<": [bcel_rule10,],
-    ">": [bcel_rule9,],
-    "@": [bcel_rule11,],
-    "A": [bcel_rule11,],
-    "B": [bcel_rule11,],
-    "C": [bcel_rule11,],
-    "D": [bcel_rule11,],
-    "E": [bcel_rule11,],
-    "F": [bcel_rule11,],
-    "G": [bcel_rule11,],
-    "H": [bcel_rule11,],
-    "I": [bcel_rule11,],
-    "J": [bcel_rule11,],
-    "K": [bcel_rule11,],
-    "L": [bcel_rule11,],
-    "M": [bcel_rule11,],
-    "N": [bcel_rule11,],
-    "O": [bcel_rule11,],
-    "P": [bcel_rule11,],
-    "Q": [bcel_rule11,],
-    "R": [bcel_rule11,],
-    "S": [bcel_rule11,],
-    "T": [bcel_rule11,],
-    "U": [bcel_rule11,],
-    "V": [bcel_rule11,],
-    "W": [bcel_rule11,],
-    "X": [bcel_rule11,],
-    "Y": [bcel_rule11,],
-    "Z": [bcel_rule11,],
-    "_": [bcel_rule11,],
-    "a": [bcel_rule11,],
-    "b": [bcel_rule11,],
-    "c": [bcel_rule11,],
-    "d": [bcel_rule11,],
-    "e": [bcel_rule11,],
-    "f": [bcel_rule11,],
-    "g": [bcel_rule11,],
-    "h": [bcel_rule11,],
-    "i": [bcel_rule11,],
-    "j": [bcel_rule11,],
-    "k": [bcel_rule11,],
-    "l": [bcel_rule11,],
-    "m": [bcel_rule11,],
-    "n": [bcel_rule11,],
-    "o": [bcel_rule11,],
-    "p": [bcel_rule11,],
-    "q": [bcel_rule11,],
-    "r": [bcel_rule11,],
-    "s": [bcel_rule11,],
-    "t": [bcel_rule11,],
-    "u": [bcel_rule11,],
-    "v": [bcel_rule11,],
-    "w": [bcel_rule11,],
-    "x": [bcel_rule11,],
-    "y": [bcel_rule11,],
-    "z": [bcel_rule11,],
+    "\"": [
+        bcel_rule5,
+    ],
+    "#": [
+        bcel_rule7,
+    ],
+    "%": [
+        bcel_rule6,
+    ],
+    "'": [
+        bcel_rule4,
+    ],
+    "/": [
+        bcel_rule0,
+        bcel_rule1,
+        bcel_rule2,
+        bcel_rule3,
+    ],
+    "0": [
+        bcel_rule11,
+    ],
+    "1": [
+        bcel_rule11,
+    ],
+    "2": [
+        bcel_rule11,
+    ],
+    "3": [
+        bcel_rule11,
+    ],
+    "4": [
+        bcel_rule11,
+    ],
+    "5": [
+        bcel_rule11,
+    ],
+    "6": [
+        bcel_rule11,
+    ],
+    "7": [
+        bcel_rule11,
+    ],
+    "8": [
+        bcel_rule11,
+    ],
+    "9": [
+        bcel_rule11,
+    ],
+    ":": [
+        bcel_rule8,
+    ],
+    "<": [
+        bcel_rule10,
+    ],
+    ">": [
+        bcel_rule9,
+    ],
+    "@": [
+        bcel_rule11,
+    ],
+    "A": [
+        bcel_rule11,
+    ],
+    "B": [
+        bcel_rule11,
+    ],
+    "C": [
+        bcel_rule11,
+    ],
+    "D": [
+        bcel_rule11,
+    ],
+    "E": [
+        bcel_rule11,
+    ],
+    "F": [
+        bcel_rule11,
+    ],
+    "G": [
+        bcel_rule11,
+    ],
+    "H": [
+        bcel_rule11,
+    ],
+    "I": [
+        bcel_rule11,
+    ],
+    "J": [
+        bcel_rule11,
+    ],
+    "K": [
+        bcel_rule11,
+    ],
+    "L": [
+        bcel_rule11,
+    ],
+    "M": [
+        bcel_rule11,
+    ],
+    "N": [
+        bcel_rule11,
+    ],
+    "O": [
+        bcel_rule11,
+    ],
+    "P": [
+        bcel_rule11,
+    ],
+    "Q": [
+        bcel_rule11,
+    ],
+    "R": [
+        bcel_rule11,
+    ],
+    "S": [
+        bcel_rule11,
+    ],
+    "T": [
+        bcel_rule11,
+    ],
+    "U": [
+        bcel_rule11,
+    ],
+    "V": [
+        bcel_rule11,
+    ],
+    "W": [
+        bcel_rule11,
+    ],
+    "X": [
+        bcel_rule11,
+    ],
+    "Y": [
+        bcel_rule11,
+    ],
+    "Z": [
+        bcel_rule11,
+    ],
+    "_": [
+        bcel_rule11,
+    ],
+    "a": [
+        bcel_rule11,
+    ],
+    "b": [
+        bcel_rule11,
+    ],
+    "c": [
+        bcel_rule11,
+    ],
+    "d": [
+        bcel_rule11,
+    ],
+    "e": [
+        bcel_rule11,
+    ],
+    "f": [
+        bcel_rule11,
+    ],
+    "g": [
+        bcel_rule11,
+    ],
+    "h": [
+        bcel_rule11,
+    ],
+    "i": [
+        bcel_rule11,
+    ],
+    "j": [
+        bcel_rule11,
+    ],
+    "k": [
+        bcel_rule11,
+    ],
+    "l": [
+        bcel_rule11,
+    ],
+    "m": [
+        bcel_rule11,
+    ],
+    "n": [
+        bcel_rule11,
+    ],
+    "o": [
+        bcel_rule11,
+    ],
+    "p": [
+        bcel_rule11,
+    ],
+    "q": [
+        bcel_rule11,
+    ],
+    "r": [
+        bcel_rule11,
+    ],
+    "s": [
+        bcel_rule11,
+    ],
+    "t": [
+        bcel_rule11,
+    ],
+    "u": [
+        bcel_rule11,
+    ],
+    "v": [
+        bcel_rule11,
+    ],
+    "w": [
+        bcel_rule11,
+    ],
+    "x": [
+        bcel_rule11,
+    ],
+    "y": [
+        bcel_rule11,
+    ],
+    "z": [
+        bcel_rule11,
+    ],
 }
 
 # x.rulesDictDict for bcel mode.

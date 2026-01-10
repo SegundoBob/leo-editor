@@ -673,206 +673,423 @@ keywordsDictDict = {
 
 # Rules for actionscript_main ruleset.
 
+
 def actionscript_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def actionscript_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def actionscript_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 # Used to color "("
 def actionscript_rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def actionscript_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//")
+
 
 # Used to color ")".  2011/05/22: change kind to "operator". Also changed actionscript.xml.
 def actionscript_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=")")
 
+
 # Used to color "(".  2011/05/22: change kind to "operator". Also changed actionscript.xml.
 def actionscript_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="(")
 
+
 def actionscript_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def actionscript_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
+
 def actionscript_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def actionscript_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
 
+
 def actionscript_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def actionscript_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def actionscript_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def actionscript_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def actionscript_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def actionscript_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def actionscript_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
+
 
 def actionscript_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def actionscript_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def actionscript_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def actionscript_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def actionscript_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
 
+
 def actionscript_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def actionscript_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def actionscript_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
+
 
 def actionscript_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=";")
 
+
 def actionscript_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
+
 
 def actionscript_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
 
+
 def actionscript_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
 
+
 def actionscript_rule30(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+
 
 def actionscript_rule31(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def actionscript_rule32(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for actionscript_main ruleset.
 rulesDict1 = {
-    "!": [actionscript_rule8,],
-    "\"": [actionscript_rule1,],
-    "#": [actionscript_rule32,],
-    "%": [actionscript_rule17,],
-    "&": [actionscript_rule18,],
-    "'": [actionscript_rule2,],
-    "(": [actionscript_rule3, actionscript_rule6,],
-    ")": [actionscript_rule5,],
-    "*": [actionscript_rule14,],
-    "+": [actionscript_rule11,],
-    ",": [actionscript_rule25,],
-    "-": [actionscript_rule12,],
-    ".": [actionscript_rule22,],
-    "/": [actionscript_rule0, actionscript_rule4, actionscript_rule13,],
-    "0": [actionscript_rule32,],
-    "1": [actionscript_rule32,],
-    "2": [actionscript_rule32,],
-    "3": [actionscript_rule32,],
-    "4": [actionscript_rule32,],
-    "5": [actionscript_rule32,],
-    "6": [actionscript_rule32,],
-    "7": [actionscript_rule32,],
-    "8": [actionscript_rule32,],
-    "9": [actionscript_rule32,],
-    ":": [actionscript_rule30, actionscript_rule31,],
-    ";": [actionscript_rule26,],
-    "<": [actionscript_rule10, actionscript_rule16,],
-    "=": [actionscript_rule7,],
-    ">": [actionscript_rule9, actionscript_rule15,],
-    "?": [actionscript_rule29,],
-    "@": [actionscript_rule32,],
-    "A": [actionscript_rule32,],
-    "B": [actionscript_rule32,],
-    "C": [actionscript_rule32,],
-    "D": [actionscript_rule32,],
-    "E": [actionscript_rule32,],
-    "F": [actionscript_rule32,],
-    "G": [actionscript_rule32,],
-    "H": [actionscript_rule32,],
-    "I": [actionscript_rule32,],
-    "J": [actionscript_rule32,],
-    "K": [actionscript_rule32,],
-    "L": [actionscript_rule32,],
-    "M": [actionscript_rule32,],
-    "N": [actionscript_rule32,],
-    "O": [actionscript_rule32,],
-    "P": [actionscript_rule32,],
-    "Q": [actionscript_rule32,],
-    "R": [actionscript_rule32,],
-    "S": [actionscript_rule32,],
-    "T": [actionscript_rule32,],
-    "U": [actionscript_rule32,],
-    "V": [actionscript_rule32,],
-    "W": [actionscript_rule32,],
-    "X": [actionscript_rule32,],
-    "Y": [actionscript_rule32,],
-    "Z": [actionscript_rule32,],
-    "[": [actionscript_rule28,],
-    "]": [actionscript_rule27,],
-    "^": [actionscript_rule20,],
-    "_": [actionscript_rule32,],
-    "a": [actionscript_rule32,],
-    "b": [actionscript_rule32,],
-    "c": [actionscript_rule32,],
-    "d": [actionscript_rule32,],
-    "e": [actionscript_rule32,],
-    "f": [actionscript_rule32,],
-    "g": [actionscript_rule32,],
-    "h": [actionscript_rule32,],
-    "i": [actionscript_rule32,],
-    "j": [actionscript_rule32,],
-    "k": [actionscript_rule32,],
-    "l": [actionscript_rule32,],
-    "m": [actionscript_rule32,],
-    "n": [actionscript_rule32,],
-    "o": [actionscript_rule32,],
-    "p": [actionscript_rule32,],
-    "q": [actionscript_rule32,],
-    "r": [actionscript_rule32,],
-    "s": [actionscript_rule32,],
-    "t": [actionscript_rule32,],
-    "u": [actionscript_rule32,],
-    "v": [actionscript_rule32,],
-    "w": [actionscript_rule32,],
-    "x": [actionscript_rule32,],
-    "y": [actionscript_rule32,],
-    "z": [actionscript_rule32,],
-    "{": [actionscript_rule24,],
-    "|": [actionscript_rule19,],
-    "}": [actionscript_rule23,],
-    "~": [actionscript_rule21,],
+    "!": [
+        actionscript_rule8,
+    ],
+    "\"": [
+        actionscript_rule1,
+    ],
+    "#": [
+        actionscript_rule32,
+    ],
+    "%": [
+        actionscript_rule17,
+    ],
+    "&": [
+        actionscript_rule18,
+    ],
+    "'": [
+        actionscript_rule2,
+    ],
+    "(": [
+        actionscript_rule3,
+        actionscript_rule6,
+    ],
+    ")": [
+        actionscript_rule5,
+    ],
+    "*": [
+        actionscript_rule14,
+    ],
+    "+": [
+        actionscript_rule11,
+    ],
+    ",": [
+        actionscript_rule25,
+    ],
+    "-": [
+        actionscript_rule12,
+    ],
+    ".": [
+        actionscript_rule22,
+    ],
+    "/": [
+        actionscript_rule0,
+        actionscript_rule4,
+        actionscript_rule13,
+    ],
+    "0": [
+        actionscript_rule32,
+    ],
+    "1": [
+        actionscript_rule32,
+    ],
+    "2": [
+        actionscript_rule32,
+    ],
+    "3": [
+        actionscript_rule32,
+    ],
+    "4": [
+        actionscript_rule32,
+    ],
+    "5": [
+        actionscript_rule32,
+    ],
+    "6": [
+        actionscript_rule32,
+    ],
+    "7": [
+        actionscript_rule32,
+    ],
+    "8": [
+        actionscript_rule32,
+    ],
+    "9": [
+        actionscript_rule32,
+    ],
+    ":": [
+        actionscript_rule30,
+        actionscript_rule31,
+    ],
+    ";": [
+        actionscript_rule26,
+    ],
+    "<": [
+        actionscript_rule10,
+        actionscript_rule16,
+    ],
+    "=": [
+        actionscript_rule7,
+    ],
+    ">": [
+        actionscript_rule9,
+        actionscript_rule15,
+    ],
+    "?": [
+        actionscript_rule29,
+    ],
+    "@": [
+        actionscript_rule32,
+    ],
+    "A": [
+        actionscript_rule32,
+    ],
+    "B": [
+        actionscript_rule32,
+    ],
+    "C": [
+        actionscript_rule32,
+    ],
+    "D": [
+        actionscript_rule32,
+    ],
+    "E": [
+        actionscript_rule32,
+    ],
+    "F": [
+        actionscript_rule32,
+    ],
+    "G": [
+        actionscript_rule32,
+    ],
+    "H": [
+        actionscript_rule32,
+    ],
+    "I": [
+        actionscript_rule32,
+    ],
+    "J": [
+        actionscript_rule32,
+    ],
+    "K": [
+        actionscript_rule32,
+    ],
+    "L": [
+        actionscript_rule32,
+    ],
+    "M": [
+        actionscript_rule32,
+    ],
+    "N": [
+        actionscript_rule32,
+    ],
+    "O": [
+        actionscript_rule32,
+    ],
+    "P": [
+        actionscript_rule32,
+    ],
+    "Q": [
+        actionscript_rule32,
+    ],
+    "R": [
+        actionscript_rule32,
+    ],
+    "S": [
+        actionscript_rule32,
+    ],
+    "T": [
+        actionscript_rule32,
+    ],
+    "U": [
+        actionscript_rule32,
+    ],
+    "V": [
+        actionscript_rule32,
+    ],
+    "W": [
+        actionscript_rule32,
+    ],
+    "X": [
+        actionscript_rule32,
+    ],
+    "Y": [
+        actionscript_rule32,
+    ],
+    "Z": [
+        actionscript_rule32,
+    ],
+    "[": [
+        actionscript_rule28,
+    ],
+    "]": [
+        actionscript_rule27,
+    ],
+    "^": [
+        actionscript_rule20,
+    ],
+    "_": [
+        actionscript_rule32,
+    ],
+    "a": [
+        actionscript_rule32,
+    ],
+    "b": [
+        actionscript_rule32,
+    ],
+    "c": [
+        actionscript_rule32,
+    ],
+    "d": [
+        actionscript_rule32,
+    ],
+    "e": [
+        actionscript_rule32,
+    ],
+    "f": [
+        actionscript_rule32,
+    ],
+    "g": [
+        actionscript_rule32,
+    ],
+    "h": [
+        actionscript_rule32,
+    ],
+    "i": [
+        actionscript_rule32,
+    ],
+    "j": [
+        actionscript_rule32,
+    ],
+    "k": [
+        actionscript_rule32,
+    ],
+    "l": [
+        actionscript_rule32,
+    ],
+    "m": [
+        actionscript_rule32,
+    ],
+    "n": [
+        actionscript_rule32,
+    ],
+    "o": [
+        actionscript_rule32,
+    ],
+    "p": [
+        actionscript_rule32,
+    ],
+    "q": [
+        actionscript_rule32,
+    ],
+    "r": [
+        actionscript_rule32,
+    ],
+    "s": [
+        actionscript_rule32,
+    ],
+    "t": [
+        actionscript_rule32,
+    ],
+    "u": [
+        actionscript_rule32,
+    ],
+    "v": [
+        actionscript_rule32,
+    ],
+    "w": [
+        actionscript_rule32,
+    ],
+    "x": [
+        actionscript_rule32,
+    ],
+    "y": [
+        actionscript_rule32,
+    ],
+    "z": [
+        actionscript_rule32,
+    ],
+    "{": [
+        actionscript_rule24,
+    ],
+    "|": [
+        actionscript_rule19,
+    ],
+    "}": [
+        actionscript_rule23,
+    ],
+    "~": [
+        actionscript_rule21,
+    ],
 }
 
 # x.rulesDictDict for actionscript mode.

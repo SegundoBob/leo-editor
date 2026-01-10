@@ -122,178 +122,374 @@ keywordsDictDict = {
 
 # Rules for uscript_main ruleset.
 
+
 def uscript_rule0(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment1", seq="/**/")
+
 
 def uscript_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def uscript_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def uscript_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def uscript_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//")
 
+
 def uscript_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def uscript_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
+
 def uscript_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="@")
+
 
 def uscript_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="#")
 
+
 def uscript_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="$")
+
 
 def uscript_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def uscript_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def uscript_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def uscript_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def uscript_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def uscript_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def uscript_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def uscript_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="\\\\")
+
 
 def uscript_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def uscript_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def uscript_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def uscript_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def uscript_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
 
+
 def uscript_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="`")
 
+
 def uscript_rule24(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_whitespace_end=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+
 
 def uscript_rule25(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def uscript_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for uscript_main ruleset.
 rulesDict1 = {
-    "!": [uscript_rule6,],
-    "\"": [uscript_rule2,],
-    "#": [uscript_rule8,],
-    "$": [uscript_rule9,],
-    "&": [uscript_rule11,],
-    "'": [uscript_rule3,],
-    "(": [uscript_rule25,],
-    "*": [uscript_rule12,],
-    "+": [uscript_rule15,],
-    "-": [uscript_rule13,],
-    "/": [uscript_rule0, uscript_rule1, uscript_rule4, uscript_rule21,],
-    "0": [uscript_rule26,],
-    "1": [uscript_rule26,],
-    "2": [uscript_rule26,],
-    "3": [uscript_rule26,],
-    "4": [uscript_rule26,],
-    "5": [uscript_rule26,],
-    "6": [uscript_rule26,],
-    "7": [uscript_rule26,],
-    "8": [uscript_rule26,],
-    "9": [uscript_rule26,],
-    ":": [uscript_rule18, uscript_rule24,],
-    "<": [uscript_rule19,],
-    "=": [uscript_rule14,],
-    ">": [uscript_rule20,],
-    "?": [uscript_rule22,],
-    "@": [uscript_rule7, uscript_rule26,],
-    "A": [uscript_rule26,],
-    "B": [uscript_rule26,],
-    "C": [uscript_rule26,],
-    "D": [uscript_rule26,],
-    "E": [uscript_rule26,],
-    "F": [uscript_rule26,],
-    "G": [uscript_rule26,],
-    "H": [uscript_rule26,],
-    "I": [uscript_rule26,],
-    "J": [uscript_rule26,],
-    "K": [uscript_rule26,],
-    "L": [uscript_rule26,],
-    "M": [uscript_rule26,],
-    "N": [uscript_rule26,],
-    "O": [uscript_rule26,],
-    "P": [uscript_rule26,],
-    "Q": [uscript_rule26,],
-    "R": [uscript_rule26,],
-    "S": [uscript_rule26,],
-    "T": [uscript_rule26,],
-    "U": [uscript_rule26,],
-    "V": [uscript_rule26,],
-    "W": [uscript_rule26,],
-    "X": [uscript_rule26,],
-    "Y": [uscript_rule26,],
-    "Z": [uscript_rule26,],
-    "\\": [uscript_rule17,],
-    "^": [uscript_rule10,],
-    "`": [uscript_rule23,],
-    "a": [uscript_rule26,],
-    "b": [uscript_rule26,],
-    "c": [uscript_rule26,],
-    "d": [uscript_rule26,],
-    "e": [uscript_rule26,],
-    "f": [uscript_rule26,],
-    "g": [uscript_rule26,],
-    "h": [uscript_rule26,],
-    "i": [uscript_rule26,],
-    "j": [uscript_rule26,],
-    "k": [uscript_rule26,],
-    "l": [uscript_rule26,],
-    "m": [uscript_rule26,],
-    "n": [uscript_rule26,],
-    "o": [uscript_rule26,],
-    "p": [uscript_rule26,],
-    "q": [uscript_rule26,],
-    "r": [uscript_rule26,],
-    "s": [uscript_rule26,],
-    "t": [uscript_rule26,],
-    "u": [uscript_rule26,],
-    "v": [uscript_rule26,],
-    "w": [uscript_rule26,],
-    "x": [uscript_rule26,],
-    "y": [uscript_rule26,],
-    "z": [uscript_rule26,],
-    "|": [uscript_rule16,],
-    "~": [uscript_rule5,],
+    "!": [
+        uscript_rule6,
+    ],
+    "\"": [
+        uscript_rule2,
+    ],
+    "#": [
+        uscript_rule8,
+    ],
+    "$": [
+        uscript_rule9,
+    ],
+    "&": [
+        uscript_rule11,
+    ],
+    "'": [
+        uscript_rule3,
+    ],
+    "(": [
+        uscript_rule25,
+    ],
+    "*": [
+        uscript_rule12,
+    ],
+    "+": [
+        uscript_rule15,
+    ],
+    "-": [
+        uscript_rule13,
+    ],
+    "/": [
+        uscript_rule0,
+        uscript_rule1,
+        uscript_rule4,
+        uscript_rule21,
+    ],
+    "0": [
+        uscript_rule26,
+    ],
+    "1": [
+        uscript_rule26,
+    ],
+    "2": [
+        uscript_rule26,
+    ],
+    "3": [
+        uscript_rule26,
+    ],
+    "4": [
+        uscript_rule26,
+    ],
+    "5": [
+        uscript_rule26,
+    ],
+    "6": [
+        uscript_rule26,
+    ],
+    "7": [
+        uscript_rule26,
+    ],
+    "8": [
+        uscript_rule26,
+    ],
+    "9": [
+        uscript_rule26,
+    ],
+    ":": [
+        uscript_rule18,
+        uscript_rule24,
+    ],
+    "<": [
+        uscript_rule19,
+    ],
+    "=": [
+        uscript_rule14,
+    ],
+    ">": [
+        uscript_rule20,
+    ],
+    "?": [
+        uscript_rule22,
+    ],
+    "@": [
+        uscript_rule7,
+        uscript_rule26,
+    ],
+    "A": [
+        uscript_rule26,
+    ],
+    "B": [
+        uscript_rule26,
+    ],
+    "C": [
+        uscript_rule26,
+    ],
+    "D": [
+        uscript_rule26,
+    ],
+    "E": [
+        uscript_rule26,
+    ],
+    "F": [
+        uscript_rule26,
+    ],
+    "G": [
+        uscript_rule26,
+    ],
+    "H": [
+        uscript_rule26,
+    ],
+    "I": [
+        uscript_rule26,
+    ],
+    "J": [
+        uscript_rule26,
+    ],
+    "K": [
+        uscript_rule26,
+    ],
+    "L": [
+        uscript_rule26,
+    ],
+    "M": [
+        uscript_rule26,
+    ],
+    "N": [
+        uscript_rule26,
+    ],
+    "O": [
+        uscript_rule26,
+    ],
+    "P": [
+        uscript_rule26,
+    ],
+    "Q": [
+        uscript_rule26,
+    ],
+    "R": [
+        uscript_rule26,
+    ],
+    "S": [
+        uscript_rule26,
+    ],
+    "T": [
+        uscript_rule26,
+    ],
+    "U": [
+        uscript_rule26,
+    ],
+    "V": [
+        uscript_rule26,
+    ],
+    "W": [
+        uscript_rule26,
+    ],
+    "X": [
+        uscript_rule26,
+    ],
+    "Y": [
+        uscript_rule26,
+    ],
+    "Z": [
+        uscript_rule26,
+    ],
+    "\\": [
+        uscript_rule17,
+    ],
+    "^": [
+        uscript_rule10,
+    ],
+    "`": [
+        uscript_rule23,
+    ],
+    "a": [
+        uscript_rule26,
+    ],
+    "b": [
+        uscript_rule26,
+    ],
+    "c": [
+        uscript_rule26,
+    ],
+    "d": [
+        uscript_rule26,
+    ],
+    "e": [
+        uscript_rule26,
+    ],
+    "f": [
+        uscript_rule26,
+    ],
+    "g": [
+        uscript_rule26,
+    ],
+    "h": [
+        uscript_rule26,
+    ],
+    "i": [
+        uscript_rule26,
+    ],
+    "j": [
+        uscript_rule26,
+    ],
+    "k": [
+        uscript_rule26,
+    ],
+    "l": [
+        uscript_rule26,
+    ],
+    "m": [
+        uscript_rule26,
+    ],
+    "n": [
+        uscript_rule26,
+    ],
+    "o": [
+        uscript_rule26,
+    ],
+    "p": [
+        uscript_rule26,
+    ],
+    "q": [
+        uscript_rule26,
+    ],
+    "r": [
+        uscript_rule26,
+    ],
+    "s": [
+        uscript_rule26,
+    ],
+    "t": [
+        uscript_rule26,
+    ],
+    "u": [
+        uscript_rule26,
+    ],
+    "v": [
+        uscript_rule26,
+    ],
+    "w": [
+        uscript_rule26,
+    ],
+    "x": [
+        uscript_rule26,
+    ],
+    "y": [
+        uscript_rule26,
+    ],
+    "z": [
+        uscript_rule26,
+    ],
+    "|": [
+        uscript_rule16,
+    ],
+    "~": [
+        uscript_rule5,
+    ],
 }
 
 # x.rulesDictDict for uscript mode.

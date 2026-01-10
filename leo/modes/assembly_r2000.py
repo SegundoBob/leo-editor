@@ -244,95 +244,236 @@ keywordsDictDict = {
 
 # Rules for assembly_r2000_main ruleset.
 
+
 def assembly_r2000_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
 
+
 def assembly_r2000_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def assembly_r2000_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def assembly_r2000_rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True)
+
 
 def assembly_r2000_rule4(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for assembly_r2000_main ruleset.
 rulesDict1 = {
-    "\"": [assembly_r2000_rule2,],
-    "#": [assembly_r2000_rule0,],
-    "$": [assembly_r2000_rule4,],
-    "'": [assembly_r2000_rule1,],
-    ".": [assembly_r2000_rule4,],
-    "0": [assembly_r2000_rule4,],
-    "1": [assembly_r2000_rule4,],
-    "2": [assembly_r2000_rule4,],
-    "3": [assembly_r2000_rule4,],
-    "4": [assembly_r2000_rule4,],
-    "5": [assembly_r2000_rule4,],
-    "6": [assembly_r2000_rule4,],
-    "7": [assembly_r2000_rule4,],
-    "8": [assembly_r2000_rule4,],
-    "9": [assembly_r2000_rule4,],
-    ":": [assembly_r2000_rule3,],
-    "@": [assembly_r2000_rule4,],
-    "A": [assembly_r2000_rule4,],
-    "B": [assembly_r2000_rule4,],
-    "C": [assembly_r2000_rule4,],
-    "D": [assembly_r2000_rule4,],
-    "E": [assembly_r2000_rule4,],
-    "F": [assembly_r2000_rule4,],
-    "G": [assembly_r2000_rule4,],
-    "H": [assembly_r2000_rule4,],
-    "I": [assembly_r2000_rule4,],
-    "J": [assembly_r2000_rule4,],
-    "K": [assembly_r2000_rule4,],
-    "L": [assembly_r2000_rule4,],
-    "M": [assembly_r2000_rule4,],
-    "N": [assembly_r2000_rule4,],
-    "O": [assembly_r2000_rule4,],
-    "P": [assembly_r2000_rule4,],
-    "Q": [assembly_r2000_rule4,],
-    "R": [assembly_r2000_rule4,],
-    "S": [assembly_r2000_rule4,],
-    "T": [assembly_r2000_rule4,],
-    "U": [assembly_r2000_rule4,],
-    "V": [assembly_r2000_rule4,],
-    "W": [assembly_r2000_rule4,],
-    "X": [assembly_r2000_rule4,],
-    "Y": [assembly_r2000_rule4,],
-    "Z": [assembly_r2000_rule4,],
-    "a": [assembly_r2000_rule4,],
-    "b": [assembly_r2000_rule4,],
-    "c": [assembly_r2000_rule4,],
-    "d": [assembly_r2000_rule4,],
-    "e": [assembly_r2000_rule4,],
-    "f": [assembly_r2000_rule4,],
-    "g": [assembly_r2000_rule4,],
-    "h": [assembly_r2000_rule4,],
-    "i": [assembly_r2000_rule4,],
-    "j": [assembly_r2000_rule4,],
-    "k": [assembly_r2000_rule4,],
-    "l": [assembly_r2000_rule4,],
-    "m": [assembly_r2000_rule4,],
-    "n": [assembly_r2000_rule4,],
-    "o": [assembly_r2000_rule4,],
-    "p": [assembly_r2000_rule4,],
-    "q": [assembly_r2000_rule4,],
-    "r": [assembly_r2000_rule4,],
-    "s": [assembly_r2000_rule4,],
-    "t": [assembly_r2000_rule4,],
-    "u": [assembly_r2000_rule4,],
-    "v": [assembly_r2000_rule4,],
-    "w": [assembly_r2000_rule4,],
-    "x": [assembly_r2000_rule4,],
-    "y": [assembly_r2000_rule4,],
-    "z": [assembly_r2000_rule4,],
+    "\"": [
+        assembly_r2000_rule2,
+    ],
+    "#": [
+        assembly_r2000_rule0,
+    ],
+    "$": [
+        assembly_r2000_rule4,
+    ],
+    "'": [
+        assembly_r2000_rule1,
+    ],
+    ".": [
+        assembly_r2000_rule4,
+    ],
+    "0": [
+        assembly_r2000_rule4,
+    ],
+    "1": [
+        assembly_r2000_rule4,
+    ],
+    "2": [
+        assembly_r2000_rule4,
+    ],
+    "3": [
+        assembly_r2000_rule4,
+    ],
+    "4": [
+        assembly_r2000_rule4,
+    ],
+    "5": [
+        assembly_r2000_rule4,
+    ],
+    "6": [
+        assembly_r2000_rule4,
+    ],
+    "7": [
+        assembly_r2000_rule4,
+    ],
+    "8": [
+        assembly_r2000_rule4,
+    ],
+    "9": [
+        assembly_r2000_rule4,
+    ],
+    ":": [
+        assembly_r2000_rule3,
+    ],
+    "@": [
+        assembly_r2000_rule4,
+    ],
+    "A": [
+        assembly_r2000_rule4,
+    ],
+    "B": [
+        assembly_r2000_rule4,
+    ],
+    "C": [
+        assembly_r2000_rule4,
+    ],
+    "D": [
+        assembly_r2000_rule4,
+    ],
+    "E": [
+        assembly_r2000_rule4,
+    ],
+    "F": [
+        assembly_r2000_rule4,
+    ],
+    "G": [
+        assembly_r2000_rule4,
+    ],
+    "H": [
+        assembly_r2000_rule4,
+    ],
+    "I": [
+        assembly_r2000_rule4,
+    ],
+    "J": [
+        assembly_r2000_rule4,
+    ],
+    "K": [
+        assembly_r2000_rule4,
+    ],
+    "L": [
+        assembly_r2000_rule4,
+    ],
+    "M": [
+        assembly_r2000_rule4,
+    ],
+    "N": [
+        assembly_r2000_rule4,
+    ],
+    "O": [
+        assembly_r2000_rule4,
+    ],
+    "P": [
+        assembly_r2000_rule4,
+    ],
+    "Q": [
+        assembly_r2000_rule4,
+    ],
+    "R": [
+        assembly_r2000_rule4,
+    ],
+    "S": [
+        assembly_r2000_rule4,
+    ],
+    "T": [
+        assembly_r2000_rule4,
+    ],
+    "U": [
+        assembly_r2000_rule4,
+    ],
+    "V": [
+        assembly_r2000_rule4,
+    ],
+    "W": [
+        assembly_r2000_rule4,
+    ],
+    "X": [
+        assembly_r2000_rule4,
+    ],
+    "Y": [
+        assembly_r2000_rule4,
+    ],
+    "Z": [
+        assembly_r2000_rule4,
+    ],
+    "a": [
+        assembly_r2000_rule4,
+    ],
+    "b": [
+        assembly_r2000_rule4,
+    ],
+    "c": [
+        assembly_r2000_rule4,
+    ],
+    "d": [
+        assembly_r2000_rule4,
+    ],
+    "e": [
+        assembly_r2000_rule4,
+    ],
+    "f": [
+        assembly_r2000_rule4,
+    ],
+    "g": [
+        assembly_r2000_rule4,
+    ],
+    "h": [
+        assembly_r2000_rule4,
+    ],
+    "i": [
+        assembly_r2000_rule4,
+    ],
+    "j": [
+        assembly_r2000_rule4,
+    ],
+    "k": [
+        assembly_r2000_rule4,
+    ],
+    "l": [
+        assembly_r2000_rule4,
+    ],
+    "m": [
+        assembly_r2000_rule4,
+    ],
+    "n": [
+        assembly_r2000_rule4,
+    ],
+    "o": [
+        assembly_r2000_rule4,
+    ],
+    "p": [
+        assembly_r2000_rule4,
+    ],
+    "q": [
+        assembly_r2000_rule4,
+    ],
+    "r": [
+        assembly_r2000_rule4,
+    ],
+    "s": [
+        assembly_r2000_rule4,
+    ],
+    "t": [
+        assembly_r2000_rule4,
+    ],
+    "u": [
+        assembly_r2000_rule4,
+    ],
+    "v": [
+        assembly_r2000_rule4,
+    ],
+    "w": [
+        assembly_r2000_rule4,
+    ],
+    "x": [
+        assembly_r2000_rule4,
+    ],
+    "y": [
+        assembly_r2000_rule4,
+    ],
+    "z": [
+        assembly_r2000_rule4,
+    ],
 }
 
 # x.rulesDictDict for assembly_r2000 mode.

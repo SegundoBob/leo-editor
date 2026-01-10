@@ -30,30 +30,40 @@ keywordsDictDict = {
 
 # Rules for json_main ruleset.
 
+
 def json_string(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 if 0:
+
     def json_single_string(colorer, s, i):
         return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
+
 
 def json_colon(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def json_comma(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
+
 
 def json_open_brace(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def json_close_brace(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def json_open_bracket(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
 
+
 def json_close_bracket(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
+
 
 # Rules dict for json_main ruleset.
 rulesDict1 = {

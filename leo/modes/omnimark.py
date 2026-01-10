@@ -428,160 +428,348 @@ keywordsDictDict = {
 
 # Rules for omnimark_main ruleset.
 
+
 def omnimark_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#!")
+
 
 def omnimark_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
 
+
 def omnimark_rule2(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="invalid", begin="\"((?!$)[^\"])*$", end="$",
-          no_line_break=True)
+    return colorer.match_span_regexp(s, i, kind="invalid", begin="\"((?!$)[^\"])*$", end="$", no_line_break=True)
+
 
 def omnimark_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def omnimark_rule4(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="invalid", begin="'((?!$)[^'])*$", end="$",
-          no_line_break=True)
+    return colorer.match_span_regexp(s, i, kind="invalid", begin="'((?!$)[^'])*$", end="$", no_line_break=True)
+
 
 def omnimark_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def omnimark_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def omnimark_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def omnimark_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def omnimark_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def omnimark_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def omnimark_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def omnimark_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def omnimark_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def omnimark_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="@")
 
+
 def omnimark_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="$")
+
 
 def omnimark_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def omnimark_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def omnimark_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def omnimark_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
+
 
 def omnimark_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
+
 def omnimark_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for omnimark_main ruleset.
 rulesDict1 = {
-    "!": [omnimark_rule20, omnimark_rule21,],
-    "\"": [omnimark_rule2, omnimark_rule3,],
-    "#": [omnimark_rule0, omnimark_rule21,],
-    "$": [omnimark_rule15,],
-    "%": [omnimark_rule16,],
-    "&": [omnimark_rule6,],
-    "'": [omnimark_rule4, omnimark_rule5,],
-    "*": [omnimark_rule18,],
-    "+": [omnimark_rule8,],
-    "-": [omnimark_rule21,],
-    "/": [omnimark_rule10,],
-    "0": [omnimark_rule21,],
-    "1": [omnimark_rule21,],
-    "2": [omnimark_rule21,],
-    "3": [omnimark_rule21,],
-    "4": [omnimark_rule21,],
-    "5": [omnimark_rule21,],
-    "6": [omnimark_rule21,],
-    "7": [omnimark_rule21,],
-    "8": [omnimark_rule21,],
-    "9": [omnimark_rule21,],
-    ";": [omnimark_rule1,],
-    "<": [omnimark_rule11,],
-    "=": [omnimark_rule9,],
-    ">": [omnimark_rule12,],
-    "?": [omnimark_rule19,],
-    "@": [omnimark_rule14, omnimark_rule21,],
-    "A": [omnimark_rule21,],
-    "B": [omnimark_rule21,],
-    "C": [omnimark_rule21,],
-    "D": [omnimark_rule21,],
-    "E": [omnimark_rule21,],
-    "F": [omnimark_rule21,],
-    "G": [omnimark_rule21,],
-    "H": [omnimark_rule21,],
-    "I": [omnimark_rule21,],
-    "J": [omnimark_rule21,],
-    "K": [omnimark_rule21,],
-    "L": [omnimark_rule21,],
-    "M": [omnimark_rule21,],
-    "N": [omnimark_rule21,],
-    "O": [omnimark_rule21,],
-    "P": [omnimark_rule21,],
-    "Q": [omnimark_rule21,],
-    "R": [omnimark_rule21,],
-    "S": [omnimark_rule21,],
-    "T": [omnimark_rule21,],
-    "U": [omnimark_rule21,],
-    "V": [omnimark_rule21,],
-    "W": [omnimark_rule21,],
-    "X": [omnimark_rule21,],
-    "Y": [omnimark_rule21,],
-    "Z": [omnimark_rule21,],
-    "^": [omnimark_rule17,],
-    "a": [omnimark_rule21,],
-    "b": [omnimark_rule21,],
-    "c": [omnimark_rule21,],
-    "d": [omnimark_rule21,],
-    "e": [omnimark_rule21,],
-    "f": [omnimark_rule21,],
-    "g": [omnimark_rule21,],
-    "h": [omnimark_rule21,],
-    "i": [omnimark_rule21,],
-    "j": [omnimark_rule21,],
-    "k": [omnimark_rule21,],
-    "l": [omnimark_rule21,],
-    "m": [omnimark_rule21,],
-    "n": [omnimark_rule21,],
-    "o": [omnimark_rule21,],
-    "p": [omnimark_rule21,],
-    "q": [omnimark_rule21,],
-    "r": [omnimark_rule21,],
-    "s": [omnimark_rule21,],
-    "t": [omnimark_rule21,],
-    "u": [omnimark_rule21,],
-    "v": [omnimark_rule21,],
-    "w": [omnimark_rule21,],
-    "x": [omnimark_rule21,],
-    "y": [omnimark_rule21,],
-    "z": [omnimark_rule21,],
-    "|": [omnimark_rule7,],
-    "~": [omnimark_rule13,],
+    "!": [
+        omnimark_rule20,
+        omnimark_rule21,
+    ],
+    "\"": [
+        omnimark_rule2,
+        omnimark_rule3,
+    ],
+    "#": [
+        omnimark_rule0,
+        omnimark_rule21,
+    ],
+    "$": [
+        omnimark_rule15,
+    ],
+    "%": [
+        omnimark_rule16,
+    ],
+    "&": [
+        omnimark_rule6,
+    ],
+    "'": [
+        omnimark_rule4,
+        omnimark_rule5,
+    ],
+    "*": [
+        omnimark_rule18,
+    ],
+    "+": [
+        omnimark_rule8,
+    ],
+    "-": [
+        omnimark_rule21,
+    ],
+    "/": [
+        omnimark_rule10,
+    ],
+    "0": [
+        omnimark_rule21,
+    ],
+    "1": [
+        omnimark_rule21,
+    ],
+    "2": [
+        omnimark_rule21,
+    ],
+    "3": [
+        omnimark_rule21,
+    ],
+    "4": [
+        omnimark_rule21,
+    ],
+    "5": [
+        omnimark_rule21,
+    ],
+    "6": [
+        omnimark_rule21,
+    ],
+    "7": [
+        omnimark_rule21,
+    ],
+    "8": [
+        omnimark_rule21,
+    ],
+    "9": [
+        omnimark_rule21,
+    ],
+    ";": [
+        omnimark_rule1,
+    ],
+    "<": [
+        omnimark_rule11,
+    ],
+    "=": [
+        omnimark_rule9,
+    ],
+    ">": [
+        omnimark_rule12,
+    ],
+    "?": [
+        omnimark_rule19,
+    ],
+    "@": [
+        omnimark_rule14,
+        omnimark_rule21,
+    ],
+    "A": [
+        omnimark_rule21,
+    ],
+    "B": [
+        omnimark_rule21,
+    ],
+    "C": [
+        omnimark_rule21,
+    ],
+    "D": [
+        omnimark_rule21,
+    ],
+    "E": [
+        omnimark_rule21,
+    ],
+    "F": [
+        omnimark_rule21,
+    ],
+    "G": [
+        omnimark_rule21,
+    ],
+    "H": [
+        omnimark_rule21,
+    ],
+    "I": [
+        omnimark_rule21,
+    ],
+    "J": [
+        omnimark_rule21,
+    ],
+    "K": [
+        omnimark_rule21,
+    ],
+    "L": [
+        omnimark_rule21,
+    ],
+    "M": [
+        omnimark_rule21,
+    ],
+    "N": [
+        omnimark_rule21,
+    ],
+    "O": [
+        omnimark_rule21,
+    ],
+    "P": [
+        omnimark_rule21,
+    ],
+    "Q": [
+        omnimark_rule21,
+    ],
+    "R": [
+        omnimark_rule21,
+    ],
+    "S": [
+        omnimark_rule21,
+    ],
+    "T": [
+        omnimark_rule21,
+    ],
+    "U": [
+        omnimark_rule21,
+    ],
+    "V": [
+        omnimark_rule21,
+    ],
+    "W": [
+        omnimark_rule21,
+    ],
+    "X": [
+        omnimark_rule21,
+    ],
+    "Y": [
+        omnimark_rule21,
+    ],
+    "Z": [
+        omnimark_rule21,
+    ],
+    "^": [
+        omnimark_rule17,
+    ],
+    "a": [
+        omnimark_rule21,
+    ],
+    "b": [
+        omnimark_rule21,
+    ],
+    "c": [
+        omnimark_rule21,
+    ],
+    "d": [
+        omnimark_rule21,
+    ],
+    "e": [
+        omnimark_rule21,
+    ],
+    "f": [
+        omnimark_rule21,
+    ],
+    "g": [
+        omnimark_rule21,
+    ],
+    "h": [
+        omnimark_rule21,
+    ],
+    "i": [
+        omnimark_rule21,
+    ],
+    "j": [
+        omnimark_rule21,
+    ],
+    "k": [
+        omnimark_rule21,
+    ],
+    "l": [
+        omnimark_rule21,
+    ],
+    "m": [
+        omnimark_rule21,
+    ],
+    "n": [
+        omnimark_rule21,
+    ],
+    "o": [
+        omnimark_rule21,
+    ],
+    "p": [
+        omnimark_rule21,
+    ],
+    "q": [
+        omnimark_rule21,
+    ],
+    "r": [
+        omnimark_rule21,
+    ],
+    "s": [
+        omnimark_rule21,
+    ],
+    "t": [
+        omnimark_rule21,
+    ],
+    "u": [
+        omnimark_rule21,
+    ],
+    "v": [
+        omnimark_rule21,
+    ],
+    "w": [
+        omnimark_rule21,
+    ],
+    "x": [
+        omnimark_rule21,
+    ],
+    "y": [
+        omnimark_rule21,
+    ],
+    "z": [
+        omnimark_rule21,
+    ],
+    "|": [
+        omnimark_rule7,
+    ],
+    "~": [
+        omnimark_rule13,
+    ],
 }
 
 # x.rulesDictDict for omnimark mode.

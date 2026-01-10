@@ -194,203 +194,415 @@ keywordsDictDict = {
 
 # Rules for typescript_main ruleset.
 
+
 # #1602
 def typescript_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/*", end="*/")
 
+
 def typescript_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def typescript_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def typescript_rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def typescript_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//")
 
+
 def typescript_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="comment1", seq="<!--")
+
 
 def typescript_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def typescript_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def typescript_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def typescript_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def typescript_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def typescript_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def typescript_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def typescript_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def typescript_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def typescript_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def typescript_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def typescript_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def typescript_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def typescript_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def typescript_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def typescript_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
+
 
 def typescript_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
 
+
 def typescript_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
+
 
 def typescript_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
 
+
 def typescript_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=";")
+
 
 def typescript_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
 
+
 def typescript_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
+
 
 def typescript_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
 
+
 def typescript_rule29(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_whitespace_end=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+
 
 def typescript_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def typescript_rule31(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 def typescript_rule32(colorer, s, i):  # #2287.
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", no_line_break=True)
+
 
 # Rules dict for typescript_main ruleset.
 rulesDict1 = {
-    "`": [typescript_rule32,],  # #2287.
-    "!": [typescript_rule7,],
-    "\"": [typescript_rule1,],
-    "%": [typescript_rule16,],
-    "&": [typescript_rule17,],
-    "'": [typescript_rule2,],
-    "(": [typescript_rule3,],
-    "*": [typescript_rule13,],
-    "+": [typescript_rule10,],
-    ",": [typescript_rule24,],
-    "-": [typescript_rule11,],
-    ".": [typescript_rule21,],
-    "/": [typescript_rule0, typescript_rule4, typescript_rule12,],
-    "0": [typescript_rule31,],
-    "1": [typescript_rule31,],
-    "2": [typescript_rule31,],
-    "3": [typescript_rule31,],
-    "4": [typescript_rule31,],
-    "5": [typescript_rule31,],
-    "6": [typescript_rule31,],
-    "7": [typescript_rule31,],
-    "8": [typescript_rule31,],
-    "9": [typescript_rule31,],
-    ":": [typescript_rule29, typescript_rule30,],
-    ";": [typescript_rule25,],
-    "<": [typescript_rule5, typescript_rule9, typescript_rule15,],
-    "=": [typescript_rule6,],
-    ">": [typescript_rule8, typescript_rule14,],
-    "?": [typescript_rule28,],
-    "@": [typescript_rule31,],
-    "A": [typescript_rule31,],
-    "B": [typescript_rule31,],
-    "C": [typescript_rule31,],
-    "D": [typescript_rule31,],
-    "E": [typescript_rule31,],
-    "F": [typescript_rule31,],
-    "G": [typescript_rule31,],
-    "H": [typescript_rule31,],
-    "I": [typescript_rule31,],
-    "J": [typescript_rule31,],
-    "K": [typescript_rule31,],
-    "L": [typescript_rule31,],
-    "M": [typescript_rule31,],
-    "N": [typescript_rule31,],
-    "O": [typescript_rule31,],
-    "P": [typescript_rule31,],
-    "Q": [typescript_rule31,],
-    "R": [typescript_rule31,],
-    "S": [typescript_rule31,],
-    "T": [typescript_rule31,],
-    "U": [typescript_rule31,],
-    "V": [typescript_rule31,],
-    "W": [typescript_rule31,],
-    "X": [typescript_rule31,],
-    "Y": [typescript_rule31,],
-    "Z": [typescript_rule31,],
-    "[": [typescript_rule27,],
-    "]": [typescript_rule26,],
-    "^": [typescript_rule19,],
-    "a": [typescript_rule31,],
-    "b": [typescript_rule31,],
-    "c": [typescript_rule31,],
-    "d": [typescript_rule31,],
-    "e": [typescript_rule31,],
-    "f": [typescript_rule31,],
-    "g": [typescript_rule31,],
-    "h": [typescript_rule31,],
-    "i": [typescript_rule31,],
-    "j": [typescript_rule31,],
-    "k": [typescript_rule31,],
-    "l": [typescript_rule31,],
-    "m": [typescript_rule31,],
-    "n": [typescript_rule31,],
-    "o": [typescript_rule31,],
-    "p": [typescript_rule31,],
-    "q": [typescript_rule31,],
-    "r": [typescript_rule31,],
-    "s": [typescript_rule31,],
-    "t": [typescript_rule31,],
-    "u": [typescript_rule31,],
-    "v": [typescript_rule31,],
-    "w": [typescript_rule31,],
-    "x": [typescript_rule31,],
-    "y": [typescript_rule31,],
-    "z": [typescript_rule31,],
-    "{": [typescript_rule23,],
-    "|": [typescript_rule18,],
-    "}": [typescript_rule22,],
-    "~": [typescript_rule20,],
+    "`": [
+        typescript_rule32,
+    ],  # #2287.
+    "!": [
+        typescript_rule7,
+    ],
+    "\"": [
+        typescript_rule1,
+    ],
+    "%": [
+        typescript_rule16,
+    ],
+    "&": [
+        typescript_rule17,
+    ],
+    "'": [
+        typescript_rule2,
+    ],
+    "(": [
+        typescript_rule3,
+    ],
+    "*": [
+        typescript_rule13,
+    ],
+    "+": [
+        typescript_rule10,
+    ],
+    ",": [
+        typescript_rule24,
+    ],
+    "-": [
+        typescript_rule11,
+    ],
+    ".": [
+        typescript_rule21,
+    ],
+    "/": [
+        typescript_rule0,
+        typescript_rule4,
+        typescript_rule12,
+    ],
+    "0": [
+        typescript_rule31,
+    ],
+    "1": [
+        typescript_rule31,
+    ],
+    "2": [
+        typescript_rule31,
+    ],
+    "3": [
+        typescript_rule31,
+    ],
+    "4": [
+        typescript_rule31,
+    ],
+    "5": [
+        typescript_rule31,
+    ],
+    "6": [
+        typescript_rule31,
+    ],
+    "7": [
+        typescript_rule31,
+    ],
+    "8": [
+        typescript_rule31,
+    ],
+    "9": [
+        typescript_rule31,
+    ],
+    ":": [
+        typescript_rule29,
+        typescript_rule30,
+    ],
+    ";": [
+        typescript_rule25,
+    ],
+    "<": [
+        typescript_rule5,
+        typescript_rule9,
+        typescript_rule15,
+    ],
+    "=": [
+        typescript_rule6,
+    ],
+    ">": [
+        typescript_rule8,
+        typescript_rule14,
+    ],
+    "?": [
+        typescript_rule28,
+    ],
+    "@": [
+        typescript_rule31,
+    ],
+    "A": [
+        typescript_rule31,
+    ],
+    "B": [
+        typescript_rule31,
+    ],
+    "C": [
+        typescript_rule31,
+    ],
+    "D": [
+        typescript_rule31,
+    ],
+    "E": [
+        typescript_rule31,
+    ],
+    "F": [
+        typescript_rule31,
+    ],
+    "G": [
+        typescript_rule31,
+    ],
+    "H": [
+        typescript_rule31,
+    ],
+    "I": [
+        typescript_rule31,
+    ],
+    "J": [
+        typescript_rule31,
+    ],
+    "K": [
+        typescript_rule31,
+    ],
+    "L": [
+        typescript_rule31,
+    ],
+    "M": [
+        typescript_rule31,
+    ],
+    "N": [
+        typescript_rule31,
+    ],
+    "O": [
+        typescript_rule31,
+    ],
+    "P": [
+        typescript_rule31,
+    ],
+    "Q": [
+        typescript_rule31,
+    ],
+    "R": [
+        typescript_rule31,
+    ],
+    "S": [
+        typescript_rule31,
+    ],
+    "T": [
+        typescript_rule31,
+    ],
+    "U": [
+        typescript_rule31,
+    ],
+    "V": [
+        typescript_rule31,
+    ],
+    "W": [
+        typescript_rule31,
+    ],
+    "X": [
+        typescript_rule31,
+    ],
+    "Y": [
+        typescript_rule31,
+    ],
+    "Z": [
+        typescript_rule31,
+    ],
+    "[": [
+        typescript_rule27,
+    ],
+    "]": [
+        typescript_rule26,
+    ],
+    "^": [
+        typescript_rule19,
+    ],
+    "a": [
+        typescript_rule31,
+    ],
+    "b": [
+        typescript_rule31,
+    ],
+    "c": [
+        typescript_rule31,
+    ],
+    "d": [
+        typescript_rule31,
+    ],
+    "e": [
+        typescript_rule31,
+    ],
+    "f": [
+        typescript_rule31,
+    ],
+    "g": [
+        typescript_rule31,
+    ],
+    "h": [
+        typescript_rule31,
+    ],
+    "i": [
+        typescript_rule31,
+    ],
+    "j": [
+        typescript_rule31,
+    ],
+    "k": [
+        typescript_rule31,
+    ],
+    "l": [
+        typescript_rule31,
+    ],
+    "m": [
+        typescript_rule31,
+    ],
+    "n": [
+        typescript_rule31,
+    ],
+    "o": [
+        typescript_rule31,
+    ],
+    "p": [
+        typescript_rule31,
+    ],
+    "q": [
+        typescript_rule31,
+    ],
+    "r": [
+        typescript_rule31,
+    ],
+    "s": [
+        typescript_rule31,
+    ],
+    "t": [
+        typescript_rule31,
+    ],
+    "u": [
+        typescript_rule31,
+    ],
+    "v": [
+        typescript_rule31,
+    ],
+    "w": [
+        typescript_rule31,
+    ],
+    "x": [
+        typescript_rule31,
+    ],
+    "y": [
+        typescript_rule31,
+    ],
+    "z": [
+        typescript_rule31,
+    ],
+    "{": [
+        typescript_rule23,
+    ],
+    "|": [
+        typescript_rule18,
+    ],
+    "}": [
+        typescript_rule22,
+    ],
+    "~": [
+        typescript_rule20,
+    ],
 }
 
 # x.rulesDictDict for typescript mode.

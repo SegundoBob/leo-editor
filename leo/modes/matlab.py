@@ -5619,209 +5619,435 @@ keywordsDictDict = {
 
 # Rules for matlab_main ruleset.
 
+
 def matlab_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def matlab_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="%")
 
+
 def matlab_rule2(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def matlab_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="==")
 
+
 def matlab_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~=")
+
 
 def matlab_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def matlab_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def matlab_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def matlab_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def matlab_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def matlab_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def matlab_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def matlab_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="./")
+
 
 def matlab_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="\\")
 
+
 def matlab_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".\\")
+
 
 def matlab_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def matlab_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".*")
+
 
 def matlab_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def matlab_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".^")
+
 
 def matlab_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="'")
 
+
 def matlab_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".'")
+
 
 def matlab_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def matlab_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def matlab_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def matlab_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
+
 
 def matlab_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=".")
 
+
 def matlab_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=",")
+
 
 def matlab_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=";")
 
+
 def matlab_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="]")
+
 
 def matlab_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="[")
 
+
 def matlab_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="(")
+
 
 def matlab_rule31(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=")")
 
+
 def matlab_rule32(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="{")
+
 
 def matlab_rule33(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="}")
 
+
 def matlab_rule34(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="?")
+
 
 def matlab_rule35(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="...")
 
+
 def matlab_rule36(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for matlab_main ruleset.
 rulesDict1 = {
-    "%": [matlab_rule1,],
-    "&": [matlab_rule21,],
-    "'": [matlab_rule0, matlab_rule19,],
-    "(": [matlab_rule30,],
-    ")": [matlab_rule31,],
-    "*": [matlab_rule15,],
-    "+": [matlab_rule9,],
-    ",": [matlab_rule26,],
-    "-": [matlab_rule10,],
-    ".": [matlab_rule12, matlab_rule14, matlab_rule16, matlab_rule18, matlab_rule20, matlab_rule25, matlab_rule35,],
-    "/": [matlab_rule11,],
-    "0": [matlab_rule36,],
-    "1": [matlab_rule36,],
-    "2": [matlab_rule36,],
-    "3": [matlab_rule36,],
-    "4": [matlab_rule36,],
-    "5": [matlab_rule36,],
-    "6": [matlab_rule36,],
-    "7": [matlab_rule36,],
-    "8": [matlab_rule36,],
-    "9": [matlab_rule36,],
-    ":": [matlab_rule24,],
-    ";": [matlab_rule27,],
-    "<": [matlab_rule6, matlab_rule8,],
-    "=": [matlab_rule2, matlab_rule3,],
-    ">": [matlab_rule5, matlab_rule7,],
-    "?": [matlab_rule34,],
-    "@": [matlab_rule36,],
-    "A": [matlab_rule36,],
-    "B": [matlab_rule36,],
-    "C": [matlab_rule36,],
-    "D": [matlab_rule36,],
-    "E": [matlab_rule36,],
-    "F": [matlab_rule36,],
-    "G": [matlab_rule36,],
-    "H": [matlab_rule36,],
-    "I": [matlab_rule36,],
-    "J": [matlab_rule36,],
-    "K": [matlab_rule36,],
-    "L": [matlab_rule36,],
-    "M": [matlab_rule36,],
-    "N": [matlab_rule36,],
-    "O": [matlab_rule36,],
-    "P": [matlab_rule36,],
-    "Q": [matlab_rule36,],
-    "R": [matlab_rule36,],
-    "S": [matlab_rule36,],
-    "T": [matlab_rule36,],
-    "U": [matlab_rule36,],
-    "V": [matlab_rule36,],
-    "W": [matlab_rule36,],
-    "X": [matlab_rule36,],
-    "Y": [matlab_rule36,],
-    "Z": [matlab_rule36,],
-    "[": [matlab_rule29,],
-    "\\": [matlab_rule13,],
-    "]": [matlab_rule28,],
-    "^": [matlab_rule17,],
-    "_": [matlab_rule36,],
-    "a": [matlab_rule36,],
-    "b": [matlab_rule36,],
-    "c": [matlab_rule36,],
-    "d": [matlab_rule36,],
-    "e": [matlab_rule36,],
-    "f": [matlab_rule36,],
-    "g": [matlab_rule36,],
-    "h": [matlab_rule36,],
-    "i": [matlab_rule36,],
-    "j": [matlab_rule36,],
-    "k": [matlab_rule36,],
-    "l": [matlab_rule36,],
-    "m": [matlab_rule36,],
-    "n": [matlab_rule36,],
-    "o": [matlab_rule36,],
-    "p": [matlab_rule36,],
-    "q": [matlab_rule36,],
-    "r": [matlab_rule36,],
-    "s": [matlab_rule36,],
-    "t": [matlab_rule36,],
-    "u": [matlab_rule36,],
-    "v": [matlab_rule36,],
-    "w": [matlab_rule36,],
-    "x": [matlab_rule36,],
-    "y": [matlab_rule36,],
-    "z": [matlab_rule36,],
-    "{": [matlab_rule32,],
-    "|": [matlab_rule22,],
-    "}": [matlab_rule33,],
-    "~": [matlab_rule4, matlab_rule23,],
+    "%": [
+        matlab_rule1,
+    ],
+    "&": [
+        matlab_rule21,
+    ],
+    "'": [
+        matlab_rule0,
+        matlab_rule19,
+    ],
+    "(": [
+        matlab_rule30,
+    ],
+    ")": [
+        matlab_rule31,
+    ],
+    "*": [
+        matlab_rule15,
+    ],
+    "+": [
+        matlab_rule9,
+    ],
+    ",": [
+        matlab_rule26,
+    ],
+    "-": [
+        matlab_rule10,
+    ],
+    ".": [
+        matlab_rule12,
+        matlab_rule14,
+        matlab_rule16,
+        matlab_rule18,
+        matlab_rule20,
+        matlab_rule25,
+        matlab_rule35,
+    ],
+    "/": [
+        matlab_rule11,
+    ],
+    "0": [
+        matlab_rule36,
+    ],
+    "1": [
+        matlab_rule36,
+    ],
+    "2": [
+        matlab_rule36,
+    ],
+    "3": [
+        matlab_rule36,
+    ],
+    "4": [
+        matlab_rule36,
+    ],
+    "5": [
+        matlab_rule36,
+    ],
+    "6": [
+        matlab_rule36,
+    ],
+    "7": [
+        matlab_rule36,
+    ],
+    "8": [
+        matlab_rule36,
+    ],
+    "9": [
+        matlab_rule36,
+    ],
+    ":": [
+        matlab_rule24,
+    ],
+    ";": [
+        matlab_rule27,
+    ],
+    "<": [
+        matlab_rule6,
+        matlab_rule8,
+    ],
+    "=": [
+        matlab_rule2,
+        matlab_rule3,
+    ],
+    ">": [
+        matlab_rule5,
+        matlab_rule7,
+    ],
+    "?": [
+        matlab_rule34,
+    ],
+    "@": [
+        matlab_rule36,
+    ],
+    "A": [
+        matlab_rule36,
+    ],
+    "B": [
+        matlab_rule36,
+    ],
+    "C": [
+        matlab_rule36,
+    ],
+    "D": [
+        matlab_rule36,
+    ],
+    "E": [
+        matlab_rule36,
+    ],
+    "F": [
+        matlab_rule36,
+    ],
+    "G": [
+        matlab_rule36,
+    ],
+    "H": [
+        matlab_rule36,
+    ],
+    "I": [
+        matlab_rule36,
+    ],
+    "J": [
+        matlab_rule36,
+    ],
+    "K": [
+        matlab_rule36,
+    ],
+    "L": [
+        matlab_rule36,
+    ],
+    "M": [
+        matlab_rule36,
+    ],
+    "N": [
+        matlab_rule36,
+    ],
+    "O": [
+        matlab_rule36,
+    ],
+    "P": [
+        matlab_rule36,
+    ],
+    "Q": [
+        matlab_rule36,
+    ],
+    "R": [
+        matlab_rule36,
+    ],
+    "S": [
+        matlab_rule36,
+    ],
+    "T": [
+        matlab_rule36,
+    ],
+    "U": [
+        matlab_rule36,
+    ],
+    "V": [
+        matlab_rule36,
+    ],
+    "W": [
+        matlab_rule36,
+    ],
+    "X": [
+        matlab_rule36,
+    ],
+    "Y": [
+        matlab_rule36,
+    ],
+    "Z": [
+        matlab_rule36,
+    ],
+    "[": [
+        matlab_rule29,
+    ],
+    "\\": [
+        matlab_rule13,
+    ],
+    "]": [
+        matlab_rule28,
+    ],
+    "^": [
+        matlab_rule17,
+    ],
+    "_": [
+        matlab_rule36,
+    ],
+    "a": [
+        matlab_rule36,
+    ],
+    "b": [
+        matlab_rule36,
+    ],
+    "c": [
+        matlab_rule36,
+    ],
+    "d": [
+        matlab_rule36,
+    ],
+    "e": [
+        matlab_rule36,
+    ],
+    "f": [
+        matlab_rule36,
+    ],
+    "g": [
+        matlab_rule36,
+    ],
+    "h": [
+        matlab_rule36,
+    ],
+    "i": [
+        matlab_rule36,
+    ],
+    "j": [
+        matlab_rule36,
+    ],
+    "k": [
+        matlab_rule36,
+    ],
+    "l": [
+        matlab_rule36,
+    ],
+    "m": [
+        matlab_rule36,
+    ],
+    "n": [
+        matlab_rule36,
+    ],
+    "o": [
+        matlab_rule36,
+    ],
+    "p": [
+        matlab_rule36,
+    ],
+    "q": [
+        matlab_rule36,
+    ],
+    "r": [
+        matlab_rule36,
+    ],
+    "s": [
+        matlab_rule36,
+    ],
+    "t": [
+        matlab_rule36,
+    ],
+    "u": [
+        matlab_rule36,
+    ],
+    "v": [
+        matlab_rule36,
+    ],
+    "w": [
+        matlab_rule36,
+    ],
+    "x": [
+        matlab_rule36,
+    ],
+    "y": [
+        matlab_rule36,
+    ],
+    "z": [
+        matlab_rule36,
+    ],
+    "{": [
+        matlab_rule32,
+    ],
+    "|": [
+        matlab_rule22,
+    ],
+    "}": [
+        matlab_rule33,
+    ],
+    "~": [
+        matlab_rule4,
+        matlab_rule23,
+    ],
 }
 
 # x.rulesDictDict for matlab mode.

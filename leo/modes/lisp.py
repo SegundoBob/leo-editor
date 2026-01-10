@@ -998,124 +998,297 @@ keywordsDictDict = {
 
 # Rules for lisp_main ruleset.
 
+
 def lisp_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="#|", end="|#")
+
 
 def lisp_rule1(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="'(")
 
+
 def lisp_rule2(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal1", pattern="'")
+
 
 def lisp_rule3(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern="&")
 
+
 def lisp_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="`")
+
 
 def lisp_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="@")
 
+
 def lisp_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
+
 
 def lisp_rule7(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment4", seq=";;;;")
 
+
 def lisp_rule8(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment3", seq=";;;")
+
 
 def lisp_rule9(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq=";;")
 
+
 def lisp_rule10(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
+
 
 def lisp_rule11(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def lisp_rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for lisp_main ruleset.
 rulesDict1 = {
-    "\"": [lisp_rule11,],
-    "#": [lisp_rule0,],
-    "%": [lisp_rule6,],
-    "&": [lisp_rule3,],
-    "'": [lisp_rule1, lisp_rule2,],
-    "*": [lisp_rule12,],
-    "+": [lisp_rule12,],
-    "-": [lisp_rule12,],
-    "/": [lisp_rule12,],
-    "0": [lisp_rule12,],
-    "1": [lisp_rule12,],
-    "2": [lisp_rule12,],
-    "3": [lisp_rule12,],
-    "4": [lisp_rule12,],
-    "5": [lisp_rule12,],
-    "6": [lisp_rule12,],
-    "7": [lisp_rule12,],
-    "8": [lisp_rule12,],
-    "9": [lisp_rule12,],
-    ";": [lisp_rule7, lisp_rule8, lisp_rule9, lisp_rule10,],
-    "<": [lisp_rule12,],
-    "=": [lisp_rule12,],
-    ">": [lisp_rule12,],
-    "@": [lisp_rule5, lisp_rule12,],
-    "A": [lisp_rule12,],
-    "B": [lisp_rule12,],
-    "C": [lisp_rule12,],
-    "D": [lisp_rule12,],
-    "E": [lisp_rule12,],
-    "F": [lisp_rule12,],
-    "G": [lisp_rule12,],
-    "H": [lisp_rule12,],
-    "I": [lisp_rule12,],
-    "J": [lisp_rule12,],
-    "K": [lisp_rule12,],
-    "L": [lisp_rule12,],
-    "M": [lisp_rule12,],
-    "N": [lisp_rule12,],
-    "O": [lisp_rule12,],
-    "P": [lisp_rule12,],
-    "Q": [lisp_rule12,],
-    "R": [lisp_rule12,],
-    "S": [lisp_rule12,],
-    "T": [lisp_rule12,],
-    "U": [lisp_rule12,],
-    "V": [lisp_rule12,],
-    "W": [lisp_rule12,],
-    "X": [lisp_rule12,],
-    "Y": [lisp_rule12,],
-    "Z": [lisp_rule12,],
-    "`": [lisp_rule4,],
-    "a": [lisp_rule12,],
-    "b": [lisp_rule12,],
-    "c": [lisp_rule12,],
-    "d": [lisp_rule12,],
-    "e": [lisp_rule12,],
-    "f": [lisp_rule12,],
-    "g": [lisp_rule12,],
-    "h": [lisp_rule12,],
-    "i": [lisp_rule12,],
-    "j": [lisp_rule12,],
-    "k": [lisp_rule12,],
-    "l": [lisp_rule12,],
-    "m": [lisp_rule12,],
-    "n": [lisp_rule12,],
-    "o": [lisp_rule12,],
-    "p": [lisp_rule12,],
-    "q": [lisp_rule12,],
-    "r": [lisp_rule12,],
-    "s": [lisp_rule12,],
-    "t": [lisp_rule12,],
-    "u": [lisp_rule12,],
-    "v": [lisp_rule12,],
-    "w": [lisp_rule12,],
-    "x": [lisp_rule12,],
-    "y": [lisp_rule12,],
-    "z": [lisp_rule12,],
+    "\"": [
+        lisp_rule11,
+    ],
+    "#": [
+        lisp_rule0,
+    ],
+    "%": [
+        lisp_rule6,
+    ],
+    "&": [
+        lisp_rule3,
+    ],
+    "'": [
+        lisp_rule1,
+        lisp_rule2,
+    ],
+    "*": [
+        lisp_rule12,
+    ],
+    "+": [
+        lisp_rule12,
+    ],
+    "-": [
+        lisp_rule12,
+    ],
+    "/": [
+        lisp_rule12,
+    ],
+    "0": [
+        lisp_rule12,
+    ],
+    "1": [
+        lisp_rule12,
+    ],
+    "2": [
+        lisp_rule12,
+    ],
+    "3": [
+        lisp_rule12,
+    ],
+    "4": [
+        lisp_rule12,
+    ],
+    "5": [
+        lisp_rule12,
+    ],
+    "6": [
+        lisp_rule12,
+    ],
+    "7": [
+        lisp_rule12,
+    ],
+    "8": [
+        lisp_rule12,
+    ],
+    "9": [
+        lisp_rule12,
+    ],
+    ";": [
+        lisp_rule7,
+        lisp_rule8,
+        lisp_rule9,
+        lisp_rule10,
+    ],
+    "<": [
+        lisp_rule12,
+    ],
+    "=": [
+        lisp_rule12,
+    ],
+    ">": [
+        lisp_rule12,
+    ],
+    "@": [
+        lisp_rule5,
+        lisp_rule12,
+    ],
+    "A": [
+        lisp_rule12,
+    ],
+    "B": [
+        lisp_rule12,
+    ],
+    "C": [
+        lisp_rule12,
+    ],
+    "D": [
+        lisp_rule12,
+    ],
+    "E": [
+        lisp_rule12,
+    ],
+    "F": [
+        lisp_rule12,
+    ],
+    "G": [
+        lisp_rule12,
+    ],
+    "H": [
+        lisp_rule12,
+    ],
+    "I": [
+        lisp_rule12,
+    ],
+    "J": [
+        lisp_rule12,
+    ],
+    "K": [
+        lisp_rule12,
+    ],
+    "L": [
+        lisp_rule12,
+    ],
+    "M": [
+        lisp_rule12,
+    ],
+    "N": [
+        lisp_rule12,
+    ],
+    "O": [
+        lisp_rule12,
+    ],
+    "P": [
+        lisp_rule12,
+    ],
+    "Q": [
+        lisp_rule12,
+    ],
+    "R": [
+        lisp_rule12,
+    ],
+    "S": [
+        lisp_rule12,
+    ],
+    "T": [
+        lisp_rule12,
+    ],
+    "U": [
+        lisp_rule12,
+    ],
+    "V": [
+        lisp_rule12,
+    ],
+    "W": [
+        lisp_rule12,
+    ],
+    "X": [
+        lisp_rule12,
+    ],
+    "Y": [
+        lisp_rule12,
+    ],
+    "Z": [
+        lisp_rule12,
+    ],
+    "`": [
+        lisp_rule4,
+    ],
+    "a": [
+        lisp_rule12,
+    ],
+    "b": [
+        lisp_rule12,
+    ],
+    "c": [
+        lisp_rule12,
+    ],
+    "d": [
+        lisp_rule12,
+    ],
+    "e": [
+        lisp_rule12,
+    ],
+    "f": [
+        lisp_rule12,
+    ],
+    "g": [
+        lisp_rule12,
+    ],
+    "h": [
+        lisp_rule12,
+    ],
+    "i": [
+        lisp_rule12,
+    ],
+    "j": [
+        lisp_rule12,
+    ],
+    "k": [
+        lisp_rule12,
+    ],
+    "l": [
+        lisp_rule12,
+    ],
+    "m": [
+        lisp_rule12,
+    ],
+    "n": [
+        lisp_rule12,
+    ],
+    "o": [
+        lisp_rule12,
+    ],
+    "p": [
+        lisp_rule12,
+    ],
+    "q": [
+        lisp_rule12,
+    ],
+    "r": [
+        lisp_rule12,
+    ],
+    "s": [
+        lisp_rule12,
+    ],
+    "t": [
+        lisp_rule12,
+    ],
+    "u": [
+        lisp_rule12,
+    ],
+    "v": [
+        lisp_rule12,
+    ],
+    "w": [
+        lisp_rule12,
+    ],
+    "x": [
+        lisp_rule12,
+    ],
+    "y": [
+        lisp_rule12,
+    ],
+    "z": [
+        lisp_rule12,
+    ],
 }
 
 # x.rulesDictDict for lisp mode.

@@ -1,76 +1,110 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20241119064750.1: * @file ../modes/css.py
+# @+leo-ver=5-thin
+# @+node:ekr.20241119064750.1: * @file ../modes/css.py
 """
 leo/modes/css.py: Leo's mode file for @language css.
 """
-#@+<< css.py: imports >>
-#@+node:ekr.20241120011923.1: ** << css.py: imports >>
+
+# @+<< css.py: imports >>
+# @+node:ekr.20241120011923.1: ** << css.py: imports >>
 from __future__ import annotations
 from typing import Any
 from leo.core import leoGlobals as g
+
 assert g
-#@-<< css.py: imports >>
-#@+<< css.py rules >>
-#@+node:ekr.20241120010414.1: ** << css.py rules >>
-#@+others
-#@+node:ekr.20241119185920.1: *3* css.py: rules for css_main ruleset
-#@+node:ekr.20241120174607.1: *4* css_rule0
+
+
+# @-<< css.py: imports >>
+# @+<< css.py rules >>
+# @+node:ekr.20241120010414.1: ** << css.py rules >>
+# @+others
+# @+node:ekr.20241119185920.1: *3* css.py: rules for css_main ruleset
+# @+node:ekr.20241120174607.1: *4* css_rule0
 def css_rule0(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
-#@+node:ekr.20241120174607.2: *4* css_rule1
+
+
+# @+node:ekr.20241120174607.2: *4* css_rule1
 def css_rule1(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=";")
-#@+node:ekr.20241120174607.3: *4* css_rule2 (..)
+
+
+# @+node:ekr.20241120174607.3: *4* css_rule2 (..)
 def css_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="null", begin="(", end=")",
-          delegate="css::literal")
-#@+node:ekr.20241120174607.4: *4* css_rule3
+    return colorer.match_span(s, i, kind="null", begin="(", end=")", delegate="css::literal")
+
+
+# @+node:ekr.20241120174607.4: *4* css_rule3
 def css_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
-#@+node:ekr.20241120174607.5: *4* css_rule4
+
+
+# @+node:ekr.20241120174607.5: *4* css_rule4
 def css_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
-#@+node:ekr.20241120174607.6: *4* css_rule5
+
+
+# @+node:ekr.20241120174607.6: *4* css_rule5
 def css_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=",")
-#@+node:ekr.20241120174607.7: *4* css_rule6
+
+
+# @+node:ekr.20241120174607.7: *4* css_rule6
 def css_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=".")
-#@+node:ekr.20241120174607.8: *4* css_rule7
+
+
+# @+node:ekr.20241120174607.8: *4* css_rule7
 def css_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
-#@+node:ekr.20241120174607.9: *4* css_rule8
+
+
+# @+node:ekr.20241120174607.9: *4* css_rule8
 def css_rule8(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="#")
-#@+node:ekr.20241120174607.10: *4* css_rule8A
+
+
+# @+node:ekr.20241120174607.10: *4* css_rule8A
 # For selectors...
+
 
 def css_rule8A(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern=".")
-#@+node:ekr.20241120174607.11: *4* css_rule8B
+
+
+# @+node:ekr.20241120174607.11: *4* css_rule8B
 def css_rule8B(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern=">")
-#@+node:ekr.20241120174607.12: *4* css_rule8C
+
+
+# @+node:ekr.20241120174607.12: *4* css_rule8C
 def css_rule8C(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="+")
-#@+node:ekr.20241120174607.13: *4* css_rule8D
+
+
+# @+node:ekr.20241120174607.13: *4* css_rule8D
 def css_rule8D(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal2", pattern="~")
-#@+node:ekr.20241120174607.14: *4* css_rule9
+
+
+# @+node:ekr.20241120174607.14: *4* css_rule9
 def css_rule9(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
-#@+node:ekr.20241120174607.15: *4* css_rule10
+
+
+# @+node:ekr.20241120174607.15: *4* css_rule10
 def css_rule10(colorer, s, i):
     return colorer.match_keywords(s, i)
-#@+node:ekr.20241121083146.1: *4* css_rule_at_language @language
-def css_rule_at_language(colorer, s, i):
 
+
+# @+node:ekr.20241121083146.1: *4* css_rule_at_language @language
+def css_rule_at_language(colorer, s, i):
     if i == 0 and s.startswith("@language "):
         return colorer.match_at_language(s, i)
     return 0  # Fail, but allow other matches.
-#@+node:ekr.20241120174643.1: *4* css_rule_end_style </style>
-def css_rule_end_style(colorer: Any, s: str, i: int) -> int:
 
+
+# @+node:ekr.20241120174643.1: *4* css_rule_end_style </style>
+def css_rule_end_style(colorer: Any, s: str, i: int) -> int:
     if i != 0 or not s.startswith("</style>"):
         return 0  # Fail, but allow other matches.
 
@@ -80,9 +114,10 @@ def css_rule_end_style(colorer: Any, s: str, i: int) -> int:
     # Restart any previous delegate.
     colorer.pop_delegate()
     return len(s)  # Success.
-#@+node:ekr.20241121083900.1: *4* css_rule_style <style>
-def css_rule_style(colorer: Any, s: str, i: int) -> int:
 
+
+# @+node:ekr.20241121083900.1: *4* css_rule_style <style>
+def css_rule_style(colorer: Any, s: str, i: int) -> int:
     if i != 0 or not s.startswith("<style"):
         return 0  # Fail, but allow other matches.
 
@@ -93,12 +128,13 @@ def css_rule_style(colorer: Any, s: str, i: int) -> int:
     colorer.push_delegate('css')
     return len(s)  # Success.
 
-#@-others
-#@-<< css.py rules >>
-#@+<< css.py dictionaries >>
-#@+node:ekr.20241120010446.1: ** << css.py dictionaries >>
-#@+others
-#@+node:ekr.20241119185711.1: *3* css.py: attributes dicts
+
+# @-others
+# @-<< css.py rules >>
+# @+<< css.py dictionaries >>
+# @+node:ekr.20241120010446.1: ** << css.py dictionaries >>
+# @+others
+# @+node:ekr.20241119185711.1: *3* css.py: attributes dicts
 # Attributes dict for css_main ruleset.
 css_main_attributes_dict = {
     "default": "null",
@@ -124,7 +160,7 @@ attributesDictDict = {
     "css_literal": css_literal_attributes_dict,
     "css_main": css_main_attributes_dict,
 }
-#@+node:ekr.20241119185615.1: *3* css.py: properties dict
+# @+node:ekr.20241119185615.1: *3* css.py: properties dict
 # Properties for css mode.
 properties = {
     "commentEnd": "*/",
@@ -134,7 +170,7 @@ properties = {
     "lineUpClosingBracket": "true",
     "noWordSep": "_",
 }
-#@+node:ekr.20241119185813.1: *3* css.py: keywords dict for css_main ruleset
+# @+node:ekr.20241119185813.1: *3* css.py: keywords dict for css_main ruleset
 # Keywords dict for css_main ruleset.
 css_main_keywords_dict = {
     ":after": "keyword3",
@@ -608,7 +644,7 @@ css_main_keywords_dict = {
     "yellowgreen": "keyword3",
     "z-index": "keyword2",
 }
-#@+node:ekr.20241119190054.1: *3* css.py: rules dict for css_main ruleset
+# @+node:ekr.20241119190054.1: *3* css.py: rules dict for css_main ruleset
 # Rules dict for css_main ruleset.
 rulesDict1 = {
     "!": [css_rule7],
@@ -638,9 +674,9 @@ rulesDict1 = {
     ":": [css_rule0, css_rule10],
     ";": [css_rule1],
     "@": [
-            css_rule_at_language,
-            css_rule10,
-        ],
+        css_rule_at_language,
+        css_rule10,
+    ],
     "A": [css_rule10],
     "B": [css_rule10],
     "C": [css_rule10],
@@ -696,7 +732,7 @@ rulesDict1 = {
     "{": [css_rule3],
     "}": [css_rule4],
 }
-#@+node:ekr.20241119190259.1: *3* css.py: css_literal ruleset (empty)
+# @+node:ekr.20241119190259.1: *3* css.py: css_literal ruleset (empty)
 # Rules for css_literal ruleset.
 
 # Rules dict for css_literal ruleset.
@@ -704,7 +740,7 @@ rulesDict2 = {}
 
 # Keywords dict for css_literal ruleset.
 css_literal_keywords_dict = {}
-#@-others
+# @-others
 
 # Import dict for css mode.
 importDict = {}
@@ -720,8 +756,8 @@ keywordsDictDict = {
     "css_literal": css_literal_keywords_dict,
     "css_main": css_main_keywords_dict,
 }
-#@-<< css.py dictionaries >>
+# @-<< css.py dictionaries >>
 
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

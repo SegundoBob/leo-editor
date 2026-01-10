@@ -41,13 +41,16 @@ keywordsDictDict = {
 
 # Rules for pseudoplain_main ruleset.
 
+
 def pseudoplain_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="operator", begin="[[", end="]]",
-          delegate="pseudoplain::interior")
+    return colorer.match_span(s, i, kind="operator", begin="[[", end="]]", delegate="pseudoplain::interior")
+
 
 # Rules dict for pseudoplain_main ruleset.
 rulesDict1 = {
-    "[": [pseudoplain_rule0,],
+    "[": [
+        pseudoplain_rule0,
+    ],
 }
 
 rulesDict2 = {}

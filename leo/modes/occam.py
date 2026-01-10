@@ -219,164 +219,355 @@ keywordsDictDict = {
 
 # Rules for occam_main ruleset.
 
+
 def occam_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--")
+
 
 def occam_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#")
 
+
 def occam_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def occam_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def occam_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":=")
 
+
 def occam_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def occam_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">>")
 
+
 def occam_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<<")
+
 
 def occam_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<>")
 
+
 def occam_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="><")
+
 
 def occam_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def occam_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def occam_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def occam_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def occam_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def occam_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def occam_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def occam_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="\\")
+
 
 def occam_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def occam_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
+
 
 def occam_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
+
 def occam_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/\\")
+
 
 def occam_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="\\/")
 
+
 def occam_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def occam_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for occam_main ruleset.
 rulesDict1 = {
-    "!": [occam_rule20,],
-    "\"": [occam_rule3,],
-    "#": [occam_rule1,],
-    "'": [occam_rule2,],
-    "*": [occam_rule18,],
-    "+": [occam_rule14,],
-    "-": [occam_rule0, occam_rule15,],
-    ".": [occam_rule24,],
-    "/": [occam_rule16, occam_rule21,],
-    "0": [occam_rule24,],
-    "1": [occam_rule24,],
-    "2": [occam_rule24,],
-    "3": [occam_rule24,],
-    "4": [occam_rule24,],
-    "5": [occam_rule24,],
-    "6": [occam_rule24,],
-    "7": [occam_rule24,],
-    "8": [occam_rule24,],
-    "9": [occam_rule24,],
-    ":": [occam_rule4,],
-    "<": [occam_rule7, occam_rule8, occam_rule11, occam_rule13,],
-    "=": [occam_rule5,],
-    ">": [occam_rule6, occam_rule9, occam_rule10, occam_rule12,],
-    "?": [occam_rule19,],
-    "@": [occam_rule24,],
-    "A": [occam_rule24,],
-    "B": [occam_rule24,],
-    "C": [occam_rule24,],
-    "D": [occam_rule24,],
-    "E": [occam_rule24,],
-    "F": [occam_rule24,],
-    "G": [occam_rule24,],
-    "H": [occam_rule24,],
-    "I": [occam_rule24,],
-    "J": [occam_rule24,],
-    "K": [occam_rule24,],
-    "L": [occam_rule24,],
-    "M": [occam_rule24,],
-    "N": [occam_rule24,],
-    "O": [occam_rule24,],
-    "P": [occam_rule24,],
-    "Q": [occam_rule24,],
-    "R": [occam_rule24,],
-    "S": [occam_rule24,],
-    "T": [occam_rule24,],
-    "U": [occam_rule24,],
-    "V": [occam_rule24,],
-    "W": [occam_rule24,],
-    "X": [occam_rule24,],
-    "Y": [occam_rule24,],
-    "Z": [occam_rule24,],
-    "\\": [occam_rule17, occam_rule22,],
-    "a": [occam_rule24,],
-    "b": [occam_rule24,],
-    "c": [occam_rule24,],
-    "d": [occam_rule24,],
-    "e": [occam_rule24,],
-    "f": [occam_rule24,],
-    "g": [occam_rule24,],
-    "h": [occam_rule24,],
-    "i": [occam_rule24,],
-    "j": [occam_rule24,],
-    "k": [occam_rule24,],
-    "l": [occam_rule24,],
-    "m": [occam_rule24,],
-    "n": [occam_rule24,],
-    "o": [occam_rule24,],
-    "p": [occam_rule24,],
-    "q": [occam_rule24,],
-    "r": [occam_rule24,],
-    "s": [occam_rule24,],
-    "t": [occam_rule24,],
-    "u": [occam_rule24,],
-    "v": [occam_rule24,],
-    "w": [occam_rule24,],
-    "x": [occam_rule24,],
-    "y": [occam_rule24,],
-    "z": [occam_rule24,],
-    "~": [occam_rule23,],
+    "!": [
+        occam_rule20,
+    ],
+    "\"": [
+        occam_rule3,
+    ],
+    "#": [
+        occam_rule1,
+    ],
+    "'": [
+        occam_rule2,
+    ],
+    "*": [
+        occam_rule18,
+    ],
+    "+": [
+        occam_rule14,
+    ],
+    "-": [
+        occam_rule0,
+        occam_rule15,
+    ],
+    ".": [
+        occam_rule24,
+    ],
+    "/": [
+        occam_rule16,
+        occam_rule21,
+    ],
+    "0": [
+        occam_rule24,
+    ],
+    "1": [
+        occam_rule24,
+    ],
+    "2": [
+        occam_rule24,
+    ],
+    "3": [
+        occam_rule24,
+    ],
+    "4": [
+        occam_rule24,
+    ],
+    "5": [
+        occam_rule24,
+    ],
+    "6": [
+        occam_rule24,
+    ],
+    "7": [
+        occam_rule24,
+    ],
+    "8": [
+        occam_rule24,
+    ],
+    "9": [
+        occam_rule24,
+    ],
+    ":": [
+        occam_rule4,
+    ],
+    "<": [
+        occam_rule7,
+        occam_rule8,
+        occam_rule11,
+        occam_rule13,
+    ],
+    "=": [
+        occam_rule5,
+    ],
+    ">": [
+        occam_rule6,
+        occam_rule9,
+        occam_rule10,
+        occam_rule12,
+    ],
+    "?": [
+        occam_rule19,
+    ],
+    "@": [
+        occam_rule24,
+    ],
+    "A": [
+        occam_rule24,
+    ],
+    "B": [
+        occam_rule24,
+    ],
+    "C": [
+        occam_rule24,
+    ],
+    "D": [
+        occam_rule24,
+    ],
+    "E": [
+        occam_rule24,
+    ],
+    "F": [
+        occam_rule24,
+    ],
+    "G": [
+        occam_rule24,
+    ],
+    "H": [
+        occam_rule24,
+    ],
+    "I": [
+        occam_rule24,
+    ],
+    "J": [
+        occam_rule24,
+    ],
+    "K": [
+        occam_rule24,
+    ],
+    "L": [
+        occam_rule24,
+    ],
+    "M": [
+        occam_rule24,
+    ],
+    "N": [
+        occam_rule24,
+    ],
+    "O": [
+        occam_rule24,
+    ],
+    "P": [
+        occam_rule24,
+    ],
+    "Q": [
+        occam_rule24,
+    ],
+    "R": [
+        occam_rule24,
+    ],
+    "S": [
+        occam_rule24,
+    ],
+    "T": [
+        occam_rule24,
+    ],
+    "U": [
+        occam_rule24,
+    ],
+    "V": [
+        occam_rule24,
+    ],
+    "W": [
+        occam_rule24,
+    ],
+    "X": [
+        occam_rule24,
+    ],
+    "Y": [
+        occam_rule24,
+    ],
+    "Z": [
+        occam_rule24,
+    ],
+    "\\": [
+        occam_rule17,
+        occam_rule22,
+    ],
+    "a": [
+        occam_rule24,
+    ],
+    "b": [
+        occam_rule24,
+    ],
+    "c": [
+        occam_rule24,
+    ],
+    "d": [
+        occam_rule24,
+    ],
+    "e": [
+        occam_rule24,
+    ],
+    "f": [
+        occam_rule24,
+    ],
+    "g": [
+        occam_rule24,
+    ],
+    "h": [
+        occam_rule24,
+    ],
+    "i": [
+        occam_rule24,
+    ],
+    "j": [
+        occam_rule24,
+    ],
+    "k": [
+        occam_rule24,
+    ],
+    "l": [
+        occam_rule24,
+    ],
+    "m": [
+        occam_rule24,
+    ],
+    "n": [
+        occam_rule24,
+    ],
+    "o": [
+        occam_rule24,
+    ],
+    "p": [
+        occam_rule24,
+    ],
+    "q": [
+        occam_rule24,
+    ],
+    "r": [
+        occam_rule24,
+    ],
+    "s": [
+        occam_rule24,
+    ],
+    "t": [
+        occam_rule24,
+    ],
+    "u": [
+        occam_rule24,
+    ],
+    "v": [
+        occam_rule24,
+    ],
+    "w": [
+        occam_rule24,
+    ],
+    "x": [
+        occam_rule24,
+    ],
+    "y": [
+        occam_rule24,
+    ],
+    "z": [
+        occam_rule24,
+    ],
+    "~": [
+        occam_rule23,
+    ],
 }
 
 # x.rulesDictDict for occam mode.

@@ -204,161 +204,349 @@ keywordsDictDict = {
 
 # Rules for applescript_main ruleset.
 
+
 def applescript_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="(*", end="*)")
+
 
 def applescript_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--")
 
+
 def applescript_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def applescript_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def applescript_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="(")
 
+
 def applescript_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=")")
+
 
 def applescript_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def applescript_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def applescript_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def applescript_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def applescript_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def applescript_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def applescript_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def applescript_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def applescript_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def applescript_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def applescript_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def applescript_rule17(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="application[\\t\\s]+responses")
+
 
 def applescript_rule18(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="current[\\t\\s]+application")
 
+
 def applescript_rule19(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="white[\\t\\s]+space")
+
 
 def applescript_rule20(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+caps")
 
+
 def applescript_rule21(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="all[\\t\\s]+lowercase")
+
 
 def applescript_rule22(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="small[\\t\\s]+caps")
 
+
 def applescript_rule23(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="keyword3", regexp="missing[\\t\\s]+value")
+
 
 def applescript_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for applescript_main ruleset.
 rulesDict1 = {
-    "\"": [applescript_rule2,],
-    "&": [applescript_rule11,],
-    "'": [applescript_rule3, applescript_rule24,],
-    "(": [applescript_rule0, applescript_rule4,],
-    ")": [applescript_rule5,],
-    "*": [applescript_rule9,],
-    "+": [applescript_rule6,],
-    "-": [applescript_rule1, applescript_rule7,],
-    "/": [applescript_rule10,],
-    "0": [applescript_rule24,],
-    "1": [applescript_rule24,],
-    "2": [applescript_rule24,],
-    "3": [applescript_rule24,],
-    "4": [applescript_rule24,],
-    "5": [applescript_rule24,],
-    "6": [applescript_rule24,],
-    "7": [applescript_rule24,],
-    "8": [applescript_rule24,],
-    "9": [applescript_rule24,],
-    "<": [applescript_rule12, applescript_rule13,],
-    "=": [applescript_rule16,],
-    ">": [applescript_rule14, applescript_rule15,],
-    "@": [applescript_rule24,],
-    "A": [applescript_rule24,],
-    "B": [applescript_rule24,],
-    "C": [applescript_rule24,],
-    "D": [applescript_rule24,],
-    "E": [applescript_rule24,],
-    "F": [applescript_rule24,],
-    "G": [applescript_rule24,],
-    "H": [applescript_rule24,],
-    "I": [applescript_rule24,],
-    "J": [applescript_rule24,],
-    "K": [applescript_rule24,],
-    "L": [applescript_rule24,],
-    "M": [applescript_rule24,],
-    "N": [applescript_rule24,],
-    "O": [applescript_rule24,],
-    "P": [applescript_rule24,],
-    "Q": [applescript_rule24,],
-    "R": [applescript_rule24,],
-    "S": [applescript_rule24,],
-    "T": [applescript_rule24,],
-    "U": [applescript_rule24,],
-    "V": [applescript_rule24,],
-    "W": [applescript_rule24,],
-    "X": [applescript_rule24,],
-    "Y": [applescript_rule24,],
-    "Z": [applescript_rule24,],
-    "^": [applescript_rule8,],
-    "a": [applescript_rule17, applescript_rule20, applescript_rule21, applescript_rule24,],
-    "b": [applescript_rule24,],
-    "c": [applescript_rule18, applescript_rule24,],
-    "d": [applescript_rule24,],
-    "e": [applescript_rule24,],
-    "f": [applescript_rule24,],
-    "g": [applescript_rule24,],
-    "h": [applescript_rule24,],
-    "i": [applescript_rule24,],
-    "j": [applescript_rule24,],
-    "k": [applescript_rule24,],
-    "l": [applescript_rule24,],
-    "m": [applescript_rule23, applescript_rule24,],
-    "n": [applescript_rule24,],
-    "o": [applescript_rule24,],
-    "p": [applescript_rule24,],
-    "q": [applescript_rule24,],
-    "r": [applescript_rule24,],
-    "s": [applescript_rule22, applescript_rule24,],
-    "t": [applescript_rule24,],
-    "u": [applescript_rule24,],
-    "v": [applescript_rule24,],
-    "w": [applescript_rule19, applescript_rule24,],
-    "x": [applescript_rule24,],
-    "y": [applescript_rule24,],
-    "z": [applescript_rule24,],
+    "\"": [
+        applescript_rule2,
+    ],
+    "&": [
+        applescript_rule11,
+    ],
+    "'": [
+        applescript_rule3,
+        applescript_rule24,
+    ],
+    "(": [
+        applescript_rule0,
+        applescript_rule4,
+    ],
+    ")": [
+        applescript_rule5,
+    ],
+    "*": [
+        applescript_rule9,
+    ],
+    "+": [
+        applescript_rule6,
+    ],
+    "-": [
+        applescript_rule1,
+        applescript_rule7,
+    ],
+    "/": [
+        applescript_rule10,
+    ],
+    "0": [
+        applescript_rule24,
+    ],
+    "1": [
+        applescript_rule24,
+    ],
+    "2": [
+        applescript_rule24,
+    ],
+    "3": [
+        applescript_rule24,
+    ],
+    "4": [
+        applescript_rule24,
+    ],
+    "5": [
+        applescript_rule24,
+    ],
+    "6": [
+        applescript_rule24,
+    ],
+    "7": [
+        applescript_rule24,
+    ],
+    "8": [
+        applescript_rule24,
+    ],
+    "9": [
+        applescript_rule24,
+    ],
+    "<": [
+        applescript_rule12,
+        applescript_rule13,
+    ],
+    "=": [
+        applescript_rule16,
+    ],
+    ">": [
+        applescript_rule14,
+        applescript_rule15,
+    ],
+    "@": [
+        applescript_rule24,
+    ],
+    "A": [
+        applescript_rule24,
+    ],
+    "B": [
+        applescript_rule24,
+    ],
+    "C": [
+        applescript_rule24,
+    ],
+    "D": [
+        applescript_rule24,
+    ],
+    "E": [
+        applescript_rule24,
+    ],
+    "F": [
+        applescript_rule24,
+    ],
+    "G": [
+        applescript_rule24,
+    ],
+    "H": [
+        applescript_rule24,
+    ],
+    "I": [
+        applescript_rule24,
+    ],
+    "J": [
+        applescript_rule24,
+    ],
+    "K": [
+        applescript_rule24,
+    ],
+    "L": [
+        applescript_rule24,
+    ],
+    "M": [
+        applescript_rule24,
+    ],
+    "N": [
+        applescript_rule24,
+    ],
+    "O": [
+        applescript_rule24,
+    ],
+    "P": [
+        applescript_rule24,
+    ],
+    "Q": [
+        applescript_rule24,
+    ],
+    "R": [
+        applescript_rule24,
+    ],
+    "S": [
+        applescript_rule24,
+    ],
+    "T": [
+        applescript_rule24,
+    ],
+    "U": [
+        applescript_rule24,
+    ],
+    "V": [
+        applescript_rule24,
+    ],
+    "W": [
+        applescript_rule24,
+    ],
+    "X": [
+        applescript_rule24,
+    ],
+    "Y": [
+        applescript_rule24,
+    ],
+    "Z": [
+        applescript_rule24,
+    ],
+    "^": [
+        applescript_rule8,
+    ],
+    "a": [
+        applescript_rule17,
+        applescript_rule20,
+        applescript_rule21,
+        applescript_rule24,
+    ],
+    "b": [
+        applescript_rule24,
+    ],
+    "c": [
+        applescript_rule18,
+        applescript_rule24,
+    ],
+    "d": [
+        applescript_rule24,
+    ],
+    "e": [
+        applescript_rule24,
+    ],
+    "f": [
+        applescript_rule24,
+    ],
+    "g": [
+        applescript_rule24,
+    ],
+    "h": [
+        applescript_rule24,
+    ],
+    "i": [
+        applescript_rule24,
+    ],
+    "j": [
+        applescript_rule24,
+    ],
+    "k": [
+        applescript_rule24,
+    ],
+    "l": [
+        applescript_rule24,
+    ],
+    "m": [
+        applescript_rule23,
+        applescript_rule24,
+    ],
+    "n": [
+        applescript_rule24,
+    ],
+    "o": [
+        applescript_rule24,
+    ],
+    "p": [
+        applescript_rule24,
+    ],
+    "q": [
+        applescript_rule24,
+    ],
+    "r": [
+        applescript_rule24,
+    ],
+    "s": [
+        applescript_rule22,
+        applescript_rule24,
+    ],
+    "t": [
+        applescript_rule24,
+    ],
+    "u": [
+        applescript_rule24,
+    ],
+    "v": [
+        applescript_rule24,
+    ],
+    "w": [
+        applescript_rule19,
+        applescript_rule24,
+    ],
+    "x": [
+        applescript_rule24,
+    ],
+    "y": [
+        applescript_rule24,
+    ],
+    "z": [
+        applescript_rule24,
+    ],
 }
 
 # x.rulesDictDict for applescript mode.

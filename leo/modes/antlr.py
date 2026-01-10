@@ -90,97 +90,240 @@ keywordsDictDict = {
 
 # Rules for antlr_main ruleset.
 
+
 def antlr_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/",
-          delegate="java::javadoc")
+    return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/", delegate="java::javadoc")
+
 
 def antlr_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def antlr_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="//")
+
 
 def antlr_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def antlr_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def antlr_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def antlr_rule6(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for antlr_main ruleset.
 rulesDict1 = {
-    "\"": [antlr_rule3,],
-    "/": [antlr_rule0, antlr_rule1, antlr_rule2,],
-    "0": [antlr_rule6,],
-    "1": [antlr_rule6,],
-    "2": [antlr_rule6,],
-    "3": [antlr_rule6,],
-    "4": [antlr_rule6,],
-    "5": [antlr_rule6,],
-    "6": [antlr_rule6,],
-    "7": [antlr_rule6,],
-    "8": [antlr_rule6,],
-    "9": [antlr_rule6,],
-    ":": [antlr_rule5,],
-    "@": [antlr_rule6,],
-    "A": [antlr_rule6,],
-    "B": [antlr_rule6,],
-    "C": [antlr_rule6,],
-    "D": [antlr_rule6,],
-    "E": [antlr_rule6,],
-    "F": [antlr_rule6,],
-    "G": [antlr_rule6,],
-    "H": [antlr_rule6,],
-    "I": [antlr_rule6,],
-    "J": [antlr_rule6,],
-    "K": [antlr_rule6,],
-    "L": [antlr_rule6,],
-    "M": [antlr_rule6,],
-    "N": [antlr_rule6,],
-    "O": [antlr_rule6,],
-    "P": [antlr_rule6,],
-    "Q": [antlr_rule6,],
-    "R": [antlr_rule6,],
-    "S": [antlr_rule6,],
-    "T": [antlr_rule6,],
-    "U": [antlr_rule6,],
-    "V": [antlr_rule6,],
-    "W": [antlr_rule6,],
-    "X": [antlr_rule6,],
-    "Y": [antlr_rule6,],
-    "Z": [antlr_rule6,],
-    "a": [antlr_rule6,],
-    "b": [antlr_rule6,],
-    "c": [antlr_rule6,],
-    "d": [antlr_rule6,],
-    "e": [antlr_rule6,],
-    "f": [antlr_rule6,],
-    "g": [antlr_rule6,],
-    "h": [antlr_rule6,],
-    "i": [antlr_rule6,],
-    "j": [antlr_rule6,],
-    "k": [antlr_rule6,],
-    "l": [antlr_rule6,],
-    "m": [antlr_rule6,],
-    "n": [antlr_rule6,],
-    "o": [antlr_rule6,],
-    "p": [antlr_rule6,],
-    "q": [antlr_rule6,],
-    "r": [antlr_rule6,],
-    "s": [antlr_rule6,],
-    "t": [antlr_rule6,],
-    "u": [antlr_rule6,],
-    "v": [antlr_rule6,],
-    "w": [antlr_rule6,],
-    "x": [antlr_rule6,],
-    "y": [antlr_rule6,],
-    "z": [antlr_rule6,],
-    "|": [antlr_rule4,],
+    "\"": [
+        antlr_rule3,
+    ],
+    "/": [
+        antlr_rule0,
+        antlr_rule1,
+        antlr_rule2,
+    ],
+    "0": [
+        antlr_rule6,
+    ],
+    "1": [
+        antlr_rule6,
+    ],
+    "2": [
+        antlr_rule6,
+    ],
+    "3": [
+        antlr_rule6,
+    ],
+    "4": [
+        antlr_rule6,
+    ],
+    "5": [
+        antlr_rule6,
+    ],
+    "6": [
+        antlr_rule6,
+    ],
+    "7": [
+        antlr_rule6,
+    ],
+    "8": [
+        antlr_rule6,
+    ],
+    "9": [
+        antlr_rule6,
+    ],
+    ":": [
+        antlr_rule5,
+    ],
+    "@": [
+        antlr_rule6,
+    ],
+    "A": [
+        antlr_rule6,
+    ],
+    "B": [
+        antlr_rule6,
+    ],
+    "C": [
+        antlr_rule6,
+    ],
+    "D": [
+        antlr_rule6,
+    ],
+    "E": [
+        antlr_rule6,
+    ],
+    "F": [
+        antlr_rule6,
+    ],
+    "G": [
+        antlr_rule6,
+    ],
+    "H": [
+        antlr_rule6,
+    ],
+    "I": [
+        antlr_rule6,
+    ],
+    "J": [
+        antlr_rule6,
+    ],
+    "K": [
+        antlr_rule6,
+    ],
+    "L": [
+        antlr_rule6,
+    ],
+    "M": [
+        antlr_rule6,
+    ],
+    "N": [
+        antlr_rule6,
+    ],
+    "O": [
+        antlr_rule6,
+    ],
+    "P": [
+        antlr_rule6,
+    ],
+    "Q": [
+        antlr_rule6,
+    ],
+    "R": [
+        antlr_rule6,
+    ],
+    "S": [
+        antlr_rule6,
+    ],
+    "T": [
+        antlr_rule6,
+    ],
+    "U": [
+        antlr_rule6,
+    ],
+    "V": [
+        antlr_rule6,
+    ],
+    "W": [
+        antlr_rule6,
+    ],
+    "X": [
+        antlr_rule6,
+    ],
+    "Y": [
+        antlr_rule6,
+    ],
+    "Z": [
+        antlr_rule6,
+    ],
+    "a": [
+        antlr_rule6,
+    ],
+    "b": [
+        antlr_rule6,
+    ],
+    "c": [
+        antlr_rule6,
+    ],
+    "d": [
+        antlr_rule6,
+    ],
+    "e": [
+        antlr_rule6,
+    ],
+    "f": [
+        antlr_rule6,
+    ],
+    "g": [
+        antlr_rule6,
+    ],
+    "h": [
+        antlr_rule6,
+    ],
+    "i": [
+        antlr_rule6,
+    ],
+    "j": [
+        antlr_rule6,
+    ],
+    "k": [
+        antlr_rule6,
+    ],
+    "l": [
+        antlr_rule6,
+    ],
+    "m": [
+        antlr_rule6,
+    ],
+    "n": [
+        antlr_rule6,
+    ],
+    "o": [
+        antlr_rule6,
+    ],
+    "p": [
+        antlr_rule6,
+    ],
+    "q": [
+        antlr_rule6,
+    ],
+    "r": [
+        antlr_rule6,
+    ],
+    "s": [
+        antlr_rule6,
+    ],
+    "t": [
+        antlr_rule6,
+    ],
+    "u": [
+        antlr_rule6,
+    ],
+    "v": [
+        antlr_rule6,
+    ],
+    "w": [
+        antlr_rule6,
+    ],
+    "x": [
+        antlr_rule6,
+    ],
+    "y": [
+        antlr_rule6,
+    ],
+    "z": [
+        antlr_rule6,
+    ],
+    "|": [
+        antlr_rule4,
+    ],
 }
 
 # x.rulesDictDict for antlr mode.
