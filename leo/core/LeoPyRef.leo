@@ -8,24 +8,18 @@
 <vnodes>
 <v t="ekr.20051031040240"><vh>Startup</vh>
 <v t="ekr.20080412053100.5"><vh>@settings</vh>
+<v t="ekr.20220904210247.1"><vh>@@@enabled-plugins</vh></v>
+<v t="ekr.20260110061420.1"><vh>@bool beautify-python-code-on-write = True</vh></v>
 <v t="ekr.20251214042454.1"><vh>@bool body-pane-wraps = False</vh></v>
 <v t="ekr.20140902155015.18674"><vh>@bool qt-use-scintilla = False</vh></v>
 <v t="ekr.20250715195948.1"><vh>@bool report-changed-at-clean-nodes = True</vh></v>
 <v t="ekr.20221129012213.1"><vh>@bool run-flake8-on-write = False</vh></v>
+<v t="ekr.20260110024304.1"><vh>@bool write-black-sentinels = True</vh></v>
 <v t="ekr.20210530065000.2"><vh>@data exec-script-commands</vh></v>
 <v t="ekr.20210530065000.3"><vh>@data exec-script-patterns</vh></v>
 <v t="ekr.20150425145248.1"><vh>@data history-list</vh></v>
-<v t="ekr.20240107154430.1"><vh>@int max-find-long-lines-length = 90</vh></v>
-<v t="ekr.20220904210247.1"><vh>@@@enabled-plugins</vh></v>
+<v t="ekr.20240107154430.1"><vh>@int max-find-long-lines-length = 120</vh></v>
 <v t="ekr.20140916101314.19538"><vh>@string target_language = python</vh></v>
-<v t="ekr.20200212095937.1"><vh>Beautify command settings</vh>
-<v t="ekr.20200212095937.2"><vh>@bool beautify-allow-joined-strings = False</vh></v>
-<v t="ekr.20200212095937.3"><vh>@bool beautify-keep-comment-indentation = True</vh></v>
-<v t="ekr.20260108172912.1"><vh>@bool beautify-python-code-on-write = False</vh></v>
-<v t="ekr.20260110024304.1"><vh>@bool write-black-sentinels = True</vh></v>
-<v t="ekr.20200212095937.5"><vh>@int beautify-max-join-line-length = 0</vh></v>
-<v t="ekr.20200212095937.6"><vh>@int beautify-max-split-line-length = 0</vh></v>
-</v>
 <v t="ekr.20160122104332.1"><vh>Buttons &amp; commands</vh>
 <v t="ekr.20150502050609.1"><vh>@button backup</vh></v>
 <v t="ekr.20170811173924.1"><vh>@button backup-repo</vh></v>
@@ -38,11 +32,6 @@
 <v t="ekr.20240417150035.1"><vh>&lt;&lt; old commands &gt;&gt;</vh></v>
 <v t="ekr.20230511074046.1"><vh>&lt;&lt; prefixes &gt;&gt;</vh></v>
 </v>
-</v>
-<v t="ekr.20210110092457.1"><vh>leojs buttons</vh>
-<v t="ekr.20210110092457.5"><vh>@@@button cov @key=ctrl-6</vh></v>
-<v t="ekr.20210110092457.6"><vh>@@@button moz @key=ctrl-7</vh></v>
-<v t="ekr.20210110092457.7"><vh>@@@button unit</vh></v>
 </v>
 </v>
 <v t="ekr.20170427114412.1"><vh>scripts</vh>
@@ -133,7 +122,6 @@
 <v t="ekr.20120420054855.14241"><vh>@file leoSessions.py</vh></v>
 <v t="ekr.20080708094444.1"><vh>@file leoShadow.py</vh></v>
 <v t="ekr.20180121041003.1"><vh>@file leoTips.py</vh></v>
-<v t="ekr.20240105140814.1"><vh>@file leoTokens.py</vh></v>
 <v t="ekr.20031218072017.3603"><vh>@file leoUndo.py</vh></v>
 <v t="ekr.20131109170017.16504"><vh>@file leoVim.py</vh></v>
 </v>
@@ -637,7 +625,6 @@
 <v t="ekr.20210820203000.1"><vh>@file ../unittests/core/test_leoserver.py</vh></v>
 <v t="ekr.20210902092024.1"><vh>@file ../unittests/core/test_leoShadow.py</vh></v>
 <v t="ekr.20230722095455.1"><vh>@file ../unittests/core/test_leoTest2.py</vh></v>
-<v t="ekr.20240105151507.1"><vh>@file ../unittests/core/test_leoTokens.py</vh></v>
 <v t="ekr.20210906141410.1"><vh>@file ../unittests/core/test_leoUndo.py</vh></v>
 <v t="ekr.20210910072917.1"><vh>@file ../unittests/core/test_leoVim.py</vh></v>
 </v>
@@ -1012,10 +999,11 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
 
 &lt;/xsl:stylesheet&gt;
 </t>
-<t tx="ekr.20150425145248.1">check-leo
-execute-script
+<t tx="ekr.20150425145248.1">execute-script
+pylint
+
+# check-leo
 # patch-pyflakes
-# pylint
 
 # restart-leo
 # ctrl-click-at-cursor
@@ -1277,15 +1265,6 @@ efc.GitDiffController(c).diff_two_revs(
 )
 </t>
 <t tx="ekr.20190607124533.1"></t>
-<t tx="ekr.20200212095937.1"></t>
-<t tx="ekr.20200212095937.2">True:  allow joined lines to contain strings.
-False: (Recommended by EKR): Retain alignment of strings.</t>
-<t tx="ekr.20200212095937.3">True: Retain indentation of overindented stand-alone comment lines.</t>
-<t tx="ekr.20200212095937.5"># At present I am of the opinion that joining lines is usually a bad idea.
-
-Should be &lt;= beautify-max-split-line-length.
-Zero suppresses all line joining.</t>
-<t tx="ekr.20200212095937.6">Zero suppresses all line splitting.</t>
 <t tx="ekr.20200222083959.1">import logging
 rootLogger = logging.getLogger('')
 rootLogger.setLevel(logging.DEBUG)
@@ -1371,24 +1350,6 @@ for path in paths:
             else:
                 d [h] = True
 print('done')</t>
-<t tx="ekr.20210110092457.1">@language python
-@nosearch
-</t>
-<t tx="ekr.20210110092457.5">g.cls()
-import os
-os.chdir(os.path.join(g.app.loadDir, '..', '..'))
-# os.system('py-cov-find')
-command = r'pytest --cov-report html --cov-report term-missing --cov leo.core.leoFind leo\core\leoFind.py'
-os.system(command)
-g.es_print('done')</t>
-<t tx="ekr.20210110092457.6">import os
-# os.system('moz htmlcov/leo_core_leoFind_py.html')
-os.chdir(os.path.join(g.app.loadDir, '..', '..'))
-os.system('moz htmlcov/leo_core_leoFind_py.html')</t>
-<t tx="ekr.20210110092457.7">g.cls()
-import os
-os.system('python -m unittest leoFind.py')
-g.es_print('done')</t>
 <t tx="ekr.20210118013157.1">"""
 Convert defs in LeoFind to pep8 names.
 - Don't change defs containing underscores.
@@ -1965,7 +1926,7 @@ assert core_p and command_p and globals_p
     # 'toString', 'toUnicode', 'trace', 'translateString',
     # 'underline', 'undoHelper', 'unl', 'values', 'visit',
     # 'warn', 'warning', 'word',</t>
-<t tx="ekr.20220823195205.1" _mod_time="4741da58145e5f5f2e2e">"""
+<t tx="ekr.20220823195205.1" _mod_time="4741da588ff36c8fc82e">"""
 Stand alone GUI free index builder for Leo's full text search system::
 
   python leoftsindex.py &lt;file1&gt; &lt;file2&gt; &lt;file3&gt;...
@@ -1999,6 +1960,7 @@ node's body is assumed to be a simple text listing of paths to .leo files).
 """
 
 import sys
+
 # add folder containing 'leo' folder to path
 # sys.path.append("/home/tbrown/Package/leo/bzr/leo.repo/trunk")
 import leo.core.leoBridge as leoBridge
@@ -2009,7 +1971,7 @@ controller = leoBridge.controller(
     loadPlugins=False,  # True: attempt to load plugins.
     readSettings=False,  # True: read standard settings files.
     silent=False,  # True: don't print signon messages.
-    verbose=False
+    verbose=False,
 )
 g = controller.globals()
 
@@ -2027,7 +1989,6 @@ done = set()  # outlines scanned, to avoid repetition repetition
 todo = list(files)
 
 while todo:
-
     item = todo.pop(0)
 
     print("INDEX: %s" % item)
@@ -2060,7 +2021,6 @@ while todo:
         files = [fn]
 
     for fn in files:
-
         # file names may still have '#' if taken from a node list
         real_name = fn.split('#', 1)[0]
         if real_name in done:
@@ -2728,7 +2688,8 @@ if new_b != proj_p.b:
 <t tx="ekr.20251214042454.1">True: Wrap body text.
 
 </t>
-<t tx="ekr.20260108172912.1"></t>
-<t tx="ekr.20260110024304.1">New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.</t>
+<t tx="ekr.20260110024304.1"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
+# This setting is strongly recommended so that you can use ruff format to beautify your code.</t>
+<t tx="ekr.20260110061420.1"></t>
 </tnodes>
 </leo_file>

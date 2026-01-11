@@ -2,6 +2,7 @@
 # @+node:ekr.20181014073705.1: * @file ../../run_pytest_tests.py
 import sys
 import pytest
+
 path = sys.argv[-1]
 args = [
     '--quiet',

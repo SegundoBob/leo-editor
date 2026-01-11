@@ -146,6 +146,7 @@ leo/test/pylint-leo-rc.txt
 leo/test/.leo
 leo/test/ropeProject/*.*
 leo/test/scriptFile.py
+leo/test/beautify_node.py
 leo/test/leoProfile.txt
 leo/test/testzip.zip
 leo/test/*.html

@@ -4222,7 +4222,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             #         # In case we bring back QtSvg again)
             #         if s.startswith('<svg'):
             #             if QtSvg is None:
-            #                 g.es(NO_SVG_WIDGET_MSG, color = 'red')
+            #                 g.es(NO_SVG_WIDGET_MSG, color='red')
             #                 return
             #             else:
             #                 self.update_svg(s, keywords)
@@ -4647,7 +4647,6 @@ class ViewRenderedController3(QtWidgets.QWidget):
             # @-<< identify_code_blocks >>
             # @+<< fill_chunks >>
             # @+node:TomP.20200112103729.5: *7* << fill_chunks >>
-
             _cleanline = line.strip()
             _starts_with_at = not _got_language and line and line[0] == '@' and _cleanline != '@' and _cleanline != '@c'
 

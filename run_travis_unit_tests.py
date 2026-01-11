@@ -4,6 +4,7 @@ import os
 import sys
 import traceback
 import unittest
+
 tag = 'run_travis_unit_tests.py'
 try:
     base_dir = os.path.dirname(__file__)

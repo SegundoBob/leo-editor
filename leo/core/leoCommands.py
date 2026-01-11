@@ -693,12 +693,12 @@ class Commands:
     # @+node:ekr.20250508044308.1: *3* @cmd beautify-tree
     @cmd('beautify-tree')
     def beautify_tree_command(self, event: LeoKeyEvent = None) -> None:
-        """Undoably beautify c.p and its subtree."""
+        """
+        Undoably beautify c.p and its subtree.
+        This command can be very slow.
+        """
         c = self
-        from leo.core.leoTokens import TokenBasedOrange
-
-        tbo = TokenBasedOrange()
-        tbo.beautify_script_tree(c.p)
+        c.beautify_script_tree(c.p)
 
     # @+node:ekr.20210530065748.1: *3* @cmd c.execute-general-script
     @cmd('execute-general-script')
@@ -1313,24 +1313,30 @@ class Commands:
         script_p = p or c.p  # Only for error reporting below.
 
         # Compute flags
-        beautify_flag = language == 'python' and c.config.getBool('beautify-python-code-on-write', default=False)
-        pyflakes_flag = (
-            runPyflakes and language == 'python' and c.config.getBool('run-pyflakes-on-write', default=False)
+        # fmt: off
+        beautify_flag = (
+            language == 'python'
+            and c.config.getBool('beautify-python-code-on-write', default=False)
         )
+        pyflakes_flag = (
+            runPyflakes
+            and language == 'python'
+            and c.config.getBool('run-pyflakes-on-write', default=False)
+        )
+        # fmt: on
         if not script and language not in ('jupytext', 'python'):  # #4197, #4226.
             w = c.frame.body.wrapper
             # For non-python languages...
             valid = (
                 # There must be a selection,
-                w
-                and w.getSelectedText().strip()
+                w and w.getSelectedText().strip()
                 # and the selection must apply to p,
                 and p == c.p
                 # and the 'useSelectedText` kwarg must be True,
                 and useSelectedText
                 # and script *won't* be expanded to the entire body.
                 and not c.forceExecuteEntireBody
-            )
+            )  # fmt: skip
             if not valid:
                 message = f"Must select text to execute {language} script"
                 g.es_print(message, color='blue')
@@ -1338,10 +1344,7 @@ class Commands:
 
         # #4350: Optionally beautify each node in script_p's tree separately.
         if beautify_flag and not script and not g.unitTesting:
-            from leo.core.leoTokens import TokenBasedOrange
-
-            tbo = TokenBasedOrange()
-            tbo.beautify_script_tree(script_p)
+            c.beautify_script_tree(c.p)
 
         # Compute the script if necessary.
         if not script:
@@ -5305,7 +5308,122 @@ class Commands:
         finally:
             c.redraw()
 
-    # @+node:ekr.20171124084149.1: *3* c.Scripting utils
+    # @+node:ekr.20171124084149.1: *3* c.Scripting/beautifier utils
+    # @+node:ekr.20260110090421.1: *4* c.beautify_with_ruff
+    def beautify_with_ruff(self, root: Position, filename: str) -> bool:
+        """
+        Use ruff format to format a temp file.
+        Return True if there were no exceptions.
+        """
+        c = self
+
+        # Calculate the arguments to ruff format.
+        args = ['--silent']  # '--verbose',  # Useful only for debugging.
+
+        # Override the line length only if given explicitly.
+        # The default in Leo's pyproject.toml is 120.
+        line_length = c.config.getInt('black-line-length')
+        if line_length and line_length > 0:
+            args.append(f"--config line-length={line_length}")
+
+        # Use Leo's default pyproject.toml by default.
+        default_toml = f"{g.app.leoEditorDir}{os.sep}pyproject.toml"
+        toml = c.config.getString('black-toml')
+        toml_s = toml if toml and os.path.exists(toml) else default_toml
+        args.append(f"--config {toml_s}")
+
+        # Calculate the ruff command.
+        isWindows = sys.platform.startswith('win')
+        python = 'py' if isWindows else 'python'
+        command = f"{python} -m ruff format {' '.join(args)} {filename}"
+
+        # Run the command.
+        try:
+            subprocess.Popen(command, shell=True).communicate()  # Wait for results.
+            return True
+        except Exception:
+            g.es_exception()
+            return False
+
+    # @+node:ekr.20260110083713.1: *4* c.beautify_script_tree
+    def beautify_script_tree(self, root: Position) -> None:
+        """Undoably beautify root's entire tree."""
+        c = root.v.context
+        u, undoType = c.undoer, 'beautify-script'
+        first_p = c.p
+        n_changed = 0
+        for p in root.self_and_subtree():
+            bunch = u.beforeChangeNodeContents(p)
+            changed = self.beautify_script_node(p)
+            if changed:
+                if n_changed == 0:  # #4443.
+                    u.beforeChangeGroup(first_p, undoType)
+                n_changed += 1
+                u.afterChangeNodeContents(p, undoType, bunch)
+        if n_changed:
+            u.afterChangeGroup(root, undoType)
+            c.redraw(root)
+
+    # @+node:ekr.20260110084856.1: *5* c.beautify_script_node
+    def beautify_script_node(self, root: Position) -> bool:
+        """Beautify a single node"""
+        c = self
+
+        # Patterns for lines that must be replaced.
+        at_pat = re.compile(r'(\s*)@(.*)')  # @language, @others, etc.
+        section_ref_pat = re.compile(r'(\s*)\<\<(.+)\>\>(.*)')
+        nobeautify_pat = re.compile(r'(\s*)\@nobeautify(.*)')
+        trailing_ws_pat = re.compile(r'(.*)#(.*)')
+
+        # Part 1: A hack: munge @others, @language, and section references.
+        indices: list[int] = []  # Indices of replaced lines.
+        contents: list[str] = []  # Contents after replacements.
+        for i, s in enumerate(g.splitLines(root.b)):
+            if m := at_pat.match(s):
+                contents.append(f"{m.group(1)}# @{m.group(2)}\n")
+                indices.append(i)
+            elif m := section_ref_pat.match(s):
+                contents.append(f"{m.group(1)}pass\n")
+                indices.append(i)
+            elif m := nobeautify_pat.match(s):
+                return False
+            else:
+                contents.append(s)
+
+        # Part 2: Beautify.
+        test_dir = g.finalize_join(g.app.leoEditorDir, 'leo', 'test')
+        path = g.finalize_join(test_dir, 'beautify_node.py')
+        old_contents = ''.join(contents).rstrip() + '\n\n'
+        try:
+            with open(path, 'w') as f:
+                f.write(old_contents)
+        except Exception as e:
+            print(f"exception writing: {path}:\n{e}")
+            # g.es_exception()
+            return False
+
+        c.beautify_with_ruff(root, path)
+        results_s: str = g.readFile(path)
+
+        # Part 3: Undo replacements, regularize comments and clean trailing ws.
+        body_lines: list[str] = g.splitLines(root.b)
+        results: list[str] = g.splitLines(results_s)
+        for i in indices:
+            try:
+                old_line = body_lines[i]
+                if m := trailing_ws_pat.match(old_line):
+                    old_line = f"{m.group(1).rstrip()}  #{m.group(2)}"
+                results[i] = old_line.rstrip() + '\n'
+            except IndexError:
+                return False  # This can happen.
+
+        # Part 4: Update the body if necessary.
+        new_body = ''.join(results).rstrip() + '\n'
+        changed = root.b.rstrip() != new_body.rstrip()
+        if changed:
+            root.b = new_body
+        return changed
+
     # @+node:ekr.20160201072634.1: *4* c.cloneFindByPredicate
     def cloneFindByPredicate(
         self,

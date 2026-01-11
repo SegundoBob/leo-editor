@@ -40,65 +40,6 @@ def beautifyCCode(event: LeoKeyEvent) -> None:
         CPrettyPrinter(c).pretty_print_tree(c.p)
 
 
-# @+node:ekr.20200107165628.1: *4* beautify-file-diff
-@g.command('diff-beautify-files')
-@g.command('beautify-files-diff')
-def orange_diff_files(event: LeoKeyEvent) -> None:
-    """
-    Show the diffs that would result from beautifying the external files at
-    c.p.
-    """
-    c = event.get('c')
-    if not c or not c.p:
-        return
-    t1 = time.process_time()
-    tag = 'beautify-files-diff'
-    g.es(f"{tag}...")
-    settings = orange_settings(c)
-    roots = g.findRootsWithPredicate(c, c.p)
-    for root in roots:
-        filename = c.fullPath(root)
-        if os.path.exists(filename):
-            print('')
-            print(f"{tag}: {g.shortFileName(filename)}")
-            changed = leoAst.Orange(settings=settings).beautify_file_diff(filename)
-            changed_s = 'changed' if changed else 'unchanged'
-            g.es(f"{changed_s:>9}: {g.shortFileName(filename)}")
-        else:
-            print('')
-            print(f"{tag}: file not found:{filename}")
-            g.es(f"file not found:\n{filename}")
-    t2 = time.process_time()
-    print('')
-    g.es_print(f"{tag}: {len(roots)} file{g.plural(len(roots))} in {t2 - t1:5.2f} sec.")
-
-
-# @+node:ekr.20200107165603.1: *4* beautify-files
-@g.command('beautify-files')
-def orange_files(event: LeoKeyEvent) -> None:
-    """beautify one or more files at c.p."""
-    c = event.get('c')
-    if not c or not c.p:
-        return
-    t1 = time.process_time()
-    tag = 'beautify-files'
-    g.es(f"{tag}...")
-    settings = orange_settings(c)
-    roots = g.findRootsWithPredicate(c, c.p)
-    n_changed = 0
-    for root in roots:
-        filename = c.fullPath(root)
-        if os.path.exists(filename):
-            changed = leoAst.Orange(settings=settings).beautify_file(filename)
-            if changed:
-                n_changed += 1
-        else:
-            g.es_print(f"file not found: {filename}")
-    t2 = time.process_time()
-    print('')
-    g.es_print(f"total files: {len(roots)}, changed files: {n_changed}, in {t2 - t1:5.2f} sec.")
-
-
 # @+node:ekr.20200103055814.1: *4* blacken-files
 @g.command('blacken-files')
 def blacken_files(event: LeoKeyEvent) -> None:
@@ -242,36 +183,6 @@ def fstringify_files_silent(event: LeoKeyEvent) -> None:
     )
 
 
-# @+node:ekr.20200108045048.1: *4* orange_settings
-def orange_settings(c: Cmdr) -> dict[str, object]:
-    """Return a dictionary of settings for the leo.core.leoAst.Orange class."""
-    allow_joined_strings = c.config.getBool('beautify-allow-joined-strings', default=False)
-    n_max_join = c.config.getInt('beautify-max-join-line-length')
-    max_join_line_length = 88 if n_max_join is None else n_max_join
-    n_max_split = c.config.getInt('beautify-max-split-line-length')
-    max_split_line_length = 88 if n_max_split is None else n_max_split
-    # Join <= Split.
-    # pylint: disable=consider-using-min-builtin
-    if max_join_line_length > max_split_line_length:
-        max_join_line_length = max_split_line_length
-    return {
-        'allow_joined_strings': allow_joined_strings,
-        'max_join_line_length': max_join_line_length,
-        'max_split_line_length': max_split_line_length,
-        'tab_width': abs(c.tab_width),
-    }
-
-
-# @+node:ekr.20191028140926.1: *3* Beautify:test functions
-# @+node:ekr.20191029184103.1: *4* function: show
-def show(obj: object, tag: str, dump: bool) -> None:
-    print(f"{tag}...\n")
-    if dump:
-        g.printObj(obj)
-    else:
-        print(obj)
-
-
 # @+node:ekr.20150602154951.1: *3* function: should_beautify
 def should_beautify(p: Position) -> bool:
     """
@@ -310,6 +221,15 @@ def should_beautify(p: Position) -> bool:
 def should_kill_beautify(p: Position) -> bool:
     """Return True if p.b contains @killbeautify"""
     return p.findDirective('killbeautify')
+
+
+# @+node:ekr.20191029184103.1: *3* function: show
+def show(obj: object, tag: str, dump: bool) -> None:
+    print(f"{tag}...\n")
+    if dump:
+        g.printObj(obj)
+    else:
+        print(obj)
 
 
 # @+node:ekr.20110917174948.6903: ** class CPrettyPrinter
