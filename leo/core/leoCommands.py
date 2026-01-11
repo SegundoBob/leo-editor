@@ -5347,11 +5347,10 @@ class Commands:
 
     # @+node:ekr.20260110083713.1: *4* c.beautify_script_tree
     def beautify_script_tree(self, root: Position) -> None:
-        """Undoably beautify root's entire tree."""
+        """beautify root's entire tree. This is not undoable."""
         c = root.v.context
         at = c.atFileCommands
         p = c.p
-        ### u, undoType = c.undoer, 'beautify-script'
         # Compute the path to the temp file.
         test_dir = g.finalize_join(g.app.leoEditorDir, 'leo', 'test')
         path = g.finalize_join(test_dir, 'beautify_node.py')
@@ -5360,30 +5359,24 @@ class Commands:
         if not ok:
             return
         c.beautify_with_ruff(root, path)
-        results: str = g.readFile(path)
-        if old_contents != results:
-            g.printObj(old_contents, tag='old')
-            g.printObj(results, tag='new')
-            # Update root's tree.
-            d: dict[str, VNode] = {}
-            for p in root.self_and_subtree():
-                d[p.v.gnx] = p.v
-            at.fast_read_into_root(c, results, gnx2vnode=d, path=None, root=root)
-            c.redraw(root)
+        results: str = g.readFile(path).replace('\r', '')
+        if old_contents == results:
+            return
 
-        # first_p = c.p
-        # n_changed = 0
-        # for p in root.self_and_subtree():
-        # bunch = u.beforeChangeNodeContents(p)
-        # changed = self.beautify_script_node(p)
-        # if changed:
-        # if n_changed == 0:  # #4443.
-        # u.beforeChangeGroup(first_p, undoType)
-        # n_changed += 1
-        # u.afterChangeNodeContents(p, undoType, bunch)
-        # if n_changed:
-        # u.afterChangeGroup(root, undoType)
-        # c.redraw(root)
+        # g.printObj(old_contents, tag='Old')
+        # g.printObj(results, tag='New')
+
+        # Update root's tree.
+        root_h = root.h
+        d: dict[str, VNode] = {}
+        for p in root.self_and_subtree():
+            d[p.v.gnx] = p.v
+        ok = at.fast_read_into_root(c, results, gnx2vnode=d, path=None, root=root)
+        if not ok:
+            g.trace('at.fast_read_into_root failed')  # Should not happen.
+            return
+        c.redraw()
+        g.es_print(f"beautified: {root_h}", color='blue')
 
     # @+node:ekr.20160201072634.1: *4* c.cloneFindByPredicate
     def cloneFindByPredicate(
