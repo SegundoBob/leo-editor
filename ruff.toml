@@ -2,6 +2,9 @@
 #@+node:ekr.20240406013108.1: * @file ../../ruff.toml
 #@@language toml
 
+# This file includes options only for the ruff linter.
+# pyproject.toml contains all `ruff format` options.
+
 [lint]
 ignore = [
     "E402", # Module level import not at top of file
