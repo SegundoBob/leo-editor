@@ -377,6 +377,7 @@ def refreshFromDisk(
     p: Position = None,  # For compatibility with existing scripts.
     *,
     event: LeoKeyEvent = None,  # Required for all commands.
+    silent: bool = True,
 ) -> None:
     """
     Refresh an @<file> node from disk.
@@ -416,11 +417,14 @@ def refreshFromDisk(
         update_p.expand()
         c.selectPosition(update_p)
     else:
-        c.selectPosition(p)
+        update_p = p  # #4495: Do *not* change the position!
 
-    at.changed_roots = []
+    # #4495: Report the updated file.
+    if not silent and not g.unitTesting:
+        g.es_print(f"update: {update_p.h}", color='blue')
 
     # Create the 'Recovered Nodes' tree.
+    at.changed_roots = []
     c.fileCommands.handleNodeConflicts()
     c.setChanged()
     c.redraw()
