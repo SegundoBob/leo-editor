@@ -5333,15 +5333,14 @@ class Commands:
         args.append(f"--config {toml_s}")
 
         # Calculate the ruff command.
-        isWindows = sys.platform.startswith('win')
-        python = 'py' if isWindows else 'python'
+        python = 'py' if g.isWindows else 'python'
         command = f"{python} -m ruff format {' '.join(args)} {filename}"
 
         # Run the command.
         try:
             subprocess.Popen(command, shell=True).communicate()  # Wait for results.
             results = g.readFile(filename)
-            if sys.platform.startswith('win'):
+            if g.isWindows:
                 results = results.replace('\r', '')
             return results
         except Exception:
