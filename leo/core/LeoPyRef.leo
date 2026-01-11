@@ -9,17 +9,21 @@
 <v t="ekr.20051031040240"><vh>Startup</vh>
 <v t="ekr.20080412053100.5"><vh>@settings</vh>
 <v t="ekr.20220904210247.1"><vh>@@@enabled-plugins</vh></v>
-<v t="ekr.20260110061420.1"><vh>@bool beautify-python-code-on-write = True</vh></v>
 <v t="ekr.20251214042454.1"><vh>@bool body-pane-wraps = False</vh></v>
 <v t="ekr.20140902155015.18674"><vh>@bool qt-use-scintilla = False</vh></v>
 <v t="ekr.20250715195948.1"><vh>@bool report-changed-at-clean-nodes = True</vh></v>
 <v t="ekr.20221129012213.1"><vh>@bool run-flake8-on-write = False</vh></v>
-<v t="ekr.20260110024304.1"><vh>@bool write-black-sentinels = True</vh></v>
 <v t="ekr.20210530065000.2"><vh>@data exec-script-commands</vh></v>
 <v t="ekr.20210530065000.3"><vh>@data exec-script-patterns</vh></v>
 <v t="ekr.20150425145248.1"><vh>@data history-list</vh></v>
 <v t="ekr.20240107154430.1"><vh>@int max-find-long-lines-length = 120</vh></v>
 <v t="ekr.20140916101314.19538"><vh>@string target_language = python</vh></v>
+<v t="ekr.20260111055821.1"><vh>Beautifying files and writing black-compatible sentinels</vh>
+<v t="ekr.20260111055821.2"><vh>@bool beautify-python-code-on-write = False</vh></v>
+<v t="ekr.20260111055821.3"><vh>@bool write-black-sentinels = True</vh></v>
+<v t="ekr.20260111055821.4"><vh>@int black-line-length = 120</vh></v>
+<v t="ekr.20260111055821.5"><vh>@string black-toml = None</vh></v>
+</v>
 <v t="ekr.20160122104332.1"><vh>Buttons &amp; commands</vh>
 <v t="ekr.20150502050609.1"><vh>@button backup</vh></v>
 <v t="ekr.20170811173924.1"><vh>@button backup-repo</vh></v>
@@ -2170,7 +2174,7 @@ if missing:
 else:
     print('No missing files!')
 print('done')</t>
-<t tx="ekr.20240107154430.1"># 79: PEP8 recommendation.</t>
+<t tx="ekr.20240107154430.1"></t>
 <t tx="ekr.20240204082420.1"></t>
 <t tx="ekr.20240204082924.1"></t>
 <t tx="ekr.20240206161713.1" _mod_time="4741da58847d4499552e">@language ini
@@ -2688,8 +2692,16 @@ if new_b != proj_p.b:
 <t tx="ekr.20251214042454.1">True: Wrap body text.
 
 </t>
-<t tx="ekr.20260110024304.1"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
-# This setting is strongly recommended so that you can use ruff format to beautify your code.</t>
-<t tx="ekr.20260110061420.1"></t>
+<t tx="ekr.20260111055821.1"># These settings control ruff format, which is compatible with black.</t>
+<t tx="ekr.20260111055821.2"># True: beautify all @&lt;file&gt; nodes in the outline using Leo's token-based beautifier.
+# True can result in much slower writes.</t>
+<t tx="ekr.20260111055821.3"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
+# This setting is **strongly recommended** so that you can use ruff format to beautify your code.
+</t>
+<t tx="ekr.20260111055821.4"># This setting overrides any value in pyproject.toml or ruff.toml
+# Leo uses 120 for its own files.</t>
+<t tx="ekr.20260111055821.5"># If given, this argument should be a full, absolute path to pyproject.toml or ruff.toml.
+# If not given, Leo's beautifier uses Leo's pyproject.toml file.
+</t>
 </tnodes>
 </leo_file>
