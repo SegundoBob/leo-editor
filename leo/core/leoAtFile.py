@@ -2648,7 +2648,7 @@ class AtFile:
         if not os.path.exists(filename):
             return False
         old_p = p.copy()
-        ok = g.beautify_with_ruff(root, filename)
+        ok = c.beautify_with_ruff(root, filename)
         if not ok:
             return False
 

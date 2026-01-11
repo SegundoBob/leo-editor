@@ -6661,30 +6661,6 @@ def deprecated() -> None:
         print('')
 
 
-# @+node:ekr.20260110090421.1: *3* g.beautify_with_ruff
-def beautify_with_ruff(root: Position, filename: str) -> bool:
-    """
-    Use ruff format to format a temp file.
-    Return True if there were no exceptions.
-    """
-    try:
-        # Define components of a single command.
-        args = (
-            f"--config {g.app.leoEditorDir}{os.sep}pyproject.toml",
-            '--config line-length=120',
-            '--silent',
-            # '--verbose',  # Messages useful only for debugging
-        )
-        isWindows = sys.platform.startswith('win')
-        python = 'py' if isWindows else 'python'
-        command = f"{python} -m ruff format {' '.join(args)} {filename}"
-        subprocess.Popen(command, shell=True).communicate()  # Wait for results.
-        return True
-    except Exception:
-        g.es_exception()
-        return False
-
-
 # @+node:ekr.20031218072017.3126: *3* g.funcToMethod (Python Cookbook)
 def funcToMethod(f: Callable, theClass: object, name: str = None) -> None:
     """

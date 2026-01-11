@@ -489,6 +489,12 @@
 <v t="ekr.20180525053145.1"><vh>@bool use-jedi = False</vh></v>
 <v t="ekr.20110510071925.14589"><vh>@bool use-qcompleter = True</vh></v>
 </v>
+<v t="ekr.20260111055007.1"><vh>Beautifying files and writing black-compatible sentinels</vh>
+<v t="ekr.20240926065158.1"><vh>@bool beautify-python-code-on-write = False</vh></v>
+<v t="ekr.20260109162430.1"><vh>@bool write-black-sentinels = False</vh></v>
+<v t="ekr.20260111055136.1"><vh>@int black-line-length = None</vh></v>
+<v t="ekr.20260111055045.1"><vh>@string black-toml = None</vh></v>
+</v>
 <v t="ekr.20140916113003.20415"><vh>Bracket matching</vh>
 <v t="ekr.20060627084739"><vh>@bool flash-matching-brackets = True</vh></v>
 <v t="ekr.20060627121646"><vh>@color flash-brackets-background-color = DodgerBlue1</vh></v>
@@ -625,7 +631,6 @@
 <v t="ekr.20170718054951.1"><vh>@string log-timestamp-format = %H:%M:%S</vh></v>
 <v t="ekr.20181018113813.1"><vh>@string script-file-path = None</vh></v>
 <v t="ekr.20170706103843.1"><vh>Checking files</vh>
-<v t="ekr.20240926065158.1"><vh>@bool beautify-python-code-on-write = False</vh></v>
 <v t="ekr.20150403055250.1"><vh>@bool check-for-changed-external-files = True</vh></v>
 <v t="ekr.20090514111518.8379"><vh>@bool check-python-code-on-write = True</vh></v>
 <v t="ekr.20221128115636.1"><vh>@bool run-flake8-on-write = False</vh></v>
@@ -638,7 +643,6 @@
 <v t="ekr.20041119034357.14"><vh>@bool at-root-bodies-start-in-doc-mode = True</vh></v>
 <v t="ekr.20070419103554"><vh>@bool force-newlines-in-at-nosent-bodies = True</vh></v>
 <v t="ekr.20041119041747"><vh>@string output-newline = nl</vh></v>
-<v t="ekr.20260109162430.1"><vh>@bool write-black-sentinels = False</vh></v>
 </v>
 <v t="ekr.20241024123618.1"><vh>Jupytext options</vh>
 <v t="ekr.20241030020739.1"><vh>@int jupytext-max-headline-length = 60</vh></v>
@@ -2289,7 +2293,7 @@
 </v>
 </v>
 <v t="ekr.20140915194122.23428"></v>
-<v t="ekr.20260109162430.1"></v>
+<v t="ekr.20260111055007.1"></v>
 </vnodes>
 <tnodes>
 <t tx="TL.20080702085131.2">If True: Save the Leo file and all modified derived files every time the external editor saves a modified file.
@@ -11696,7 +11700,8 @@ vertical-thirds2
     └───────────┴───────┴───────┘
 </t>
 <t tx="ekr.20240924055407.1">True: run Pylint on each saved file, but only if it has been changed.</t>
-<t tx="ekr.20240926065158.1">True: beautify all @&lt;file&gt; nodes in the outline using Leo's token-based beautifier.</t>
+<t tx="ekr.20240926065158.1"># True: beautify external files in the outline using ruff format.
+# Warnging: True slows down writes considerably.</t>
 <t tx="ekr.20241012050620.1">True: Leo's git-diff command will diff .leo and .leojs files.</t>
 <t tx="ekr.20241024123618.1"></t>
 <t tx="ekr.20241024123633.1">This option defaults to py:percent.
@@ -11887,7 +11892,14 @@ rest_comments_literal1_font_weight = normal
 <t tx="ekr.20250715195720.1">True: Leo will create an "update review tree" when any @file node changes externally.</t>
 <t tx="ekr.20250730050535.1">True: report changed files when saving a .leo file.</t>
 <t tx="ekr.20260109162430.1"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
-# This setting is strongly recommended so that you can use ruff format to beautify your code.</t>
+# This setting is **strongly recommended** so that you can use ruff format to beautify your code.
+</t>
+<t tx="ekr.20260111055007.1"># These settings control ruff format, which is compatible with black.</t>
+<t tx="ekr.20260111055045.1">If given, this argument should be a full, absolute path to pyproject.toml or ruff.toml.
+If not given, Leo's beautifier uses Leo's pyproject.toml file.
+</t>
+<t tx="ekr.20260111055136.1"># If given, this setting overrides any value in pyproject.toml or ruff.toml
+# Leo uses 120 for its own files.</t>
 <t tx="felix.20220506230435.1">True: (Legacy) The goto-first-visible-node and goto-first-visible-node commands collapse all nodes that are not ancestors of the target node that is selected.
 
 False: (Recommended) The commands act as simple navigation commands, and do not change the outline state.</t>

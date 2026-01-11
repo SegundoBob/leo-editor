@@ -5305,7 +5305,43 @@ class Commands:
         finally:
             c.redraw()
 
-    # @+node:ekr.20171124084149.1: *3* c.Scripting utils
+    # @+node:ekr.20171124084149.1: *3* c.Scripting/beautifier utils
+    # @+node:ekr.20260110090421.1: *4* c.beautify_with_ruff & helper
+    def beautify_with_ruff(self, root: Position, filename: str) -> bool:
+        """
+        Use ruff format to format a temp file.
+        Return True if there were no exceptions.
+        """
+        c = self
+
+        # Calculate the arguments to ruff format.
+        args = ['--silent']  # '--verbose',  # Useful only for debugging.
+
+        # Override the line length only if given explicitly.
+        # The default in Leo's pyproject.toml is 120.
+        line_length = c.config.getInt('black-line-length')
+        if line_length and line_length > 0:
+            args.append(f"--config line-length={line_length}")
+
+        # Use Leo's default pyproject.toml by default.
+        default_toml = f"{g.app.leoEditorDir}{os.sep}pyproject.toml"
+        toml = c.config.getString('black-toml')
+        toml_s = toml if toml and os.path.exists(toml) else default_toml
+        args.append(f"--config {toml_s}")
+
+        # Calculate the ruff command.
+        isWindows = sys.platform.startswith('win')
+        python = 'py' if isWindows else 'python'
+        command = f"{python} -m ruff format {' '.join(args)} {filename}"
+
+        # Run the command.
+        try:
+            subprocess.Popen(command, shell=True).communicate()  # Wait for results.
+            return True
+        except Exception:
+            g.es_exception()
+            return False
+
     # @+node:ekr.20260110083713.1: *4* c.beautify_script_tree
     def beautify_script_tree(self, root: Position) -> None:
         """Undoably beautify root's entire tree."""
@@ -5328,6 +5364,7 @@ class Commands:
     # @+node:ekr.20260110084856.1: *5* c.beautify_script_node
     def beautify_script_node(self, root: Position) -> bool:
         """Beautify a single node"""
+        c = self
 
         # Patterns for lines that must be replaced.
         at_pat = re.compile(r'(\s*)@(.*)')  # @language, @others, etc.
@@ -5362,7 +5399,7 @@ class Commands:
             # g.es_exception()
             return False
 
-        g.beautify_with_ruff(root, path)
+        c.beautify_with_ruff(root, path)
         results_s: str = g.readFile(path)
 
         # Part 3: Undo replacements, regularize comments and clean trailing ws.
