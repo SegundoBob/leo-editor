@@ -206,7 +206,7 @@ class ExternalFilesController:
             if state in ('yes', 'no'):
                 state = self.ask(c, path, p=p)
             if state in ('yes', 'yes-all'):
-                c.refreshFromDisk(p)
+                c.refreshFromDisk(p, silent=False)
 
     # @+node:ekr.20201207055713.1: *5* efc.idle_check_leo_file
     def idle_check_leo_file(self, c: Cmdr) -> None:
