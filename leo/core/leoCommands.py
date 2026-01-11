@@ -5306,7 +5306,7 @@ class Commands:
             c.redraw()
 
     # @+node:ekr.20171124084149.1: *3* c.Scripting/beautifier utils
-    # @+node:ekr.20260110090421.1: *4* c.beautify_with_ruff & helper
+    # @+node:ekr.20260110090421.1: *4* c.beautify_with_ruff
     def beautify_with_ruff(self, root: Position, filename: str) -> bool:
         """
         Use ruff format to format a temp file.
