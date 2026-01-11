@@ -5347,82 +5347,33 @@ class Commands:
 
     # @+node:ekr.20260110083713.1: *4* c.beautify_script_tree
     def beautify_script_tree(self, root: Position) -> None:
-        """Undoably beautify root's entire tree."""
+        """beautify root's entire tree. This code is not yet undoable."""
         c = root.v.context
-        u, undoType = c.undoer, 'beautify-script'
-        first_p = c.p
-        n_changed = 0
-        for p in root.self_and_subtree():
-            bunch = u.beforeChangeNodeContents(p)
-            changed = self.beautify_script_node(p)
-            if changed:
-                if n_changed == 0:  # #4443.
-                    u.beforeChangeGroup(first_p, undoType)
-                n_changed += 1
-                u.afterChangeNodeContents(p, undoType, bunch)
-        if n_changed:
-            u.afterChangeGroup(root, undoType)
-            c.redraw(root)
+        at = c.atFileCommands
+        p = c.p
 
-    # @+node:ekr.20260110084856.1: *5* c.beautify_script_node
-    def beautify_script_node(self, root: Position) -> bool:
-        """Beautify a single node"""
-        c = self
-
-        # Patterns for lines that must be replaced.
-        at_pat = re.compile(r'(\s*)@(.*)')  # @language, @others, etc.
-        section_ref_pat = re.compile(r'(\s*)\<\<(.+)\>\>(.*)')
-        nobeautify_pat = re.compile(r'(\s*)\@nobeautify(.*)')
-        trailing_ws_pat = re.compile(r'(.*)#(.*)')
-
-        # Part 1: A hack: munge @others, @language, and section references.
-        indices: list[int] = []  # Indices of replaced lines.
-        contents: list[str] = []  # Contents after replacements.
-        for i, s in enumerate(g.splitLines(root.b)):
-            if m := at_pat.match(s):
-                contents.append(f"{m.group(1)}# @{m.group(2)}\n")
-                indices.append(i)
-            elif m := section_ref_pat.match(s):
-                contents.append(f"{m.group(1)}pass\n")
-                indices.append(i)
-            elif m := nobeautify_pat.match(s):
-                return False
-            else:
-                contents.append(s)
-
-        # Part 2: Beautify.
+        # Compute the path to the temp file.
         test_dir = g.finalize_join(g.app.leoEditorDir, 'leo', 'test')
         path = g.finalize_join(test_dir, 'beautify_node.py')
-        old_contents = ''.join(contents).rstrip() + '\n\n'
-        try:
-            with open(path, 'w') as f:
-                f.write(old_contents)
-        except Exception as e:
-            print(f"exception writing: {path}:\n{e}")
-            # g.es_exception()
-            return False
-
+        old_contents = g.getScript(c, p, useSelectedText=False)
+        ok = g.writeFile(old_contents, 'utf-8', path)
+        if not ok:
+            return
         c.beautify_with_ruff(root, path)
-        results_s: str = g.readFile(path)
+        results = g.readFile(path)
+        if sys.platform.startswith('win'):
+            results = results.replace('\r', '')
+        if old_contents == results:
+            return
 
-        # Part 3: Undo replacements, regularize comments and clean trailing ws.
-        body_lines: list[str] = g.splitLines(root.b)
-        results: list[str] = g.splitLines(results_s)
-        for i in indices:
-            try:
-                old_line = body_lines[i]
-                if m := trailing_ws_pat.match(old_line):
-                    old_line = f"{m.group(1).rstrip()}  #{m.group(2)}"
-                results[i] = old_line.rstrip() + '\n'
-            except IndexError:
-                return False  # This can happen.
-
-        # Part 4: Update the body if necessary.
-        new_body = ''.join(results).rstrip() + '\n'
-        changed = root.b.rstrip() != new_body.rstrip()
-        if changed:
-            root.b = new_body
-        return changed
+        # Update root's tree.
+        d: dict[str, VNode] = {p.v.gnx: p.v for p in root.self_and_subtree()}
+        ok = at.fast_read_into_root(c, results, gnx2vnode=d, path=None, root=root)
+        if ok:
+            c.redraw()
+            g.es_print(f"beautified: {root.h}", color='blue')
+        else:
+            g.trace('at.fast_read_into_root failed')  # Should not happen.
 
     # @+node:ekr.20160201072634.1: *4* c.cloneFindByPredicate
     def cloneFindByPredicate(
