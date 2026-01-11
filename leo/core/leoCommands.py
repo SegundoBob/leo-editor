@@ -5310,10 +5310,10 @@ class Commands:
 
     # @+node:ekr.20171124084149.1: *3* c.Scripting/beautifier utils
     # @+node:ekr.20260110090421.1: *4* c.beautify_with_ruff
-    def beautify_with_ruff(self, root: Position, filename: str) -> bool:
+    def beautify_with_ruff(self, contents: str, root: Position, filename: str) -> str:
         """
         Use ruff format to format a temp file.
-        Return True if there were no exceptions.
+        Return the beautified contents.
         """
         c = self
 
@@ -5340,10 +5340,13 @@ class Commands:
         # Run the command.
         try:
             subprocess.Popen(command, shell=True).communicate()  # Wait for results.
-            return True
+            results = g.readFile(filename)
+            if sys.platform.startswith('win'):
+                results = results.replace('\r', '')
+            return results
         except Exception:
             g.es_exception()
-            return False
+            return contents
 
     # @+node:ekr.20260110083713.1: *4* c.beautify_script_tree
     def beautify_script_tree(self, root: Position) -> None:
@@ -5359,10 +5362,7 @@ class Commands:
         ok = g.writeFile(old_contents, 'utf-8', path)
         if not ok:
             return
-        c.beautify_with_ruff(root, path)
-        results = g.readFile(path)
-        if sys.platform.startswith('win'):
-            results = results.replace('\r', '')
+        results = c.beautify_with_ruff(old_contents, root, path)
         if old_contents == results:
             return
 

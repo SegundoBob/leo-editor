@@ -2589,7 +2589,7 @@ class AtFile:
         if self.checkPythonCodeOnWrite:  # First
             ok = self.checkPythonSyntax(root, contents)
         if ok and self.beautifyOnWrite:  # Second.
-            ok = self.runRuffFormat(root, fileName)
+            ok = self.runRuffFormat(contents, root, fileName)
         if ok and self.runPyFlakesOnWrite:  # Creates clickable links.
             ok = self.runPyflakes(root)
         if ok and self.runFlake8OnWrite:  # Does *not* create clickable links.
@@ -2641,22 +2641,37 @@ class AtFile:
                 g.es_print(f"{j + 1:5}: {line}")
 
     # @+node:ekr.20240926044644.1: *6* at.runRuffFormat
-    def runRuffFormat(self, root: Position, filename: str) -> bool:
-        """Run ruff format on the selected position."""
+    def runRuffFormat(self, contents: str, root: Position, filename: str) -> bool:
+        """
+        Run ruff format on the selected position.
+        Return True if all went well.
+        """
         c = self.c
         p = c.p
+        efc = g.app.externalFilesController
         if not os.path.exists(filename):
             return False
         old_p = p.copy()
-        ok = c.beautify_with_ruff(root, filename)
-        if not ok:
-            return False
+        results = c.beautify_with_ruff(contents, root, filename)
 
-        # *Always* reload the file, suppressing the reload prompt.
-        # g.es(f"beautified: {g.shortFileName(filename)}")
-
-        efc = g.app.externalFilesController
+        # Always suppress the reload prompt.
         efc.set_time(filename)
+
+        # Do nothing else if there has been no change.
+        if contents == results:
+            return True
+
+        if 0:  # Debugging only.
+            diff = difflib.unified_diff(
+                g.splitLines(contents),
+                g.splitLines(results),
+                fromfile='Old',
+                tofile='New',
+            )
+            g.printObj(list(diff), tag='Diff')
+
+        # Reload the file, suppressing the reload prompt.
+        g.es(f"beautified: {g.shortFileName(filename)}", color='blue')
         c.refreshFromDisk(root)
 
         # #4159: This may not restore the outline as it was,
