@@ -693,7 +693,10 @@ class Commands:
     # @+node:ekr.20250508044308.1: *3* @cmd beautify-tree
     @cmd('beautify-tree')
     def beautify_tree_command(self, event: LeoKeyEvent = None) -> None:
-        """Undoably beautify c.p and its subtree."""
+        """
+        Undoably beautify c.p and its subtree.
+        This command can be very slow.
+        """
         c = self
         c.beautify_script_tree(c.p)
 
@@ -5406,10 +5409,13 @@ class Commands:
         body_lines: list[str] = g.splitLines(root.b)
         results: list[str] = g.splitLines(results_s)
         for i in indices:
-            old_line = body_lines[i]
-            if m := trailing_ws_pat.match(old_line):
-                old_line = f"{m.group(1).rstrip()}  #{m.group(2)}"
-            results[i] = old_line.rstrip() + '\n'
+            try:
+                old_line = body_lines[i]
+                if m := trailing_ws_pat.match(old_line):
+                    old_line = f"{m.group(1).rstrip()}  #{m.group(2)}"
+                results[i] = old_line.rstrip() + '\n'
+            except IndexError:
+                return False  # This can happen.
 
         # Part 4: Update the body if necessary.
         new_body = ''.join(results).rstrip() + '\n'
