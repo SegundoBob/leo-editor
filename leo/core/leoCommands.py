@@ -5360,7 +5360,9 @@ class Commands:
         if not ok:
             return
         c.beautify_with_ruff(root, path)
-        results = g.readFile(path).replace('\r', '')
+        results = g.readFile(path)
+        if sys.platform.startswith('win'):
+            results = results.replace('\r', '')
         if old_contents == results:
             return
 
