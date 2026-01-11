@@ -418,11 +418,13 @@ def refreshFromDisk(
         c.selectPosition(update_p)
     else:
         update_p = p  # #4495: Do *not* change the position!
-    if not silent:
+
+    # #4495: Report the updated file.
+    if not silent and not g.unitTesting:
         g.es_print(f"update: {update_p.h}", color='blue')
-    at.changed_roots = []
 
     # Create the 'Recovered Nodes' tree.
+    at.changed_roots = []
     c.fileCommands.handleNodeConflicts()
     c.setChanged()
     c.redraw()
