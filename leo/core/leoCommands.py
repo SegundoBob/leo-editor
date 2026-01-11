@@ -5360,7 +5360,7 @@ class Commands:
         if not ok:
             return
         c.beautify_with_ruff(root, path)
-        results: str = g.readFile(path).replace('\r', '')
+        results = g.readFile(path).replace('\r', '')
         if old_contents == results:
             return
 
