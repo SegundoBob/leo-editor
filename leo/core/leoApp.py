@@ -926,7 +926,7 @@ class LeoApp:
         guiVersion = ', ' + app.gui.getFullVersion() if app.gui else ''
         leoVer = leoVersion.version
         n1, n2, n3, junk1, junk2 = sys.version_info
-        if sys.platform.startswith('win'):
+        if g.isWindows:
             sysVersion = 'Windows '
             try:
                 # peckj 20140416: determine true OS architecture
@@ -1811,7 +1811,7 @@ class LoadManager:
                     if os.path.islink(srcfile):
                         path = os.path.realpath(srcfile)
                 # @-<< resolve symlinks >>
-                if sys.platform == 'win32':
+                if g.isWindows:
                     if len(path) > 2 and path[1] == ':':
                         # Convert the drive name to upper case.
                         path = path[0].upper() + path[1:]
@@ -3787,7 +3787,7 @@ class RecentFilesManager:
         def key(path: str) -> str:
             # Sort only the base name.  That's what will appear in the menu.
             s = g.os_path_basename(path)
-            return s.lower() if sys.platform.lower().startswith('win') else s
+            return s.lower() if g.isWindows else s
 
         aList = sorted(rf.recentFiles, key=key)
         rf.recentFiles = []

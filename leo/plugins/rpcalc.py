@@ -1955,7 +1955,7 @@ class Option:
     def __init__(self, baseFileName, keySpaces=20):
         self.path = ''
         if baseFileName:
-            if sys.platform.startswith('win'):
+            if g.isWindows:
                 fileName = '{0}.ini'.format(baseFileName)
                 userPath = os.environ.get('APPDATA', '')
                 if userPath:

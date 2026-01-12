@@ -3774,7 +3774,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
     def update_latex(self, s, keywords):
         """Update latex in the vr3 pane."""
         c = self.c
-        if sys.platform.startswith('win'):
+        if g.isWindows:
             g.es_print('latex rendering not ready for Python 3')
             w = self.ensure_text_widget()
             self.show()
