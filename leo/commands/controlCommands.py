@@ -8,7 +8,6 @@ from __future__ import annotations
 from collections.abc import Callable
 import shlex
 import subprocess
-import sys
 from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.commands.baseCommands import BaseEditCommandsClass
@@ -50,7 +49,7 @@ class ControlCommandsClass(BaseEditCommandsClass):
                 shlex.split(command),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL if trace else subprocess.PIPE,
-                shell=sys.platform.startswith('win'),
+                shell=g.isWindows,
             )
             out, err = proc.communicate()
             for line in g.splitLines(out):  # type:ignore

@@ -8,7 +8,6 @@ from __future__ import annotations
 from collections.abc import Callable
 import keyword
 import re
-import sys
 import time
 from typing import Any, Generator, Optional, Union
 from typing import TYPE_CHECKING
@@ -1284,7 +1283,7 @@ class LeoFind:
         Return (found, new text)
         """
         # This hack would be dangerous on MacOs: it uses '\r' instead of '\n' (!)
-        if sys.platform.lower().startswith('win'):
+        if g.isWindows:
             # Ignore '\r' characters, which may appear in @edit nodes.
             # Fixes this bug: https://groups.google.com/forum/#!topic/leo-editor/yR8eL5cZpi4
             s = s.replace('\r', '')
@@ -1840,7 +1839,7 @@ class LeoFind:
         Return a list of indices into s.
         """
         # This hack would be dangerous on MacOs: it uses '\r' instead of '\n' (!)
-        if sys.platform.lower().startswith('win'):
+        if g.isWindows:
             # Ignore '\r' characters, which may appear in @edit nodes.
             # Fixes this bug: https://groups.google.com/forum/#!topic/leo-editor/yR8eL5cZpi4
             s = s.replace('\r', '')
@@ -2606,7 +2605,7 @@ class LeoFind:
         index = self.work_sel[2]
         s = self.work_s
         # This hack would be dangerous on MacOs: it uses '\r' instead of '\n' (!)
-        if sys.platform.lower().startswith('win'):
+        if g.isWindows:
             # Ignore '\r' characters, which may appear in @edit nodes.
             # Fixes this bug: https://groups.google.com/forum/#!topic/leo-editor/yR8eL5cZpi4
             s = s.replace('\r', '')

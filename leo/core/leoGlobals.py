@@ -6274,7 +6274,7 @@ def pr(*args: Args, **kwargs: KWargs) -> None:
     if not stdout:
         # #541.
         return
-    if sys.platform.lower().startswith('win'):
+    if g.isWindows:
         encoding = 'ascii'  # 2011/11/9.
     elif getattr(stdout, 'encoding', None):
         # sys.stdout is a TextIOWrapper with a particular encoding.
@@ -6632,7 +6632,7 @@ def CheckVersionToInt(s: str) -> int:
 @command('cls')
 def cls(event: LeoKeyEvent = None) -> None:
     """Clear the screen."""
-    if sys.platform.lower().startswith('win'):
+    if g.isWindows:
         # Leo 6.7.5: Two calls seem to be required!
         os.system('cls')
         os.system('cls')
@@ -7785,7 +7785,7 @@ def computeFileUrl(fn: str, c: Cmdr = None, p: Position = None) -> str:
     else:
         tag = 'file://'
         tag2 = 'file:///'
-        if sys.platform.startswith('win') and url.startswith(tag2):
+        if g.isWindows and url.startswith(tag2):
             path = url[len(tag2) :].lstrip()
         elif url.startswith(tag):
             path = url[len(tag) :].lstrip()

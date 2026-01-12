@@ -3300,7 +3300,7 @@ class LeoQTreeWidget(QtWidgets.QTreeWidget):
         """Read the file with the given path and put it in the outline."""
         e = sys.getfilesystemencoding()
         fn = g.toUnicode(path, encoding=e)
-        if sys.platform.lower().startswith('win') and fn.startswith('/'):
+        if g.isWindows and fn.startswith('/'):
             fn = fn[1:]
         if os.path.isdir(fn):
             # Just insert an @path directory.

@@ -3,7 +3,6 @@
 """Tests of leoCommands.py"""
 
 # pylint: disable=no-member
-import sys
 from leo.core import leoGlobals as g
 from leo.plugins.mod_scripting import scriptingController
 from leo.core.leoTest2 import LeoUnitTest
@@ -284,7 +283,7 @@ class TestCommands(LeoUnitTest):
             ('lf', '\n'),
             ('cr', '\r'),
             ('crlf', '\r\n'),
-            ('platform', '\r\n' if sys.platform.startswith('win') else '\n'),
+            ('platform', '\r\n' if g.isWindows else '\n'),
         )
         for kind, expected_ending in table:
             directive = f"@lineending {kind}\n"

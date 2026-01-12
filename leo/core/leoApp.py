@@ -147,10 +147,8 @@ class LeoApp:
         self.start_fullscreen = False  # For qt_frame plugin.
         self.start_maximized = False  # For qt_frame plugin.
         self.start_minimized = False  # For qt_frame plugin.
-        # The name of a binding to trace, or None.
-        self.trace_binding: Optional[str] = None
-        # The name of a setting to trace, or None.
-        self.trace_setting: Optional[str] = None
+        self.trace_binding: Optional[str] = None  # The name of a binding to trace, or None.
+        self.trace_setting: Optional[str] = None  # The name of a setting to trace, or None.
         self.translateToUpperCase = False  # Never set to True.
         self.use_splash_screen = True  # True: put up a splash screen.
 
@@ -304,17 +302,17 @@ class LeoApp:
     def define_delegate_language_dict(self) -> None:
         self.delegate_language_dict: dict[str, str] = {
             # Keys are new language names.
-            "codon": "python",
-            "elisp": "lisp",
-            "glsl": "c",
+            "codon":      "python",
+            "elisp":      "lisp",
+            "glsl":       "c",
             "handlebars": "html",
-            "hbs": "html",
-            "less": "css",
-            "katex": "html",  # Leo 6.8.4
-            "mathjax": "html",  # Leo 6.8.4
+            "hbs":        "html",
+            "less":       "css",
+            "katex":      "html",  # Leo 6.8.4
+            "mathjax":    "html",  # Leo 6.8.4
             "toml": "ini",
             # Values are existing languages in leo/modes.
-        }
+        }  # fmt: skip
 
     # @+node:ekr.20120522160137.9911: *5* app.define_extension_dict
     def define_extension_dict(self) -> None:
@@ -928,7 +926,7 @@ class LeoApp:
         guiVersion = ', ' + app.gui.getFullVersion() if app.gui else ''
         leoVer = leoVersion.version
         n1, n2, n3, junk1, junk2 = sys.version_info
-        if sys.platform.startswith('win'):
+        if g.isWindows:
             sysVersion = 'Windows '
             try:
                 # peckj 20140416: determine true OS architecture
@@ -1813,7 +1811,7 @@ class LoadManager:
                     if os.path.islink(srcfile):
                         path = os.path.realpath(srcfile)
                 # @-<< resolve symlinks >>
-                if sys.platform == 'win32':
+                if g.isWindows:
                     if len(path) > 2 and path[1] == ':':
                         # Convert the drive name to upper case.
                         path = path[0].upper() + path[1:]
@@ -3789,7 +3787,7 @@ class RecentFilesManager:
         def key(path: str) -> str:
             # Sort only the base name.  That's what will appear in the menu.
             s = g.os_path_basename(path)
-            return s.lower() if sys.platform.lower().startswith('win') else s
+            return s.lower() if g.isWindows else s
 
         aList = sorted(rf.recentFiles, key=key)
         rf.recentFiles = []

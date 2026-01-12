@@ -731,12 +731,11 @@ class PylintCommand:
         c, rc_fn = self.c, self.rc_fn
 
         # Invoke pylint directly.
-        is_win = sys.platform.startswith('win')
         args = ','.join([f"'--rcfile={rc_fn}'", f"'{fn}'"])
-        if is_win:
+        if g.isWindows:
             args = args.replace('\\', '\\\\')
         command = f'{sys.executable} -c "from pylint import lint; args=[{args}]; lint.Run(args)"'
-        if not is_win:
+        if not g.isWindows:
             command = shlex.split(command)  # type:ignore
 
         # Run the command using the BPM.

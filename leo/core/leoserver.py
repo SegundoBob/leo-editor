@@ -190,8 +190,7 @@ class ServerExternalFilesController(ExternalFilesController):
         self.yesno_all_answer = None  # answer, 'yes-all', or 'no-all'
 
         # if yesAll/noAll forced, then just show info message after idle_check_commander
-        self.infoMessage: str = None
-        # False or "detected", "refreshed" or "ignored"
+        self.infoMessage: str = None  # False or "detected", "refreshed" or "ignored"
 
         g.app.idleTimeManager.add_callback(self.on_idle)
 
