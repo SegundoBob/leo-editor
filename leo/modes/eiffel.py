@@ -90,88 +90,223 @@ keywordsDictDict = {
 
 # Rules for eiffel_main ruleset.
 
+
 def eiffel_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--")
 
+
 def eiffel_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def eiffel_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def eiffel_rule3(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for eiffel_main ruleset.
 rulesDict1 = {
-    "\"": [eiffel_rule1,],
-    "'": [eiffel_rule2,],
-    "-": [eiffel_rule0,],
-    "0": [eiffel_rule3,],
-    "1": [eiffel_rule3,],
-    "2": [eiffel_rule3,],
-    "3": [eiffel_rule3,],
-    "4": [eiffel_rule3,],
-    "5": [eiffel_rule3,],
-    "6": [eiffel_rule3,],
-    "7": [eiffel_rule3,],
-    "8": [eiffel_rule3,],
-    "9": [eiffel_rule3,],
-    "@": [eiffel_rule3,],
-    "A": [eiffel_rule3,],
-    "B": [eiffel_rule3,],
-    "C": [eiffel_rule3,],
-    "D": [eiffel_rule3,],
-    "E": [eiffel_rule3,],
-    "F": [eiffel_rule3,],
-    "G": [eiffel_rule3,],
-    "H": [eiffel_rule3,],
-    "I": [eiffel_rule3,],
-    "J": [eiffel_rule3,],
-    "K": [eiffel_rule3,],
-    "L": [eiffel_rule3,],
-    "M": [eiffel_rule3,],
-    "N": [eiffel_rule3,],
-    "O": [eiffel_rule3,],
-    "P": [eiffel_rule3,],
-    "Q": [eiffel_rule3,],
-    "R": [eiffel_rule3,],
-    "S": [eiffel_rule3,],
-    "T": [eiffel_rule3,],
-    "U": [eiffel_rule3,],
-    "V": [eiffel_rule3,],
-    "W": [eiffel_rule3,],
-    "X": [eiffel_rule3,],
-    "Y": [eiffel_rule3,],
-    "Z": [eiffel_rule3,],
-    "a": [eiffel_rule3,],
-    "b": [eiffel_rule3,],
-    "c": [eiffel_rule3,],
-    "d": [eiffel_rule3,],
-    "e": [eiffel_rule3,],
-    "f": [eiffel_rule3,],
-    "g": [eiffel_rule3,],
-    "h": [eiffel_rule3,],
-    "i": [eiffel_rule3,],
-    "j": [eiffel_rule3,],
-    "k": [eiffel_rule3,],
-    "l": [eiffel_rule3,],
-    "m": [eiffel_rule3,],
-    "n": [eiffel_rule3,],
-    "o": [eiffel_rule3,],
-    "p": [eiffel_rule3,],
-    "q": [eiffel_rule3,],
-    "r": [eiffel_rule3,],
-    "s": [eiffel_rule3,],
-    "t": [eiffel_rule3,],
-    "u": [eiffel_rule3,],
-    "v": [eiffel_rule3,],
-    "w": [eiffel_rule3,],
-    "x": [eiffel_rule3,],
-    "y": [eiffel_rule3,],
-    "z": [eiffel_rule3,],
+    "\"": [
+        eiffel_rule1,
+    ],
+    "'": [
+        eiffel_rule2,
+    ],
+    "-": [
+        eiffel_rule0,
+    ],
+    "0": [
+        eiffel_rule3,
+    ],
+    "1": [
+        eiffel_rule3,
+    ],
+    "2": [
+        eiffel_rule3,
+    ],
+    "3": [
+        eiffel_rule3,
+    ],
+    "4": [
+        eiffel_rule3,
+    ],
+    "5": [
+        eiffel_rule3,
+    ],
+    "6": [
+        eiffel_rule3,
+    ],
+    "7": [
+        eiffel_rule3,
+    ],
+    "8": [
+        eiffel_rule3,
+    ],
+    "9": [
+        eiffel_rule3,
+    ],
+    "@": [
+        eiffel_rule3,
+    ],
+    "A": [
+        eiffel_rule3,
+    ],
+    "B": [
+        eiffel_rule3,
+    ],
+    "C": [
+        eiffel_rule3,
+    ],
+    "D": [
+        eiffel_rule3,
+    ],
+    "E": [
+        eiffel_rule3,
+    ],
+    "F": [
+        eiffel_rule3,
+    ],
+    "G": [
+        eiffel_rule3,
+    ],
+    "H": [
+        eiffel_rule3,
+    ],
+    "I": [
+        eiffel_rule3,
+    ],
+    "J": [
+        eiffel_rule3,
+    ],
+    "K": [
+        eiffel_rule3,
+    ],
+    "L": [
+        eiffel_rule3,
+    ],
+    "M": [
+        eiffel_rule3,
+    ],
+    "N": [
+        eiffel_rule3,
+    ],
+    "O": [
+        eiffel_rule3,
+    ],
+    "P": [
+        eiffel_rule3,
+    ],
+    "Q": [
+        eiffel_rule3,
+    ],
+    "R": [
+        eiffel_rule3,
+    ],
+    "S": [
+        eiffel_rule3,
+    ],
+    "T": [
+        eiffel_rule3,
+    ],
+    "U": [
+        eiffel_rule3,
+    ],
+    "V": [
+        eiffel_rule3,
+    ],
+    "W": [
+        eiffel_rule3,
+    ],
+    "X": [
+        eiffel_rule3,
+    ],
+    "Y": [
+        eiffel_rule3,
+    ],
+    "Z": [
+        eiffel_rule3,
+    ],
+    "a": [
+        eiffel_rule3,
+    ],
+    "b": [
+        eiffel_rule3,
+    ],
+    "c": [
+        eiffel_rule3,
+    ],
+    "d": [
+        eiffel_rule3,
+    ],
+    "e": [
+        eiffel_rule3,
+    ],
+    "f": [
+        eiffel_rule3,
+    ],
+    "g": [
+        eiffel_rule3,
+    ],
+    "h": [
+        eiffel_rule3,
+    ],
+    "i": [
+        eiffel_rule3,
+    ],
+    "j": [
+        eiffel_rule3,
+    ],
+    "k": [
+        eiffel_rule3,
+    ],
+    "l": [
+        eiffel_rule3,
+    ],
+    "m": [
+        eiffel_rule3,
+    ],
+    "n": [
+        eiffel_rule3,
+    ],
+    "o": [
+        eiffel_rule3,
+    ],
+    "p": [
+        eiffel_rule3,
+    ],
+    "q": [
+        eiffel_rule3,
+    ],
+    "r": [
+        eiffel_rule3,
+    ],
+    "s": [
+        eiffel_rule3,
+    ],
+    "t": [
+        eiffel_rule3,
+    ],
+    "u": [
+        eiffel_rule3,
+    ],
+    "v": [
+        eiffel_rule3,
+    ],
+    "w": [
+        eiffel_rule3,
+    ],
+    "x": [
+        eiffel_rule3,
+    ],
+    "y": [
+        eiffel_rule3,
+    ],
+    "z": [
+        eiffel_rule3,
+    ],
 }
 
 # x.rulesDictDict for eiffel mode.

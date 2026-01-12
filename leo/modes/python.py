@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210219115553.109: * @file ../modes/python.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20210219115553.109: * @file ../modes/python.py
+# @@language python
 # Leo colorizer control file for python mode.
 # This file is in the public domain.
 
@@ -8,6 +8,7 @@ import re
 import string
 import sys
 from leo.core import leoGlobals as g
+
 assert g
 
 v1, v2, junk1, junk2, junk3 = sys.version_info
@@ -18,8 +19,8 @@ properties = {
     "lineComment": "#",
 }
 
-#@+<< Python attributes dicts >>
-#@+node:ekr.20230419163615.1: ** << Python attributes dicts >>
+# @+<< Python attributes dicts >>
+# @+node:ekr.20230419163615.1: ** << Python attributes dicts >>
 
 # Attributes dict for python_main ruleset.
 python_main_attributes_dict = {
@@ -35,9 +36,9 @@ python_main_attributes_dict = {
 attributesDictDict = {
     "python_main": python_main_attributes_dict,
 }
-#@-<< Python attributes dicts >>
-#@+<< Python keywords dicts >>
-#@+node:ekr.20230419163648.1: ** << Python keywords dicts >>
+# @-<< Python attributes dicts >>
+# @+<< Python keywords dicts >>
+# @+node:ekr.20230419163648.1: ** << Python keywords dicts >>
 # Keywords dict for python_main ruleset.
 python_main_keywords_dict = {
     "ArithmeticError": "keyword3",
@@ -310,11 +311,13 @@ python_main_keywords_dict = {
 keywordsDictDict = {
     "python_main": python_main_keywords_dict,
 }
-#@-<< Python keywords dicts >>
-#@+<< Python rules >>
-#@+node:ekr.20230419163736.1: ** << Python rules >>
-#@+others
-#@+node:ekr.20230419163819.1: *3* python_comment
+
+
+# @-<< Python keywords dicts >>
+# @+<< Python rules >>
+# @+node:ekr.20230419163736.1: ** << Python rules >>
+# @+others
+# @+node:ekr.20230419163819.1: *3* python_comment
 def python_comment(colorer, s, i):
     """
     Switch to md coloring if s is '# %% [markdown]', provided that c.p.b
@@ -334,15 +337,9 @@ def python_comment(colorer, s, i):
 
     # Leo 6.8.3. Add special case for @language jupytext.
     in_jupytext_tree = any(
-        z.startswith('@language jupytext')
-        for z_p in c.p.self_and_parents()
-        for z in g.splitLines(z_p.b)
+        z.startswith('@language jupytext') for z_p in c.p.self_and_parents() for z in g.splitLines(z_p.b)
     )
-    is_any_jupytext_comment = (
-        i == 0
-        and s.startswith('# %%')
-        and in_jupytext_tree
-    )
+    is_any_jupytext_comment = i == 0 and s.startswith('# %%') and in_jupytext_tree
     if is_any_jupytext_comment:
         # Simulate @language md or @language python.
         language = 'md' if s.startswith('# %% [markdown]') else 'python'
@@ -354,10 +351,14 @@ def python_comment(colorer, s, i):
         colorer.setState(state_i)
 
     return n  # Succeed. Do not allow other matches.
-#@+node:ekr.20230419163819.4: *3* python_double_quote
+
+
+# @+node:ekr.20230419163819.4: *3* python_double_quote
 def python_double_quote(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
-#@+node:ekr.20230419163819.2: *3* python_double_quote_docstring
+
+
+# @+node:ekr.20230419163819.2: *3* python_double_quote_docstring
 def python_double_quote_docstring(colorer, s, i):
     c = colorer.c
     seq = '"""'
@@ -366,22 +367,31 @@ def python_double_quote_docstring(colorer, s, i):
     rest_flag = c.config.getBool('color-docstrings-as-rest', default=False)
     delegate = 'rest_comments' if rest_flag else None
     return colorer.match_span(s, i, kind='literal2', begin=seq, end=seq, delegate=delegate)
-#@+node:ekr.20231209010502.1: *3* python_fstring (not used)
+
+
+# @+node:ekr.20231209010502.1: *3* python_fstring (not used)
 def python_fstring(colorer, s, i):
     return colorer.match_fstring(s, i)
-#@+node:ekr.20230419163819.22: *3* python_keyword
+
+
+# @+node:ekr.20230419163819.22: *3* python_keyword
 def python_keyword(colorer, s, i):
     return colorer.match_keywords(s, i)
-#@+node:ekr.20240213104932.1: *3* python_len_op1 (all single-character ops)
+
+
+# @+node:ekr.20240213104932.1: *3* python_len_op1 (all single-character ops)
 def python_op1(colorer, s, i):
     """Color a s[i] as an operator."""
     colorer.colorRangeWithTag(s, i, i + 1, tag='operator')
     return 1
-#@+node:ekr.20240213105320.1: *3* python_number
+
+
+# @+node:ekr.20240213105320.1: *3* python_number
 # Does not include suffixes or hex digits.
 int_s = r'[0-9]+'
-float_s = fr'{int_s}\.({int_s})?'
-number_pat = re.compile(fr'({float_s}|{int_s})')
+float_s = rf'{int_s}\.({int_s})?'
+number_pat = re.compile(rf'({float_s}|{int_s})')
+
 
 def python_number(colorer, s, i):
     if 1:  # Legacy: don't colorize numbers.
@@ -391,19 +401,24 @@ def python_number(colorer, s, i):
     n = colorer.match_seq_regexp(s, i, kind='number', regexp=number_pat)
     # print(f"python_number: i: {i:3} n: {n:2} {s[i : i + n]!r}")
     return n
-#@+node:ekr.20240213103850.1: *3* python_op_gt/lt & helpers
+
+
+# @+node:ekr.20240213103850.1: *3* python_op_gt/lt & helpers
 def python_op_gt(colorer, s, i):
-    """Color '>=' and '>'. """
+    """Color '>=' and '>'."""
     n = 2 if s[i : i + 2] == '>=' else 1
     colorer.colorRangeWithTag(s, i, i + n, tag='operator')
     return n
 
+
 def python_op_lt(colorer, s, i):
-    """Color '<=' and '<'. """
+    """Color '<=' and '<'."""
     n = 2 if s[i : i + 2] == '<=' else 1
     colorer.colorRangeWithTag(s, i, i + n, tag='operator')
     return n
-#@+node:ekr.20230419163931.1: *3* python_rule_h/f_url (not used)
+
+
+# @+node:ekr.20230419163931.1: *3* python_rule_h/f_url (not used)
 if 0:
     url = False
 
@@ -424,10 +439,14 @@ if 0:
 
         def python_f_url(colorer, s, i):
             return 0
-#@+node:ekr.20230419163819.5: *3* python_single_quote
+
+
+# @+node:ekr.20230419163819.5: *3* python_single_quote
 def python_single_quote(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
-#@+node:ekr.20230419163819.3: *3* python_single_quote_docstring
+
+
+# @+node:ekr.20230419163819.3: *3* python_single_quote_docstring
 def python_single_quote_docstring(colorer, s, i):
     c = colorer.c
     seq = "'''"
@@ -436,10 +455,12 @@ def python_single_quote_docstring(colorer, s, i):
     rest_flag = c.config.getBool('color-docstrings-as-rest', default=False)
     delegate = 'rest_comments' if rest_flag else None
     return colorer.match_span(s, i, kind='literal2', begin=seq, end=seq, delegate=delegate)
-#@-others
-#@-<< Python rules >>
-#@+<< Python rules dicts >>
-#@+node:ekr.20230419164059.1: ** << Python rules dicts >>
+
+
+# @-others
+# @-<< Python rules >>
+# @+<< Python rules dicts >>
+# @+node:ekr.20230419164059.1: ** << Python rules dicts >>
 # Rules dict for python_main ruleset.
 rulesDict1 = {
     # Operators of length 1.
@@ -454,16 +475,13 @@ rulesDict1 = {
     "/": [python_op1],
     "=": [python_op1],
     "^": [python_op1],
-
     # Operators of length 1 or 2.
     "<": [python_op_lt],
     ">": [python_op_gt],
-
     # Quotes and quotes.
     '"': [python_double_quote_docstring, python_double_quote],
     "'": [python_single_quote_docstring, python_single_quote],
     "#": [python_comment],
-
     # Numbers...
     ".": [python_number],
     "0": [python_number],
@@ -496,8 +514,8 @@ if False:  # #3770: Revert colorizing of PEP 701 f-strings.
 rulesDictDict = {
     "python_main": rulesDict1,
 }
-#@-<< Python rules dicts >>
+# @-<< Python rules dicts >>
 
 # Import dict for python mode.
 importDict = {}
-#@-leo
+# @-leo

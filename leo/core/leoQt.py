@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20140810053602.18074: * @file leoQt.py
+# @+leo-ver=5-thin
+# @+node:ekr.20140810053602.18074: * @file leoQt.py
 """Leo's Qt import wrapper, specialized for Qt6."""
+
 # pylint: disable=no-name-in-module,unused-import)
 from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
@@ -11,8 +12,8 @@ from PyQt6.QtGui import QAction, QActionGroup, QCloseEvent
 _missing_modules: list[str] = []
 
 if 0:
-    #@+<< testing: set all optional Qt modules to None >>
-    #@+node:ekr.20240528043206.1: ** << testing: set all optional Qt modules to None >>
+    # @+<< testing: set all optional Qt modules to None >>
+    # @+node:ekr.20240528043206.1: ** << testing: set all optional Qt modules to None >>
     Qsci: Any = None
     QtDesigner = None
     QtMultimedia = None
@@ -23,13 +24,14 @@ if 0:
     QtWebEngineWidgets = None
     QtSvg = None
     uic = None
-    #@-<< testing: set all optional Qt modules to None >>
+    # @-<< testing: set all optional Qt modules to None >>
 else:
-    #@+<< import optional Qt modules >>
-    #@+node:ekr.20240528041831.1: ** << import optional Qt modules >>
+    # @+<< import optional Qt modules >>
+    # @+node:ekr.20240528041831.1: ** << import optional Qt modules >>
     # Leo 6.8.0: do *not* assume these exist.
     try:
         from PyQt6 import Qsci
+
         assert Qsci
     except Exception:
         Qsci = None
@@ -89,10 +91,10 @@ else:
         uic = None
         # On Linux, uic may be a standalone program.
         _missing_modules.append('uic')
-    #@-<< import optional Qt modules >>
+    # @-<< import optional Qt modules >>
 
-#@+<< define PyQt6 enumerations >>
-#@+node:ekr.20240303142509.3: ** << define PyQt6 enumerations >>
+# @+<< define PyQt6 enumerations >>
+# @+node:ekr.20240303142509.3: ** << define PyQt6 enumerations >>
 AlignmentFlag = Qt.AlignmentFlag
 AlignLeft = Qt.AlignmentFlag.AlignLeft
 AlignRight = Qt.AlignmentFlag.AlignRight
@@ -141,9 +143,9 @@ WidgetAttribute = Qt.WidgetAttribute
 WindowState = Qt.WindowState
 WindowType = Qt.WindowType
 WrapMode = QtGui.QTextOption.WrapMode
-#@-<< define PyQt6 enumerations >>
-#@+<< asserts for pyflakes >>
-#@+node:ekr.20240528045757.1: ** << asserts for pyflakes >>
+# @-<< define PyQt6 enumerations >>
+# @+<< asserts for pyflakes >>
+# @+node:ekr.20240528045757.1: ** << asserts for pyflakes >>
 
 # For pyflakes so it doesn't complain about unused imports.
 assert QAction
@@ -164,9 +166,9 @@ assert QUrl
 # assert QtWebEngineWidgets
 # assert QtWidgets
 # assert uic
-#@-<< asserts for pyflakes >>
-#@+<< define standard abbreviations >>
-#@+node:ekr.20240528050716.1: ** << define standard abbreviations >>
+# @-<< asserts for pyflakes >>
+# @+<< define standard abbreviations >>
+# @+node:ekr.20240528050716.1: ** << define standard abbreviations >>
 qt_version = QtCore.QT_VERSION_STR
 try:
     QWebEngineSettings = QtWebEngineCore.QWebEngineSettings
@@ -175,11 +177,11 @@ except Exception:
     QWebEngineSettings = None
     WebEngineAttribute = None
     _missing_modules.append('QtWebEngineCore.QWebEngineSettings')
-#@-<< define standard abbreviations >>
+# @-<< define standard abbreviations >>
 
 if 0:  # Quickly becomes annoying.
-    #@+<< print a hint if an optional module does not exist >>
-    #@+node:ekr.20240528050657.1: ** << print a hint if an optional module does not exist >>
+    # @+<< print a hint if an optional module does not exist >>
+    # @+node:ekr.20240528050657.1: ** << print a hint if an optional module does not exist >>
     if _missing_modules:
         print('')
         print('leoQt.py: the following optional Qt modules do not exist:')
@@ -188,6 +190,6 @@ if 0:  # Quickly becomes annoying.
         print('')
         print('Please run `pip install -r requirements.txt`')
         print('')
-    #@-<< print a hint if an optional module does not exist >>
+    # @-<< print a hint if an optional module does not exist >>
 
-#@-leo
+# @-leo

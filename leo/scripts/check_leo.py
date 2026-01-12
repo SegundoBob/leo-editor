@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20251129060454.1: * @file ../scripts/check_leo.py
+# @+leo-ver=5-thin
+# @+node:ekr.20251129060454.1: * @file ../scripts/check_leo.py
 """
 This script checks Leo's most important files for potential attribute
 errors.
@@ -16,8 +16,9 @@ to devs in other projects.
 
 This script is fast: it checks files about as fast as pyflakes.
 """
-#@+<< check_leo: imports >>
-#@+node:ekr.20251129080328.1: ** << check_leo: imports >>
+
+# @+<< check_leo: imports >>
+# @+node:ekr.20251129080328.1: ** << check_leo: imports >>
 # Required directly by script.
 import ast
 import glob
@@ -25,13 +26,13 @@ import os
 import sys
 import time
 from typing import Any
-#@-<< check_leo: imports >>
+# @-<< check_leo: imports >>
 
 # Not needed: we always print a summary line.
 # print(os.path.basename(__file__))
 
-#@+<< check_leo: globals >>
-#@+node:ekr.20251130105440.1: ** << check_leo: globals >>
+# @+<< check_leo: globals >>
+# @+node:ekr.20251130105440.1: ** << check_leo: globals >>
 # Global objects.
 leoC, leoG, leoP, leoV = None, None, None, None
 
@@ -66,20 +67,23 @@ core_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'core'))
 plugins_dir = os.path.normpath(os.path.join(leo_editor_dir, 'leo', 'plugins'))
 for z in (leo_editor_dir, commands_dir, core_dir):
     assert os.path.exists(z), repr(z)
-#@-<< check_leo: globals >>
-#@+others
-#@+node:ekr.20251130081222.1: ** class CheckLeo
+
+
+# @-<< check_leo: globals >>
+# @+others
+# @+node:ekr.20251130081222.1: ** class CheckLeo
 class CheckLeo:
     """The controller class of the check_leo.py script."""
 
-    #@+others
-    #@+node:ekr.20251129161138.1: *3* CheckLeo.adjust_sys_path
+    # @+others
+    # @+node:ekr.20251129161138.1: *3* CheckLeo.adjust_sys_path
     def adjust_sys_path(self) -> None:
         """Add 'leo-editor' to sys.path"""
         if leo_editor_dir not in sys.path:
             # Caution: path[0] is reserved for script path (or '' in REPL)
             sys.path.insert(1, leo_editor_dir)
-    #@+node:ekr.20251129080959.1: *3* CheckLeo.check
+
+    # @+node:ekr.20251129080959.1: *3* CheckLeo.check
     def check(self, path: str) -> None:
         """Check one file, adding cumulative data to the visitor class."""
         assert os.path.exists(path), repr(path)
@@ -87,7 +91,8 @@ class CheckLeo:
         tree = ast.parse(contents, filename=path)
         visitor = Visitor(self.known_objects)
         visitor.visit(tree)
-    #@+node:ekr.20251129161354.1: *3* CheckLeo.compute_files
+
+    # @+node:ekr.20251129161354.1: *3* CheckLeo.compute_files
     def compute_files(self) -> list[str]:
         """Return the list of files to be checked."""
         files: list[str]
@@ -244,7 +249,7 @@ class CheckLeo:
                 # 'zenity_file_dialogs.py',
             )
             plugins_files = [f"{plugins_dir}{os.sep}{z}" for z in plugins_names]
-                # z for z in glob.glob(f"{plugins_dir}{os.sep}*.py")
+            # z for z in glob.glob(f"{plugins_dir}{os.sep}*.py")
             if 0:
                 for z in plugins_files:
                     print(f"plugin: {z}")
@@ -256,7 +261,8 @@ class CheckLeo:
         for z in files:
             assert os.path.exists(z), repr(z)
         return files
-    #@+node:ekr.20251202072018.1: *3* CheckLeo.compute_module_name
+
+    # @+node:ekr.20251202072018.1: *3* CheckLeo.compute_module_name
     def compute_module_name(self, file_name) -> str:
         """
         Compute the module corresponding to the given file name.
@@ -271,21 +277,28 @@ class CheckLeo:
         else:
             s = file_name  # Should not happen.
         return s.replace('/', '.').replace('\\', '.')
-    #@+node:ekr.20251202174626.1: *3* CheckLeo.create_known_objects
+
+    # @+node:ekr.20251202174626.1: *3* CheckLeo.create_known_objects
     def create_known_objects(self) -> dict[str, Any]:
         """Create a dictionary linking Leo's most important naming conventions to live objects."""
         assert leoC and leoG and leoP and leoV  # Must be run after create_live_objects.
         d = {
             # Python types
-            'aList': [], 'aList1': [], 'aList2': [],
-            's': ' ', 's1': ' ', 's2': ' ',
-
+            'aList': [],
+            'aList1': [],
+            'aList2': [],
+            's': ' ',
+            's1': ' ',
+            's2': ' ',
             # Leo objects.
-            'c': leoC, 'c1': leoC, 'c2': leoC,
+            'c': leoC,
+            'c1': leoC,
+            'c2': leoC,
             'g': leoG,
-            'p': leoP, 'p1': leoP, 'p2': leoP,
+            'p': leoP,
+            'p1': leoP,
+            'p2': leoP,
             'v': leoV,
-
             # 'd' can stand for dialog, dict, etc.
             # 'd': {},
         }
@@ -296,7 +309,8 @@ class CheckLeo:
             for obj in (leoG.app, leoG.app.gui, leoC.frame, leoC.frame.tree):
                 print(obj.__class__.__name__)
         return d
-    #@+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
+
+    # @+node:ekr.20251129080858.1: *3* CheckLeo.create_live_objects
     def create_live_objects(self) -> tuple[Any, Any, Any, Any]:
         """Use Leo's bridge to create live objects for Leo's c, g, and p symbols."""
 
@@ -310,7 +324,8 @@ class CheckLeo:
             loadPlugins=False,  # True: attempt to load plugins.
             readSettings=False,  # True: read standard settings files.
             silent=False,  # True: don't print signon messages.
-            verbose=False)  # True: print informational messages.
+            verbose=False,
+        )  # True: print informational messages.
 
         g = controller.globals()
         c = controller.openLeoFile('dummy')
@@ -322,7 +337,8 @@ class CheckLeo:
         g.app.gui = LeoQtGui()
         c.frame = LeoQtFrame(c, 'test-frame', g.app.gui)
         return c, g, p, v
-    #@+node:ekr.20251201031243.1: *3* CheckLeo.report
+
+    # @+node:ekr.20251201031243.1: *3* CheckLeo.report
     def report(self, t1: float, t2: float, t3: float) -> None:
         """
         Print a report (controlled by global vars) of the data collected by the
@@ -340,19 +356,14 @@ class CheckLeo:
             f"check_leo.py: files: {len(self.files)} "
             f"contexts: {stats_contexts} "
             f"attrs: {stats_attrs} "
-            f"in {t3-t1:.2f} sec.")
+            f"in {t3 - t1:.2f} sec."
+        )
         if report_times:
-            print(
-                f"Setup: {t2-t1:.2f} sec.\n"
-                f" Scan: {t3-t2:.2f} sec.\n"
-                f"Total: {t3-t1:.2f} sec.")
+            print(f"Setup: {t2 - t1:.2f} sec.\n Scan: {t3 - t2:.2f} sec.\nTotal: {t3 - t1:.2f} sec.")
         if report_all_args:
             report_set(all_args, 'function/method args')
         if report_unusual_attrs:
-            unusual_attrs = [
-                z for z in all_attrs
-                if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')
-            ]
+            unusual_attrs = [z for z in all_attrs if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')]
             print(f"{len(unusual_attrs)} Unusual attrs..")
             for z in sorted(list(unusual_attrs)):
                 print(f"  {z}")
@@ -369,11 +380,10 @@ class CheckLeo:
             if report_all_undefined_chains:
                 report_set(undefined_chains)
         if 0:
-            if not any(z for z in (
-                all_attrs, errors, unknown_bases, undefined_chains
-            )):
+            if not any(z for z in (all_attrs, errors, unknown_bases, undefined_chains)):
                 print('Done')
-    #@+node:ekr.20251130081419.1: *3* CheckLeo.run
+
+    # @+node:ekr.20251130081419.1: *3* CheckLeo.run
     def run(self) -> None:
         """The main line of this script."""
         global leoC, leoG, leoP, leoV
@@ -389,32 +399,30 @@ class CheckLeo:
             self.check(path)
         t3 = time.process_time()
         self.report(t1, t2, t3)
-    #@-others
-#@+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
-class Visitor(ast.NodeVisitor):
 
+    # @-others
+
+
+# @+node:ekr.20251129092833.1: ** class Visitor(ast.NodeVisitor)
+class Visitor(ast.NodeVisitor):
     # Cumulative tracing date...
     shown_contexts: list[ast.AST] = []
     shown_modules: list[ast.AST] = []
 
     def __init__(self, known_objects: dict[str, Any]) -> None:
-
         # Per-file data.
         self.args_stack: list[str] = []
         self.context_stack: list[ast.AST] = []
         self.known_objects = known_objects
 
-    #@+others
-    #@+node:ekr.20251202084740.1: *3* Visitor.context_name
+    # @+others
+    # @+node:ekr.20251202084740.1: *3* Visitor.context_name
     def context_name(self) -> str:
         """Return the name of the present traversal context."""
         node = self.context_stack[-1]
-        return (
-            node.name if isinstance(node, ((ast.ClassDef, ast.FunctionDef)))
-            else module_name
-        )
+        return node.name if isinstance(node, ((ast.ClassDef, ast.FunctionDef))) else module_name
 
-    #@+node:ekr.20251129080749.7: *3* Visitor.visit_Attribute & helpers
+    # @+node:ekr.20251129080749.7: *3* Visitor.visit_Attribute & helpers
     def visit_Attribute(self, node: ast.AST) -> None:
         """
         The heart of the Visitor class.
@@ -463,11 +471,16 @@ class Visitor(ast.NodeVisitor):
 
         # Do *not* call self.generic_visit here.
         # split_Attribute handles all this node's children.
-    #@+node:ekr.20251201064630.1: *4* Visitor.get_obj
+
+    # @+node:ekr.20251201064630.1: *4* Visitor.get_obj
     required_prefixes = (
-        'c', 'c1', 'c2',
+        'c',
+        'c1',
+        'c2',
         'g',
-        'p', 'p1', 'p2',
+        'p',
+        'p1',
+        'p2',
         # These produce unknown bases.
         # 'w', 'widget', 'wrapper',
     )
@@ -490,9 +503,10 @@ class Visitor(ast.NodeVisitor):
         if part0 in self.required_prefixes:
             unknown_bases.add(f"{part0} in {'.'.join(parts)}")
         return None  # Failure.
-    #@+node:ekr.20251203044755.1: *4* Visitor.should_ignore
-    #@+<< define Attribute ignore_dict >>
-    #@+node:ekr.20251201051957.1: *5* << define Attribute ignore_dict >>
+
+    # @+node:ekr.20251203044755.1: *4* Visitor.should_ignore
+    # @+<< define Attribute ignore_dict >>
+    # @+node:ekr.20251201051957.1: *5* << define Attribute ignore_dict >>
     # A list of (prefixes of) chains to be ignored.
     ignore_list = (
         # Obsolete ast Nodes in leoAst.py.
@@ -544,7 +558,9 @@ class Visitor(ast.NodeVisitor):
         'p.v.tempAttributes',
         'p.v.tempAttributes.get',
         # Injected into v...
-        'v.archive_ua', 'v.undo_info', 'v.unknownAttributes',
+        'v.archive_ua',
+        'v.undo_info',
+        'v.unknownAttributes',
         # Exists only io.StringIO objects.
         'sys.stdout.getvalue',
         # Minor mysteries.
@@ -552,7 +568,7 @@ class Visitor(ast.NodeVisitor):
         's.decode',
     )
     ignore_dict = {z: 1 for z in ignore_list}
-    #@-<< define Attribute ignore_dict >>
+    # @-<< define Attribute ignore_dict >>
 
     def should_ignore(self, parts: list[str]) -> bool:
         """
@@ -565,7 +581,8 @@ class Visitor(ast.NodeVisitor):
             if '.'.join(prefix) in self.ignore_dict:
                 return True
         return False
-    #@+node:ekr.20251203015013.1: *4* Visitor.show_context
+
+    # @+node:ekr.20251203015013.1: *4* Visitor.show_context
     def show_context(self, node: ast.AST) -> None:
         """Print the traversal context of the given node."""
         context = self.context_stack[-1]
@@ -579,7 +596,8 @@ class Visitor(ast.NodeVisitor):
             print(f"class {context.name}")
         elif isinstance(context, ast.FunctionDef):
             print(f"\nfunction {context.name}")
-    #@+node:ekr.20251201032057.1: *4* Visitor.split_Attribute
+
+    # @+node:ekr.20251201032057.1: *4* Visitor.split_Attribute
     def split_Attribute(self, node: ast.AST) -> list[str]:
         """
         Return the (correct!) outer-level components of an attribute chain.
@@ -600,7 +618,8 @@ class Visitor(ast.NodeVisitor):
 
         _helper(node, result)
         return result
-    #@+node:ekr.20251202073629.1: *3* Visitor.visit_ClassDef
+
+    # @+node:ekr.20251202073629.1: *3* Visitor.visit_ClassDef
     def visit_ClassDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -609,7 +628,8 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@+node:ekr.20251202073629.2: *3* Visitor.visit_FunctionDef & get_args
+
+    # @+node:ekr.20251202073629.2: *3* Visitor.visit_FunctionDef & get_args
     def visit_FunctionDef(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -624,7 +644,8 @@ class Visitor(ast.NodeVisitor):
 
     def get_func_args(self) -> list[str]:
         return self.context_stack[-1]
-    #@+node:ekr.20251203072709.1: *4* Visitor.get_args
+
+    # @+node:ekr.20251203072709.1: *4* Visitor.get_args
     def get_args(self, node) -> list[str]:
         result: list[str] = []
         try:
@@ -643,7 +664,8 @@ class Visitor(ast.NodeVisitor):
             print(e)
             result = []
         return result
-    #@+node:ekr.20251202071202.1: *3* Visitor.visit_Module
+
+    # @+node:ekr.20251202071202.1: *3* Visitor.visit_Module
     def visit_Module(self, node: ast.AST) -> None:
         global stats_contexts
         stats_contexts += 1
@@ -652,9 +674,12 @@ class Visitor(ast.NodeVisitor):
             self.generic_visit(node)
         finally:
             self.context_stack.pop()
-    #@-others
-#@-others
+
+    # @-others
+
+
+# @-others
 CheckLeo().run()
 
-#@@language python
-#@-leo
+# @@language python
+# @-leo

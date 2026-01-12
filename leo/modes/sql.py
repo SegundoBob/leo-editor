@@ -372,168 +372,359 @@ keywordsDictDict = {
 
 # Rules for sql_main ruleset.
 
+
 def sql_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
+
 
 def sql_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
 
+
 def sql_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def sql_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="[", end="]",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="[", end="]", no_line_break=True)
+
 
 def sql_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--")
 
+
 def sql_rule5(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="REM",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="REM", at_line_start=True)
+
 
 def sql_rule6(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="REMARK",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="REMARK", at_line_start=True)
+
 
 def sql_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def sql_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def sql_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def sql_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def sql_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def sql_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def sql_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def sql_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
+
 
 def sql_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def sql_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def sql_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def sql_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def sql_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!=")
 
+
 def sql_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!>")
+
 
 def sql_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!<")
 
+
 def sql_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":=")
 
+
 def sql_rule23(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True)
+
 
 def sql_rule24(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for sql_main ruleset.
 rulesDict1 = {
-    "!": [sql_rule19, sql_rule20, sql_rule21,],
-    "\"": [sql_rule2,],
-    "%": [sql_rule14,],
-    "&": [sql_rule15,],
-    "'": [sql_rule1,],
-    "*": [sql_rule10,],
-    "+": [sql_rule7,],
-    "-": [sql_rule4, sql_rule8,],
-    "/": [sql_rule0, sql_rule9,],
-    "0": [sql_rule24,],
-    "1": [sql_rule24,],
-    "2": [sql_rule24,],
-    "3": [sql_rule24,],
-    "4": [sql_rule24,],
-    "5": [sql_rule24,],
-    "6": [sql_rule24,],
-    "7": [sql_rule24,],
-    "8": [sql_rule24,],
-    "9": [sql_rule24,],
-    ":": [sql_rule22, sql_rule23,],
-    "<": [sql_rule13,],
-    "=": [sql_rule11,],
-    ">": [sql_rule12,],
-    "@": [sql_rule24,],
-    "A": [sql_rule24,],
-    "B": [sql_rule24,],
-    "C": [sql_rule24,],
-    "D": [sql_rule24,],
-    "E": [sql_rule24,],
-    "F": [sql_rule24,],
-    "G": [sql_rule24,],
-    "H": [sql_rule24,],
-    "I": [sql_rule24,],
-    "J": [sql_rule24,],
-    "K": [sql_rule24,],
-    "L": [sql_rule24,],
-    "M": [sql_rule24,],
-    "N": [sql_rule24,],
-    "O": [sql_rule24,],
-    "P": [sql_rule24,],
-    "Q": [sql_rule24,],
-    "R": [sql_rule5, sql_rule6, sql_rule24,],
-    "S": [sql_rule24,],
-    "T": [sql_rule24,],
-    "U": [sql_rule24,],
-    "V": [sql_rule24,],
-    "W": [sql_rule24,],
-    "X": [sql_rule24,],
-    "Y": [sql_rule24,],
-    "Z": [sql_rule24,],
-    "[": [sql_rule3,],
-    "^": [sql_rule17,],
-    "_": [sql_rule24,],
-    "a": [sql_rule24,],
-    "b": [sql_rule24,],
-    "c": [sql_rule24,],
-    "d": [sql_rule24,],
-    "e": [sql_rule24,],
-    "f": [sql_rule24,],
-    "g": [sql_rule24,],
-    "h": [sql_rule24,],
-    "i": [sql_rule24,],
-    "j": [sql_rule24,],
-    "k": [sql_rule24,],
-    "l": [sql_rule24,],
-    "m": [sql_rule24,],
-    "n": [sql_rule24,],
-    "o": [sql_rule24,],
-    "p": [sql_rule24,],
-    "q": [sql_rule24,],
-    "r": [sql_rule24,],
-    "s": [sql_rule24,],
-    "t": [sql_rule24,],
-    "u": [sql_rule24,],
-    "v": [sql_rule24,],
-    "w": [sql_rule24,],
-    "x": [sql_rule24,],
-    "y": [sql_rule24,],
-    "z": [sql_rule24,],
-    "|": [sql_rule16,],
-    "~": [sql_rule18,],
+    "!": [
+        sql_rule19,
+        sql_rule20,
+        sql_rule21,
+    ],
+    "\"": [
+        sql_rule2,
+    ],
+    "%": [
+        sql_rule14,
+    ],
+    "&": [
+        sql_rule15,
+    ],
+    "'": [
+        sql_rule1,
+    ],
+    "*": [
+        sql_rule10,
+    ],
+    "+": [
+        sql_rule7,
+    ],
+    "-": [
+        sql_rule4,
+        sql_rule8,
+    ],
+    "/": [
+        sql_rule0,
+        sql_rule9,
+    ],
+    "0": [
+        sql_rule24,
+    ],
+    "1": [
+        sql_rule24,
+    ],
+    "2": [
+        sql_rule24,
+    ],
+    "3": [
+        sql_rule24,
+    ],
+    "4": [
+        sql_rule24,
+    ],
+    "5": [
+        sql_rule24,
+    ],
+    "6": [
+        sql_rule24,
+    ],
+    "7": [
+        sql_rule24,
+    ],
+    "8": [
+        sql_rule24,
+    ],
+    "9": [
+        sql_rule24,
+    ],
+    ":": [
+        sql_rule22,
+        sql_rule23,
+    ],
+    "<": [
+        sql_rule13,
+    ],
+    "=": [
+        sql_rule11,
+    ],
+    ">": [
+        sql_rule12,
+    ],
+    "@": [
+        sql_rule24,
+    ],
+    "A": [
+        sql_rule24,
+    ],
+    "B": [
+        sql_rule24,
+    ],
+    "C": [
+        sql_rule24,
+    ],
+    "D": [
+        sql_rule24,
+    ],
+    "E": [
+        sql_rule24,
+    ],
+    "F": [
+        sql_rule24,
+    ],
+    "G": [
+        sql_rule24,
+    ],
+    "H": [
+        sql_rule24,
+    ],
+    "I": [
+        sql_rule24,
+    ],
+    "J": [
+        sql_rule24,
+    ],
+    "K": [
+        sql_rule24,
+    ],
+    "L": [
+        sql_rule24,
+    ],
+    "M": [
+        sql_rule24,
+    ],
+    "N": [
+        sql_rule24,
+    ],
+    "O": [
+        sql_rule24,
+    ],
+    "P": [
+        sql_rule24,
+    ],
+    "Q": [
+        sql_rule24,
+    ],
+    "R": [
+        sql_rule5,
+        sql_rule6,
+        sql_rule24,
+    ],
+    "S": [
+        sql_rule24,
+    ],
+    "T": [
+        sql_rule24,
+    ],
+    "U": [
+        sql_rule24,
+    ],
+    "V": [
+        sql_rule24,
+    ],
+    "W": [
+        sql_rule24,
+    ],
+    "X": [
+        sql_rule24,
+    ],
+    "Y": [
+        sql_rule24,
+    ],
+    "Z": [
+        sql_rule24,
+    ],
+    "[": [
+        sql_rule3,
+    ],
+    "^": [
+        sql_rule17,
+    ],
+    "_": [
+        sql_rule24,
+    ],
+    "a": [
+        sql_rule24,
+    ],
+    "b": [
+        sql_rule24,
+    ],
+    "c": [
+        sql_rule24,
+    ],
+    "d": [
+        sql_rule24,
+    ],
+    "e": [
+        sql_rule24,
+    ],
+    "f": [
+        sql_rule24,
+    ],
+    "g": [
+        sql_rule24,
+    ],
+    "h": [
+        sql_rule24,
+    ],
+    "i": [
+        sql_rule24,
+    ],
+    "j": [
+        sql_rule24,
+    ],
+    "k": [
+        sql_rule24,
+    ],
+    "l": [
+        sql_rule24,
+    ],
+    "m": [
+        sql_rule24,
+    ],
+    "n": [
+        sql_rule24,
+    ],
+    "o": [
+        sql_rule24,
+    ],
+    "p": [
+        sql_rule24,
+    ],
+    "q": [
+        sql_rule24,
+    ],
+    "r": [
+        sql_rule24,
+    ],
+    "s": [
+        sql_rule24,
+    ],
+    "t": [
+        sql_rule24,
+    ],
+    "u": [
+        sql_rule24,
+    ],
+    "v": [
+        sql_rule24,
+    ],
+    "w": [
+        sql_rule24,
+    ],
+    "x": [
+        sql_rule24,
+    ],
+    "y": [
+        sql_rule24,
+    ],
+    "z": [
+        sql_rule24,
+    ],
+    "|": [
+        sql_rule16,
+    ],
+    "~": [
+        sql_rule18,
+    ],
 }
 
 # x.rulesDictDict for sql mode.

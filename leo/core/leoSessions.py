@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20120420054855.14241: * @file leoSessions.py
+# @+leo-ver=5-thin
+# @+node:ekr.20120420054855.14241: * @file leoSessions.py
 """Support for sessions in Leo."""
+
 from __future__ import annotations
 from typing import Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
@@ -9,22 +10,25 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
 
-#@+others
-#@+node:ekr.20120420054855.14349: ** class SessionManager
+
+# @+others
+# @+node:ekr.20120420054855.14349: ** class SessionManager
 class SessionManager:
     """A class managing session data and related commands."""
-    #@+others
-    #@+node:ekr.20120420054855.14246: *3* SessionManager.clear_session
+
+    # @+others
+    # @+node:ekr.20120420054855.14246: *3* SessionManager.clear_session
     def clear_session(self, c: Cmdr) -> None:
         """Close all tabs except the presently selected tab."""
         for frame in g.app.windowList:
             if frame.c != c:
                 frame.c.close()
-    #@+node:ekr.20120420054855.14417: *3* SessionManager.error
+
+    # @+node:ekr.20120420054855.14417: *3* SessionManager.error
     # def error (self,s):
-        # # Do not use g.trace or g.es here.
-        # print(s)
-    #@+node:ekr.20120420054855.14245: *3* SessionManager.get_session
+    # # Do not use g.trace or g.es here.
+    # print(s)
+    # @+node:ekr.20120420054855.14245: *3* SessionManager.get_session
     def get_session(self) -> list[str]:
         """Return a list of UNLs for open tabs."""
         result: list[str] = []
@@ -40,14 +44,16 @@ class SessionManager:
             if c.fileName():
                 result.append(c.p.get_full_gnx_UNL())
         return result
-    #@+node:ekr.20120420054855.14416: *3* SessionManager.get_session_path
+
+    # @+node:ekr.20120420054855.14416: *3* SessionManager.get_session_path
     def get_session_path(self) -> Optional[str]:
         """Return the path to the session file."""
         for path in (g.app.homeLeoDir, g.app.homeDir):
             if g.os_path_exists(path):
                 return g.finalize_join(path, 'leo.session')
         return None
-    #@+node:ekr.20120420054855.14247: *3* SessionManager.load_session
+
+    # @+node:ekr.20120420054855.14247: *3* SessionManager.load_session
     def load_session(self, c: Cmdr = None, unls: list[str] = None) -> None:
         """
         Open a tab for each item in UNLs & select the indicated node in each.
@@ -70,7 +76,8 @@ class SessionManager:
                 g.trace('loading session file:', fn)
             # This selects the proper position.
             g.openWithFileName(fn, gui=g.app.gui, old_c=c)
-    #@+node:ekr.20120420054855.14248: *3* SessionManager.load_snapshot
+
+    # @+node:ekr.20120420054855.14248: *3* SessionManager.load_snapshot
     def load_snapshot(self) -> list[str]:
         """
         Load a snapshot of a session from the leo.session file.
@@ -88,7 +95,8 @@ class SessionManager:
             g.trace('Unexpected exception in SessionManager.load_snapshot')
             g.es_exception()
         return None
-    #@+node:ekr.20120420054855.14249: *3* SessionManager.save_snapshot
+
+    # @+node:ekr.20120420054855.14249: *3* SessionManager.save_snapshot
     def save_snapshot(self) -> None:
         """
         Save a snapshot of the present session to the leo.session file.
@@ -107,9 +115,12 @@ class SessionManager:
         except Exception:
             g.trace('Unexpected exception in SessionManager.save_snapshot')
             g.es_exception()
-    #@-others
-#@+node:ekr.20120420054855.14375: ** Commands (leoSession.py)
-#@+node:ekr.20120420054855.14388: *3* session-clear
+
+    # @-others
+
+
+# @+node:ekr.20120420054855.14375: ** Commands (leoSession.py)
+# @+node:ekr.20120420054855.14388: *3* session-clear
 @g.command('session-clear')
 def session_clear_command(event: LeoKeyEvent) -> None:
     """Close all tabs except the presently selected tab."""
@@ -117,7 +128,9 @@ def session_clear_command(event: LeoKeyEvent) -> None:
     m = g.app.sessionManager
     if c and m:
         m.clear_session(c)
-#@+node:ekr.20120420054855.14385: *3* session-create
+
+
+# @+node:ekr.20120420054855.14385: *3* session-create
 @g.command('session-create')
 def session_create_command(event: LeoKeyEvent) -> None:
     """Create a new @session node."""
@@ -129,7 +142,9 @@ def session_create_command(event: LeoKeyEvent) -> None:
         p2.b = "\n".join(aList)
         p2.h = "@session"
         c.redraw()
-#@+node:ekr.20120420054855.14387: *3* session-refresh
+
+
+# @+node:ekr.20120420054855.14387: *3* session-refresh
 @g.command('session-refresh')
 def session_refresh_command(event: LeoKeyEvent) -> None:
     """Refresh the current @session node."""
@@ -139,7 +154,9 @@ def session_refresh_command(event: LeoKeyEvent) -> None:
         aList = m.get_session()
         c.p.b = "\n".join(aList)
         c.redraw()
-#@+node:ekr.20120420054855.14386: *3* session-restore
+
+
+# @+node:ekr.20120420054855.14386: *3* session-restore
 @g.command('session-restore')
 def session_restore_command(event: LeoKeyEvent) -> None:
     """Open a tab for each item in the @session node & select the indicated node in each."""
@@ -151,7 +168,9 @@ def session_restore_command(event: LeoKeyEvent) -> None:
             m.load_session(c, aList)
         else:
             print('Please select an "@session" node')
-#@+node:ekr.20120420054855.14390: *3* session-snapshot-load
+
+
+# @+node:ekr.20120420054855.14390: *3* session-snapshot-load
 @g.command('session-snapshot-load')
 def session_snapshot_load_command(event: LeoKeyEvent) -> None:
     """Load a snapshot of a session from the leo.session file."""
@@ -160,14 +179,18 @@ def session_snapshot_load_command(event: LeoKeyEvent) -> None:
     if c and m:
         aList = m.load_snapshot()
         m.load_session(c, aList)
-#@+node:ekr.20120420054855.14389: *3* session-snapshot-save
+
+
+# @+node:ekr.20120420054855.14389: *3* session-snapshot-save
 @g.command('session-snapshot-save')
 def session_snapshot_save_command(event: LeoKeyEvent) -> None:
     """Save a snapshot of the present session to the leo.session file."""
     if m := g.app.sessionManager:
         m.save_snapshot()
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

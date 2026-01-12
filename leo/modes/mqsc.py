@@ -216,94 +216,228 @@ keywordsDictDict = {
 
 # Rules for mqsc_main ruleset.
 
+
 def mqsc_rule0(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment1", seq="*",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment1", seq="*", at_line_start=True)
+
 
 def mqsc_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="('", end="')",
-          exclude_match=True,
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="('", end="')", exclude_match=True, no_line_break=True)
+
 
 def mqsc_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="(", end=")",
-          exclude_match=True,
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal2", begin="(", end=")", exclude_match=True, no_line_break=True)
+
 
 def mqsc_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def mqsc_rule4(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for mqsc_main ruleset.
 rulesDict1 = {
-    "(": [mqsc_rule1, mqsc_rule2,],
-    "*": [mqsc_rule0,],
-    "+": [mqsc_rule3,],
-    "0": [mqsc_rule4,],
-    "1": [mqsc_rule4,],
-    "2": [mqsc_rule4,],
-    "3": [mqsc_rule4,],
-    "4": [mqsc_rule4,],
-    "5": [mqsc_rule4,],
-    "6": [mqsc_rule4,],
-    "7": [mqsc_rule4,],
-    "8": [mqsc_rule4,],
-    "9": [mqsc_rule4,],
-    "@": [mqsc_rule4,],
-    "A": [mqsc_rule4,],
-    "B": [mqsc_rule4,],
-    "C": [mqsc_rule4,],
-    "D": [mqsc_rule4,],
-    "E": [mqsc_rule4,],
-    "F": [mqsc_rule4,],
-    "G": [mqsc_rule4,],
-    "H": [mqsc_rule4,],
-    "I": [mqsc_rule4,],
-    "J": [mqsc_rule4,],
-    "K": [mqsc_rule4,],
-    "L": [mqsc_rule4,],
-    "M": [mqsc_rule4,],
-    "N": [mqsc_rule4,],
-    "O": [mqsc_rule4,],
-    "P": [mqsc_rule4,],
-    "Q": [mqsc_rule4,],
-    "R": [mqsc_rule4,],
-    "S": [mqsc_rule4,],
-    "T": [mqsc_rule4,],
-    "U": [mqsc_rule4,],
-    "V": [mqsc_rule4,],
-    "W": [mqsc_rule4,],
-    "X": [mqsc_rule4,],
-    "Y": [mqsc_rule4,],
-    "Z": [mqsc_rule4,],
-    "a": [mqsc_rule4,],
-    "b": [mqsc_rule4,],
-    "c": [mqsc_rule4,],
-    "d": [mqsc_rule4,],
-    "e": [mqsc_rule4,],
-    "f": [mqsc_rule4,],
-    "g": [mqsc_rule4,],
-    "h": [mqsc_rule4,],
-    "i": [mqsc_rule4,],
-    "j": [mqsc_rule4,],
-    "k": [mqsc_rule4,],
-    "l": [mqsc_rule4,],
-    "m": [mqsc_rule4,],
-    "n": [mqsc_rule4,],
-    "o": [mqsc_rule4,],
-    "p": [mqsc_rule4,],
-    "q": [mqsc_rule4,],
-    "r": [mqsc_rule4,],
-    "s": [mqsc_rule4,],
-    "t": [mqsc_rule4,],
-    "u": [mqsc_rule4,],
-    "v": [mqsc_rule4,],
-    "w": [mqsc_rule4,],
-    "x": [mqsc_rule4,],
-    "y": [mqsc_rule4,],
-    "z": [mqsc_rule4,],
+    "(": [
+        mqsc_rule1,
+        mqsc_rule2,
+    ],
+    "*": [
+        mqsc_rule0,
+    ],
+    "+": [
+        mqsc_rule3,
+    ],
+    "0": [
+        mqsc_rule4,
+    ],
+    "1": [
+        mqsc_rule4,
+    ],
+    "2": [
+        mqsc_rule4,
+    ],
+    "3": [
+        mqsc_rule4,
+    ],
+    "4": [
+        mqsc_rule4,
+    ],
+    "5": [
+        mqsc_rule4,
+    ],
+    "6": [
+        mqsc_rule4,
+    ],
+    "7": [
+        mqsc_rule4,
+    ],
+    "8": [
+        mqsc_rule4,
+    ],
+    "9": [
+        mqsc_rule4,
+    ],
+    "@": [
+        mqsc_rule4,
+    ],
+    "A": [
+        mqsc_rule4,
+    ],
+    "B": [
+        mqsc_rule4,
+    ],
+    "C": [
+        mqsc_rule4,
+    ],
+    "D": [
+        mqsc_rule4,
+    ],
+    "E": [
+        mqsc_rule4,
+    ],
+    "F": [
+        mqsc_rule4,
+    ],
+    "G": [
+        mqsc_rule4,
+    ],
+    "H": [
+        mqsc_rule4,
+    ],
+    "I": [
+        mqsc_rule4,
+    ],
+    "J": [
+        mqsc_rule4,
+    ],
+    "K": [
+        mqsc_rule4,
+    ],
+    "L": [
+        mqsc_rule4,
+    ],
+    "M": [
+        mqsc_rule4,
+    ],
+    "N": [
+        mqsc_rule4,
+    ],
+    "O": [
+        mqsc_rule4,
+    ],
+    "P": [
+        mqsc_rule4,
+    ],
+    "Q": [
+        mqsc_rule4,
+    ],
+    "R": [
+        mqsc_rule4,
+    ],
+    "S": [
+        mqsc_rule4,
+    ],
+    "T": [
+        mqsc_rule4,
+    ],
+    "U": [
+        mqsc_rule4,
+    ],
+    "V": [
+        mqsc_rule4,
+    ],
+    "W": [
+        mqsc_rule4,
+    ],
+    "X": [
+        mqsc_rule4,
+    ],
+    "Y": [
+        mqsc_rule4,
+    ],
+    "Z": [
+        mqsc_rule4,
+    ],
+    "a": [
+        mqsc_rule4,
+    ],
+    "b": [
+        mqsc_rule4,
+    ],
+    "c": [
+        mqsc_rule4,
+    ],
+    "d": [
+        mqsc_rule4,
+    ],
+    "e": [
+        mqsc_rule4,
+    ],
+    "f": [
+        mqsc_rule4,
+    ],
+    "g": [
+        mqsc_rule4,
+    ],
+    "h": [
+        mqsc_rule4,
+    ],
+    "i": [
+        mqsc_rule4,
+    ],
+    "j": [
+        mqsc_rule4,
+    ],
+    "k": [
+        mqsc_rule4,
+    ],
+    "l": [
+        mqsc_rule4,
+    ],
+    "m": [
+        mqsc_rule4,
+    ],
+    "n": [
+        mqsc_rule4,
+    ],
+    "o": [
+        mqsc_rule4,
+    ],
+    "p": [
+        mqsc_rule4,
+    ],
+    "q": [
+        mqsc_rule4,
+    ],
+    "r": [
+        mqsc_rule4,
+    ],
+    "s": [
+        mqsc_rule4,
+    ],
+    "t": [
+        mqsc_rule4,
+    ],
+    "u": [
+        mqsc_rule4,
+    ],
+    "v": [
+        mqsc_rule4,
+    ],
+    "w": [
+        mqsc_rule4,
+    ],
+    "x": [
+        mqsc_rule4,
+    ],
+    "y": [
+        mqsc_rule4,
+    ],
+    "z": [
+        mqsc_rule4,
+    ],
 }
 
 # x.rulesDictDict for mqsc mode.

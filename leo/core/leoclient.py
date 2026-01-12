@@ -1,8 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210202110241.1: * @file leoclient.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210202110241.1: * @file leoclient.py
 """
 An example client for leoserver.py, based on work by Félix Malboeuf. Used by permission.
 """
+
 import asyncio
 import json
 import time
@@ -26,8 +27,9 @@ tot_response_time = 0.0
 n_known_response_times = 0
 n_unknown_response_times = 0
 
-#@+others
-#@+node:ekr.20210219105145.1: ** function: _dump_outline
+
+# @+others
+# @+node:ekr.20210219105145.1: ** function: _dump_outline
 def _dump_outline(c):  # pragma: no cover
     """Dump the outline."""
     tag = '_dump_outline'
@@ -36,7 +38,9 @@ def _dump_outline(c):  # pragma: no cover
         level_s = ' ' * 2 * p.level()
         print(f"{level_s}{p.childIndex():2} {p.v.gnx} {p.h}")
     print('')
-#@+node:ekr.20210206075253.1: ** function: _get_action_list
+
+
+# @+node:ekr.20210206075253.1: ** function: _get_action_list
 def _get_action_list():
     """
     Return all callable public methods of the server.
@@ -44,6 +48,7 @@ def _get_action_list():
     """
     import inspect
     import os
+
     server = leoserver.LeoServer()
     # file_name = "xyzzy.leo"
     file_name = g.finalize_join(g.app.loadDir, '..', 'test', 'test.leo')
@@ -51,19 +56,30 @@ def _get_action_list():
     log = False
     exclude_names = [
         # Find methods...
-        'replace_all', 'replace_then_find',
-        'clone_find_all', 'clone_find_all_flattened', 'clone_find_tag',
-        'find_all', 'find_def', 'find_next', 'find_previous', 'find_var',
+        'replace_all',
+        'replace_then_find',
+        'clone_find_all',
+        'clone_find_all_flattened',
+        'clone_find_tag',
+        'find_all',
+        'find_def',
+        'find_next',
+        'find_previous',
+        'find_var',
         'tag_children',
         # Other methods
         'set_body',
         'error',
         'replace',
-        'delete_node', 'cut_node',  # dangerous.
-        'click_button', 'get_buttons', 'remove_button',  # Require plugins.
+        'delete_node',
+        'cut_node',  # dangerous.
+        'click_button',
+        'get_buttons',
+        'remove_button',  # Require plugins.
         'save_file',  # way too dangerous!
         # 'set_selection',  # Not ready yet.
-        'open_file', 'close_file',  # Done by hand.
+        'open_file',
+        'close_file',  # Done by hand.
         'import_any_file',
         'insert_child_named_node',
         'insert_named_node',
@@ -91,7 +107,10 @@ def _get_action_list():
         ("contractAllHeadlines", {}),  # normal leo command
         ("!insert_node", {}),
         ("!contract_node", {}),
-        ("!close_file", {"forced": True}),  # forced flag set to true because it was modified
+        (
+            "!close_file",
+            {"forced": True},
+        ),  # forced flag set to true because it was modified
         ("!get_all_leo_commands", {}),
         ("!get_all_server_commands", {}),
         ("!shut_down", {}),
@@ -101,8 +120,7 @@ def _get_action_list():
     # Add all remaining methods to the middle.
     tests = inspect.getmembers(server, inspect.ismethod)
     test_names = sorted([name for (name, value) in tests if not name.startswith('_')])
-    middle: list = [("!" + z, {}) for z in test_names
-        if z not in head_names + tail_names + exclude_names]
+    middle: list = [("!" + z, {}) for z in test_names if z not in head_names + tail_names + exclude_names]
     middle_names = [name for (name, package) in middle]  # type:ignore
     all_tests = head + middle + tail  # type:ignore
     if 0:
@@ -111,7 +129,8 @@ def _get_action_list():
         g.printObj(all_names, tag='all_names')
     return all_tests
 
-#@+node:ekr.20210206093130.1: ** function: _show_response
+
+# @+node:ekr.20210206093130.1: ** function: _show_response
 def _show_response(n, d):
     global n_known_response_times
     global n_unknown_response_times
@@ -138,17 +157,19 @@ def _show_response(n, d):
         print(f"id: {d.get('id', '---'):3} d: {sorted(d)}")
         return
     if action == 'open_file':
-        g.printObj(d,
-            tag=f"{tag}: got: open-file response time: {response_time_s}")
+        g.printObj(d, tag=f"{tag}: got: open-file response time: {response_time_s}")
     elif action == 'get_all_commands':
         commands = d.get('commands')
         print(f"{tag}: got: get_all_commands {len(commands)}")
     else:
         print(f"{tag}: got: {d}")
-#@+node:ekr.20210205144500.1: ** function: client_main_loop
+
+
+# @+node:ekr.20210205144500.1: ** function: client_main_loop
 n_async_responses = 0
 n_known_response_times = 0
 n_unknown_response_times = 0
+
 
 async def client_main_loop(timeout):
     global n_async_responses
@@ -221,9 +242,12 @@ async def client_main_loop(timeout):
         print(f"Asynchronous responses: {n_async_responses}")
         print(f"Unknown response times: {n_unknown_response_times}")
         print(f"  Known response times: {n_known_response_times}")
-        print(f" Average response_time: {(tot_response_time/n_known_response_times):3.2} sec.")
-            # About 0.1, regardless of tracing.
-#@+node:ekr.20210205141432.1: ** function: main
+        print(
+            f" Average response_time: {(tot_response_time / n_known_response_times):3.2} sec."
+        )  # About 0.1, regardless of tracing.
+
+
+# @+node:ekr.20210205141432.1: ** function: main
 def main():
     loop = asyncio.get_event_loop()
     try:
@@ -231,8 +255,10 @@ def main():
     except KeyboardInterrupt:
         # This terminates the server abnormally.
         print(f"{tag}: Keyboard interrupt")
-#@-others
+
+
+# @-others
 
 if __name__ == '__main__':
     main()
-#@-leo
+# @-leo

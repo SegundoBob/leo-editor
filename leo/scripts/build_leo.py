@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240321122822.1: * @file ../scripts/build_leo.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240321122822.1: * @file ../scripts/build_leo.py
+# @@language python
 
 """
 build_leo.py: Build Leo as follows:
@@ -11,6 +11,7 @@ build_leo.py: Build Leo as follows:
 See info item #3837 for full documentation.
 https://github.com/leo-editor/leo-editor/issues/3837
 """
+
 import glob
 import os
 import subprocess
@@ -38,4 +39,4 @@ print('')
 subprocess.Popen(command, shell=True).communicate()
 
 print('See build_log.txt')
-#@-leo
+# @-leo

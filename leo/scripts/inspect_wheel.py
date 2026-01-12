@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240321122917.1: * @file ../scripts/inspect_wheel.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240321122917.1: * @file ../scripts/inspect_wheel.py
+# @@language python
 
 """
 inspect_wheel.py: Inspect the metadata of wheel files.
@@ -29,4 +29,4 @@ print(command)
 subprocess.Popen(command, shell=True).communicate()
 
 print('See inspect_wheel.txt')
-#@-leo
+# @-leo

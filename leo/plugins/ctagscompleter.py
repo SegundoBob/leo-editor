@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20091118065749.5261: * @file ../plugins/ctagscompleter.py
-#@+<< docstring >>
-#@+node:ville.20090317180704.8: ** << docstring >>
-""" This plugin uses ctags to provide an autocompletion list.
+# @+leo-ver=5-thin
+# @+node:ekr.20091118065749.5261: * @file ../plugins/ctagscompleter.py
+# @+<< docstring >>
+# @+node:ville.20090317180704.8: ** << docstring >>
+"""This plugin uses ctags to provide an autocompletion list.
 
 Requirements:
     - Exuberant Ctags:
@@ -24,26 +24,29 @@ functions/methods starting with 'ba'. 'foo->' portion is ignored in completion
 search.
 
 """
-#@-<< docstring >>
-#@+<< ctagscompleter imports >>
-#@+node:ekr.20161223144720.1: ** << ctagscompleter imports >>
+
+# @-<< docstring >>
+# @+<< ctagscompleter imports >>
+# @+node:ekr.20161223144720.1: ** << ctagscompleter imports >>
 import os
 from typing import Any
 from leo.core import leoGlobals as g
 from leo.core.leoQt import QtCore, QtWidgets
+
 QCompleter = QtWidgets.QCompleter
 QStringListModel = QtCore.QStringListModel
 
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
-#@-<< ctagscompleter imports >>
+# @-<< ctagscompleter imports >>
 # Global variables
 controllers: dict[Any, Any] = {}  # Keys are commanders, values are controllers.
 tagLines: list[str] = []  # The saved contents of the tags file.
 
-#@+others
-#@+node:ekr.20110307092028.14155: ** Top-level functions
-#@+node:ville.20090317180704.11: *3* init (ctagscompleter.py)
+
+# @+others
+# @+node:ekr.20110307092028.14155: ** Top-level functions
+# @+node:ville.20090317180704.11: *3* init (ctagscompleter.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     global tagLines
@@ -57,13 +60,16 @@ def init():
     g.plugin_signon(__name__)
     return True
 
-#@+node:ville.20090317180704.12: *3* onCreate (ctagscompleter.py)
+
+# @+node:ville.20090317180704.12: *3* onCreate (ctagscompleter.py)
 def onCreate(tag, keys):
     """Register the ctags-complete command for the newly-created commander."""
     c = keys.get('c')
     if c:
         c.k.registerCommand('ctags-complete', start)
-#@+node:ekr.20091015185801.5245: *3* read_tags_file
+
+
+# @+node:ekr.20091015185801.5245: *3* read_tags_file
 def read_tags_file():
     """Return the lines of ~/.leo/tags or [] on error."""
     tagsFileName = os.path.expanduser('~/.leo/tags')
@@ -82,7 +88,9 @@ def read_tags_file():
     except Exception:
         g.es_exception()
         return []
-#@+node:ekr.20110307092028.14160: *3* start (ctags-complete)
+
+
+# @+node:ekr.20110307092028.14160: *3* start (ctags-complete)
 def start(event):
     """
     The ctags-complete command.
@@ -97,15 +105,15 @@ def start(event):
     if not cc:
         controllers[h] = cc = CtagsController(c)
     cc.start(event)
-#@+node:ekr.20110307092028.14154: ** class CtagsController
-class CtagsController:
 
+
+# @+node:ekr.20110307092028.14154: ** class CtagsController
+class CtagsController:
     # To do: put cursor at end of word initially.
 
-    #@+others
-    #@+node:ekr.20110307092028.14161: *3* ctags.__init__
+    # @+others
+    # @+node:ekr.20110307092028.14161: *3* ctags.__init__
     def __init__(self, c):
-
         # Init ivars.
         self.active = False
         self.body_widget = c.frame.body.widget
@@ -115,7 +123,8 @@ class CtagsController:
         self.popup_filter = None
         # Patch the body's event filter.
         self.ev_filter = c.frame.body.wrapper.ev_filter
-    #@+node:ekr.20091015185801.5243: *3* ctags.complete
+
+    # @+node:ekr.20091015185801.5243: *3* ctags.complete
     def complete(self, event):
         """Find all completions."""
         # c = self.c
@@ -128,9 +137,9 @@ class CtagsController:
         cpl.setModel(model)
         cpl.setCompletionPrefix(prefix)
         cpl.complete()
-    #@+node:ekr.20110307141357.14195: *3* ctags.end
-    def end(self, completion=''):
 
+    # @+node:ekr.20110307141357.14195: *3* ctags.end
+    def end(self, completion=''):
         w = self.body_widget
         cpl = self.completer
         if not completion:
@@ -145,15 +154,16 @@ class CtagsController:
             tc.insertText(cmpl[-extra:])
             w.setTextCursor(tc)
         self.kill()
-    #@+node:ekr.20110307141357.14198: *3* ctags.kill
-    def kill(self):
 
+    # @+node:ekr.20110307141357.14198: *3* ctags.kill
+    def kill(self):
         # Delete the completer.
         self.completer.deleteLater()
         self.completer = None
         self.active = False
         self.ev_filter.ctagscompleter_active = False
-    #@+node:ville.20090321223959.2: *3* ctags.lookup
+
+    # @+node:ville.20090321223959.2: *3* ctags.lookup
     def lookup(self, prefix):
         """Return a list of all items starting with prefix."""
         # global tagLines
@@ -164,9 +174,9 @@ class CtagsController:
         hits = [z.split(None, 1) for z in tagLines if z.startswith(prefix)]
         desc = [z[0] for z in hits]
         return sorted(list(set(desc)))
-    #@+node:ekr.20110307092028.14159: *3* ctags.onKey
-    def onKey(self, event, stroke):
 
+    # @+node:ekr.20110307092028.14159: *3* ctags.onKey
+    def onKey(self, event, stroke):
         stroke = stroke.lower()
         g.trace(repr(stroke))
         if stroke in ('space', 'return'):
@@ -178,14 +188,17 @@ class CtagsController:
             event.ignore()  # Does work.
         else:
             self.complete(event)
-    #@+node:ekr.20110307092028.14157: *3* ctags.start (ctags-complete)
+
+    # @+node:ekr.20110307092028.14157: *3* ctags.start (ctags-complete)
     def start(self, event):
         """Initialize."""
         c = self.c
+
         #
         # Create the callback to insert the selected completion.
         def completion_callback(completion, self=self):
             self.end(completion)
+
         #
         # Create the completer.
         cpl = c.frame.top.completer = self.completer = QCompleter()
@@ -199,6 +212,9 @@ class CtagsController:
         #
         # Show the completions.
         self.complete(event)
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

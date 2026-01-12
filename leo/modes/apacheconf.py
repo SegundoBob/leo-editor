@@ -955,266 +955,685 @@ keywordsDictDict = {
 
 # Rules for apacheconf_main ruleset.
 
+
 def apacheconf_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
 
+
 def apacheconf_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def apacheconf_rule2(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>",
-          delegate="apacheconf::vhost")
+    return colorer.match_span_regexp(
+        s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>", delegate="apacheconf::vhost"
+    )
+
 
 def apacheconf_rule3(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
-          delegate="apacheconf::directive")
+    return colorer.match_span_regexp(
+        s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>", delegate="apacheconf::directive"
+    )
+
 
 def apacheconf_rule4(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for apacheconf_main ruleset.
 rulesDict1 = {
-    "\"": [apacheconf_rule1,],
-    "#": [apacheconf_rule0,],
-    "0": [apacheconf_rule4,],
-    "1": [apacheconf_rule4,],
-    "2": [apacheconf_rule4,],
-    "3": [apacheconf_rule4,],
-    "4": [apacheconf_rule4,],
-    "5": [apacheconf_rule4,],
-    "6": [apacheconf_rule4,],
-    "7": [apacheconf_rule4,],
-    "8": [apacheconf_rule4,],
-    "9": [apacheconf_rule4,],
-    "< ": [apacheconf_rule2, apacheconf_rule3,],
-    "@": [apacheconf_rule4,],
-    "A": [apacheconf_rule4,],
-    "B": [apacheconf_rule4,],
-    "C": [apacheconf_rule4,],
-    "D": [apacheconf_rule4,],
-    "E": [apacheconf_rule4,],
-    "F": [apacheconf_rule4,],
-    "G": [apacheconf_rule4,],
-    "H": [apacheconf_rule4,],
-    "I": [apacheconf_rule4,],
-    "J": [apacheconf_rule4,],
-    "K": [apacheconf_rule4,],
-    "L": [apacheconf_rule4,],
-    "M": [apacheconf_rule4,],
-    "N": [apacheconf_rule4,],
-    "O": [apacheconf_rule4,],
-    "P": [apacheconf_rule4,],
-    "Q": [apacheconf_rule4,],
-    "R": [apacheconf_rule4,],
-    "S": [apacheconf_rule4,],
-    "T": [apacheconf_rule4,],
-    "U": [apacheconf_rule4,],
-    "V": [apacheconf_rule4,],
-    "W": [apacheconf_rule4,],
-    "X": [apacheconf_rule4,],
-    "Y": [apacheconf_rule4,],
-    "Z": [apacheconf_rule4,],
-    "_": [apacheconf_rule4,],
-    "a": [apacheconf_rule4,],
-    "b": [apacheconf_rule4,],
-    "c": [apacheconf_rule4,],
-    "d": [apacheconf_rule4,],
-    "e": [apacheconf_rule4,],
-    "f": [apacheconf_rule4,],
-    "g": [apacheconf_rule4,],
-    "h": [apacheconf_rule4,],
-    "i": [apacheconf_rule4,],
-    "j": [apacheconf_rule4,],
-    "k": [apacheconf_rule4,],
-    "l": [apacheconf_rule4,],
-    "m": [apacheconf_rule4,],
-    "n": [apacheconf_rule4,],
-    "o": [apacheconf_rule4,],
-    "p": [apacheconf_rule4,],
-    "q": [apacheconf_rule4,],
-    "r": [apacheconf_rule4,],
-    "s": [apacheconf_rule4,],
-    "t": [apacheconf_rule4,],
-    "u": [apacheconf_rule4,],
-    "v": [apacheconf_rule4,],
-    "w": [apacheconf_rule4,],
-    "x": [apacheconf_rule4,],
-    "y": [apacheconf_rule4,],
-    "z": [apacheconf_rule4,],
+    "\"": [
+        apacheconf_rule1,
+    ],
+    "#": [
+        apacheconf_rule0,
+    ],
+    "0": [
+        apacheconf_rule4,
+    ],
+    "1": [
+        apacheconf_rule4,
+    ],
+    "2": [
+        apacheconf_rule4,
+    ],
+    "3": [
+        apacheconf_rule4,
+    ],
+    "4": [
+        apacheconf_rule4,
+    ],
+    "5": [
+        apacheconf_rule4,
+    ],
+    "6": [
+        apacheconf_rule4,
+    ],
+    "7": [
+        apacheconf_rule4,
+    ],
+    "8": [
+        apacheconf_rule4,
+    ],
+    "9": [
+        apacheconf_rule4,
+    ],
+    "< ": [
+        apacheconf_rule2,
+        apacheconf_rule3,
+    ],
+    "@": [
+        apacheconf_rule4,
+    ],
+    "A": [
+        apacheconf_rule4,
+    ],
+    "B": [
+        apacheconf_rule4,
+    ],
+    "C": [
+        apacheconf_rule4,
+    ],
+    "D": [
+        apacheconf_rule4,
+    ],
+    "E": [
+        apacheconf_rule4,
+    ],
+    "F": [
+        apacheconf_rule4,
+    ],
+    "G": [
+        apacheconf_rule4,
+    ],
+    "H": [
+        apacheconf_rule4,
+    ],
+    "I": [
+        apacheconf_rule4,
+    ],
+    "J": [
+        apacheconf_rule4,
+    ],
+    "K": [
+        apacheconf_rule4,
+    ],
+    "L": [
+        apacheconf_rule4,
+    ],
+    "M": [
+        apacheconf_rule4,
+    ],
+    "N": [
+        apacheconf_rule4,
+    ],
+    "O": [
+        apacheconf_rule4,
+    ],
+    "P": [
+        apacheconf_rule4,
+    ],
+    "Q": [
+        apacheconf_rule4,
+    ],
+    "R": [
+        apacheconf_rule4,
+    ],
+    "S": [
+        apacheconf_rule4,
+    ],
+    "T": [
+        apacheconf_rule4,
+    ],
+    "U": [
+        apacheconf_rule4,
+    ],
+    "V": [
+        apacheconf_rule4,
+    ],
+    "W": [
+        apacheconf_rule4,
+    ],
+    "X": [
+        apacheconf_rule4,
+    ],
+    "Y": [
+        apacheconf_rule4,
+    ],
+    "Z": [
+        apacheconf_rule4,
+    ],
+    "_": [
+        apacheconf_rule4,
+    ],
+    "a": [
+        apacheconf_rule4,
+    ],
+    "b": [
+        apacheconf_rule4,
+    ],
+    "c": [
+        apacheconf_rule4,
+    ],
+    "d": [
+        apacheconf_rule4,
+    ],
+    "e": [
+        apacheconf_rule4,
+    ],
+    "f": [
+        apacheconf_rule4,
+    ],
+    "g": [
+        apacheconf_rule4,
+    ],
+    "h": [
+        apacheconf_rule4,
+    ],
+    "i": [
+        apacheconf_rule4,
+    ],
+    "j": [
+        apacheconf_rule4,
+    ],
+    "k": [
+        apacheconf_rule4,
+    ],
+    "l": [
+        apacheconf_rule4,
+    ],
+    "m": [
+        apacheconf_rule4,
+    ],
+    "n": [
+        apacheconf_rule4,
+    ],
+    "o": [
+        apacheconf_rule4,
+    ],
+    "p": [
+        apacheconf_rule4,
+    ],
+    "q": [
+        apacheconf_rule4,
+    ],
+    "r": [
+        apacheconf_rule4,
+    ],
+    "s": [
+        apacheconf_rule4,
+    ],
+    "t": [
+        apacheconf_rule4,
+    ],
+    "u": [
+        apacheconf_rule4,
+    ],
+    "v": [
+        apacheconf_rule4,
+    ],
+    "w": [
+        apacheconf_rule4,
+    ],
+    "x": [
+        apacheconf_rule4,
+    ],
+    "y": [
+        apacheconf_rule4,
+    ],
+    "z": [
+        apacheconf_rule4,
+    ],
 }
 
 # Rules for apacheconf_directive ruleset.
 
+
 def apacheconf_rule5(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#")
 
+
 def apacheconf_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def apacheconf_rule7(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>",
-          delegate="apacheconf::vhost")
+    return colorer.match_span_regexp(
+        s, i, kind="markup", begin="<(VirtualHost)[^>]*>", end="</$1>", delegate="apacheconf::vhost"
+    )
+
 
 def apacheconf_rule8(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>",
-          delegate="apacheconf::directive")
+    return colorer.match_span_regexp(
+        s, i, kind="markup", begin="<(\\w+)[^>]*>", end="</$1>", delegate="apacheconf::directive"
+    )
+
 
 def apacheconf_rule9(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for apacheconf_directive ruleset.
 rulesDict2 = {
-    "\"": [apacheconf_rule6,],
-    "#": [apacheconf_rule5,],
-    "0": [apacheconf_rule9,],
-    "1": [apacheconf_rule9,],
-    "2": [apacheconf_rule9,],
-    "3": [apacheconf_rule9,],
-    "4": [apacheconf_rule9,],
-    "5": [apacheconf_rule9,],
-    "6": [apacheconf_rule9,],
-    "7": [apacheconf_rule9,],
-    "8": [apacheconf_rule9,],
-    "9": [apacheconf_rule9,],
-    "< ": [apacheconf_rule7, apacheconf_rule8,],
-    "@": [apacheconf_rule9,],
-    "A": [apacheconf_rule9,],
-    "B": [apacheconf_rule9,],
-    "C": [apacheconf_rule9,],
-    "D": [apacheconf_rule9,],
-    "E": [apacheconf_rule9,],
-    "F": [apacheconf_rule9,],
-    "G": [apacheconf_rule9,],
-    "H": [apacheconf_rule9,],
-    "I": [apacheconf_rule9,],
-    "J": [apacheconf_rule9,],
-    "K": [apacheconf_rule9,],
-    "L": [apacheconf_rule9,],
-    "M": [apacheconf_rule9,],
-    "N": [apacheconf_rule9,],
-    "O": [apacheconf_rule9,],
-    "P": [apacheconf_rule9,],
-    "Q": [apacheconf_rule9,],
-    "R": [apacheconf_rule9,],
-    "S": [apacheconf_rule9,],
-    "T": [apacheconf_rule9,],
-    "U": [apacheconf_rule9,],
-    "V": [apacheconf_rule9,],
-    "W": [apacheconf_rule9,],
-    "X": [apacheconf_rule9,],
-    "Y": [apacheconf_rule9,],
-    "Z": [apacheconf_rule9,],
-    "_": [apacheconf_rule9,],
-    "a": [apacheconf_rule9,],
-    "b": [apacheconf_rule9,],
-    "c": [apacheconf_rule9,],
-    "d": [apacheconf_rule9,],
-    "e": [apacheconf_rule9,],
-    "f": [apacheconf_rule9,],
-    "g": [apacheconf_rule9,],
-    "h": [apacheconf_rule9,],
-    "i": [apacheconf_rule9,],
-    "j": [apacheconf_rule9,],
-    "k": [apacheconf_rule9,],
-    "l": [apacheconf_rule9,],
-    "m": [apacheconf_rule9,],
-    "n": [apacheconf_rule9,],
-    "o": [apacheconf_rule9,],
-    "p": [apacheconf_rule9,],
-    "q": [apacheconf_rule9,],
-    "r": [apacheconf_rule9,],
-    "s": [apacheconf_rule9,],
-    "t": [apacheconf_rule9,],
-    "u": [apacheconf_rule9,],
-    "v": [apacheconf_rule9,],
-    "w": [apacheconf_rule9,],
-    "x": [apacheconf_rule9,],
-    "y": [apacheconf_rule9,],
-    "z": [apacheconf_rule9,],
+    "\"": [
+        apacheconf_rule6,
+    ],
+    "#": [
+        apacheconf_rule5,
+    ],
+    "0": [
+        apacheconf_rule9,
+    ],
+    "1": [
+        apacheconf_rule9,
+    ],
+    "2": [
+        apacheconf_rule9,
+    ],
+    "3": [
+        apacheconf_rule9,
+    ],
+    "4": [
+        apacheconf_rule9,
+    ],
+    "5": [
+        apacheconf_rule9,
+    ],
+    "6": [
+        apacheconf_rule9,
+    ],
+    "7": [
+        apacheconf_rule9,
+    ],
+    "8": [
+        apacheconf_rule9,
+    ],
+    "9": [
+        apacheconf_rule9,
+    ],
+    "< ": [
+        apacheconf_rule7,
+        apacheconf_rule8,
+    ],
+    "@": [
+        apacheconf_rule9,
+    ],
+    "A": [
+        apacheconf_rule9,
+    ],
+    "B": [
+        apacheconf_rule9,
+    ],
+    "C": [
+        apacheconf_rule9,
+    ],
+    "D": [
+        apacheconf_rule9,
+    ],
+    "E": [
+        apacheconf_rule9,
+    ],
+    "F": [
+        apacheconf_rule9,
+    ],
+    "G": [
+        apacheconf_rule9,
+    ],
+    "H": [
+        apacheconf_rule9,
+    ],
+    "I": [
+        apacheconf_rule9,
+    ],
+    "J": [
+        apacheconf_rule9,
+    ],
+    "K": [
+        apacheconf_rule9,
+    ],
+    "L": [
+        apacheconf_rule9,
+    ],
+    "M": [
+        apacheconf_rule9,
+    ],
+    "N": [
+        apacheconf_rule9,
+    ],
+    "O": [
+        apacheconf_rule9,
+    ],
+    "P": [
+        apacheconf_rule9,
+    ],
+    "Q": [
+        apacheconf_rule9,
+    ],
+    "R": [
+        apacheconf_rule9,
+    ],
+    "S": [
+        apacheconf_rule9,
+    ],
+    "T": [
+        apacheconf_rule9,
+    ],
+    "U": [
+        apacheconf_rule9,
+    ],
+    "V": [
+        apacheconf_rule9,
+    ],
+    "W": [
+        apacheconf_rule9,
+    ],
+    "X": [
+        apacheconf_rule9,
+    ],
+    "Y": [
+        apacheconf_rule9,
+    ],
+    "Z": [
+        apacheconf_rule9,
+    ],
+    "_": [
+        apacheconf_rule9,
+    ],
+    "a": [
+        apacheconf_rule9,
+    ],
+    "b": [
+        apacheconf_rule9,
+    ],
+    "c": [
+        apacheconf_rule9,
+    ],
+    "d": [
+        apacheconf_rule9,
+    ],
+    "e": [
+        apacheconf_rule9,
+    ],
+    "f": [
+        apacheconf_rule9,
+    ],
+    "g": [
+        apacheconf_rule9,
+    ],
+    "h": [
+        apacheconf_rule9,
+    ],
+    "i": [
+        apacheconf_rule9,
+    ],
+    "j": [
+        apacheconf_rule9,
+    ],
+    "k": [
+        apacheconf_rule9,
+    ],
+    "l": [
+        apacheconf_rule9,
+    ],
+    "m": [
+        apacheconf_rule9,
+    ],
+    "n": [
+        apacheconf_rule9,
+    ],
+    "o": [
+        apacheconf_rule9,
+    ],
+    "p": [
+        apacheconf_rule9,
+    ],
+    "q": [
+        apacheconf_rule9,
+    ],
+    "r": [
+        apacheconf_rule9,
+    ],
+    "s": [
+        apacheconf_rule9,
+    ],
+    "t": [
+        apacheconf_rule9,
+    ],
+    "u": [
+        apacheconf_rule9,
+    ],
+    "v": [
+        apacheconf_rule9,
+    ],
+    "w": [
+        apacheconf_rule9,
+    ],
+    "x": [
+        apacheconf_rule9,
+    ],
+    "y": [
+        apacheconf_rule9,
+    ],
+    "z": [
+        apacheconf_rule9,
+    ],
 }
 
 # Rules for apacheconf_vhost ruleset.
 
+
 def apacheconf_rule10(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="#")
 
+
 def apacheconf_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def apacheconf_rule12(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for apacheconf_vhost ruleset.
 rulesDict3 = {
-    "\"": [apacheconf_rule11,],
-    "#": [apacheconf_rule10,],
-    "0": [apacheconf_rule12,],
-    "1": [apacheconf_rule12,],
-    "2": [apacheconf_rule12,],
-    "3": [apacheconf_rule12,],
-    "4": [apacheconf_rule12,],
-    "5": [apacheconf_rule12,],
-    "6": [apacheconf_rule12,],
-    "7": [apacheconf_rule12,],
-    "8": [apacheconf_rule12,],
-    "9": [apacheconf_rule12,],
-    "@": [apacheconf_rule12,],
-    "A": [apacheconf_rule12,],
-    "B": [apacheconf_rule12,],
-    "C": [apacheconf_rule12,],
-    "D": [apacheconf_rule12,],
-    "E": [apacheconf_rule12,],
-    "F": [apacheconf_rule12,],
-    "G": [apacheconf_rule12,],
-    "H": [apacheconf_rule12,],
-    "I": [apacheconf_rule12,],
-    "J": [apacheconf_rule12,],
-    "K": [apacheconf_rule12,],
-    "L": [apacheconf_rule12,],
-    "M": [apacheconf_rule12,],
-    "N": [apacheconf_rule12,],
-    "O": [apacheconf_rule12,],
-    "P": [apacheconf_rule12,],
-    "Q": [apacheconf_rule12,],
-    "R": [apacheconf_rule12,],
-    "S": [apacheconf_rule12,],
-    "T": [apacheconf_rule12,],
-    "U": [apacheconf_rule12,],
-    "V": [apacheconf_rule12,],
-    "W": [apacheconf_rule12,],
-    "X": [apacheconf_rule12,],
-    "Y": [apacheconf_rule12,],
-    "Z": [apacheconf_rule12,],
-    "_": [apacheconf_rule12,],
-    "a": [apacheconf_rule12,],
-    "b": [apacheconf_rule12,],
-    "c": [apacheconf_rule12,],
-    "d": [apacheconf_rule12,],
-    "e": [apacheconf_rule12,],
-    "f": [apacheconf_rule12,],
-    "g": [apacheconf_rule12,],
-    "h": [apacheconf_rule12,],
-    "i": [apacheconf_rule12,],
-    "j": [apacheconf_rule12,],
-    "k": [apacheconf_rule12,],
-    "l": [apacheconf_rule12,],
-    "m": [apacheconf_rule12,],
-    "n": [apacheconf_rule12,],
-    "o": [apacheconf_rule12,],
-    "p": [apacheconf_rule12,],
-    "q": [apacheconf_rule12,],
-    "r": [apacheconf_rule12,],
-    "s": [apacheconf_rule12,],
-    "t": [apacheconf_rule12,],
-    "u": [apacheconf_rule12,],
-    "v": [apacheconf_rule12,],
-    "w": [apacheconf_rule12,],
-    "x": [apacheconf_rule12,],
-    "y": [apacheconf_rule12,],
-    "z": [apacheconf_rule12,],
+    "\"": [
+        apacheconf_rule11,
+    ],
+    "#": [
+        apacheconf_rule10,
+    ],
+    "0": [
+        apacheconf_rule12,
+    ],
+    "1": [
+        apacheconf_rule12,
+    ],
+    "2": [
+        apacheconf_rule12,
+    ],
+    "3": [
+        apacheconf_rule12,
+    ],
+    "4": [
+        apacheconf_rule12,
+    ],
+    "5": [
+        apacheconf_rule12,
+    ],
+    "6": [
+        apacheconf_rule12,
+    ],
+    "7": [
+        apacheconf_rule12,
+    ],
+    "8": [
+        apacheconf_rule12,
+    ],
+    "9": [
+        apacheconf_rule12,
+    ],
+    "@": [
+        apacheconf_rule12,
+    ],
+    "A": [
+        apacheconf_rule12,
+    ],
+    "B": [
+        apacheconf_rule12,
+    ],
+    "C": [
+        apacheconf_rule12,
+    ],
+    "D": [
+        apacheconf_rule12,
+    ],
+    "E": [
+        apacheconf_rule12,
+    ],
+    "F": [
+        apacheconf_rule12,
+    ],
+    "G": [
+        apacheconf_rule12,
+    ],
+    "H": [
+        apacheconf_rule12,
+    ],
+    "I": [
+        apacheconf_rule12,
+    ],
+    "J": [
+        apacheconf_rule12,
+    ],
+    "K": [
+        apacheconf_rule12,
+    ],
+    "L": [
+        apacheconf_rule12,
+    ],
+    "M": [
+        apacheconf_rule12,
+    ],
+    "N": [
+        apacheconf_rule12,
+    ],
+    "O": [
+        apacheconf_rule12,
+    ],
+    "P": [
+        apacheconf_rule12,
+    ],
+    "Q": [
+        apacheconf_rule12,
+    ],
+    "R": [
+        apacheconf_rule12,
+    ],
+    "S": [
+        apacheconf_rule12,
+    ],
+    "T": [
+        apacheconf_rule12,
+    ],
+    "U": [
+        apacheconf_rule12,
+    ],
+    "V": [
+        apacheconf_rule12,
+    ],
+    "W": [
+        apacheconf_rule12,
+    ],
+    "X": [
+        apacheconf_rule12,
+    ],
+    "Y": [
+        apacheconf_rule12,
+    ],
+    "Z": [
+        apacheconf_rule12,
+    ],
+    "_": [
+        apacheconf_rule12,
+    ],
+    "a": [
+        apacheconf_rule12,
+    ],
+    "b": [
+        apacheconf_rule12,
+    ],
+    "c": [
+        apacheconf_rule12,
+    ],
+    "d": [
+        apacheconf_rule12,
+    ],
+    "e": [
+        apacheconf_rule12,
+    ],
+    "f": [
+        apacheconf_rule12,
+    ],
+    "g": [
+        apacheconf_rule12,
+    ],
+    "h": [
+        apacheconf_rule12,
+    ],
+    "i": [
+        apacheconf_rule12,
+    ],
+    "j": [
+        apacheconf_rule12,
+    ],
+    "k": [
+        apacheconf_rule12,
+    ],
+    "l": [
+        apacheconf_rule12,
+    ],
+    "m": [
+        apacheconf_rule12,
+    ],
+    "n": [
+        apacheconf_rule12,
+    ],
+    "o": [
+        apacheconf_rule12,
+    ],
+    "p": [
+        apacheconf_rule12,
+    ],
+    "q": [
+        apacheconf_rule12,
+    ],
+    "r": [
+        apacheconf_rule12,
+    ],
+    "s": [
+        apacheconf_rule12,
+    ],
+    "t": [
+        apacheconf_rule12,
+    ],
+    "u": [
+        apacheconf_rule12,
+    ],
+    "v": [
+        apacheconf_rule12,
+    ],
+    "w": [
+        apacheconf_rule12,
+    ],
+    "x": [
+        apacheconf_rule12,
+    ],
+    "y": [
+        apacheconf_rule12,
+    ],
+    "z": [
+        apacheconf_rule12,
+    ],
 }
 
 # x.rulesDictDict for apacheconf mode.

@@ -17,16 +17,15 @@ def create_dv():
     rootObject = view.rootObject()
     return view
 
+
 def main():
-
-
     app = QApplication(sys.argv)
     v = create_dv()
     app.exec_()
 
+
 if __name__ == '__main__':
     main()
-
 
 
 # Get the root object of the user interface.  It defines a
@@ -34,10 +33,10 @@ if __name__ == '__main__':
 # can be accessed transparently from Python.
 
 # Provide the current date and time when requested by the user interface.
-#rootObject.messageRequired.connect(now.emit_now)
+# rootObject.messageRequired.connect(now.emit_now)
 
 # Update the user interface with the current date and time.
-#now.now.connect(rootObject.updateMessage)
+# now.now.connect(rootObject.updateMessage)
 
 # Provide an initial message as a prompt.
-#rootObject.updateMessage("Click to get the current date and time")
+# rootObject.updateMessage("Click to get the current date and time")

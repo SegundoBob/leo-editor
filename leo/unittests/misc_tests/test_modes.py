@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20250109055422.1: * @file ../unittests/misc_tests/test_modes.py
+# @+leo-ver=5-thin
+# @+node:ekr.20250109055422.1: * @file ../unittests/misc_tests/test_modes.py
 """Tests of files in leo/modes"""
+
 import importlib
 import glob
 import os
@@ -10,19 +11,21 @@ from typing import Any
 from leo.core import leoGlobals as g
 from leo.core.leoColorizer import JEditColorizer
 from leo.core.leoTest2 import LeoUnitTest
-#@+others
-#@+node:ekr.20250109055422.2: ** class TestModes(LeoUnitTest)
+
+
+# @+others
+# @+node:ekr.20250109055422.2: ** class TestModes(LeoUnitTest)
 class TestModes(LeoUnitTest):
     """Unit tests checking files in leo/modes."""
-    #@+others
-    #@+node:ekr.20250109055422.3: *3* TestModes.tests...
-    #@+node:ekr.20241118022857.1: *4* TestModes.test_all_mode_files
-    def test_all_mode_files(self):
 
+    # @+others
+    # @+node:ekr.20250109055422.3: *3* TestModes.tests...
+    # @+node:ekr.20241118022857.1: *4* TestModes.test_all_mode_files
+    def test_all_mode_files(self):
         tag = 'test_all_mode_files'
 
-        #@+others  # Define test_one_mode_file
-        #@+node:ekr.20241118025715.1: *5* function: test_one_mode_file
+        # @+others  # Define test_one_mode_file
+        # @+node:ekr.20241118025715.1: *5* function: test_one_mode_file
         def test_one_mode_file(module: Any) -> None:
             """Call all rules in the given module, a mode file."""
             c = self.c
@@ -44,7 +47,8 @@ class TestModes(LeoUnitTest):
             s = 'def spam()'
             for rule in rules:
                 rule(colorer, s, i)
-        #@-others
+
+        # @-others
 
         fails = []
         mode_path = g.os_path_finalize_join(g.app.loadDir, '..', 'modes')
@@ -64,13 +68,12 @@ class TestModes(LeoUnitTest):
             message = f"\n{tag}:Test failed:...\n{fails_s}\n"
             raise AssertionError(message)
 
-    #@+node:ekr.20250109055901.1: *4* TestModes.test_rules_dicts
+    # @+node:ekr.20250109055901.1: *4* TestModes.test_rules_dicts
     def test_rules_dicts(self):
-
         # tag = 'test_rules_dicts'
 
-        #@+others  # Define test_rules_dict
-        #@+node:ekr.20250109060045.1: *5* function: test_rules_dict
+        # @+others  # Define test_rules_dict
+        # @+node:ekr.20250109060045.1: *5* function: test_rules_dict
         def test_rules_dict(language: str, path: str) -> None:
             """Call all rules in the given module, a mode file."""
             c = self.c
@@ -87,19 +90,19 @@ class TestModes(LeoUnitTest):
             d = module.rulesDict1
             for key in word1_chars:
                 assert key in d, f"Missing key in {language}.rulesDict1: {key!r}"
-        #@-others
+
+        # @-others
 
         mode_path = g.os_path_finalize_join(g.app.loadDir, '..', 'modes')
         for language in ('python', 'rust'):
             mode_path = os.path.normpath(f"{mode_path}{os.sep}{language}.py")
             test_rules_dict(language, mode_path)
-    #@+node:ekr.20250114101209.1: *4* TestModes.test_rust_character_patterns
-    def test_rust_character_patterns(self):
 
+    # @+node:ekr.20250114101209.1: *4* TestModes.test_rust_character_patterns
+    def test_rust_character_patterns(self):
         from leo.modes.rust import rust_char
 
         class TestColorizer:
-
             def match_seq(self, s: str, i: int, kind: str, seq: str):
                 return kind, seq
 
@@ -166,9 +169,9 @@ class TestModes(LeoUnitTest):
             kind, seq = rust_char(colorer, s, i=0)
             assert kind == 'literal4', kind
             assert seq == "'", repr(seq)
-    #@+node:ekr.20250123084454.1: *4* TestModes.test_c_label
-    def test_c_label(self):
 
+    # @+node:ekr.20250123084454.1: *4* TestModes.test_c_label
+    def test_c_label(self):
         from leo.modes.c import c_keyword
 
         c = self.c
@@ -178,7 +181,6 @@ class TestModes(LeoUnitTest):
         actual_kind: str
 
         class TestColorizer:
-
             def match_keywords(self, s: str, i: int):
                 return jedit_colorer.match_keywords(s, i)
 
@@ -199,6 +201,9 @@ class TestModes(LeoUnitTest):
             assert n == expected_n, (expected_n, n, s)
             assert expected_kind == actual_kind, (expected_kind, actual_kind, s)
             assert expected_seq == actual_seq, (expected_seq, actual_seq, s)
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

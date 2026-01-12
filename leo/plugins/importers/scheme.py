@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20231012140553.1: * @file ../plugins/importers/scheme.py
+# @+leo-ver=5-thin
+# @+node:ekr.20231012140553.1: * @file ../plugins/importers/scheme.py
 """The @auto importer for the scheme language."""
+
 from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
@@ -11,8 +12,9 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
 
-#@+others
-#@+node:ekr.20231012140553.2: ** class Scheme_Importer(Elisp_Importer)
+
+# @+others
+# @+node:ekr.20231012140553.2: ** class Scheme_Importer(Elisp_Importer)
 class Scheme_Importer(Elisp_Importer):
     """The importer for the Scheme language."""
 
@@ -25,16 +27,22 @@ class Scheme_Importer(Elisp_Importer):
         ('define-public', re.compile(r'\s*\(\s*\bdefine-public\s*\(?\s*([\w_-]+)')),
         ('define', re.compile(r'\s*\(\s*\bdefine\s*\(?([\w_-]+)')),
     )
-#@-others
+
+
+# @-others
+
 
 def do_import(c: Cmdr, parent: Position, s: str) -> None:
     """The importer callback for scheme."""
     Scheme_Importer(c).import_from_string(parent, s)
 
+
 importer_dict = {
-    'extensions': ['.scm',],
+    'extensions': [
+        '.scm',
+    ],
     'func': do_import,
 }
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

@@ -1,54 +1,55 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170428084207.494: * @file ../external/npyscreen/wgautocomplete.py
+# @+leo-ver=5-thin
+# @+node:ekr.20170428084207.494: * @file ../external/npyscreen/wgautocomplete.py
 #!/usr/bin/env python
-#@+others
-#@+node:ekr.20170428084207.495: ** Declarations
+# @+others
+# @+node:ekr.20170428084207.495: ** Declarations
 import curses
 from . import wgtextbox as textbox
 from . import wgmultiline as multiline
 from . import wgtitlefield as titlefield
 import os
+
 # from . import fmForm as Form
 from . import fmPopup as Popup
 
-#@+node:ekr.20170428084207.496: ** class Autocomplete
+
+# @+node:ekr.20170428084207.496: ** class Autocomplete
 class Autocomplete(textbox.Textfield):
     """This class is fairly useless, but override auto_complete to change that.  See filename class for example"""
-    #@+others
-    #@+node:ekr.20170428084207.497: *3* set_up_handlers
+
+    # @+others
+    # @+node:ekr.20170428084207.497: *3* set_up_handlers
     def set_up_handlers(self):
         '''Autocomplete.set_up_handlers.'''
         super(Autocomplete, self).set_up_handlers()
-        self.handlers.update({
-            curses.ascii.TAB: self.auto_complete
-        })
+        self.handlers.update({curses.ascii.TAB: self.auto_complete})
 
-    #@+node:ekr.20170428084207.498: *3* auto_complete
+    # @+node:ekr.20170428084207.498: *3* auto_complete
     def auto_complete(self, input):
         curses.beep()
 
-    #@+node:ekr.20170428084207.499: *3* get_choice
+    # @+node:ekr.20170428084207.499: *3* get_choice
     def get_choice(self, values):
         # If auto_complete needs the user to select from a list of values, this function lets them do that.
 
-        #tmp_window = Form.TitleForm(name=self.name, framed=True)
+        # tmp_window = Form.TitleForm(name=self.name, framed=True)
         tmp_window = Popup.Popup(name=self.name, framed=True)
-        sel = tmp_window.add_widget(multiline.MultiLine,
-                values=values,
-                value=self.value,
-                return_exit=True, select_exit=True)
-        #sel = multiline.MultiLine(tmp_window, values=values, value=self.value)
+        sel = tmp_window.add_widget(
+            multiline.MultiLine, values=values, value=self.value, return_exit=True, select_exit=True
+        )
+        # sel = multiline.MultiLine(tmp_window, values=values, value=self.value)
         tmp_window.display()
         sel.value = 0
         sel.edit()
         return sel.value
 
+    # @-others
 
-    #@-others
-#@+node:ekr.20170428084207.500: ** class Filename
+
+# @+node:ekr.20170428084207.500: ** class Filename
 class Filename(Autocomplete):
-    #@+others
-    #@+node:ekr.20170428084207.501: *3* auto_complete
+    # @+others
+    # @+node:ekr.20170428084207.501: *3* auto_complete
     def auto_complete(self, input):
         # expand ~
         self.value = os.path.expanduser(self.value)
@@ -69,9 +70,7 @@ class Filename(Autocomplete):
                 break
 
             flist = [os.path.join(dir, x) for x in flist]
-            possibilities = list(filter(
-                (lambda x: os.path.split(x)[1].startswith(fname)), flist
-                ))
+            possibilities = list(filter((lambda x: os.path.split(x)[1].startswith(fname)), flist))
 
             if len(possibilities) == 0:
                 # can't complete
@@ -81,8 +80,7 @@ class Filename(Autocomplete):
             if len(possibilities) == 1:
                 if self.value != possibilities[0]:
                     self.value = possibilities[0]
-                if os.path.isdir(self.value) \
-                    and not self.value.endswith(os.sep):
+                if os.path.isdir(self.value) and not self.value.endswith(os.sep):
                     self.value = self.value + os.sep
                 else:
                     if not os.path.isdir(self.value):
@@ -92,7 +90,7 @@ class Filename(Autocomplete):
             if len(possibilities) > 1:
                 filelist = possibilities
             else:
-                filelist = flist  #os.listdir(os.path.dirname(self.value))
+                filelist = flist  # os.listdir(os.path.dirname(self.value))
 
             filelist = list(map((lambda x: os.path.normpath(os.path.join(self.value, x))), filelist))
             files_only = []
@@ -122,18 +120,20 @@ class Filename(Autocomplete):
 
             # Can't complete
             curses.beep()
-        #os.path.normpath(self.value)
+        # os.path.normpath(self.value)
         os.path.normcase(self.value)
         self.cursor_position = len(self.value)
 
-    #@-others
-#@+node:ekr.20170428084207.502: ** class TitleFilename
+    # @-others
+
+
+# @+node:ekr.20170428084207.502: ** class TitleFilename
 class TitleFilename(titlefield.TitleText):
     _entry_type = Filename
 
 
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@nobeautify
-#@-leo
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@nobeautify
+# @-leo

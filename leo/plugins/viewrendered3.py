@@ -1,21 +1,21 @@
-#@+leo-ver=5-thin
-#@+node:TomP.20191215195433.1: * @file ../plugins/viewrendered3.py
-#@@tabwidth -4
-#@@language python
+# @+leo-ver=5-thin
+# @+node:TomP.20191215195433.1: * @file ../plugins/viewrendered3.py
+# @@tabwidth -4
+# @@language python
 # The line-too-long suppression must appear before the docstring.
 # pylint: disable=invalid-name,line-too-long,multiple-statements,undefined-variable,used-before-assignment
 r"""
-#@+<< vr3 docstring >>
-#@+node:TomP.20191215195433.2: ** << vr3 docstring >>
-#@@language rest
-#@@nocolor
-#@@pagewidth 65
+# @+<< vr3 docstring >>
+# @+node:TomP.20191215195433.2: ** << vr3 docstring >>
+# @@language rest
+# @@nocolor
+# @@pagewidth 65
 
 Creates a window for live rendering of reSTructuredText, Markdown
 and Asciidoc text, images, movies, sounds, rst, html, etc.
 
-#@+others
-#@+node:tom.20240521004125.1: *3* About
+# @+others
+# @+node:tom.20240521004125.1: *3* About
 About Viewrendered3 V5.22
 ===========================
 
@@ -82,7 +82,7 @@ the plugin.
 
 
 
-#@+node:tom.20241124124334.1: *3* New With This Version
+# @+node:tom.20241124124334.1: *3* New With This Version
 New With This Version
 ======================
 
@@ -90,7 +90,7 @@ The state machine used for processing Markdown and
 Asciidoc nodes was changed to reset to its original
 configuration. This fixed an occasional bug when an
 entire subtree was rendered.
-#@+node:tom.20241124124347.1: *3* Previous Recent Changes
+# @+node:tom.20241124124347.1: *3* Previous Recent Changes
 Previous Recent Changes
 ========================
 - Fixed: the freeze state was getting set to "unfreeze" after an
@@ -180,8 +180,8 @@ Asciidoctor enhancements
       vr3-asciidoctor-imagesdir=''``).
 
 The Dart programming language is now supported.
-#@+node:TomP.20200309205046.1: *3* Compatibility
-#@@pagewidth 65
+# @+node:TomP.20200309205046.1: *3* Compatibility
+# @@pagewidth 65
 Compatibility
 =============
 
@@ -191,8 +191,8 @@ Viewrendered. In limited testing, this seems to work as expected.
 It is advisable to bind VR to a different hot key than VR3. One
 possibility is Alt-0 for VR3 and Alt-F10 for VR.
 
-#@+node:TomP.20200308232305.1: *3* Limitations and Quirks
-#@@pagewidth 65
+# @+node:TomP.20200308232305.1: *3* Limitations and Quirks
+# @@pagewidth 65
 Limitations and Quirks
 ======================
 
@@ -240,8 +240,8 @@ Limitations and Quirks
        the render pane first. You may have to click back in the
        body or outline panes after this.
 
-#@+node:TomP.20200115200249.1: *3* Dependencies
-#@@pagewidth 65
+# @+node:TomP.20200115200249.1: *3* Dependencies
+# @@pagewidth 65
 Dependencies
 ============
 
@@ -257,8 +257,8 @@ plugin.
 This plugin uses pygments for syntax coloring in the MD stylesheet.
 
 
-#@+node:TomP.20200115200807.1: *3* Settings and Configuration
-#@@pagewidth 65
+# @+node:TomP.20200115200807.1: *3* Settings and Configuration
+# @@pagewidth 65
 Settings and Configuration
 ==========================
 
@@ -334,11 +334,11 @@ plugin::
 
     vr3-toggle = Alt+0
 
-#@+node:tom.20210612193759.1: *4* Stylesheets
+# @+node:tom.20210612193759.1: *4* Stylesheets
 Stylesheets
 ===========
 
-#@+node:tom.20211118000408.1: *5* ReStructuredText
+# @+node:tom.20211118000408.1: *5* ReStructuredText
 ReStructuredText
 ------------------
 
@@ -381,7 +381,7 @@ those colors specified by the stylesheet.  This lets the main VR3
 colors match those of the Leo theme that is in use.
 
 .. Note:: Only the text and background colors will be changed. Other colors, such as syntax coloring, warnings, etc., are not changed. This is usually not a problem if the VR3 stylesheet and Leo's stylesheet are both dark or both light.  It is better not to mix the light/dark character because this could lead to readability problems with, for example, syntax coloring.
-#@+node:tom.20211118000432.1: *5* Markdown
+# @+node:tom.20211118000432.1: *5* Markdown
 Markdown
 ---------
 
@@ -423,7 +423,7 @@ those colors specified by the stylesheet.  This lets the main VR3
 colors match those of the Leo theme that is in use.
 
 .. Note:: Only the text and background colors will be changed. Other colors, such as syntax coloring, warnings, etc., are not changed. This is usually not a problem if the VR3 stylesheet and Leo's stylesheet are both dark or both light.  It is better not to mix the light/dark character because this could lead to readability problems with, for example, syntax coloring.
-#@+node:tom.20210612193820.1: *4* MathJax Script Location
+# @+node:tom.20210612193820.1: *4* MathJax Script Location
 MathJax Script Location
 =======================
 
@@ -437,7 +437,7 @@ that one of the ``.js`` script files in the ``es`` directory be used, as shown
 in the above table.  If the script is loaded from the Internet, the URL must
 include a ``?config`` specifier.  The one shown in the example above works well.
 
-#@+node:TomP.20210422235304.1: *4* External Processors For Other Languages
+# @+node:TomP.20210422235304.1: *4* External Processors For Other Languages
 External Processors For Other Languages
 =======================================
 
@@ -463,7 +463,7 @@ A language that is specified here will not automatically be executed: only langu
 
 VR3 can only successfully execute code if all code blocks in a node or subtree use the same language.
 
-#@+node:TomP.20210423000029.1: *5* @param Optional Parameters
+# @+node:TomP.20210423000029.1: *5* @param Optional Parameters
 Optional Parameters
 ====================
 
@@ -496,7 +496,7 @@ outside a code block::
     # code to execute
     # ...
 
-#@+node:TomP.20210423002026.1: *5* Limitations
+# @+node:TomP.20210423002026.1: *5* Limitations
 Limitations
 ============
 
@@ -504,8 +504,8 @@ Limitations
 
 2. The supported command line format is fairly simple, so a language that needs separate compile and run stages will be difficult to use.
 
-#@+node:TomP.20200115200324.1: *3* Commands
-#@@pagewidth 65
+# @+node:TomP.20200115200324.1: *3* Commands
+# @@pagewidth 65
 Commands
 ========
 
@@ -544,8 +544,8 @@ There is rarely a reason to invoke any of them, except these:
     the rendering panel.
 
 
-#@+node:TomP.20200902222012.1: *3* Structured Text
-#@@pagewidth 65
+# @+node:TomP.20200902222012.1: *3* Structured Text
+# @@pagewidth 65
 Structured Text
 ===============
 
@@ -564,8 +564,8 @@ successfully executed.
 VR3 can render RsT, MD, and Asciidoc, but do not include more
 than one in any one node or subtree.
 
-#@+node:TomP.20200902222226.1: *4* Special Directives
-#@@pagewidth 65
+# @+node:TomP.20200902222226.1: *4* Special Directives
+# @@pagewidth 65
 Special Directives
 ------------------
 
@@ -625,7 +625,7 @@ In addition to the image syntax of the structured text in use,
 See `Settings and Configuration/External Processors/Optional
 Parameters`.
 
-#@+node:TomP.20200115200601.1: *4* Rendering reStructuredText
+# @+node:TomP.20200115200601.1: *4* Rendering reStructuredText
 Rendering reStructuredText
 ==========================
 
@@ -639,7 +639,7 @@ changed using the ``Default Kind`` menu.
 **Note**: reStructuredText errors and warnings will appear in red
 in the rendering pane.
 
-#@+node:TomP.20200115200634.1: *4* Rendering Markdown
+# @+node:TomP.20200115200634.1: *4* Rendering Markdown
 Rendering Markdown
 ==================
 
@@ -735,7 +735,7 @@ No Language Mixing
 As with RsT rendering, do not mix multiple structured languages in a single
 node or subtree.
 
-#@+node:TomP.20200820170225.1: *4* Rendering Asciidoc
+# @+node:TomP.20200820170225.1: *4* Rendering Asciidoc
 Rendering Asciidoc
 ===================
 
@@ -858,14 +858,14 @@ syntactical form ``[.xxx]``, e.g., ``[.big.]``.  Instead,
 the leading period must be omitted: ``[big]``. There may be
 other differences.
 
-#@+node:TomP.20200309191519.1: *3* Colorized Languages
+# @+node:TomP.20200309191519.1: *3* Colorized Languages
 Colorized Languages
 ===================
 
 Currently the languages that can be colorized are python, dart,
 javascript, java, julia, css, xml, and sql.
 
-#@+node:TomP.20210225000326.1: *3* Code Execution
+# @+node:TomP.20210225000326.1: *3* Code Execution
 Code Execution
 ===============
 
@@ -928,7 +928,7 @@ are used in `@language` directives.
 
 The languages that can currently be used are `javascript` and `julia`.  This list may be expanded in the future.
 
-#@+node:tom.20211104225431.1: *3* Easy Plotting Of X-Y Data
+# @+node:tom.20211104225431.1: *3* Easy Plotting Of X-Y Data
 Easy Plotting Of X-Y Data
 --------------------------
 
@@ -948,7 +948,7 @@ browser when *Other Actions/Help For Plot 2D* is clicked. This
 help is also invoked by the minibuffer command
 *vr3-help-plot-2d*.
 
-#@+node:tom.20220225114320.1: *3* Rendering HTML From Clipboard
+# @+node:tom.20220225114320.1: *3* Rendering HTML From Clipboard
 Rendering HTML From Clipboard
 ==============================
 
@@ -961,7 +961,7 @@ Pressing the *Reload* button restores the view to the current
 node.
 
 Currently VR3 has to be open for the command to work.
-#@+node:TomP.20200115200833.1: *3* Acknowledgments
+# @+node:TomP.20200115200833.1: *3* Acknowledgments
 Acknowledgments
 ================
 
@@ -984,13 +984,13 @@ and some additional capabilities have been added.
 
 Enhancements to the RsT stylesheets were adapted from Peter Mills' stylesheet.
 
-#@-others
+# @-others
 
-#@-<< vr3 docstring >>
+# @-<< vr3 docstring >>
 """
 
-#@+<< imports >>
-#@+node:TomP.20191215195433.4: ** << imports >>
+# @+<< imports >>
+# @+node:TomP.20191215195433.4: ** << imports >>
 #
 # Stdlib...
 from configparser import ConfigParser
@@ -1022,8 +1022,8 @@ from leo.core.leoApp import LoadManager as LM
 # 1946
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 
-#@+<< Qt Imports >>
-#@+node:tom.20210517102737.1: *3* << Qt Imports >> (VR3)
+# @+<< Qt Imports >>
+# @+node:tom.20210517102737.1: *3* << Qt Imports >> (VR3)
 try:
     from leo.plugins import qt_text
     from leo.core.leoQt import QtCore, QtWidgets
@@ -1031,6 +1031,7 @@ try:
     from leo.core.leoQt import KeyboardModifier, WrapMode
     from leo.core.leoQt import QAction, QActionGroup
     from leo.core.leoQt import QtGui, QUrl
+
     QColor = QtGui.QColor
 
 
@@ -1041,6 +1042,7 @@ except ImportError:
 has_webengineview = False
 try:
     from leo.core.leoQt import QtWebEngineWidgets
+
     has_webengineview = True
 except ImportError:
     # Might have Qt without QtWebEngineWidgets
@@ -1052,6 +1054,7 @@ if has_webengineview:
     qwv = QtWebEngineWidgets.QWebEngineView
     try:
         from leo.core.leoQt import QtWebEngineCore
+
         QWebEngineSettings = QtWebEngineCore.QWebEngineSettings
     except Exception:
         QWebEngineSettings = QtWebEngineWidgets.QWebEngineSettings
@@ -1072,9 +1075,9 @@ if QtSvg:
         QSvgWidget = QtSvg.QSvgWidget
     else:
         QtSvg = None
-#@-<< Qt Imports >>
-#@+<< Optional imports >>
-#@+node:tom.20240725071327.1: *3* << Optional imports >> (VR3)
+# @-<< Qt Imports >>
+# @+<< Optional imports >>
+# @+node:tom.20240725071327.1: *3* << Optional imports >> (VR3)
 try:
     import docutils
     import docutils.core
@@ -1084,6 +1087,7 @@ if docutils:
     try:
         from docutils.core import publish_string
         from docutils.utils import SystemMessage
+
         got_docutils = True
     except ImportError:
         got_docutils = False
@@ -1096,6 +1100,7 @@ else:
     print('VR3: *** no docutils')
 try:
     import markdown
+
     got_markdown = True
 except ImportError:
     got_markdown = False
@@ -1118,10 +1123,10 @@ try:
 except ImportError:
     pygments = None
     print('VR3: *** no pygments')
-#@-<< Optional imports >>
-#@-<< imports >>
-#@+<< declarations >>
-#@+node:tom.20240520232254.1: ** << declarations >>
+# @-<< Optional imports >>
+# @-<< imports >>
+# @+<< declarations >>
+# @+node:tom.20240520232254.1: ** << declarations >>
 # pylint: disable=invalid-name
 C = 'c'
 VR3_NS_ID = '_leo_viewrendered3'
@@ -1154,22 +1159,16 @@ RST = 'rst'
 ASCIIDOC_CONF_FILENAME = 'html5.conf'
 MATHJAX_URL = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js'
 
-#@+<< RsT Error styles>>
-#@+node:tom.20240520232254.2: *3* << RsT Error styles>>
-RST_ERROR_BODY_STYLE = ('color:#606060;'
-                        'background: aliceblue;'
-                        'padding-left:1em;'
-                        'padding-right:1em;'
-                        'border:thin solid gray;'
-                        'border-radius:.4em;')
+# @+<< RsT Error styles>>
+# @+node:tom.20240520232254.2: *3* << RsT Error styles>>
+RST_ERROR_BODY_STYLE = (
+    'color:#606060;background: aliceblue;padding-left:1em;padding-right:1em;border:thin solid gray;border-radius:.4em;'
+)
 
-RST_ERROR_MSG_STYLE = ('color:red;'
-                       'background:white;'
-                       'padding-left:1em;'
-                       'padding-right:1em;'
-                       'border:thin solid gray;'
-                       'border-radius:.4em;')
-#@-<< RsT Error styles>>
+RST_ERROR_MSG_STYLE = (
+    'color:red;background:white;padding-left:1em;padding-right:1em;border:thin solid gray;border-radius:.4em;'
+)
+# @-<< RsT Error styles>>
 # RST_HEADING_CHARS = '''=-:.`'"-~^_*+#'''# Symbol hierarchy - maybe some day
 RST_HEADING_CHARS = '''=============='''  # For now, same symbol for all levels
 RST_NO_WARNINGS = 5
@@ -1180,8 +1179,8 @@ VR3_TEMP_FILE = 'leo_rst_html.html'
 XML = 'xml'
 ZOOM_FACTOR = 1.1
 
-#@+<< MD stylesheets >>
-#@+node:tom.20240520232254.3: *3* << MD stylesheets >>
+# @+<< MD stylesheets >>
+# @+node:tom.20240520232254.3: *3* << MD stylesheets >>
 MD_BASE_STYLESHEET_NAME = 'md_styles.css'
 MD_STYLESHEET_DARK = 'md_styles_solarized_dark.css'
 MD_STYLESHEET_LIGHT = 'md_styles_solarized_light.css'
@@ -1212,7 +1211,7 @@ body, th, td {
   font-size: 90%;
 }
 '''
-#@-<< MD stylesheets >>
+# @-<< MD stylesheets >>
 
 TEXT_HTML_HEADER = f'''<html>
 <head>
@@ -1241,8 +1240,8 @@ RST_IMAGE_DIRECTIVE = '.. image::'
 SKIPBLOCKS = ('.. toctree::', '.. index::')
 ASCDOC_PYGMENTS_ATTRIBUTE = ':source-highlighter: pygments'
 
-#@+<< Other Line Markers >>
-#@+node:tom.20240520232254.4: *3* << Other Line Markers >>
+# @+<< Other Line Markers >>
+# @+node:tom.20240520232254.4: *3* << Other Line Markers >>
 # MD
 MD_LABELre = r'^!\[(?P<label>.*)\]'
 MD_URLre = r'\((?P<url>.+)\)'
@@ -1251,7 +1250,7 @@ MD_IMAGE_MARKER_RE = re.compile(MD_IMGre)
 
 ASCIIDOC_IMGre = r'image::(?P<url>.+)\[.*\]'
 ASCIIDOC_IMG = re.compile(ASCIIDOC_IMGre)
-#@-<< Other Line Markers >>
+# @-<< Other Line Markers >>
 
 _in_code_block = False
 
@@ -1261,8 +1260,8 @@ EXECUTABLES_SECTION = 'executables'
 LEO_PLUGINS_DIR = os.path.dirname(__file__)
 NO_SVG_WIDGET_MSG = 'QSvgWidget not available'
 
-#@+<< Misc Globals >>
-#@+node:tom.20240520232254.5: *3* << Misc Globals >>
+# @+<< Misc Globals >>
+# @+node:tom.20240520232254.5: *3* << Misc Globals >>
 ad3_file = ''
 asciidoc = None
 asciidoctor = None
@@ -1271,9 +1270,9 @@ asciidoc3_ok = False
 asciidoc_dirs: Dict[str, Dict] = {'asciidoc': {}, 'asciidoc3': {}}
 asciidoc_processors: List[Any] = []
 asciidoc_has_diagram = False
-#@-<< Misc Globals >>
-#@+<< define html templates >>
-#@+node:TomP.20191215195433.6: *3* << define html templates >> (vr3)
+# @-<< Misc Globals >>
+# @+<< define html templates >>
+# @+node:TomP.20191215195433.6: *3* << define html templates >> (vr3)
 image_template = '''\
 <html>
 <body bgcolor="#fffbdc">
@@ -1295,9 +1294,9 @@ latex_template = f'''\
 </body>
 </html>
 '''
-#@-<< define html templates >>
+# @-<< define html templates >>
 
-#@-<< declarations >>
+# @-<< declarations >>
 
 trace = False  # This global trace is convenient.
 
@@ -1305,8 +1304,9 @@ trace = False  # This global trace is convenient.
 controllers: Dict[str, Any] = {}  # values: VR3 widgets
 positions: Dict[int, Any] = {}  # values: OPENED_IN_TAB, OPENED_IN_SPLITTER, OPENED_SHARING_BODY
 
-#@+others
-#@+node:TomP.20200508124457.1: ** find_exe()
+
+# @+others
+# @+node:TomP.20200508124457.1: ** find_exe()
 def find_exe(exename):
     """Locate an executable and return its path.
 
@@ -1339,7 +1339,9 @@ def find_exe(exename):
         or shutil.which(exename, os.X_OK, scripts_local_dir)
         or shutil.which(exename, os.X_OK)
     )
-#@+node:tom.20211127234312.1: ** find_dir()
+
+
+# @+node:tom.20211127234312.1: ** find_dir()
 def find_dir(name, path):
     """Given a starting directory, return the full path to the named directory.
 
@@ -1350,7 +1352,9 @@ def find_dir(name, path):
         if name in dirs:
             return os.path.join(root, name)
     return None
-#@+node:tom.20221231143118.1: ** get_gems()
+
+
+# @+node:tom.20221231143118.1: ** get_gems()
 def check_gems(gem: str, encoding: str = 'utf-8') -> bool:
     """Check if a particular ruby gem is installed."""
     cmd = f'gem list {gem}'
@@ -1359,7 +1363,8 @@ def check_gems(gem: str, encoding: str = 'utf-8') -> bool:
     installed = gem in proc.stdout.decode(encoding)
     return installed
 
-#@+node:tom.20241005133916.1: ** is_theme_dark()
+
+# @+node:tom.20241005133916.1: ** is_theme_dark()
 def is_theme_dark(c):
     """Return True if editor background is darker than foreground."""
     wrapper = c.frame.body.wrapper
@@ -1368,7 +1373,9 @@ def is_theme_dark(c):
     fg = pallete.text().color()
     bg = pallete.window().color()
     return fg.value() > bg.value()
-#@+node:tom.20241005134508.1: ** tinker with colors()
+
+
+# @+node:tom.20241005134508.1: ** tinker with colors()
 def tinker_with_colors(c, kind: str = REST):
     """Use Editor's fore- and back-ground colors.
 
@@ -1383,8 +1390,8 @@ def tinker_with_colors(c, kind: str = REST):
     wrapper = c.frame.body.wrapper
     w = wrapper.widget
     pallete = w.viewport().palette()
-    fg_hex = pallete.text().color().rgb() & 0x00ffffff
-    bg_hex = pallete.window().color().rgb() & 0x00ffffff
+    fg_hex = pallete.text().color().rgb() & 0x00FFFFFF
+    bg_hex = pallete.window().color().rgb() & 0x00FFFFFF
     fg = f'#{fg_hex:06x}'
     bg = f'#{bg_hex:06x}'
 
@@ -1410,12 +1417,14 @@ def tinker_with_colors(c, kind: str = REST):
 """
     # Graft the colors after any previous stylesheet so they have priority.
     return css_fragment
-#@+node:tom.20211125003406.1: ** configure_asciidoc
+
+
+# @+node:tom.20211125003406.1: ** configure_asciidoc
 def configure_asciidoc():
     r"""
-    #@+<< asciidoc docstring >>
-    #@+node:tom.20211125003406.2: *3* << asciidoc docstring >>
-    #@@nocolor
+    # @+<< asciidoc docstring >>
+    # @+node:tom.20211125003406.2: *3* << asciidoc docstring >>
+    # @@nocolor
     Determine which Asciidoc processor to use.
 
     There are three possible processors:  asciidoc, asciidoc3, and asciidoctor.
@@ -1445,7 +1454,7 @@ def configure_asciidoc():
     "asciidoctor-diagram", which the external asciidoctor processor uses to
     render Plantuml diagrams.  (If asciidoctor is used and a node contains a
     plantuml diagram, the diagram will be rendered).
-    #@-<< asciidoc docstring >>
+    # @-<< asciidoc docstring >>
     """
     global AsciiDocAPI, AsciiDoc3API, ad3, ad3_file
     global asciidoc_ok, asciidoc3_ok  # asciidoc_processors
@@ -1456,11 +1465,12 @@ def configure_asciidoc():
     asciidoc3_ok = False
     asciidoc_has_diagram = check_gems('asciidoctor-diagram')
 
-    #@+<< get asciidoc >>
-    #@+node:tom.20211125003406.3: *3* << get asciidoc >>
+    # @+<< get asciidoc >>
+    # @+node:tom.20211125003406.3: *3* << get asciidoc >>
     try:
         from asciidoc import AsciiDocAPI
         from asciidoc.asciidoc import VERSION
+
         version = VERSION.split('.')
         major = int(version[0])
         goldilocks = int(version[1])
@@ -1477,6 +1487,7 @@ def configure_asciidoc():
         if dopatch:
             print('.... Patching asciidoc')
             from asciidoc.api import Options
+
             AsciiDocAPI.__init__ = new_init  # type:ignore
 
         asciidoc_ok = True
@@ -1492,12 +1503,13 @@ def configure_asciidoc():
         d_['stylesheets'] = find_dir('stylesheets', asciidoc_dir)
         d_['javascripts'] = find_dir('javascripts', asciidoc_dir)
         asciidoc_dirs['asciidoc'] = d_
-    #@-<< get asciidoc >>
-    #@+<< get asciidoc3 >>
-    #@+node:tom.20211125003406.4: *3* << get asciidoc3 >>
+    # @-<< get asciidoc >>
+    # @+<< get asciidoc3 >>
+    # @+node:tom.20211125003406.4: *3* << get asciidoc3 >>
     try:
         from asciidoc3.asciidoc3api import AsciiDoc3API
         from asciidoc3 import asciidoc3 as ad3
+
         ad3_file = ad3.__file__  # type:ignore
         asciidoc3_ok = True
     except ImportError:
@@ -1511,13 +1523,14 @@ def configure_asciidoc():
         d_['stylesheets'] = find_dir('stylesheets', asciidoc3_dir)
         d_['javascripts'] = find_dir('javascripts', asciidoc3_dir)
         asciidoc_dirs['asciidoc3'] = d_
-    #@-<< get asciidoc3 >>
+    # @-<< get asciidoc3 >>
+
 
 configure_asciidoc()
-#@+node:TomP.20200508125029.1: ** Find External Executables
+# @+node:TomP.20200508125029.1: ** Find External Executables
 pandoc_exec = find_exe('pandoc') or None
-#@+node:TomP.20210218231600.1: ** Find executables in VR3_CONFIG_FILE
-#@@language python
+# @+node:TomP.20210218231600.1: ** Find executables in VR3_CONFIG_FILE
+# @@language python
 # Get paths for executables from the VR3_CONFIG_FILE file
 lm = LM()
 leodir = os.path.abspath(g.app.homeLeoDir)
@@ -1533,15 +1546,19 @@ if inifile_exists:
         exepaths = dict(config[EXECUTABLES_SECTION])
 else:
     g.es(f"Can't find {inifile} so VR3 cannot execute non-Python code")
-#@+node:TomP.20191215195433.7: ** vr3.Top-level
-#@+node:TomP.20191215195433.8: *3* vr3.decorate_window
+
+
+# @+node:TomP.20191215195433.7: ** vr3.Top-level
+# @+node:TomP.20191215195433.8: *3* vr3.decorate_window
 def decorate_window(w):
     # Do not override the style sheet!
     # This interferes with themes
-        # w.setStyleSheet(stickynote_stylesheet)
+    # w.setStyleSheet(stickynote_stylesheet)
     g.app.gui.attachLeoIcon(w)
     w.resize(600, 300)
-#@+node:TomP.20191215195433.9: *3* vr3.init
+
+
+# @+node:TomP.20191215195433.9: *3* vr3.init
 def init() -> bool:
     """Return True if the plugin has loaded successfully."""
     # global got_docutils
@@ -1549,9 +1566,7 @@ def init() -> bool:
         return False
     if not QtWidgets or not g.app.gui.guiName().startswith('qt'):
         if (
-            not g.unitTesting
-            and not g.app.batchMode
-            and g.app.gui.guiName() in ('browser', 'curses')  # EKR.
+            not g.unitTesting and not g.app.batchMode and g.app.gui.guiName() in ('browser', 'curses')  # EKR.
         ):
             g.es_print('viewrendered3 requires Qt')
         return False
@@ -1568,15 +1583,20 @@ def init() -> bool:
     g.registerHandler('scrolledMessage', show_scrolled_message)
 
     return True
-#@+node:TomP.20191215195433.10: *3* vr3.isVisible
+
+
+# @+node:TomP.20191215195433.10: *3* vr3.isVisible
 def xisVisible():
     """Return True if the VR3 pane is visible."""
     return
-#@+node:TomP.20191215195433.11: *3* vr3.onCreate
+
+
+# @+node:TomP.20191215195433.11: *3* vr3.onCreate
 def onCreate(tag, keys):
     pass
 
-#@+at
+
+# @+at
 # def onCreate(tag: str, keys: dict) -> None:
 #     c = keys.get('c')
 #     if not c:
@@ -1587,7 +1607,7 @@ def onCreate(tag, keys):
 #     vr.active = True
 #     vr.is_visible = False
 #     vr.hide()
-#@+node:TomP.20191215195433.12: *3* vr3.onClose
+# @+node:TomP.20191215195433.12: *3* vr3.onClose
 def onClose(tag, keys):
     c = keys.get('c')
     h = c.hash()
@@ -1597,7 +1617,9 @@ def onClose(tag, keys):
         c.bodyWantsFocus()
         del controllers[h]
         vr3.deactivate()
-#@+node:tom.20240918232752.1: *3* vr3.show_scrolled_message
+
+
+# @+node:tom.20240918232752.1: *3* vr3.show_scrolled_message
 def show_scrolled_message(tag, kw):
     """Show "scrolled message" in VR3.
 
@@ -1621,12 +1643,7 @@ def show_scrolled_message(tag, kw):
 
     title = kw.get('short_title', '').strip()
     vr3.setWindowTitle(title)
-    s = '\n'.join([
-        title,
-        '=' * len(title),
-        '',
-        kw.get('msg')
-    ])
+    s = '\n'.join([title, '=' * len(title), '', kw.get('msg')])
 
     delay = 500  # if started_vr3 else 0
 
@@ -1639,17 +1656,21 @@ def show_scrolled_message(tag, kw):
         vr3.show()
 
         # if not vr3.isVisible:
-            # vr3.show()
+        # vr3.show()
 
     QtCore.QTimer.singleShot(delay, lambda: do_scrolled_msg(vr3, s, flags))
     return True
-#@+node:TomP.20191215195433.14: *3* vr3.split_last_sizes
+
+
+# @+node:TomP.20191215195433.14: *3* vr3.split_last_sizes
 def split_last_sizes(sizes):
     result = [2 * x for x in sizes[:-1]]
     result.append(sizes[-1])
     result.append(sizes[-1])
     return result
-#@+node:tom.20230403142205.1: *3* vr3.open_in_tab
+
+
+# @+node:tom.20230403142205.1: *3* vr3.open_in_tab
 def open_in_tab(c, vr3):
     """Open a vr3 instance in a tab in the log pane."""
     log = c.frame.log
@@ -1657,7 +1678,9 @@ def open_in_tab(c, vr3):
     log.selectTab(TABNAME)
     vr3.set_unfreeze()
     positions[c.hash()] = OPENED_IN_TAB
-#@+node:tom.20230403143106.1: *3* vr3.close_tab
+
+
+# @+node:tom.20230403143106.1: *3* vr3.close_tab
 def close_tab(c, vr3):
     """Close the VR3 tab if it is open.
 
@@ -1669,7 +1692,8 @@ def close_tab(c, vr3):
     h = c.hash()
     positions[h] = OPENED_IN_TAB
 
-#@+node:TomP.20191215195433.15: *3* vr3.getVr3
+
+# @+node:TomP.20191215195433.15: *3* vr3.getVr3
 def getVr3(event):
     """Return the VR3 ViewRenderedController3
 
@@ -1686,7 +1710,7 @@ def getVr3(event):
     # global controllers
     if g.app.gui.guiName() != 'qt':
         return None
-    if (c := event.get('c')):
+    if c := event.get('c'):
         h = c.hash()
     else:
         return None
@@ -1698,8 +1722,10 @@ def getVr3(event):
         vr3.set_freeze()
 
     return vr3
-#@+node:TomP.20191215195433.16: ** vr3.Commands
-#@+node:TomP.20191215195433.18: *3* g.command('vr3')
+
+
+# @+node:TomP.20191215195433.16: ** vr3.Commands
+# @+node:TomP.20191215195433.18: *3* g.command('vr3')
 @g.command('vr3')
 def viewrendered(event):
     """Create VR3 in this commander if not already created.
@@ -1720,17 +1746,22 @@ def viewrendered(event):
 
     getVr3({'c': c})
     return None  # Make pylint happy
-#@+node:TomP.20200112232719.1: *3* g.command('vr3-execute')
+
+
+# @+node:TomP.20200112232719.1: *3* g.command('vr3-execute')
 @g.command('vr3-execute')
 def execute_code(event):
     """Execute code in a RsT or MD node or subtree."""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
 
     c = event.get('c')
     vr3.execute_flag = True
     vr3.update(tag='view', keywords={'c': c, 'force': True})
-#@+node:TomP.20191215195433.29: *3* g.command('vr3-export-rst-html')
+
+
+# @+node:TomP.20191215195433.29: *3* g.command('vr3-export-rst-html')
 @g.command('vr3-export-rst-html')
 def export_rst_html(event):
     """Export rendering to system browser."""
@@ -1753,29 +1784,30 @@ def export_rst_html(event):
     with ioOpen(pathname, 'w', encoding='utf-8') as f:
         f.write(_html)
     webbrowser.open_new_tab(pathname)
-#@+node:tom.20220824141850.1: *3* g.command('vr3-freeze')
+
+
+# @+node:tom.20220824141850.1: *3* g.command('vr3-freeze')
 @g.command('vr3-freeze')
 def freeze_rendering_pane(event):
     """Freeze the rendering pane so it does not update."""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
     vr3.set_freeze()
-#@+node:tom.20211103161929.1: *3* g.command('vr3-help-plot-2d')
+
+
+# @+node:tom.20211103161929.1: *3* g.command('vr3-help-plot-2d')
 @g.command('vr3-help-plot-2d')
 def vr3_help_for_plot_2d(event):
-
     vr3 = getVr3(event)
     c = vr3.c
 
     doc_ = vr3.plot_2d.__doc__
     doclines = doc_.split('\n')
-    doclines = [line for line in doclines
-                if not line.lstrip().startswith('#@')]
+    doclines = [line for line in doclines if not line.lstrip().startswith('#@')]
     doc = '\n'.join(doclines)
     docstr = cleandoc(doc)
-    docstr = ('Help For VR3 Plot 2D\n'
-              '=====================\n'
-              + docstr)
+    docstr = 'Help For VR3 Plot 2D\n=====================\n' + docstr
 
     args: Dict[str, Any] = {'output_encoding': 'utf-8'}
     if vr3.rst_stylesheet and os.path.exists(vr3.rst_stylesheet):
@@ -1797,7 +1829,9 @@ def vr3_help_for_plot_2d(event):
     with ioOpen(pathname, 'w', encoding='utf-8') as f:
         f.write(_html)
     webbrowser.open_new_tab(pathname)
-#@+node:TomP.20191215195433.21: *3* g.command('vr3-hide')
+
+
+# @+node:TomP.20191215195433.21: *3* g.command('vr3-hide')
 @g.command('vr3-hide')
 @g.command('vr3-close')
 def hide_rendering_pane(event):
@@ -1806,13 +1840,14 @@ def hide_rendering_pane(event):
     if g.app.gui.guiName() != 'qt':
         return
 
-    if (c := event.get('c')):
+    if c := event.get('c'):
         h = c.hash()
     else:
         return
 
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
 
     if vr3.pyplot_active:
         g.es_print('can not close vr3 pane after using pyplot')
@@ -1827,29 +1862,38 @@ def hide_rendering_pane(event):
 
     c.bodyWantsFocus()
 
+
 teardown = hide_rendering_pane
 # Compatibility
 close_rendering_pane = hide_rendering_pane
-#@+node:TomP.20191215195433.22: *3* g.command('vr3-lock')
+
+
+# @+node:TomP.20191215195433.22: *3* g.command('vr3-lock')
 @g.command('vr3-lock')
 def lock_rendering_pane(event):
     """Lock the rendering pane to the current node."""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
 
     vr3.lock()
-#@+node:TomP.20200113230428.1: *3* g.command('vr3-lock-unlock-tree')
+
+
+# @+node:TomP.20200113230428.1: *3* g.command('vr3-lock-unlock-tree')
 @g.command('vr3-lock-unlock-tree')
 def lock_unlock_tree(event):
     """Toggle between lock(), unlock()."""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
 
     if vr3.lock_to_tree:
         vr3.unlock()
     else:
         vr3.lock()
-#@+node:tom.20210620170624.1: *3* g.command('vr3-open-markup-in-editor')
+
+
+# @+node:tom.20210620170624.1: *3* g.command('vr3-open-markup-in-editor')
 @g.command('vr3-open-markup-in-editor')
 def markup_to_editor(event):
     """Send VR3's markup to an external editor.
@@ -1874,12 +1918,14 @@ def markup_to_editor(event):
     cmd = [editor, 'vr3_last_markup.txt']
     subprocess.Popen(cmd)
 
-#@+node:TomP.20191215195433.23: *3* g.command('vr3-pause-play')
+
+# @+node:TomP.20191215195433.23: *3* g.command('vr3-pause-play')
 @g.command('vr3-pause-play-movie')
 def pause_play_movie(event):
     """Pause or play a movie in the rendering pane."""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
     vp = vr3.vp
     if not vp:
         return
@@ -1887,12 +1933,13 @@ def pause_play_movie(event):
     f = vp.pause if _state == 1 else vp.play
     f()
 
-#@+node:tom.20211103011049.1: *3* g.command('vr3-plot-2d')
+
+# @+node:tom.20211103011049.1: *3* g.command('vr3-plot-2d')
 @g.command('vr3-plot-2d')
 def vr3_plot_2d(event):
-    #@+<< vr3-plot-2d docstring >>
-    #@+node:tom.20211104105903.2: *4* << vr3-plot-2d docstring >>
-    #@@language rest
+    # @+<< vr3-plot-2d docstring >>
+    # @+node:tom.20211104105903.2: *4* << vr3-plot-2d docstring >>
+    # @@language rest
     r"""
     Show a plot of x-y data in the selected node.
 
@@ -2027,10 +2074,12 @@ def vr3_plot_2d(event):
     styling, as modified by a *matplotlibrc* file if Matplotlib can
     find one.
     """
-    #@-<< vr3-plot-2d docstring >>
+    # @-<< vr3-plot-2d docstring >>
     vr3 = getVr3(event)
     vr3.plot_2d()
-#@+node:tom.20220225110149.1: *3* g.command('vr3-render-html-from-clip')
+
+
+# @+node:tom.20220225110149.1: *3* g.command('vr3-render-html-from-clip')
 @g.command('vr3-render-html-from-clip')
 def vr3_render_html_from_clip(event):
     """Render HTML string from clipboard.
@@ -2049,7 +2098,7 @@ def vr3_render_html_from_clip(event):
     vr3.update_html(clip_str, {})
 
 
-#@+node:TomP.20191215195433.24: *3* g.command('vr3-show')
+# @+node:TomP.20191215195433.24: *3* g.command('vr3-show')
 @g.command('vr3-show')
 def show_rendering_pane(event):
     """Show the rendering pane."""
@@ -2075,12 +2124,15 @@ def show_rendering_pane(event):
     vr3.show()
     vr3.set_unfreeze()
 
-#@+node:TomP.20201003182453.1: *3* g.command('vr3-shrink-view')
+
+# @+node:TomP.20201003182453.1: *3* g.command('vr3-shrink-view')
 @g.command('vr3-shrink-view')
 def shrink_view(event):
     vr3 = getVr3(event)
     vr3.shrinkView()
-#@+node:tom.20230403141635.1: *3* g.command('vr3-tab')
+
+
+# @+node:tom.20230403141635.1: *3* g.command('vr3-tab')
 @g.command('vr3-tab')
 def viewrendered_tab(event):
     """Open VR3 in a tab in commander's log framer"""
@@ -2096,7 +2148,8 @@ def viewrendered_tab(event):
         open_in_tab(c, vr3)
         vr3.set_unfreeze()
 
-#@+node:TomP.20191215195433.25: *3* g.command('vr3-toggle')
+
+# @+node:TomP.20191215195433.25: *3* g.command('vr3-toggle')
 @g.command('vr3-toggle')
 def toggle_rendering_pane(event):
     """Toggle the rendering pane.
@@ -2119,7 +2172,9 @@ def toggle_rendering_pane(event):
         vr3.set_freeze()
     else:
         show_rendering_pane({'c': c})  # Same as "vr3-show" command
-#@+node:tom.20230403190542.1: *3* g.command('vr3-toggle-tab')
+
+
+# @+node:tom.20230403190542.1: *3* g.command('vr3-toggle-tab')
 @g.command('vr3-toggle-tab')
 def toggle_rendering_pane_tab(event):
     """Toggle the rendering pane.
@@ -2144,28 +2199,36 @@ def toggle_rendering_pane_tab(event):
         open_in_tab(c, vr3)
         vr3.set_unfreeze()
 
-#@+node:tom.20220824142721.1: *3* g.command('vr3-unfreeze')
+
+# @+node:tom.20220824142721.1: *3* g.command('vr3-unfreeze')
 @g.command('vr3-unfreeze')
 def unfreeze_rendering_pane(event):
     """Allow the rendering pane to update."""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
 
     vr3.set_unfreeze()
-#@+node:TomP.20191215195433.26: *3* g.command('vr3-unlock')
+
+
+# @+node:TomP.20191215195433.26: *3* g.command('vr3-unlock')
 @g.command('vr3-unlock')
 def unlock_rendering_pane(event):
     """Allow rendering pane to witch to current node."""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
 
     vr3.unlock()
-#@+node:TomP.20191215195433.27: *3* g.command('vr3-update')
+
+
+# @+node:TomP.20191215195433.27: *3* g.command('vr3-update')
 @g.command('vr3-update')
 def update_rendering_pane(event):
     """Update the rendering pane"""
     vr3 = getVr3(event)
-    if not vr3: return
+    if not vr3:
+        return
 
     c = event.get('c')
     old_freeze = vr3.freeze
@@ -2174,7 +2237,9 @@ def update_rendering_pane(event):
     vr3.update(tag='view', keywords={'c': c, 'force': True})
     if old_freeze:
         vr3.set_freeze()
-#@+node:TomP.20200923123015.1: *3* g.command('vr3-use-default-layout')
+
+
+# @+node:TomP.20200923123015.1: *3* g.command('vr3-use-default-layout')
 @g.command('vr3-use-default-layout')
 def open_with_layout(event):
     vr3 = getVr3(event)
@@ -2182,16 +2247,20 @@ def open_with_layout(event):
     c.doCommandByName('vr3-update')
     c.bodyWantsFocusNow()
 
-#@+node:TomP.20201003182436.1: *3* g.command('vr3-zoom-view')
+
+# @+node:TomP.20201003182436.1: *3* g.command('vr3-zoom-view')
 @g.command('vr3-zoom-view')
 def zoom_view(event):
     vr3 = getVr3(event)
     vr3.zoomView()
-#@+node:TomP.20191215195433.36: ** class ViewRenderedController3 (QWidget)
+
+
+# @+node:TomP.20191215195433.36: ** class ViewRenderedController3 (QWidget)
 class ViewRenderedController3(QtWidgets.QWidget):
     """A class to control rendering in a rendering pane."""
-    #@+others
-    #@+node:TomP.20200329223820.1: *3* vr3.ctor & helpers
+
+    # @+others
+    # @+node:TomP.20200329223820.1: *3* vr3.ctor & helpers
     def __init__(self, c, parent=None):
         """Ctor for ViewRenderedController class.
 
@@ -2202,12 +2271,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.c = c
         # Create the widget.
         super().__init__(parent)
-            # per http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html
-            # QtWidgets.QWidget.__init__(self)
+        # per http://enki-editor.org/2014/08/23/Pyqt_mem_mgmt.html
+        # QtWidgets.QWidget.__init__(self)
         self.create_pane()
 
-        #@+<< Set ivars >>
-        #@+node:tom.20240919181141.1: *4* << Set ivars >> (VR3)
+        # @+<< Set ivars >>
+        # @+node:tom.20240919181141.1: *4* << Set ivars >> (VR3)
         self.active = False
         self.badColors = []
         self.controllers = controllers
@@ -2246,9 +2315,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.finish_when_scrolled)
 
-        #@-<< Set ivars >>
-        #@+<< initialize configuration ivars >>
-        #@+node:tom.20240919181318.1: *4* << initialize configuration ivars >> (VR3)
+        # @-<< Set ivars >>
+        # @+<< initialize configuration ivars >>
+        # @+node:tom.20240919181318.1: *4* << initialize configuration ivars >> (VR3)
         self.base_path = ''  # A node's base path including @path directive
         self.code_only = False
         self.code_only = False
@@ -2271,13 +2340,13 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.setObjectName('viewrendered3_pane')
         self.adapt_fgbg_colors = True
 
-        #@-<< initialize configuration ivars >>
-        #@+<< asciidoc-specific >>
-        #@+node:tom.20240919181508.1: *4* << asciidoc-specific >> (VR3)
+        # @-<< initialize configuration ivars >>
+        # @+<< asciidoc-specific >>
+        # @+node:tom.20240919181508.1: *4* << asciidoc-specific >> (VR3)
         self.asciidoc3_internal_ok = True
         self.asciidoc_internal_ok = True
         self.using_ext_proc_msg_shown = False
-        #@-<< asciidoc-specific >>
+        # @-<< asciidoc-specific >>
 
         # User settings.
         self.reloadSettings()
@@ -2288,7 +2357,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.zoomed = False
 
         self.dbg_print(f'Created {self=}')
-    #@+node:TomP.20200329223820.3: *4* vr3.create_dispatch_dict
+
+    # @+node:TomP.20200329223820.3: *4* vr3.create_dispatch_dict
     def create_dispatch_dict(self):
         self.dispatch_dict = {
             'asciidoc': self.update_asciidoc,
@@ -2310,7 +2380,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         self.dispatch_dict['rest'] = self.dispatch_dict['rst']
         self.dispatch_dict['markdown'] = self.dispatch_dict['md']
-    #@+node:TomP.20200329223820.2: *4* vr3.create_web_engineview
+
+    # @+node:TomP.20200329223820.2: *4* vr3.create_web_engineview
     def create_web_engineview(self):
         """Return a QWebEngineView instance."""
         c = self.c
@@ -2330,7 +2401,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         return w
 
-    #@+node:TomP.20200329223820.4: *4* vr3.create_md_header
+    # @+node:TomP.20200329223820.4: *4* vr3.create_md_header
     def create_md_header(self):
         """Create a header for the md HTML output.
 
@@ -2360,7 +2431,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             css_fragment = tinker_with_colors(self.c, MD)
 
         if self.md_math_output and self.mathjax_url:
-            script_str = fr'<script defer type="text/javascript" src="{self.mathjax_url}"></script>'
+            script_str = rf'<script defer type="text/javascript" src="{self.mathjax_url}"></script>'
         self.md_header = f'''
     <!DOCTYPE html>
     <html><head>
@@ -2370,7 +2441,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
     {script_str}
     </head>
     '''
-    #@+node:TomP.20200329223820.5: *4* vr3.create_pane
+
+    # @+node:TomP.20200329223820.5: *4* vr3.create_pane
     def create_pane(self):
         """Create the vr3 pane."""
 
@@ -2380,7 +2452,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.setLayout(QtWidgets.QVBoxLayout())
         self.layout().setContentsMargins(0, 0, 0, 0)
         self.create_toolbar()
-    #@+node:TomP.20200329223820.15: *4* vr3.reloadSettings
+
+    # @+node:TomP.20200329223820.15: *4* vr3.reloadSettings
     def reloadSettings(self):
         c = self.c
         c.registerReloadSettings(self)
@@ -2392,8 +2465,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         self.use_node_headline = c.config.getBool('vr3-insert-headline-from-node', default=True)
 
-        #@+<< load stylesheet settings >>
-        #@+node:tom.20240919182502.1: *5* << load stylesheet settings >>
+        # @+<< load stylesheet settings >>
+        # @+node:tom.20240919182502.1: *5* << load stylesheet settings >>
         self.adapt_fgbg_colors = c.config.getBool('vr3-adapt-fgbg-colors', True)
         self.rst_stylesheet = c.config.getString('vr3-rst-stylesheet') or ''
         self.use_dark_theme = c.config.getBool('vr3-rst-use-dark-theme', RST_USE_DARK)
@@ -2406,19 +2479,17 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.set_rst_stylesheet()
         self.create_md_header()
 
-
-
-        #@-<< load stylesheet settings >>
-        #@+<< configure markdown >>
-        #@+node:tom.20240919182545.1: *5* << configure markdown >>
+        # @-<< load stylesheet settings >>
+        # @+<< configure markdown >>
+        # @+node:tom.20240919182545.1: *5* << configure markdown >>
         if got_markdown:
             ext = ['fenced_code', 'codehilite', 'def_list', 'tables']
             if self.md_math_output:
                 ext.append('leo.extensions.mdx_math_gi')
             self.Markdown = markdown.Markdown(extensions=ext)
-        #@-<< configure markdown >>
-        #@+<< configure asciidoc >>
-        #@+node:tom.20240919182710.1: *5* << configure asciidoc >>
+        # @-<< configure markdown >>
+        # @+<< configure asciidoc >>
+        # @+node:tom.20240919182710.1: *5* << configure asciidoc >>
         self.asciidoc_path = c.config.getString('vr3-asciidoc-path') or ''
         self.prefer_asciidoc3 = c.config.getBool('vr3-prefer-asciidoc3', default=False)
         self.prefer_external = c.config.getString('vr3-prefer-external') or ''
@@ -2429,15 +2500,13 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.asciidoctor_suppress_footer = c.config.getBool('vr3-asciidoctor-nofooter', default=False)
         self.asciidoctor_icons = c.config.getString('vr3-asciidoctor-icons') or ''
         self.asciidoctor_imagesdir = c.config.getString('vr3-asciidoctor-imagesdir') or ''
-        self.asciidoctor_diagram = (
-            asciidoc_has_diagram and
-            c.config.getBool('vr3-asciidoctor-diagram', default=False)
-        )
-        #@-<< configure asciidoc >>
+        self.asciidoctor_diagram = asciidoc_has_diagram and c.config.getBool('vr3-asciidoctor-diagram', default=False)
+        # @-<< configure asciidoc >>
 
         self.external_editor = c.config.getString('vr3-ext-editor') or ''
         self.DEBUG = bool(os.environ.get("VR3_DEBUG", None))
-    #@+node:TomP.20200329223820.6: *4* vr3.create_toolbar & helper functions
+
+    # @+node:TomP.20200329223820.6: *4* vr3.create_toolbar & helper functions
     def create_toolbar(self):
         """Create toolbar and attach to the VR3 widget.
 
@@ -2465,8 +2534,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         _other_actions_button = QtWidgets.QPushButton("Other Actions")
 
-        #@+others  # functions.
-        #@+node:TomP.20200329223820.7: *5* function: vr3.set_action
+        # @+others  # functions.
+        # @+node:TomP.20200329223820.7: *5* function: vr3.set_action
         def set_action(label, menu_var_name):
             """Add a QAction to a QT menu.
 
@@ -2488,16 +2557,19 @@ class ViewRenderedController3(QtWidgets.QWidget):
             _action = QAction(label, self, checkable=True)  # type:ignore
             _action.triggered.connect(lambda: set_menu_var(menu_var_name, _action))
             menu.addAction(_action)
-        #@+node:TomP.20200329223820.8: *5* function: vr3.set_default_kind
+
+        # @+node:TomP.20200329223820.8: *5* function: vr3.set_default_kind
         def set_default_kind(kind):
             self.default_kind = kind
             self.c.doCommandByName('vr3-update')
-        #@+node:TomP.20200329223820.9: *5* function: vr3.set_freeze
+
+        # @+node:TomP.20200329223820.9: *5* function: vr3.set_freeze
         def set_freeze(checked):
             action = self.action_freeze
             self.freeze = checked
             action.setChecked(checked)
-        #@+node:TomP.20200329223820.10: *5* function: vr3.set_group_action
+
+        # @+node:TomP.20200329223820.10: *5* function: vr3.set_group_action
         def set_group_action(label, kind):
             """Coordinates the menu's checked state.
 
@@ -2516,7 +2588,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             _action.triggered.connect(lambda: set_default_kind(kind))
             group.addAction(_action)
             menu.addAction(_action)
-        #@+node:TomP.20200329223820.11: *5* function: vr3.set_menu_var
+
+        # @+node:TomP.20200329223820.11: *5* function: vr3.set_menu_var
         def set_menu_var(menu_var_name, action):
             """Update an QAction's linked variable's value.
 
@@ -2531,15 +2604,17 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
             setattr(self, menu_var_name, action.isChecked())
             self.c.doCommandByName('vr3-update')
-        #@+node:TomP.20200329223820.12: *5* function: vr3.set_tree_lock
+
+        # @+node:TomP.20200329223820.12: *5* function: vr3.set_tree_lock
         def set_tree_lock(checked):
             action = self.action_lock_to_tree
             action.setChecked(checked)
             self.lock_to_tree = checked
             self.current_tree_root = self.c.p if checked else None
-        #@-others
-        #@+<< vr3: create menus >>
-        #@+node:TomP.20200329223820.13: *5* << vr3: create menus >>
+
+        # @-others
+        # @+<< vr3: create menus >>
+        # @+node:TomP.20200329223820.13: *5* << vr3: create menus >>
         menu = QtWidgets.QMenu()
         set_action("Entire Tree", 'show_whole_tree')
 
@@ -2588,9 +2663,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
         menu.addAction(_action)
 
         _other_actions_button.setMenu(menu)
-        #@-<< vr3: create menus >>
-        #@+<< vr3: finish toolbar >>
-        #@+node:TomP.20200329223820.14: *5* << vr3: finish toolbar >>
+        # @-<< vr3: create menus >>
+        # @+<< vr3: finish toolbar >>
+        # @+node:TomP.20200329223820.14: *5* << vr3: finish toolbar >>
         _export_button = QtWidgets.QPushButton("Export")
         _export_button.setDefault(True)
         _export_button.clicked.connect(lambda: c.doCommandByName('vr3-export-rst-html'))
@@ -2611,8 +2686,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.layout().setMenuBar(_toolbar)
         self.vr3_toolbar = _toolbar
 
-        #@-<< vr3: finish toolbar >>
-    #@+node:TomP.20200329223820.16: *4* vr3.set_md_stylesheet
+        # @-<< vr3: finish toolbar >>
+
+    # @+node:TomP.20200329223820.16: *4* vr3.set_md_stylesheet
     def set_md_stylesheet(self):
         """Set or create css stylesheet for Markdown node.
 
@@ -2644,8 +2720,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                                      in use.
         """
 
-        #@+others
-        #@+node:tom.20211117180937.1: *5* check_paths()
+        # @+others
+        # @+node:tom.20211117180937.1: *5* check_paths()
         def check_paths(filename, dir_list):
             """Given a file name, check for its existence in one of
             a sequence of directories.  Return the first full path where
@@ -2657,7 +2733,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 if os.path.exists(abs_file):
                     return abs_file
             return None
-        #@-others
+
+        # @-others
 
         # Style file locations
         default_style_dir = os.path.join(g.app.leoDir, 'plugins', 'viewrendered3')
@@ -2672,8 +2749,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         # If user has specified a stylesheet file, try to use it.
         # Can be absolute path or file name. Can use either path separator.
         if self.md_stylesheet:
-            #@+<< fix path separators >>
-            #@+node:tom.20211117161459.1: *5* << fix path separators >>
+            # @+<< fix path separators >>
+            # @+node:tom.20211117161459.1: *5* << fix path separators >>
             # Fix up path
             # Defensive programming; only the first form should be needed
             # but check the others just in case:
@@ -2686,16 +2763,16 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
             # Make all separators consistent and correct for the OS
             stylefile = str(Path(stylefile))
-            #@-<< fix path separators >>
-            #@+<< check existence >>
-            #@+node:tom.20211117161734.1: *5* << check existence >>
+            # @-<< fix path separators >>
+            # @+<< check existence >>
+            # @+node:tom.20211117161734.1: *5* << check existence >>
             # Check for style file's existence
             style_path = None
             if os.path.isabs(stylefile):
                 style_path = stylefile
             else:
                 style_path = check_paths(stylefile, style_dirs)
-            #@-<< check existence >>
+            # @-<< check existence >>
             if style_path:
                 self.md_stylesheet = 'file:///' + style_path
                 g.es('VR3 Markdown stylesheet:', self.md_stylesheet)
@@ -2738,9 +2815,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         g.es('VR3 Markdown stylesheet:', self.md_stylesheet)
 
-
-    #@+node:TomP.20200329223820.17: *4* vr3.set_rst_stylesheet
-    #@@language python
+    # @+node:TomP.20200329223820.17: *4* vr3.set_rst_stylesheet
+    # @@language python
     def set_rst_stylesheet(self):
         """Set rst stylesheet to default if none specified.
 
@@ -2790,22 +2866,20 @@ class ViewRenderedController3(QtWidgets.QWidget):
         if use_default:
             leo_theme_path = g.app.loadManager.computeThemeFilePath()
             leo_theme_name = g.os_path_basename(leo_theme_path)
-            use_dark_theme = (
-                self.use_dark_theme
-                or 'dark' in leo_theme_name
-                or leo_theme_name == LEO_THEME_NAME
-            )
+            use_dark_theme = self.use_dark_theme or 'dark' in leo_theme_name or leo_theme_name == LEO_THEME_NAME
             if use_dark_theme:
                 stylesheet = RST_DEFAULT_DARK_STYLESHEET
             else:
                 stylesheet = RST_DEFAULT_STYLESHEET_NAME
             self.rst_stylesheet = g.os_path_join(vr_style_dir, stylesheet)
         g.es('VR3 RsT stylesheet:', self.rst_stylesheet)
-    #@+node:tom.20210621132824.1: *4* vr3.dbg_print
+
+    # @+node:tom.20210621132824.1: *4* vr3.dbg_print
     def dbg_print(self, *args):
         if self.DEBUG:
             g.es(*args)
-    #@+node:tom.20211104105903.1: *3* vr3.plot_2d
+
+    # @+node:tom.20211104105903.1: *3* vr3.plot_2d
     def plot_2d(self):
         """Plot 2-column data in node.
 
@@ -2830,13 +2904,14 @@ class ViewRenderedController3(QtWidgets.QWidget):
         page_lines = page.split('\n')
         data_lines = []
 
-        #@+others
-        #@+node:tom.20211104105903.5: *4* declarations
+        # @+others
+        # @+node:tom.20211104105903.5: *4* declarations
         ENCODING = 'utf-8'
         STYLEFILE = 'local_mplstyle'  # Must be in site.getuserbase()
         SECTION_RE = re.compile(r'^\[([a-zA-Z0-9]+)\]')
-        #@+node:tom.20211104105903.6: *4* functions
-        #@+node:tom.20211104105903.7: *5* has_config_section()
+
+        # @+node:tom.20211104105903.6: *4* functions
+        # @+node:tom.20211104105903.7: *5* has_config_section()
         def has_config_section(pagelines):
             """Find config-like sections in the data page.
 
@@ -2855,8 +2930,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 if m := SECTION_RE.match(line):
                     sections[m[1]] = i
             return sections
-        #@+node:tom.20211104105903.8: *5* set custom_style()
-        #@@pagewidth 65
+
+        # @+node:tom.20211104105903.8: *5* set custom_style()
+        # @@pagewidth 65
         def set_custom_style():
             r"""Apply custom matplotlib styles from a file.
 
@@ -2888,17 +2964,17 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
             if not found_styles:
                 g.es(f'Pyplot style file "{style_file}" not found, using default styles')
-        #@+node:tom.20211104105903.12: *5* plot_plain_data()
+
+        # @+node:tom.20211104105903.12: *5* plot_plain_data()
         def plot_plain_data(pagelines):
             """Plot 1- or 2- column data.  Ignore all non-numeric lines."""
-
 
             # from leo.plugins import viewrendered3 as vr3
             # from leo.plugins import viewrendered as vr
 
             # Helper functions
-            #@+<< is_numeric >>
-            #@+node:tom.20211104105903.13: *6* << is_numeric >>
+            # @+<< is_numeric >>
+            # @+node:tom.20211104105903.13: *6* << is_numeric >>
             def is_numeric(line):
                 """Test if first or 1st and 2nd cols are numeric"""
                 fields = line.split()
@@ -2916,9 +2992,10 @@ class ViewRenderedController3(QtWidgets.QWidget):
                     pass
 
                 return numeric
-            #@-<< is_numeric >>
-            #@+<< get_data >>
-            #@+node:tom.20211104105903.14: *6* << get_data >>
+
+            # @-<< is_numeric >>
+            # @+<< get_data >>
+            # @+node:tom.20211104105903.14: *6* << get_data >>
             def get_data(pagelines) -> Tuple[Any, Any]:
                 num_cols = 0
 
@@ -2953,7 +3030,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                     y = [float(b) for b in ys]
 
                 return x, y
-            #@-<< get_data >>
+
+            # @-<< get_data >>
 
             x, y = get_data(pagelines)
             if not x:
@@ -2962,8 +3040,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
             plt.plot(x, y)
             plt.show()
-        #@+node:tom.20211104155447.1: *5* set_user_style()
-        #@@pagewidth 65
+
+        # @+node:tom.20211104155447.1: *5* set_user_style()
+        # @@pagewidth 65
         def set_user_style(style_config_lines):
             """Set special plot styles.
 
@@ -3010,13 +3089,14 @@ class ViewRenderedController3(QtWidgets.QWidget):
                     break
 
             return set_style
-        #@-others
+
+        # @-others
 
         config_sections = has_config_section(page_lines)
         source_start = config_sections.get('source', -1)
         if source_start > 0:
-            #@+<< set_data >>
-            #@+node:tom.20211106174814.1: *4* << set_data >>
+            # @+<< set_data >>
+            # @+node:tom.20211106174814.1: *4* << set_data >>
             for line in page_lines[source_start:]:
                 if not line.strip:
                     break
@@ -3034,7 +3114,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                             g.es(f'VR3 -- no data in file {filename}')
                     else:
                         g.es(f'VR3 -- cannot open data file {filename}')
-            #@-<< set_data >>
+            # @-<< set_data >>
         else:
             data_lines = page_lines
 
@@ -3054,8 +3134,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         label_start = config_sections.get('labels', -1)
         if label_start >= 0:
-            #@+<< configure labels >>
-            #@+node:tom.20211104105903.11: *4* << configure labels >>
+            # @+<< configure labels >>
+            # @+node:tom.20211104105903.11: *4* << configure labels >>
             # Get lines for the labels section
             for line in page_lines[label_start:]:
                 if not line.strip:
@@ -3071,11 +3151,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 elif kind == 'yaxis':
                     plt.ylabel(val)
 
-            #@-<< configure labels >>
+            # @-<< configure labels >>
 
         plot_plain_data(data_lines)
         plt.rcdefaults()
-    #@+node:TomP.20191215195433.49: *3* vr3.update & helpers
+
+    # @+node:TomP.20191215195433.49: *3* vr3.update & helpers
     # Must have this signature: called by leoPlugins.callTagHandler.
     def update(self, tag, keywords):  # type:ignore
         """Update the vr3 pane. Called at idle time.
@@ -3120,14 +3201,15 @@ class ViewRenderedController3(QtWidgets.QWidget):
         # Save the scroll position.
         # w = self.w
         # if w.__class__ == QtWidgets.QTextBrowser:
-            # # 2011/07/30: The widget may no longer exist.
-            # try:
-                # sb = w.verticalScrollBar()
-                # self.scrollbar_pos_dict[p.v] = sb.sliderPosition()
-            # except Exception:
-                # g.es_exception()
-                    # self.deactivate()
-    #@+node:tom.20240725074751.1: *4* vr3.update_rendering
+        # # 2011/07/30: The widget may no longer exist.
+        # try:
+        # sb = w.verticalScrollBar()
+        # self.scrollbar_pos_dict[p.v] = sb.sliderPosition()
+        # except Exception:
+        # g.es_exception()
+        # self.deactivate()
+
+    # @+node:tom.20240725074751.1: *4* vr3.update_rendering
     def update_rendering(self, f, node_tree, p, keywords, kind):
         """Render the node tree in the VR3 pane according to its kind."""
         s = keywords.get('s') if 's' in keywords else p.b
@@ -3139,7 +3221,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             f(s2, keywords)
         else:
             self.show_literal(s)
-    #@+node:tom.20241116145648.1: *4* vr3 scroll methods
+
+    # @+node:tom.20241116145648.1: *4* vr3 scroll methods
     # Support for saving and restoring scroll position.
     def capture_scroll_position(self) -> None:
         self.qwev.page().runJavaScript("window.pageYOffset", self.store_scroll_position)
@@ -3169,16 +3252,17 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.scrolling = False
         self.in_forced_message = False
         self.temp_scroll_postion = self.scroll_position = 0
-    #@+node:tom.20240724103143.1: *4* vr3.create_node_tree
+
+    # @+node:tom.20240724103143.1: *4* vr3.create_node_tree
     def create_node_tree(self, p, kind):
         _root = (self.current_tree_root or p) if self.lock_to_tree else p
         rootcopy = _root.copy()
         node_tree = [rootcopy]
-        if (kind in (ASCIIDOC, MD, PLAIN, RST, REST, TEXT)
-            and node_tree and self.show_whole_tree):
+        if kind in (ASCIIDOC, MD, PLAIN, RST, REST, TEXT) and node_tree and self.show_whole_tree:
             node_tree.extend(rootcopy.subtree())
         return node_tree
-    #@+node:tom.20240724102606.1: *4* vr3.prep_for_dispatch
+
+    # @+node:tom.20240724102606.1: *4* vr3.prep_for_dispatch
     def prep_for_dispatch(self, p, keywords):
         # Suppress updates until we change nodes.
         self.gnx = p.v.gnx
@@ -3186,14 +3270,16 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         # For rst, md, asciidoc handler
         self.rst_html = ''
-    #@+node:tom.20240724084623.1: *4* vr3.show_literal
+
+    # @+node:tom.20240724084623.1: *4* vr3.show_literal
     def show_literal(self, s):
         h = f'<pre>{s}</pre>'
         w = self.w
         self.set_html(h, w)
         self.rst_html = h
         w.show()
-    #@+node:tom.20240724083001.1: *4* vr3.compute_kind
+
+    # @+node:tom.20240724083001.1: *4* vr3.compute_kind
     def compute_kind(self, p, keywords):
         """Return processing function for the kind of node."""
         node_kind = None
@@ -3204,7 +3290,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             if node_kind in ('edit', 'file', 'clean', 'auto'):
                 node_kind = RST
         return node_kind
-    #@+node:tom.20240724081410.1: *4* vr3.handle_scrolled_msg
+
+    # @+node:tom.20240724081410.1: *4* vr3.handle_scrolled_msg
     def handle_scrolled_msg(self, keywords):
         """Display a "scrolled" message - usually for display of
         docstrings, help-for-command messages, etc.  Called from qt_gui.py.
@@ -3219,7 +3306,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
         s = keywords['s'] = '\n'.join([l for l in lines if not l.startswith('#@')])
 
         f = self.dispatch_dict.get(node_kind)
-        f([s,], keywords)  # type:ignore
+        f(
+            [
+                s,
+            ],
+            keywords,
+        )  # type:ignore
 
         # Prevent VR3 from showing the selected node at
         # the next idle-time callback,
@@ -3230,7 +3322,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.last_headline = p.v.h
 
         self.dbg_print(f'Scrolled msg: {keywords=}, {self=}')
-    #@+node:TomP.20191215195433.51: *4* vr3.embed_widget & helper
+
+    # @+node:TomP.20191215195433.51: *4* vr3.embed_widget & helper
     def embed_widget(self, w, delete_callback=None):
         """Embed widget w in the appropriate splitter."""
         c = self.c
@@ -3246,7 +3339,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             text_name = 'body-text-renderer'
             w.setObjectName(text_name)
             # Do not do this! It interferes with themes.
-                # self.setBackgroundColor(self.background_color, text_name, w)
+            # self.setBackgroundColor(self.background_color, text_name, w)
             w.setReadOnly(True)
             # Create the standard Leo bindings.
             wrapper_name = 'rendering-pane-wrapper'
@@ -3254,7 +3347,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             w.leo_wrapper = wrapper
             c.k.completeAllBindingsForWidget(wrapper)
             w.setWordWrapMode(WrapMode.WrapAtWordBoundaryOrAnywhere)
-    #@+node:TomP.20191215195433.52: *4* vr3.setBackgroundColor
+
+    # @+node:TomP.20191215195433.52: *4* vr3.setBackgroundColor
     def setBackgroundColor(self, colorName, name, w):
         """Set the background color of the vr3 pane."""
 
@@ -3264,11 +3358,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
         # if not colorName: return
         # styleSheet = 'QTextEdit#%s { background-color: %s; }' % (name, colorName)
         # if QtGui.QColor(colorName).isValid():
-            # w.setStyleSheet(styleSheet)
+        # w.setStyleSheet(styleSheet)
         # elif colorName not in self.badColors:
-            # self.badColors.append(colorName)
-            # g.warning('invalid body background color: %s' % (colorName))
-    #@+node:TomP.20191215195433.53: *4* vr3.must_update
+        # self.badColors.append(colorName)
+        # g.warning('invalid body background color: %s' % (colorName))
+
+    # @+node:TomP.20191215195433.53: *4* vr3.must_update
     def must_update(self, keywords):
         """Return True if we must update the rendering pane."""
         _must_update = False
@@ -3276,21 +3371,14 @@ class ViewRenderedController3(QtWidgets.QWidget):
         body_editor = c.frame.body.widget  # LeoQTextBrowser
         doc = body_editor.document()
 
-        if not (g.unitTesting
-                or c != keywords.get('c')
-                or not self.active
-                or self.locked):
+        if not (g.unitTesting or c != keywords.get('c') or not self.active or self.locked):
             if keywords.get('force'):
                 self.active = True
                 _must_update = True
             elif self.gnx != p.v.gnx and not self.lock_to_tree:
                 _must_update = True
                 self.cancel_scroll()
-            elif (doc.isModified()
-                  or len(p.b) != self.length
-                  or self.last_text != p.b
-                  or self.last_headline != p.h
-                  ):
+            elif doc.isModified() or len(p.b) != self.length or self.last_text != p.b or self.last_headline != p.h:
                 if self.get_kind(p) in ('html', 'pyplot'):
                     _must_update = False  # Only update explicitly.
                 else:
@@ -3304,7 +3392,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             doc.setModified(False)
 
         return _must_update
-    #@+node:TomP.20191215195433.54: *4* vr3.update_asciidoc & helpers
+
+    # @+node:TomP.20191215195433.54: *4* vr3.update_asciidoc & helpers
     def update_asciidoc(self, node_list, keywords):
         """Update asciidoc in the vr3 pane."""
 
@@ -3319,7 +3408,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         h = g.toUnicode(h)  # EKR.
         self.set_html(h, w)
         # self.show()
-    #@+node:TomP.20200825083904.1: *5* vr3.process_asciidoc_nodes
+
+    # @+node:TomP.20200825083904.1: *5* vr3.process_asciidoc_nodes
     def process_asciidoc_nodes(self, node_list, s=''):
         """Convert content of Leo nodes, or a string, to Asciidoc.
 
@@ -3393,11 +3483,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 result += '----\n'
 
         return result
-    #@+node:TomP.20200824155122.1: *5* vr3.convert_to_asciidoc
+
+    # @+node:TomP.20200824155122.1: *5* vr3.convert_to_asciidoc
     def convert_to_asciidoc(self, s):
         r"""
-        #@+<< convert asciidoc docstring >>
-        #@+node:tom.20211122114736.1: *6* << convert asciidoc docstring >>
+        # @+<< convert asciidoc docstring >>
+        # @+node:tom.20211122114736.1: *6* << convert asciidoc docstring >>
         Convert a string to html using an asciidoc processor.
 
         If the settings prefer an external asciidoctor (Ruby) processor,
@@ -3428,7 +3519,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         RETURNS
         the html returned by the processor, or an error message.
-        #@-<< convert asciidoc docstring >>
+        # @-<< convert asciidoc docstring >>
         """
         global asciidoc_processors
         # global AsciiDocAPI, AsciiDoc3, API, ad3_file
@@ -3438,19 +3529,20 @@ class ViewRenderedController3(QtWidgets.QWidget):
             self.rst_html = h
             return h
 
-        #@+<< function proc_string >>
-        #@+node:tom.20211122104550.1: *6* << function proc_string >>
+        # @+<< function proc_string >>
+        # @+node:tom.20211122104550.1: *6* << function proc_string >>
         def proc_string(proc):
             st = f'{type(proc)}'.lower()
             name = 'asciidoc3' if 'doc3' in st else 'asciidoc'
             return name
-        #@-<< function proc_string >>
+
+        # @-<< function proc_string >>
 
         # Reuse cached processors if possible
         if not asciidoc_processors:
             asciidoc_processors = []
-            #@+<< Find available processors >>
-            #@+node:tom.20211122104636.1: *6* << Find available processors >>
+            # @+<< Find available processors >>
+            # @+node:tom.20211122104636.1: *6* << Find available processors >>
             if asciidoc_ok:
                 asciidoc_processors.append(AsciiDocAPI())  # type:ignore
             if asciidoc3_ok:
@@ -3460,20 +3552,20 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 self.rst_html = h
                 return h
 
-            #@-<< Find available processors >>
+            # @-<< Find available processors >>
             if not asciidoc_processors:
                 h = '<h1>VR3 -- Cannot find an asciidoc processor</h1>'
                 self.rst_html = h
                 return h
 
-        #@+<< set processor priority >>
-        #@+node:tom.20211125140326.1: *6* << set processor priority >>
+        # @+<< set processor priority >>
+        # @+node:tom.20211125140326.1: *6* << set processor priority >>
         if self.prefer_asciidoc3:
             if proc_string(asciidoc_processors[0]) != 'asciidoc3':
                 asciidoc_processors.reverse()
         elif proc_string(asciidoc_processors[0]) != 'asciidoc':
             asciidoc_processors.reverse()
-        #@-<< set processor priority >>
+        # @-<< set processor priority >>
 
         infile = StringIO(s)
         outfile = StringIO()
@@ -3486,8 +3578,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         if not os.path.exists(asciidoc_conf_file):
             asciidoc_conf_file = ''
 
-        #@+<< try all processors >>
-        #@+node:tom.20211122104319.1: *6* << try all processors >>
+        # @+<< try all processors >>
+        # @+node:tom.20211122104319.1: *6* << try all processors >>
         for processor in asciidoc_processors:
             proc_name = proc_string(processor)
 
@@ -3516,10 +3608,10 @@ class ViewRenderedController3(QtWidgets.QWidget):
             except Exception as e:
                 failed.append(proc_name)
                 h += f'{proc_name} Failed: {e}\n'
-        #@-<< try all processors >>
+        # @-<< try all processors >>
         self.rst_html = h
-        #@+<< show fail-succeed processors >>
-        #@+node:tom.20211122104420.1: *6* << show fail-succeed processors >>
+        # @+<< show fail-succeed processors >>
+        # @+node:tom.20211122104420.1: *6* << show fail-succeed processors >>
         if self.asciidoc_show_proc_fail_msgs:
             if failed:
                 failed_procs = ','.join([f'{fail}' for fail in failed])
@@ -3528,18 +3620,20 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 g.es(f'VR3 -- Asciidoc succeeded using {succeeded}')
             # Reset to True on reload of settings:
             self.asciidoc_show_proc_fail_msgs = False
-        #@-<< show fail-succeed processors >>
+        # @-<< show fail-succeed processors >>
 
         if succeeded:
             infile.close()
             outfile.close()
         return h
-    #@+node:TomP.20191215195433.56: *5* vr3.convert_to_asciidoc_external
+
+    # @+node:TomP.20191215195433.56: *5* vr3.convert_to_asciidoc_external
     def convert_to_asciidoc_external(self, s):
         """Convert s to html using the Ruby asciidoctor3 processor."""
         s = self.run_asciidoctor_external(s)
         return g.toUnicode(s)
-    #@+node:TomP.20191215195433.57: *6* vr3.run_asciidoctor_external
+
+    # @+node:TomP.20191215195433.57: *6* vr3.run_asciidoctor_external
     def run_asciidoctor_external(self, s):
         """
         Process s with an asciidoctor3 external processor.
@@ -3588,7 +3682,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             g.es(message)
             return message
 
-    #@+node:TomP.20191215195433.58: *4* vr3.update_graphics_script
+    # @+node:TomP.20191215195433.58: *4* vr3.update_graphics_script
     def update_graphics_script(self, s, keywords):
         """Update the graphics script in the vr3 pane."""
         c = self.c
@@ -3612,10 +3706,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 self.gs = self.gv = None
 
             self.embed_widget(w, delete_callback=delete_callback)
-        c.executeScript(
-            script=s,
-            namespace={'gs': self.gs, 'gv': self.gv})
-    #@+node:TomP.20191215195433.59: *4* vr3.update_html
+        c.executeScript(script=s, namespace={'gs': self.gs, 'gv': self.gv})
+
+    # @+node:TomP.20191215195433.59: *4* vr3.update_html
     update_html_count = 0
 
     def update_html(self, s, keywords):
@@ -3631,7 +3724,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         w.setHtml(s)
         w.show()
         c.bodyWantsFocusNow()
-    #@+node:TomP.20191215195433.60: *4* vr3.update_image
+
+    # @+node:TomP.20191215195433.60: *4* vr3.update_image
     def update_image(self, s, keywords):
         """Update an image in the vr3 pane.
 
@@ -3675,11 +3769,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
         w = self.ensure_web_widget()
         self.set_html(template, w)
         w.show()
-    #@+node:TomP.20191215195433.63: *4* vr3.update_latex & helper
+
+    # @+node:TomP.20191215195433.63: *4* vr3.update_latex & helper
     def update_latex(self, s, keywords):
         """Update latex in the vr3 pane."""
         c = self.c
-        if sys.platform.startswith('win'):
+        if g.isWindows:
             g.es_print('latex rendering not ready for Python 3')
             w = self.ensure_text_widget()
             self.show()
@@ -3697,23 +3792,25 @@ class ViewRenderedController3(QtWidgets.QWidget):
         w.setHtml(s)
         w.show()
         c.bodyWantsFocusNow()
-    #@+node:TomP.20191215195433.64: *5* vr3.create_latex_html
+
+    # @+node:TomP.20191215195433.64: *5* vr3.create_latex_html
     def create_latex_html(self, s):
         """Create an html page embedding the latex code s."""
         html_s = html.escape(s)
         template = latex_template % (html_s)
         template = textwrap.dedent(template).strip()
         return template
-    #@+node:TomP.20191215195433.65: *4* vr3.update_md & helpers
+
+    # @+node:TomP.20191215195433.65: *4* vr3.update_md & helpers
     def update_md(self, node_list, keywords):
         """Update markdown text in the vr3 pane.
 
-            ARGUMENTS
-            node_list -- a list of outline nodes to be processed.
-            keywords -- a dictionary of keywords
+        ARGUMENTS
+        node_list -- a list of outline nodes to be processed.
+        keywords -- a dictionary of keywords
 
-            RETURNS
-            nothing
+        RETURNS
+        nothing
         """
         # Do this regardless of whether we show the widget or not.
         self.ensure_web_widget()
@@ -3748,7 +3845,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             # s = node_list[0].b
             w.setHtml('')  # EKR.
 
-    #@+node:TomP.20191215195433.66: *5* convert_markdown_to_html
+    # @+node:TomP.20191215195433.66: *5* convert_markdown_to_html
     def convert_markdown_to_html(self, node_list, s=''):
         """Convert node_list to html using the markdown processor.
 
@@ -3758,8 +3855,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         the HTML returned by markdown.
         """
 
-        #@+others
-        #@+node:TomP.20200208211132.1: *6* setup
+        # @+others
+        # @+node:TomP.20200208211132.1: *6* setup
         c, p = self.c, self.c.p
         if g.app.gui.guiName() != 'qt':
             return ''  # EKR
@@ -3775,7 +3872,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
         if os.path.isdir(path):
             os.chdir(path)
 
-        #@+node:TomP.20200208211347.1: *6* process nodes
+        # @+node:TomP.20200208211347.1: *6* process nodes
         result = ''
         codelist = []
         sm = StateMachine(self, TEXT, MD, MD)
@@ -3829,7 +3926,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
                     result += f'{err_result}\n'
                 result += '```\n'
 
-        #@+node:TomP.20200209115750.1: *6* generate HTML
+        # @+node:TomP.20200209115750.1: *6* generate HTML
 
         try:
             _html = self.Markdown.reset().convert(result)
@@ -3842,8 +3939,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         _html = self.md_header + '\n<body>\n' + _html + '\n</body>\n</html>'
         return _html
-        #@-others
-    #@+node:TomP.20191215195433.67: *4* vr3.update_movie
+        # @-others
+
+    # @+node:TomP.20191215195433.67: *4* vr3.update_movie
     movie_warning = False
 
     def update_movie(self, s, keywords):
@@ -3880,13 +3978,15 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.show()
         vp = self.vp
         vp.play()
-    #@+node:TomP.20191215195433.68: *4* vr3.update_networkx
+
+    # @+node:TomP.20191215195433.68: *4* vr3.update_networkx
     def update_networkx(self, s, keywords):
         """Update a networkx graphic in the vr3 pane."""
         w = self.ensure_text_widget()
         w.setPlainText('')  # 'Networkx: len: %s' % (len(s)))
         self.show()
-    #@+node:TomP.20191215195433.69: *4* vr3.update_pandoc & helpers
+
+    # @+node:TomP.20191215195433.69: *4* vr3.update_pandoc & helpers
     def update_pandoc(self, s, keywords):
         """
         Update an @pandoc in the vr3 pane.
@@ -3908,7 +4008,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 g.es_exception()
             return
         self.update_rst(s, keywords)
-    #@+node:TomP.20191215195433.70: *5* vr3.convert_to_pandoc
+
+    # @+node:TomP.20191215195433.70: *5* vr3.convert_to_pandoc
     def convert_to_pandoc(self, s):
         """Convert s to html using the asciidoctor or asciidoc processor."""
         c, p = self.c, self.c.p
@@ -3922,7 +4023,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             self.title = None
         s = self.run_pandoc(s)
         return g.toUnicode(s)
-    #@+node:TomP.20191215195433.71: *5* vr3.run_pandoc
+
+    # @+node:TomP.20191215195433.71: *5* vr3.run_pandoc
     def run_pandoc(self, s):
         """
         Process s with pandoc.
@@ -3944,7 +4046,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         # Read the output file and return it.
         with open(o_path, 'r', encoding=ENCODING) as f:
             return f.read()
-    #@+node:tom.20250103185205.1: *4* vr3.update_pdf
+
+    # @+node:tom.20250103185205.1: *4* vr3.update_pdf
     def update_pdf(self, s, keywords):
         """Display PDF file.
 
@@ -3971,7 +4074,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             w.setHtml('<h1>No PDF file in headline or body</h1>')
         w.show()
         c.bodyWantsFocusNow()
-    #@+node:tom.20250104125231.1: *5* v3.get_file_path
+
+    # @+node:tom.20250104125231.1: *5* v3.get_file_path
     def get_file_path(self, kind=None):
         """Return an absolute file path from a node.
 
@@ -4003,7 +4107,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             s = c.p.b.split('\n')[0].strip()
             path = self.get_file_from_string(s)
         return path
-    #@+node:tom.20250104130838.1: *5* v3.get_file_from_string
+
+    # @+node:tom.20250104130838.1: *5* v3.get_file_from_string
     def get_file_from_string(self, s):
         """Return the path to an existing file based on s.
 
@@ -4033,7 +4138,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         path1 = fn if Path.exists(Path(fn)) else ''
         return path1
-    #@+node:TomP.20191215195433.72: *4* vr3.update_pyplot
+
+    # @+node:TomP.20191215195433.72: *4* vr3.update_pyplot
     def update_pyplot(self, s, keywords):
         """Get the pyplot script at c.p.b and show it."""
         g.es('@pyplot nodes not implemented', color='gray')
@@ -4042,8 +4148,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             c = self.c
             if not self.pyplot_imported:
                 self.pyplot_imported = True
-                backend = g.finalize_join(
-                    g.app.loadDir, '..', 'plugins', 'pyplot_backend.py')
+                backend = g.finalize_join(g.app.loadDir, '..', 'plugins', 'pyplot_backend.py')
                 if g.os_path_exists(backend):
                     if matplotlib:
                         try:
@@ -4057,20 +4162,23 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 namespace = {
                     'animation': animation,
                     'matplotlib': matplotlib,
-                    'numpy': np, 'np': np,
-                    'pyplot': plt, 'plt': plt,
+                    'numpy': np,
+                    'np': np,
+                    'pyplot': plt,
+                    'plt': plt,
                 }
             except Exception:
                 g.es_print('matplotlib imports failed')
                 namespace = {}
             # Embedding already works without this!
-                # self.embed_pyplot_widget()
+            # self.embed_pyplot_widget()
             self.pyplot_imported = True
             # pyplot will throw RuntimeError if we close the pane.
             self.pyplot_active = True
             c.executeScript(
                 event=None,
-                args=None, p=None,
+                args=None,
+                p=None,
                 script=c.p.b,  # None,
                 useSelectedText=False,
                 define_g=True,
@@ -4081,17 +4189,18 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 runPyflakes=False,  # Suppress warnings about pre-defined symbols.
             )
             c.bodyWantsFocusNow()
-    #@+node:TomP.20191215195433.73: *4* vr3.update_rst & helpers
-    #@@language python
+
+    # @+node:TomP.20191215195433.73: *4* vr3.update_rst & helpers
+    # @@language python
     def update_rst(self, node_list, keywords=None):
         """Update rst in the vr3 pane.
 
-            ARGUMENTS
-            node_list -- a list of outline nodes to be processed.
-            keywords -- a dictionary of keywords
+        ARGUMENTS
+        node_list -- a list of outline nodes to be processed.
+        keywords -- a dictionary of keywords
 
-            RETURNS
-            nothing
+        RETURNS
+        nothing
         """
         if not keywords:  # EKR
             keywords = {}
@@ -4109,15 +4218,15 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 s = node_list[0].b
                 s = self.remove_directives(s)
             isHtml = s and s[0] == '<'
-    #@+at
-    #         # In case we bring back QtSvg again)
-    #         if s.startswith('<svg'):
-    #             if QtSvg is None:
-    #                 g.es(NO_SVG_WIDGET_MSG, color = 'red')
-    #                 return
-    #             else:
-    #                 self.update_svg(s, keywords)
-    #@@c
+            # @+at
+            #         # In case we bring back QtSvg again)
+            #         if s.startswith('<svg'):
+            #             if QtSvg is None:
+            #                 g.es(NO_SVG_WIDGET_MSG, color='red')
+            #                 return
+            #             else:
+            #                 self.update_svg(s, keywords)
+            # @@c
             self.rst_html = ''
             if s and isHtml:
                 _code = [n.b for n in node_list]
@@ -4134,15 +4243,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         # self.show()
 
-
-
-
-
-
-
-
-    #@+node:TomP.20191215195433.74: *5* vr3.convert_to_html
-    #@@language python
+    # @+node:TomP.20191215195433.74: *5* vr3.convert_to_html
+    # @@language python
     def convert_to_html(self, node_list, s=''):
         """Convert node_list to html using docutils.
 
@@ -4154,9 +4256,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
         the html returned by docutils.
         """
 
-        #@+others
-        #@+node:TomP.20200105214716.1: *6* vr3.setup
-        #@@language python
+        # @+others
+        # @+node:TomP.20200105214716.1: *6* vr3.setup
+        # @@language python
         c, p = self.c, self.c.p
         if g.app.gui.guiName() != 'qt':
             return ''  # EKR
@@ -4171,8 +4273,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             path = os.path.dirname(path)
         if os.path.isdir(path):
             os.chdir(path)
-        #@+node:TomP.20200105214928.1: *6* vr3.process nodes
-        #@@language python
+        # @+node:TomP.20200105214928.1: *6* vr3.process nodes
+        # @@language python
         result = ''
         codelist = []
         if not node_list:
@@ -4190,8 +4292,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 result += sproc
                 if codelines:
                     codelist.extend(codelines)
-        #@+node:TomP.20200426183119.1: *6* vr3.execute code blocks
-        #@@language python
+        # @+node:TomP.20200426183119.1: *6* vr3.execute code blocks
+        # @@language python
         # Execute code blocks; capture and insert execution results.
         # This means anything written to stdout or stderr.
         # The paths to known executables are in the exepaths dictionary, which
@@ -4224,8 +4326,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 result += f'\n::\n\n{indented_execution_result}\n'
             if indented_err_result.strip():
                 result += f'\n::\n\n{indented_err_result}\n'
-        #@+node:TomP.20200105214743.1: *6* vr3.get html from docutils
-        #@@language python
+        # @+node:TomP.20200105214743.1: *6* vr3.get html from docutils
+        # @@language python
         args: Dict[str, Any] = {'output_encoding': 'utf-8'}
         if self.rst_stylesheet and os.path.exists(self.rst_stylesheet):
             args['stylesheet_path'] = f'{self.rst_stylesheet}'
@@ -4246,8 +4348,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
         if result.strip():
             try:
                 self.last_markup = result
-                _html = publish_string(result, writer_name='html',
-                                       settings_overrides=args)
+                _html = publish_string(result, writer_name='html', settings_overrides=args)
             except SystemMessage as sm:
                 msg = sm.args[0]
                 if 'SEVERE' in msg or 'FATAL' in msg:
@@ -4267,13 +4368,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
             _html = html_str.encode(ENCODING)
             self.rst_html = _html
         return _html
-        #@-others
+        # @-others
 
-
-    #@+node:TomP.20210218003018.1: *5* execution helpers
+    # @+node:TomP.20210218003018.1: *5* execution helpers
     # Helper functions to execute non-python languages.
-    #@+others
-    #@+node:TomP.20210218232648.1: *6* ext_execute_code
+    # @+others
+    # @+node:TomP.20210218232648.1: *6* ext_execute_code
     def ext_execute_code(self, lang, code):
         """Execute code using an external processor.
 
@@ -4302,29 +4402,31 @@ class ViewRenderedController3(QtWidgets.QWidget):
         # pylint: disable=subprocess-run-check
         result = subprocess.run(cmd, shell=False, capture_output=True, text=True, encoding='utf-8')
         return result.stdout, result.stderr
-    #@-others
-    #@+node:TomP.20200112103934.1: *5* process_rst_node
-    #@@language python
+
+    # @-others
+    # @+node:TomP.20200112103934.1: *5* process_rst_node
+    # @@language python
     def process_rst_node(self, s):
         """Process the string of a rst node, honoring "@language" code blocks
 
-           Any sections delineated by "@language xxx" /"@language yyy" directives
-           are marked as code blocks in RST, where "xxx" is a code name
-           (e.g., "python"), and "yyy" is a non-code name (e.g., "rst").
-           There can be several changes from code to non-code and back
-           within the node.
+        Any sections delineated by "@language xxx" /"@language yyy" directives
+        are marked as code blocks in RST, where "xxx" is a code name
+        (e.g., "python"), and "yyy" is a non-code name (e.g., "rst").
+        There can be several changes from code to non-code and back
+        within the node.
 
-           Lines that contain only "@" cause all succeeding lines
-           to be skipped until the next line that contains only "@c".
+        Lines that contain only "@" cause all succeeding lines
+        to be skipped until the next line that contains only "@c".
 
-           ARGUMENT
-           s -- the node's contents as a string
+        ARGUMENT
+        s -- the node's contents as a string
 
-           RETURNS
-           a string having the code parts formatted as rst code blocks.
+        RETURNS
+        a string having the code parts formatted as rst code blocks.
         """
-        #@+<< rst special line helpers >>
-        #@+node:TomP.20200121121247.1: *6* << rst special line helpers >>
+
+        # @+<< rst special line helpers >>
+        # @+node:TomP.20200121121247.1: *6* << rst special line helpers >>
         def get_rst_code_language(line):
             """Return the language and tag for a line beginning with ".. code::"."""
             global _in_code_block
@@ -4345,9 +4447,10 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
         def empty_line(line):
             return not line.strip()
-        #@-<< rst special line helpers >>
-        #@+<< Loop Over Lines >>
-        #@+node:TomP.20200112103729.1: *6* << Loop Over Lines >>
+
+        # @-<< rst special line helpers >>
+        # @+<< Loop Over Lines >>
+        # @+node:TomP.20200112103729.1: *6* << Loop Over Lines >>
 
         lines = s.split('\n')
         # Break up text into chunks
@@ -4369,15 +4472,15 @@ class ViewRenderedController3(QtWidgets.QWidget):
         # environment = {'c': c, 'g': g, 'p': c.p} # EKR: predefine c & p.
 
         for i, line in enumerate(lines):
-            #@+<< omit at-others >>
-            #@+node:TomP.20200909123019.1: *7* << omit at-others >>
+            # @+<< omit at-others >>
+            # @+node:TomP.20200909123019.1: *7* << omit at-others >>
             # Omit lines starting with [blank]*line = @others
             left = line.lstrip()
             if left.startswith('@others'):
                 continue
-            #@-<< omit at-others >>
-            #@+<< handle toctree >>
-            #@+node:TomP.20200411133219.1: *7* << handle toctree >>
+            # @-<< omit at-others >>
+            # @+<< handle toctree >>
+            # @+node:TomP.20200411133219.1: *7* << handle toctree >>
             # Skip all lines in an indented block started by a string in SKIPBLOCKS
             # such as ".. toctree::" or ".. index::"
             # We need to skip all lines in the block until there is a non-blank
@@ -4398,9 +4501,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
                         continue
                 elif indented(line):
                     continue
-            #@-<< handle toctree >>
-            #@+<< handle quotes >>
-            #@+node:TomP.20200117172607.1: *7* << handle quotes >>
+            # @-<< handle toctree >>
+            # @+<< handle quotes >>
+            # @+node:TomP.20200117172607.1: *7* << handle quotes >>
             # Detect if we are starting or ending a multi-line
             # string in a code block.  We need to know
             # to prevent directives within a string from
@@ -4420,9 +4523,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
                         _in_quotes = line.count(_quotes_type) == 1
                     else:
                         _in_quotes = False
-            #@-<< handle quotes >>
-            #@+<< handle_ats >>
-            #@+node:TomP.20200112103729.2: *7* << handle_ats >>
+            # @-<< handle quotes >>
+            # @+<< handle_ats >>
+            # @+node:TomP.20200112103729.2: *7* << handle_ats >>
             # Honor "@", "@c": skip all lines after "@" until next "@c".
             if line.rstrip() == '@':
                 _at_skip_in_effect = True
@@ -4432,9 +4535,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
 
             if _at_skip_in_effect:
                 continue
-            #@-<< handle_ats >>
-            #@+<< handle at-image >>
-            #@+node:TomP.20200416153716.1: *7* << handle at-image >>
+            # @-<< handle_ats >>
+            # @+<< handle at-image >>
+            # @+node:TomP.20200416153716.1: *7* << handle at-image >>
             # Handle @image and @param directives.
             # param format: space separated words, stored in self.params
             # as a list of the words.
@@ -4486,9 +4589,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
                         params = params[1:]
                         self.params.extend(params)
                     continue
-            #@-<< handle at-image >>
-            #@+<< identify_code_blocks >>
-            #@+node:TomP.20200112103729.3: *7* << identify_code_blocks >>
+            # @-<< handle at-image >>
+            # @+<< identify_code_blocks >>
+            # @+node:TomP.20200112103729.3: *7* << identify_code_blocks >>
             # Identify code blocks
             # Can start with "@language" or ".. code::"
             _got_language_by_rst_block = line.startswith(RST_CODE_INTRO) and not _in_quotes
@@ -4506,7 +4609,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 # and to detect the end of the block.  We need to un-indent
                 # because CODE chunks assume the lines are not indented.
                 _numlines = len(lines)
-                if _numlines < i + 2: continue  # Reached the end of the node.
+                if _numlines < i + 2:
+                    continue  # Reached the end of the node.
 
                 # Skip mandatory first blank line before indent
                 _first_code_line_num = i + 2
@@ -4515,7 +4619,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 # Figure out the indentation
                 _indentation = ''
                 for ch in _first_code_line:
-                    if ch not in (' ', '\t'): break
+                    if ch not in (' ', '\t'):
+                        break
                     _indentation += ch
 
                 # Last line of code block must be followed by at least one blank line and
@@ -4523,7 +4628,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 _last_code_line_num = _first_code_line_num
                 if not _last_code_line_num == _numlines - 1:
                     for j in range(_first_code_line_num, _numlines):
-                        if lines[j].startswith(_indentation): continue
+                        if lines[j].startswith(_indentation):
+                            continue
                         if j == _numlines - 1:
                             _last_code_line_num = j
                         elif lines[j + 1] and lines[j + 1][0] not in (' ', '\t'):
@@ -4538,18 +4644,11 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 _in_code_block = _language in LANGUAGES
                 if _in_code_block and not self.controlling_code_lang:
                     self.controlling_code_lang = _language if _in_code_block else None
-            #@-<< identify_code_blocks >>
-            #@+<< fill_chunks >>
-            #@+node:TomP.20200112103729.5: *7* << fill_chunks >>
-
+            # @-<< identify_code_blocks >>
+            # @+<< fill_chunks >>
+            # @+node:TomP.20200112103729.5: *7* << fill_chunks >>
             _cleanline = line.strip()
-            _starts_with_at = (
-                not _got_language
-                and line
-                and line[0] == '@'
-                and _cleanline != '@'
-                and _cleanline != '@c'
-            )
+            _starts_with_at = not _got_language and line and line[0] == '@' and _cleanline != '@' and _cleanline != '@c'
 
             if i == 0 and not _got_language:
                 # Set up the first chunk (unless the first line changes the language)
@@ -4599,10 +4698,10 @@ class ViewRenderedController3(QtWidgets.QWidget):
                         _chunk = Chunk(_tag, _structure, _lang)
                 else:
                     _chunk.add_line(line)
-            #@-<< fill_chunks >>
-        #@-<< Loop Over Lines >>
-        #@+<< Finalize Node >>
-        #@+node:TomP.20200112103742.1: *6* << Finalize Node >>
+            # @-<< fill_chunks >>
+        # @-<< Loop Over Lines >>
+        # @+<< Finalize Node >>
+        # @+node:TomP.20200112103742.1: *6* << Finalize Node >>
         # Make sure chunk ends with a blank line
         _chunk.add_line('\n')
 
@@ -4620,27 +4719,29 @@ class ViewRenderedController3(QtWidgets.QWidget):
         if self.execute_flag:
             codelines = ['\n'.join(ch.text_lines) for ch in chunks if ch.tag == CODE]
         return final_text, codelines
-        #@-<< Finalize Node >>
-    #@+node:tom.20210621144739.1: *5* vr3.make_title_from_headline
+        # @-<< Finalize Node >>
+
+    # @+node:tom.20210621144739.1: *5* vr3.make_title_from_headline
     def make_title_from_headline(self, p, h):
         """From node title, return title with over- and underline- strings.
 
-           Symbol is chosen based on the indent level of the node.
-           Note that might differe from p.h because of, e.g.,
-           directive removal.
+        Symbol is chosen based on the indent level of the node.
+        Note that might differe from p.h because of, e.g.,
+        directive removal.
 
-           ARGUMENTS
-           p -- the node position whose indent level is to be used.
-           h -- the headline string to be processed.
+        ARGUMENTS
+        p -- the node position whose indent level is to be used.
+        h -- the headline string to be processed.
 
-           RETURNS
-           a string
+        RETURNS
+        a string
         """
         level = min(p.level(), 4) - 1
         heading_str = RST_HEADING_CHARS[level] * (len(h) + 1)
         return f'{heading_str}\n{h}\n{heading_str}'
-    #@+node:TomP.20200107232540.1: *5* vr3.make_rst_headline
-    #@@language python
+
+    # @+node:TomP.20200107232540.1: *5* vr3.make_rst_headline
+    # @@language python
     def make_rst_headline(self, p, s):
         """Turn node's title into a headline and add to front of text.
 
@@ -4668,7 +4769,6 @@ class ViewRenderedController3(QtWidgets.QWidget):
             _headline_str = _headline_str.strip()  # Docutils raises error for leading space
             _headline_str = _headline_str.replace('\\', '\\\\')
 
-
         # Don't duplicate node heading if the body already has it
         # Assumes that 1st two lines are a heading if
         # node headline == body's first line.
@@ -4680,7 +4780,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             s = f'{headline_str}\n\n{s}'
 
         return s
-    #@+node:TomP.20191215195433.77: *4* vr3.update_svg
+
+    # @+node:TomP.20191215195433.77: *4* vr3.update_svg
     # http://doc.trolltech.com/4.4/qtsvg.html
     # http://doc.trolltech.com/4.4/painting-svgviewer.html
 
@@ -4710,7 +4811,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 self.show()
                 w.load(path)
                 w.show()
-    #@+node:TomP.20191215195433.78: *4* vr3.update_url
+
+    # @+node:TomP.20191215195433.78: *4* vr3.update_url
     def update_url(self, s, keywords):
         c, p = self.c, self.c.p
         colorizer = c.frame.body.colorizer
@@ -4731,8 +4833,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
             w = self.ensure_text_widget()
             self.show()
             w.setPlainText('')
-    #@+node:TomP.20191215195433.79: *4* vr3.utils for update helpers...
-    #@+node:TomP.20191215195433.80: *5* vr3.ensure_text_widget
+
+    # @+node:TomP.20191215195433.79: *4* vr3.utils for update helpers...
+    # @+node:TomP.20191215195433.80: *5* vr3.ensure_text_widget
     def ensure_text_widget(self):
         """Swap a text widget into the rendering pane if necessary."""
         c = self.c
@@ -4757,7 +4860,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             self.embed_widget(w)  # Creates w.wrapper
             assert w == self.w
         return self.w
-    #@+node:TomP.20191227101625.1: *5* vr3.ensure_web_widget
+
+    # @+node:TomP.20191227101625.1: *5* vr3.ensure_web_widget
     def ensure_web_widget(self):
         """Swap a webengineview widget into the rendering pane if necessary."""
         w = self.qwev
@@ -4765,7 +4869,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
             self.embed_widget(w)  # Creates w.wrapper
             assert w == self.w
         return self.w
-    #@+node:TomP.20191215195433.81: *5* vr3.get_kind
+
+    # @+node:TomP.20191215195433.81: *5* vr3.get_kind
     def get_kind(self, p):
         """Return the proper rendering kind for node p."""
 
@@ -4773,13 +4878,16 @@ class ViewRenderedController3(QtWidgets.QWidget):
         kind = None
         for p1 in p.self_and_parents(p):
             language = self.get_language(p1)
-            if ((got_markdown and language in ('md', 'markdown'))
+            if (
+                (got_markdown and language in ('md', 'markdown'))
                 or (got_docutils and language in ('rest', 'rst'))
-                or (language and language in self.dispatch_dict)):
+                or (language and language in self.dispatch_dict)
+            ):
                 kind = language
                 break
         return kind
-    #@+node:TomP.20200109132851.1: *6* vr3.get_language
+
+    # @+node:TomP.20200109132851.1: *6* vr3.get_language
     def get_language(self, p):
         """Return the language in effect at position p.
 
@@ -4798,7 +4906,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         # Warning: (see #344): don't use c.target_language as a default.
         colorizer = getattr(c.frame.body.colorizer, 'findFirstValidAtLanguageDirective', g)
         return colorizer.findFirstValidAtLanguageDirective(p.b)
-    #@+node:TomP.20191215195433.82: *5* vr3.get_fn
+
+    # @+node:TomP.20191215195433.82: *5* vr3.get_fn
     def get_fn(self, s, tag=None):
         """Return an absolute file path, with ~, .., and symbolic links resolved."""
         c = self.c
@@ -4821,19 +4930,22 @@ class ViewRenderedController3(QtWidgets.QWidget):
         ok = g.os_path_exists(fn)
         return ok, fn
 
-    #@+node:TomP.20191215195433.83: *5* vr3.get_url
+    # @+node:TomP.20191215195433.83: *5* vr3.get_url
     def get_url(self, s, tag):
         p = self.c.p
         url = s or p.h[len(tag) :]
         url = url.strip()
         return url
-    #@+node:tom.20240521000648.1: *5* vr3.get_node_path
+
+    # @+node:tom.20240521000648.1: *5* vr3.get_node_path
     def get_node_path(self, c, p) -> str:
         return c.getPath(p)
-    #@+node:TomP.20191215195433.84: *5* vr3.must_change_widget
+
+    # @+node:TomP.20191215195433.84: *5* vr3.must_change_widget
     def must_change_widget(self, widget_class):
         return not self.w or self.w.__class__ != widget_class  # EKR.
-    #@+node:TomP.20191215195433.85: *5* vr3.remove_directives
+
+    # @+node:TomP.20191215195433.85: *5* vr3.remove_directives
     def remove_directives(self, s):
         """Remove all Leo directives from a string except "@language"."""
 
@@ -4850,7 +4962,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
                     continue
             result.append(li)
         return ''.join(result)
-    #@+node:TomP.20200112233701.1: *5* vr3.execute_code
+
+    # @+node:TomP.20200112233701.1: *5* vr3.execute_code
     # Modified from VR2
     def exec_code(self, code, environment):
         """Execute the code, capturing the output in stdout and stderr."""
@@ -4875,16 +4988,17 @@ class ViewRenderedController3(QtWidgets.QWidget):
             sys.stderr = saveerr  # restore stderr
 
         return bufferout.getvalue(), buffererr.getvalue() + except_err
-    #@+node:TomP.20200330152649.1: *4* vr3.update_text
+
+    # @+node:TomP.20200330152649.1: *4* vr3.update_text
     def update_text(self, node_list, keywords=None):
         """Update as text-only in the vr3 pane.
 
-            ARGUMENTS
-            node_list -- a list of outline nodes to be processed.
-            keywords -- a dictionary of keywords
+        ARGUMENTS
+        node_list -- a list of outline nodes to be processed.
+        keywords -- a dictionary of keywords
 
-            RETURNS
-            nothing
+        RETURNS
+        nothing
         """
         # Do this regardless of whether we show the widget or not.
         self.ensure_web_widget()
@@ -4908,8 +5022,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
         self.rst_html = h
 
         w.show()
-    #@+node:TomP.20200329230436.1: *4* vr3: command helpers...
-    #@+node:TomP.20200329230436.2: *5* vr3.activate
+
+    # @+node:TomP.20200329230436.1: *4* vr3: command helpers...
+    # @+node:TomP.20200329230436.2: *5* vr3.activate
     def activate(self):
         """Activate the vr3-window."""
         if not self.active:
@@ -4917,14 +5032,16 @@ class ViewRenderedController3(QtWidgets.QWidget):
             g.registerHandler('select2', self.update)
             g.registerHandler('idle', self.update)
             self.hide()
-    #@+node:TomP.20200329230436.4: *5* vr3.deactivate
+
+    # @+node:TomP.20200329230436.4: *5* vr3.deactivate
     def deactivate(self):
         """Deactivate the vr3 window."""
         # Never disable the idle-time hook: other plugins may need it.
         g.unregisterHandler('select2', self.update)
         g.unregisterHandler('idle', self.update)
         self.active = False
-    #@+node:tom.20220824142257.1: *5* vr3.freeze/unfreeze
+
+    # @+node:tom.20220824142257.1: *5* vr3.freeze/unfreeze
     def set_freeze(self):
         """Freeze the vr3 pane to prevent updates ."""
         action = self.action_freeze
@@ -4936,7 +5053,8 @@ class ViewRenderedController3(QtWidgets.QWidget):
         action = self.action_freeze
         action.setChecked(False)
         self.freeze = False
-    #@+node:TomP.20200329230436.5: *5* vr3.lock/unlock
+
+    # @+node:TomP.20200329230436.5: *5* vr3.lock/unlock
     def lock(self):
         """Lock the vr3 pane to the current node ."""
         action = self.action_lock_to_tree
@@ -4950,49 +5068,56 @@ class ViewRenderedController3(QtWidgets.QWidget):
         action.setChecked(False)
         self.lock_to_tree = False
         self.current_tree_root = None
-    #@+node:TomP.20200329230436.6: *5* vr3.show_dock_or_pane
+
+    # @+node:TomP.20200329230436.6: *5* vr3.show_dock_or_pane
     def show_dock_or_pane(self):
         self.show()
         self.set_unfreeze()
         # c.bodyWantsFocusNow()
-    #@+node:TomP.20200329230436.8: *5* vr3: toolbar helpers...
-    #@+node:TomP.20200329230436.9: *6* vr3.get_toolbar_label
-    #@+at
+
+    # @+node:TomP.20200329230436.8: *5* vr3: toolbar helpers...
+    # @+node:TomP.20200329230436.9: *6* vr3.get_toolbar_label
+    # @+at
     # def get_toolbar_label(self):
     #     """Return the toolbar label object."""
     #
     #     return self.findChild(QtWidgets.QLabel, VR3_TOOLBAR_NAME)
-    #@+node:TomP.20200329230436.10: *6* vr3.hide_toolbar
+    # @+node:TomP.20200329230436.10: *6* vr3.hide_toolbar
     def hide_toolbar(self):
         try:
             _toolbar = self.vr3_toolbar
             _toolbar.setVisible(False)
         except RuntimeError as e:
             g.es(f'show_toolbar(): no toolbar; {type(e)}: {e}')
-    #@+node:TomP.20200329230436.11: *6* vr3.show_toolbar
+
+    # @+node:TomP.20200329230436.11: *6* vr3.show_toolbar
     def show_toolbar(self):
         try:
             _toolbar = self.vr3_toolbar
             _toolbar.setVisible(True)
         except RuntimeError as e:
             g.es(f'show_toolbar(): no toolbar; {type(e)}: {e}')
-    #@+node:TomP.20200329230436.12: *5* vr3: zoom helpers...
-    #@+node:TomP.20200329230436.13: *6* vr3.shrinkView
+
+    # @+node:TomP.20200329230436.12: *5* vr3: zoom helpers...
+    # @+node:TomP.20200329230436.13: *6* vr3.shrinkView
     def shrinkView(self):
         w = self.qwev
         _zf = w.zoomFactor()
         w.setZoomFactor(_zf / ZOOM_FACTOR)
-    #@+node:TomP.20200329230436.14: *6* vr3.zoomView
+
+    # @+node:TomP.20200329230436.14: *6* vr3.zoomView
     def zoomView(self):
         w = self.qwev
         _zf = w.zoomFactor()
         w.setZoomFactor(_zf * ZOOM_FACTOR)
-    #@+node:TomP.20200329230453.1: *4* vr3: events...
-    #@+node:TomP.20200329230453.2: *5* vr3.closeEvent
+
+    # @+node:TomP.20200329230453.1: *4* vr3: events...
+    # @+node:TomP.20200329230453.2: *5* vr3.closeEvent
     def closeEvent(self, event):
         """Close the vr3 window."""
         self.deactivate()
-    #@+node:TomP.20200329230453.3: *5* vr3.keyPressEvent
+
+    # @+node:TomP.20200329230453.3: *5* vr3.keyPressEvent
     def keyPressEvent(self, event):
         """Take actions on keypresses when the VR3 render pane has focus and a
            key is pressed.
@@ -5012,8 +5137,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
             self.shrinkView()
         else:
             super().keyPressEvent(event)
-    #@+node:TomP.20200329230503.1: *4* vr3: utils
-    #@+node:TomP.20200329230503.2: *5* vr3.set_html
+
+    # @+node:TomP.20200329230503.1: *4* vr3: utils
+    # @+node:TomP.20200329230503.2: *5* vr3.set_html
     def set_html(self, s, w):
         """Set text in w to s."""
         c = self.c
@@ -5035,15 +5161,19 @@ class ViewRenderedController3(QtWidgets.QWidget):
             self.set_unfreeze()
 
         w.show()
-    #@+node:TomP.20200329230503.3: *5* vr3.underline
+
+    # @+node:TomP.20200329230503.3: *5* vr3.underline
     def underline(self, s):
         """Generate rST underlining for s."""
         ch = '#'
         n = max(4, len(g.toEncodedString(s, reportErrors=False)))
         return f'{s}\n{ch * n}\n\n'
-    #@-others
-#@+node:tom.20240520234642.1: ** State Machine Components
-#@+node:tom.20240520234642.2: *3* class State
+
+    # @-others
+
+
+# @+node:tom.20240520234642.1: ** State Machine Components
+# @+node:tom.20240520234642.2: *3* class State
 class State(Enum):
     BASE = auto()
     AT_LANG_CODE = auto()
@@ -5057,11 +5187,12 @@ class State(Enum):
     STARTING_ASCDOC_CODE_BLOCK = auto()
     ASCDOC_READY_FOR_FENCE = auto()
 
-#@+node:tom.20240520234642.3: *3* class Action
+
+# @+node:tom.20240520234642.3: *3* class Action
 class Action:
     @staticmethod
     def new_chunk(sm, line, tag, language, addline_at_new_start=False):
-        """ Add chunk to chunk list, create new chunk.
+        """Add chunk to chunk list, create new chunk.
 
         ARGUMENTS
         sm -- a StateMachine instance.
@@ -5088,8 +5219,8 @@ class Action:
     def add_line(sm, line, tag=None, language=TEXT):
         sm.current_chunk.add_line(line)
 
-    #@+others
-    #@+node:tom.20240521002159.1: *4* Add at-Image
+    # @+others
+    # @+node:tom.20240521002159.1: *4* Add at-Image
     @staticmethod
     def add_image(sm, line, tag=None, language=None):
         # Used for @image lines
@@ -5116,7 +5247,8 @@ class Action:
                     line = f'image:{abs_url}[]'
                 sm.current_chunk.add_line(line)
             # If no url parameter, do nothing
-    #@+node:tom.20240521002223.1: *4* Image Path to Absolute
+
+    # @+node:tom.20240521002223.1: *4* Image Path to Absolute
     @staticmethod
     def image_url2abs(sm, line, tag=None, language=None):
         """Convert MD or Asciidoc image directive's image path to an absolute one"""
@@ -5145,7 +5277,8 @@ class Action:
                 sm.current_chunk.add_line(line)
         else:
             sm.current_chunk.add_line(line)
-    #@-others
+
+    # @-others
 
     @staticmethod
     def no_action(sm, line, tag=None, language=TEXT):
@@ -5160,7 +5293,9 @@ class Action:
     def add_math_block_end(sm, line, tag=None, language=None):
         line = r'\]'
         sm.current_chunk.add_line(line)
-#@+node:tom.20240520234642.4: *3* class Marker
+
+
+# @+node:tom.20240520234642.4: *3* class Marker
 class Marker(Enum):
     """
     For indicating markers in a text line that characterize their purpose, like "@language".
@@ -5180,8 +5315,9 @@ class Marker(Enum):
     ASCDOC_CODE_MARKER = auto()
     ASCDOC_CODE_LANG_MARKER = auto()  # a line like "[source, python]" before a line "---"
 
-#@+node:tom.20240520234642.5: *3* class Chunk
-#@@language python
+
+# @+node:tom.20240520234642.5: *3* class Chunk
+# @@language python
 class Chunk:
     """Holds a block of text, with various metadata about it."""
 
@@ -5229,8 +5365,11 @@ class Chunk:
                 _formatted.extend(self.text_lines)
                 _formatted.append(ASCDOC_FENCE_MARKER)
                 self.formatted = '\n'.join(_formatted)
-#@+node:tom.20240520234642.6: *3* class StateMachine
-#@@language python
+
+
+# @+node:tom.20240520234642.6: *3* class StateMachine
+# @@language python
+
 
 class StateMachine:
     def __init__(self, vr3, tag=TEXT, structure=RST, lang=RST):
@@ -5260,8 +5399,8 @@ class StateMachine:
         self.inskip = False
         self.codelang = ''
 
-    #@+<< runMachine >>
-    #@+node:tom.20240520234642.7: *4* << runMachine >>
+    # @+<< runMachine >>
+    # @+node:tom.20240520234642.7: *4* << runMachine >>
     def runMachine(self, lines):
         """Process a list of text lines and return final text and a list of lines of code.
 
@@ -5275,7 +5414,6 @@ class StateMachine:
         for self.i, line in enumerate(lines):
             self.do_state(self.state, line)
         self.chunk_list.append(self.current_chunk)  # have to pick up the last chunk
-
 
         for ch in self.chunk_list:
             ch.format_code()
@@ -5291,10 +5429,11 @@ class StateMachine:
 
         final_text = '\n'.join(results)
         return final_text, codelines
-    #@-<< runMachine >>
-    #@+<< do_state >>
-    #@+node:tom.20240520234642.8: *4* << do_state >>
-    #@@language python
+
+    # @-<< runMachine >>
+    # @+<< do_state >>
+    # @+node:tom.20240520234642.8: *4* << do_state >>
+    # @@language python
     def do_state(self, state, line):
         marker, tag, language = self.get_marker(line)
         if marker == Marker.START_SKIP:
@@ -5326,9 +5465,10 @@ class StateMachine:
 
         action(self, line, tag, language)  # type:ignore
         self.state = next
-    #@-<< do_state >>
-    #@+<< get_marker_md >>
-    #@+node:tom.20240520234642.9: *4* << get_marker_md >>
+
+    # @-<< do_state >>
+    # @+<< get_marker_md >>
+    # @+node:tom.20240520234642.9: *4* << get_marker_md >>
     def get_marker_md(self, line, tag, _lang, marker):
         # If _lang == a code language, we are starting a code block.
         if _lang:
@@ -5353,11 +5493,11 @@ class StateMachine:
             marker = Marker.MD_FENCE_MARKER
 
         return (marker, tag, lang)
-    #@-<< get_marker_md >>
-    #@+<< get_marker_asciidoc >>
-    #@+node:tom.20240520234642.10: *4* << get_marker_asciidoc >>
-    def get_marker_asciidoc(self, line, tag, lang, marker):
 
+    # @-<< get_marker_md >>
+    # @+<< get_marker_asciidoc >>
+    # @+node:tom.20240520234642.10: *4* << get_marker_asciidoc >>
+    def get_marker_asciidoc(self, line, tag, lang, marker):
         if line.startswith(ASCDOC_CODE_LANG_MARKER):
             self.codelang = ''
             lang = ASCIIDOC
@@ -5390,10 +5530,11 @@ class StateMachine:
                 self.last_marker = None
 
         return (marker, tag, lang)
-    #@-<< get_marker_asciidoc >>
-    #@+<< get_marker >>
-    #@+node:tom.20240520234642.11: *4* << get_marker >>
-    #@@language python
+
+    # @-<< get_marker_asciidoc >>
+    # @+<< get_marker >>
+    # @+node:tom.20240520234642.11: *4* << get_marker >>
+    # @@language python
     def get_marker(self, line):
         """Return classification information about a line.
 
@@ -5415,7 +5556,9 @@ class StateMachine:
 
         # For debugging
         if line.startswith('#%%%%'):
-            g.es(f'==== state: {self.state}, lang: {self.lang}, chunk_lang: {self.current_chunk.language}, tag: {self.current_chunk.tag}')
+            g.es(
+                f'==== state: {self.state}, lang: {self.lang}, chunk_lang: {self.current_chunk.language}, tag: {self.current_chunk.tag}'
+            )
             return (None, None, None)
 
         # Omit lines between @ and @c
@@ -5468,48 +5611,42 @@ class StateMachine:
             marker = Marker.MARKER_NONE
 
         return (marker, tag, lang)
-    #@-<< get_marker >>
-    #@+<< State Table >>
-    #@+node:tom.20240520234642.12: *4* << State Table >>
-    State_table = {  # (state, marker): (action, next_state)
 
+    # @-<< get_marker >>
+    # @+<< State Table >>
+    # @+node:tom.20240520234642.12: *4* << State Table >>
+    State_table = {  # (state, marker): (action, next_state)
         (State.BASE, Marker.AT_LANGUAGE_MARKER): (Action.new_chunk, State.AT_LANG_CODE),
         # (State.AT_LANG_CODE, Marker.MARKER_NONE): (Action.add_line, State.AT_LANG_CODE),
         (State.AT_LANG_CODE, Marker.MARKER_NONE): (Action.add_line, State.BASE),
         (State.BASE, Marker.MARKER_NONE): (Action.add_line, State.BASE),
-
         # When we encounter a new @language line, the next state might be either
         # State.BASE or State.AT_LANG_CODE, so we have to compute which it will be.
-        (State.AT_LANG_CODE, Marker.AT_LANGUAGE_MARKER):
-                    (Action.new_chunk, State.TO_BE_COMPUTED),
-
+        (State.AT_LANG_CODE, Marker.AT_LANGUAGE_MARKER): (Action.new_chunk, State.TO_BE_COMPUTED),
         (State.BASE, Marker.IMAGE_MARKER): (Action.add_image, State.BASE),
         (State.BASE, Marker.MD_IMAGE_MARKER): (Action.image_url2abs, State.BASE),
         (State.BASE, Marker.ASCIIDOC_IMAGE_MARKER): (Action.image_url2abs, State.BASE),
-
         # ========= Markdown-specific states ==================
         (State.BASE, Marker.MD_FENCE_LANG_MARKER): (Action.new_chunk, State.FENCED_CODE),
         (State.BASE, Marker.MD_FENCE_MARKER): (Action.add_line, State.BASE),
         (State.FENCED_CODE, Marker.MARKER_NONE): (Action.add_line, State.FENCED_CODE),
         (State.FENCED_CODE, Marker.MD_FENCE_MARKER): (Action.new_chunk, State.BASE),
-        (State.AT_LANG_CODE, Marker.MD_FENCE_MARKER):
-                    (Action.add_line, State.AT_LANG_CODE),
+        (State.AT_LANG_CODE, Marker.MD_FENCE_MARKER): (Action.add_line, State.AT_LANG_CODE),
         (State.BASE, Marker.MD_FENCE_MATH_MARKER): (Action.add_math_block_start, State.FENCED_MATH),
         (State.FENCED_MATH, Marker.MARKER_NONE): (Action.add_line, State.FENCED_MATH),
         (State.FENCED_MATH, Marker.MD_FENCE_MARKER): (Action.add_math_block_end, State.BASE),
-
         # ========== ASCIIDOC-specific states =================
-        (State.BASE, Marker.ASCDOC_CODE_LANG_MARKER):
-                    (Action.no_action, State.ASCDOC_READY_FOR_FENCE),
+        (State.BASE, Marker.ASCDOC_CODE_LANG_MARKER): (Action.no_action, State.ASCDOC_READY_FOR_FENCE),
         (State.ASCDOC_READY_FOR_FENCE, Marker.ASCDOC_CODE_MARKER):
-                    # Start a new code chunk
-                    (Action.new_chunk, State.FENCED_CODE),
+        # Start a new code chunk
+        (Action.new_chunk, State.FENCED_CODE),
         # (State.FENCED_CODE, Marker.MARKER_NONE): (Action.add_line, State.FENCED_CODE),
         (State.FENCED_CODE, Marker.ASCDOC_CODE_MARKER):
-                    # End fenced code chunk
-                    (Action.new_chunk, State.BASE)
+        # End fenced code chunk
+        (Action.new_chunk, State.BASE),
     }
-    #@-<< State Table >>
+    # @-<< State Table >>
 
-#@-others
-#@-leo
+
+# @-others
+# @-leo

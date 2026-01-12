@@ -1,10 +1,10 @@
-#@+leo-ver=5-thin
-#@+node:timo.20050213160555: * @file ../plugins/bibtex.py
-#@+<< docstring >>
-#@+node:ekr.20050912175750: ** << docstring >>
-#@@nocolor-node
-#@@wrap
-r""" Creates a BibTex file from an  '@bibtex <filename>' tree.
+# @+leo-ver=5-thin
+# @+node:timo.20050213160555: * @file ../plugins/bibtex.py
+# @+<< docstring >>
+# @+node:ekr.20050912175750: ** << docstring >>
+# @@nocolor-node
+# @@wrap
+r"""Creates a BibTex file from an  '@bibtex <filename>' tree.
 
 Nodes of the form '@<x> key' create entries in the file.
 
@@ -61,14 +61,14 @@ in the headline. Double-clicking it will read the file and parse it into a
 BibTeX file.
 
 """
-#@-<< docstring >>
+
+# @-<< docstring >>
 from leo.core import leoGlobals as g
+
 # By Timo Honkasalo: contributed under the same license as Leo.py itself.
 # 2017/02/23: Rewritten by EKR
-#@+<< define templates dict>>
-#@+node:timo.20050215183130: ** <<define templates dict>>
-#@@nobeautify
-
+# @+<< define templates dict>>
+# @+node:timo.20050215183130: ** <<define templates dict>>
 # pylint: disable=line-too-long
 templates = {
     '@article':         'author       = {},\ntitle        = {},\njournal      = {},\nyear         = ',
@@ -85,13 +85,15 @@ templates = {
     '@proceedings':     'title        = {},\nyear         = ',
     '@techreport':      'author       = {},\ntitle        = {},\ninstitution  = {},\nyear         = ',
     '@unpublished':     'author       = {},\ntitle        = {},\nnote         = {}'
-}
-#@-<< define templates dict>>
+}  # fmt: skip
+# @-<< define templates dict>>
 entrytypes = list(templates.keys())
 entrytypes.append('@string')
-#@+<< to do >>
-#@+node:timo.20050213185039: ** <<to do>>
-#@+at To do list (in approximate order of importance):
+
+
+# @+<< to do >>
+# @+node:timo.20050213185039: ** <<to do>>
+# @+at To do list (in approximate order of importance):
 #
 # - Translating between non-ascii characters and LaTeX code when reading/writing
 # - Checking for duplicate keys
@@ -104,9 +106,9 @@ entrytypes.append('@string')
 # - Expanding strings
 # - Syntax checking
 # - Syntax highligting
-#@-<< to do >>
-#@+others
-#@+node:ekr.20100128073941.5370: ** init (bibtex.py)
+# @-<< to do >>
+# @+others
+# @+node:ekr.20100128073941.5370: ** init (bibtex.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = not g.unitTesting
@@ -116,7 +118,9 @@ def init():
         g.registerHandler("headkey2", onHeadKey)
         g.plugin_signon(__name__)
     return ok
-#@+node:timo.20050215222802: ** onHeadKey
+
+
+# @+node:timo.20050215222802: ** onHeadKey
 def onHeadKey(tag, keywords):
     """
     Write template for the entry in body pane.
@@ -144,11 +148,14 @@ def onHeadKey(tag, keywords):
                 p.b = templates.get(kind)
                 # c.frame.body.wrapper.setInsertPoint(16)
                 return
-#@+node:timo.20050213160555.3: ** onIconDoubleClick
+
+
+# @+node:timo.20050213160555.3: ** onIconDoubleClick
 #
 # this does not check for proper filename syntax.
 # path is the current dir, or the place @folder points to
 # this should probably be changed to @path or so.
+
 
 def onIconDoubleClick(tag, keywords):
     """
@@ -169,7 +176,9 @@ def onIconDoubleClick(tag, keywords):
             writeTreeAsBibTex(c, fn, p)
         else:
             readBibTexFileIntoTree(c, fn, p)
-#@+node:timo.20050214174623.1: ** readBibTexFileIntoTree
+
+
+# @+node:timo.20050214174623.1: ** readBibTexFileIntoTree
 def readBibTexFileIntoTree(c, fn, p):
     """Import a BibTeX file into a @bibtex tree."""
     root = p.copy()
@@ -190,25 +199,30 @@ def readBibTexFileIntoTree(c, fn, p):
             h = '@' + line[:i]
             h = h.replace('{', ' ').replace('(', ' ').replace('\n', '')
             b = line[i + 1 :].rstrip().lstrip('\n')[:-1]
-            entries.append((h, b),)
+            entries.append(
+                (h, b),
+            )
     if strings:
         h, b = '@string', ''.join(strings)
-        aList.append((h, b),)
+        aList.append(
+            (h, b),
+        )
     aList.extend(entries)
     for h, b in aList:
         p = root.insertAsLastChild()
         p.b, p.h = b, h
     root.expand()
     c.redraw()
-#@+node:timo.20050213160555.7: ** writeTreeAsBibTex
+
+
+# @+node:timo.20050213160555.7: ** writeTreeAsBibTex
 def writeTreeAsBibTex(c, fn, root):
     """Write root's *subtree* to bibFile."""
     strings, entries = [], []
     for p in root.subtree():
         h = p.h
         if h.lower() == '@string':
-            strings.extend([('@string{%s}\n\n' % z.rstrip())
-                for z in g.splitLines(p.b) if z.strip()])
+            strings.extend([('@string{%s}\n\n' % z.rstrip()) for z in g.splitLines(p.b) if z.strip()])
         else:
             i = h.find(' ')
             kind, rest = h[:i].lower(), h[i + 1 :].rstrip()
@@ -220,7 +234,9 @@ def writeTreeAsBibTex(c, fn, root):
         with open(fn, 'wb') as f:
             s = ''.join(strings + entries)
             f.write(g.toEncodedString(s, encoding=encoding))
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

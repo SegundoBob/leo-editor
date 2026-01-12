@@ -32,33 +32,43 @@ keywordsDictDict = {
 
 # Rules for sgml_main ruleset.
 
+
 def sgml_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->")
 
+
 def sgml_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<!ENTITY", end=">",
-          delegate="xml::entity-tags")
+    return colorer.match_span(s, i, kind="keyword2", begin="<!ENTITY", end=">", delegate="xml::entity-tags")
+
 
 def sgml_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>",
-          delegate="xml::cdata")
+    return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>", delegate="xml::cdata")
+
 
 def sgml_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">",
-          delegate="xml::dtd-tags")
+    return colorer.match_span(s, i, kind="keyword2", begin="<!", end=">", delegate="xml::dtd-tags")
+
 
 def sgml_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">",
-          delegate="xml::tags")
+    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="xml::tags")
+
 
 def sgml_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="&", end=";",
-          no_word_break=True)
+    return colorer.match_span(s, i, kind="literal2", begin="&", end=";", no_word_break=True)
+
 
 # Rules dict for sgml_main ruleset.
 rulesDict1 = {
-    "&": [sgml_rule5,],
-    "<": [sgml_rule0, sgml_rule1, sgml_rule2, sgml_rule3, sgml_rule4,],
+    "&": [
+        sgml_rule5,
+    ],
+    "<": [
+        sgml_rule0,
+        sgml_rule1,
+        sgml_rule2,
+        sgml_rule3,
+        sgml_rule4,
+    ],
 }
 
 # x.rulesDictDict for sgml mode.

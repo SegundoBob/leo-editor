@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20230802060212.1: * @file ../unittests/commands/test_gotoCommands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20230802060212.1: * @file ../unittests/commands/test_gotoCommands.py
 """Tests of leo.commands.gotoCommands."""
 # pylint: disable=no-member
 
@@ -10,15 +10,15 @@ from leo.core.leoNodes import Position
 
 assert g
 
-#@+others
-#@+node:ekr.20230802060212.2: ** class TestGotoCommands(LeoUnitTest)
+
+# @+others
+# @+node:ekr.20230802060212.2: ** class TestGotoCommands(LeoUnitTest)
 class TestGotoCommands(LeoUnitTest):
     """Unit tests for leo/commands/gotoCommands.py."""
 
-    #@+others
-    #@+node:ekr.20230802060444.1: *3* TestGotoCommands.test_show_file_line
+    # @+others
+    # @+node:ekr.20230802060444.1: *3* TestGotoCommands.test_show_file_line
     def test_show_file_line(self):
-
         c = self.c
         x = GoToCommands(c)
 
@@ -26,10 +26,9 @@ class TestGotoCommands(LeoUnitTest):
         real_clean_contents: list[str]
         root: Position
 
-        #@+others  # Create helpers
-        #@+node:ekr.20230804093924.1: *4* function: create_test_tree
+        # @+others  # Create helpers
+        # @+node:ekr.20230804093924.1: *4* function: create_test_tree
         def create_test_tree() -> Position:
-
             self.clean_tree()
             self.create_test_paste_outline()
 
@@ -43,21 +42,16 @@ class TestGotoCommands(LeoUnitTest):
             for v in c.all_unique_nodes():
                 for i in range(2):
                     v.b += f"{v.h} line {i}\n"
-            root.b = (
-                '@language python\n'
-                'before\n'
-                '@others\n'
-                'after\n'
-            )
+            root.b = '@language python\nbefore\n@others\nafter\n'
             return root
-        #@+node:ekr.20230804093956.1: *4* function: init_unchanging_data
-        def init_unchanging_data() -> None:
 
+        # @+node:ekr.20230804093956.1: *4* function: init_unchanging_data
+        def init_unchanging_data() -> None:
             nonlocal clean_contents, real_clean_contents
 
             # Init the comment delims.
             delim1, delim2 = x.get_delims(root)
-            assert(delim1, delim2) == ('#', None)
+            assert (delim1, delim2) == ('#', None)
             delims = x.get_3_delims(root)
 
             # Create contents, the file *with* sentinels.
@@ -79,9 +73,8 @@ class TestGotoCommands(LeoUnitTest):
             # Test 0: A strong test of g.is_invisible_sentinel.
             self.assertEqual(clean_contents, real_clean_contents)
 
-        #@+node:ekr.20230804094419.1: *4* test1
+        # @+node:ekr.20230804094419.1: *4* test1
         def test1() -> None:
-
             nonlocal clean_contents  # noqa # pyflakes and ruff conflict.
 
             # test the helper for show-file-line
@@ -95,9 +88,9 @@ class TestGotoCommands(LeoUnitTest):
                 else:
                     # print(f"{p.h:10} {offset:3} {line}")
                     assert p.h in line, (offset, repr(p.h), repr(line))
-        #@+node:ekr.20230804094514.1: *4* test2
-        def test2() -> None:
 
+        # @+node:ekr.20230804094514.1: *4* test2
+        def test2() -> None:
             nonlocal clean_contents  # noqa # pyflakes and ruff conflict.
 
             # test the helper for goto-global-line.
@@ -111,16 +104,20 @@ class TestGotoCommands(LeoUnitTest):
                 if p.h.startswith('@clean'):
                     if offset == 1:
                         # We are testing p.b, not clean_line.
-                        assert line == '@language python\n', (offset, repr(p.h), repr(line))
+                        assert line == '@language python\n', (
+                            offset,
+                            repr(p.h),
+                            repr(line),
+                        )
                 else:
                     assert p.h in line, (offset, repr(p.h), repr(line))
-        #@+node:ekr.20230804105414.1: *4* test3
+
+        # @+node:ekr.20230804105414.1: *4* test3
         def test3() -> None:
             # test show-file-line & goto-global-line directly >>
 
             global_i = 0  # Global line index.
             for p in c.all_positions():
-
                 # Init and test lines.
                 lines = g.splitLines(p.b)
                 if p != root:
@@ -143,7 +140,8 @@ class TestGotoCommands(LeoUnitTest):
                     global_i += 2
                 else:
                     global_i += len(lines)
-        #@-others
+
+        # @-others
 
         # All body lines are unique, which simplifies the tests below.
         root = create_test_tree()
@@ -160,6 +158,9 @@ class TestGotoCommands(LeoUnitTest):
         test1()
         test2()
         test3()
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

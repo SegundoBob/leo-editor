@@ -30,11 +30,13 @@ def namedtuple(typename, field_names):
     # Parse and validate the field names.  Validation serves two purposes,
     # generating informative error messages and preventing template injection attacks.
     if isinstance(field_names, basestring):
-        field_names = field_names.replace(',', ' ').split() # names separated by whitespace and/or commas
+        field_names = field_names.replace(',', ' ').split()  # names separated by whitespace and/or commas
     field_names = tuple(map(str, field_names))
     for name in (typename,) + field_names:
-        if not all(c.isalnum() or c=='_' for c in name):
-            raise ValueError('Type names and field names can only contain alphanumeric characters and underscores: %r' % name)
+        if not all(c.isalnum() or c == '_' for c in name):
+            raise ValueError(
+                'Type names and field names can only contain alphanumeric characters and underscores: %r' % name
+            )
         if _iskeyword(name):
             raise ValueError('Type names and field names cannot be a keyword: %r' % name)
         if name[0].isdigit():
@@ -49,7 +51,7 @@ def namedtuple(typename, field_names):
 
     # Create and fill-in the class template
     numfields = len(field_names)
-    argtxt = repr(field_names).replace("'", "")[1:-1]   # tuple repr without parens or quotes
+    argtxt = repr(field_names).replace("'", "")[1:-1]  # tuple repr without parens or quotes
     reprtxt = ', '.join('%s=%%r' % name for name in field_names)
     dicttxt = ', '.join('%r: t[%d]' % (name, pos) for pos, name in enumerate(field_names))
     template = '''class %(typename)s(tuple):
@@ -83,8 +85,7 @@ def namedtuple(typename, field_names):
 
     # Execute the template string in a temporary namespace and
     # support tracing utilities by setting a value for frame.f_globals['__name__']
-    namespace = dict(_itemgetter=_itemgetter, __name__='namedtuple_%s' % typename,
-                     _property=property, _tuple=tuple)
+    namespace = dict(_itemgetter=_itemgetter, __name__='namedtuple_%s' % typename, _property=property, _tuple=tuple)
     try:
         exec(template, namespace)
     except SyntaxError:

@@ -1,19 +1,21 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20180216124241.1: * @file c:/leo.repo/leo-editor/leo/external/leoserver/leoserver.py
-#@@language python
-#@@tabwidth -4
-#@+<< imports >>
-#@+node:ekr.20180216124319.1: ** << imports >>
+# @+leo-ver=5-thin
+# @+node:ekr.20180216124241.1: * @file c:/leo.repo/leo-editor/leo/external/leoserver/leoserver.py
+# @@language python
+# @@tabwidth -4
+# @+<< imports >>
+# @+node:ekr.20180216124319.1: ** << imports >>
 import json
 import webbrowser
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import leo.core.leoBridge as leoBridge
-#@-<< imports >>
-#@+others
-#@+node:ekr.20180216124319.2: ** class LeoHTTPRequestHandler
+
+
+# @-<< imports >>
+# @+others
+# @+node:ekr.20180216124319.2: ** class LeoHTTPRequestHandler
 class LeoHTTPRequestHandler(BaseHTTPRequestHandler):
-    #@+others
-    #@+node:ekr.20180216124319.3: *3* do_GET
+    # @+others
+    # @+node:ekr.20180216124319.3: *3* do_GET
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
@@ -24,10 +26,11 @@ class LeoHTTPRequestHandler(BaseHTTPRequestHandler):
             assert self.path == '/get_tree'
             c = self.server.namespace['c']
             nodes = [{'h': i.h, 'b': i.b} for i in c.p.self_and_siblings()]
-                                      # for i in c.all_positions()
+            # for i in c.all_positions()
             response = {'nodes': nodes}
             self.wfile.write(json.dumps(response).encode('utf-8'))
-    #@+node:ekr.20180216124319.4: *3* do_POST
+
+    # @+node:ekr.20180216124319.4: *3* do_POST
     def do_POST(self):
         self.send_response(200)
         self.end_headers()
@@ -47,8 +50,11 @@ class LeoHTTPRequestHandler(BaseHTTPRequestHandler):
             response = {'answer': repr(result) + '\n'}
         s = json.dumps(response).encode('utf-8')
         self.wfile.write(s)
-    #@-others
-#@+node:ekr.20180216124319.5: ** open_bridge
+
+    # @-others
+
+
+# @+node:ekr.20180216124319.5: ** open_bridge
 def open_bridge():
     '''Open Leo bridge and return g.'''
     print('opening leoBridge...')
@@ -61,12 +67,14 @@ def open_bridge():
     )
     g = controller.globals()
     return controller, g
-#@-others
+
+
+# @-others
 controller, g = open_bridge()
 join = g.os_path_finalize_join
 loadDir = g.app.loadDir
-#@+<< define STATIC_FILES >>
-#@+node:ekr.20180216125137.1: ** << define STATIC_FILES >>
+# @+<< define STATIC_FILES >>
+# @+node:ekr.20180216125137.1: ** << define STATIC_FILES >>
 STATIC_FILES = {
     # '/favicon.ico': 'leo/Icons/LeoApp.ico',
     '/favicon.ico': join(loadDir, '..', 'Icons', 'LeoApp.ico'),
@@ -80,7 +88,7 @@ STATIC_FILES = {
     '/leoserver.css': join(loadDir, '..', 'external', 'leoserver', 'leoserver.css'),
 }
 
-#@-<< define STATIC_FILES >>
+# @-<< define STATIC_FILES >>
 path = join(loadDir, '..', 'doc', 'LeoDocs.leo')
 c = controller.openLeoFile(path)
 server = HTTPServer(('127.0.0.1', 8370), LeoHTTPRequestHandler)
@@ -90,4 +98,4 @@ try:
     server.serve_forever()
 except KeyboardInterrupt:
     print('Keyboard interrupt. Bye')
-#@-leo
+# @-leo

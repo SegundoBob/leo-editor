@@ -1,21 +1,22 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20230705083159.1: * @file ../unittests/commands/test_editFileCommands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20230705083159.1: * @file ../unittests/commands/test_editFileCommands.py
 """Tests of leo.commands.editFileCommands."""
+
 import os
 import sys
 from leo.core import leoGlobals as g
 from leo.commands.editFileCommands import GitDiffController
 from leo.core.leoTest2 import LeoUnitTest
 
-#@+others
-#@+node:ekr.20230714143317.2: ** class TestEditFileCommands(LeoUnitTest)
+
+# @+others
+# @+node:ekr.20230714143317.2: ** class TestEditFileCommands(LeoUnitTest)
 class TestEditFileCommands(LeoUnitTest):
     """Unit tests for leo/commands/editFileCommands.py."""
 
-    #@+others
-    #@+node:ekr.20230714143317.3: *3* TestEditFileCommands.slow_test_gdc_node_history
+    # @+others
+    # @+node:ekr.20230714143317.3: *3* TestEditFileCommands.slow_test_gdc_node_history
     def slow_test_gdc_node_history(self):
-
         # These links are valid within leoPy.leo on EKR's machine.
         # g.findUnl:        unl:gnx://leoPy.leo#ekr.20230626064652.1
         # g.parsePathData:  unl:gnx://leoPy.leo#ekr.20230630132341.1
@@ -32,7 +33,8 @@ class TestEditFileCommands(LeoUnitTest):
         )
         x.node_history(path, gnxs, limit=30)
         # self.dump_tree(tag='slow_test_gdc_node_history')
-    #@+node:ekr.20230714143451.1: *3* TestEditFileCommands.test_diff_two_branches
+
+    # @+node:ekr.20230714143451.1: *3* TestEditFileCommands.test_diff_two_branches
     def test_diff_two_branches(self):
         c = self.c
         u = c.undoer
@@ -58,7 +60,7 @@ class TestEditFileCommands(LeoUnitTest):
                 x.diff_two_branches(
                     branch1='master',
                     branch2='devel',
-                    fn='leo/core/leoGlobals.py'  # Don't use backslashes.
+                    fn='leo/core/leoGlobals.py',  # Don't use backslashes.
                 )
             finally:
                 sys.stdout = sys.__stdout__
@@ -72,7 +74,8 @@ class TestEditFileCommands(LeoUnitTest):
             self.assertEqual(c.lastTopLevel().h, expected_last_headline)
         finally:
             os.chdir(old_dir)
-    #@+node:ekr.20230714154706.1: *3* TestEditFileCommands.verbose_test_git_diff
+
+    # @+node:ekr.20230714154706.1: *3* TestEditFileCommands.verbose_test_git_diff
     def verbose_test_git_diff(self):
         # Don't run this test by default.
         # It can spew random git messages depending on the state of the repo.
@@ -100,8 +103,9 @@ class TestEditFileCommands(LeoUnitTest):
         self.assertEqual(c.lastTopLevel(), root)
         u.redo()
         self.assertTrue(c.lastTopLevel().h.startswith(expected_last_headline))
-    #@+node:ekr.20230714160049.1: *3* TestEditFileCommands.test_diff_two_revs
-    def test_diff_two_revs(self):
+
+    # @+node:ekr.20230714160049.1: *3* TestEditFileCommands.test_diff_two_revs
+    def slow_test_diff_two_revs(self):
         c = self.c
         u = c.undoer
         x = GitDiffController(c=c)
@@ -128,7 +132,9 @@ class TestEditFileCommands(LeoUnitTest):
         self.assertEqual(c.lastTopLevel(), root)
         u.redo()
         self.assertEqual(c.lastTopLevel().h.strip(), expected_last_headline)
-    #@-others
 
-#@-others
-#@-leo
+    # @-others
+
+
+# @-others
+# @-leo

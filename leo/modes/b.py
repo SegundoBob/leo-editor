@@ -156,198 +156,417 @@ keywordsDictDict = {
 
 # Rules for b_main ruleset.
 
+
 def b_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment3", begin="/*?", end="?*/")
+
 
 def b_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
 
+
 def b_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def b_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def b_rule4(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq="//")
 
+
 def b_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def b_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="#")
 
+
 def b_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="$0")
+
 
 def b_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def b_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def b_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def b_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def b_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def b_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def b_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def b_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def b_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="\\")
 
+
 def b_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def b_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def b_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=";")
+
 
 def b_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def b_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def b_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def b_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
+
 
 def b_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
 
+
 def b_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="(")
+
 
 def b_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=")")
 
+
 def b_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
+
 
 def b_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
 
+
 def b_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
+
 
 def b_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
 
+
 def b_rule31(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for b_main ruleset.
 rulesDict1 = {
-    "!": [b_rule5,],
-    "\"": [b_rule2,],
-    "#": [b_rule6,],
-    "$": [b_rule7,],
-    "%": [b_rule8,],
-    "&": [b_rule10,],
-    "'": [b_rule3,],
-    "(": [b_rule25,],
-    ")": [b_rule26,],
-    "*": [b_rule13,],
-    "+": [b_rule14,],
-    ",": [b_rule24,],
-    "-": [b_rule21,],
-    ".": [b_rule23,],
-    "/": [b_rule0, b_rule1, b_rule4, b_rule15,],
-    "0": [b_rule31,],
-    "1": [b_rule31,],
-    "2": [b_rule31,],
-    "3": [b_rule31,],
-    "4": [b_rule31,],
-    "5": [b_rule31,],
-    "6": [b_rule31,],
-    "7": [b_rule31,],
-    "8": [b_rule31,],
-    "9": [b_rule31,],
-    ":": [b_rule18,],
-    ";": [b_rule19,],
-    "<": [b_rule12,],
-    "=": [b_rule9,],
-    ">": [b_rule11,],
-    "@": [b_rule31,],
-    "A": [b_rule31,],
-    "B": [b_rule31,],
-    "C": [b_rule31,],
-    "D": [b_rule31,],
-    "E": [b_rule31,],
-    "F": [b_rule31,],
-    "G": [b_rule31,],
-    "H": [b_rule31,],
-    "I": [b_rule31,],
-    "J": [b_rule31,],
-    "K": [b_rule31,],
-    "L": [b_rule31,],
-    "M": [b_rule31,],
-    "N": [b_rule31,],
-    "O": [b_rule31,],
-    "P": [b_rule31,],
-    "Q": [b_rule31,],
-    "R": [b_rule31,],
-    "S": [b_rule31,],
-    "T": [b_rule31,],
-    "U": [b_rule31,],
-    "V": [b_rule31,],
-    "W": [b_rule31,],
-    "X": [b_rule31,],
-    "Y": [b_rule31,],
-    "Z": [b_rule31,],
-    "[": [b_rule30,],
-    "\\": [b_rule16,],
-    "]": [b_rule29,],
-    "^": [b_rule22,],
-    "_": [b_rule31,],
-    "a": [b_rule31,],
-    "b": [b_rule31,],
-    "c": [b_rule31,],
-    "d": [b_rule31,],
-    "e": [b_rule31,],
-    "f": [b_rule31,],
-    "g": [b_rule31,],
-    "h": [b_rule31,],
-    "i": [b_rule31,],
-    "j": [b_rule31,],
-    "k": [b_rule31,],
-    "l": [b_rule31,],
-    "m": [b_rule31,],
-    "n": [b_rule31,],
-    "o": [b_rule31,],
-    "p": [b_rule31,],
-    "q": [b_rule31,],
-    "r": [b_rule31,],
-    "s": [b_rule31,],
-    "t": [b_rule31,],
-    "u": [b_rule31,],
-    "v": [b_rule31,],
-    "w": [b_rule31,],
-    "x": [b_rule31,],
-    "y": [b_rule31,],
-    "z": [b_rule31,],
-    "{": [b_rule28,],
-    "|": [b_rule20,],
-    "}": [b_rule27,],
-    "~": [b_rule17, b_rule31,],
+    "!": [
+        b_rule5,
+    ],
+    "\"": [
+        b_rule2,
+    ],
+    "#": [
+        b_rule6,
+    ],
+    "$": [
+        b_rule7,
+    ],
+    "%": [
+        b_rule8,
+    ],
+    "&": [
+        b_rule10,
+    ],
+    "'": [
+        b_rule3,
+    ],
+    "(": [
+        b_rule25,
+    ],
+    ")": [
+        b_rule26,
+    ],
+    "*": [
+        b_rule13,
+    ],
+    "+": [
+        b_rule14,
+    ],
+    ",": [
+        b_rule24,
+    ],
+    "-": [
+        b_rule21,
+    ],
+    ".": [
+        b_rule23,
+    ],
+    "/": [
+        b_rule0,
+        b_rule1,
+        b_rule4,
+        b_rule15,
+    ],
+    "0": [
+        b_rule31,
+    ],
+    "1": [
+        b_rule31,
+    ],
+    "2": [
+        b_rule31,
+    ],
+    "3": [
+        b_rule31,
+    ],
+    "4": [
+        b_rule31,
+    ],
+    "5": [
+        b_rule31,
+    ],
+    "6": [
+        b_rule31,
+    ],
+    "7": [
+        b_rule31,
+    ],
+    "8": [
+        b_rule31,
+    ],
+    "9": [
+        b_rule31,
+    ],
+    ":": [
+        b_rule18,
+    ],
+    ";": [
+        b_rule19,
+    ],
+    "<": [
+        b_rule12,
+    ],
+    "=": [
+        b_rule9,
+    ],
+    ">": [
+        b_rule11,
+    ],
+    "@": [
+        b_rule31,
+    ],
+    "A": [
+        b_rule31,
+    ],
+    "B": [
+        b_rule31,
+    ],
+    "C": [
+        b_rule31,
+    ],
+    "D": [
+        b_rule31,
+    ],
+    "E": [
+        b_rule31,
+    ],
+    "F": [
+        b_rule31,
+    ],
+    "G": [
+        b_rule31,
+    ],
+    "H": [
+        b_rule31,
+    ],
+    "I": [
+        b_rule31,
+    ],
+    "J": [
+        b_rule31,
+    ],
+    "K": [
+        b_rule31,
+    ],
+    "L": [
+        b_rule31,
+    ],
+    "M": [
+        b_rule31,
+    ],
+    "N": [
+        b_rule31,
+    ],
+    "O": [
+        b_rule31,
+    ],
+    "P": [
+        b_rule31,
+    ],
+    "Q": [
+        b_rule31,
+    ],
+    "R": [
+        b_rule31,
+    ],
+    "S": [
+        b_rule31,
+    ],
+    "T": [
+        b_rule31,
+    ],
+    "U": [
+        b_rule31,
+    ],
+    "V": [
+        b_rule31,
+    ],
+    "W": [
+        b_rule31,
+    ],
+    "X": [
+        b_rule31,
+    ],
+    "Y": [
+        b_rule31,
+    ],
+    "Z": [
+        b_rule31,
+    ],
+    "[": [
+        b_rule30,
+    ],
+    "\\": [
+        b_rule16,
+    ],
+    "]": [
+        b_rule29,
+    ],
+    "^": [
+        b_rule22,
+    ],
+    "_": [
+        b_rule31,
+    ],
+    "a": [
+        b_rule31,
+    ],
+    "b": [
+        b_rule31,
+    ],
+    "c": [
+        b_rule31,
+    ],
+    "d": [
+        b_rule31,
+    ],
+    "e": [
+        b_rule31,
+    ],
+    "f": [
+        b_rule31,
+    ],
+    "g": [
+        b_rule31,
+    ],
+    "h": [
+        b_rule31,
+    ],
+    "i": [
+        b_rule31,
+    ],
+    "j": [
+        b_rule31,
+    ],
+    "k": [
+        b_rule31,
+    ],
+    "l": [
+        b_rule31,
+    ],
+    "m": [
+        b_rule31,
+    ],
+    "n": [
+        b_rule31,
+    ],
+    "o": [
+        b_rule31,
+    ],
+    "p": [
+        b_rule31,
+    ],
+    "q": [
+        b_rule31,
+    ],
+    "r": [
+        b_rule31,
+    ],
+    "s": [
+        b_rule31,
+    ],
+    "t": [
+        b_rule31,
+    ],
+    "u": [
+        b_rule31,
+    ],
+    "v": [
+        b_rule31,
+    ],
+    "w": [
+        b_rule31,
+    ],
+    "x": [
+        b_rule31,
+    ],
+    "y": [
+        b_rule31,
+    ],
+    "z": [
+        b_rule31,
+    ],
+    "{": [
+        b_rule28,
+    ],
+    "|": [
+        b_rule20,
+    ],
+    "}": [
+        b_rule27,
+    ],
+    "~": [
+        b_rule17,
+        b_rule31,
+    ],
 }
 
 # x.rulesDictDict for b mode.

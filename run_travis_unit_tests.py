@@ -1,9 +1,10 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20181009072707.1: * @file ../../run_travis_unit_tests.py
+# @+leo-ver=5-thin
+# @+node:ekr.20181009072707.1: * @file ../../run_travis_unit_tests.py
 import os
 import sys
 import traceback
 import unittest
+
 tag = 'run_travis_unit_tests.py'
 try:
     base_dir = os.path.dirname(__file__)
@@ -26,4 +27,4 @@ except Exception:
     for line in lines:
         print(line.rstrip())
     sys.exit(1)
-#@-leo
+# @-leo

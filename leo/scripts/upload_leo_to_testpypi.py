@@ -1,6 +1,6 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20240321123225.2: * @file ../scripts/upload_leo_to_testpypi.py
-#@@language python
+# @+leo-ver=5-thin
+# @+node:ekr.20240321123225.2: * @file ../scripts/upload_leo_to_testpypi.py
+# @@language python
 
 """
 upload_leo_to_testpypi.py: Run `python -m twine upload -r testpypi dist/*.*`.
@@ -29,4 +29,4 @@ if 1:  # Don't do this until we are ready to release.
     subprocess.Popen(command, shell=True).communicate()
 else:
     print(f"Skipped: {command}")
-#@-leo
+# @-leo

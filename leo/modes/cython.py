@@ -24,7 +24,6 @@ attributesDictDict = {
 
 # Keywords dict for cython_main ruleset.
 cython_main_keywords_dict = {
-
     # Additional cython keywords....
     # The colorizer computes word chars, so "except?" is handled correctly.
     "by": "keyword4",
@@ -47,7 +46,6 @@ cython_main_keywords_dict = {
     "IF": "keyword4",
     "ELIF": "keyword4",
     "ELSE": "keyword4",
-
     # New types, hightlighted as builtins (keyword3).
     "NULL": "keyword3",
     "bint": "keyword3",
@@ -63,7 +61,6 @@ cython_main_keywords_dict = {
     "short": "keyword3",
     "size_t": "keyword3",
     "void": "keyword3",
-
     # Normal Python keywords, the same as in python.py...
     # except that conflicts with cython keywords have been removed.
     "ArithmeticError": "keyword3",
@@ -332,72 +329,94 @@ keywordsDictDict = {
 
 # Rules for cython_main ruleset.
 
+
 def cython_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
+
 
 def cython_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="\"\"\"", end="\"\"\"")
 
+
 def cython_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="'''", end="'''")
+
 
 def cython_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def cython_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
+
 
 def cython_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def cython_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def cython_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def cython_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def cython_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def cython_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def cython_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def cython_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def cython_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def cython_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
+
 
 def cython_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
 
+
 def cython_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def cython_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def cython_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def cython_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def cython_rule20(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def cython_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
+
 
 url = False
 
@@ -418,89 +437,260 @@ else:
     def cython_rule_f_url(colorer, s, i):
         return 0
 
+
 # Rules dict for cython_main ruleset.
 rulesDict1 = {
-    "!": [cython_rule6,],
-    "\"": [cython_rule1, cython_rule3,],
-    "#": [cython_rule0,],
-    "%": [cython_rule15,],
-    "&": [cython_rule16,],
-    "'": [cython_rule2, cython_rule4,],
-    "(": [cython_rule20,],
-    "*": [cython_rule12,],
-    "+": [cython_rule9,],
-    "-": [cython_rule10,],
-    "/": [cython_rule11,],
-    "0": [cython_rule21,],
-    "1": [cython_rule21,],
-    "2": [cython_rule21,],
-    "3": [cython_rule21,],
-    "4": [cython_rule21,],
-    "5": [cython_rule21,],
-    "6": [cython_rule21,],
-    "7": [cython_rule21,],
-    "8": [cython_rule21,],
-    "9": [cython_rule21,],
-    "<": [cython_rule8, cython_rule14,],
-    "=": [cython_rule5,],
-    ">": [cython_rule7, cython_rule13,],
-    "@": [cython_rule21,],
-    "A": [cython_rule21,],
-    "B": [cython_rule21,],
-    "C": [cython_rule21,],
-    "D": [cython_rule21,],
-    "E": [cython_rule21,],
-    "F": [cython_rule_f_url, cython_rule21,],
-    "G": [cython_rule21,],
-    "H": [cython_rule_h_url, cython_rule21,],
-    "I": [cython_rule21,],
-    "J": [cython_rule21,],
-    "K": [cython_rule21,],
-    "L": [cython_rule21,],
-    "M": [cython_rule21,],
-    "N": [cython_rule21,],
-    "O": [cython_rule21,],
-    "P": [cython_rule21,],
-    "Q": [cython_rule21,],
-    "R": [cython_rule21,],
-    "S": [cython_rule21,],
-    "T": [cython_rule21,],
-    "U": [cython_rule21,],
-    "V": [cython_rule21,],
-    "W": [cython_rule21,],
-    "X": [cython_rule21,],
-    "Y": [cython_rule21,],
-    "Z": [cython_rule21,],
-    "^": [cython_rule18,],
-    "_": [cython_rule21,],
-    "a": [cython_rule21,],
-    "b": [cython_rule21,],
-    "c": [cython_rule21,],
-    "d": [cython_rule21,],
-    "e": [cython_rule21,],
-    "f": [cython_rule_f_url, cython_rule21,],
-    "g": [cython_rule21,],
-    "h": [cython_rule_h_url, cython_rule21,],
-    "i": [cython_rule21,],
-    "j": [cython_rule21,],
-    "k": [cython_rule21,],
-    "l": [cython_rule21,],
-    "m": [cython_rule21,],
-    "n": [cython_rule21,],
-    "o": [cython_rule21,],
-    "p": [cython_rule21,],
-    "q": [cython_rule21,],
-    "r": [cython_rule21,],
-    "s": [cython_rule21,],
-    "t": [cython_rule21,],
-    "u": [cython_rule21,],
-    "v": [cython_rule21,],
-    "w": [cython_rule21,],
-    "x": [cython_rule21,],
-    "y": [cython_rule21,],
-    "z": [cython_rule21,],
-    "|": [cython_rule17,],
-    "~": [cython_rule19,],
+    "!": [
+        cython_rule6,
+    ],
+    "\"": [
+        cython_rule1,
+        cython_rule3,
+    ],
+    "#": [
+        cython_rule0,
+    ],
+    "%": [
+        cython_rule15,
+    ],
+    "&": [
+        cython_rule16,
+    ],
+    "'": [
+        cython_rule2,
+        cython_rule4,
+    ],
+    "(": [
+        cython_rule20,
+    ],
+    "*": [
+        cython_rule12,
+    ],
+    "+": [
+        cython_rule9,
+    ],
+    "-": [
+        cython_rule10,
+    ],
+    "/": [
+        cython_rule11,
+    ],
+    "0": [
+        cython_rule21,
+    ],
+    "1": [
+        cython_rule21,
+    ],
+    "2": [
+        cython_rule21,
+    ],
+    "3": [
+        cython_rule21,
+    ],
+    "4": [
+        cython_rule21,
+    ],
+    "5": [
+        cython_rule21,
+    ],
+    "6": [
+        cython_rule21,
+    ],
+    "7": [
+        cython_rule21,
+    ],
+    "8": [
+        cython_rule21,
+    ],
+    "9": [
+        cython_rule21,
+    ],
+    "<": [
+        cython_rule8,
+        cython_rule14,
+    ],
+    "=": [
+        cython_rule5,
+    ],
+    ">": [
+        cython_rule7,
+        cython_rule13,
+    ],
+    "@": [
+        cython_rule21,
+    ],
+    "A": [
+        cython_rule21,
+    ],
+    "B": [
+        cython_rule21,
+    ],
+    "C": [
+        cython_rule21,
+    ],
+    "D": [
+        cython_rule21,
+    ],
+    "E": [
+        cython_rule21,
+    ],
+    "F": [
+        cython_rule_f_url,
+        cython_rule21,
+    ],
+    "G": [
+        cython_rule21,
+    ],
+    "H": [
+        cython_rule_h_url,
+        cython_rule21,
+    ],
+    "I": [
+        cython_rule21,
+    ],
+    "J": [
+        cython_rule21,
+    ],
+    "K": [
+        cython_rule21,
+    ],
+    "L": [
+        cython_rule21,
+    ],
+    "M": [
+        cython_rule21,
+    ],
+    "N": [
+        cython_rule21,
+    ],
+    "O": [
+        cython_rule21,
+    ],
+    "P": [
+        cython_rule21,
+    ],
+    "Q": [
+        cython_rule21,
+    ],
+    "R": [
+        cython_rule21,
+    ],
+    "S": [
+        cython_rule21,
+    ],
+    "T": [
+        cython_rule21,
+    ],
+    "U": [
+        cython_rule21,
+    ],
+    "V": [
+        cython_rule21,
+    ],
+    "W": [
+        cython_rule21,
+    ],
+    "X": [
+        cython_rule21,
+    ],
+    "Y": [
+        cython_rule21,
+    ],
+    "Z": [
+        cython_rule21,
+    ],
+    "^": [
+        cython_rule18,
+    ],
+    "_": [
+        cython_rule21,
+    ],
+    "a": [
+        cython_rule21,
+    ],
+    "b": [
+        cython_rule21,
+    ],
+    "c": [
+        cython_rule21,
+    ],
+    "d": [
+        cython_rule21,
+    ],
+    "e": [
+        cython_rule21,
+    ],
+    "f": [
+        cython_rule_f_url,
+        cython_rule21,
+    ],
+    "g": [
+        cython_rule21,
+    ],
+    "h": [
+        cython_rule_h_url,
+        cython_rule21,
+    ],
+    "i": [
+        cython_rule21,
+    ],
+    "j": [
+        cython_rule21,
+    ],
+    "k": [
+        cython_rule21,
+    ],
+    "l": [
+        cython_rule21,
+    ],
+    "m": [
+        cython_rule21,
+    ],
+    "n": [
+        cython_rule21,
+    ],
+    "o": [
+        cython_rule21,
+    ],
+    "p": [
+        cython_rule21,
+    ],
+    "q": [
+        cython_rule21,
+    ],
+    "r": [
+        cython_rule21,
+    ],
+    "s": [
+        cython_rule21,
+    ],
+    "t": [
+        cython_rule21,
+    ],
+    "u": [
+        cython_rule21,
+    ],
+    "v": [
+        cython_rule21,
+    ],
+    "w": [
+        cython_rule21,
+    ],
+    "x": [
+        cython_rule21,
+    ],
+    "y": [
+        cython_rule21,
+    ],
+    "z": [
+        cython_rule21,
+    ],
+    "|": [
+        cython_rule17,
+    ],
+    "~": [
+        cython_rule19,
+    ],
 }
 
 # x.rulesDictDict for cython mode.

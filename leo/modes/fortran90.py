@@ -186,132 +186,301 @@ keywordsDictDict = {
 
 # Rules for fortran90_main ruleset.
 
+
 def fortran90_rule0(colorer, s, i):
     return colorer.match_terminate(s, i, kind="", at_char=132)
+
 
 def fortran90_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="!")
 
+
 def fortran90_rule2(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def fortran90_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def fortran90_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def fortran90_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def fortran90_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
+
 
 def fortran90_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/=")
 
+
 def fortran90_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="==")
+
 
 def fortran90_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".lt.")
 
+
 def fortran90_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".gt.")
+
 
 def fortran90_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".eq.")
 
+
 def fortran90_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".ne.")
+
 
 def fortran90_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".le.")
 
+
 def fortran90_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".ge.")
+
 
 def fortran90_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".AND.")
 
+
 def fortran90_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".OR.")
+
 
 def fortran90_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for fortran90_main ruleset.
 rulesDict1 = {
-    "!": [fortran90_rule1,],
-    "&": [fortran90_rule6,],
-    ".": [fortran90_rule9, fortran90_rule10, fortran90_rule11, fortran90_rule12, fortran90_rule13, fortran90_rule14, fortran90_rule15, fortran90_rule16, fortran90_rule17,],
-    "/": [fortran90_rule7,],
-    "0": [fortran90_rule17,],
-    "1": [fortran90_rule17,],
-    "2": [fortran90_rule17,],
-    "3": [fortran90_rule17,],
-    "4": [fortran90_rule17,],
-    "5": [fortran90_rule17,],
-    "6": [fortran90_rule17,],
-    "7": [fortran90_rule17,],
-    "8": [fortran90_rule17,],
-    "9": [fortran90_rule17,],
-    "<": [fortran90_rule2, fortran90_rule5,],
-    "=": [fortran90_rule8,],
-    ">": [fortran90_rule3, fortran90_rule4,],
-    "@": [fortran90_rule17,],
-    "A": [fortran90_rule17,],
-    "B": [fortran90_rule17,],
-    "C": [fortran90_rule17,],
-    "D": [fortran90_rule17,],
-    "E": [fortran90_rule17,],
-    "F": [fortran90_rule17,],
-    "G": [fortran90_rule17,],
-    "H": [fortran90_rule17,],
-    "I": [fortran90_rule17,],
-    "J": [fortran90_rule17,],
-    "K": [fortran90_rule17,],
-    "L": [fortran90_rule17,],
-    "M": [fortran90_rule17,],
-    "N": [fortran90_rule17,],
-    "O": [fortran90_rule17,],
-    "P": [fortran90_rule17,],
-    "Q": [fortran90_rule17,],
-    "R": [fortran90_rule17,],
-    "S": [fortran90_rule17,],
-    "T": [fortran90_rule17,],
-    "U": [fortran90_rule17,],
-    "V": [fortran90_rule17,],
-    "W": [fortran90_rule17,],
-    "X": [fortran90_rule17,],
-    "Y": [fortran90_rule17,],
-    "Z": [fortran90_rule17,],
-    "a": [fortran90_rule17,],
-    "b": [fortran90_rule17,],
-    "c": [fortran90_rule17,],
-    "d": [fortran90_rule17,],
-    "e": [fortran90_rule17,],
-    "f": [fortran90_rule17,],
-    "g": [fortran90_rule17,],
-    "h": [fortran90_rule17,],
-    "i": [fortran90_rule17,],
-    "j": [fortran90_rule17,],
-    "k": [fortran90_rule17,],
-    "l": [fortran90_rule17,],
-    "m": [fortran90_rule17,],
-    "n": [fortran90_rule17,],
-    "o": [fortran90_rule17,],
-    "p": [fortran90_rule17,],
-    "q": [fortran90_rule17,],
-    "r": [fortran90_rule17,],
-    "s": [fortran90_rule17,],
-    "t": [fortran90_rule17,],
-    "u": [fortran90_rule17,],
-    "v": [fortran90_rule17,],
-    "w": [fortran90_rule17,],
-    "x": [fortran90_rule17,],
-    "y": [fortran90_rule17,],
-    "z": [fortran90_rule17,],
+    "!": [
+        fortran90_rule1,
+    ],
+    "&": [
+        fortran90_rule6,
+    ],
+    ".": [
+        fortran90_rule9,
+        fortran90_rule10,
+        fortran90_rule11,
+        fortran90_rule12,
+        fortran90_rule13,
+        fortran90_rule14,
+        fortran90_rule15,
+        fortran90_rule16,
+        fortran90_rule17,
+    ],
+    "/": [
+        fortran90_rule7,
+    ],
+    "0": [
+        fortran90_rule17,
+    ],
+    "1": [
+        fortran90_rule17,
+    ],
+    "2": [
+        fortran90_rule17,
+    ],
+    "3": [
+        fortran90_rule17,
+    ],
+    "4": [
+        fortran90_rule17,
+    ],
+    "5": [
+        fortran90_rule17,
+    ],
+    "6": [
+        fortran90_rule17,
+    ],
+    "7": [
+        fortran90_rule17,
+    ],
+    "8": [
+        fortran90_rule17,
+    ],
+    "9": [
+        fortran90_rule17,
+    ],
+    "<": [
+        fortran90_rule2,
+        fortran90_rule5,
+    ],
+    "=": [
+        fortran90_rule8,
+    ],
+    ">": [
+        fortran90_rule3,
+        fortran90_rule4,
+    ],
+    "@": [
+        fortran90_rule17,
+    ],
+    "A": [
+        fortran90_rule17,
+    ],
+    "B": [
+        fortran90_rule17,
+    ],
+    "C": [
+        fortran90_rule17,
+    ],
+    "D": [
+        fortran90_rule17,
+    ],
+    "E": [
+        fortran90_rule17,
+    ],
+    "F": [
+        fortran90_rule17,
+    ],
+    "G": [
+        fortran90_rule17,
+    ],
+    "H": [
+        fortran90_rule17,
+    ],
+    "I": [
+        fortran90_rule17,
+    ],
+    "J": [
+        fortran90_rule17,
+    ],
+    "K": [
+        fortran90_rule17,
+    ],
+    "L": [
+        fortran90_rule17,
+    ],
+    "M": [
+        fortran90_rule17,
+    ],
+    "N": [
+        fortran90_rule17,
+    ],
+    "O": [
+        fortran90_rule17,
+    ],
+    "P": [
+        fortran90_rule17,
+    ],
+    "Q": [
+        fortran90_rule17,
+    ],
+    "R": [
+        fortran90_rule17,
+    ],
+    "S": [
+        fortran90_rule17,
+    ],
+    "T": [
+        fortran90_rule17,
+    ],
+    "U": [
+        fortran90_rule17,
+    ],
+    "V": [
+        fortran90_rule17,
+    ],
+    "W": [
+        fortran90_rule17,
+    ],
+    "X": [
+        fortran90_rule17,
+    ],
+    "Y": [
+        fortran90_rule17,
+    ],
+    "Z": [
+        fortran90_rule17,
+    ],
+    "a": [
+        fortran90_rule17,
+    ],
+    "b": [
+        fortran90_rule17,
+    ],
+    "c": [
+        fortran90_rule17,
+    ],
+    "d": [
+        fortran90_rule17,
+    ],
+    "e": [
+        fortran90_rule17,
+    ],
+    "f": [
+        fortran90_rule17,
+    ],
+    "g": [
+        fortran90_rule17,
+    ],
+    "h": [
+        fortran90_rule17,
+    ],
+    "i": [
+        fortran90_rule17,
+    ],
+    "j": [
+        fortran90_rule17,
+    ],
+    "k": [
+        fortran90_rule17,
+    ],
+    "l": [
+        fortran90_rule17,
+    ],
+    "m": [
+        fortran90_rule17,
+    ],
+    "n": [
+        fortran90_rule17,
+    ],
+    "o": [
+        fortran90_rule17,
+    ],
+    "p": [
+        fortran90_rule17,
+    ],
+    "q": [
+        fortran90_rule17,
+    ],
+    "r": [
+        fortran90_rule17,
+    ],
+    "s": [
+        fortran90_rule17,
+    ],
+    "t": [
+        fortran90_rule17,
+    ],
+    "u": [
+        fortran90_rule17,
+    ],
+    "v": [
+        fortran90_rule17,
+    ],
+    "w": [
+        fortran90_rule17,
+    ],
+    "x": [
+        fortran90_rule17,
+    ],
+    "y": [
+        fortran90_rule17,
+    ],
+    "z": [
+        fortran90_rule17,
+    ],
 }
 
 # x.rulesDictDict for fortran90 mode.

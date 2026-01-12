@@ -1,20 +1,23 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20230714131540.1: * @file ../unittests/core/test_leoCompare.py
+# @+leo-ver=5-thin
+# @+node:ekr.20230714131540.1: * @file ../unittests/core/test_leoCompare.py
 """Tests of leoCompare.py"""
+
 import os
 import tempfile
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
+
 assert g
 
-#@+others
-#@+node:ekr.20230714131540.2: ** class TestCompare(LeoUnitTest)
+
+# @+others
+# @+node:ekr.20230714131540.2: ** class TestCompare(LeoUnitTest)
 class TestCompare(LeoUnitTest):
     """Test cases for leoCompare.py"""
-    #@+others
-    #@+node:ekr.20230714131540.3: *3* TestCompare.test_diff_marked_nodes
-    def test_diff_marked_nodes(self):
 
+    # @+others
+    # @+node:ekr.20230714131540.3: *3* TestCompare.test_diff_marked_nodes
+    def test_diff_marked_nodes(self):
         from leo.core.leoCompare import diffMarkedNodes
 
         # Setup.
@@ -63,9 +66,9 @@ class TestCompare(LeoUnitTest):
             u.redo()
             self.assertEqual(0, c.checkOutline())
             self.assertEqual(c.lastTopLevel().h, 'diff marked nodes')
-    #@+node:ekr.20230714160900.1: *3* TestCompare.test_diff_list_of_files
-    def test_diff_list_of_files(self):
 
+    # @+node:ekr.20230714160900.1: *3* TestCompare.test_diff_list_of_files
+    def test_diff_list_of_files(self):
         from leo.core.leoCompare import CompareLeoOutlines
 
         # Setup.
@@ -81,7 +84,7 @@ class TestCompare(LeoUnitTest):
 
         # The contents of a small .leo file.
         contents1 = self.prep(
-        """
+            """
             <?xml version="1.0" encoding="utf-8"?>
             <!-- Created by Leo: https://leo-editor.github.io/leo-editor/leo_toc.html -->
             <leo_file xmlns:leo="http://leo-editor.github.io/leo-editor/namespaces/leo-python-editor/1.1" >
@@ -96,7 +99,8 @@ class TestCompare(LeoUnitTest):
             <t tx="ekr.20230714162224.2"></t>
             </tnodes>
             </leo_file>
-        """)
+        """
+        )
         contents2 = contents1.replace('test_file1.leo', 'test_file2.leo')
 
         # Create the absolute paths.
@@ -126,6 +130,9 @@ class TestCompare(LeoUnitTest):
             self.assertTrue(os.path.exists(path), msg=path)
             os.remove(path)
             self.assertFalse(os.path.exists(path), msg=path)
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

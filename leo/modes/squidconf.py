@@ -240,79 +240,212 @@ keywordsDictDict = {
 
 # Rules for squidconf_main ruleset.
 
+
 def squidconf_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="#")
+
 
 def squidconf_rule1(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for squidconf_main ruleset.
 rulesDict1 = {
-    "#": [squidconf_rule0,],
-    "0": [squidconf_rule1,],
-    "1": [squidconf_rule1,],
-    "2": [squidconf_rule1,],
-    "3": [squidconf_rule1,],
-    "4": [squidconf_rule1,],
-    "5": [squidconf_rule1,],
-    "6": [squidconf_rule1,],
-    "7": [squidconf_rule1,],
-    "8": [squidconf_rule1,],
-    "9": [squidconf_rule1,],
-    "@": [squidconf_rule1,],
-    "A": [squidconf_rule1,],
-    "B": [squidconf_rule1,],
-    "C": [squidconf_rule1,],
-    "D": [squidconf_rule1,],
-    "E": [squidconf_rule1,],
-    "F": [squidconf_rule1,],
-    "G": [squidconf_rule1,],
-    "H": [squidconf_rule1,],
-    "I": [squidconf_rule1,],
-    "J": [squidconf_rule1,],
-    "K": [squidconf_rule1,],
-    "L": [squidconf_rule1,],
-    "M": [squidconf_rule1,],
-    "N": [squidconf_rule1,],
-    "O": [squidconf_rule1,],
-    "P": [squidconf_rule1,],
-    "Q": [squidconf_rule1,],
-    "R": [squidconf_rule1,],
-    "S": [squidconf_rule1,],
-    "T": [squidconf_rule1,],
-    "U": [squidconf_rule1,],
-    "V": [squidconf_rule1,],
-    "W": [squidconf_rule1,],
-    "X": [squidconf_rule1,],
-    "Y": [squidconf_rule1,],
-    "Z": [squidconf_rule1,],
-    "_": [squidconf_rule1,],
-    "a": [squidconf_rule1,],
-    "b": [squidconf_rule1,],
-    "c": [squidconf_rule1,],
-    "d": [squidconf_rule1,],
-    "e": [squidconf_rule1,],
-    "f": [squidconf_rule1,],
-    "g": [squidconf_rule1,],
-    "h": [squidconf_rule1,],
-    "i": [squidconf_rule1,],
-    "j": [squidconf_rule1,],
-    "k": [squidconf_rule1,],
-    "l": [squidconf_rule1,],
-    "m": [squidconf_rule1,],
-    "n": [squidconf_rule1,],
-    "o": [squidconf_rule1,],
-    "p": [squidconf_rule1,],
-    "q": [squidconf_rule1,],
-    "r": [squidconf_rule1,],
-    "s": [squidconf_rule1,],
-    "t": [squidconf_rule1,],
-    "u": [squidconf_rule1,],
-    "v": [squidconf_rule1,],
-    "w": [squidconf_rule1,],
-    "x": [squidconf_rule1,],
-    "y": [squidconf_rule1,],
-    "z": [squidconf_rule1,],
+    "#": [
+        squidconf_rule0,
+    ],
+    "0": [
+        squidconf_rule1,
+    ],
+    "1": [
+        squidconf_rule1,
+    ],
+    "2": [
+        squidconf_rule1,
+    ],
+    "3": [
+        squidconf_rule1,
+    ],
+    "4": [
+        squidconf_rule1,
+    ],
+    "5": [
+        squidconf_rule1,
+    ],
+    "6": [
+        squidconf_rule1,
+    ],
+    "7": [
+        squidconf_rule1,
+    ],
+    "8": [
+        squidconf_rule1,
+    ],
+    "9": [
+        squidconf_rule1,
+    ],
+    "@": [
+        squidconf_rule1,
+    ],
+    "A": [
+        squidconf_rule1,
+    ],
+    "B": [
+        squidconf_rule1,
+    ],
+    "C": [
+        squidconf_rule1,
+    ],
+    "D": [
+        squidconf_rule1,
+    ],
+    "E": [
+        squidconf_rule1,
+    ],
+    "F": [
+        squidconf_rule1,
+    ],
+    "G": [
+        squidconf_rule1,
+    ],
+    "H": [
+        squidconf_rule1,
+    ],
+    "I": [
+        squidconf_rule1,
+    ],
+    "J": [
+        squidconf_rule1,
+    ],
+    "K": [
+        squidconf_rule1,
+    ],
+    "L": [
+        squidconf_rule1,
+    ],
+    "M": [
+        squidconf_rule1,
+    ],
+    "N": [
+        squidconf_rule1,
+    ],
+    "O": [
+        squidconf_rule1,
+    ],
+    "P": [
+        squidconf_rule1,
+    ],
+    "Q": [
+        squidconf_rule1,
+    ],
+    "R": [
+        squidconf_rule1,
+    ],
+    "S": [
+        squidconf_rule1,
+    ],
+    "T": [
+        squidconf_rule1,
+    ],
+    "U": [
+        squidconf_rule1,
+    ],
+    "V": [
+        squidconf_rule1,
+    ],
+    "W": [
+        squidconf_rule1,
+    ],
+    "X": [
+        squidconf_rule1,
+    ],
+    "Y": [
+        squidconf_rule1,
+    ],
+    "Z": [
+        squidconf_rule1,
+    ],
+    "_": [
+        squidconf_rule1,
+    ],
+    "a": [
+        squidconf_rule1,
+    ],
+    "b": [
+        squidconf_rule1,
+    ],
+    "c": [
+        squidconf_rule1,
+    ],
+    "d": [
+        squidconf_rule1,
+    ],
+    "e": [
+        squidconf_rule1,
+    ],
+    "f": [
+        squidconf_rule1,
+    ],
+    "g": [
+        squidconf_rule1,
+    ],
+    "h": [
+        squidconf_rule1,
+    ],
+    "i": [
+        squidconf_rule1,
+    ],
+    "j": [
+        squidconf_rule1,
+    ],
+    "k": [
+        squidconf_rule1,
+    ],
+    "l": [
+        squidconf_rule1,
+    ],
+    "m": [
+        squidconf_rule1,
+    ],
+    "n": [
+        squidconf_rule1,
+    ],
+    "o": [
+        squidconf_rule1,
+    ],
+    "p": [
+        squidconf_rule1,
+    ],
+    "q": [
+        squidconf_rule1,
+    ],
+    "r": [
+        squidconf_rule1,
+    ],
+    "s": [
+        squidconf_rule1,
+    ],
+    "t": [
+        squidconf_rule1,
+    ],
+    "u": [
+        squidconf_rule1,
+    ],
+    "v": [
+        squidconf_rule1,
+    ],
+    "w": [
+        squidconf_rule1,
+    ],
+    "x": [
+        squidconf_rule1,
+    ],
+    "y": [
+        squidconf_rule1,
+    ],
+    "z": [
+        squidconf_rule1,
+    ],
 }
 
 # x.rulesDictDict for squidconf mode.

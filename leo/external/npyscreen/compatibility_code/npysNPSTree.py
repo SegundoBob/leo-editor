@@ -3,22 +3,32 @@ import weakref
 import collections
 import operator
 
+
 class NPSTreeData(object):
     CHILDCLASS = None
-    def __init__(self, content=None, parent=None, selected=False, selectable=True,
-                    highlight=False, expanded=True, ignoreRoot=True, sort_function=None):
+
+    def __init__(
+        self,
+        content=None,
+        parent=None,
+        selected=False,
+        selectable=True,
+        highlight=False,
+        expanded=True,
+        ignoreRoot=True,
+        sort_function=None,
+    ):
         self.setParent(parent)
         self.setContent(content)
         self.selectable = selectable
-        self.selected   = selected
-        self.highlight  = highlight
-        self.expanded   = expanded
-        self._children  = []
+        self.selected = selected
+        self.highlight = highlight
+        self.expanded = expanded
+        self._children = []
         self.ignoreRoot = ignoreRoot
-        self.sort       = False
+        self.sort = False
         self.sort_function = sort_function
         self.sort_function_wrapper = True
-
 
     def getContent(self):
         return self.content
@@ -44,7 +54,6 @@ class NPSTreeData(object):
     def getParent(self):
         return self._parent
 
-
     def findDepth(self, d=0):
         depth = d
         parent = self.getParent()
@@ -53,9 +62,9 @@ class NPSTreeData(object):
             parent = parent.getParent()
         return d
         # Recursive
-        #if self._parent == None:
+        # if self._parent == None:
         #    return d
-        #else:
+        # else:
         #    return(self._parent.findDepth(d+1))
 
     def isLastSibling(self):
@@ -105,7 +114,6 @@ class NPSTreeData(object):
                 ch.setParent(None)
         self._children = new_children
 
-
     def create_wrapped_sort_function(self, this_function):
         def new_function(the_item):
             if the_item:
@@ -113,6 +121,7 @@ class NPSTreeData(object):
                 return this_function(the_real_item)
             else:
                 return the_item
+
         return new_function
 
     def walkParents(self):
@@ -122,7 +131,7 @@ class NPSTreeData(object):
             p = p.getParent()
 
     def walkTree(self, onlyExpanded=True, ignoreRoot=True, sort=None, sort_function=None):
-        #Iterate over Tree
+        # Iterate over Tree
         if sort is None:
             sort = self.sort
 
@@ -142,7 +151,7 @@ class NPSTreeData(object):
         # example sort function #             return frm
         # example sort function #     else:
         # example sort function #         return the_item
-        #key = operator.methodcaller('getContent',)
+        # key = operator.methodcaller('getContent',)
 
         if self.sort_function_wrapper and sort_function:
             # def wrapped_sort_function(the_item):
@@ -159,12 +168,17 @@ class NPSTreeData(object):
         key = _this_sort_function
         if not ignoreRoot:
             yield self
-        nodes_to_yield = collections.deque() # better memory management than a list for pop(0)
+        nodes_to_yield = collections.deque()  # better memory management than a list for pop(0)
         if self.expanded or not onlyExpanded:
             if sort:
                 # This and the similar block below could be combined into a nested function
                 if key:
-                    nodes_to_yield.extend(sorted(self.getChildren(), key=key,))
+                    nodes_to_yield.extend(
+                        sorted(
+                            self.getChildren(),
+                            key=key,
+                        )
+                    )
                 else:
                     nodes_to_yield.extend(sorted(self.getChildren()))
             else:
@@ -180,7 +194,7 @@ class NPSTreeData(object):
                         else:
                             nodes_to_yield.extendleft(sorted(child.getChildren(), reverse=True))
                     else:
-                        #for node in child.getChildren():
+                        # for node in child.getChildren():
                         #    if node not in nodes_to_yield:
                         #        nodes_to_yield.appendleft(node)
                         yield_these = list(child.getChildren())
@@ -189,8 +203,12 @@ class NPSTreeData(object):
                         del yield_these
                 yield child
 
-    def _walkTreeRecursive(self,onlyExpanded=True, ignoreRoot=True,):
-        #This is an old, recursive version
+    def _walkTreeRecursive(
+        self,
+        onlyExpanded=True,
+        ignoreRoot=True,
+    ):
+        # This is an old, recursive version
         if (not onlyExpanded) or (self.expanded):
             for child in self.getChildren():
                 for node in child.walkTree(onlyExpanded=onlyExpanded, ignoreRoot=False):

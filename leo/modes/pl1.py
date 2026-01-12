@@ -552,160 +552,346 @@ keywordsDictDict = {
 
 # Rules for pl1_main ruleset.
 
+
 def pl1_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
+
 
 def pl1_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
 
+
 def pl1_rule2(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def pl1_rule3(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="keyword2", regexp="\\* *process",
-          at_line_start=True)
+    return colorer.match_eol_span_regexp(s, i, kind="keyword2", regexp="\\* *process", at_line_start=True)
+
 
 def pl1_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def pl1_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def pl1_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def pl1_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def pl1_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def pl1_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def pl1_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def pl1_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def pl1_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def pl1_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def pl1_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
 
+
 def pl1_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
+
 
 def pl1_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=";")
 
+
 def pl1_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=")")
+
 
 def pl1_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="(")
 
+
 def pl1_rule19(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_whitespace_end=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+
 
 def pl1_rule20(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def pl1_rule21(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for pl1_main ruleset.
 rulesDict1 = {
-    "\"": [pl1_rule2,],
-    "%": [pl1_rule21,],
-    "&": [pl1_rule12,],
-    "'": [pl1_rule1,],
-    "(": [pl1_rule18, pl1_rule20,],
-    ")": [pl1_rule17,],
-    "*": [pl1_rule3, pl1_rule7,],
-    "+": [pl1_rule5,],
-    ",": [pl1_rule15,],
-    "-": [pl1_rule6,],
-    ".": [pl1_rule14,],
-    "/": [pl1_rule0, pl1_rule8,],
-    "0": [pl1_rule21,],
-    "1": [pl1_rule21,],
-    "2": [pl1_rule21,],
-    "3": [pl1_rule21,],
-    "4": [pl1_rule21,],
-    "5": [pl1_rule21,],
-    "6": [pl1_rule21,],
-    "7": [pl1_rule21,],
-    "8": [pl1_rule21,],
-    "9": [pl1_rule21,],
-    ":": [pl1_rule19,],
-    ";": [pl1_rule16,],
-    "<": [pl1_rule10,],
-    "=": [pl1_rule4,],
-    ">": [pl1_rule9,],
-    "@": [pl1_rule21,],
-    "A": [pl1_rule21,],
-    "B": [pl1_rule21,],
-    "C": [pl1_rule21,],
-    "D": [pl1_rule21,],
-    "E": [pl1_rule21,],
-    "F": [pl1_rule21,],
-    "G": [pl1_rule21,],
-    "H": [pl1_rule21,],
-    "I": [pl1_rule21,],
-    "J": [pl1_rule21,],
-    "K": [pl1_rule21,],
-    "L": [pl1_rule21,],
-    "M": [pl1_rule21,],
-    "N": [pl1_rule21,],
-    "O": [pl1_rule21,],
-    "P": [pl1_rule21,],
-    "Q": [pl1_rule21,],
-    "R": [pl1_rule21,],
-    "S": [pl1_rule21,],
-    "T": [pl1_rule21,],
-    "U": [pl1_rule21,],
-    "V": [pl1_rule21,],
-    "W": [pl1_rule21,],
-    "X": [pl1_rule21,],
-    "Y": [pl1_rule21,],
-    "Z": [pl1_rule21,],
-    "^": [pl1_rule11,],
-    "a": [pl1_rule21,],
-    "b": [pl1_rule21,],
-    "c": [pl1_rule21,],
-    "d": [pl1_rule21,],
-    "e": [pl1_rule21,],
-    "f": [pl1_rule21,],
-    "g": [pl1_rule21,],
-    "h": [pl1_rule21,],
-    "i": [pl1_rule21,],
-    "j": [pl1_rule21,],
-    "k": [pl1_rule21,],
-    "l": [pl1_rule21,],
-    "m": [pl1_rule21,],
-    "n": [pl1_rule21,],
-    "o": [pl1_rule21,],
-    "p": [pl1_rule21,],
-    "q": [pl1_rule21,],
-    "r": [pl1_rule21,],
-    "s": [pl1_rule21,],
-    "t": [pl1_rule21,],
-    "u": [pl1_rule21,],
-    "v": [pl1_rule21,],
-    "w": [pl1_rule21,],
-    "x": [pl1_rule21,],
-    "y": [pl1_rule21,],
-    "z": [pl1_rule21,],
-    "|": [pl1_rule13,],
+    "\"": [
+        pl1_rule2,
+    ],
+    "%": [
+        pl1_rule21,
+    ],
+    "&": [
+        pl1_rule12,
+    ],
+    "'": [
+        pl1_rule1,
+    ],
+    "(": [
+        pl1_rule18,
+        pl1_rule20,
+    ],
+    ")": [
+        pl1_rule17,
+    ],
+    "*": [
+        pl1_rule3,
+        pl1_rule7,
+    ],
+    "+": [
+        pl1_rule5,
+    ],
+    ",": [
+        pl1_rule15,
+    ],
+    "-": [
+        pl1_rule6,
+    ],
+    ".": [
+        pl1_rule14,
+    ],
+    "/": [
+        pl1_rule0,
+        pl1_rule8,
+    ],
+    "0": [
+        pl1_rule21,
+    ],
+    "1": [
+        pl1_rule21,
+    ],
+    "2": [
+        pl1_rule21,
+    ],
+    "3": [
+        pl1_rule21,
+    ],
+    "4": [
+        pl1_rule21,
+    ],
+    "5": [
+        pl1_rule21,
+    ],
+    "6": [
+        pl1_rule21,
+    ],
+    "7": [
+        pl1_rule21,
+    ],
+    "8": [
+        pl1_rule21,
+    ],
+    "9": [
+        pl1_rule21,
+    ],
+    ":": [
+        pl1_rule19,
+    ],
+    ";": [
+        pl1_rule16,
+    ],
+    "<": [
+        pl1_rule10,
+    ],
+    "=": [
+        pl1_rule4,
+    ],
+    ">": [
+        pl1_rule9,
+    ],
+    "@": [
+        pl1_rule21,
+    ],
+    "A": [
+        pl1_rule21,
+    ],
+    "B": [
+        pl1_rule21,
+    ],
+    "C": [
+        pl1_rule21,
+    ],
+    "D": [
+        pl1_rule21,
+    ],
+    "E": [
+        pl1_rule21,
+    ],
+    "F": [
+        pl1_rule21,
+    ],
+    "G": [
+        pl1_rule21,
+    ],
+    "H": [
+        pl1_rule21,
+    ],
+    "I": [
+        pl1_rule21,
+    ],
+    "J": [
+        pl1_rule21,
+    ],
+    "K": [
+        pl1_rule21,
+    ],
+    "L": [
+        pl1_rule21,
+    ],
+    "M": [
+        pl1_rule21,
+    ],
+    "N": [
+        pl1_rule21,
+    ],
+    "O": [
+        pl1_rule21,
+    ],
+    "P": [
+        pl1_rule21,
+    ],
+    "Q": [
+        pl1_rule21,
+    ],
+    "R": [
+        pl1_rule21,
+    ],
+    "S": [
+        pl1_rule21,
+    ],
+    "T": [
+        pl1_rule21,
+    ],
+    "U": [
+        pl1_rule21,
+    ],
+    "V": [
+        pl1_rule21,
+    ],
+    "W": [
+        pl1_rule21,
+    ],
+    "X": [
+        pl1_rule21,
+    ],
+    "Y": [
+        pl1_rule21,
+    ],
+    "Z": [
+        pl1_rule21,
+    ],
+    "^": [
+        pl1_rule11,
+    ],
+    "a": [
+        pl1_rule21,
+    ],
+    "b": [
+        pl1_rule21,
+    ],
+    "c": [
+        pl1_rule21,
+    ],
+    "d": [
+        pl1_rule21,
+    ],
+    "e": [
+        pl1_rule21,
+    ],
+    "f": [
+        pl1_rule21,
+    ],
+    "g": [
+        pl1_rule21,
+    ],
+    "h": [
+        pl1_rule21,
+    ],
+    "i": [
+        pl1_rule21,
+    ],
+    "j": [
+        pl1_rule21,
+    ],
+    "k": [
+        pl1_rule21,
+    ],
+    "l": [
+        pl1_rule21,
+    ],
+    "m": [
+        pl1_rule21,
+    ],
+    "n": [
+        pl1_rule21,
+    ],
+    "o": [
+        pl1_rule21,
+    ],
+    "p": [
+        pl1_rule21,
+    ],
+    "q": [
+        pl1_rule21,
+    ],
+    "r": [
+        pl1_rule21,
+    ],
+    "s": [
+        pl1_rule21,
+    ],
+    "t": [
+        pl1_rule21,
+    ],
+    "u": [
+        pl1_rule21,
+    ],
+    "v": [
+        pl1_rule21,
+    ],
+    "w": [
+        pl1_rule21,
+    ],
+    "x": [
+        pl1_rule21,
+    ],
+    "y": [
+        pl1_rule21,
+    ],
+    "z": [
+        pl1_rule21,
+    ],
+    "|": [
+        pl1_rule13,
+    ],
 }
 
 # x.rulesDictDict for pl1 mode.

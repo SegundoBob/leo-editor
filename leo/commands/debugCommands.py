@@ -1,8 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20150514040118.1: * @file ../commands/debugCommands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20150514040118.1: * @file ../commands/debugCommands.py
 """Per-commander debugging class."""
-#@+<< debugCommands imports & annotations >>
-#@+node:ekr.20181006100818.1: ** << debugCommands imports & annotations >>
+
+# @+<< debugCommands imports & annotations >>
+# @+node:ekr.20181006100818.1: ** << debugCommands imports & annotations >>
 from __future__ import annotations
 from collections.abc import Callable
 import os
@@ -14,15 +15,23 @@ from leo.commands.baseCommands import BaseEditCommandsClass
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
 
-#@-<< debugCommands imports & annotations >>
+# @-<< debugCommands imports & annotations >>
+
 
 def cmd(name: str) -> Callable:
     """Command decorator for the DebugCommandsClass class."""
-    return g.new_cmd_decorator(name, ['c', 'debugCommands',])
+    return g.new_cmd_decorator(
+        name,
+        [
+            'c',
+            'debugCommands',
+        ],
+    )
+
 
 class DebugCommandsClass(BaseEditCommandsClass):
-    #@+others
-    #@+node:ekr.20150514063305.104: ** debug.debug & helper
+    # @+others
+    # @+node:ekr.20150514063305.104: ** debug.debug & helper
     @cmd('debug')
     def invoke_debugger(self, event: LeoKeyEvent = None) -> None:
         """
@@ -38,6 +47,7 @@ class DebugCommandsClass(BaseEditCommandsClass):
         # check for doctest examples
         try:
             import doctest
+
             parser = doctest.DocTestParser()
             examples = parser.get_examples(script)
             # if this is doctest, extract the examples as a script
@@ -57,7 +67,8 @@ class DebugCommandsClass(BaseEditCommandsClass):
         os.chdir(g.app.loadDir)
         args = [sys.executable, winpdb, '-t', filename]
         os.spawnv(os.P_NOWAIT, python, args)
-    #@+node:ekr.20150514063305.105: *3* debug.findDebugger
+
+    # @+node:ekr.20150514063305.105: *3* debug.findDebugger
     def findDebugger(self) -> Optional[str]:
         """Find the winpdb debugger."""
         c = self.c
@@ -79,7 +90,8 @@ class DebugCommandsClass(BaseEditCommandsClass):
         for z in debuggers:
             print(z)
         return None
-    #@+node:ekr.20170713112849.1: ** debug.dump-node
+
+    # @+node:ekr.20170713112849.1: ** debug.dump-node
     @cmd('dump-node')
     def dumpNode(self, event: LeoKeyEvent = None) -> None:
         """Dump c.p.v, including gnx, uA's, etc."""
@@ -91,23 +103,28 @@ class DebugCommandsClass(BaseEditCommandsClass):
                 g.printDict(p.v.u)
             else:
                 g.es_print('no uAs')
-    #@+node:ekr.20150514063305.103: ** debug.gc-collect-garbage
+
+    # @+node:ekr.20150514063305.103: ** debug.gc-collect-garbage
     @cmd('gc-collect-garbage')
     def collectGarbage(self, event: LeoKeyEvent = None) -> None:
         """Run Python's Garbage Collector."""
         import gc
+
         gc.collect()
-    #@+node:ekr.20150514063305.106: ** debug.gc-dump-all-objects
+
+    # @+node:ekr.20150514063305.106: ** debug.gc-dump-all-objects
     @cmd('gc-dump-all-objects')
     def dumpAllObjects(self, event: LeoKeyEvent = None) -> None:
         """Print a summary of all existing Python objects."""
         g.printGc()
-    #@+node:ekr.20150514063305.111: ** debug.gc-show-summary
+
+    # @+node:ekr.20150514063305.111: ** debug.gc-show-summary
     @cmd('gc-show-summary')
     def printGcSummary(self, event: LeoKeyEvent = None) -> None:
         """Print a brief summary of all Python objects."""
         g.printGcSummary()
-    #@+node:ekr.20170429154309.1: ** debug.kill-log-listener
+
+    # @+node:ekr.20170429154309.1: ** debug.kill-log-listener
     @cmd('kill-log-listener')
     @cmd('log-kill-listener')
     def killLogListener(self, event: LeoKeyEvent = None) -> None:
@@ -121,7 +138,8 @@ class DebugCommandsClass(BaseEditCommandsClass):
             g.es_print('killed log listener.')
         else:
             g.es_print('log listener not active.')
-    #@+node:ekr.20150514063305.110: ** debug.show-focus
+
+    # @+node:ekr.20150514063305.110: ** debug.show-focus
     @cmd('show-focus')
     def printFocus(self, event: LeoKeyEvent = None) -> None:
         """
@@ -131,14 +149,12 @@ class DebugCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         # w = g.app.gui.get_focus()
-        g.es_print(
-            'c.requestedFocusWidget:',
-            c.widget_name(c.requestedFocusWidget))
-        g.es_print(
-            '           c.get_focus:',
-            c.widget_name(c.get_focus()))
-    #@-others
+        g.es_print('c.requestedFocusWidget:', c.widget_name(c.requestedFocusWidget))
+        g.es_print('           c.get_focus:', c.widget_name(c.get_focus()))
 
-#@@language python
-#@@tabwidth -4
-#@-leo
+    # @-others
+
+
+# @@language python
+# @@tabwidth -4
+# @-leo

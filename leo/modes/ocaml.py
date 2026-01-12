@@ -1202,264 +1202,525 @@ keywordsDictDict = {
 
 # Rules for ocaml_main ruleset.
 
+
 def ocaml_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment4", begin="(**", end="*)",
-          no_escape=True)
+    return colorer.match_span(s, i, kind="comment4", begin="(**", end="*)", no_escape=True)
+
 
 def ocaml_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="(*", end="*)",
-          no_escape=True)
+    return colorer.match_span(s, i, kind="comment3", begin="(*", end="*)", no_escape=True)
+
 
 def ocaml_rule2(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal1", regexp="'([^']|\\\\(['\"bntr\\\\]|[[:digit:]]{3}|x[[:xdigit:]]{2}))'")
+    return colorer.match_seq_regexp(
+        s, i, kind="literal1", regexp="'([^']|\\\\(['\"bntr\\\\]|[[:digit:]]{3}|x[[:xdigit:]]{2}))'"
+    )
+
 
 def ocaml_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal2", begin="\"", end="\"")
 
+
 def ocaml_rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="#",
-          at_line_start=True)
+    return colorer.match_mark_following(s, i, kind="label", pattern="#", at_line_start=True)
+
 
 def ocaml_rule5(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="%",
-          at_line_start=True)
+    return colorer.match_mark_following(s, i, kind="label", pattern="%", at_line_start=True)
+
 
 def ocaml_rule6(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal3", pattern="'")
 
+
 def ocaml_rule7(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal4", pattern="`")
+
 
 def ocaml_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="}")
 
+
 def ocaml_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="|]")
+
 
 def ocaml_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="||")
 
+
 def ocaml_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="|")
+
 
 def ocaml_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="{<")
 
+
 def ocaml_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="{")
+
 
 def ocaml_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="literal4", seq="_")
 
+
 def ocaml_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="]")
+
 
 def ocaml_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="[]")
 
+
 def ocaml_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="[|")
+
 
 def ocaml_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="[>")
 
+
 def ocaml_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="[<")
+
 
 def ocaml_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="[")
 
+
 def ocaml_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=">}")
+
 
 def ocaml_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=">]")
 
+
 def ocaml_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="<-")
+
 
 def ocaml_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=";;")
 
+
 def ocaml_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=";")
+
 
 def ocaml_rule26(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=":>")
 
+
 def ocaml_rule27(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":=")
+
 
 def ocaml_rule28(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="::")
 
+
 def ocaml_rule29(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=":")
+
 
 def ocaml_rule30(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="..")
 
+
 def ocaml_rule31(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="->")
+
 
 def ocaml_rule32(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=",")
 
+
 def ocaml_rule33(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq=")")
+
 
 def ocaml_rule34(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="()")
 
+
 def ocaml_rule35(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="markup", seq="(")
+
 
 def ocaml_rule36(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="=[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule37(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="<[-!$%&*+./:<=>?@^|~]*")
+
 
 def ocaml_rule38(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp=">[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule39(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="@[-!$%&*+./:<=>?@^|~]*")
+
 
 def ocaml_rule40(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\^[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule41(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\|[-!$%&*+./:<=>?@^|~]+")
+
 
 def ocaml_rule42(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="&[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule43(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\+[-!$%&*+./:<=>?@^|~]*")
+
 
 def ocaml_rule44(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="-[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule45(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\*[-!$%&*+./:<=>?@^|~]*")
+
 
 def ocaml_rule46(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="/[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule47(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\$[-!$%&*+./:<=>?@^|~]*")
+
 
 def ocaml_rule48(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="%[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule49(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="![-!$%&*+./:<=>?@^|~]*")
+
 
 def ocaml_rule50(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="\\?[-!$%&*+./:<=>?@^|~]*")
 
+
 def ocaml_rule51(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="operator", regexp="~[-!$%&*+./:<=>?@^|~]*")
+
 
 def ocaml_rule52(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for ocaml_main ruleset.
 rulesDict1 = {
-    "!": [ocaml_rule49,],
-    "\"": [ocaml_rule3,],
-    "#": [ocaml_rule4,],
-    "$": [ocaml_rule47,],
-    "%": [ocaml_rule5, ocaml_rule48,],
-    "&": [ocaml_rule42,],
-    "'": [ocaml_rule2, ocaml_rule6,],
-    "(": [ocaml_rule0, ocaml_rule1, ocaml_rule34, ocaml_rule35,],
-    ")": [ocaml_rule33,],
-    "*": [ocaml_rule45,],
-    "+": [ocaml_rule43,],
-    ",": [ocaml_rule32,],
-    "-": [ocaml_rule31, ocaml_rule44,],
-    ".": [ocaml_rule30,],
-    "/": [ocaml_rule46,],
-    "0": [ocaml_rule52,],
-    "1": [ocaml_rule52,],
-    "2": [ocaml_rule52,],
-    "3": [ocaml_rule52,],
-    "4": [ocaml_rule52,],
-    "5": [ocaml_rule52,],
-    "6": [ocaml_rule52,],
-    "7": [ocaml_rule52,],
-    "8": [ocaml_rule52,],
-    "9": [ocaml_rule52,],
-    ":": [ocaml_rule26, ocaml_rule27, ocaml_rule28, ocaml_rule29,],
-    ";": [ocaml_rule24, ocaml_rule25,],
-    "<": [ocaml_rule23, ocaml_rule37,],
-    "=": [ocaml_rule36,],
-    ">": [ocaml_rule21, ocaml_rule22, ocaml_rule38,],
-    "?": [ocaml_rule50,],
-    "@": [ocaml_rule39, ocaml_rule52,],
-    "A": [ocaml_rule52,],
-    "B": [ocaml_rule52,],
-    "C": [ocaml_rule52,],
-    "D": [ocaml_rule52,],
-    "E": [ocaml_rule52,],
-    "F": [ocaml_rule52,],
-    "G": [ocaml_rule52,],
-    "H": [ocaml_rule52,],
-    "I": [ocaml_rule52,],
-    "J": [ocaml_rule52,],
-    "K": [ocaml_rule52,],
-    "L": [ocaml_rule52,],
-    "M": [ocaml_rule52,],
-    "N": [ocaml_rule52,],
-    "O": [ocaml_rule52,],
-    "P": [ocaml_rule52,],
-    "Q": [ocaml_rule52,],
-    "R": [ocaml_rule52,],
-    "S": [ocaml_rule52,],
-    "T": [ocaml_rule52,],
-    "U": [ocaml_rule52,],
-    "V": [ocaml_rule52,],
-    "W": [ocaml_rule52,],
-    "X": [ocaml_rule52,],
-    "Y": [ocaml_rule52,],
-    "Z": [ocaml_rule52,],
-    "[": [ocaml_rule16, ocaml_rule17, ocaml_rule18, ocaml_rule19, ocaml_rule20,],
-    "]": [ocaml_rule15,],
-    "^": [ocaml_rule40,],
-    "_": [ocaml_rule14, ocaml_rule52,],
-    "`": [ocaml_rule7,],
-    "a": [ocaml_rule52,],
-    "b": [ocaml_rule52,],
-    "c": [ocaml_rule52,],
-    "d": [ocaml_rule52,],
-    "e": [ocaml_rule52,],
-    "f": [ocaml_rule52,],
-    "g": [ocaml_rule52,],
-    "h": [ocaml_rule52,],
-    "i": [ocaml_rule52,],
-    "j": [ocaml_rule52,],
-    "k": [ocaml_rule52,],
-    "l": [ocaml_rule52,],
-    "m": [ocaml_rule52,],
-    "n": [ocaml_rule52,],
-    "o": [ocaml_rule52,],
-    "p": [ocaml_rule52,],
-    "q": [ocaml_rule52,],
-    "r": [ocaml_rule52,],
-    "s": [ocaml_rule52,],
-    "t": [ocaml_rule52,],
-    "u": [ocaml_rule52,],
-    "v": [ocaml_rule52,],
-    "w": [ocaml_rule52,],
-    "x": [ocaml_rule52,],
-    "y": [ocaml_rule52,],
-    "z": [ocaml_rule52,],
-    "{": [ocaml_rule12, ocaml_rule13,],
-    "|": [ocaml_rule9, ocaml_rule10, ocaml_rule11, ocaml_rule41,],
-    "}": [ocaml_rule8,],
-    "~": [ocaml_rule51,],
+    "!": [
+        ocaml_rule49,
+    ],
+    "\"": [
+        ocaml_rule3,
+    ],
+    "#": [
+        ocaml_rule4,
+    ],
+    "$": [
+        ocaml_rule47,
+    ],
+    "%": [
+        ocaml_rule5,
+        ocaml_rule48,
+    ],
+    "&": [
+        ocaml_rule42,
+    ],
+    "'": [
+        ocaml_rule2,
+        ocaml_rule6,
+    ],
+    "(": [
+        ocaml_rule0,
+        ocaml_rule1,
+        ocaml_rule34,
+        ocaml_rule35,
+    ],
+    ")": [
+        ocaml_rule33,
+    ],
+    "*": [
+        ocaml_rule45,
+    ],
+    "+": [
+        ocaml_rule43,
+    ],
+    ",": [
+        ocaml_rule32,
+    ],
+    "-": [
+        ocaml_rule31,
+        ocaml_rule44,
+    ],
+    ".": [
+        ocaml_rule30,
+    ],
+    "/": [
+        ocaml_rule46,
+    ],
+    "0": [
+        ocaml_rule52,
+    ],
+    "1": [
+        ocaml_rule52,
+    ],
+    "2": [
+        ocaml_rule52,
+    ],
+    "3": [
+        ocaml_rule52,
+    ],
+    "4": [
+        ocaml_rule52,
+    ],
+    "5": [
+        ocaml_rule52,
+    ],
+    "6": [
+        ocaml_rule52,
+    ],
+    "7": [
+        ocaml_rule52,
+    ],
+    "8": [
+        ocaml_rule52,
+    ],
+    "9": [
+        ocaml_rule52,
+    ],
+    ":": [
+        ocaml_rule26,
+        ocaml_rule27,
+        ocaml_rule28,
+        ocaml_rule29,
+    ],
+    ";": [
+        ocaml_rule24,
+        ocaml_rule25,
+    ],
+    "<": [
+        ocaml_rule23,
+        ocaml_rule37,
+    ],
+    "=": [
+        ocaml_rule36,
+    ],
+    ">": [
+        ocaml_rule21,
+        ocaml_rule22,
+        ocaml_rule38,
+    ],
+    "?": [
+        ocaml_rule50,
+    ],
+    "@": [
+        ocaml_rule39,
+        ocaml_rule52,
+    ],
+    "A": [
+        ocaml_rule52,
+    ],
+    "B": [
+        ocaml_rule52,
+    ],
+    "C": [
+        ocaml_rule52,
+    ],
+    "D": [
+        ocaml_rule52,
+    ],
+    "E": [
+        ocaml_rule52,
+    ],
+    "F": [
+        ocaml_rule52,
+    ],
+    "G": [
+        ocaml_rule52,
+    ],
+    "H": [
+        ocaml_rule52,
+    ],
+    "I": [
+        ocaml_rule52,
+    ],
+    "J": [
+        ocaml_rule52,
+    ],
+    "K": [
+        ocaml_rule52,
+    ],
+    "L": [
+        ocaml_rule52,
+    ],
+    "M": [
+        ocaml_rule52,
+    ],
+    "N": [
+        ocaml_rule52,
+    ],
+    "O": [
+        ocaml_rule52,
+    ],
+    "P": [
+        ocaml_rule52,
+    ],
+    "Q": [
+        ocaml_rule52,
+    ],
+    "R": [
+        ocaml_rule52,
+    ],
+    "S": [
+        ocaml_rule52,
+    ],
+    "T": [
+        ocaml_rule52,
+    ],
+    "U": [
+        ocaml_rule52,
+    ],
+    "V": [
+        ocaml_rule52,
+    ],
+    "W": [
+        ocaml_rule52,
+    ],
+    "X": [
+        ocaml_rule52,
+    ],
+    "Y": [
+        ocaml_rule52,
+    ],
+    "Z": [
+        ocaml_rule52,
+    ],
+    "[": [
+        ocaml_rule16,
+        ocaml_rule17,
+        ocaml_rule18,
+        ocaml_rule19,
+        ocaml_rule20,
+    ],
+    "]": [
+        ocaml_rule15,
+    ],
+    "^": [
+        ocaml_rule40,
+    ],
+    "_": [
+        ocaml_rule14,
+        ocaml_rule52,
+    ],
+    "`": [
+        ocaml_rule7,
+    ],
+    "a": [
+        ocaml_rule52,
+    ],
+    "b": [
+        ocaml_rule52,
+    ],
+    "c": [
+        ocaml_rule52,
+    ],
+    "d": [
+        ocaml_rule52,
+    ],
+    "e": [
+        ocaml_rule52,
+    ],
+    "f": [
+        ocaml_rule52,
+    ],
+    "g": [
+        ocaml_rule52,
+    ],
+    "h": [
+        ocaml_rule52,
+    ],
+    "i": [
+        ocaml_rule52,
+    ],
+    "j": [
+        ocaml_rule52,
+    ],
+    "k": [
+        ocaml_rule52,
+    ],
+    "l": [
+        ocaml_rule52,
+    ],
+    "m": [
+        ocaml_rule52,
+    ],
+    "n": [
+        ocaml_rule52,
+    ],
+    "o": [
+        ocaml_rule52,
+    ],
+    "p": [
+        ocaml_rule52,
+    ],
+    "q": [
+        ocaml_rule52,
+    ],
+    "r": [
+        ocaml_rule52,
+    ],
+    "s": [
+        ocaml_rule52,
+    ],
+    "t": [
+        ocaml_rule52,
+    ],
+    "u": [
+        ocaml_rule52,
+    ],
+    "v": [
+        ocaml_rule52,
+    ],
+    "w": [
+        ocaml_rule52,
+    ],
+    "x": [
+        ocaml_rule52,
+    ],
+    "y": [
+        ocaml_rule52,
+    ],
+    "z": [
+        ocaml_rule52,
+    ],
+    "{": [
+        ocaml_rule12,
+        ocaml_rule13,
+    ],
+    "|": [
+        ocaml_rule9,
+        ocaml_rule10,
+        ocaml_rule11,
+        ocaml_rule41,
+    ],
+    "}": [
+        ocaml_rule8,
+    ],
+    "~": [
+        ocaml_rule51,
+    ],
 }
 
 # x.rulesDictDict for ocaml mode.

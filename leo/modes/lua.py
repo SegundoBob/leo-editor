@@ -195,166 +195,354 @@ keywordsDictDict = {
 
 # Rules for lua_main ruleset.
 
+
 def lua_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="--[[", end="]]")
+
 
 def lua_rule1(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq="--")
 
+
 def lua_rule2(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="comment2", seq="#!",
-          at_line_start=True)
+    return colorer.match_eol_span(s, i, kind="comment2", seq="#!", at_line_start=True)
+
 
 def lua_rule3(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"")
 
+
 def lua_rule4(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
+
 
 # Leo issue #1175:
 def lua_rule5(colorer, s, i):
     return colorer.match_lua_literal(s, i, kind="literal1")
 
+
 def lua_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def lua_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def lua_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def lua_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def lua_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def lua_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="..")
 
+
 def lua_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def lua_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def lua_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def lua_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
 
+
 def lua_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="==")
+
 
 def lua_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~=")
 
+
 def lua_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def lua_rule19(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="(",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="(", exclude_match=True)
+
 
 def lua_rule20(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="{",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="{", exclude_match=True)
+
 
 def lua_rule21(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="\"",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="\"", exclude_match=True)
+
 
 def lua_rule22(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="function", pattern="'",
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="function", pattern="'", exclude_match=True)
+
 
 def lua_rule23(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for lua_main ruleset.
 rulesDict1 = {
-    "\"": [lua_rule3, lua_rule21,],
-    "#": [lua_rule2,],
-    "'": [lua_rule4, lua_rule22,],
-    "(": [lua_rule19,],
-    "*": [lua_rule8,],
-    "+": [lua_rule6,],
-    "-": [lua_rule0, lua_rule1, lua_rule7,],
-    ".": [lua_rule11, lua_rule23,],
-    "/": [lua_rule9,],
-    "0": [lua_rule23,],
-    "1": [lua_rule23,],
-    "2": [lua_rule23,],
-    "3": [lua_rule23,],
-    "4": [lua_rule23,],
-    "5": [lua_rule23,],
-    "6": [lua_rule23,],
-    "7": [lua_rule23,],
-    "8": [lua_rule23,],
-    "9": [lua_rule23,],
-    "<": [lua_rule12, lua_rule13,],
-    "=": [lua_rule16, lua_rule18,],
-    ">": [lua_rule14, lua_rule15,],
-    "@": [lua_rule23,],
-    "A": [lua_rule23,],
-    "B": [lua_rule23,],
-    "C": [lua_rule23,],
-    "D": [lua_rule23,],
-    "E": [lua_rule23,],
-    "F": [lua_rule23,],
-    "G": [lua_rule23,],
-    "H": [lua_rule23,],
-    "I": [lua_rule23,],
-    "J": [lua_rule23,],
-    "K": [lua_rule23,],
-    "L": [lua_rule23,],
-    "M": [lua_rule23,],
-    "N": [lua_rule23,],
-    "O": [lua_rule23,],
-    "P": [lua_rule23,],
-    "Q": [lua_rule23,],
-    "R": [lua_rule23,],
-    "S": [lua_rule23,],
-    "T": [lua_rule23,],
-    "U": [lua_rule23,],
-    "V": [lua_rule23,],
-    "W": [lua_rule23,],
-    "X": [lua_rule23,],
-    "Y": [lua_rule23,],
-    "Z": [lua_rule23,],
-    "[": [lua_rule5,],
-    "^": [lua_rule10,],
-    "_": [lua_rule23,],
-    "a": [lua_rule23,],
-    "b": [lua_rule23,],
-    "c": [lua_rule23,],
-    "d": [lua_rule23,],
-    "e": [lua_rule23,],
-    "f": [lua_rule23,],
-    "g": [lua_rule23,],
-    "h": [lua_rule23,],
-    "i": [lua_rule23,],
-    "j": [lua_rule23,],
-    "k": [lua_rule23,],
-    "l": [lua_rule23,],
-    "m": [lua_rule23,],
-    "n": [lua_rule23,],
-    "o": [lua_rule23,],
-    "p": [lua_rule23,],
-    "q": [lua_rule23,],
-    "r": [lua_rule23,],
-    "s": [lua_rule23,],
-    "t": [lua_rule23,],
-    "u": [lua_rule23,],
-    "v": [lua_rule23,],
-    "w": [lua_rule23,],
-    "x": [lua_rule23,],
-    "y": [lua_rule23,],
-    "z": [lua_rule23,],
-    "{": [lua_rule20,],
-    "~": [lua_rule17,],
+    "\"": [
+        lua_rule3,
+        lua_rule21,
+    ],
+    "#": [
+        lua_rule2,
+    ],
+    "'": [
+        lua_rule4,
+        lua_rule22,
+    ],
+    "(": [
+        lua_rule19,
+    ],
+    "*": [
+        lua_rule8,
+    ],
+    "+": [
+        lua_rule6,
+    ],
+    "-": [
+        lua_rule0,
+        lua_rule1,
+        lua_rule7,
+    ],
+    ".": [
+        lua_rule11,
+        lua_rule23,
+    ],
+    "/": [
+        lua_rule9,
+    ],
+    "0": [
+        lua_rule23,
+    ],
+    "1": [
+        lua_rule23,
+    ],
+    "2": [
+        lua_rule23,
+    ],
+    "3": [
+        lua_rule23,
+    ],
+    "4": [
+        lua_rule23,
+    ],
+    "5": [
+        lua_rule23,
+    ],
+    "6": [
+        lua_rule23,
+    ],
+    "7": [
+        lua_rule23,
+    ],
+    "8": [
+        lua_rule23,
+    ],
+    "9": [
+        lua_rule23,
+    ],
+    "<": [
+        lua_rule12,
+        lua_rule13,
+    ],
+    "=": [
+        lua_rule16,
+        lua_rule18,
+    ],
+    ">": [
+        lua_rule14,
+        lua_rule15,
+    ],
+    "@": [
+        lua_rule23,
+    ],
+    "A": [
+        lua_rule23,
+    ],
+    "B": [
+        lua_rule23,
+    ],
+    "C": [
+        lua_rule23,
+    ],
+    "D": [
+        lua_rule23,
+    ],
+    "E": [
+        lua_rule23,
+    ],
+    "F": [
+        lua_rule23,
+    ],
+    "G": [
+        lua_rule23,
+    ],
+    "H": [
+        lua_rule23,
+    ],
+    "I": [
+        lua_rule23,
+    ],
+    "J": [
+        lua_rule23,
+    ],
+    "K": [
+        lua_rule23,
+    ],
+    "L": [
+        lua_rule23,
+    ],
+    "M": [
+        lua_rule23,
+    ],
+    "N": [
+        lua_rule23,
+    ],
+    "O": [
+        lua_rule23,
+    ],
+    "P": [
+        lua_rule23,
+    ],
+    "Q": [
+        lua_rule23,
+    ],
+    "R": [
+        lua_rule23,
+    ],
+    "S": [
+        lua_rule23,
+    ],
+    "T": [
+        lua_rule23,
+    ],
+    "U": [
+        lua_rule23,
+    ],
+    "V": [
+        lua_rule23,
+    ],
+    "W": [
+        lua_rule23,
+    ],
+    "X": [
+        lua_rule23,
+    ],
+    "Y": [
+        lua_rule23,
+    ],
+    "Z": [
+        lua_rule23,
+    ],
+    "[": [
+        lua_rule5,
+    ],
+    "^": [
+        lua_rule10,
+    ],
+    "_": [
+        lua_rule23,
+    ],
+    "a": [
+        lua_rule23,
+    ],
+    "b": [
+        lua_rule23,
+    ],
+    "c": [
+        lua_rule23,
+    ],
+    "d": [
+        lua_rule23,
+    ],
+    "e": [
+        lua_rule23,
+    ],
+    "f": [
+        lua_rule23,
+    ],
+    "g": [
+        lua_rule23,
+    ],
+    "h": [
+        lua_rule23,
+    ],
+    "i": [
+        lua_rule23,
+    ],
+    "j": [
+        lua_rule23,
+    ],
+    "k": [
+        lua_rule23,
+    ],
+    "l": [
+        lua_rule23,
+    ],
+    "m": [
+        lua_rule23,
+    ],
+    "n": [
+        lua_rule23,
+    ],
+    "o": [
+        lua_rule23,
+    ],
+    "p": [
+        lua_rule23,
+    ],
+    "q": [
+        lua_rule23,
+    ],
+    "r": [
+        lua_rule23,
+    ],
+    "s": [
+        lua_rule23,
+    ],
+    "t": [
+        lua_rule23,
+    ],
+    "u": [
+        lua_rule23,
+    ],
+    "v": [
+        lua_rule23,
+    ],
+    "w": [
+        lua_rule23,
+    ],
+    "x": [
+        lua_rule23,
+    ],
+    "y": [
+        lua_rule23,
+    ],
+    "z": [
+        lua_rule23,
+    ],
+    "{": [
+        lua_rule20,
+    ],
+    "~": [
+        lua_rule17,
+    ],
 }
 
 # x.rulesDictDict for lua mode.

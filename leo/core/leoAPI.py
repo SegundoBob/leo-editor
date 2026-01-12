@@ -1,10 +1,11 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20250329033400.1: * @file leoAPI.py
+# @+leo-ver=5-thin
+# @+node:ekr.20250329033400.1: * @file leoAPI.py
 """
 Abstract base classes and Protocol classes for Leo's gui.
 """
-#@+<< leoAPI.py: imports and annotations >>
-#@+node:ekr.20250329041628.1: ** << leoAPI.py: imports and annotations >>
+
+# @+<< leoAPI.py: imports and annotations >>
+# @+node:ekr.20250329041628.1: ** << leoAPI.py: imports and annotations >>
 from __future__ import annotations
 from typing import Any, Optional
 from typing import TYPE_CHECKING
@@ -15,11 +16,13 @@ if TYPE_CHECKING:
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position, VNode
     from leo.plugins.mod_scripting import ScriptingController
-    Widget = Any  # 'Any' is the correct annotation for base class widgets.
-#@-<< leoAPI.py: imports and annotations >>
 
-#@+others
-#@+node:ekr.20250329033642.5: ** class BaseTextAPI
+    Widget = Any  # 'Any' is the correct annotation for base class widgets.
+# @-<< leoAPI.py: imports and annotations >>
+
+
+# @+others
+# @+node:ekr.20250329033642.5: ** class BaseTextAPI
 class BaseTextAPI:
     """
     A class specifying the interface to various text widgets,
@@ -50,7 +53,14 @@ class BaseTextAPI:
     def enable(self, enabled: bool = True) -> None:
         pass
 
-    def flashCharacter(self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75) -> None:
+    def flashCharacter(
+        self,
+        i: int,
+        bg: str = 'white',
+        fg: str = 'red',
+        flashes: int = 3,
+        delay: int = 75,
+    ) -> None:
         pass
 
     def get(self, i: int, j: int) -> str:
@@ -106,7 +116,9 @@ class BaseTextAPI:
 
     def setYScrollPosition(self, i: int) -> None:
         pass
-#@+node:ekr.20250329033642.2: ** class IconBarAPI
+
+
+# @+node:ekr.20250329033642.2: ** class IconBarAPI
 class IconBarAPI:
     """The required API for c.frame.iconBar."""
 
@@ -137,7 +149,8 @@ class IconBarAPI:
     def getNewFrame(self) -> None:
         pass
 
-    def setCommandForButton(self,
+    def setCommandForButton(
+        self,
         button: BaseTextAPI,
         command: str,
         command_p: Position,
@@ -146,7 +159,9 @@ class IconBarAPI:
         script: str,
     ) -> None:
         pass
-#@+node:ekr.20250329033642.3: ** class StatusLineAPI
+
+
+# @+node:ekr.20250329033642.3: ** class StatusLineAPI
 class StatusLineAPI:
     """The required API for c.frame.statusLine."""
 
@@ -176,11 +191,14 @@ class StatusLineAPI:
 
     def update(self) -> None:
         pass
-#@+node:ekr.20070228074228.1: ** class StringTextWrapper
+
+
+# @+node:ekr.20070228074228.1: ** class StringTextWrapper
 class StringTextWrapper:
     """A class that represents Leo's body pane as a Python string."""
-    #@+others
-    #@+node:ekr.20070228074228.2: *3* stw.ctor
+
+    # @+others
+    # @+node:ekr.20070228074228.2: *3* stw.ctor
     def __init__(self, c: Cmdr, name: str) -> None:
         """Ctor for the StringTextWrapper class."""
         self.c = c
@@ -198,14 +216,16 @@ class StringTextWrapper:
     def getName(self) -> str:
         """StringTextWrapper."""
         return self.name  # Essential.
-    #@+node:ekr.20140903172510.18578: *3* stw.Clipboard
+
+    # @+node:ekr.20140903172510.18578: *3* stw.Clipboard
     def clipboard_clear(self) -> None:
         g.app.gui.replaceClipboardWith('')
 
     def clipboard_append(self, s: str) -> None:
         s1 = g.app.gui.getTextFromClipboard()
         g.app.gui.replaceClipboardWith(s1 + s)
-    #@+node:ekr.20140903172510.18579: *3* stw.Do-nothings
+
+    # @+node:ekr.20140903172510.18579: *3* stw.Do-nothings
     # For StringTextWrapper.
 
     def disable(self) -> None:
@@ -214,7 +234,14 @@ class StringTextWrapper:
     def enable(self, enabled: bool = True) -> None:
         pass
 
-    def flashCharacter(self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75) -> None:
+    def flashCharacter(
+        self,
+        i: int,
+        bg: str = 'white',
+        fg: str = 'red',
+        flashes: int = 3,
+        delay: int = 75,
+    ) -> None:
         pass
 
     def getXScrollPosition(self) -> int:
@@ -240,14 +267,16 @@ class StringTextWrapper:
 
     def setYScrollPosition(self, i: int) -> None:
         pass
-    #@+node:ekr.20140903172510.18591: *3* stw.Text
-    #@+node:ekr.20140903172510.18592: *4* stw.appendText
+
+    # @+node:ekr.20140903172510.18591: *3* stw.Text
+    # @+node:ekr.20140903172510.18592: *4* stw.appendText
     def appendText(self, s: str) -> None:
         """StringTextWrapper."""
         self.s = self.s + g.toUnicode(s)  # defensive
         self.ins = len(self.s)
         self.sel = self.ins, self.ins
-    #@+node:ekr.20140903172510.18593: *4* stw.delete
+
+    # @+node:ekr.20140903172510.18593: *4* stw.delete
     def delete(self, i: int, j: int = None) -> None:
         """StringTextWrapper."""
         if j is None:
@@ -259,24 +288,28 @@ class StringTextWrapper:
         self.setAllText(s[:i] + s[j:])
         # Bug fix: 2011/11/13: Significant in external tests.
         self.setSelectionRange(i, i, insert=i)
-    #@+node:ekr.20140903172510.18594: *4* stw.deleteTextSelection
+
+    # @+node:ekr.20140903172510.18594: *4* stw.deleteTextSelection
     def deleteTextSelection(self) -> None:
         """StringTextWrapper."""
         i, j = self.getSelectionRange()
         self.delete(i, j)
-    #@+node:ekr.20140903172510.18595: *4* stw.get
+
+    # @+node:ekr.20140903172510.18595: *4* stw.get
     def get(self, i: int, j: Optional[int] = None) -> str:
         """StringTextWrapper."""
         if j is None:
             j = i + 1
         s = self.s[i:j]
         return g.toUnicode(s)
-    #@+node:ekr.20140903172510.18596: *4* stw.getAllText
+
+    # @+node:ekr.20140903172510.18596: *4* stw.getAllText
     def getAllText(self) -> str:
         """StringTextWrapper."""
         s = self.s
         return g.checkUnicode(s)
-    #@+node:ekr.20140903172510.18584: *4* stw.getInsertPoint
+
+    # @+node:ekr.20140903172510.18584: *4* stw.getInsertPoint
     def getInsertPoint(self) -> int:
         """StringTextWrapper."""
         i = self.ins
@@ -287,17 +320,20 @@ class StringTextWrapper:
                 i = self.virtualInsertPoint
         self.virtualInsertPoint = i
         return i
-    #@+node:ekr.20220909182855.1: *4* stw.getLastIndex
+
+    # @+node:ekr.20220909182855.1: *4* stw.getLastIndex
     def getLastIndex(self) -> int:
         """Return the length of the self.s"""
         return len(self.s)
-    #@+node:ekr.20140903172510.18597: *4* stw.getSelectedText
+
+    # @+node:ekr.20140903172510.18597: *4* stw.getSelectedText
     def getSelectedText(self) -> str:
         """StringTextWrapper."""
         i, j = self.sel
         s = self.s[i:j]
         return g.checkUnicode(s)
-    #@+node:ekr.20140903172510.18585: *4* stw.getSelectionRange
+
+    # @+node:ekr.20140903172510.18585: *4* stw.getSelectionRange
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
         """Return the selected range of the widget."""
         sel = self.sel
@@ -308,56 +344,68 @@ class StringTextWrapper:
             return sel
         i = self.ins
         return i, i
-    #@+node:ekr.20140903172510.18586: *4* stw.hasSelection
+
+    # @+node:ekr.20140903172510.18586: *4* stw.hasSelection
     def hasSelection(self) -> bool:
         """StringTextWrapper."""
         i, j = self.getSelectionRange()
         return i != j
-    #@+node:ekr.20140903172510.18598: *4* stw.insert
+
+    # @+node:ekr.20140903172510.18598: *4* stw.insert
     def insert(self, i: int, s: str) -> None:
         """StringTextWrapper."""
         self.s = self.s[:i] + s + self.s[i:]
         i += len(s)
         self.ins = i
         self.sel = i, i
-    #@+node:ekr.20140903172510.18589: *4* stw.selectAllText
+
+    # @+node:ekr.20140903172510.18589: *4* stw.selectAllText
     def selectAllText(self, insert: int = None) -> None:
         """StringTextWrapper."""
         self.setSelectionRange(0, len(self.s), insert=insert)
-    #@+node:ekr.20140903172510.18600: *4* stw.setAllText
+
+    # @+node:ekr.20140903172510.18600: *4* stw.setAllText
     def setAllText(self, s: str) -> None:
         """StringTextWrapper."""
         self.s = s
         i = len(self.s)
         self.ins = i
         self.sel = i, i
-    #@+node:ekr.20140903172510.18587: *4* stw.setInsertPoint
+
+    # @+node:ekr.20140903172510.18587: *4* stw.setInsertPoint
     def setInsertPoint(self, i: int, s: str = None) -> None:
         """StringTextWrapper."""
         self.virtualInsertPoint = i
         self.ins = i
         self.sel = i, i
-    #@+node:ekr.20070228111853: *4* stw.setSelectionRange
+
+    # @+node:ekr.20070228111853: *4* stw.setSelectionRange
     def setSelectionRange(self, i: int, j: int, insert: int = None) -> None:
         """StringTextWrapper."""
         self.sel = i, j
         self.ins = j if insert is None else insert
-    #@+node:ekr.20140903172510.18582: *4* stw.toPythonIndexRowCol
+
+    # @+node:ekr.20140903172510.18582: *4* stw.toPythonIndexRowCol
     def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:
         """StringTextWrapper."""
         s = self.getAllText()
         row, col = g.convertPythonIndexToRowCol(s, index)
         return row, col
-    #@-others
-#@+node:ekr.20250329033642.4: ** class TreeAPI
+
+    # @-others
+
+
+# @+node:ekr.20250329033642.4: ** class TreeAPI
 class TreeAPI:
     """The required API for c.frame.tree."""
 
     def __init__(self, frame: Widget) -> None:
         pass
+
     # Must be defined in subclasses.
 
-    def editLabel(self,
+    def editLabel(
+        self,
         v: VNode,
         selectAll: bool = False,
         selection: tuple = None,
@@ -369,10 +417,12 @@ class TreeAPI:
 
     def redraw(self, p: Position = None) -> None:
         pass
+
     redraw_now = redraw
 
     def scrollTo(self, p: Position) -> None:
         pass
+
     # May be defined in subclasses.
 
     def initAfterLoad(self) -> None:
@@ -380,6 +430,7 @@ class TreeAPI:
 
     def onHeadChanged(self, p: Position, undoType: str = 'Typing') -> None:
         pass
+
     # Hints for optimization. The proper default is c.redraw()
 
     def redraw_after_contract(self, p: Position) -> None:
@@ -393,6 +444,7 @@ class TreeAPI:
 
     def redraw_after_select(self, p: Position = None) -> None:
         pass
+
     # Must be defined in the LeoTree class...
     # def OnIconDoubleClick (self,p):
 
@@ -413,8 +465,10 @@ class TreeAPI:
 
     def updateHead(self, event: LeoKeyEvent, w: BaseTextAPI) -> None:
         pass
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 60
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 60
+# @-leo

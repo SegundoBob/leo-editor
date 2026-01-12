@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20140907123524.18777: * @file ../plugins/qt_quickheadlines.py
+# @+leo-ver=5-thin
+# @+node:ekr.20140907123524.18777: * @file ../plugins/qt_quickheadlines.py
 """qt_quickheadlines plugin."""
+
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
@@ -10,16 +11,20 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
 
 __qh = None  # For quick headlines.
-#@+others
-#@+node:ekr.20140907123524.18778: ** install_qt_quickheadlines_tab
+
+
+# @+others
+# @+node:ekr.20140907123524.18778: ** install_qt_quickheadlines_tab
 def install_qt_quickheadlines_tab(c: Cmdr) -> None:
     global __qh
     __qh = QuickHeadlines(c)
 
-g.insqh = install_qt_quickheadlines_tab
-#@+node:ekr.20110605121601.18534: ** class QuickHeadlines
-class QuickHeadlines:
 
+g.insqh = install_qt_quickheadlines_tab
+
+
+# @+node:ekr.20110605121601.18534: ** class QuickHeadlines
+class QuickHeadlines:
     def __init__(self, c: Cmdr):
         self.c = c
         tabw = c.frame.top.tabWidget
@@ -29,7 +34,7 @@ class QuickHeadlines:
         self.requested = False
 
     def req_update(self):
-        """ prevent too frequent updates (only one/100 msec) """
+        """prevent too frequent updates (only one/100 msec)"""
         if self.requested:
             return
         QtCore.QTimer.singleShot(100, self.update)
@@ -42,8 +47,10 @@ class QuickHeadlines:
         p = self.c.currentPosition()
         for n in p.children():
             self.listWidget.addItem(n.h)
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

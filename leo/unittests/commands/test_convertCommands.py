@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20211013081056.1: * @file ../unittests/commands/test_convertCommands.py
+# @+leo-ver=5-thin
+# @+node:ekr.20211013081056.1: * @file ../unittests/commands/test_convertCommands.py
 """Tests of leo.commands.leoConvertCommands."""
+
 import os
 import re
 from leo.core import leoGlobals as g
@@ -8,15 +9,15 @@ from leo.core.leoTest2 import LeoUnitTest
 from leo.commands.convertCommands import ConvertCommandsClass
 from leo.unittests.plugins.test_importers import BaseTestImporter
 
-#@+others
-#@+node:ekr.20220824193803.1: ** class Test_To_Python(BaseTestImporter):
+
+# @+others
+# @+node:ekr.20220824193803.1: ** class Test_To_Python(BaseTestImporter):
 class Test_To_Python(BaseTestImporter):
     """Test cases for commands using To_Python class."""
 
-    #@+others
-    #@+node:ekr.20220824193932.1: *3* test_c_to_python
+    # @+others
+    # @+node:ekr.20220824193932.1: *3* test_c_to_python
     def test_c_to_python(self):
-
         c = self.c
         x1 = ConvertCommandsClass(c)
         x = x1.C_To_Python(c)
@@ -31,8 +32,11 @@ class Test_To_Python(BaseTestImporter):
         """
         lines = g.splitLines(s)
         x.convertCodeList(lines)
-    #@-others
-#@+node:ekr.20220108083112.1: ** class TestAddMypyAnnotations(LeoUnitTest):
+
+    # @-others
+
+
+# @+node:ekr.20220108083112.1: ** class TestAddMypyAnnotations(LeoUnitTest):
 class TestAddMypyAnnotations(LeoUnitTest):
     """Test cases for add-mypy-annotations command"""
 
@@ -57,27 +61,29 @@ class TestAddMypyAnnotations(LeoUnitTest):
             'v': 'VNode',
         }
 
-    #@+others
-    #@+node:ekr.20220108091352.1: *3* test_ama.test_already_annotated
+    # @+others
+    # @+node:ekr.20220108091352.1: *3* test_ama.test_already_annotated
     def test_already_annotated(self):
         p = self.p
         p.b = contents = self.prep(
-        '''
+            '''
             def f1(i: int, s: str) -> str:
                 return s
 
             def f2(self, c: Cmdr, g: Any, ivars: list[str]) -> Any:
                 pass
-        ''')
+        '''
+        )
         self.x.convert_body(p)
         self.assertEqual(p.b, contents)
-    #@+node:ekr.20220416053117.1: *3* test_ama.test_bug_2606
+
+    # @+node:ekr.20220416053117.1: *3* test_ama.test_bug_2606
     def test_bug_2606(self):
         # https://github.com/leo-editor/leo-editor/issues/2606
         p = self.p
         # Make sure any adjustment to the args logic doesn't affect following functions.
         p.b = self.prep(
-        '''
+            '''
             def f1(root=p and p.copy()):
                 pass
 
@@ -86,9 +92,10 @@ class TestAddMypyAnnotations(LeoUnitTest):
 
             def f3(a, self=self):
                 pass
-        ''')
-        expected = self.prep(
         '''
+        )
+        expected = self.prep(
+            '''
             def f1(root: Any=p and p.copy()) -> None:
                 pass
 
@@ -97,29 +104,34 @@ class TestAddMypyAnnotations(LeoUnitTest):
 
             def f3(a: Any, self=self) -> None:
                 pass
-        ''')
+        '''
+        )
         self.x.convert_body(p)
         self.assertEqual(p.b, expected)
-    #@+node:ekr.20220108093044.1: *3* test_ama.test_initializers
+
+    # @+node:ekr.20220108093044.1: *3* test_ama.test_initializers
     def test_initializers(self):
         p = self.p
         p.b = self.prep(
-        '''
+            '''
             def f3(i = 2, f = 1.1, b = True, s = 'abc', x = None):
                 pass
-        ''')
-        expected = self.prep(
         '''
+        )
+        expected = self.prep(
+            '''
             def f3(i: int=2, f: float=1.1, b: bool=True, s: str='abc', x: Any=None) -> None:
                 pass
-        ''')
+        '''
+        )
         self.x.convert_body(p)
         self.assertEqual(p.b, expected)
-    #@+node:ekr.20220108093621.1: *3* test_ama.test_multiline_def
+
+    # @+node:ekr.20220108093621.1: *3* test_ama.test_multiline_def
     def test_multiline_def(self):
         p = self.p
         p.b = self.prep(
-        '''
+            '''
             def f (
                 self,
                 a,
@@ -129,9 +141,10 @@ class TestAddMypyAnnotations(LeoUnitTest):
                 **kwargs,
             ):
                 pass
-        ''')
-        expected = self.prep(
         '''
+        )
+        expected = self.prep(
+            '''
             def f(
                 self,
                 a: Any,
@@ -141,14 +154,16 @@ class TestAddMypyAnnotations(LeoUnitTest):
                 **kwargs: Any,
             ) -> None:
                 pass
-        ''')
+        '''
+        )
         self.x.convert_body(p)
         self.assertEqual(p.b, expected)
-    #@+node:ekr.20220108153333.1: *3* test_ama.test_multiline_def_with_comments
+
+    # @+node:ekr.20220108153333.1: *3* test_ama.test_multiline_def_with_comments
     def test_multiline_def_with_comments(self):
         p = self.p
         p.b = self.prep(
-        '''
+            '''
             def f (
                 self,# comment 1
                 a,   # comment, 2
@@ -157,10 +172,11 @@ class TestAddMypyAnnotations(LeoUnitTest):
                 e=3,
             ):
                 pass
-        ''')
+        '''
+        )
         # Note: The command insert exactly two spaces before comments.
         expected = self.prep(
-        '''
+            '''
             def f(
                 self,  # comment 1
                 a: Any,  # comment, 2
@@ -169,30 +185,35 @@ class TestAddMypyAnnotations(LeoUnitTest):
                 e: int=3,
             ) -> None:
                 pass
-        ''')
+        '''
+        )
         self.x.convert_body(p)
         # g.printObj(p.b)
         self.assertEqual(p.b, expected)
-    #@+node:ekr.20220108083112.4: *3* test_ama.test_plain_args
+
+    # @+node:ekr.20220108083112.4: *3* test_ama.test_plain_args
     def test_plain_args(self):
         p = self.p
         p.b = self.prep(
-        '''
+            '''
             def f1(event, i, s):
                 pass
-        ''')
-        expected = self.prep(
         '''
+        )
+        expected = self.prep(
+            '''
             def f1(event: Event, i: int, s: str) -> None:
                 pass
-        ''')
+        '''
+        )
         self.x.convert_body(p)
         self.assertEqual(p.b, expected)
-    #@+node:ekr.20220416082758.1: *3* test_ama.test_special_methods
+
+    # @+node:ekr.20220416082758.1: *3* test_ama.test_special_methods
     def test_special_methods(self):
         p = self.p
         p.b = self.prep(
-        '''
+            '''
             def __init__(self):
                 pass
 
@@ -201,9 +222,10 @@ class TestAddMypyAnnotations(LeoUnitTest):
 
             def __str__(self):
                 pass
-        ''')
-        expected = self.prep(
         '''
+        )
+        expected = self.prep(
+            '''
             def __init__(self) -> None:
                 pass
 
@@ -212,16 +234,20 @@ class TestAddMypyAnnotations(LeoUnitTest):
 
             def __str__(self) -> str:
                 pass
-        ''')
+        '''
+        )
         self.x.convert_body(p)
         self.assertEqual(p.b, expected)
-    #@-others
-#@+node:ekr.20231121061008.1: ** class TestPythonToTypeRust(LeoUnitTest):
+
+    # @-others
+
+
+# @+node:ekr.20231121061008.1: ** class TestPythonToTypeRust(LeoUnitTest):
 class TestPythonToTypeRust(LeoUnitTest):
     """Test cases for python-to-typescript command"""
 
-    #@+others
-    #@+node:ekr.20231121061008.2: *3*  test_py2rust.setUp
+    # @+others
+    # @+node:ekr.20231121061008.2: *3*  test_py2rust.setUp
     def setUp(self):
         super().setUp()
         c = self.c
@@ -230,7 +256,8 @@ class TestPythonToTypeRust(LeoUnitTest):
         self.assertTrue(hasattr(self.x, 'convert'))
         root = self.root_p
         root.deleteAllChildren()
-    #@+node:ekr.20231121061008.4: *3* slow_test_py2rust.test_convert_position_class
+
+    # @+node:ekr.20231121061008.4: *3* slow_test_py2rust.test_convert_position_class
     def slow_test_convert_position_class(self):
         # Convert a copy of the Position class
         c = self.c
@@ -259,9 +286,9 @@ class TestPythonToTypeRust(LeoUnitTest):
         self.p = root
         c.selectPosition(self.p)
         self.x.convert(self.p)
-    #@+node:ekr.20231121061008.5: *3* test_py2rust.test_f_strings()
-    def test_f_strings(self):
 
+    # @+node:ekr.20231121061008.5: *3* test_py2rust.test_f_strings()
+    def test_f_strings(self):
         x = self.x
         tests = (
             (
@@ -282,30 +309,20 @@ class TestPythonToTypeRust(LeoUnitTest):
             lines = [source]
             x.do_f_strings(lines)
             self.assertEqual(lines[-1], expected)
-    #@+node:ekr.20231121062934.1: *3* test_py2rust.test_if_statements()
-    def test_if_statements(self):
 
+    # @+node:ekr.20231121062934.1: *3* test_py2rust.test_if_statements()
+    def test_if_statements(self):
         x = self.x
         tests = (
             # Test 1.
             (
-                (
-                    'if not should_beautify(p):\n'
-                    "    return [] if toList else ''  # #2271\n"
-                ),
+                ('if not should_beautify(p):\n    return [] if toList else \'\'  # #2271\n'),
                 # Replace operators, but not single quotes.
-                (
-                    'if ! should_beautify(p) {\n'
-                    "    return [] if toList else ''  # #2271\n"
-                    '}\n'
-                ),
+                ('if ! should_beautify(p) {\n    return [] if toList else \'\'  # #2271\n}\n'),
             ),
             # Test 2
             (
-                (
-                    'if TYPE_CHECKING:  # pragma: no cover\n'
-                    '    from leo.core.leoCommands import Commands as Cmdr\n'
-                ),
+                ('if TYPE_CHECKING:  # pragma: no cover\n    from leo.core.leoCommands import Commands as Cmdr\n'),
                 (
                     'if TYPE_CHECKING { // # pragma: no cover\n'
                     '    from leo.core.leoCommands import Commands as Cmdr\n'
@@ -323,7 +340,8 @@ class TestPythonToTypeRust(LeoUnitTest):
             assert i > 0
             # g.printObj(lines, tag='result')
             self.assertEqual(lines, expected)
-    #@+node:ekr.20231121061008.3: *3* test_py2rust.test_setup
+
+    # @+node:ekr.20231121061008.3: *3* test_py2rust.test_setup
     def test_setup(self):
         c = self.c
         assert self.x
@@ -333,13 +351,16 @@ class TestPythonToTypeRust(LeoUnitTest):
         if 0:
             for p in c.all_positions():
                 g.printObj(p.b, tag=p.h)
-    #@-others
-#@+node:ekr.20211013081200.1: ** class TestPythonToTypeScript(LeoUnitTest):
+
+    # @-others
+
+
+# @+node:ekr.20211013081200.1: ** class TestPythonToTypeScript(LeoUnitTest):
 class TestPythonToTypeScript(LeoUnitTest):
     """Test cases for python-to-typescript command"""
 
-    #@+others
-    #@+node:ekr.20211013090653.1: *3*  test_py2ts.setUp
+    # @+others
+    # @+node:ekr.20211013090653.1: *3*  test_py2ts.setUp
     def setUp(self):
         super().setUp()
         c = self.c
@@ -370,7 +391,8 @@ class TestPythonToTypeScript(LeoUnitTest):
         root.h = 'leoNodes.py'
         self.p = root
         c.selectPosition(self.p)
-    #@+node:ekr.20211013081200.2: *3* test_py2ts.test_setup
+
+    # @+node:ekr.20211013081200.2: *3* test_py2ts.test_setup
     def test_setup(self):
         c = self.c
         assert self.x
@@ -380,13 +402,14 @@ class TestPythonToTypeScript(LeoUnitTest):
         if 0:
             for p in c.all_positions():
                 g.printObj(p.b, tag=p.h)
-    #@+node:ekr.20211013085659.1: *3* test_py2ts.test_convert_position_class
+
+    # @+node:ekr.20211013085659.1: *3* test_py2ts.test_convert_position_class
     def test_convert_position_class(self):
         # Convert a copy of the Position class
         self.x.convert(self.p)
-    #@+node:ekr.20211021075411.1: *3* test_py2ts.test_do_f_strings()
-    def test_do_f_strings(self):
 
+    # @+node:ekr.20211021075411.1: *3* test_py2ts.test_do_f_strings()
+    def test_do_f_strings(self):
         x = self.x
         tests = (
             (
@@ -407,6 +430,9 @@ class TestPythonToTypeScript(LeoUnitTest):
             lines = [source]
             x.do_f_strings(lines)
             self.assertEqual(lines[-1], expected)
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

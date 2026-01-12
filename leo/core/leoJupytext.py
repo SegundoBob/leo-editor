@@ -1,13 +1,13 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20241022090855.1: * @file leoJupytext.py
+# @+leo-ver=5-thin
+# @+node:ekr.20241022090855.1: * @file leoJupytext.py
 """
 Support for pairing .ipynb and .py files with jupytext.
 
 https://github.com/mwouts/jupytext
 """
 
-#@+<< leoJupytext: imports and annotations >>
-#@+node:ekr.20241022093347.1: ** << leoJupytext: imports and annotations >>
+# @+<< leoJupytext: imports and annotations >>
+# @+node:ekr.20241022093347.1: ** << leoJupytext: imports and annotations >>
 from __future__ import annotations
 import io
 import os
@@ -16,6 +16,7 @@ from typing import Any, Tuple, TYPE_CHECKING
 
 try:
     import jupytext  # pylint: disable=unused-import
+
     has_jupytext = True
 except Exception:
     has_jupytext = False
@@ -25,15 +26,16 @@ from leo.core import leoGlobals as g
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
+
     Notebook = Any  # nbformat.notebooknode.NotebookNode
-#@-<< leoJupytext: imports and annotations >>
+# @-<< leoJupytext: imports and annotations >>
 
-#@+others
-#@+node:ekr.20241022093215.1: ** class JupytextManager
+
+# @+others
+# @+node:ekr.20241022093215.1: ** class JupytextManager
 class JupytextManager:
-
-    #@+others
-    #@+node:ekr.20241029065713.1: *3* jtm.create_outline & helpers
+    # @+others
+    # @+node:ekr.20241029065713.1: *3* jtm.create_outline & helpers
     def create_outline(self, c: Cmdr, root: Position) -> None:
         """
         Scan root.b, creating child nodes and
@@ -59,7 +61,8 @@ class JupytextManager:
         # Replace root.b by the computed markup.
         root.b = self.compute_markup(header)
         c.redraw()
-    #@+node:ekr.20241029153032.1: *4* jtm.compute_headline
+
+    # @+node:ekr.20241029153032.1: *4* jtm.compute_headline
     def compute_headline(self, c: Cmdr, cell: str, p: Position) -> str:
         """Return the headline given the contents of a cell."""
 
@@ -103,7 +106,8 @@ class JupytextManager:
 
         # Case 3: Return the entire shortened python line.
         return shorten(line1)
-    #@+node:ekr.20241029160441.1: *4* jtm.compute_markup
+
+    # @+node:ekr.20241029160441.1: *4* jtm.compute_markup
     def compute_markup(self, header: str) -> str:
         """Return the proper markup for root.b"""
         markup_list = [
@@ -114,7 +118,8 @@ class JupytextManager:
         if header:
             markup_list.insert(0, g.angleBrackets(' prefix ') + '\n')
         return ''.join(markup_list)
-    #@+node:ekr.20241029152029.1: *4* jtm.make_cell
+
+    # @+node:ekr.20241029152029.1: *4* jtm.make_cell
     def make_cell(self, c: Cmdr, i: int, contents: str, root: Position) -> int:
         """
         Scan for a cell starting at contents[i].
@@ -133,7 +138,8 @@ class JupytextManager:
         child.b = cell
         child.h = self.compute_headline(c, cell, child)
         return j
-    #@+node:ekr.20241029155214.1: *4* jtm.make_prefix
+
+    # @+node:ekr.20241029155214.1: *4* jtm.make_prefix
     def make_prefix(self, i: int, contents: str, root: Position) -> int:
         """
         Create a child node for the header.
@@ -151,7 +157,8 @@ class JupytextManager:
         # The prefix starts at 0, not start.
         p.b = contents[0:end]
         return end
-    #@+node:ekr.20241023162459.1: *3* jtm.dump_notebook
+
+    # @+node:ekr.20241023162459.1: *3* jtm.dump_notebook
     def dump_notebook(self, nb: Notebook) -> None:
         """Dump a notebook (class nbformat.notebooknode.NotebookNode)"""
         g.trace(g.callers())
@@ -169,7 +176,8 @@ class JupytextManager:
             print('cells...')
             for i, cell in enumerate(nb['cells']):
                 print(f"cell {i}: {g.objToString(cell)}")
-    #@+node:ekr.20241023152818.1: *3* jtm.full_path
+
+    # @+node:ekr.20241023152818.1: *3* jtm.full_path
     def full_path(self, c: Cmdr, p: Position) -> str:
         """
         Return the full path in effect for the `@jupytext x.ipynb` node at p.
@@ -184,7 +192,8 @@ class JupytextManager:
             return ''
         full_path = c.fullPath(p)
         return full_path
-    #@+node:ekr.20241024160108.1: *3* jtm.get_jupytext_config_file
+
+    # @+node:ekr.20241024160108.1: *3* jtm.get_jupytext_config_file
     def get_jupytext_config_file(self) -> str:
         """
         Print the name and contents of the jupytext config file in effect.
@@ -194,13 +203,15 @@ class JupytextManager:
         """
         from jupytext.config import find_jupytext_configuration_file
         import tomllib
+
         config_file = find_jupytext_configuration_file(os.getcwd())
         if config_file:
             with open(config_file, 'rb') as f:
                 data = tomllib.load(f)
                 g.printObj(data, tag=f"jupytext: contents of {config_file!r}")
         return config_file
-    #@+node:ekr.20241023155136.1: *3* jtm.read
+
+    # @+node:ekr.20241023155136.1: *3* jtm.read
     def read(self, c: Cmdr, p: Position) -> Tuple[str, str]:  # pragma: no cover
         """
         Called from at.readOneAtJupytextNode.
@@ -223,7 +234,7 @@ class JupytextManager:
         try:
             notebook = jupytext.read(path, fmt=fmt)
             with io.StringIO() as f:
-            # Use jupytext.write, *not* jupytext.writes.
+                # Use jupytext.write, *not* jupytext.writes.
                 jupytext.write(notebook, f, fmt=fmt)
                 contents = f.getvalue()
         except Exception:
@@ -233,7 +244,8 @@ class JupytextManager:
                 raw_contents = f.read()
                 contents = g.toUnicode(raw_contents)
         return contents, path
-    #@+node:ekr.20241023073354.1: *3* jtm.update
+
+    # @+node:ekr.20241023073354.1: *3* jtm.update
     def update(self, c: Cmdr, p: Position, path: str) -> None:
         """
         Update the @jupytext node at p when the path has changed externally.
@@ -241,7 +253,8 @@ class JupytextManager:
         at = c.atFileCommands
         at.readOneAtJupytextNode(p)
         c.redraw()
-    #@+node:ekr.20241023161034.1: *3* jtm.warn_no_jupytext
+
+    # @+node:ekr.20241023161034.1: *3* jtm.warn_no_jupytext
     warning_given = False
 
     def warn_no_jupytext(self) -> None:
@@ -252,7 +265,8 @@ class JupytextManager:
             g.es_print('can not import `jupytext`', color='red')
             g.es_print('`pip install jupytext`', color='blue')
             print('')
-    #@+node:ekr.20241023155519.1: *3* jtm.write
+
+    # @+node:ekr.20241023155519.1: *3* jtm.write
     def write(self, c: Cmdr, p: Position, contents: str) -> None:
         """
         - Check that p is an @jupytext node.
@@ -269,7 +283,10 @@ class JupytextManager:
         fmt = c.config.getString('jupytext-fmt') or 'py:percent'
         notebook = jupytext.reads(contents, fmt=fmt)
         jupytext.write(notebook, path, fmt=fmt)
-    #@-others
-#@-others
 
-#@-leo
+    # @-others
+
+
+# @-others
+
+# @-leo

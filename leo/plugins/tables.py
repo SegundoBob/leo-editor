@@ -1,16 +1,18 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20170217164004.1: * @file ../plugins/tables.py
+# @+leo-ver=5-thin
+# @+node:ekr.20170217164004.1: * @file ../plugins/tables.py
 """
 A plugin that inserts tables, inspired by org mode tables:
 
 Written by Edward K. Ream, February 17, 2017.
 """
+
 from leo.core import leoGlobals as g
 
-#@+others
-#@+node:ekr.20170217164709.1: ** top level
-#@+node:ekr.20170217164759.1: *3* tables.py:commands
+# @+others
+# @+node:ekr.20170217164709.1: ** top level
+# @+node:ekr.20170217164759.1: *3* tables.py:commands
 # Note: importing this plugin creates the commands.
+
 
 @g.command('table-align')
 def table_align(self, event=None):
@@ -19,13 +21,16 @@ def table_align(self, event=None):
     if controller:
         controller.align()
 
+
 @g.command('table-toggle-enabled')
 def table_toggle_enabled(self, event=None):
     c = event.get('c')
     controller = c and getattr(c, 'tableController')
     if controller:
         controller.toggle()
-#@+node:ekr.20170217164730.1: *3* tables.py:init
+
+
+# @+node:ekr.20170217164730.1: *3* tables.py:init
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = g.app.gui.guiName() in ('qt', 'qttabs')
@@ -33,7 +38,9 @@ def init():
         g.registerHandler('after-create-leo-frame', onCreate)
         g.plugin_signon(__name__)
     return ok
-#@+node:ekr.20170217165001.1: *3* tables.py:onCreate
+
+
+# @+node:ekr.20170217165001.1: *3* tables.py:onCreate
 def onCreate(tag, keys):
     """Create a Tables instance for the outline."""
     c = keys.get('c')
@@ -41,7 +48,9 @@ def onCreate(tag, keys):
         c.tableController = TableController(c)
     else:
         g.trace('can not create TableController')
-#@+node:ekr.20170217164903.1: ** class TableController
+
+
+# @+node:ekr.20170217164903.1: ** class TableController
 class TableController:
     """A class to create and align tables."""
 
@@ -57,8 +66,8 @@ class TableController:
         self.old_insert_newline = c.editCommands.insertNewlineBase
         c.editCommands.insertNewlineBase = self.insert_newline
 
-    #@+others
-    #@+node:ekr.20170218142054.1: *3* table.abort
+    # @+others
+    # @+node:ekr.20170218142054.1: *3* table.abort
     def abort(self):
         """undo all monkey-patches."""
         g.es_print('exiting table.py plugin')
@@ -66,7 +75,8 @@ class TableController:
         c.tableController = None
         c.k.handleDefaultChar = self.old_handleDefaultChar
         ec.insertNewlineBase = self.old_insert_newline
-    #@+node:ekr.20170218073117.1: *3* table.default_key_handler
+
+    # @+node:ekr.20170218073117.1: *3* table.default_key_handler
     def default_key_handler(self, event, stroke):
         """
         TableController: Override k.old_handleDefaultChar.
@@ -82,7 +92,7 @@ class TableController:
         else:
             self.put(ch, event)
 
-    #@+node:ekr.20170218130241.1: *3* table.get_table
+    # @+node:ekr.20170218130241.1: *3* table.get_table
     def get_table(self, ch, w):
         """Return i, lines, if w's insert point is inside a table."""
         s = w.getAllText()
@@ -130,7 +140,8 @@ class TableController:
             # Last line ends the table.
             return i_row1, s1, lines[i1 : len(lines)]
         return -1, s1, []
-    #@+node:ekr.20170218075243.1: *3* table.insert_newline
+
+    # @+node:ekr.20170218075243.1: *3* table.insert_newline
     def insert_newline(self, event):
         """TableController: override c.editCommands.insertNewLine."""
         w = self.ec.editWidget(event)
@@ -140,7 +151,8 @@ class TableController:
             self.put('|', event)
         else:
             self.put('\n', event)
-    #@+node:ekr.20170218135553.1: *3* table.put
+
+    # @+node:ekr.20170218135553.1: *3* table.put
     def put(self, ch, event):
         """
         Insert the given ch into w.
@@ -154,17 +166,21 @@ class TableController:
         except Exception:
             g.es_exception()
             self.abort()
-    #@+node:ekr.20170218125521.1: *3* table.toggle
+
+    # @+node:ekr.20170218125521.1: *3* table.toggle
     def toggle(self, event=None):
         """Toggle enabling."""
         self.enabled = not self.enabled
-    #@+node:ekr.20170218134104.1: *3* table.update (not used)
+
+    # @+node:ekr.20170218134104.1: *3* table.update (not used)
     # def update(self, event, i, lines, stroke):
 
-        # # self.old_handleDefaultChar(event, stroke)
-        # self.put(ch, w)
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+    # # self.old_handleDefaultChar(event, stroke)
+    # self.put(ch, w)
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

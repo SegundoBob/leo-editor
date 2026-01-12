@@ -1,29 +1,34 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20180119164431.1: * @file ../plugins/patch_python_colorizer.py
+# @+leo-ver=5-thin
+# @+node:ekr.20180119164431.1: * @file ../plugins/patch_python_colorizer.py
 """
 Shows how to patch python colorizer.
 """
+
 import re
 from leo.core import leoGlobals as g
-assert g
-#@+others
-#@+node:ekr.20180119164528.6: ** init
-def init():
 
+assert g
+
+
+# @+others
+# @+node:ekr.20180119164528.6: ** init
+def init():
     ok = g.app.gui.guiName() == 'qt'
     if ok:
         g.registerHandler('after-create-leo-frame', onCreate)
         g.plugin_signon(__file__)
     return ok
-#@+node:ekr.20180119164528.7: ** onCreate
-def onCreate(tag, keys):
 
+
+# @+node:ekr.20180119164528.7: ** onCreate
+def onCreate(tag, keys):
     c = keys.get('c')
     if c:
         patch_colorizer(c)
-#@+node:ekr.20180119171526.1: ** patch_colorizer
-def patch_colorizer(c):
 
+
+# @+node:ekr.20180119171526.1: ** patch_colorizer
+def patch_colorizer(c):
     colorizer = c.frame.body.colorizer
     mode = colorizer.modes.get('python_main')
     d = mode.get('rulesDict')
@@ -33,9 +38,10 @@ def patch_colorizer(c):
     # g.printObj(rulesDict.get('G'))
     # Force a full recolor.
     c.frame.body.wrapper.setAllText(c.p.b)
-#@+node:ekr.20180119164405.1: ** python_rule_global
-def python_rule_global(colorer, s, i):
 
+
+# @+node:ekr.20180119164405.1: ** python_rule_global
+def python_rule_global(colorer, s, i):
     pattern = re.compile(r'\b(G[A-Z0-9_]*)')
     self = colorer
     kind = 'keyword1'
@@ -47,7 +53,9 @@ def python_rule_global(colorer, s, i):
     else:
         j = i
     return j - i
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

@@ -1,8 +1,8 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20050301083306: * @file ../plugins/mod_read_dir_outline.py
+# @+leo-ver=5-thin
+# @+node:ekr.20050301083306: * @file ../plugins/mod_read_dir_outline.py
 
-#@+<< docstring >>
-#@+node:ekr.20050301084207: ** << docstring >>
+# @+<< docstring >>
+# @+node:ekr.20050301084207: ** << docstring >>
 """
 Allows Leo to read a complete directory tree into a Leo outline. Converts
 directories into headlines and puts the list of file names into bodies.
@@ -18,27 +18,29 @@ Feedback on this plugin can be sent to::
     <frederic [point] mommeja [at] laposte [point] net>
 
 """
-#@-<< docstring >>
+# @-<< docstring >>
 
-#@@language python
-#@@tabwidth -4
+# @@language python
+# @@tabwidth -4
 
 import os
 from leo.core import leoGlobals as g
 
 language = 'english'  # Anything except 'french' uses english.
 
-#@+others
-#@+node:ekr.20050301083306.4: ** init
+
+# @+others
+# @+node:ekr.20050301083306.4: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     # This plugin is now gui independent.
     g.registerHandler(("new2", "menu2"), onCreate)
     g.plugin_signon(__name__)
     return True
-#@+node:ekr.20050301083306.5: ** onCreate
-def onCreate(tag, keywords):
 
+
+# @+node:ekr.20050301083306.5: ** onCreate
+def onCreate(tag, keywords):
     c = keywords.get('c')
     cc = controller(c)
     menu = c.frame.menu.getMenu('Outline')
@@ -51,17 +53,17 @@ def onCreate(tag, keywords):
         (mess1, "Shift+Ctrl+Alt+D", cc.readDir),
     )
     c.frame.menu.createMenuEntries(menu, table)
-#@+node:ekr.20050301083306.6: ** class controller
+
+
+# @+node:ekr.20050301083306.6: ** class controller
 class controller:
-
-    #@+others
-    #@+node:ekr.20050301083306.7: *3* ctor
+    # @+others
+    # @+node:ekr.20050301083306.7: *3* ctor
     def __init__(self, c):
-
         self.c = c
-    #@+node:ekr.20050301083306.8: *3* readDir
-    def readDir(self, event=None):
 
+    # @+node:ekr.20050301083306.8: *3* readDir
+    def readDir(self, event=None):
         # fr - Modifier pour adapter à votre environnement
         # en - Change it to select the starting browsing directory
         c = self.c
@@ -86,10 +88,10 @@ class controller:
                 g.es(str(compteurglobal) + " fichiers traités.")
             else:
                 g.es(str(compteurglobal) + " files outlined.")
-    #@+node:ekr.20050301083306.10: *3* importDir
-    def importDir(self, dir, compteurglobal):
 
-        """ La routine récursive de lecture des fichiers """
+    # @+node:ekr.20050301083306.10: *3* importDir
+    def importDir(self, dir, compteurglobal):
+        """La routine récursive de lecture des fichiers"""
 
         if not g.os_path_exists(dir):
             if language == 'french':
@@ -104,8 +106,8 @@ class controller:
         try:
             # ici, on liste le contenu du répertoire
             body = ""
-            #@+<< listdir >>
-            #@+node:ekr.20050301083306.11: *4* << listdir >>
+            # @+<< listdir >>
+            # @+node:ekr.20050301083306.11: *4* << listdir >>
             try:
                 fichiers = os.listdir(dir)
                 dossiers = []
@@ -114,7 +116,7 @@ class controller:
                     path = g.os_path_join(dir, f)
                     # est-ce un fichier ?
                     if g.os_path_isfile(path):
-                        body += (f + "\n")
+                        body += f + "\n"
                     else:
                         # c'est alors un répertoire
                         dossiers.append(path)
@@ -125,7 +127,7 @@ class controller:
                 else:
                     g.es("os.listdir error...")
                 g.es_exception()
-            #@-<< listdir >>
+            # @-<< listdir >>
             p = c.importCommands.createHeadline(current, body, tail)
             c.selectPosition(p)
             if dossiers:
@@ -142,6 +144,9 @@ class controller:
             g.es_exception()
 
         return compteurglobal
-    #@-others
-#@-others
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @-leo

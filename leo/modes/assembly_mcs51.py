@@ -193,183 +193,382 @@ keywordsDictDict = {
 
 # Rules for assembly_mcs51_main ruleset.
 
+
 def assembly_mcs51_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
 
+
 def assembly_mcs51_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def assembly_mcs51_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def assembly_mcs51_rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="%%",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_following(s, i, kind="label", pattern="%%", at_line_start=True, exclude_match=True)
+
 
 def assembly_mcs51_rule4(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$",
-          at_line_start=True)
+    return colorer.match_mark_following(s, i, kind="keyword2", pattern="$", at_line_start=True)
+
 
 def assembly_mcs51_rule5(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_line_start=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+
 
 def assembly_mcs51_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=",")
 
+
 def assembly_mcs51_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=":")
+
 
 def assembly_mcs51_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="(")
 
+
 def assembly_mcs51_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq=")")
+
 
 def assembly_mcs51_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="]")
 
+
 def assembly_mcs51_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="[")
+
 
 def assembly_mcs51_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="null", seq="$")
 
+
 def assembly_mcs51_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def assembly_mcs51_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def assembly_mcs51_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def assembly_mcs51_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def assembly_mcs51_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="%")
+
 
 def assembly_mcs51_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
 
+
 def assembly_mcs51_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def assembly_mcs51_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="&")
 
+
 def assembly_mcs51_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
+
 
 def assembly_mcs51_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
 
+
 def assembly_mcs51_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def assembly_mcs51_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def assembly_mcs51_rule25(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def assembly_mcs51_rule26(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for assembly_mcs51_main ruleset.
 rulesDict1 = {
-    "!": [assembly_mcs51_rule22,],
-    "\"": [assembly_mcs51_rule2,],
-    "$": [assembly_mcs51_rule4, assembly_mcs51_rule12, assembly_mcs51_rule26,],
-    "%": [assembly_mcs51_rule3, assembly_mcs51_rule17,],
-    "&": [assembly_mcs51_rule20,],
-    "'": [assembly_mcs51_rule1,],
-    "(": [assembly_mcs51_rule8,],
-    ")": [assembly_mcs51_rule9,],
-    "*": [assembly_mcs51_rule16,],
-    "+": [assembly_mcs51_rule13,],
-    ",": [assembly_mcs51_rule6,],
-    "-": [assembly_mcs51_rule14,],
-    "/": [assembly_mcs51_rule15,],
-    "0": [assembly_mcs51_rule26,],
-    "1": [assembly_mcs51_rule26,],
-    "2": [assembly_mcs51_rule26,],
-    "3": [assembly_mcs51_rule26,],
-    "4": [assembly_mcs51_rule26,],
-    "5": [assembly_mcs51_rule26,],
-    "6": [assembly_mcs51_rule26,],
-    "7": [assembly_mcs51_rule26,],
-    "8": [assembly_mcs51_rule26,],
-    "9": [assembly_mcs51_rule26,],
-    ":": [assembly_mcs51_rule5, assembly_mcs51_rule7,],
-    ";": [assembly_mcs51_rule0,],
-    "<": [assembly_mcs51_rule24,],
-    "=": [assembly_mcs51_rule23,],
-    ">": [assembly_mcs51_rule25,],
-    "@": [assembly_mcs51_rule26,],
-    "A": [assembly_mcs51_rule26,],
-    "B": [assembly_mcs51_rule26,],
-    "C": [assembly_mcs51_rule26,],
-    "D": [assembly_mcs51_rule26,],
-    "E": [assembly_mcs51_rule26,],
-    "F": [assembly_mcs51_rule26,],
-    "G": [assembly_mcs51_rule26,],
-    "H": [assembly_mcs51_rule26,],
-    "I": [assembly_mcs51_rule26,],
-    "J": [assembly_mcs51_rule26,],
-    "K": [assembly_mcs51_rule26,],
-    "L": [assembly_mcs51_rule26,],
-    "M": [assembly_mcs51_rule26,],
-    "N": [assembly_mcs51_rule26,],
-    "O": [assembly_mcs51_rule26,],
-    "P": [assembly_mcs51_rule26,],
-    "Q": [assembly_mcs51_rule26,],
-    "R": [assembly_mcs51_rule26,],
-    "S": [assembly_mcs51_rule26,],
-    "T": [assembly_mcs51_rule26,],
-    "U": [assembly_mcs51_rule26,],
-    "V": [assembly_mcs51_rule26,],
-    "W": [assembly_mcs51_rule26,],
-    "X": [assembly_mcs51_rule26,],
-    "Y": [assembly_mcs51_rule26,],
-    "Z": [assembly_mcs51_rule26,],
-    "[": [assembly_mcs51_rule11,],
-    "]": [assembly_mcs51_rule10,],
-    "^": [assembly_mcs51_rule19,],
-    "_": [assembly_mcs51_rule26,],
-    "a": [assembly_mcs51_rule26,],
-    "b": [assembly_mcs51_rule26,],
-    "c": [assembly_mcs51_rule26,],
-    "d": [assembly_mcs51_rule26,],
-    "e": [assembly_mcs51_rule26,],
-    "f": [assembly_mcs51_rule26,],
-    "g": [assembly_mcs51_rule26,],
-    "h": [assembly_mcs51_rule26,],
-    "i": [assembly_mcs51_rule26,],
-    "j": [assembly_mcs51_rule26,],
-    "k": [assembly_mcs51_rule26,],
-    "l": [assembly_mcs51_rule26,],
-    "m": [assembly_mcs51_rule26,],
-    "n": [assembly_mcs51_rule26,],
-    "o": [assembly_mcs51_rule26,],
-    "p": [assembly_mcs51_rule26,],
-    "q": [assembly_mcs51_rule26,],
-    "r": [assembly_mcs51_rule26,],
-    "s": [assembly_mcs51_rule26,],
-    "t": [assembly_mcs51_rule26,],
-    "u": [assembly_mcs51_rule26,],
-    "v": [assembly_mcs51_rule26,],
-    "w": [assembly_mcs51_rule26,],
-    "x": [assembly_mcs51_rule26,],
-    "y": [assembly_mcs51_rule26,],
-    "z": [assembly_mcs51_rule26,],
-    "|": [assembly_mcs51_rule18,],
-    "~": [assembly_mcs51_rule21,],
+    "!": [
+        assembly_mcs51_rule22,
+    ],
+    "\"": [
+        assembly_mcs51_rule2,
+    ],
+    "$": [
+        assembly_mcs51_rule4,
+        assembly_mcs51_rule12,
+        assembly_mcs51_rule26,
+    ],
+    "%": [
+        assembly_mcs51_rule3,
+        assembly_mcs51_rule17,
+    ],
+    "&": [
+        assembly_mcs51_rule20,
+    ],
+    "'": [
+        assembly_mcs51_rule1,
+    ],
+    "(": [
+        assembly_mcs51_rule8,
+    ],
+    ")": [
+        assembly_mcs51_rule9,
+    ],
+    "*": [
+        assembly_mcs51_rule16,
+    ],
+    "+": [
+        assembly_mcs51_rule13,
+    ],
+    ",": [
+        assembly_mcs51_rule6,
+    ],
+    "-": [
+        assembly_mcs51_rule14,
+    ],
+    "/": [
+        assembly_mcs51_rule15,
+    ],
+    "0": [
+        assembly_mcs51_rule26,
+    ],
+    "1": [
+        assembly_mcs51_rule26,
+    ],
+    "2": [
+        assembly_mcs51_rule26,
+    ],
+    "3": [
+        assembly_mcs51_rule26,
+    ],
+    "4": [
+        assembly_mcs51_rule26,
+    ],
+    "5": [
+        assembly_mcs51_rule26,
+    ],
+    "6": [
+        assembly_mcs51_rule26,
+    ],
+    "7": [
+        assembly_mcs51_rule26,
+    ],
+    "8": [
+        assembly_mcs51_rule26,
+    ],
+    "9": [
+        assembly_mcs51_rule26,
+    ],
+    ":": [
+        assembly_mcs51_rule5,
+        assembly_mcs51_rule7,
+    ],
+    ";": [
+        assembly_mcs51_rule0,
+    ],
+    "<": [
+        assembly_mcs51_rule24,
+    ],
+    "=": [
+        assembly_mcs51_rule23,
+    ],
+    ">": [
+        assembly_mcs51_rule25,
+    ],
+    "@": [
+        assembly_mcs51_rule26,
+    ],
+    "A": [
+        assembly_mcs51_rule26,
+    ],
+    "B": [
+        assembly_mcs51_rule26,
+    ],
+    "C": [
+        assembly_mcs51_rule26,
+    ],
+    "D": [
+        assembly_mcs51_rule26,
+    ],
+    "E": [
+        assembly_mcs51_rule26,
+    ],
+    "F": [
+        assembly_mcs51_rule26,
+    ],
+    "G": [
+        assembly_mcs51_rule26,
+    ],
+    "H": [
+        assembly_mcs51_rule26,
+    ],
+    "I": [
+        assembly_mcs51_rule26,
+    ],
+    "J": [
+        assembly_mcs51_rule26,
+    ],
+    "K": [
+        assembly_mcs51_rule26,
+    ],
+    "L": [
+        assembly_mcs51_rule26,
+    ],
+    "M": [
+        assembly_mcs51_rule26,
+    ],
+    "N": [
+        assembly_mcs51_rule26,
+    ],
+    "O": [
+        assembly_mcs51_rule26,
+    ],
+    "P": [
+        assembly_mcs51_rule26,
+    ],
+    "Q": [
+        assembly_mcs51_rule26,
+    ],
+    "R": [
+        assembly_mcs51_rule26,
+    ],
+    "S": [
+        assembly_mcs51_rule26,
+    ],
+    "T": [
+        assembly_mcs51_rule26,
+    ],
+    "U": [
+        assembly_mcs51_rule26,
+    ],
+    "V": [
+        assembly_mcs51_rule26,
+    ],
+    "W": [
+        assembly_mcs51_rule26,
+    ],
+    "X": [
+        assembly_mcs51_rule26,
+    ],
+    "Y": [
+        assembly_mcs51_rule26,
+    ],
+    "Z": [
+        assembly_mcs51_rule26,
+    ],
+    "[": [
+        assembly_mcs51_rule11,
+    ],
+    "]": [
+        assembly_mcs51_rule10,
+    ],
+    "^": [
+        assembly_mcs51_rule19,
+    ],
+    "_": [
+        assembly_mcs51_rule26,
+    ],
+    "a": [
+        assembly_mcs51_rule26,
+    ],
+    "b": [
+        assembly_mcs51_rule26,
+    ],
+    "c": [
+        assembly_mcs51_rule26,
+    ],
+    "d": [
+        assembly_mcs51_rule26,
+    ],
+    "e": [
+        assembly_mcs51_rule26,
+    ],
+    "f": [
+        assembly_mcs51_rule26,
+    ],
+    "g": [
+        assembly_mcs51_rule26,
+    ],
+    "h": [
+        assembly_mcs51_rule26,
+    ],
+    "i": [
+        assembly_mcs51_rule26,
+    ],
+    "j": [
+        assembly_mcs51_rule26,
+    ],
+    "k": [
+        assembly_mcs51_rule26,
+    ],
+    "l": [
+        assembly_mcs51_rule26,
+    ],
+    "m": [
+        assembly_mcs51_rule26,
+    ],
+    "n": [
+        assembly_mcs51_rule26,
+    ],
+    "o": [
+        assembly_mcs51_rule26,
+    ],
+    "p": [
+        assembly_mcs51_rule26,
+    ],
+    "q": [
+        assembly_mcs51_rule26,
+    ],
+    "r": [
+        assembly_mcs51_rule26,
+    ],
+    "s": [
+        assembly_mcs51_rule26,
+    ],
+    "t": [
+        assembly_mcs51_rule26,
+    ],
+    "u": [
+        assembly_mcs51_rule26,
+    ],
+    "v": [
+        assembly_mcs51_rule26,
+    ],
+    "w": [
+        assembly_mcs51_rule26,
+    ],
+    "x": [
+        assembly_mcs51_rule26,
+    ],
+    "y": [
+        assembly_mcs51_rule26,
+    ],
+    "z": [
+        assembly_mcs51_rule26,
+    ],
+    "|": [
+        assembly_mcs51_rule18,
+    ],
+    "~": [
+        assembly_mcs51_rule21,
+    ],
 }
 
 # x.rulesDictDict for assembly_mcs51 mode.

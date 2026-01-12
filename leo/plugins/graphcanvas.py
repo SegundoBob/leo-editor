@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:tbrown.20090206153748.1: * @file ../plugins/graphcanvas.py
+# @+leo-ver=5-thin
+# @+node:tbrown.20090206153748.1: * @file ../plugins/graphcanvas.py
 """
 Provides a widget for displaying graphs (networks) in Leo.
 
@@ -21,8 +21,8 @@ in windows.  This plugin started out supporting both, but it seems (TNB 20120511
 make sense to focus on pydot.
 """
 
-#@+<< imports >>
-#@+node:bob.20110119123023.7392: ** << imports >> graphcanvas
+# @+<< imports >>
+# @+node:bob.20110119123023.7392: ** << imports >> graphcanvas
 
 from math import atan2, sin, cos
 import os
@@ -34,10 +34,12 @@ from leo.core import leoGlobals as g
 from leo.core import leoPlugins
 from leo.core.leoQt import Qt, QtCore, QtGui, QtWidgets, uic
 from leo.core.leoQt import KeyboardModifier
+
 # Third-party imports
 try:
     import pydot
     import dot_parser
+
     assert dot_parser
     pygraphviz = None
 except Exception:
@@ -50,10 +52,12 @@ except Exception:
 # Fail fast, right after all imports.
 g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 
-#@-<< imports >>
+# @-<< imports >>
 c_db_key = '_graph_canvas_gnx'
-#@+others
-#@+node:bob.20110119123023.7393: ** init (graphcanvas.py)
+
+
+# @+others
+# @+node:bob.20110119123023.7393: ** init (graphcanvas.py)
 def init():
     """Return True if the plugin has loaded successfully."""
     if not uic or g.app.gui.guiName() != "qt":
@@ -64,7 +68,9 @@ def init():
     g.loadOnePlugin("backlink.py")
     g.plugin_signon(__name__)
     return True
-#@+node:bob.20110121094946.3410: ** colorize_headlines_visitor
+
+
+# @+node:bob.20110121094946.3410: ** colorize_headlines_visitor
 def colorize_headlines_visitor(c, p, item):
     """Item is a QTreeWidgetItem."""
     if '_bklnk' in p.v.u:
@@ -80,9 +86,10 @@ def colorize_headlines_visitor(c, p, item):
             f = item.font(0)
             f.setBold(True)
     raise leoPlugins.TryNext
-#@+node:bob.20110119123023.7394: ** onCreate
-def onCreate(tag, keys):
 
+
+# @+node:bob.20110119123023.7394: ** onCreate
+def onCreate(tag, keys):
     c = keys.get('c')
     if not c:
         return
@@ -92,12 +99,13 @@ def onCreate(tag, keys):
         for v in c.all_unique_nodes():
             if v.gnx == gnx:
                 gcc = c.graphcanvasController
-                gcc.loadGraph(
-                    c.vnode2position(v).self_and_subtree())
+                gcc.loadGraph(c.vnode2position(v).self_and_subtree())
                 gcc.loadLinked('all')
                 if gcc.nodeItem:
                     gcc.lastNodeItem = gcc.nodeItem.get(v)
-#@+node:tbrown.20110716130512.21969: ** command graph-toggle-autoload
+
+
+# @+node:tbrown.20110716130512.21969: ** command graph-toggle-autoload
 @g.command('graph-toggle-autoload')
 def toggle_autoload(event):
     """
@@ -115,16 +123,16 @@ def toggle_autoload(event):
     else:
         c.db[c_db_key] = str(c.p.v.gnx)
         g.es('Graph for current node will be autoloaded')
-#@+node:bob.20110119123023.7395: ** class graphcanvasUI
-class graphcanvasUI(QtWidgets.QWidget):  # type:ignore
-    #@+others
-    #@+node:bob.20110119123023.7396: *3* __init__
-    def __init__(self, owner=None):
 
+
+# @+node:bob.20110119123023.7395: ** class graphcanvasUI
+class graphcanvasUI(QtWidgets.QWidget):  # type:ignore
+    # @+others
+    # @+node:bob.20110119123023.7396: *3* __init__
+    def __init__(self, owner=None):
         self.owner = owner
         super().__init__()
-        uiPath = g.os_path_join(g.app.leoDir,
-            'plugins', 'GraphCanvas', 'GraphCanvas.ui')
+        uiPath = g.os_path_join(g.app.leoDir, 'plugins', 'GraphCanvas', 'GraphCanvas.ui')
         # change directory for this to work
         old_dir = os.getcwd()
         try:
@@ -182,42 +190,45 @@ class graphcanvasUI(QtWidgets.QWidget):  # type:ignore
             menu.addAction(name, func)
         u.btnLayout.setMenu(menu)
 
-    #@+node:tbrown.20110122085529.15400: *3* reset_zoom
+    # @+node:tbrown.20110122085529.15400: *3* reset_zoom
     def reset_zoom(self):
-
         self.canvasView.resetTransform()
         self.canvasView.current_scale = 0
-    #@-others
-#@+node:bob.20110119123023.7397: ** class GraphicsView
+
+    # @-others
+
+
+# @+node:bob.20110119123023.7397: ** class GraphicsView
 class GraphicsView(QtWidgets.QGraphicsView):  # type:ignore
-    #@+others
-    #@+node:bob.20110119123023.7398: *3* __init__
+    # @+others
+    # @+node:bob.20110119123023.7398: *3* __init__
     def __init__(self, glue, *args, **kargs):
         self.glue = glue
         self.current_scale = 0
         super().__init__(*args)
-    #@+node:tbrown.20110122085529.15399: *3* wheelEvent (graphcanvas.py)
+
+    # @+node:tbrown.20110122085529.15399: *3* wheelEvent (graphcanvas.py)
     def wheelEvent(self, event):
-
         if int(event.modifiers() & KeyboardModifier.ControlModifier):
-
-            scale = 1. + 0.1 * (event.delta() / 120)
+            scale = 1.0 + 0.1 * (event.delta() / 120)
 
             self.scale(scale, scale)
 
         elif int(event.modifiers() & Qt.AltModifier):
-
             self.glue.scale_centers(event.delta() / 120)
 
         else:
-
             QtWidgets.QGraphicsView.wheelEvent(self, event)
-    #@+node:bob.20110119123023.7399: *3* mouseDoubleClickEvent
+
+    # @+node:bob.20110119123023.7399: *3* mouseDoubleClickEvent
     def mouseDoubleClickEvent(self, event):
         QtWidgets.QGraphicsView.mouseDoubleClickEvent(self, event)
         self.glue.newNode(pnt=self.mapToScene(event.pos()))
-    #@-others
-#@+node:tbrown.20110413094721.24681: ** class GetImage
+
+    # @-others
+
+
+# @+node:tbrown.20110413094721.24681: ** class GetImage
 class GetImage:
     """Image handling functions"""
 
@@ -287,12 +298,12 @@ class GetImage:
     @staticmethod
     def _no_image():
         """return QGraphicsPixmapItem with "No Image" image loaded"""
-        testpath = g.os_path_abspath(g.os_path_join(
-            g.app.loadDir, '../plugins/GraphCanvas/no_image.png'))
+        testpath = g.os_path_abspath(g.os_path_join(g.app.loadDir, '../plugins/GraphCanvas/no_image.png'))
         return QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap(testpath))
-#@+node:tbrown.20110407091036.17531: ** class nodeBase
-class nodeBase(QtWidgets.QGraphicsItemGroup):  # type:ignore
 
+
+# @+node:tbrown.20110407091036.17531: ** class nodeBase
+class nodeBase(QtWidgets.QGraphicsItemGroup):  # type:ignore
     node_types: dict[str, Any] = {}
 
     @classmethod
@@ -300,7 +311,6 @@ class nodeBase(QtWidgets.QGraphicsItemGroup):  # type:ignore
         return nodeBase.node_types[ntype](owner, node)
 
     def __init__(self, owner, node, *args, **kargs):
-
         super().__init__(*args, **kargs)
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable)
 
@@ -316,28 +326,31 @@ class nodeBase(QtWidgets.QGraphicsItemGroup):  # type:ignore
     def set_bg_color(self, color):
         pass
 
-    #@+others
-    #@+node:tbrown.20110407091036.17539: *3* do_update
+    # @+others
+    # @+node:tbrown.20110407091036.17539: *3* do_update
     def do_update(self):
-
         raise NotImplementedError
-    #@+node:tbrown.20110407091036.17536: *3* mouseMoveEvent
-    def mouseMoveEvent(self, event):
 
+    # @+node:tbrown.20110407091036.17536: *3* mouseMoveEvent
+    def mouseMoveEvent(self, event):
         QtWidgets.QGraphicsItemGroup.mouseMoveEvent(self, event)
         self.owner.newPos(self, event)
-    #@+node:tbrown.20110407091036.17537: *3* mouseReleaseEvent
-    def mouseReleaseEvent(self, event):
 
+    # @+node:tbrown.20110407091036.17537: *3* mouseReleaseEvent
+    def mouseReleaseEvent(self, event):
         QtWidgets.QGraphicsItemGroup.mouseReleaseEvent(self, event)
         self.owner.releaseNode(self, event)
-    #@+node:tbrown.20110407091036.17538: *3* focusOutEvent
+
+    # @+node:tbrown.20110407091036.17538: *3* focusOutEvent
     def focusOutEvent(self, event):
         QtWidgets.QGraphicsItemGroup.focusOutEvent(self, event)
         self.bg.setBrush(QtGui.QBrush(QtGui.QColor(200, 240, 200)))
         g.es("focusOutEvent")
-    #@-others
-#@+node:tbrown.20110407091036.17533: ** class nodeRect
+
+    # @-others
+
+
+# @+node:tbrown.20110407091036.17533: ** class nodeRect
 class nodeRect(nodeBase):
     """text with shape behind it node type"""
 
@@ -386,15 +399,15 @@ class nodeRect(nodeBase):
         self.bg.setBrush(QtGui.QBrush(QtGui.QColor(color)))
 
     def do_update(self):
-
         self.text.setPlainText(self.get_text())
 
-        self.bg.setRect(-2, +2,
-            self.text.document().size().width() + 4,
-            self.text.document().size().height() - 2)
+        self.bg.setRect(-2, +2, self.text.document().size().width() + 4, self.text.document().size().height() - 2)
+
 
 nodeBase.node_types[nodeRect.__name__] = nodeRect
-#@+node:tbrown.20110413094721.20406: ** class nodeNone
+
+
+# @+node:tbrown.20110413094721.20406: ** class nodeNone
 class nodeNone(nodeBase):
     """text with shape behind it node type"""
 
@@ -424,11 +437,13 @@ class nodeNone(nodeBase):
         self.text.setDefaultTextColor(QtGui.QColor(color))
 
     def do_update(self):
-
         self.text.setPlainText(self.get_text())
 
+
 nodeBase.node_types[nodeNone.__name__] = nodeNone
-#@+node:tbrown.20110412222027.19250: ** class nodeEllipse
+
+
+# @+node:tbrown.20110412222027.19250: ** class nodeEllipse
 class nodeEllipse(nodeRect):
     """text with shape behind it node type"""
 
@@ -439,12 +454,13 @@ class nodeEllipse(nodeRect):
     def do_update(self):
         marginX = self.text.document().size().width() / 2
         # marginY = self.text.document().size().height()/2
-        self.bg.setRect(-marginX, 0,
-            self.text.document().size().width() * 2,
-            self.text.document().size().height())
+        self.bg.setRect(-marginX, 0, self.text.document().size().width() * 2, self.text.document().size().height())
+
 
 nodeBase.node_types[nodeEllipse.__name__] = nodeEllipse
-#@+node:tbrown.20110412222027.19252: ** class nodeDiamond
+
+
+# @+node:tbrown.20110412222027.19252: ** class nodeDiamond
 class nodeDiamond(nodeRect):
     """text with shape behind it node type"""
 
@@ -469,10 +485,12 @@ class nodeDiamond(nodeRect):
         poly.append(QtCore.QPointF(marginX, -marginY))
         self.bg.setPolygon(poly)
 
-nodeBase.node_types[nodeDiamond.__name__] = nodeDiamond
-#@+node:tbrown.20110412222027.19253: ** class nodeComment
-class nodeComment(nodeRect):
 
+nodeBase.node_types[nodeDiamond.__name__] = nodeDiamond
+
+
+# @+node:tbrown.20110412222027.19253: ** class nodeComment
+class nodeComment(nodeRect):
     def get_text(self):
         """return text content for the text in the foreground"""
         return self.node.b.strip()
@@ -496,19 +514,18 @@ class nodeComment(nodeRect):
         return item
 
     def do_update(self):
-
         self._set_text(self.text)
 
-        self.bg.setRect(-2, +2,
-            self.text.document().size().width() + 4,
-            self.text.document().size().height() - 2)
+        self.bg.setRect(-2, +2, self.text.document().size().width() + 4, self.text.document().size().height() - 2)
 
         self.setToolTip(self.node.h)
 
-nodeBase.node_types[nodeComment.__name__] = nodeComment
-#@+node:tbrown.20110407091036.17530: ** class nodeTable
-class nodeTable(nodeRect):
 
+nodeBase.node_types[nodeComment.__name__] = nodeComment
+
+
+# @+node:tbrown.20110407091036.17530: ** class nodeTable
+class nodeTable(nodeRect):
     def __init__(self, *args, **kargs):
         super().__init__(*args, **kargs)
         # can't load children here, because we don't know where we are yet
@@ -536,7 +553,6 @@ class nodeTable(nodeRect):
             self.updating = False
 
     def mouseMoveEvent(self, event):
-
         ox, oy = self.x(), self.y()
 
         nodeRect.mouseMoveEvent(self, event)
@@ -552,9 +568,10 @@ class nodeTable(nodeRect):
 
 
 nodeBase.node_types[nodeTable.__name__] = nodeTable
-#@+node:tbrown.20110413094721.20407: ** class nodeImage
-class nodeImage(nodeBase):
 
+
+# @+node:tbrown.20110413094721.20407: ** class nodeImage
+class nodeImage(nodeBase):
     def __init__(self, *args, **kargs):
         super().__init__(*args, **kargs)
 
@@ -567,7 +584,6 @@ class nodeImage(nodeBase):
         self.addToGroup(self.bg)
 
     def bg_item(self):
-
         img, descr = GetImage.get_image('/', self.node.h, self.node.b)
 
         self.setToolTip(descr)
@@ -580,12 +596,16 @@ class nodeImage(nodeBase):
     def do_update(self):
         pass
 
+
 nodeBase.node_types[nodeImage.__name__] = nodeImage
-#@+node:bob.20110121161547.3424: ** class linkItem
+
+
+# @+node:bob.20110121161547.3424: ** class linkItem
 class linkItem(QtWidgets.QGraphicsItemGroup):  # type:ignore
     """Node on the canvas"""
-    #@+others
-    #@+node:bob.20110119123023.7405: *3* __init__
+
+    # @+others
+    # @+node:bob.20110119123023.7405: *3* __init__
     def __init__(self, glue, hierarchyLink=False, *args, **kargs):
         """:Parameters:
             - `glue`: glue object owning this
@@ -619,21 +639,22 @@ class linkItem(QtWidgets.QGraphicsItemGroup):  # type:ignore
 
         self.head.setPen(QtGui.QPen(Qt.NoPen))
         self.addToGroup(self.head)
-    #@+node:bob.20110119123023.7406: *3* mousePressEvent
+
+    # @+node:bob.20110119123023.7406: *3* mousePressEvent
     def mousePressEvent(self, event):
         QtWidgets.QGraphicsItemGroup.mousePressEvent(self, event)
         self.glue.pressLink(self, event)
-    #@+node:bob.20110119123023.7407: *3* setLine
-    def setLine(self, x0, y0, x1, y1, hierarchyLink=False):
 
+    # @+node:bob.20110119123023.7407: *3* setLine
+    def setLine(self, x0, y0, x1, y1, hierarchyLink=False):
         self.line.setLine(x0, y0, x1, y1)
 
-        x, y = x1 - (x1 - x0) / 3., y1 - (y1 - y0) / 3.
+        x, y = x1 - (x1 - x0) / 3.0, y1 - (y1 - y0) / 3.0
 
         if not hierarchyLink:
-            r = 12.
+            r = 12.0
         else:
-            r = 6.
+            r = 6.0
 
         a = atan2(y1 - y0, x1 - x0)
         w = 2.79252680
@@ -644,14 +665,17 @@ class linkItem(QtWidgets.QGraphicsItemGroup):  # type:ignore
             # QtCore.QPointF(x, y),
         ]
         self.head.setPolygon(QtGui.QPolygonF(pts))
-    #@-others
-#@+node:bob.20110119123023.7408: ** class graphcanvasController
+
+    # @-others
+
+
+# @+node:bob.20110119123023.7408: ** class graphcanvasController
 class graphcanvasController:
     """Display and edit links in leo"""
-    #@+others
-    #@+node:bob.20110119123023.7409: *3* __init__ & reloadSettings (graphcanvasController)
-    def __init__(self, c):
 
+    # @+others
+    # @+node:bob.20110119123023.7409: *3* __init__ & reloadSettings (graphcanvasController)
+    def __init__(self, c):
         self.c = c
         self.c.graphcanvasController = self
         self.selectPen = QtGui.QPen(QtGui.QColor(255, 0, 0))
@@ -660,8 +684,8 @@ class graphcanvasController:
         g.registerHandler('headkey2', lambda a, b: self.do_update())
         g.registerHandler("select2", self.onSelect2)
         # g.registerHandler('open2', self.loadLinks)
-            # already missed initial 'open2' because of after-create-leo-frame, so
-            # self.loadLinksInt()
+        # already missed initial 'open2' because of after-create-leo-frame, so
+        # self.loadLinksInt()
         self.initIvars()
         self.reloadSettings()
 
@@ -669,7 +693,8 @@ class graphcanvasController:
         c = self.c
         c.registerReloadSettings(self)
         self.graph_manual_layout = c.config.getBool('graph-manual-layout', default=False)
-    #@+node:bob.20110119123023.7410: *3* initIvars
+
+    # @+node:bob.20110119123023.7410: *3* initIvars
     def initIvars(self):
         """initialize, called by __init__ and clear"""
         self.node = {}  # item to vnode map
@@ -681,9 +706,9 @@ class graphcanvasController:
         self.lastNodeItem = None
         self.internal_select = False
         # avoid selection of a @graph node on the graph triggering onSelect2
-    #@+node:tbrown.20110122085529.15402: *3* layouts
-    def layouts(self):
 
+    # @+node:tbrown.20110122085529.15402: *3* layouts
+    def layouts(self):
         if pygraphviz:
             return [
                 ('PyGraphViz:', lambda: None),
@@ -701,12 +726,11 @@ class graphcanvasController:
                 ('circo', lambda: self.layout('circo')),
                 ('osage', lambda: self.layout('osage')),
                 ('sfdp', lambda: self.layout('sfdp')),
-        ]
+            ]
         return [('install pygraphviz or pydot for layouts', lambda: None)]
 
-    #@+node:tbrown.20110122085529.15403: *3* layout
+    # @+node:tbrown.20110122085529.15403: *3* layout
     def layout(self, type_):
-
         if pygraphviz:
             G = pygraphviz.AGraph(strict=False, directed=True)
             if type_ == 'dot LR':
@@ -726,7 +750,7 @@ class graphcanvasController:
                 G.add_edge(
                     (from_, from_.gnx),
                     (to, to.gnx),
-            )
+                )
             elif pydot:
                 G.add_edge(pydot.Edge(from_.gnx, to.gnx))
 
@@ -772,9 +796,9 @@ class graphcanvasController:
         self.center_graph()
         # self.ui.canvasView.centerOn(self.ui.canvas.sceneRect().center())
         # self.ui.canvasView.fitInView(self.ui.canvas.sceneRect(), Qt.KeepAspectRatio)
-    #@+node:bob.20110119133133.3353: *3* loadGraph
-    def loadGraph(self, what='node', create=True, pnt=None):
 
+    # @+node:bob.20110119133133.3353: *3* loadGraph
+    def loadGraph(self, what='node', create=True, pnt=None):
         if what == 'sibs':
             collection = self.c.currentPosition().self_and_siblings()
         elif what == 'recur':
@@ -785,7 +809,6 @@ class graphcanvasController:
             collection = what
 
         for pos in collection:
-
             try:
                 node = pos.v
             except AttributeError:
@@ -854,9 +877,9 @@ class graphcanvasController:
         if what == 'node' and collection[0].v in self.nodeItem:
             # then select it
             self.releaseNode(self.nodeItem[collection[0].v])
-    #@+node:bob.20110119123023.7412: *3* loadLinked
-    def loadLinked(self, what='linked'):
 
+    # @+node:bob.20110119123023.7412: *3* loadLinked
+    def loadLinked(self, what='linked'):
         blc = getattr(self.c, 'backlinkController')
         if not blc:
             return
@@ -875,7 +898,8 @@ class graphcanvasController:
             if not linked or what != 'all':
                 # none added, or doing just one round
                 break
-    #@+node:bob.20110119123023.7413: *3* addLinkItem
+
+    # @+node:bob.20110119123023.7413: *3* addLinkItem
     def addLinkItem(self, from_, to, hierarchyLink=False):
         if from_ not in self.nodeItem:
             return
@@ -896,9 +920,9 @@ class graphcanvasController:
             self.hierarchyLink[li] = key
 
         self.ui.canvas.addItem(li)
-    #@+node:bob.20110119123023.7414: *3* setLinkItem
-    def setLinkItem(self, li, from_, to, hierarchyLink=False):
 
+    # @+node:bob.20110119123023.7414: *3* setLinkItem
+    def setLinkItem(self, li, from_, to, hierarchyLink=False):
         fromSize = self.nodeItem[from_].size()
         toSize = self.nodeItem[to].size()
 
@@ -907,8 +931,10 @@ class graphcanvasController:
             from_.u['_bklnk']['y'] + fromSize.height() / 2 + self.nodeItem[from_].iconVPos,
             to.u['_bklnk']['x'] + toSize.width() / 2,
             to.u['_bklnk']['y'] + toSize.height() / 2 + self.nodeItem[to].iconVPos,
-            hierarchyLink)
-    #@+node:bob.20110127092345.6036: *3* newPos
+            hierarchyLink,
+        )
+
+    # @+node:bob.20110127092345.6036: *3* newPos
     def newPos(self, nodeItem, event):
         """nodeItem is telling us it has a new position
 
@@ -935,7 +961,8 @@ class graphcanvasController:
         for child in node.children:
             if (node, child) in self.hierarchyLinkItem:
                 self.setLinkItem(self.hierarchyLinkItem[(node, child)], node, child)
-    #@+node:bob.20110119123023.7416: *3* releaseNode
+
+    # @+node:bob.20110119123023.7416: *3* releaseNode
     def releaseNode(self, nodeItem, event=None):
         """nodeItem is telling us it has a new position"""
 
@@ -944,15 +971,10 @@ class graphcanvasController:
 
         # text only node needs pen used to indicate selection removed
         lastNode = self.lastNodeItem
-        if (lastNode and
-            not isinstance(lastNode, nodeNone) and
-            not isinstance(lastNode, nodeImage)
-        ):
+        if lastNode and not isinstance(lastNode, nodeNone) and not isinstance(lastNode, nodeImage):
             lastNode.bg.setPen(QtGui.QPen(Qt.NoPen))
 
-        if (not isinstance(nodeItem, nodeNone) and
-             not isinstance(nodeItem, nodeImage)
-        ):
+        if not isinstance(nodeItem, nodeNone) and not isinstance(nodeItem, nodeImage):
             nodeItem.bg.setPen(self.selectPen)
 
         oldItem = self.lastNodeItem
@@ -973,7 +995,8 @@ class graphcanvasController:
                 blc.vlink(self.node[oldItem], self.node[nodeItem])
                 # blc will call our do_update(), so in retaliation...
                 blc.updateTabInt()
-    #@+node:bob.20110119123023.7417: *3* newNode
+
+    # @+node:bob.20110119123023.7417: *3* newNode
     def newNode(self, pnt):
         nn = self.c.currentPosition().insertAfter()
         nn.setHeadString('node')
@@ -981,7 +1004,7 @@ class graphcanvasController:
         self.c.redraw()
         self.loadGraph(pnt=pnt)
 
-    #@+node:bob.20110119123023.7418: *3* pressLink (graphcanvas.py)
+    # @+node:bob.20110119123023.7418: *3* pressLink (graphcanvas.py)
     def pressLink(self, linkItem, event):
         """nodeItem is telling us it was clicked"""
         blc = getattr(self.c, 'backlinkController')
@@ -1005,9 +1028,9 @@ class graphcanvasController:
         blc.updateTabInt()
 
         print('done')
-    #@+node:bob.20110119123023.7419: *3* unLoad
-    def unLoad(self):
 
+    # @+node:bob.20110119123023.7419: *3* unLoad
+    def unLoad(self):
         if not self.lastNodeItem:
             return
         node = self.node[self.lastNodeItem]
@@ -1032,9 +1055,9 @@ class graphcanvasController:
         del self.node[self.lastNodeItem]
 
         self.lastNodeItem = None
-    #@+node:bob.20110119123023.7420: *3* clear
-    def clear(self):
 
+    # @+node:bob.20110119123023.7420: *3* clear
+    def clear(self):
         for i in self.node:
             self.ui.canvas.removeItem(i)
         for i in self.link:
@@ -1045,7 +1068,8 @@ class graphcanvasController:
         self.initIvars()
 
         self.ui.reset_zoom()
-    #@+node:bob.20110119123023.7421: *3* do_update
+
+    # @+node:bob.20110119123023.7421: *3* do_update
     def do_update(self, adjust=True):
         """rescan name, links, extent"""
 
@@ -1080,7 +1104,8 @@ class graphcanvasController:
 
         if adjust:
             self.ui.canvasView.setSceneRect(self.ui.canvas.sceneRect().adjusted(-50, -50, 50, 50))
-    #@+node:bob.20110119123023.7422: *3* goto
+
+    # @+node:bob.20110119123023.7422: *3* goto
     def goto(self):
         """make outline select node"""
         if not self.lastNodeItem:
@@ -1090,15 +1115,14 @@ class graphcanvasController:
         if self.c.positionExists(p):
             self.internal_select = True
             self.c.selectPosition(p)
-    #@+node:tbrown.20110205084504.15370: *3* scale_centers
-    def scale_centers(self, direction):
 
+    # @+node:tbrown.20110205084504.15370: *3* scale_centers
+    def scale_centers(self, direction):
         direction = 0.9 if direction < 0 else 1.1
 
         minx = maxx = miny = maxy = None
 
         for i in self.nodeItem:
-
             if i.u['_bklnk']['x'] < minx or minx is None:
                 minx = i.u['_bklnk']['x']
             if i.u['_bklnk']['x'] > maxx or maxx is None:
@@ -1108,15 +1132,14 @@ class graphcanvasController:
             if i.u['_bklnk']['y'] > maxy or maxy is None:
                 maxy = i.u['_bklnk']['y']
 
-        midx = (minx + maxx) / 2.
-        midy = (miny + maxy) / 2.
+        midx = (minx + maxx) / 2.0
+        midy = (miny + maxy) / 2.0
 
         bbox = self.ui.canvas.itemsBoundingRect()
         midx = bbox.center().x()
         midy = bbox.center().y()
 
         for i in self.nodeItem:
-
             i.u['_bklnk']['x'] = midx + (i.u['_bklnk']['x'] - midx) * direction
             i.u['_bklnk']['y'] = midy + (i.u['_bklnk']['y'] - midy) * direction
             self.nodeItem[i].setPos(i.u['_bklnk']['x'], i.u['_bklnk']['y'])
@@ -1125,10 +1148,10 @@ class graphcanvasController:
         self.do_update()
 
         self.center_graph()
-    #@+node:tbrown.20110205084504.19507: *3* center_graph
+
+    # @+node:tbrown.20110205084504.19507: *3* center_graph
     def center_graph(self):
-        """scale and center current scene, and add space around it for movement
-        """
+        """scale and center current scene, and add space around it for movement"""
 
         # scale and center current scene
         bbox = self.ui.canvas.itemsBoundingRect()
@@ -1148,9 +1171,9 @@ class graphcanvasController:
 
         self.ui.canvas.setSceneRect(bbox)
         self.ui.canvasView.updateSceneRect(bbox)
-    #@+node:tbrown.20110407091036.17535: *3* setNode
-    def setNode(self, node_class):
 
+    # @+node:tbrown.20110407091036.17535: *3* setNode
+    def setNode(self, node_class):
         if not self.lastNodeItem:
             return
         node = self.node[self.lastNodeItem]
@@ -1162,12 +1185,12 @@ class graphcanvasController:
         self.loadGraph()
 
         self.releaseNode(self.nodeItem[node])
-    #@+node:bob.20110120111825.3352: *3* MY_IMPLEMENTATION
-    #@+others
-    #@+node:bob.20110121113659.3412: *4* Events
-    #@+node:bob.20110120173002.3405: *5* onSelect2
-    def onSelect2(self, tag, keywords):
 
+    # @+node:bob.20110120111825.3352: *3* MY_IMPLEMENTATION
+    # @+others
+    # @+node:bob.20110121113659.3412: *4* Events
+    # @+node:bob.20110120173002.3405: *5* onSelect2
+    def onSelect2(self, tag, keywords):
         """Shows the UNL in the status line whenever a node gets selected."""
 
         if self.internal_select:
@@ -1193,10 +1216,10 @@ class graphcanvasController:
 
         if c.p.v in self.nodeItem and self.ui.UI.chkTrack.isChecked():
             self.locateNode()
-    #@+node:bob.20110121113659.3414: *4* Node Management
-    #@+node:bob.20110119123023.7411: *5* locateNode
-    def locateNode(self):
 
+    # @+node:bob.20110121113659.3414: *4* Node Management
+    # @+node:bob.20110119123023.7411: *5* locateNode
+    def locateNode(self):
         node, item = self.nodeitemForPos()
 
         if not item:
@@ -1210,9 +1233,9 @@ class graphcanvasController:
         self.loadGraph()
 
         self.releaseNode(item)  # fake click on node to select
-    #@+node:tbrown.20110122085529.15388: *5* itemForPos
-    def nodeitemForPos(self, pos=None):
 
+    # @+node:tbrown.20110122085529.15388: *5* itemForPos
+    def nodeitemForPos(self, pos=None):
         if not pos:
             pos = self.c.currentPosition()
 
@@ -1220,9 +1243,9 @@ class graphcanvasController:
             return pos.v, None
 
         return pos.v, self.nodeItem[pos.v]
-    #@+node:bob.20110120111825.3354: *5* resetNode
-    def resetNode(self):
 
+    # @+node:bob.20110120111825.3354: *5* resetNode
+    def resetNode(self):
         if not self.lastNodeItem:
             return
         node = self.node[self.lastNodeItem]
@@ -1240,9 +1263,9 @@ class graphcanvasController:
         del node.u['_bklnk']
 
         self.unLoad()
-    #@+node:bob.20110202125047.4170: *5* exportGraph
-    def exportGraph(self):
 
+    # @+node:bob.20110202125047.4170: *5* exportGraph
+    def exportGraph(self):
         image = QtGui.QImage(2048, 1536, QtGui.QImage.Format_ARGB32_Premultiplied)
         painter = QtGui.QPainter(image)
         self.ui.canvas.render(painter)
@@ -1253,10 +1276,10 @@ class graphcanvasController:
         )
         if filepath:
             image.save(filepath)
-    #@+node:bob.20110121113659.3413: *4* Formatting
-    #@+node:bob.20110120111825.3356: *5* setColor
-    def setColor(self):
 
+    # @+node:bob.20110121113659.3413: *4* Formatting
+    # @+node:bob.20110120111825.3356: *5* setColor
+    def setColor(self):
         if self.lastNodeItem not in self.node:
             return
         node = self.node[self.lastNodeItem]
@@ -1276,9 +1299,9 @@ class graphcanvasController:
 
         self.releaseNode(item)  # reselect
         self.c.redraw()  # update color of node in the tree too
-    #@+node:bob.20110120111825.3358: *5* setTextColor
-    def setTextColor(self):
 
+    # @+node:bob.20110120111825.3358: *5* setTextColor
+    def setTextColor(self):
         if self.lastNodeItem not in self.node:
             return
         node = self.node[self.lastNodeItem]
@@ -1298,9 +1321,9 @@ class graphcanvasController:
 
         self.releaseNode(item)  # reselect
         self.c.redraw()  # update color of node in the tree too
-    #@+node:bob.20110120111825.3360: *5* clearFormatting
-    def clearFormatting(self):
 
+    # @+node:bob.20110120111825.3360: *5* clearFormatting
+    def clearFormatting(self):
         if self.lastNodeItem not in self.node:
             return
         node = self.node[self.lastNodeItem]
@@ -1316,9 +1339,12 @@ class graphcanvasController:
             del node.u['_bklnk']['tcolor']
         self.releaseNode(self.nodeItem[node])
         self.c.redraw()  # update color of node in the tree too
-    #@-others
-    #@-others
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+
+    # @-others
+    # @-others
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

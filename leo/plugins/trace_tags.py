@@ -1,10 +1,14 @@
-#@+leo-ver=5-thin
-#@+node:edream.110203113231.738: * @file ../plugins/trace_tags.py
-""" Trace most common hooks, but not key, drag or idle hooks."""
+# @+leo-ver=5-thin
+# @+node:edream.110203113231.738: * @file ../plugins/trace_tags.py
+"""Trace most common hooks, but not key, drag or idle hooks."""
+
 from leo.core import leoGlobals as g
+
 tagCount = 0
-#@+others
-#@+node:ekr.20050303073056.1: ** init
+
+
+# @+others
+# @+node:ekr.20050303073056.1: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = not g.unitTesting
@@ -12,19 +16,28 @@ def init():
         g.registerHandler("all", trace_tags)
         g.plugin_signon(__name__)
     return ok
-#@+node:edream.110203113231.739: ** trace_tags (trace_tags.py)
+
+
+# @+node:edream.110203113231.739: ** trace_tags (trace_tags.py)
 def trace_tags(tag, keywords):
     global tagCount
     brief = True
     tagCount += 1  # Always count the hook.
     # List of hooks to suppress.
     if tag in (
-        'bodykey1', 'bodykey2', 'dragging1', 'dragging2',
-        'headkey1', 'headkey2',
+        'bodykey1',
+        'bodykey2',
+        'dragging1',
+        'dragging2',
+        'headkey1',
+        'headkey2',
         'idle',
         # 'after-redraw-outline', 'redraw-entire-outline',
-        'draw-outline-text-box', 'draw-outline-icon',
-        'draw-outline-node', 'draw-outline-box', 'draw-sub-outline',
+        'draw-outline-text-box',
+        'draw-outline-icon',
+        'draw-outline-node',
+        'draw-outline-box',
+        'draw-sub-outline',
     ):
         return
     # Almost all tags have both c and v keys in the keywords dict.
@@ -49,7 +62,9 @@ def trace_tags(tag, keywords):
         for key, value in keys:
             g.pr(tagCount, tag, key, value)
         g.pr('')
-#@-others
-#@@language python
-#@@tabwidth -4
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @-leo

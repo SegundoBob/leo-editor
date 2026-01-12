@@ -1,6 +1,7 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20210904064440.2: * @file ../unittests/plugins/test_importers.py
+# @+leo-ver=5-thin
+# @+node:ekr.20210904064440.2: * @file ../unittests/plugins/test_importers.py
 """Tests of leo/plugins/importers"""
+
 import glob
 import importlib
 import textwrap
@@ -15,8 +16,10 @@ import leo.plugins.importers.coffeescript as coffeescript
 import leo.plugins.importers.javascript as javascript
 import leo.plugins.importers.markdown as markdown
 import leo.plugins.importers.otl as otl
-#@+others
-#@+node:ekr.20210904064440.3: ** class BaseTestImporter(LeoUnitTest)
+
+
+# @+others
+# @+node:ekr.20210904064440.3: ** class BaseTestImporter(LeoUnitTest)
 class BaseTestImporter(LeoUnitTest):
     """The base class for tests of leoImport.py"""
 
@@ -26,8 +29,8 @@ class BaseTestImporter(LeoUnitTest):
         super().setUp()
         g.app.loadManager.createAllImporterData()
 
-    #@+others
-    #@+node:ekr.20230526135305.1: *3* BaseTestImporter.check_outline
+    # @+others
+    # @+node:ekr.20230526135305.1: *3* BaseTestImporter.check_outline
     def check_outline(self, p: Position, expected: tuple) -> None:
         """
         BaseTestImporter.check_outline.
@@ -63,12 +66,13 @@ class BaseTestImporter(LeoUnitTest):
             if True:  # Usually a great trace.
                 # Dump the expected results, as in LeoUnitTest.dump_tree.
                 print('Expected results')
-                for (level, headline, body) in expected:
+                for level, headline, body in expected:
                     print('')
                     print('level:', level, headline)
                     g.printObj(g.splitLines(body))
             raise
-    #@+node:ekr.20220809054555.1: *3* BaseTestImporter.check_round_trip
+
+    # @+node:ekr.20220809054555.1: *3* BaseTestImporter.check_round_trip
     def check_round_trip(self, p: Position, s: str, strict: bool = True) -> None:
         """Assert that p's outline is equivalent to s."""
         c = self.c
@@ -84,9 +88,13 @@ class BaseTestImporter(LeoUnitTest):
         if s_lines != result_lines:
             g.trace('FAIL', g.caller(2))
             g.printObj([f"{i:<4} {z}" for i, z in enumerate(s_lines)], tag=f"expected: {p.h}")
-            g.printObj([f"{i:<4} {z}" for i, z in enumerate(result_lines)], tag=f"results: {p.h}")
+            g.printObj(
+                [f"{i:<4} {z}" for i, z in enumerate(result_lines)],
+                tag=f"results: {p.h}",
+            )
         self.assertEqual(s_lines, result_lines)
-    #@+node:ekr.20211108044605.1: *3* BaseTestImporter.compute_unit_test_kind
+
+    # @+node:ekr.20211108044605.1: *3* BaseTestImporter.compute_unit_test_kind
     def compute_unit_test_kind(self, ext: str) -> str:
         """Return kind from the given extension."""
         aClass = g.app.classDispatchDict.get(ext)
@@ -105,15 +113,16 @@ class BaseTestImporter(LeoUnitTest):
                 if d2.get(z) == aClass:
                     return z  # pragma: no cover
         return '@file'
-    #@+node:ekr.20230527075112.1: *3* BaseTestImporter.new_round_trip_test
-    def new_round_trip_test(self, s: str, expected_s: str = None, strict: bool = True) -> None:
 
+    # @+node:ekr.20230527075112.1: *3* BaseTestImporter.new_round_trip_test
+    def new_round_trip_test(self, s: str, expected_s: str = None, strict: bool = True) -> None:
         if not expected_s:  # Leo 6.8.7.
             # Define the *strict* expected results.
             expected_s = textwrap.dedent(s).strip() + '\n'
         p = self.run_test(s)
         self.check_round_trip(p, expected_s, strict=strict)
-    #@+node:ekr.20230526124600.1: *3* BaseTestImporter.new_run_test
+
+    # @+node:ekr.20230526124600.1: *3* BaseTestImporter.new_run_test
     def new_run_test(self, s: str, expected_results: tuple, *, check: bool = True) -> None:
         """
         Run a unit test of an import scanner,
@@ -135,7 +144,7 @@ class BaseTestImporter(LeoUnitTest):
         test_s = textwrap.dedent(s).lstrip()
 
         # Leo 6.8.7:
-        c.importCommands.createOutline(parent.copy(), ext, test_s, treeType= '@clean')
+        c.importCommands.createOutline(parent.copy(), ext, test_s, treeType='@clean')
 
         if check:
             # Dump the actual results on failure and raise AssertionError.
@@ -143,7 +152,8 @@ class BaseTestImporter(LeoUnitTest):
         else:
             # Just dump the tree.
             self.dump_tree(p, tag='Actual results...')
-    #@+node:ekr.20211127042843.1: *3* BaseTestImporter.run_test
+
+    # @+node:ekr.20211127042843.1: *3* BaseTestImporter.run_test
     def run_test(self, s: str) -> Position:
         """
         Run a unit test of an import scanner,
@@ -165,12 +175,14 @@ class BaseTestImporter(LeoUnitTest):
         test_s = textwrap.dedent(s).strip() + '\n'
         c.importCommands.createOutline(parent.copy(), ext, test_s)
         return parent
-    #@-others
-#@+node:ekr.20211108052633.1: ** class TestAtAuto (BaseTestImporter)
-class TestAtAuto(BaseTestImporter):
 
-    #@+others
-    #@+node:ekr.20210904065459.122: *3* TestAtAuto.test_importers_can_be_imported
+    # @-others
+
+
+# @+node:ekr.20211108052633.1: ** class TestAtAuto (BaseTestImporter)
+class TestAtAuto(BaseTestImporter):
+    # @+others
+    # @+node:ekr.20210904065459.122: *3* TestAtAuto.test_importers_can_be_imported
     def test_importers_can_be_imported(self):
         path = g.finalize_join(g.app.loadDir, '..', 'plugins', 'importers')
         assert g.os_path_exists(path), repr(path)
@@ -179,16 +191,17 @@ class TestAtAuto(BaseTestImporter):
             sfn = g.shortFileName(fn)
             m = importlib.import_module('leo.plugins.importers.%s' % sfn[:-3])
             assert m
-    #@-others
-#@+node:ekr.20211108062025.1: ** class TestC (BaseTestImporter)
-class TestC(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108062025.1: ** class TestC (BaseTestImporter)
+class TestC(BaseTestImporter):
     ext = '.c'
 
-    #@+others
-    #@+node:ekr.20210904065459.3: *3* TestC.test_c_class_1
+    # @+others
+    # @+node:ekr.20210904065459.3: *3* TestC.test_c_class_1
     def test_c_class_1(self):
-
         s = """
             class cTestClass1 {
 
@@ -202,33 +215,30 @@ class TestC(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language c\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language c\n@tabwidth -4\n',
             ),
-            (1, 'class cTestClass1',
+            (
+                1,
+                'class cTestClass1',
                 'class cTestClass1 {\n'
                 '\n'  # Leo 6.8.7
                 '    @others\n'
-                '}\n'
+                '}\n',
             ),
-            (2, 'func foo',
-                'int foo (int a) {\n'
-                '    a = 2 ;\n'
-                '}\n'
-                '\n'  # Leo 6.8.7
+            (
+                2,
+                'func foo',
+                'int foo (int a) {\n    a = 2 ;\n}\n\n',  # Leo 6.8.7
             ),
-            (2, 'func bar',
-                'char bar (float c) {\n'
-                '    ;\n'
-                '}\n'
-            ),
+            (2, 'func bar', 'char bar (float c) {\n    ;\n}\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.4: *3* TestC.test_class_underindented_line
-    def test_class_underindented_line(self):
 
+    # @+node:ekr.20210904065459.4: *3* TestC.test_class_underindented_line
+    def test_class_underindented_line(self):
         s = """
             class cTestClass1 {
 
@@ -245,36 +255,34 @@ class TestC(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language c\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language c\n@tabwidth -4\n',
             ),
-            (1, 'class cTestClass1',
+            (
+                1,
+                'class cTestClass1',
                 'class cTestClass1 {\n'
                 '\n'  # Leo 6.8.7
                 '@others\n'
-                '}\n'
+                '}\n',
             ),
-            (2, 'func foo',
-                '    int foo (int a) {\n'
-                '// an underindented line.\n'
-                '        a = 2 ;\n'
-                '    }\n'
-                '\n'  # Leo 6.8.7
+            (
+                2,
+                'func foo',
+                '    int foo (int a) {\n// an underindented line.\n        a = 2 ;\n    }\n\n',  # Leo 6.8.7
             ),
-            (2, 'func bar',
-                '    // This should go with the next function.\n'
-                '\n'
-                '    char bar (float c) {\n'
-                '        ;\n'
-                '    }\n'
+            (
+                2,
+                'func bar',
+                '    // This should go with the next function.\n\n    char bar (float c) {\n        ;\n    }\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.5: *3* TestC.test_open_curly_bracket_on_next_line
-    def test_open_curly_bracket_on_next_line(self):
 
+    # @+node:ekr.20210904065459.5: *3* TestC.test_open_curly_bracket_on_next_line
+    def test_open_curly_bracket_on_next_line(self):
         s = """
             void
             aaa::bbb::doit(awk* b)
@@ -289,31 +297,26 @@ class TestC(BaseTestImporter):
             } // comment
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language c\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language c\n@tabwidth -4\n',
             ),
-            (1, 'func doit',
-                'void\n'
-                'aaa::bbb::doit(awk* b)\n'
-                '{\n'
-                '    assert(false);\n'
-                '}\n'
-                '\n'  # Leo 6.8.7
+            (
+                1,
+                'func doit',
+                'void\naaa::bbb::doit(awk* b)\n{\n    assert(false);\n}\n\n',  # Leo 6.8.7
             ),
-            (1, 'func dothat',
-                'bool\n'
-                'aaa::bbb::dothat(xyz *b) // trailing comment.\n'
-                '{\n'
-                '    return true;\n'
-                '} // comment\n'
+            (
+                1,
+                'func dothat',
+                'bool\naaa::bbb::dothat(xyz *b) // trailing comment.\n{\n    return true;\n} // comment\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.10: *3* TestC.test_extern
-    def test_extern(self):
 
+    # @+node:ekr.20210904065459.10: *3* TestC.test_extern
+    def test_extern(self):
         s = """
             extern "C"
             {
@@ -323,7 +326,9 @@ class TestC(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 'extern "C"\n'
                 '{\n'
                 '#include "stuff.h"\n'
@@ -331,14 +336,13 @@ class TestC(BaseTestImporter):
                 '#include "that.h"\n'
                 '}\n'
                 '@language c\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
         )
         self.new_run_test(s, expected_results)
 
-    #@+node:ekr.20210904065459.8: *3* TestC.test_old_style_decl_1
+    # @+node:ekr.20210904065459.8: *3* TestC.test_old_style_decl_1
     def test_old_style_decl_1(self):
-
         s = """
             static void
             ReleaseCharSet(cset)
@@ -351,7 +355,9 @@ class TestC(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 'static void\n'
                 'ReleaseCharSet(cset)\n'
                 '    CharSet *cset;\n'
@@ -362,14 +368,13 @@ class TestC(BaseTestImporter):
                 '    }\n'
                 '}\n'
                 '@language c\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
         )
         self.new_run_test(s, expected_results)
 
-    #@+node:ekr.20210904065459.9: *3* TestC.test_old_style_decl_2
+    # @+node:ekr.20210904065459.9: *3* TestC.test_old_style_decl_2
     def test_old_style_decl_2(self):
-
         s = """
             Tcl_Obj *
             Tcl_NewLongObj(longValue)
@@ -380,7 +385,9 @@ class TestC(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 'Tcl_Obj *\n'
                 'Tcl_NewLongObj(longValue)\n'
                 '    register long longValue; /* Long integer used to initialize the\n'
@@ -389,13 +396,13 @@ class TestC(BaseTestImporter):
                 '    return Tcl_DbNewLongObj(longValue, "unknown", 0);\n'
                 '}\n'
                 '@language c\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20220812232648.1: *3* TestC.test_template
-    def test_template(self):
 
+    # @+node:ekr.20220812232648.1: *3* TestC.test_template
+    def test_template(self):
         s = """
             template <class T>
             T GetMax (T a, T b) {
@@ -405,24 +412,26 @@ class TestC(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language c\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language c\n@tabwidth -4\n',
             ),
-            (1, 'func GetMax',
-                    'template <class T>\n'
-                    'T GetMax (T a, T b) {\n'
-                    '  T result;\n'
-                    '  result = (a>b)? a : b;\n'
-                    '  return (result);\n'
-                    '}\n'
+            (
+                1,
+                'func GetMax',
+                'template <class T>\n'
+                'T GetMax (T a, T b) {\n'
+                '  T result;\n'
+                '  result = (a>b)? a : b;\n'
+                '  return (result);\n'
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230510161130.1: *3* TestC.test_delete_comments_and_strings
-    def test_delete_comments_and_strings(self):
 
+    # @+node:ekr.20230510161130.1: *3* TestC.test_delete_comments_and_strings
+    def test_delete_comments_and_strings(self):
         importer = C_Importer(self.c)
 
         lines = [
@@ -433,20 +442,20 @@ class TestC(BaseTestImporter):
             '/*\n',
             '    if (1): a = 2\n',
             '*/\n',
-            'i = 2\n'
+            'i = 2\n',
         ]
 
         # The expected lines preserve characters except for line comments.
         expected_lines = [
             'i = 1\n',
             's =\n',
-          # 'if (/* a */1)\n',
+            # 'if (/* a */1)\n',
             'if (       1)\n',
             '    ;\n',
             '\n',
             '\n',
             '\n',
-            'i = 2\n'
+            'i = 2\n',
         ]
         result = importer.delete_comments_and_strings(lines)
         if 0:
@@ -455,12 +464,13 @@ class TestC(BaseTestImporter):
             g.printObj(expected_lines, tag='expected')
         self.assertEqual(len(result), len(expected_lines))
         self.assertEqual(result, expected_lines)
-    #@+node:ekr.20230511044054.1: *3* TestC.test_find_blocks
-    def test_find_blocks(self):
 
+    # @+node:ekr.20230511044054.1: *3* TestC.test_find_blocks
+    def test_find_blocks(self):
         importer = C_Importer(self.c)
-        lines = g.splitLines(self.prep(
-        """
+        lines = g.splitLines(
+            self.prep(
+                """
 
             # enable-trace
 
@@ -489,7 +499,9 @@ class TestC(BaseTestImporter):
                     }
                 }
             }
-        """))
+        """
+            )
+        )
         importer.lines = lines
         importer.guide_lines = importer.make_guide_lines(lines)
         blocks = importer.find_blocks(i1=0, i2=len(lines))
@@ -499,7 +511,8 @@ class TestC(BaseTestImporter):
         for block in blocks:
             result_lines.extend(lines[block.start : block.end])
         self.assertEqual(lines, result_lines)
-    #@+node:ekr.20230607164309.1: *3* TestC.test_struct
+
+    # @+node:ekr.20230607164309.1: *3* TestC.test_struct
     def test_struct(self):
         # From codon sources.
         s = """
@@ -515,37 +528,40 @@ class TestC(BaseTestImporter):
         };
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language c\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language c\n@tabwidth -4\n',
             ),
-            (1, 'struct SrcInfoAttribute',
-                 'struct SrcInfoAttribute : public Attribute {\n'
-                 '  static const std::string AttributeName;\n'
-                 '\n'
-                 '  std::unique_ptr<Attribute> clone(util::CloneVisitor &cv) const override {\n'
-                 '    return std::make_unique<SrcInfoAttribute>(*this);\n'
-                 '  }\n'
-                 '\n'
-                 'private:\n'
-                 '  std::ostream &doFormat(std::ostream &os) const override { return os << info; }\n'
-                 '};\n'
+            (
+                1,
+                'struct SrcInfoAttribute',
+                'struct SrcInfoAttribute : public Attribute {\n'
+                '  static const std::string AttributeName;\n'
+                '\n'
+                '  std::unique_ptr<Attribute> clone(util::CloneVisitor &cv) const override {\n'
+                '    return std::make_unique<SrcInfoAttribute>(*this);\n'
+                '  }\n'
+                '\n'
+                'private:\n'
+                '  std::ostream &doFormat(std::ostream &os) const override { return os << info; }\n'
+                '};\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108063520.1: ** class TestCoffeescript (BaseTestImporter)
-class TestCoffeescript(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108063520.1: ** class TestCoffeescript (BaseTestImporter)
+class TestCoffeescript(BaseTestImporter):
     ext = '.coffee'
 
-    #@+others
-    #@+node:ekr.20210904065459.15: *3* TestCoffeescript.test_coffeescript_1
-    #@@tabwidth -2 # Required
+    # @+others
+    # @+node:ekr.20210904065459.15: *3* TestCoffeescript.test_coffeescript_1
+    # @@tabwidth -2 # Required
 
     def test_coffeescript_1(self):
-
         s = r"""
         # Js2coffee relies on Narcissus's parser.
 
@@ -562,33 +578,36 @@ class TestCoffeescript(BaseTestImporter):
         """
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    "# Js2coffee relies on Narcissus's parser.\n"
-                    '\n'
-                    "{parser} = @Narcissus or require('./narcissus_packed')\n"
-                    '\n'
-                    '# Main entry point\n'
-                    '\n'
-                    '@others\n'
-                    '@language coffeescript\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                "# Js2coffee relies on Narcissus's parser.\n"
+                '\n'
+                "{parser} = @Narcissus or require('./narcissus_packed')\n"
+                '\n'
+                '# Main entry point\n'
+                '\n'
+                '@others\n'
+                '@language coffeescript\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'function: buildCoffee',
-                    'buildCoffee = (str) ->\n'
-                    "  str  = str.replace /\\r/g, ''\n"
-                    '  str += "\\n"\n'
-                    '\n'
-                    '  builder    = new Builder\n'
-                    '  scriptNode = parser.parse str\n'
+            (
+                1,
+                'function: buildCoffee',
+                'buildCoffee = (str) ->\n'
+                "  str  = str.replace /\\r/g, ''\n"
+                '  str += "\\n"\n'
+                '\n'
+                '  builder    = new Builder\n'
+                '  scriptNode = parser.parse str\n',
             ),
         )
         self.new_run_test(s, expected_results)
 
-    #@+node:ekr.20210904065459.16: *3* TestCoffeescript.test_coffeescript_2
-    #@@tabwidth -2 # Required
+    # @+node:ekr.20210904065459.16: *3* TestCoffeescript.test_coffeescript_2
+    # @@tabwidth -2 # Required
 
     def test_coffeescript_2(self):
-
         s = """
           class Builder
             constructor: ->
@@ -621,20 +640,20 @@ class TestCoffeescript(BaseTestImporter):
 
           """
         expected_results = (
-          (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language coffeescript\n'
-                '@tabwidth -4\n'
-          ),
-          (1, 'class Builder',
-                'class Builder\n'
-                '  @others\n'
-          ),
-          (2, 'Builder.constructor',
-              'constructor: ->\n'
-              '  @transformer = new Transformer\n'
-          ),
-          (2, 'Builder.build',
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language coffeescript\n@tabwidth -4\n',
+            ),
+            (1, 'class Builder', 'class Builder\n  @others\n'),
+            (
+                2,
+                'Builder.constructor',
+                'constructor: ->\n  @transformer = new Transformer\n',
+            ),
+            (
+                2,
+                'Builder.build',
                 '# `build()`\n'
                 '\n'
                 'build: (args...) ->\n'
@@ -647,47 +666,54 @@ class TestCoffeescript(BaseTestImporter):
                 '  fn  = (@[name] or @other)\n'
                 '  out = fn.apply(this, args)\n'
                 '\n'
-                '  if node.parenthesized then paren(out) else out\n'
-          ),
-          (2, 'Builder.transform',
-              '# `transform()`\n'
-              '\n'
-              'transform: (args...) ->\n'
-              '  @transformer.transform.apply(@transformer, args)\n'
-              '\n'  # Leo 6.8.7
-          ),
-          (2, 'Builder.body',
-              '# `body()`\n'
-              '\n'
-              'body: (node, opts={}) ->\n'
-              '  str = @build(node, opts)\n'
-              '  str = blockTrim(str)\n'
-              '  str = unshift(str)\n'
-              '  if str.length > 0 then str else ""\n'
-              '\n'  # Leo 6.8.7
-          ),
+                '  if node.parenthesized then paren(out) else out\n',
+            ),
+            (
+                2,
+                'Builder.transform',
+                '# `transform()`\n'
+                '\n'
+                'transform: (args...) ->\n'
+                '  @transformer.transform.apply(@transformer, args)\n'
+                '\n',  # Leo 6.8.7
+            ),
+            (
+                2,
+                'Builder.body',
+                '# `body()`\n'
+                '\n'
+                'body: (node, opts={}) ->\n'
+                '  str = @build(node, opts)\n'
+                '  str = blockTrim(str)\n'
+                '  str = unshift(str)\n'
+                '  if str.length > 0 then str else ""\n'
+                '\n',  # Leo 6.8.7
+            ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20211108085023.1: *3* TestCoffeescript.test_get_leading_indent
+
+    # @+node:ekr.20211108085023.1: *3* TestCoffeescript.test_get_leading_indent
     def test_get_leading_indent(self):
         c = self.c
         importer = coffeescript.Coffeescript_Importer(c)
         self.assertEqual(importer.single_comment, '#')
-    #@+node:ekr.20210904065459.126: *3* TestCoffeescript.test_scan_line
+
+    # @+node:ekr.20210904065459.126: *3* TestCoffeescript.test_scan_line
     def test_scan_line(self):
         c = self.c
         x = coffeescript.Coffeescript_Importer(c)
         self.assertEqual(x.single_comment, '#')
-    #@-others
-#@+node:ekr.20211108062958.1: ** class TestCSharp (BaseTestImporter)
-class TestCSharp(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108062958.1: ** class TestCSharp (BaseTestImporter)
+class TestCSharp(BaseTestImporter):
     ext = '.c#'
 
-    #@+others
-    #@+node:ekr.20210904065459.12: *3* TestCSharp.test_namespace_indent
+    # @+others
+    # @+node:ekr.20210904065459.12: *3* TestCSharp.test_namespace_indent
     def test_namespace_indent(self):
-
         s = """
             namespace {
                 class cTestClass1 {
@@ -696,23 +722,21 @@ class TestCSharp(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language csharp\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language csharp\n@tabwidth -4\n',
             ),
-            (1, 'namespace unnamed namespace',
-                    'namespace {\n'
-                    '    class cTestClass1 {\n'
-                    '        ;\n'
-                    '    }\n'
-                    '}\n'
+            (
+                1,
+                'namespace unnamed namespace',
+                'namespace {\n    class cTestClass1 {\n        ;\n    }\n}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.13: *3* TestCSharp.test_namespace_no_indent
-    def test_namespace_no_indent(self):
 
+    # @+node:ekr.20210904065459.13: *3* TestCSharp.test_namespace_no_indent
+    def test_namespace_no_indent(self):
         s = """
             namespace {
             class cTestClass1 {
@@ -721,29 +745,29 @@ class TestCSharp(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language csharp\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language csharp\n@tabwidth -4\n',
             ),
-            (1, 'namespace unnamed namespace',
-                    'namespace {\n'
-                    'class cTestClass1 {\n'
-                    '    ;\n'
-                    '}\n'
-                    '}\n'
+            (
+                1,
+                'namespace unnamed namespace',
+                'namespace {\nclass cTestClass1 {\n    ;\n}\n}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108063908.1: ** class TestCython (BaseTestImporter)
+
+    # @-others
+
+
+# @+node:ekr.20211108063908.1: ** class TestCython (BaseTestImporter)
 class TestCython(BaseTestImporter):
-
     ext = '.pyx'
-    #@+others
-    #@+node:ekr.20210904065459.11: *3* TestCython.test_cython_importer
-    def test_cython_importer(self):
 
+    # @+others
+    # @+node:ekr.20210904065459.11: *3* TestCython.test_cython_importer
+    def test_cython_importer(self):
         s = '''
             from libc.math cimport pow
 
@@ -760,40 +784,43 @@ class TestCython(BaseTestImporter):
                 print("({} ^ 2) + {} = {}".format(x, x, square_and_add(x)))
         '''
         expected_results = (
-            (0, '',  # check_outlines ignores the first headline.
-                    'from libc.math cimport pow\n'
-                    '\n'
-                    '@others\n'
-                    '@language cython\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # check_outlines ignores the first headline.
+                'from libc.math cimport pow\n\n@others\n@language cython\n@tabwidth -4\n',
             ),
-            (1, 'cdef double square_and_add',
-                    'cdef double square_and_add (double x):\n'
-                    '    """Compute x^2 + x as double.\n'
-                    '\n'
-                    '    This is a cdef function that can be called from within\n'
-                    '    a Cython program, but not from Python.\n'
-                    '    """\n'
-                    '    return pow(x, 2.0) + x\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'cdef double square_and_add',
+                'cdef double square_and_add (double x):\n'
+                '    """Compute x^2 + x as double.\n'
+                '\n'
+                '    This is a cdef function that can be called from within\n'
+                '    a Cython program, but not from Python.\n'
+                '    """\n'
+                '    return pow(x, 2.0) + x\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'cpdef print_result',
-                    'cpdef print_result (double x):\n'
-                    '    """This is a cpdef function that can be called from Python."""\n'
-                    '    print("({} ^ 2) + {} = {}".format(x, x, square_and_add(x)))\n'
+            (
+                1,
+                'cpdef print_result',
+                'cpdef print_result (double x):\n'
+                '    """This is a cpdef function that can be called from Python."""\n'
+                '    print("({} ^ 2) + {} = {}".format(x, x, square_and_add(x)))\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108064115.1: ** class TestDart (BaseTestImporter)
-class TestDart(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108064115.1: ** class TestDart (BaseTestImporter)
+class TestDart(BaseTestImporter):
     ext = '.dart'
 
-    #@+others
-    #@+node:ekr.20210904065459.17: *3* TestDart.test_hello_world
+    # @+others
+    # @+node:ekr.20210904065459.17: *3* TestDart.test_hello_world
     def test_hello_world(self):
-
         s = r'''
         var name = 'Bob';
 
@@ -813,45 +840,47 @@ class TestDart(BaseTestImporter):
         }
         '''
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language dart\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language dart\n@tabwidth -4\n',
             ),
-            (1, 'function hello',
-                    "var name = 'Bob';\n"
-                    '\n'
-                    'hello() {\n'
-                    "  print('Hello, World!');\n"
-                    '}\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'function hello',
+                "var name = 'Bob';\n\nhello() {\n  print('Hello, World!');\n}\n\n",  # Leo 6.8.7
             ),
-            (1, 'function printNumber',
-                    '// Define a function.\n'
-                    'printNumber(num aNumber) {\n'
-                    "  print('The number is $aNumber.'); // Print to console.\n"
-                    '}\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'function printNumber',
+                '// Define a function.\n'
+                'printNumber(num aNumber) {\n'
+                "  print('The number is $aNumber.'); // Print to console.\n"
+                '}\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'function void main',
-                    '// This is where the app starts executing.\n'
-                    'void main() {\n'
-                    '  var number = 42; // Declare and initialize a variable.\n'
-                    '  printNumber(number); // Call a function.\n'
-                    '}\n'
+            (
+                1,
+                'function void main',
+                '// This is where the app starts executing.\n'
+                'void main() {\n'
+                '  var number = 42; // Declare and initialize a variable.\n'
+                '  printNumber(number); // Call a function.\n'
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108065659.1: ** class TestElisp (BaseTestImporter)
-class TestElisp(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108065659.1: ** class TestElisp (BaseTestImporter)
+class TestElisp(BaseTestImporter):
     ext = '.el'
 
-    #@+others
-    #@+node:ekr.20210904065459.18: *3* TestElisp.test_elisp_1
+    # @+others
+    # @+node:ekr.20210904065459.18: *3* TestElisp.test_elisp_1
     def test_elisp_1(self):
-
         # Add weird assignments for coverage.
         s = """
             ;;; comment
@@ -868,33 +897,33 @@ class TestElisp(BaseTestImporter):
                (+ 1 2 3))
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language lisp\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language lisp\n@tabwidth -4\n',
             ),
-            (1, 'defun abc',
-                    ';;; comment\n'
-                    ';;; continue\n'
-                    ';;;\n'
-                    '\n'
-                    '(defun abc (a b)\n'
-                    '   (assn a "abc")\n'
-                    '   (assn b \\x)\n'
-                    '   (+ 1 2 3))\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'defun abc',
+                ';;; comment\n'
+                ';;; continue\n'
+                ';;;\n'
+                '\n'
+                '(defun abc (a b)\n'
+                '   (assn a "abc")\n'
+                '   (assn b \\x)\n'
+                '   (+ 1 2 3))\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'defun cde',
-                    '; comment re cde\n'
-                    '(defun cde (a b)\n'
-                    '   (+ 1 2 3))\n'
-            ),
+            (1, 'defun cde', '; comment re cde\n(defun cde (a b)\n   (+ 1 2 3))\n'),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108064432.1: ** class TestHtml (BaseTestImporter)
-class TestHtml(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108064432.1: ** class TestHtml (BaseTestImporter)
+class TestHtml(BaseTestImporter):
     ext = '.htm'
 
     def setUp(self):
@@ -906,10 +935,9 @@ class TestHtml(BaseTestImporter):
         c.config.settingsDict = settingsDict
         c.config.set(c.p, 'data', 'import-html-tags', tags_list, warn=True)
 
-    #@+others
-    #@+node:ekr.20210904065459.28: *3* TestHtml.test_brython
+    # @+others
+    # @+node:ekr.20210904065459.28: *3* TestHtml.test_brython
     def test_brython(self):
-
         # https://github.com/leo-editor/leo-editor/issues/479
         s = '''
             <!DOCTYPE html>
@@ -931,42 +959,41 @@ class TestHtml(BaseTestImporter):
         '''
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language html\n@tabwidth -4\n',
             ),
-            (1, '<html>',
-                    '<!DOCTYPE html>\n'
-                    '<html>\n'
-                    '@others\n'
-                    '</html>\n'
+            (1, '<html>', '<!DOCTYPE html>\n<html>\n@others\n</html>\n'),
+            (
+                2,
+                '<head>',
+                '<head>\n'
+                '@others\n'
+                '<title>Brython</title>\n'
+                '<link rel="stylesheet" href="Brython_files/doc_brython.css">\n'
+                '</head>\n',
             ),
-            (2, '<head>',
-                    '<head>\n'
-                    '@others\n'
-                    '<title>Brython</title>\n'
-                    '<link rel="stylesheet" href="Brython_files/doc_brython.css">\n'
-                    '</head>\n'
+            (
+                3,
+                '<script type="text/python3">',
+                '<script type="text/python3">\n'
+                '"""Code for the header menu"""\n'
+                'from browser import document as doc\n'
+                'from browser import html\n'
+                'import header\n'
+                '</script>\n',
             ),
-            (3, '<script type="text/python3">',
-                    '<script type="text/python3">\n'
-                    '"""Code for the header menu"""\n'
-                    'from browser import document as doc\n'
-                    'from browser import html\n'
-                    'import header\n'
-                    '</script>\n'
-            ),
-            (2, """<body onload="brython({debug:1, cache:'none'})">""",
-                    '<body onload="brython({debug:1, cache:\'none\'})">\n'
-                    '<!-- comment -->\n'
-                    '</body>\n'
+            (
+                2,
+                """<body onload="brython({debug:1, cache:'none'})">""",
+                '<body onload="brython({debug:1, cache:\'none\'})">\n<!-- comment -->\n</body>\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.25: *3* TestHtml.test_improperly_nested_tags
-    def test_improperly_nested_tags(self):
 
+    # @+node:ekr.20210904065459.25: *3* TestHtml.test_improperly_nested_tags
+    def test_improperly_nested_tags(self):
         s = """
             <body>
 
@@ -984,38 +1011,34 @@ class TestHtml(BaseTestImporter):
             </body>
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language html\n@tabwidth -4\n',
             ),
-            (1, '<body>',
-                    '<body>\n'
-                    '@others\n'
-                    '</p> <!-- orphan -->\n'
-                    '\n'
-                    '</body>\n'
+            (1, '<body>', '<body>\n@others\n</p> <!-- orphan -->\n\n</body>\n'),
+            (
+                2,
+                '<div id="D666">Paragraph</p> <!-- P1 -->',
+                '\n'  # Leo 6.8.7
+                '<!-- OOPS: the div and p elements not properly nested.-->\n'
+                '<!-- OOPS: this table got generated twice. -->\n'
+                '\n'
+                '<p id="P1">\n'
+                '<div id="D666">Paragraph</p> <!-- P1 -->\n'
+                '@others\n'
+                '</div>\n',
             ),
-            (2, '<div id="D666">Paragraph</p> <!-- P1 -->',
-                    '\n'  # Leo 6.8.7
-                    '<!-- OOPS: the div and p elements not properly nested.-->\n'
-                    '<!-- OOPS: this table got generated twice. -->\n'
-                    '\n'
-                    '<p id="P1">\n'
-                    '<div id="D666">Paragraph</p> <!-- P1 -->\n'
-                    '@others\n'
-                    '</div>\n'
-            ),
-            (3, '<TABLE id="T666"></TABLE></p> <!-- P2 -->',
-                    '<p id="P2">\n'
-                    '\n'
-                    '<TABLE id="T666"></TABLE></p> <!-- P2 -->\n'
+            (
+                3,
+                '<TABLE id="T666"></TABLE></p> <!-- P2 -->',
+                '<p id="P2">\n\n<TABLE id="T666"></TABLE></p> <!-- P2 -->\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.26: *3* TestHtml.test_improperly_terminated_tags
-    def test_improperly_terminated_tags(self):
 
+    # @+node:ekr.20210904065459.26: *3* TestHtml.test_improperly_terminated_tags
+    def test_improperly_terminated_tags(self):
         s = '''
             <html>
 
@@ -1031,30 +1054,28 @@ class TestHtml(BaseTestImporter):
             <!-- oops: missing tags. -->
         '''
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '    <!-- oops: link elements terminated two different ways -->\n'
-                    '    <link id="L1">\n'
-                    '    <link id="L2">\n'
-                    '    <link id="L3" />\n'
-                    "    <link id='L4' />\n"
-                    '\n'
-                    '    <title>TITLE</title>\n'
-                    '\n'
-                    '<!-- oops: missing tags. -->\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n'
+                '    <!-- oops: link elements terminated two different ways -->\n'
+                '    <link id="L1">\n'
+                '    <link id="L2">\n'
+                '    <link id="L3" />\n'
+                "    <link id='L4' />\n"
+                '\n'
+                '    <title>TITLE</title>\n'
+                '\n'
+                '<!-- oops: missing tags. -->\n'
+                '@language html\n'
+                '@tabwidth -4\n',
             ),
-            (1, '<head>',
-                    '<html>\n'
-                    '\n'
-                    '<head>\n'
-            ),
+            (1, '<head>', '<html>\n\n<head>\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.19: *3* TestHtml.test_mixed_case_tags
-    def test_mixed_case_tags(self):
 
+    # @+node:ekr.20210904065459.19: *3* TestHtml.test_mixed_case_tags
+    def test_mixed_case_tags(self):
         s = """
             <html>
             <HEAD>
@@ -1066,34 +1087,30 @@ class TestHtml(BaseTestImporter):
             </HTML>
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language html\n@tabwidth -4\n',
             ),
-            (1, '<html>',
-                    '<html>\n'
-                    '@others\n'
-                    '</HTML>\n'
+            (1, '<html>', '<html>\n@others\n</HTML>\n'),
+            (
+                2,
+                '<HEAD>',  # We don't want to lowercase *all* headlines.
+                '<HEAD>\n    <title>Bodystring</title>\n</head>\n',
             ),
-            (2, '<HEAD>',  # We don't want to lowercase *all* headlines.
-                    '<HEAD>\n'
-                    '    <title>Bodystring</title>\n'
-                    '</head>\n'
-            ),
-            (2, '<body class="bodystring">',
-                    '<body class="bodystring">\n'
-                    "<div id='bodydisplay'></div>\n"
-                    '</body>\n'
+            (
+                2,
+                '<body class="bodystring">',
+                '<body class="bodystring">\n<div id=\'bodydisplay\'></div>\n</body>\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.20: *3* TestHtml.test_multiple_tags_on_a_line
-    def test_multiple_tags_on_a_line(self):
 
+    # @+node:ekr.20210904065459.20: *3* TestHtml.test_multiple_tags_on_a_line
+    def test_multiple_tags_on_a_line(self):
         # pylint: disable=line-too-long
-        #@+<< define s >>
-        #@+node:ekr.20230126042723.1: *4* << define s >>
+        # @+<< define s >>
+        # @+node:ekr.20230126042723.1: *4* << define s >>
         # tags that cause nodes: html, head, body, div, table, nodeA, nodeB
         # NOT: tr, td, tbody, etc.
         s = """
@@ -1149,12 +1166,12 @@ class TestHtml(BaseTestImporter):
             </body>
             </html>
         """
-        #@-<< define s >>
+        # @-<< define s >>
 
         # xml.preprocess_lines inserts several newlines.
         # Modify the expected result accordingly.
-        expected_s = (s
-            .replace('Form 25 Filings</a></td>\n', 'Form 25 Filings</a>\n</td>\n')
+        expected_s = (
+            s.replace('Form 25 Filings</a></td>\n', 'Form 25 Filings</a>\n</td>\n')
             .replace('</tr><tr>\n', '</tr>\n<tr>\n')
             .replace('</tr></table>\n', '</tr>\n</table>\n')
             .replace('<td class="blutopgrabot"><a', '<td class="blutopgrabot">\n<a')
@@ -1162,9 +1179,8 @@ class TestHtml(BaseTestImporter):
         )
         self.new_round_trip_test(s, expected_s, strict=False)
 
-    #@+node:ekr.20210904065459.21: *3* TestHtml.test_multple_node_completed_on_a_line
+    # @+node:ekr.20210904065459.21: *3* TestHtml.test_multple_node_completed_on_a_line
     def test_multple_node_completed_on_a_line(self):
-
         s = """
             <!-- tags that start nodes: html,body,head,div,table,nodeA,nodeB -->
             <html><head>headline</head><body>body</body></html>
@@ -1173,23 +1189,21 @@ class TestHtml(BaseTestImporter):
         # xml.preprocess_lines inserts a newline between </head> and <body>.
 
         expected_results = (
-            (0, '',
-                    '@others\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
-            ),
-            (1, '<html>',
-                    '<!-- tags that start nodes: html,body,head,div,table,nodeA,nodeB -->\n'
-                    '<html>\n'
-                    '<head>headline</head>\n'
-                    '<body>body</body>\n'
-                    '</html>\n'
+            (0, '', '@others\n@language html\n@tabwidth -4\n'),
+            (
+                1,
+                '<html>',
+                '<!-- tags that start nodes: html,body,head,div,table,nodeA,nodeB -->\n'
+                '<html>\n'
+                '<head>headline</head>\n'
+                '<body>body</body>\n'
+                '</html>\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.22: *3* TestHtml.test_multple_node_starts_on_a_line
-    def test_multple_node_starts_on_a_line(self):
 
+    # @+node:ekr.20210904065459.22: *3* TestHtml.test_multple_node_starts_on_a_line
+    def test_multple_node_starts_on_a_line(self):
         s = '''
             <html>
             <head>headline</head>
@@ -1197,22 +1211,21 @@ class TestHtml(BaseTestImporter):
             </html>
         '''
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language html\n@tabwidth -4\n',
             ),
-            (1, '<html>',
-                    '<html>\n'
-                    '<head>headline</head>\n'
-                    '<body>body</body>\n'
-                    '</html>\n'
+            (
+                1,
+                '<html>',
+                '<html>\n<head>headline</head>\n<body>body</body>\n</html>\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230123162321.1: *3* TestHtml.test_structure
-    def test_structure(self):
 
+    # @+node:ekr.20230123162321.1: *3* TestHtml.test_structure
+    def test_structure(self):
         s = '''
             <html>
             <head>
@@ -1228,41 +1241,21 @@ class TestHtml(BaseTestImporter):
             </html>
         '''
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language html\n@tabwidth -4\n',
             ),
-            (1, '<html>',
-                    '<html>\n'
-                    '@others\n'
-                    '</html>\n'
-            ),
-            (2, '<head>',
-                    '<head>\n'
-                    '    <meta charset="utf-8" />\n'
-                    '</head>\n'
-            ),
-            (2, '<body>',
-                     '<body>\n'
-                     '    @others\n'
-                     '</body>\n'
-            ),
-            (3, '<div class="a">',
-                     '<div class="a">\n'
-                     '    @others\n'
-                     '</div>\n'
-            ),
-            (4, '<div class="a-1">',
-                     '<div class="a-1">\n'
-                     '    some text\n'
-                     '</div>\n'
-            ),
+            (1, '<html>', '<html>\n@others\n</html>\n'),
+            (2, '<head>', '<head>\n    <meta charset="utf-8" />\n</head>\n'),
+            (2, '<body>', '<body>\n    @others\n</body>\n'),
+            (3, '<div class="a">', '<div class="a">\n    @others\n</div>\n'),
+            (4, '<div class="a-1">', '<div class="a-1">\n    some text\n</div>\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.23: *3* TestHtml.test_underindented_comment
-    def test_underindented_comment(self):
 
+    # @+node:ekr.20210904065459.23: *3* TestHtml.test_underindented_comment
+    def test_underindented_comment(self):
         s = r'''
             <table cellspacing="0" cellpadding="0" width="600" border="0">
                 <!-- The indentation of this element causes the problem. -->
@@ -1275,33 +1268,31 @@ class TestHtml(BaseTestImporter):
             <p>Paragraph</p>
         '''
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '<p>Paragraph</p>\n'
-                    '@language html\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n<p>Paragraph</p>\n@language html\n@tabwidth -4\n',
             ),
-            (1, '<table cellspacing="0" cellpadding="0" width="600" border="0">',
-                    '<table cellspacing="0" cellpadding="0" width="600" border="0">\n'
-                    '@others\n'
-                    '</table>\n'
+            (
+                1,
+                '<table cellspacing="0" cellpadding="0" width="600" border="0">',
+                '<table cellspacing="0" cellpadding="0" width="600" border="0">\n@others\n</table>\n',
             ),
-            (2, '<table>',
-                    '    <!-- The indentation of this element causes the problem. -->\n'
-                    '    <table>\n'
-                    '@others\n'
-                    '</table>\n'
+            (
+                2,
+                '<table>',
+                '    <!-- The indentation of this element causes the problem. -->\n    <table>\n@others\n</table>\n',
             ),
-            (3, '<div align="center">',
-                    '<div align="center">\n'
-                    '<iframe src="http://www.amex.com/index.jsp"</iframe>\n'
-                    '</div>\n'
+            (
+                3,
+                '<div align="center">',
+                '<div align="center">\n<iframe src="http://www.amex.com/index.jsp"</iframe>\n</div>\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.24: *3* TestHtml.test_uppercase_tags
-    def test_uppercase_tags(self):
 
+    # @+node:ekr.20210904065459.24: *3* TestHtml.test_uppercase_tags
+    def test_uppercase_tags(self):
         s = """
             <HTML>
             <HEAD>
@@ -1313,36 +1304,30 @@ class TestHtml(BaseTestImporter):
             </HTML>
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language html\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language html\n@tabwidth -4\n',
             ),
-            (1, '<HTML>',
-                    '<HTML>\n'
-                    '@others\n'
-                    '</HTML>\n'
-            ),
-            (2, '<HEAD>',
-                    '<HEAD>\n'
-                    '    <title>Bodystring</title>\n'
-                    '</HEAD>\n'
-            ),
-            (2, "<BODY class='bodystring'>",
-                    "<BODY class='bodystring'>\n"
-                    "<DIV id='bodydisplay'></DIV>\n"
-                    '</BODY>\n'
+            (1, '<HTML>', '<HTML>\n@others\n</HTML>\n'),
+            (2, '<HEAD>', '<HEAD>\n    <title>Bodystring</title>\n</HEAD>\n'),
+            (
+                2,
+                "<BODY class='bodystring'>",
+                "<BODY class='bodystring'>\n<DIV id='bodydisplay'></DIV>\n</BODY>\n",
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108062617.1: ** class TestIni (BaseTestImporter)
-class TestIni(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108062617.1: ** class TestIni (BaseTestImporter)
+class TestIni(BaseTestImporter):
     ext = '.ini'
 
-    #@+others
-    #@+node:ekr.20220813054952.1: *3* TestIni.test_1
+    # @+others
+    # @+node:ekr.20220813054952.1: *3* TestIni.test_1
     def test_1(self):
         # This is just a coverage test for the importer.
         s = """
@@ -1400,16 +1385,17 @@ class TestIni(BaseTestImporter):
 
         """.replace('AT', '@')
         self.run_test(s)
-    #@-others
-#@+node:ekr.20211108065916.1: ** class TestJava (BaseTestImporter)
-class TestJava(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108065916.1: ** class TestJava (BaseTestImporter)
+class TestJava(BaseTestImporter):
     ext = '.java'
 
-    #@+others
-    #@+node:ekr.20210904065459.30: *3* TestJava.test_from_AdminPermission_java
+    # @+others
+    # @+node:ekr.20210904065459.30: *3* TestJava.test_from_AdminPermission_java
     def test_from_AdminPermission_java(self):
-
         ### To do: allow '{' on following line.
         s = """
             /**
@@ -1426,33 +1412,37 @@ class TestJava(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language java\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language java\n@tabwidth -4\n',
             ),
-            (1, 'class AdminPermission',
-                    '/**\n'
-                    " * Indicates the caller's authority to perform lifecycle operations on\n"
-                    ' */\n'
-                    '\n'
-                    'public final class AdminPermission extends BasicPermission {\n'
-                    '    @others\n'
-                    '}\n'
+            (
+                1,
+                'class AdminPermission',
+                '/**\n'
+                " * Indicates the caller's authority to perform lifecycle operations on\n"
+                ' */\n'
+                '\n'
+                'public final class AdminPermission extends BasicPermission {\n'
+                '    @others\n'
+                '}\n',
             ),
-            (2, 'func AdminPermission',
-                    '/**\n'
-                    ' * Creates a new <tt>AdminPermission</tt> object.\n'
-                    ' */\n'
-                    'public AdminPermission() {\n'
-                    '    super("AdminPermission");\n'
-                    '}\n'
+            (
+                2,
+                'func AdminPermission',
+                '/**\n'
+                ' * Creates a new <tt>AdminPermission</tt> object.\n'
+                ' */\n'
+                'public AdminPermission() {\n'
+                '    super("AdminPermission");\n'
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.31: *3* TestJava.test_from_BundleException_java
-    def test_from_BundleException_java(self):
 
+    # @+node:ekr.20210904065459.31: *3* TestJava.test_from_BundleException_java
+    def test_from_BundleException_java(self):
         s = """
             /*
              * $Header: /cvs/leo/test/unitTest.leo,v 1.247 2008/02/14 14:59:04 edream Exp $
@@ -1476,42 +1466,47 @@ class TestJava(BaseTestImporter):
 
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 '@others\n'
                 '\n'  # Leo 6.8.7
                 '@language java\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'class BundleException',
-                    '/*\n'
-                    ' * $Header: /cvs/leo/test/unitTest.leo,v 1.247 2008/02/14 14:59:04 edream Exp $\n'
-                    ' *\n'
-                    ' */\n'
-                    '\n'
-                    'package org.osgi.framework;\n'
-                    '\n'
-                    'public class BundleException extends Exception {\n'
-                    '    @others\n'
-                    '}\n'
+            (
+                1,
+                'class BundleException',
+                '/*\n'
+                ' * $Header: /cvs/leo/test/unitTest.leo,v 1.247 2008/02/14 14:59:04 edream Exp $\n'
+                ' *\n'
+                ' */\n'
+                '\n'
+                'package org.osgi.framework;\n'
+                '\n'
+                'public class BundleException extends Exception {\n'
+                '    @others\n'
+                '}\n',
             ),
-            (2, 'func BundleException',
-                    'static final long serialVersionUID = 3571095144220455665L;\n'
-                    '/**\n'
-                    ' * Nested exception.\n'
-                    ' */\n'
-                    'private Throwable cause;\n'
-                    '\n'
-                    'public BundleException(String msg, Throwable cause) {\n'
-                    '    super(msg);\n'
-                    '    this.cause = cause;\n'
-                    '}\n'
+            (
+                2,
+                'func BundleException',
+                'static final long serialVersionUID = 3571095144220455665L;\n'
+                '/**\n'
+                ' * Nested exception.\n'
+                ' */\n'
+                'private Throwable cause;\n'
+                '\n'
+                'public BundleException(String msg, Throwable cause) {\n'
+                '    super(msg);\n'
+                '    this.cause = cause;\n'
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
 
-    #@+node:ekr.20210904065459.32: *3* TestJava.test_interface_test1
+    # @+node:ekr.20210904065459.32: *3* TestJava.test_interface_test1
     def test_interface_test1(self):
-
         s = """
             interface Bicycle {
                 void changeCadence(int newValue);
@@ -1519,22 +1514,21 @@ class TestJava(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language java\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language java\n@tabwidth -4\n',
             ),
-            (1, 'interface Bicycle',
-                'interface Bicycle {\n'
-                '    void changeCadence(int newValue);\n'
-                '    void changeGear(int newValue);\n'
-                '}\n'
+            (
+                1,
+                'interface Bicycle',
+                'interface Bicycle {\n    void changeCadence(int newValue);\n    void changeGear(int newValue);\n}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.33: *3* TestJava.test_interface_test2
-    def test_interface_test2(self):
 
+    # @+node:ekr.20210904065459.33: *3* TestJava.test_interface_test2
+    def test_interface_test2(self):
         s = """
             interface Bicycle {
             void changeCadence(int newValue);
@@ -1542,27 +1536,27 @@ class TestJava(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language java\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language java\n@tabwidth -4\n',
             ),
-            (1, 'interface Bicycle',
-                'interface Bicycle {\n'
-                'void changeCadence(int newValue);\n'
-                'void changeGear(int newValue);\n'
-                '}\n'
+            (
+                1,
+                'interface Bicycle',
+                'interface Bicycle {\nvoid changeCadence(int newValue);\nvoid changeGear(int newValue);\n}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20231225065750.1: *3* TestJava.test_round_trip
-    def test_round_trip(self):
 
+    # @+node:ekr.20231225065750.1: *3* TestJava.test_round_trip
+    def test_round_trip(self):
         c, root = self.c, self.c.p
         at = c.atFileCommands
-        #@+<< define contents: test_round_trip >>
-        #@+node:ekr.20231225065840.1: *4* << define contents: test_round_trip >>
-        contents = """
+        # @+<< define contents: test_round_trip >>
+        # @+node:ekr.20231225065840.1: *4* << define contents: test_round_trip >>
+        contents = (
+            """
             public class Main {
                 public static void main(String[] args) {
                     myMethod();
@@ -1573,8 +1567,10 @@ class TestJava(BaseTestImporter):
                 }
 
             }
-        """.strip() + '\n'
-        #@-<< define contents: test_round_trip >>
+        """.strip()
+            + '\n'
+        )
+        # @-<< define contents: test_round_trip >>
 
         # Import contents into root's tree.
         importer = Java_Importer(c)
@@ -1596,16 +1592,17 @@ class TestJava(BaseTestImporter):
             g.printObj(expected, tag='expected')
 
         self.assertEqual(results, expected)
-    #@-others
-#@+node:ekr.20211108070310.1: ** class TestJavascript (BaseTestImporter)
-class TestJavascript(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108070310.1: ** class TestJavascript (BaseTestImporter)
+class TestJavascript(BaseTestImporter):
     ext = '.js'
 
-    #@+others
-    #@+node:ekr.20210904065459.35: *3* TestJavascript.test_plain_function
+    # @+others
+    # @+node:ekr.20210904065459.35: *3* TestJavascript.test_plain_function
     def test_plain_function(self):
-
         s = """
             // Restarting
             function restart() {
@@ -1621,29 +1618,31 @@ class TestJavascript(BaseTestImporter):
         """
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language javascript\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language javascript\n@tabwidth -4\n',
             ),
-            (1, 'function restart',
-                    '// Restarting\n'
-                    'function restart() {\n'
-                    '    invokeParamifier(params,"onstart");\n'
-                    '    if(story.isEmpty()) {\n'
-                    '        var tiddlers = store.filterTiddlers(store.getTiddlerText("DefaultTiddlers"));\n'
-                    '        for(var t=0; t<tiddlers.length; t++) {\n'
-                    '            story.displayTiddler("bottom",tiddlers[t].title);\n'
-                    '        }\n'
-                    '    }\n'
-                    '    window.scrollTo(0,0);\n'
-                    '}\n'
+            (
+                1,
+                'function restart',
+                '// Restarting\n'
+                'function restart() {\n'
+                '    invokeParamifier(params,"onstart");\n'
+                '    if(story.isEmpty()) {\n'
+                '        var tiddlers = store.filterTiddlers(store.getTiddlerText("DefaultTiddlers"));\n'
+                '        for(var t=0; t<tiddlers.length; t++) {\n'
+                '            story.displayTiddler("bottom",tiddlers[t].title);\n'
+                '        }\n'
+                '    }\n'
+                '    window.scrollTo(0,0);\n'
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.36: *3* TestJavascript.test_var_equal_function
-    def test_var_equal_function(self):
 
+    # @+node:ekr.20210904065459.36: *3* TestJavascript.test_var_equal_function
+    def test_var_equal_function(self):
         s = """
             var c3 = (function () {
                 "use strict";
@@ -1660,42 +1659,46 @@ class TestJavascript(BaseTestImporter):
         """
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language javascript\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language javascript\n@tabwidth -4\n',
             ),
-            (1, 'function c3',
-                    'var c3 = (function () {\n'
-                    '    @others\n'
-                    '\n'  # Leo 6.8.7
-                    '    return c3;\n'
-                    '}());\n'
+            (
+                1,
+                'function c3',
+                'var c3 = (function () {\n'
+                '    @others\n'
+                '\n'  # Leo 6.8.7
+                '    return c3;\n'
+                '}());\n',
             ),
-            (2, 'function c3.someFunction',
-                    '"use strict";\n'
-                    '\n'
-                    '// Globals\n'
-                    'var c3 = { version: "0.0.1"   };\n'
-                    '\n'
-                    'c3.someFunction = function () {\n'
-                    '    console.log("Just a demo...");\n'
-                    '};\n'
+            (
+                2,
+                'function c3.someFunction',
+                '"use strict";\n'
+                '\n'
+                '// Globals\n'
+                'var c3 = { version: "0.0.1"   };\n'
+                '\n'
+                'c3.someFunction = function () {\n'
+                '    console.log("Just a demo...");\n'
+                '};\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20220814014851.1: *3* TestJavascript.test_comments
-    def test_comments(self):
 
+    # @+node:ekr.20220814014851.1: *3* TestJavascript.test_comments
+    def test_comments(self):
         s = """
             /* Test of multi-line comments.
              * line 2.
              */
         """
         self.new_round_trip_test(s)
-    #@+node:ekr.20210904065459.34: *3* TestJavascript.test_regex
-    def test_regex(self):
 
+    # @+node:ekr.20210904065459.34: *3* TestJavascript.test_regex
+    def test_regex(self):
         s = """
             String.prototype.toJSONString = function() {
                 if(/["\\\\\\x00-\\x1f]/.test(this))
@@ -1705,9 +1708,9 @@ class TestJavascript(BaseTestImporter):
             };
             """
         self.new_round_trip_test(s)
-    #@+node:ekr.20231023061407.1: *3* TestJavascript.test_guide_lines
-    def test_guide_lines(self):
 
+    # @+node:ekr.20231023061407.1: *3* TestJavascript.test_guide_lines
+    def test_guide_lines(self):
         c = self.c
         x = javascript.JS_Importer(c)
 
@@ -1717,18 +1720,19 @@ class TestJavascript(BaseTestImporter):
         guide_lines = x.delete_comments_and_strings(lines)
         line1 = guide_lines[0]
         assert not line1.strip(), repr(line1)
-    #@-others
-#@+node:ekr.20241029091227.1: ** class TestJupytext (BaseTextImporter)
-class TestJupytext(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20241029091227.1: ** class TestJupytext (BaseTextImporter)
+class TestJupytext(BaseTestImporter):
     def setUp(self):
         super().setUp()
         g.app.jupytextManager = JupytextManager()
 
-    #@+others
-    #@+node:ekr.20241029093840.1: *3* TestJupytext.run_jupytext_test
+    # @+others
+    # @+node:ekr.20241029093840.1: *3* TestJupytext.run_jupytext_test
     def run_jupytext_test(self, s: str, expected_results: tuple, brief: bool = False) -> None:
-
         c = self.c
         p = c.p
 
@@ -1750,9 +1754,8 @@ class TestJupytext(BaseTestImporter):
         # g.printObj(test_s, tag='test_s')
         # g.printObj(expected_results, tag='expected_results')
 
-    #@+node:ekr.20241029092043.1: *3* TestJupytext.test_small_file
+    # @+node:ekr.20241029092043.1: *3* TestJupytext.test_small_file
     def test_small_ipynb_file(self):
-
         # Must be in standard form, with a space after '#'.
         s = """\
             # %%
@@ -1779,57 +1782,55 @@ class TestJupytext(BaseTestImporter):
             # %%
         """
         expected_results = (
-            (0, '',  # check_outlines ignores the first headline.
-                    '<< prefix >>\n'
-                    '@others\n'
-                    '@language jupytext\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # check_outlines ignores the first headline.
+                '<< prefix >>\n@others\n@language jupytext\n@tabwidth -4\n',
             ),
-            (1, '<< prefix >>',
-                    '# %%\n'
-                    '# A leading (misleading?) comment.\n'
-                    '# %%\n'
-                    '# ---\n'
-                    '# jupyter:\n'
-                    '#   kernelspec:\n'
-                    '#     display_name: Python 3 (ipykernel)\n'
-                    '#     language: python\n'
-                    '#     name: python3\n'
-                    '# ---\n'
+            (
+                1,
+                '<< prefix >>',
+                '# %%\n'
+                '# A leading (misleading?) comment.\n'
+                '# %%\n'
+                '# ---\n'
+                '# jupyter:\n'
+                '#   kernelspec:\n'
+                '#     display_name: Python 3 (ipykernel)\n'
+                '#     language: python\n'
+                '#     name: python3\n'
+                '# ---\n',
             ),
-            (1, '2 + 666 + 4',
-                    '# %%\n'
-                    '2 + 666 + 4\n'
+            (1, '2 + 666 + 4', '# %%\n2 + 666 + 4\n'),
+            (
+                1,
+                "print('hi changed externally')",
+                '# %%\nprint(\'hi changed externally\')\n',
             ),
-            (1, "print('hi changed externally')",
-                    '# %%\n'
-                    "print('hi changed externally')\n"
+            (
+                1,
+                '# This is a markdown cell',
+                '# %% [markdown]\n# # This is a markdown cell\n\n',
             ),
-            (1, '# This is a markdown cell',
-                    '# %% [markdown]\n'
-                    '# # This is a markdown cell\n'
-                    '\n'
+            (
+                1,
+                '## Another markdown cell',
+                '# %% [markdown]\n# ## Another markdown cell\n\n',
             ),
-            (1, '## Another markdown cell',
-                    '# %% [markdown]\n'
-                    '# ## Another markdown cell\n'
-                    '\n'
-            ),
-            (1, 'Cell 5',
-                    '# %%\n'
-            ),
+            (1, 'Cell 5', '# %%\n'),
         )
         self.run_jupytext_test(s, expected_results)
-    #@-others
-#@+node:ekr.20220816082603.1: ** class TestLua (BaseTestImporter)
-class TestLua(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20220816082603.1: ** class TestLua (BaseTestImporter)
+class TestLua(BaseTestImporter):
     ext = '.lua'
 
-    #@+others
-    #@+node:ekr.20220816082722.1: *3* TestLua.test_1
+    # @+others
+    # @+node:ekr.20220816082722.1: *3* TestLua.test_1
     def test_lua_1(self):
-
         s = """
              function foo (a)
                print("foo", a)
@@ -1851,46 +1852,49 @@ class TestLua(BaseTestImporter):
              print("main", coroutine.resume(co, "x", "y"))
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '\n'  # Leo 6.8.7
-                    'print("main", coroutine.resume(co, 1, 10))\n'
-                    'print("main", coroutine.resume(co, "r"))\n'
-                    'print("main", coroutine.resume(co, "x", "y"))\n'
-                    'print("main", coroutine.resume(co, "x", "y"))\n'
-                    '@language lua\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n'
+                '\n'  # Leo 6.8.7
+                'print("main", coroutine.resume(co, 1, 10))\n'
+                'print("main", coroutine.resume(co, "r"))\n'
+                'print("main", coroutine.resume(co, "x", "y"))\n'
+                'print("main", coroutine.resume(co, "x", "y"))\n'
+                '@language lua\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'function foo',
-                    'function foo (a)\n'
-                    '  print("foo", a)\n'
-                    '  return coroutine.yield(2*a)\n'
-                    'end\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'function foo',
+                'function foo (a)\n  print("foo", a)\n  return coroutine.yield(2*a)\nend\n\n',  # Leo 6.8.7
             ),
-            (1, 'function coroutine.create',
-                    'co = coroutine.create(function (a,b)\n'
-                    '      print("co-body", a, b)\n'
-                    '      local r = foo(a+1)\n'
-                    '      print("co-body", r)\n'
-                    '      local r, s = coroutine.yield(a+b, a-b)\n'
-                    '      print("co-body", r, s)\n'
-                    '      return b, "end"\n'
-                    'end)\n'
+            (
+                1,
+                'function coroutine.create',
+                'co = coroutine.create(function (a,b)\n'
+                '      print("co-body", a, b)\n'
+                '      local r = foo(a+1)\n'
+                '      print("co-body", r)\n'
+                '      local r, s = coroutine.yield(a+b, a-b)\n'
+                '      print("co-body", r, s)\n'
+                '      return b, "end"\n'
+                'end)\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108043230.1: ** class TestMarkdown (BaseTestImporter)
-class TestMarkdown(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108043230.1: ** class TestMarkdown (BaseTestImporter)
+class TestMarkdown(BaseTestImporter):
     ext = '.md'
     treeType = '@auto-md'
 
-    #@+others
-    #@+node:ekr.20210904065459.109: *3* TestMarkdown.test_md_import
+    # @+others
+    # @+node:ekr.20210904065459.109: *3* TestMarkdown.test_md_import
     def test_md_import(self):
-
         # Must be in standard form, with a space after '#'.
         s = """\
             # Top
@@ -1916,40 +1920,27 @@ class TestMarkdown(BaseTestImporter):
             Section 3, line 1
         """
         expected_results = (
-            (0, '',  # check_outlines ignores the first headline.
-                    '@language md\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # check_outlines ignores the first headline.
+                '@language md\n@tabwidth -4\n',
             ),
             (1, 'Top', 'The top section\n\n'),
-            (2, 'Section 1',
-                    'section 1, line 1\n'
-                    'section 1, line 2\n'
-                    '\n'
+            (2, 'Section 1', 'section 1, line 1\nsection 1, line 2\n\n'),
+            (2, 'Section 2', 'section 2, line 1\n\n'),
+            (3, 'Section 2.1', 'section 2.1, line 1\n\n'),
+            (
+                4,
+                'Section 2.1.1',
+                'section 2.2.1 line 1\nThe next section is empty. It must not be deleted.\n\n',
             ),
-            (2, 'Section 2',
-                    'section 2, line 1\n'
-                    '\n'
-            ),
-            (3, 'Section 2.1',
-                    'section 2.1, line 1\n'
-                    '\n'
-            ),
-            (4, 'Section 2.1.1',
-                    'section 2.2.1 line 1\n'
-                    'The next section is empty. It must not be deleted.\n'
-                    '\n'
-            ),
-            (3, 'Section 2.2',
-                    '\n'
-            ),
-            (2, 'Section 3',
-                    'Section 3, line 1\n'
-            ),
+            (3, 'Section 2.2', '\n'),
+            (2, 'Section 3', 'Section 3, line 1\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.110: *3* TestMarkdown.test_md_import_rst_style
-    def test_md_import_rst_style(self):
 
+    # @+node:ekr.20210904065459.110: *3* TestMarkdown.test_md_import_rst_style
+    def test_md_import_rst_style(self):
         s = """\
             Top
             ====
@@ -1985,50 +1976,27 @@ class TestMarkdown(BaseTestImporter):
             section 3, line 1
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language md\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language md\n@tabwidth -4\n',
             ),
-            (1, 'Top',
-                '\n'
-                'The top section\n'
-                '\n'
+            (1, 'Top', '\nThe top section\n\n'),
+            (
+                2,
+                'Section 1',
+                '\nsection 1, line 1\n-- Not an underline\nsection 1, line 2\n\n',
             ),
-            (2, 'Section 1',
-                '\n'
-                'section 1, line 1\n'
-                '-- Not an underline\n'
-                'section 1, line 2\n'
-                '\n'
-            ),
-            (2, 'Section 2',
-                '\n'
-                'section 2, line 1\n'
-                '\n'
-            ),
-            (3, 'Section 2.1',
-                '\n'
-                'section 2.1, line 1\n'
-                '\n'
-            ),
-            (4, 'Section 2.1.1',
-                '\n'
-                'section 2.2.1 line 1\n'
-                '\n'
-            ),
-            (3, 'Section 2.2',
-                'section 2.2, line 1.\n'
-                '\n'
-            ),
-            (2, 'Section 3',
-                '\n'
-                'section 3, line 1\n'
-            ),
+            (2, 'Section 2', '\nsection 2, line 1\n\n'),
+            (3, 'Section 2.1', '\nsection 2.1, line 1\n\n'),
+            (4, 'Section 2.1.1', '\nsection 2.2.1 line 1\n\n'),
+            (3, 'Section 2.2', 'section 2.2, line 1.\n\n'),
+            (2, 'Section 3', '\nsection 3, line 1\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.111: *3* TestMarkdown.test_markdown_importer_basic
-    def test_markdown_importer_basic(self):
 
+    # @+node:ekr.20210904065459.111: *3* TestMarkdown.test_markdown_importer_basic
+    def test_markdown_importer_basic(self):
         # Must be in standard form, with a space after '#'.
         s = """
             Decl line.
@@ -2047,35 +2015,24 @@ class TestMarkdown(BaseTestImporter):
             # Last header: no text
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language md\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language md\n@tabwidth -4\n',
             ),
-            (1, '!Declarations',
-                'Decl line.\n'
+            (1, '!Declarations', 'Decl line.\n'),
+            (1, 'Header', '\nAfter header text\n\n'),
+            (
+                2,
+                'Subheader',
+                '\nNot an underline\n\n----------------\n\nAfter subheader text\n\n',
             ),
-            (1, 'Header',
-                '\n'
-                'After header text\n'
-                '\n'
-            ),
-            (2, 'Subheader',
-                '\n'
-                'Not an underline\n'
-                '\n'
-                '----------------\n'
-                '\n'
-                'After subheader text\n'
-                '\n'
-            ),
-            (1, 'Last header: no text',
-                ''
-            ),
+            (1, 'Last header: no text', ''),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.112: *3* TestMarkdown.test_markdown_importer_implicit_section
-    def test_markdown_importer_implicit_section(self):
 
+    # @+node:ekr.20210904065459.112: *3* TestMarkdown.test_markdown_importer_implicit_section
+    def test_markdown_importer_implicit_section(self):
         s = """
             Decl line.
             #Header
@@ -2096,38 +2053,21 @@ class TestMarkdown(BaseTestImporter):
             #Last header: no text
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language md\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language md\n@tabwidth -4\n',
             ),
-            (1, '!Declarations',
-                'Decl line.\n'
-            ),
-            (1, 'Header',
-                '\n'
-                'After header text\n'
-                '\n'
-            ),
-            (2, 'Subheader',
-                '\n'
-                'Not an underline\n'
-                '\n'
-                '----------------\n'
-                '\n'
-            ),
-            (1, 'This *should* be a section',
-                '\n'
-                'After subheader text\n'
-                '\n'
-            ),
-            (1, 'Last header: no text',
-                ''
-            ),
+            (1, '!Declarations', 'Decl line.\n'),
+            (1, 'Header', '\nAfter header text\n\n'),
+            (2, 'Subheader', '\nNot an underline\n\n----------------\n\n'),
+            (1, 'This *should* be a section', '\nAfter subheader text\n\n'),
+            (1, 'Last header: no text', ''),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.114: *3* TestMarkdown.test_markdown_github_syntax
-    def test_markdown_github_syntax(self):
 
+    # @+node:ekr.20210904065459.114: *3* TestMarkdown.test_markdown_github_syntax
+    def test_markdown_github_syntax(self):
         # Must be in standard form, with a space after '#'.
         s = """
             Decl line.
@@ -2142,28 +2082,22 @@ class TestMarkdown(BaseTestImporter):
             # Last header
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language md\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language md\n@tabwidth -4\n',
             ),
-            (1, '!Declarations',
-                'Decl line.\n'
+            (1, '!Declarations', 'Decl line.\n'),
+            (
+                1,
+                'Header',
+                '\n```python\nloads.init = {\n    Chloride: 11.5,\n    TotalP: 0.002,\n}\n```\n',
             ),
-            (1, 'Header',
-                '\n'
-                '```python\n'
-                'loads.init = {\n'
-                '    Chloride: 11.5,\n'
-                '    TotalP: 0.002,\n'
-                '}\n'
-                '```\n'
-            ),
-            (1, 'Last header',
-                ''
-            ),
+            (1, 'Last header', ''),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.128: *3* TestMarkdown.test_is_hash
+
+    # @+node:ekr.20210904065459.128: *3* TestMarkdown.test_is_hash
     def test_is_hash(self):
         c = self.c
         x = markdown.Markdown_Importer(c)
@@ -2181,27 +2115,38 @@ class TestMarkdown(BaseTestImporter):
         level3, name = x.is_hash('Not a hash')
         assert level3 is None
         assert name is None
-    #@+node:ekr.20210904065459.129: *3* TestMarkdown.test_is_underline
+
+    # @+node:ekr.20210904065459.129: *3* TestMarkdown.test_is_underline
     def test_is_underline(self):
         c = self.c
         x = markdown.Markdown_Importer(c)
         for line in ('----\n', '-----\n', '====\n', '====\n'):
             got = x.is_underline(line)
             assert got, repr(line)
-        for line in ('-\n', '--\n', '---\n', '==\n', '===\n', '===\n', '==-==\n', 'abc\n'):
+        for line in (
+            '-\n',
+            '--\n',
+            '---\n',
+            '==\n',
+            '===\n',
+            '===\n',
+            '==-==\n',
+            'abc\n',
+        ):
             got = x.is_underline(line)
             assert not got, repr(line)
-    #@-others
-#@+node:ekr.20211108080955.1: ** class TestOrg (BaseTestImporter)
-class TestOrg(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108080955.1: ** class TestOrg (BaseTestImporter)
+class TestOrg(BaseTestImporter):
     ext = '.org'
     treeType = '@auto-org'
 
-    #@+others
-    #@+node:ekr.20210904065459.42: *3* TestOrg.test_1
+    # @+others
+    # @+node:ekr.20210904065459.42: *3* TestOrg.test_1
     def test_1(self):
-
         s = """
             * Section 1
             Sec 1.
@@ -2216,50 +2161,38 @@ class TestOrg(BaseTestImporter):
             Sec 3.1
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language org\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language org\n@tabwidth -4\n',
             ),
-            (1, 'Section 1',
-                    'Sec 1.\n'
-            ),
-            (1, 'Section 2',
-                    'Sec 2.\n'
-            ),
-            (2, 'Section 2-1',
-                    'Sec 2.1\n'
-            ),
-            (3, 'Section 2-1-1',
-                    'Sec 2.1.1\n'
-            ),
-            (1, 'Section 3',
-                    ''
-            ),
-            (2, 'Section 3.1',
-                    'Sec 3.1\n'
-            ),
+            (1, 'Section 1', 'Sec 1.\n'),
+            (1, 'Section 2', 'Sec 2.\n'),
+            (2, 'Section 2-1', 'Sec 2.1\n'),
+            (3, 'Section 2-1-1', 'Sec 2.1.1\n'),
+            (1, 'Section 3', ''),
+            (2, 'Section 3.1', 'Sec 3.1\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.46: *3* TestOrg.test_1074
-    def test_1074(self):
 
+    # @+node:ekr.20210904065459.46: *3* TestOrg.test_1074
+    def test_1074(self):
         s = """
             *  Test
             First line.
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@language org\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language org\n@tabwidth -4\n',
             ),
-            (1, ' Test',
-                    'First line.\n'
-            ),
+            (1, ' Test', 'First line.\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.45: *3* TestOrg.test_552
-    def test_552(self):
 
+    # @+node:ekr.20210904065459.45: *3* TestOrg.test_552
+    def test_552(self):
         s = """
             * Events
               :PROPERTIES:
@@ -2269,26 +2202,19 @@ class TestOrg(BaseTestImporter):
             *** 每周惯例
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@language org\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language org\n@tabwidth -4\n',
             ),
-            (1, 'Events',
-                    '  :PROPERTIES:\n'
-                    '  :CATEGORY: events\n'
-                    '  :END:\n'
-            ),
-            (2, '整理个人生活',
-                    ''
-            ),
-            (3, '每周惯例',
-                    ''
-            ),
+            (1, 'Events', '  :PROPERTIES:\n  :CATEGORY: events\n  :END:\n'),
+            (2, '整理个人生活', ''),
+            (3, '每周惯例', ''),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.44: *3* TestOrg.test_intro
-    def test_intro(self):
 
+    # @+node:ekr.20210904065459.44: *3* TestOrg.test_intro
+    def test_intro(self):
         s = """
             Intro line.
             * Section 1
@@ -2297,22 +2223,18 @@ class TestOrg(BaseTestImporter):
             Sec 2.
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                'Intro line.\n'
-                '@language org\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                'Intro line.\n@language org\n@tabwidth -4\n',
             ),
-            (1, 'Section 1',
-                'Sec 1.\n'
-            ),
-            (1, 'Section 2',
-                'Sec 2.\n'
-            ),
+            (1, 'Section 1', 'Sec 1.\n'),
+            (1, 'Section 2', 'Sec 2.\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.47: *3* TestOrg.test_placeholder
-    def test_placeholder(self):
 
+    # @+node:ekr.20210904065459.47: *3* TestOrg.test_placeholder
+    def test_placeholder(self):
         # insert test for org here.
         s = """
             * Section 1
@@ -2330,38 +2252,27 @@ class TestOrg(BaseTestImporter):
             Sec 3.1
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language org\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language org\n@tabwidth -4\n',
             ),
-            (1, 'Section 1',
-                'Sec 1.\n'
-            ),
-            (1, 'Section 2',
-                'Sec 2.\n'
-            ),
-            (2, 'Section 2-1',
-                'Sec 2.1\n'
-            ),
-            (3, 'Section 2-1-1',
-                'Sec 2.1.1\n'
-            ),
+            (1, 'Section 1', 'Sec 1.\n'),
+            (1, 'Section 2', 'Sec 2.\n'),
+            (2, 'Section 2-1', 'Sec 2.1\n'),
+            (3, 'Section 2-1-1', 'Sec 2.1.1\n'),
             (1, 'Section 3', ''),
             (2, 'placeholder level 2', ''),
             (3, 'placeholder level 3', ''),
             (4, 'placeholder level 4', ''),
             (5, 'placeholder level 5', ''),
-            (6, 'Section 3-1-1-1-1-1',
-                ': Sec 3-1-1-1-1-1\n'
-            ),
-            (2, 'Section 3.1',
-                'Sec 3.1\n'
-            ),
+            (6, 'Section 3-1-1-1-1-1', ': Sec 3-1-1-1-1-1\n'),
+            (2, 'Section 3.1', 'Sec 3.1\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.43: *3* TestOrg.test_tags
-    def test_tags(self):
 
+    # @+node:ekr.20210904065459.43: *3* TestOrg.test_tags
+    def test_tags(self):
         s = """\
             * Section 1 :tag1:
             * Section 2 :tag2:
@@ -2370,29 +2281,32 @@ class TestOrg(BaseTestImporter):
         c = self.c
         # Create the TagController by hand.
         from leo.plugins.nodetags import TagController
+
         c.theTagController = TagController(c)
         # Run the test.
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@language org\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language org\n@tabwidth -4\n',
             ),
             (1, 'Section 1 :tag1:', ''),
             (1, 'Section 2 :tag2:', ''),
             (1, 'Section 3 :tag3:tag4:', ''),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108081327.1: ** class TestOtl (BaseTestImporter)
-class TestOtl(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108081327.1: ** class TestOtl (BaseTestImporter)
+class TestOtl(BaseTestImporter):
     ext = '.otl'
     treeType = '@auto-otl'
 
-    #@+others
-    #@+node:ekr.20210904065459.49: *3* TestOtl.test_otl_1
+    # @+others
+    # @+node:ekr.20210904065459.49: *3* TestOtl.test_otl_1
     def test_otl_1(self):
-
         s = """
             preamble.
             Section 1
@@ -2409,10 +2323,11 @@ class TestOtl(BaseTestImporter):
             : Sec 3.1
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 # 'line in root node\n'
-                '@language otl\n'
-                '@tabwidth -4\n'
+                '@language otl\n@tabwidth -4\n',
             ),
             (1, 'preamble.', ''),
             (1, 'Section 1', 'Sec 1.\n'),
@@ -2423,9 +2338,9 @@ class TestOtl(BaseTestImporter):
             (2, 'Section 3.1', 'Sec 3.1\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20220804040446.1: *3* TestOtl.test_otl_placeholder
-    def test_otl_placeholder(self):
 
+    # @+node:ekr.20220804040446.1: *3* TestOtl.test_otl_placeholder
+    def test_otl_placeholder(self):
         s = """
             Section 1
             : Sec 1.
@@ -2435,9 +2350,10 @@ class TestOtl(BaseTestImporter):
             : Sec 3.
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language otl\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language otl\n@tabwidth -4\n',
             ),
             (1, 'Section 1', 'Sec 1.\n'),
             (1, 'Section 2', 'Sec 2.\n'),
@@ -2445,9 +2361,9 @@ class TestOtl(BaseTestImporter):
             (3, 'Section 3', 'Sec 3.\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.48: *3* TestOtl.test_vim_outline_mode
-    def test_vim_outline_mode(self):
 
+    # @+node:ekr.20210904065459.48: *3* TestOtl.test_vim_outline_mode
+    def test_vim_outline_mode(self):
         c = self.c
         x = otl.Otl_Importer(c)
         pattern = x.otl_node_pattern
@@ -2459,20 +2375,21 @@ class TestOtl(BaseTestImporter):
         for line in table:
             m = pattern.match(line)
             self.assertTrue(m, msg=repr(line))
-    #@-others
-#@+node:ekr.20211108081719.1: ** class TestPascal (BaseTestImporter)
-class TestPascal(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108081719.1: ** class TestPascal (BaseTestImporter)
+class TestPascal(BaseTestImporter):
     ext = '.pas'
 
-    #@+others
-    #@+node:ekr.20210904065459.50: *3* TestPascal.test_delphi_interface
+    # @+others
+    # @+node:ekr.20210904065459.50: *3* TestPascal.test_delphi_interface
     def test_delphi_interface(self):
-
-        #@+<< define s >>
-        #@+node:ekr.20230518071612.1: *4* << define s >>
+        # @+<< define s >>
+        # @+node:ekr.20230518071612.1: *4* << define s >>
         s = self.prep(
-        """
+            """
             unit Unit1;
 
             interface
@@ -2508,66 +2425,73 @@ class TestPascal(BaseTestImporter):
             end;
 
             end. // interface
-        """)
-        #@-<< define s >>
+        """
+        )
+        # @-<< define s >>
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language pascal\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language pascal\n@tabwidth -4\n',
             ),
-            (1, 'unit Unit1',
-                    'unit Unit1;\n'
-                    '\n'
-                    'interface\n'
-                    '\n'
-                    'uses\n'
-                    'Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls,\n'
-                    'Forms,\n'
-                    'Dialogs;\n'
-                    '\n'
-                    'type\n'
-                    'TForm1 = class(TForm)\n'
+            (
+                1,
+                'unit Unit1',
+                'unit Unit1;\n'
+                '\n'
+                'interface\n'
+                '\n'
+                'uses\n'
+                'Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls,\n'
+                'Forms,\n'
+                'Dialogs;\n'
+                '\n'
+                'type\n'
+                'TForm1 = class(TForm)\n',
             ),
-            (1, 'procedure FormCreate',
-                    'procedure FormCreate(Sender: TObject);\n'
-                    'private\n'
-                    '{ Private declarations }\n'
-                    'public\n'
-                    '{ Public declarations }\n'
-                    'end;\n'
-                    '\n'
-                    'var\n'
-                    'Form1: TForm1;\n'
-                    '\n'
-                    'implementation\n'
-                    '\n'
-                    '{$R *.dfm}\n'
-                    '\n'  # Leo 6.8.7
-                ),
-            (1, 'procedure TForm1.FormCreate',
-                    'procedure TForm1.FormCreate(Sender: TObject);\n'
-                    'var\n'
-                    'x,y: double;\n'
-                    'begin\n'
-                    'x:= 4;\n'
-                    'Y := x/2;\n'
-                    "z := 'abc'\n"
-                    'end;\n'
-                    '\n'
-                    'end. // interface\n'
+            (
+                1,
+                'procedure FormCreate',
+                'procedure FormCreate(Sender: TObject);\n'
+                'private\n'
+                '{ Private declarations }\n'
+                'public\n'
+                '{ Public declarations }\n'
+                'end;\n'
+                '\n'
+                'var\n'
+                'Form1: TForm1;\n'
+                '\n'
+                'implementation\n'
+                '\n'
+                '{$R *.dfm}\n'
+                '\n',  # Leo 6.8.7
+            ),
+            (
+                1,
+                'procedure TForm1.FormCreate',
+                'procedure TForm1.FormCreate(Sender: TObject);\n'
+                'var\n'
+                'x,y: double;\n'
+                'begin\n'
+                'x:= 4;\n'
+                'Y := x/2;\n'
+                "z := 'abc'\n"
+                'end;\n'
+                '\n'
+                'end. // interface\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20220829221825.1: *3* TestPascal.test_indentation
-    def test_indentation(self):
 
+    # @+node:ekr.20220829221825.1: *3* TestPascal.test_indentation
+    def test_indentation(self):
         # From GSTATOBJ.PAS
-        #@+<< define s >>
-        #@+node:ekr.20220830112013.1: *4* << define s >>
+        # @+<< define s >>
+        # @+node:ekr.20220830112013.1: *4* << define s >>
         s = self.prep(
-        """
+            """
         unit gstatobj;
 
         {$F+,R-,S+}
@@ -2635,104 +2559,115 @@ class TestPascal(BaseTestImporter):
         for i := 1 to max do
             data^[i].y := data^[i].y + pstatObj(source)^.data^[i].y;
         end;
-        """)
-        #@-<< define s >>
+        """
+        )
+        # @-<< define s >>
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language pascal\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language pascal\n@tabwidth -4\n',
             ),
-            (1, 'unit gstatobj',
-                    'unit gstatobj;\n'
-                    '\n'
-                    '{$F+,R-,S+}\n'
-                    '{$I numdirect.inc}\n'
-                    '\n'
-                    'interface\n'
-                    'uses gf2obj1;\n'
-                    '\n'
-                    'implementation\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'unit gstatobj',
+                'unit gstatobj;\n'
+                '\n'
+                '{$F+,R-,S+}\n'
+                '{$I numdirect.inc}\n'
+                '\n'
+                'interface\n'
+                'uses gf2obj1;\n'
+                '\n'
+                'implementation\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'procedure statObj.scale',
-                    'procedure statObj.scale(factor: float);\n'
-                    'var i: integer;\n'
-                    'begin\n'
-                    '   for i := 1 to num do\n'
-                    '      with data^[i] do y := factor * y;\n'
-                    'end;\n'
-                    '\n'  # Leo 6.8.7
-
+            (
+                1,
+                'procedure statObj.scale',
+                'procedure statObj.scale(factor: float);\n'
+                'var i: integer;\n'
+                'begin\n'
+                '   for i := 1 to num do\n'
+                '      with data^[i] do y := factor * y;\n'
+                'end;\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'procedure statObj.multiplyGraph',
-                    'procedure statObj.multiplyGraph(var source: pGraphObj);\n'
-                    'var i, max: integer;\n'
-                    'begin\n'
-                    'max := source^.getNum;\n'
-                    'if max < num then num := max;\n'
-                    'for i := 1 to max do\n'
-                    '    data^[i].y := data^[i].y * pstatObj(source)^.data^[i].y;\n'
-                    'end;\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'procedure statObj.multiplyGraph',
+                'procedure statObj.multiplyGraph(var source: pGraphObj);\n'
+                'var i, max: integer;\n'
+                'begin\n'
+                'max := source^.getNum;\n'
+                'if max < num then num := max;\n'
+                'for i := 1 to max do\n'
+                '    data^[i].y := data^[i].y * pstatObj(source)^.data^[i].y;\n'
+                'end;\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'function statObj.divideGraph',
-                    'function statObj.divideGraph(var numerator: pGraphObj): boolean;\n'
-                    'var zerodata: boolean;\n'
-                    'i, j, max: integer;\n'
-                    'yy: float;\n'
-                    'pg: pStatObj;\n'
-                    'begin\n'
-                    'if numerator = nil then begin\n'
-                    '    divideGraph := false;\n'
-                    '    exit;\n'
-                    ' end;\n'
-                    'zerodata:= false;\n'
-                    'new(pg,init);\n'
-                    'if pg = nil then begin\n'
-                    '   divideGraph := false;\n'
-                    '   exit;\n'
-                    ' end;\n'
-                    'max := numerator^.getNum;\n'
-                    'if max < num then num := max;\n'
-                    'pg^.importData(@self);\n'
-                    'j := 0;\n'
-                    'for i := 1 to max do begin\n'
-                    '    yy := pg^.sendYData(i);\n'
-                    '    if yy <> 0 then begin\n'
-                    '       inc(j);\n'
-                    '       getYData(j, numerator^.sendYData(i)/yy);\n'
-                    '       getXData(j, pg^.sendXData(i));\n'
-                    '     end else zeroData := true;\n'
-                    ' end;\n'
-                    'setNum(j);\n'
-                    'dispose(pg, byebye);\n'
-                    'divideGraph := not zeroData;\n'
-                    'end;\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'function statObj.divideGraph',
+                'function statObj.divideGraph(var numerator: pGraphObj): boolean;\n'
+                'var zerodata: boolean;\n'
+                'i, j, max: integer;\n'
+                'yy: float;\n'
+                'pg: pStatObj;\n'
+                'begin\n'
+                'if numerator = nil then begin\n'
+                '    divideGraph := false;\n'
+                '    exit;\n'
+                ' end;\n'
+                'zerodata:= false;\n'
+                'new(pg,init);\n'
+                'if pg = nil then begin\n'
+                '   divideGraph := false;\n'
+                '   exit;\n'
+                ' end;\n'
+                'max := numerator^.getNum;\n'
+                'if max < num then num := max;\n'
+                'pg^.importData(@self);\n'
+                'j := 0;\n'
+                'for i := 1 to max do begin\n'
+                '    yy := pg^.sendYData(i);\n'
+                '    if yy <> 0 then begin\n'
+                '       inc(j);\n'
+                '       getYData(j, numerator^.sendYData(i)/yy);\n'
+                '       getXData(j, pg^.sendXData(i));\n'
+                '     end else zeroData := true;\n'
+                ' end;\n'
+                'setNum(j);\n'
+                'dispose(pg, byebye);\n'
+                'divideGraph := not zeroData;\n'
+                'end;\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'procedure statObj.addGraph',
-                    'procedure statObj.addGraph(var source: pgraphObj);\n'
-                    'var i, max: integer;\n'
-                    'begin\n'
-                    'max := source^.getNum;\n'
-                    'if max < num then num := max;\n'
-                    'for i := 1 to max do\n'
-                    '    data^[i].y := data^[i].y + pstatObj(source)^.data^[i].y;\n'
-                    'end;\n'
+            (
+                1,
+                'procedure statObj.addGraph',
+                'procedure statObj.addGraph(var source: pgraphObj);\n'
+                'var i, max: integer;\n'
+                'begin\n'
+                'max := source^.getNum;\n'
+                'if max < num then num := max;\n'
+                'for i := 1 to max do\n'
+                '    data^[i].y := data^[i].y + pstatObj(source)^.data^[i].y;\n'
+                'end;\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108081950.1: ** class TestPerl (BaseTestImporter)
-class TestPerl(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108081950.1: ** class TestPerl (BaseTestImporter)
+class TestPerl(BaseTestImporter):
     ext = '.pl'
 
-    #@+others
-    #@+node:ekr.20210904065459.51: *3* TestPerl.test_1
+    # @+others
+    # @+node:ekr.20210904065459.51: *3* TestPerl.test_1
     def test_1(self):
-
         s = """
             #!/usr/bin/perl
 
@@ -2757,45 +2692,48 @@ class TestPerl(BaseTestImporter):
             Hello();
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '            "ﬁ" =~ /fi/i;\n'
-                    '\n'
-                    '            $bar = "foo";\n'
-                    '            if ($bar =~ /foo/){\n'
-                    '               print "Second time is matching\n'
-                    '";\n'
-                    '            }else{\n'
-                    '               print "Second time is not matching\n'
-                    '";\n'
-                    '            }\n'
-                    '\n'
-                    '            # Function call\n'
-                    '            Hello();\n'
-                    '@language perl\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n'
+                '            "ﬁ" =~ /fi/i;\n'
+                '\n'
+                '            $bar = "foo";\n'
+                '            if ($bar =~ /foo/){\n'
+                '               print "Second time is matching\n'
+                '";\n'
+                '            }else{\n'
+                '               print "Second time is not matching\n'
+                '";\n'
+                '            }\n'
+                '\n'
+                '            # Function call\n'
+                '            Hello();\n'
+                '@language perl\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'sub Hello',
-                    '#!/usr/bin/perl\n'
-                    '\n'
-                    '            # Function definition\n'
-                    '            sub Hello{\n'
-                    '               print "Hello, World!\n'
-                    '";\n'
-                    '            }\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'sub Hello',
+                '#!/usr/bin/perl\n'
+                '\n'
+                '            # Function definition\n'
+                '            sub Hello{\n'
+                '               print "Hello, World!\n'
+                '";\n'
+                '            }\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'sub Test',
-                    '            sub Test{\n'
-                    '               print "Test!\n'
-                    '";\n'
-                    '            }\n'
+            (
+                1,
+                'sub Test',
+                '            sub Test{\n               print "Test!\n";\n            }\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.53: *3* TestPerl.test_multi_line_string
-    def test_multi_line_string(self):
 
+    # @+node:ekr.20210904065459.53: *3* TestPerl.test_multi_line_string
+    def test_multi_line_string(self):
         s = """
             #!/usr/bin/perl
 
@@ -2809,26 +2747,28 @@ class TestPerl(BaseTestImporter):
             world\n";
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '#!/usr/bin/perl\n'
-                    '\n'
-                    '            # This would print with a line break in the middle\n'
-                    '            print "Hello\n'
-                    '\n'
-                    '            sub World {\n'
-                    '                print "This is not a function!"\n'
-                    '            }\n'
-                    '\n'
-                    '            world\n'
-                    '";\n'
-                    '@language perl\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '#!/usr/bin/perl\n'
+                '\n'
+                '            # This would print with a line break in the middle\n'
+                '            print "Hello\n'
+                '\n'
+                '            sub World {\n'
+                '                print "This is not a function!"\n'
+                '            }\n'
+                '\n'
+                '            world\n'
+                '";\n'
+                '@language perl\n'
+                '@tabwidth -4\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.52: *3* TestPerl.test_perlpod_comment
-    def test_perlpod_comment(self):
 
+    # @+node:ekr.20210904065459.52: *3* TestPerl.test_perlpod_comment
+    def test_perlpod_comment(self):
         s = """
             #!/usr/bin/perl
 
@@ -2848,40 +2788,46 @@ class TestPerl(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language perl\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language perl\n@tabwidth -4\n',
             ),
-            (1, 'sub Test',
-                    '#!/usr/bin/perl\n'
-                    '\n'
-                    '            sub Test{\n'
-                    '               print "Test!\n'
-                    '";\n'
-                    '            }\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'sub Test',
+                '#!/usr/bin/perl\n'
+                '\n'
+                '            sub Test{\n'
+                '               print "Test!\n'
+                '";\n'
+                '            }\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'sub World',
-                    '            =begin comment\n'
-                    '            sub World {\n'
-                    '                print "This is not a function!"\n'
-                    '            }\n'
+            (
+                1,
+                'sub World',
+                '            =begin comment\n'
+                '            sub World {\n'
+                '                print "This is not a function!"\n'
+                '            }\n',
             ),
-            (1, 'sub Hello',
-                    '            =cut\n'
-                    '\n'
-                    '            # Function definition\n'
-                    '            sub Hello{\n'
-                    '               print "Hello, World!\n'
-                    '";\n'
-                    '            }\n'
+            (
+                1,
+                'sub Hello',
+                '            =cut\n'
+                '\n'
+                '            # Function definition\n'
+                '            sub Hello{\n'
+                '               print "Hello, World!\n'
+                '";\n'
+                '            }\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.55: *3* TestPerl.test_regex
-    def test_regex(self):
 
+    # @+node:ekr.20210904065459.55: *3* TestPerl.test_regex
+    def test_regex(self):
         s = """
             #!/usr/bin/perl
 
@@ -2902,48 +2848,40 @@ class TestPerl(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language perl\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language perl\n@tabwidth -4\n',
             ),
-            (1, 'sub test1',
-                    '#!/usr/bin/perl\n'
-                    '\n'
-                    'sub test1 {\n'
-                    '    s = /}/g;\n'
-                    '}\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'sub test1',
+                '#!/usr/bin/perl\n\nsub test1 {\n    s = /}/g;\n}\n\n',  # Leo 6.8.7
             ),
-            (1, 'sub test2',
-                    'sub test2 {\n'
-                    '    s = m//}/;\n'
-                    '}\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'sub test2',
+                'sub test2 {\n    s = m//}/;\n}\n\n',  # Leo 6.8.7
             ),
-            (1, 'sub test3',
-                    'sub test3 {\n'
-                    '    s = s///}/;\n'
-                    '}\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'sub test3',
+                'sub test3 {\n    s = s///}/;\n}\n\n',  # Leo 6.8.7
             ),
-            (1, 'sub test4',
-                    'sub test4 {\n'
-                    '    s = tr///}/;\n'
-                    '}\n'
-            ),
+            (1, 'sub test4', 'sub test4 {\n    s = tr///}/;\n}\n'),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108082208.1: ** class TestPhp (BaseTestImporter)
-class TestPhp(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108082208.1: ** class TestPhp (BaseTestImporter)
+class TestPhp(BaseTestImporter):
     ext = '.php'
 
-    #@+others
-    #@+node:ekr.20210904065459.56: *3* TestPhp.test_import_class
+    # @+others
+    # @+node:ekr.20210904065459.56: *3* TestPhp.test_import_class
     def test_import_class(self):
-
         s = """
             <?php
 
@@ -2959,9 +2897,9 @@ class TestPhp(BaseTestImporter):
             ?>
         """
         self.run_test(s)
-    #@+node:ekr.20210904065459.57: *3* TestPhp.test_import_conditional_class
-    def test_import_conditional_class(self):
 
+    # @+node:ekr.20210904065459.57: *3* TestPhp.test_import_conditional_class
+    def test_import_conditional_class(self):
         s = """
             <?php
 
@@ -2978,9 +2916,9 @@ class TestPhp(BaseTestImporter):
             ?>
         """
         self.new_round_trip_test(s)
-    #@+node:ekr.20210904065459.58: *3* TestPhp.test_import_classes__functions
-    def test_import_classes__functions(self):
 
+    # @+node:ekr.20210904065459.58: *3* TestPhp.test_import_classes__functions
+    def test_import_classes__functions(self):
         s = """
             <?php
             class Enum {
@@ -3021,9 +2959,8 @@ class TestPhp(BaseTestImporter):
         """
         self.new_round_trip_test(s)
 
-    #@+node:ekr.20210904065459.59: *3* TestPhp.test_here_doc
+    # @+node:ekr.20210904065459.59: *3* TestPhp.test_here_doc
     def test_here_doc(self):
-
         s = """
             <?php
             class foo {
@@ -3035,16 +2972,17 @@ class TestPhp(BaseTestImporter):
             ?>
         """
         self.new_round_trip_test(s)
-    #@-others
-#@+node:ekr.20211108082509.1: ** class TestPython (BaseTestImporter)
-class TestPython(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108082509.1: ** class TestPython (BaseTestImporter)
+class TestPython(BaseTestImporter):
     ext = '.py'
 
-    #@+others
-    #@+node:ekr.20240219045037.1: *3* TestPython.test_almost_empty_defs
+    # @+others
+    # @+node:ekr.20240219045037.1: *3* TestPython.test_almost_empty_defs
     def test_almost_empty_defs(self):
-
         s = '''
             class TracerCore:
 
@@ -3063,39 +3001,36 @@ class TestPython(BaseTestImporter):
             '''
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                   '@others\n'
-                   '\n'  # Leo 6.8.7
-                   "if __name__ == '__main__':\n"
-                    '    main()\n'
-                   '@language python\n'
-                   '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n'
+                '\n'  # Leo 6.8.7
+                "if __name__ == '__main__':\n"
+                '    main()\n'
+                '@language python\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'class TracerCore',
-                    'class TracerCore:\n'
-                    '\n'  # Leo 6.8.7
-                    '    @others\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'class TracerCore',
+                'class TracerCore:\n'
+                '\n'  # Leo 6.8.7
+                '    @others\n'
+                '\n',  # Leo 6.8.7
             ),
-            (2, 'TracerCore.start',
-                    'def start(self):\n'
-                    '    """Start this tracer."""\n'
-                    '\n'  # Leo 6.8.7
+            (
+                2,
+                'TracerCore.start',
+                'def start(self):\n    """Start this tracer."""\n\n',  # Leo 6.8.7
             ),
-            (2, 'TracerCore.stop',
-                    'def stop(self):\n'
-                    '    """Stop this tracer."""\n'
-            ),
-            (1, 'function: main',
-                    '# About main\n'
-                    'def main():\n'
-                    '    pass\n'
-            ),
+            (2, 'TracerCore.stop', 'def stop(self):\n    """Stop this tracer."""\n'),
+            (1, 'function: main', '# About main\ndef main():\n    pass\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
-    def test_class_docstring(self):
 
+    # @+node:ekr.20250814083817.1: *3* TestPython.test_class_docstring
+    def test_class_docstring(self):
         # Test that docstrings contain no whitespace in otherwise blank lines.
         # To do: Test generation of @others.
         s = '''
@@ -3139,58 +3074,62 @@ class TestPython(BaseTestImporter):
             '''
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'class RefactoringChecker',
-                    'class RefactoringChecker(checkers.BaseTokenChecker):\n'
-                    '    """Looks for code which can be refactored.\n'
-                    '\n'  # There should be no leading whitespace in this line.
-                    '    This checker also mixes the astroid and the token approaches\n'
-                    '    in order to create knowledge about whether an "else if" node\n'
-                    '    is a true "else if" node, or an "elif" node.\n'
-                    '    """\n'
-                    '\n'  # Leo 6.8.7.
-                    '    @others\n'
+            (
+                1,
+                'class RefactoringChecker',
+                'class RefactoringChecker(checkers.BaseTokenChecker):\n'
+                '    """Looks for code which can be refactored.\n'
+                '\n'  # There should be no leading whitespace in this line.
+                '    This checker also mixes the astroid and the token approaches\n'
+                '    in order to create knowledge about whether an "else if" node\n'
+                '    is a true "else if" node, or an "elif" node.\n'
+                '    """\n'
+                '\n'  # Leo 6.8.7.
+                '    @others\n',
             ),
-            (2, 'RefactoringChecker.__init__',
-                    'name = "refactoring"\n'
-                    '\n'
-                    'msgs = {\n'
-                    '    "R1701": (\n'
-                    '        "Consider merging these isinstance calls to isinstance(%s, (%s))",\n'
-                    '        "consider-merging-isinstance",\n'
-                    '        "Used when multiple consecutive isinstance calls can be merged into one.",\n'
-                    '    ),\n'
-                    '}\n'
-                    '\n'
-                    'options = (\n'
-                    '    (\n'
-                    '        "max-nested-blocks",\n'
-                    '        {\n'
-                    '            "default": 5,\n'
-                    '            "type": "int",\n'
-                    '            "metavar": "<int>",\n'
-                    '            "help": "Maximum number of nested blocks for function / method body",\n'
-                    '        },\n'
-                    '    ),\n'
-                    ')\n'
-                    '\n'
-                    'def __init__(self, linter: PyLinter) -> None:\n'
-                    '    super().__init__(linter)\n'
-                    '    self._return_nodes: dict[str, list[nodes.Return]] = {}\n'
-                    '    self._consider_using_with_stack = ConsiderUsingWithStack()\n'
-                    '    self._init()\n'
-                    '    self._never_returning_functions: set[str] = set()\n'
-                    '    self._suggest_join_with_non_empty_separator: bool = False\n'
+            (
+                2,
+                'RefactoringChecker.__init__',
+                'name = "refactoring"\n'
+                '\n'
+                'msgs = {\n'
+                '    "R1701": (\n'
+                '        "Consider merging these isinstance calls to isinstance(%s, (%s))",\n'
+                '        "consider-merging-isinstance",\n'
+                '        "Used when multiple consecutive isinstance calls can be merged into one.",\n'
+                '    ),\n'
+                '}\n'
+                '\n'
+                'options = (\n'
+                '    (\n'
+                '        "max-nested-blocks",\n'
+                '        {\n'
+                '            "default": 5,\n'
+                '            "type": "int",\n'
+                '            "metavar": "<int>",\n'
+                '            "help": "Maximum number of nested blocks for function / method body",\n'
+                '        },\n'
+                '    ),\n'
+                ')\n'
+                '\n'
+                'def __init__(self, linter: PyLinter) -> None:\n'
+                '    super().__init__(linter)\n'
+                '    self._return_nodes: dict[str, list[nodes.Return]] = {}\n'
+                '    self._consider_using_with_stack = ConsiderUsingWithStack()\n'
+                '    self._init()\n'
+                '    self._never_returning_functions: set[str] = set()\n'
+                '    self._suggest_join_with_non_empty_separator: bool = False\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230514195224.1: *3* TestPython.test_delete_comments_and_strings
-    def test_delete_comments_and_strings(self):
 
+    # @+node:ekr.20230514195224.1: *3* TestPython.test_delete_comments_and_strings
+    def test_delete_comments_and_strings(self):
         importer = Python_Importer(self.c)
 
         lines = [
@@ -3228,9 +3167,9 @@ class TestPython(BaseTestImporter):
         result = importer.delete_comments_and_strings(lines)
         self.assertEqual(len(result), len(expected_lines))
         self.assertEqual(result, expected_lines)
-    #@+node:ekr.20241127163654.1: *3* TestPython.test_delete_comments_and_strings2
-    def test_delete_comments_and_strings2(self):
 
+    # @+node:ekr.20241127163654.1: *3* TestPython.test_delete_comments_and_strings2
+    def test_delete_comments_and_strings2(self):
         s = r'''
             """
             An application for managing IPython history.
@@ -3242,7 +3181,9 @@ class TestPython(BaseTestImporter):
             )
         '''
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 '"""\n'
                 'An application for managing IPython history.\n'
                 '\n'
@@ -3252,14 +3193,14 @@ class TestPython(BaseTestImporter):
                 '    "end\\n"\n'
                 ')\n'
                 '@language python\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
         )
 
         self.new_run_test(s, expected_results)
-    #@+node:vitalije.20211206201240.1: *3* TestPython.test_general_test_1
-    def test_general_test_1(self):
 
+    # @+node:vitalije.20211206201240.1: *3* TestPython.test_general_test_1
+    def test_general_test_1(self):
         s = """
                 import sys
                 def f1():
@@ -3301,75 +3242,52 @@ class TestPython(BaseTestImporter):
             """.replace('AT', '@')
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    'import sys\n'
-                    '@others\n'
-                    '\n'  # Leo 6.8.7
-                    "if __name__ == '__main__':\n"
-                    '    main()\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                'import sys\n'
+                '@others\n'
+                '\n'  # Leo 6.8.7
+                "if __name__ == '__main__':\n"
+                '    main()\n'
+                '@language python\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'function: f1',
-                    'def f1():\n'
-                    '    pass\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'function: f1',
+                'def f1():\n    pass\n\n',  # Leo 6.8.7
             ),
-            (1, 'class Class1',
-                       'class Class1:\n'
-                       '    @others\n'
-                       '\n'  # Leo 6.8.7
+            (
+                1,
+                'class Class1',
+                'class Class1:\n    @others\n\n',  # Leo 6.8.7
             ),
-            (2, 'Class1.method11',
-                       'def method11():\n'
-                       '    pass\n'
+            (2, 'Class1.method11', 'def method11():\n    pass\n'),
+            (2, 'Class1.method12', 'def method12():\n    pass\n'),
+            (
+                1,
+                'function: f2',
+                '#\n# Define a = 2\na = 2\n\ndef f2():\n    pass\n\n',  # Leo 6.8.7
             ),
-            (2, 'Class1.method12',
-                       'def method12():\n'
-                       '    pass\n'
+            (
+                1,
+                'class Class2',
+                '# An outer comment\n@myClassDecorator\nclass Class2:\n    @others\n\n',  # Leo 6.8.7
             ),
-            (1, 'function: f2',
-                       '#\n'
-                       '# Define a = 2\n'
-                       'a = 2\n'
-                       '\n'
-                       'def f2():\n'
-                       '    pass\n'
-                       '\n'  # Leo 6.8.7
+            (
+                2,
+                'Class2.method21',
+                'def method21():\n    print(1)\n    print(2)\n    print(3)\n',
             ),
-            (1, 'class Class2',
-                       '# An outer comment\n'
-                       '@myClassDecorator\n'
-                       'class Class2:\n'
-                       '    @others\n'
-                       '\n'  # Leo 6.8.7
-            ),
-            (2, 'Class2.method21',
-                       'def method21():\n'
-                       '    print(1)\n'
-                       '    print(2)\n'
-                       '    print(3)\n'
-            ),
-            (2, 'Class2.method22',
-                       '@myDecorator\n'
-                       'def method22():\n'
-                       '    pass\n'
-            ),
-            (2, 'Class2.method23',
-                       'def method23():\n'
-                       '    pass\n'
-            ),
-            (1, 'function: main',
-                   '# About main.\n'
-                   '\n'
-                   'def main():\n'
-                   '    pass\n'
-            ),
+            (2, 'Class2.method22', '@myDecorator\ndef method22():\n    pass\n'),
+            (2, 'Class2.method23', 'def method23():\n    pass\n'),
+            (1, 'function: main', '# About main.\n\ndef main():\n    pass\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20241126104128.1: *3* TestPython.test_ipython_idiom
-    def test_ipython_idiom(self):
 
+    # @+node:ekr.20241126104128.1: *3* TestPython.test_ipython_idiom
+    def test_ipython_idiom(self):
         s = r'''
     # test_ipython_idiom
     class HistoryTrim(BaseIPythonApplication):
@@ -3416,76 +3334,85 @@ class TestPython(BaseTestImporter):
                 return self.subapp.start()
     '''
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '# test_ipython_idiom\n'
-                    '@others\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '# test_ipython_idiom\n@others\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'class HistoryTrim',
-                    'class HistoryTrim(BaseIPythonApplication):\n'
-                    '\n'  # Leo 6.8.7
-                    '    @others\n'
-                    '\n'  # Leo 6.8.7
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'class HistoryTrim',
+                'class HistoryTrim(BaseIPythonApplication):\n'
+                '\n'  # Leo 6.8.7
+                '    @others\n'
+                '\n'  # Leo 6.8.7
+                '\n',  # Leo 6.8.7
             ),
-            (2, 'HistoryTrim.start',
-                    'description = trim_hist_help\n'
-                    '\n'
-                    'backup = Bool(False, help="Keep the old history file as history.sqlite.<N>").tag(\n'
-                    '    config=True\n'
-                    ')\n'
-                    '\n'
-                    'def start(self):\n'
-                    '    new_db.execute("""CREATE TABLE IF NOT EXISTS output_history\n'
-                    '                    (session integer, line integer, output text,\n'
-                    '                    PRIMARY KEY (session, line))""")\n'
-                    '    new_db.commit()\n'
-                    '    new_hist_file.rename(hist_file)\n'
+            (
+                2,
+                'HistoryTrim.start',
+                'description = trim_hist_help\n'
+                '\n'
+                'backup = Bool(False, help="Keep the old history file as history.sqlite.<N>").tag(\n'
+                '    config=True\n'
+                ')\n'
+                '\n'
+                'def start(self):\n'
+                '    new_db.execute("""CREATE TABLE IF NOT EXISTS output_history\n'
+                '                    (session integer, line integer, output text,\n'
+                '                    PRIMARY KEY (session, line))""")\n'
+                '    new_db.commit()\n'
+                '    new_hist_file.rename(hist_file)\n',
             ),
-            (1, 'class HistoryClear',
-                    'class HistoryClear(HistoryTrim):\n'
-                    '\n'  # Leo 6.8.7
-                    '    @others\n'
-                    '\n'  # Leo 6.8.7
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'class HistoryClear',
+                'class HistoryClear(HistoryTrim):\n'
+                '\n'  # Leo 6.8.7
+                '    @others\n'
+                '\n'  # Leo 6.8.7
+                '\n',  # Leo 6.8.7
             ),
-            (2, 'HistoryClear.start',
-
-                    'def start(self):\n'
-                    '    if self.force or ask_yes_no(\n'
-                    '        "Really delete all ipython history?", default="no", interrupt="no"\n'
-                    '    ):\n'
-                    '        HistoryTrim.start(self)\n'
+            (
+                2,
+                'HistoryClear.start',
+                'def start(self):\n'
+                '    if self.force or ask_yes_no(\n'
+                '        "Really delete all ipython history?", default="no", interrupt="no"\n'
+                '    ):\n'
+                '        HistoryTrim.start(self)\n',
             ),
-            (1, 'class HistoryApp',
-                    'class HistoryApp(Application):\n'
-                    '\n'  # Leo 6.8.7
-                    '    @others\n'
+            (
+                1,
+                'class HistoryApp',
+                'class HistoryApp(Application):\n'
+                '\n'  # Leo 6.8.7
+                '    @others\n',
             ),
-            (2, 'HistoryApp.start',
-
-                    'subcommands = Dict(dict(\n'
-                    '    trim = (HistoryTrim, HistoryTrim.description.splitlines()[0]),\n'
-                    '    clear = (HistoryClear, HistoryClear.description.splitlines()[0]),\n'
-                    '))\n'
-                    '\n'
-                    'def start(self):\n'
-                    '    if self.subapp is None:\n'
-                    '        print(\n'
-                    '            "No subcommand specified. Must specify one of: "\n'
-                    '            + ", ".join(map(repr, self.subcommands))\n'
-                    '            + ".\\n"\n'  # Tricky. Can't use 'r' prefix here.
-                    '        )\n'
-                    '        self.print_description()\n'
-                    '    else:\n'
-                    '        return self.subapp.start()\n'
+            (
+                2,
+                'HistoryApp.start',
+                'subcommands = Dict(dict(\n'
+                '    trim = (HistoryTrim, HistoryTrim.description.splitlines()[0]),\n'
+                '    clear = (HistoryClear, HistoryClear.description.splitlines()[0]),\n'
+                '))\n'
+                '\n'
+                'def start(self):\n'
+                '    if self.subapp is None:\n'
+                '        print(\n'
+                '            "No subcommand specified. Must specify one of: "\n'
+                '            + ", ".join(map(repr, self.subcommands))\n'
+                '            + ".\\n"\n'  # Tricky. Can't use 'r' prefix here.
+                '        )\n'
+                '        self.print_description()\n'
+                '    else:\n'
+                '        return self.subapp.start()\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230612072414.1: *3* TestPython.test_long_declaration
-    def test_long_declaration(self):
 
+    # @+node:ekr.20230612072414.1: *3* TestPython.test_long_declaration
+    def test_long_declaration(self):
         # ekr-mypy2/mypy/applytype.py
 
         # Note: the return type uses the python 3.11 syntax for Union.
@@ -3503,28 +3430,30 @@ class TestPython(BaseTestImporter):
             return type
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'function: get_target_type',
-                    'def get_target_type(\n'
-                    '    tvar: TypeVarLikeType,\n'
-                    '    type: Type,\n'
-                    '    callable: CallableType,\n'
-                    ') -> Type | None:\n'
-                    '    if isinstance(tvar, ParamSpecType):\n'
-                    '        return type\n'
-                    '    if isinstance(tvar, TypeVarTupleType):\n'
-                    '        return type\n'
-                    '    return type\n'
+            (
+                1,
+                'function: get_target_type',
+                'def get_target_type(\n'
+                '    tvar: TypeVarLikeType,\n'
+                '    type: Type,\n'
+                '    callable: CallableType,\n'
+                ') -> Type | None:\n'
+                '    if isinstance(tvar, ParamSpecType):\n'
+                '        return type\n'
+                '    if isinstance(tvar, TypeVarTupleType):\n'
+                '        return type\n'
+                '    return type\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20250813150236.1: *3* TestPython.test_long_defs
-    def test_long_defs(self):
 
+    # @+node:ekr.20250813150236.1: *3* TestPython.test_long_defs
+    def test_long_defs(self):
         s = '''
             def iter_spurious_suppression_messages(
                 self,
@@ -3549,13 +3478,14 @@ class TestPython(BaseTestImporter):
             '''
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language python\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'function: iter_spurious_suppression_messages',
-
+            (
+                1,
+                'function: iter_spurious_suppression_messages',
                 'def iter_spurious_suppression_messages(\n'
                 '    self,\n'
                 '    msgs_store: MessageDefinitionStore,\n'
@@ -3575,13 +3505,13 @@ class TestPython(BaseTestImporter):
                 '            ):\n'
                 '                yield "useless-suppression", line, (\n'
                 '                    msgs_store.get_msg_display_string(warning),\n'
-                '                )\n'
+                '                )\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230929051304.1: *3* TestPython.test_long_outer_docstring
-    def test_long_outer_docstring(self):
 
+    # @+node:ekr.20230929051304.1: *3* TestPython.test_long_outer_docstring
+    def test_long_outer_docstring(self):
         s = '''
             """
             Multi-line module-level docstring
@@ -3603,38 +3533,40 @@ class TestPython(BaseTestImporter):
             '''
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '"""\n'
-                    'Multi-line module-level docstring\n'
-                    '\n'
-                    'Last line.\n'
-                    '"""\n'
-                    '\n'
-                    'from __future__ import annotations\n'
-                    '\n'
-                    '@others\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '"""\n'
+                'Multi-line module-level docstring\n'
+                '\n'
+                'Last line.\n'
+                '"""\n'
+                '\n'
+                'from __future__ import annotations\n'
+                '\n'
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'class C1',
-                    'class C1:\n'
-                    '    """Class docstring"""\n'
-                    '\n'  # Leo 6.8.7
-                    '    @others\n'
-                    '\n'
+            (
+                1,
+                'class C1',
+                'class C1:\n'
+                '    """Class docstring"""\n'
+                '\n'  # Leo 6.8.7
+                '    @others\n'
+                '\n',
             ),
-            (2, 'C1.__init__',
-                    'def __init__(self):\n'
-                    '    pass\n'
-            ),
-            (1, 'function: f1',
-                   'def f1():\n'
-                   '    pass\n'
-                   '\n'  # Leo 6.8.7
+            (2, 'C1.__init__', 'def __init__(self):\n    pass\n'),
+            (
+                1,
+                'function: f1',
+                'def f1():\n    pass\n\n',  # Leo 6.8.7
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20211202064822.1: *3* TestPython.test_nested_classes
+
+    # @+node:ekr.20211202064822.1: *3* TestPython.test_nested_classes
     def test_nested_classes(self):
         s = """
             class TestCopyFile(unittest.TestCase):
@@ -3647,32 +3579,35 @@ class TestPython(BaseTestImporter):
             """
         # mypy/test-data/stdlib-samples/3.2/test/shutil.py
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                   '@others\n'
-                   '@language python\n'
-                   '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'class TestCopyFile',
-                    'class TestCopyFile(unittest.TestCase):\n'
-                    '    ATothers\n'.replace('AT', '@')
+            (
+                1,
+                'class TestCopyFile',
+                'class TestCopyFile(unittest.TestCase):\n    ATothers\n'.replace('AT', '@'),
             ),
-            (2, 'class Faux',
-                        '_delete = False\n'
-                        'a00 = 1\n'
-                        'class Faux(object):\n'
-                        '    _entered = False\n'
-                        '    _exited_with = None # type: tuple\n'
-                        '    _raised = False\n'
+            (
+                2,
+                'class Faux',
+                '_delete = False\n'
+                'a00 = 1\n'
+                'class Faux(object):\n'
+                '    _entered = False\n'
+                '    _exited_with = None # type: tuple\n'
+                '    _raised = False\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230830100457.1: *3* TestPython.test_nested_defs
+
+    # @+node:ekr.20230830100457.1: *3* TestPython.test_nested_defs
     def test_nested_defs(self):
         # See #3517
 
         # A simplified version of code in mypy/build.py.
-        s = (
-        '''
+        s = '''
             def load_plugins_from_config(
                 options: Options, errors: Errors, stdout: TextIO
             ) -> tuple[list[Plugin], dict[str, str]]:
@@ -3685,15 +3620,17 @@ class TestPython(BaseTestImporter):
                     errors.raise_error(use_stdout=False)
 
                 custom_plugins: list[Plugin] = []
-        ''')
+        '''
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language python\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'function: load_plugins_from_config',
+            (
+                1,
+                'function: load_plugins_from_config',
                 'def load_plugins_from_config(\n'
                 '    options: Options, errors: Errors, stdout: TextIO\n'
                 ') -> tuple[list[Plugin], dict[str, str]]:\n'
@@ -3705,13 +3642,13 @@ class TestPython(BaseTestImporter):
                 '        errors.report(line, 0, message)\n'
                 '        errors.raise_error(use_stdout=False)\n'
                 '\n'
-                '    custom_plugins: list[Plugin] = []\n'
+                '    custom_plugins: list[Plugin] = []\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:vitalije.20211207200701.1: *3* TestPython.test_no_methods
-    def test_no_methods(self):
 
+    # @+node:vitalije.20211207200701.1: *3* TestPython.test_no_methods
+    def test_no_methods(self):
         s = """
             class A:
                 a=1
@@ -3719,20 +3656,16 @@ class TestPython(BaseTestImporter):
                 c=3
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                   '@others\n'
-                   '@language python\n'
-                   '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'class A',
-                   'class A:\n'
-                   '    a=1\n'
-                   '    b=2\n'
-                   '    c=3\n'
-            )
+            (1, 'class A', 'class A:\n    a=1\n    b=2\n    c=3\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:vitalije.20211206212507.1: *3* TestPython.test_oneliners
+
+    # @+node:vitalije.20211206212507.1: *3* TestPython.test_oneliners
     def test_oneliners(self):
         s = """
             import sys
@@ -3752,38 +3685,34 @@ class TestPython(BaseTestImporter):
         """
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 'import sys\n'
                 '@others\n'
                 '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'function: f1',
-                    'def f1():\n'
-                    '    pass\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'function: f1',
+                'def f1():\n    pass\n\n',  # Leo 6.8.7
             ),
-            (1, 'class Class1',
-                    'class Class1:pass\n'
+            (1, 'class Class1', 'class Class1:pass\n'),
+            (
+                1,
+                'function: f2',
+                'a = 2\n@dec_for_f2\ndef f2(): pass\n\n',  # Leo 6.8.7
             ),
-            (1, 'function: f2',
-                    'a = 2\n'
-                    '@dec_for_f2\n'
-                    'def f2(): pass\n'
-                    '\n'  # Leo 6.8.7
-            ),
-            (1, 'function: main',
-                    'def main():\n'
-                    '    pass\n'
-            ),
+            (1, 'function: main', 'def main():\n    pass\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20230825071437.1: *3* TestPython.test_post_process
-    def test_post_process(self):
 
+    # @+node:ekr.20230825071437.1: *3* TestPython.test_post_process
+    def test_post_process(self):
         s = '''
             """Module-level docstring"""
 
@@ -3801,36 +3730,29 @@ class TestPython(BaseTestImporter):
             '''
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '"""Module-level docstring"""\n'
-                    '\n'
-                    'from __future__ import annotations\n'
-                    '\n'
-                    '@others\n'
-                    '@language python\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '"""Module-level docstring"""\n'
+                '\n'
+                'from __future__ import annotations\n'
+                '\n'
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'class C1',
-                    'class C1:\n'
-                    '    """Class docstring"""\n'
-                    '\n'
-                    '    @others\n'
-                    '\n'
-            ),
-            (2, 'C1.__init__',
-                    'def __init__(self):\n'
-                    '    pass\n'
-            ),
-            (1, 'function: f1',
-                   'def f1():\n'
-                   '    pass\n'
-                   '\n'  # Leo 6.8.7
+            (1, 'class C1', 'class C1:\n    """Class docstring"""\n\n    @others\n\n'),
+            (2, 'C1.__init__', 'def __init__(self):\n    pass\n'),
+            (
+                1,
+                'function: f1',
+                'def f1():\n    pass\n\n',  # Leo 6.8.7
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20250813102014.1: *3* TestPython.test_python_reference_test
-    def test_python_reference_test(self):
 
+    # @+node:ekr.20250813102014.1: *3* TestPython.test_python_reference_test
+    def test_python_reference_test(self):
         # A reference unit test to test experimental test.
         # This test should contain all edge cases of the Python importer.
         s = '''
@@ -3859,45 +3781,27 @@ class TestPython(BaseTestImporter):
             '''  # Leo 6.8.7: Two blank lines: trailing ws is *significant*.
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@others\n'
-                '\n'
-                "if __name__ == '__main__':\n"
-                '    main()\n'
-                '\n'
-                '\n'
-                '@language python\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n\nif __name__ == \'__main__\':\n    main()\n\n\n@language python\n@tabwidth -4\n',
             ),
-            (1, 'class MyClass',
-                    'class MyClass:\n'
-                    '    """MyClass: docstring"""\n'
-                    '\n'
-                    '    @others\n'
-                    '\n'
-                    '\n'
+            (
+                1,
+                'class MyClass',
+                'class MyClass:\n    """MyClass: docstring"""\n\n    @others\n\n\n',
             ),
-            (2, 'MyClass.f1',
-                    'def f1(self):\n'
-                    '    pass\n'
-                    '\n'
+            (2, 'MyClass.f1', 'def f1(self):\n    pass\n\n'),
+            (
+                2,
+                'MyClass.f2',
+                'def f2(\n    self, arg1\n):\n    a = 1\n    def inner_def():\n        pass\n',
             ),
-            (2, 'MyClass.f2',
-                    'def f2(\n'
-                    '    self, arg1\n'
-                    '):\n'
-                    '    a = 1\n'
-                    '    def inner_def():\n'
-                    '        pass\n'
-            ),
-            (1, 'function: main',
-                    '# About main\n'
-                    'def main():\n'
-                    '    pass\n'
-            ),
+            (1, 'function: main', '# About main\ndef main():\n    pass\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
+
+    # @+node:vitalije.20211207183645.1: *3* TestPython.test_strange_indentation
     def test_strange_indentation(self):
         s = """
             a = 1
@@ -3927,42 +3831,43 @@ class TestPython(BaseTestImporter):
                 print('12')
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-               'a = 1\n'
-               'if 1:\n'
-               " print('1')\n"
-               'if 2:\n'
-               "  print('2')\n"
-               'if 3:\n'
-               "   print('3')\n"
-               'if 4:\n'
-               "    print('4')\n"
-               'if 5:\n'
-               "    print('5')\n"
-               'if 6:\n'
-               "    print('6')\n"
-               'if 7:\n'
-               "    print('7')\n"
-               'if 8:\n'
-               "    print('8')\n"
-               'if 9:\n'
-               "    print('9')\n"
-               'if 10:\n'
-               "    print('10')\n"
-               'if 11:\n'
-               "    print('11')\n"
-               'if 12:\n'
-               "    print('12')\n"
-               '@language python\n'
-               '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                'a = 1\n'
+                'if 1:\n'
+                " print('1')\n"
+                'if 2:\n'
+                "  print('2')\n"
+                'if 3:\n'
+                "   print('3')\n"
+                'if 4:\n'
+                "    print('4')\n"
+                'if 5:\n'
+                "    print('5')\n"
+                'if 6:\n'
+                "    print('6')\n"
+                'if 7:\n'
+                "    print('7')\n"
+                'if 8:\n'
+                "    print('8')\n"
+                'if 9:\n'
+                "    print('9')\n"
+                'if 10:\n'
+                "    print('10')\n"
+                'if 11:\n'
+                "    print('11')\n"
+                'if 12:\n'
+                "    print('12')\n"
+                '@language python\n'
+                '@tabwidth -4\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20240219133748.1: *3* TestPython.test_underindented_lines
-    def test_underindented_lines(self):
 
-        s = (
-            '''
+    # @+node:ekr.20240219133748.1: *3* TestPython.test_underindented_lines
+    def test_underindented_lines(self):
+        s = '''
                 class Class3:
                     """Docstring"""
                 # Outer underindented comment
@@ -3977,50 +3882,47 @@ class TestPython(BaseTestImporter):
 
                 if __name__ == '__main__':
                     main()
-            ''')
+            '''
 
         expected_results = (
-            (0, '',
+            (
+                0,
+                '',
                 '@others\n'
                 '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'class Class3',
-                'class Class3:\n'
-                 '    """Docstring"""\n'
-                '@others\n'
-                '\n'  # Leo 6.8.7
+            (
+                1,
+                'class Class3',
+                'class Class3:\n    """Docstring"""\n@others\n\n',  # Leo 6.8.7
             ),
-            (2, 'Class3.u1',
-                    '# Outer underindented comment\n'
-                    '    def u1():\n'
-                    '    # Underindented comment in u1.\n'
-                    '        pass\n'
+            (
+                2,
+                'Class3.u1',
+                '# Outer underindented comment\n    def u1():\n    # Underindented comment in u1.\n        pass\n',
             ),
-            (1, 'function: main',
-                   '# About main.\n'
-                   '\n'
-                   'def main():\n'
-                   '    pass\n'
-            ),
+            (1, 'function: main', '# About main.\n\ndef main():\n    pass\n'),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108050827.1: ** class TestRst (BaseTestImporter)
-class TestRst(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108050827.1: ** class TestRst (BaseTestImporter)
+class TestRst(BaseTestImporter):
     ext = '.rst'
     treeType = '@auto-rst'
 
-    #@+others
-    #@+node:ekr.20210904065459.115: *3* TestRst.test_rst_1
+    # @+others
+    # @+node:ekr.20210904065459.115: *3* TestRst.test_rst_1
     def test_rst_1(self):
-
         try:
             import docutils
+
             assert docutils
         except Exception:  # pragma: no cover
             self.skipTest('Requires docutils')
@@ -4067,60 +3969,28 @@ class TestRst(BaseTestImporter):
             section 3.1.1, line 1
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language rest\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language rest\n@tabwidth -4\n',
             ),
-            (1, '!Dummy chapter',
-                '.. toc\n'
-                '\n'
-            ),
-            (1, 'top',
-                '\n'
-                'The top section\n'
-                '\n'
-            ),
-            (1, 'section 1',
-                '\n'
-                'section 1, line 1\n'
-                '--\n'
-                'section 1, line 2\n'
-                '\n'
-            ),
-            (1, 'section 2',
-                '\n'
-                'section 2, line 1\n'
-                '\n'
-            ),
-            (2, 'section 2.1',
-                '\n'
-                'section 2.1, line 1\n'
-                '\n'
-            ),
-            (3, 'section 2.1.1',
-                '\n'
-                'section 2.2.1 line 1\n'
-                '\n'
-            ),
-            (1, 'section 3',
-                '\n'
-                'section 3, line 1\n'
-                '\n'
-            ),
-            (2, 'placeholder level 2',
-                ''
-            ),
-            (3, 'section 3.1.1',
-                '\n'
-                'section 3.1.1, line 1\n'
-            ),
+            (1, '!Dummy chapter', '.. toc\n\n'),
+            (1, 'top', '\nThe top section\n\n'),
+            (1, 'section 1', '\nsection 1, line 1\n--\nsection 1, line 2\n\n'),
+            (1, 'section 2', '\nsection 2, line 1\n\n'),
+            (2, 'section 2.1', '\nsection 2.1, line 1\n\n'),
+            (3, 'section 2.1.1', '\nsection 2.2.1 line 1\n\n'),
+            (1, 'section 3', '\nsection 3, line 1\n\n'),
+            (2, 'placeholder level 2', ''),
+            (3, 'section 3.1.1', '\nsection 3.1.1, line 1\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.116: *3* TestRst.test_simple
-    def test_simple(self):
 
+    # @+node:ekr.20210904065459.116: *3* TestRst.test_simple
+    def test_simple(self):
         try:
             import docutils
+
             assert docutils
         except Exception:  # pragma: no cover
             self.skipTest('Requires docutils')
@@ -4137,27 +4007,25 @@ class TestRst(BaseTestImporter):
             The top chapter.
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language rest\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language rest\n@tabwidth -4\n',
             ),
-            (1, "!Dummy chapter",
-                '.. toc\n'
-                '\n'
-                '.. The section name contains trailing whitespace.\n'
-                '\n'
+            (
+                1,
+                "!Dummy chapter",
+                '.. toc\n\n.. The section name contains trailing whitespace.\n\n',
             ),
-            (1, "Chapter",
-                '\n'
-                'The top chapter.\n'
-            ),
+            (1, "Chapter", '\nThe top chapter.\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.117: *3* TestRst.test_no_double_underlines
-    def test_no_double_underlines(self):
 
+    # @+node:ekr.20210904065459.117: *3* TestRst.test_no_double_underlines
+    def test_no_double_underlines(self):
         try:
             import docutils
+
             assert docutils
         except Exception:  # pragma: no cover
             self.skipTest('Requires docutils')
@@ -4203,60 +4071,28 @@ class TestRst(BaseTestImporter):
             section 3.1.1, line 1
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@language rest\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language rest\n@tabwidth -4\n',
             ),
-            (1, '!Dummy chapter',
-                    '.. toc\n'
-                    '\n'
-            ),
-            (1, 'top',
-                    '\n'
-                    'The top section\n'
-                    '\n'
-            ),
-            (1, 'section 1',
-                    '\n'
-                    'section 1, line 1\n'
-                    '--\n'
-                    'section 1, line 2\n'
-                    '\n'
-            ),
-            (1, 'section 2',
-                    '\n'
-                    'section 2, line 1\n'
-                    '\n'
-            ),
-            (2, 'section 2.1',
-                    '\n'
-                    'section 2.1, line 1\n'
-                    '\n'
-            ),
-            (3, 'section 2.1.1',
-                    '\n'
-                    'section 2.2.1 line 1\n'
-                    '\n'
-            ),
-            (1, 'section 3',
-                    '\n'
-                    'section 3, line 1\n'
-                    '\n'
-            ),
-            (2, 'placeholder level 2',
-                    ''
-            ),
-            (3, 'section 3.1.1',
-                    '\n'
-                    'section 3.1.1, line 1\n'
-            ),
+            (1, '!Dummy chapter', '.. toc\n\n'),
+            (1, 'top', '\nThe top section\n\n'),
+            (1, 'section 1', '\nsection 1, line 1\n--\nsection 1, line 2\n\n'),
+            (1, 'section 2', '\nsection 2, line 1\n\n'),
+            (2, 'section 2.1', '\nsection 2.1, line 1\n\n'),
+            (3, 'section 2.1.1', '\nsection 2.2.1 line 1\n\n'),
+            (1, 'section 3', '\nsection 3, line 1\n\n'),
+            (2, 'placeholder level 2', ''),
+            (3, 'section 3.1.1', '\nsection 3.1.1, line 1\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.118: *3* TestRst.test_long_underlines
-    def test_long_underlines(self):
 
+    # @+node:ekr.20210904065459.118: *3* TestRst.test_long_underlines
+    def test_long_underlines(self):
         try:
             import docutils
+
             assert docutils
         except Exception:  # pragma: no cover
             self.skipTest('Requires docutils')
@@ -4270,25 +4106,21 @@ class TestRst(BaseTestImporter):
             The top section
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@language rest\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language rest\n@tabwidth -4\n',
             ),
-            (1, '!Dummy chapter',
-                    '.. toc\n'
-                    '\n'
-            ),
-            (1, 'top',
-                    '\n'
-                    'The top section\n'
-            ),
+            (1, '!Dummy chapter', '.. toc\n\n'),
+            (1, 'top', '\nThe top section\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.119: *3* TestRst.test_test_long_overlines
-    def test_test_long_overlines(self):
 
+    # @+node:ekr.20210904065459.119: *3* TestRst.test_test_long_overlines
+    def test_test_long_overlines(self):
         try:
             import docutils
+
             assert docutils
         except Exception:  # pragma: no cover
             self.skipTest('Requires docutils')
@@ -4303,25 +4135,21 @@ class TestRst(BaseTestImporter):
             The top section
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language rest\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language rest\n@tabwidth -4\n',
             ),
-            (1, "!Dummy chapter",
-                '.. toc\n'
-                '\n'
-            ),
-            (1, "top",
-                '\n'
-                'The top section\n'
-            ),
+            (1, "!Dummy chapter", '.. toc\n\n'),
+            (1, "top", '\nThe top section\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.120: *3* TestRst.test_trailing_whitespace
-    def test_trailing_whitespace(self):
 
+    # @+node:ekr.20210904065459.120: *3* TestRst.test_trailing_whitespace
+    def test_trailing_whitespace(self):
         try:
             import docutils
+
             assert docutils
         except Exception:  # pragma: no cover
             self.skipTest('Requires docutils')
@@ -4338,27 +4166,25 @@ class TestRst(BaseTestImporter):
             The top section.
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '@language rest\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language rest\n@tabwidth -4\n',
             ),
-            (1, "!Dummy chapter",
-                '.. toc\n'
-                '\n'
-                '.. The section name contains trailing whitespace.\n'
-                '\n'
+            (
+                1,
+                "!Dummy chapter",
+                '.. toc\n\n.. The section name contains trailing whitespace.\n\n',
             ),
-            (1, "top",
-                '\n'
-                'The top section.\n'
-            ),
+            (1, "top", '\nThe top section.\n'),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.121: *3* TestRst.test_leo_rst
-    def test_leo_rst(self):
 
+    # @+node:ekr.20210904065459.121: *3* TestRst.test_leo_rst
+    def test_leo_rst(self):
         try:
             import docutils
+
             assert docutils
         except Exception:  # pragma: no cover
             self.skipTest('Requires docutils')
@@ -4382,36 +4208,27 @@ class TestRst(BaseTestImporter):
             Sec 2.
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@language rest\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language rest\n@tabwidth -4\n',
             ),
-            (1, 'Chapter 1',
-                    '\n'
-                    'It was a dark and stormy night.\n'
-                    '\n'
-            ),
-            (2, 'section 1',
-                    '\n'
-                    'Sec 1.\n'
-                    '\n'
-            ),
-            (2, 'section 2',
-                    '\n'
-                    'Sec 2.\n'
-            ),
+            (1, 'Chapter 1', '\nIt was a dark and stormy night.\n\n'),
+            (2, 'section 1', '\nSec 1.\n\n'),
+            (2, 'section 2', '\nSec 2.\n'),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20220814094900.1: ** class TestRust (BaseTestImporter)
-class TestRust(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20220814094900.1: ** class TestRust (BaseTestImporter)
+class TestRust(BaseTestImporter):
     ext = '.rs'
 
-    #@+others
-    #@+node:ekr.20220814095025.1: *3* TestRust.test_rust_1
+    # @+others
+    # @+node:ekr.20220814095025.1: *3* TestRust.test_rust_1
     def test_rust_1(self):
-
         s = """
             fn main() {
                 let width1 = 30;
@@ -4428,33 +4245,35 @@ class TestRust(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language rust\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language rust\n@tabwidth -4\n',
             ),
-            (1, 'fn main',
-                    'fn main() {\n'
-                    '    let width1 = 30;\n'
-                    '    let height1 = 50;\n'
-                    '\n'
-                    '    println!(\n'
-                    '        "The area of the rectangle is {} square pixels.",\n'
-                    '        area(width1, height1)\n'
-                    '    );\n'
-                    '}\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'fn main',
+                'fn main() {\n'
+                '    let width1 = 30;\n'
+                '    let height1 = 50;\n'
+                '\n'
+                '    println!(\n'
+                '        "The area of the rectangle is {} square pixels.",\n'
+                '        area(width1, height1)\n'
+                '    );\n'
+                '}\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'fn area',
-                    'fn area(width: u32, height: u32) -> u32 {\n'
-                    '    width * height\n'
-                    '}\n'
+            (
+                1,
+                'fn area',
+                'fn area(width: u32, height: u32) -> u32 {\n    width * height\n}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20231030054735.1: *3* TestRust.test_rust_import_fails
-    def test_rust_import_fails(self):
 
+    # @+node:ekr.20231030054735.1: *3* TestRust.test_rust_import_fails
+    def test_rust_import_fails(self):
         # From ruff/crates/ruff_formatter/shared_traits.rs
         s = self.prep(
             """
@@ -4479,46 +4298,53 @@ class TestRust(BaseTestImporter):
                         AsFormat::format(&**self)
                     }
                 }
-            """)
+            """
+        )
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language rust\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language rust\n@tabwidth -4\n',
             ),
-            (1, 'trait AsFormat',
-                    '/// Used to get an object that knows how to format this object.\n'
-                    'pub trait AsFormat<Context> {\n'
-                    "    type Format<'a>: ruff_formatter::Format<Context>\n"
-                    '    where\n'
-                    "        Self: 'a;\n"
-                    '\n'
-                    '    /// Returns an object that is able to format this object.\n'
-                    "    fn format(&self) -> Self::Format<'_>;\n"
-                    '}\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'trait AsFormat',
+                '/// Used to get an object that knows how to format this object.\n'
+                'pub trait AsFormat<Context> {\n'
+                "    type Format<'a>: ruff_formatter::Format<Context>\n"
+                '    where\n'
+                "        Self: 'a;\n"
+                '\n'
+                '    /// Returns an object that is able to format this object.\n'
+                "    fn format(&self) -> Self::Format<'_>;\n"
+                '}\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'impl AsFormat for &T',
-                    '/// Implement [`AsFormat`] for references to types that implement [`AsFormat`].\n'
-                    'impl<T, C> AsFormat<C> for &T\n'
-                    'where\n'
-                    '    T: AsFormat<C>,\n'
-                    '{\n'
-                    '    @others\n'
-                    '}\n'
+            (
+                1,
+                'impl AsFormat for &T',
+                '/// Implement [`AsFormat`] for references to types that implement [`AsFormat`].\n'
+                'impl<T, C> AsFormat<C> for &T\n'
+                'where\n'
+                '    T: AsFormat<C>,\n'
+                '{\n'
+                '    @others\n'
+                '}\n',
             ),
-            (2, 'fn format',
-                    "type Format<'a> = T::Format<'a> where Self: 'a;\n"
-                    '\n'
-                    "fn format(&self) -> Self::Format<'_> {\n"
-                    '    AsFormat::format(&**self)\n'
-                    '}\n'
+            (
+                2,
+                'fn format',
+                "type Format<'a> = T::Format<'a> where Self: 'a;\n"
+                '\n'
+                "fn format(&self) -> Self::Format<'_> {\n"
+                '    AsFormat::format(&**self)\n'
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20231031161514.1: *3* TestRust.test_rust_postpass
-    def test_rust_postpass(self):
 
+    # @+node:ekr.20231031161514.1: *3* TestRust.test_rust_postpass
+    def test_rust_postpass(self):
         # Modified from ruff/crates/ruff_formatter/src/arguments.rs
         s = """
             use super::{Buffer, Format, Formatter};
@@ -4541,43 +4367,47 @@ class TestRust(BaseTestImporter):
             }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    'use super::{Buffer, Format, Formatter};\n'
-                    'use crate::FormatResult;\n'
-                    '\n'
-                    '@others\n'
-                    '@language rust\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                'use super::{Buffer, Format, Formatter};\n'
+                'use crate::FormatResult;\n'
+                '\n'
+                '@others\n'
+                '@language rust\n'
+                '@tabwidth -4\n',
             ),
-            (1, "struct Argument",
-                    # '@\n'
-                    # 'Mono-morphed type to format an object.\n'
-                    # 'Used by the [`crate::format`!].\n'
-                    # '\n'
-                    # 'This struct is similar to a dynamic dispatch (using `dyn Format`)\n'
-                    # 'because it stores a pointer to the value.\n'
-                    # '@c\n'
-                    '/// Mono-morphed type to format an object.\n'
-                    '/// Used by the [`crate::format`!].\n'
-                    '///\n'
-                    '/// This struct is similar to a dynamic dispatch (using `dyn Format`)\n'
-                    '/// because it stores a pointer to the value.\n'
-                    "pub struct Argument<'fmt, Context> {\n"
-                    "    /// The value to format stored as a raw pointer...\n"
-                    '    value: *const c_void,\n'
-                    '\n'
-                    '    /// Stores the lifetime of the value.\n'
-                    "    lifetime: PhantomData<&'fmt ()>,\n"
-                    '\n'
-                    "    /// The function pointer to `value`'s `Format::format` method\n"
-                    "    formatter: fn(*const c_void, &mut Formatter<'_, Context>) -> FormatResult<()>,\n"
-                    '}\n'
+            (
+                1,
+                "struct Argument",
+                # '@\n'
+                # 'Mono-morphed type to format an object.\n'
+                # 'Used by the [`crate::format`!].\n'
+                # '\n'
+                # 'This struct is similar to a dynamic dispatch (using `dyn Format`)\n'
+                # 'because it stores a pointer to the value.\n'
+                # '@c\n'
+                '/// Mono-morphed type to format an object.\n'
+                '/// Used by the [`crate::format`!].\n'
+                '///\n'
+                '/// This struct is similar to a dynamic dispatch (using `dyn Format`)\n'
+                '/// because it stores a pointer to the value.\n'
+                "pub struct Argument<'fmt, Context> {\n"
+                "    /// The value to format stored as a raw pointer...\n"
+                '    value: *const c_void,\n'
+                '\n'
+                '    /// Stores the lifetime of the value.\n'
+                "    lifetime: PhantomData<&'fmt ()>,\n"
+                '\n'
+                "    /// The function pointer to `value`'s `Format::format` method\n"
+                "    formatter: fn(*const c_void, &mut Formatter<'_, Context>) -> FormatResult<()>,\n"
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20231113092341.1: *3* TestRust.test_invalid_runon_string
-    def test_invalid_runon_string(self):
 
+    # @+node:ekr.20231113092341.1: *3* TestRust.test_invalid_runon_string
+    def test_invalid_runon_string(self):
         # From ruff_linter/src/rules/eradicate/detection.rs
         s = """
             #[test]
@@ -4588,24 +4418,26 @@ class TestRust(BaseTestImporter):
             }
     """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language rust\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language rust\n@tabwidth -4\n',
             ),
-            (1, 'fn comment_contains_code_basic',
-                    '#[test]\n'
-                    'fn comment_contains_code_basic() {\n'
-                    '    assert!(comment_contains_code("#import eradicate", &[]));\n'
-                    '    assert!(comment_contains_code(r#"#"key": value,"#, &[]));\n'
-                    '    assert!(comment_contains_code(r#"#"key": "value","#, &[]));\n'
-                    '}\n'
+            (
+                1,
+                'fn comment_contains_code_basic',
+                '#[test]\n'
+                'fn comment_contains_code_basic() {\n'
+                '    assert!(comment_contains_code("#import eradicate", &[]));\n'
+                '    assert!(comment_contains_code(r#"#"key": value,"#, &[]));\n'
+                '    assert!(comment_contains_code(r#"#"key": "value","#, &[]));\n'
+                '}\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20250113015615.1: *3* TestRust.test_rust_form_feed
-    def test_rust_form_feed(self):
 
+    # @+node:ekr.20250113015615.1: *3* TestRust.test_rust_form_feed
+    def test_rust_form_feed(self):
         s = """
             let contents = r"
             class FormFeedIndent:
@@ -4614,27 +4446,30 @@ class TestRust(BaseTestImporter):
             ";
         """.replace(' print', '\fprint')
         expected_results = (
-            (0, '',  # Ignore the first headline.
+            (
+                0,
+                '',  # Ignore the first headline.
                 'let contents = r"\n'
                 'class FormFeedIndent:\n'
                 '   \fdef __init__(self, a=[]):\n'
                 '       \fprint(a)\n'
                 '";\n'
                 '@language rust\n'
-                '@tabwidth -4\n'
+                '@tabwidth -4\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20231012142113.1: ** class TestScheme (BaseTestImporter)
-class TestScheme(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20231012142113.1: ** class TestScheme (BaseTestImporter)
+class TestScheme(BaseTestImporter):
     ext = '.scm'
 
-    #@+others
-    #@+node:ekr.20231012142113.2: *3* TestScheme.test_scheme_1
+    # @+others
+    # @+node:ekr.20231012142113.2: *3* TestScheme.test_scheme_1
     def test_scheme_1(self):
-
         # Add weird assignments for coverage.
         s = """
             ;;; comment
@@ -4651,39 +4486,38 @@ class TestScheme(BaseTestImporter):
                (+ 1 2 3))
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '@language scheme\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language scheme\n@tabwidth -4\n',
             ),
-            (1, 'define abc',
-                    ';;; comment\n'
-                    ';;; continue\n'
-                    ';;;\n'
-                    '\n'
-                    '(define abc (a b)\n'
-                    '   (assn a "abc")\n'
-                    '   (assn b \\x)\n'
-                    '   (+ 1 2 3))\n'
-                    '\n'  # Leo 6.8.7
+            (
+                1,
+                'define abc',
+                ';;; comment\n'
+                ';;; continue\n'
+                ';;;\n'
+                '\n'
+                '(define abc (a b)\n'
+                '   (assn a "abc")\n'
+                '   (assn b \\x)\n'
+                '   (+ 1 2 3))\n'
+                '\n',  # Leo 6.8.7
             ),
-            (1, 'define cde',
-                    '; comment re cde\n'
-                    '(define cde (a b)\n'
-                    '   (+ 1 2 3))\n'
-            ),
+            (1, 'define cde', '; comment re cde\n(define cde (a b)\n   (+ 1 2 3))\n'),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20220813174450.1: ** class TestTcl (BaseTestImporter)
-class TestTcl(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20220813174450.1: ** class TestTcl (BaseTestImporter)
+class TestTcl(BaseTestImporter):
     ext = '.tcl'
 
-    #@+others
-    #@+node:ekr.20220813174721.1: *3* TestTcl.test_1
+    # @+others
+    # @+node:ekr.20220813174721.1: *3* TestTcl.test_1
     def test_1(self):
-
         s = r"""
             proc dumpFile { fileName { channel stdout } } {
 
@@ -4708,46 +4542,51 @@ class TestTcl(BaseTestImporter):
              }
         """
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                    '@others\n'
-                    '\n'  # Leo 6.8.7
-                    ' # Main program\n'
-                    '\n'
-                    ' if { [info exists argv0] && [string equal $argv0 [info script]] } {\n'
-                    '     foreach file $argv {\n'
-                    '         puts "$file:"\n'
-                    '         dumpFile $file\n'
-                    '     }\n'
-                    ' }\n'
-                    '@language tcl\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n'
+                '\n'  # Leo 6.8.7
+                ' # Main program\n'
+                '\n'
+                ' if { [info exists argv0] && [string equal $argv0 [info script]] } {\n'
+                '     foreach file $argv {\n'
+                '         puts "$file:"\n'
+                '         dumpFile $file\n'
+                '     }\n'
+                ' }\n'
+                '@language tcl\n'
+                '@tabwidth -4\n',
             ),
-            (1, 'proc dumpFile',
-                    'proc dumpFile { fileName { channel stdout } } {\n'
-                    '\n'
-                    '     # Open the file, and set up to process it in binary mode.\n'
-                    '     set f [open $fileName r]\n'
-                    '     fconfigure $f \\\n'
-                    '         -translation binary \\\n'
-                    '         -encoding binary \\\n'
-                    '         -buffering full -buffersize 16384\n'
-                    '\n'
-                    '     close $f\n'
-                    '     return\n'
-                    ' }\n'
+            (
+                1,
+                'proc dumpFile',
+                'proc dumpFile { fileName { channel stdout } } {\n'
+                '\n'
+                '     # Open the file, and set up to process it in binary mode.\n'
+                '     set f [open $fileName r]\n'
+                '     fconfigure $f \\\n'
+                '         -translation binary \\\n'
+                '         -encoding binary \\\n'
+                '         -buffering full -buffersize 16384\n'
+                '\n'
+                '     close $f\n'
+                '     return\n'
+                ' }\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20220809161015.1: ** class TestTreepad (BaseTestImporter)
-class TestTreepad(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20220809161015.1: ** class TestTreepad (BaseTestImporter)
+class TestTreepad(BaseTestImporter):
     ext = '.hjt'
 
-    #@+others
-    #@+node:ekr.20220810141234.1: *3* TestTreepad.test_treepad_1
+    # @+others
+    # @+node:ekr.20220810141234.1: *3* TestTreepad.test_treepad_1
     def test_treepad_1(self):
-
         # 5P9i0s8y19Z is a magic number.
         # The treepad writer always writes '<Treepad version 3.0>',
         # but any version should work.
@@ -4790,45 +4629,31 @@ class TestTreepad(BaseTestImporter):
         """
 
         expected_results = (
-            (0, '',  # Ignore the first headline.
-                '<Treepad version 2.7>\n'
-                '@others\n'
-                '@language plain\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore the first headline.
+                '<Treepad version 2.7>\n@others\n@language plain\n@tabwidth -4\n',
             ),
-            (1, 'headline 1',
-                'node 1, line 1\n'
-                'node 1, line 2\n'
-            ),
-            (2, 'headline 1.1',
-                'node 1.1, line 1\n'
-            ),
-            (2, 'headline 1.2',
-                'node 1.2, line 1\n'
-                'node 1.2, line 2\n'
-            ),
-            (1, 'headline 2',
-                'node 2, line 1\n'
-                'node 2, line 2\n'
-            ),
+            (1, 'headline 1', 'node 1, line 1\nnode 1, line 2\n'),
+            (2, 'headline 1.1', 'node 1.1, line 1\n'),
+            (2, 'headline 1.2', 'node 1.2, line 1\nnode 1.2, line 2\n'),
+            (1, 'headline 2', 'node 2, line 1\nnode 2, line 2\n'),
             (2, 'placeholder level 2', ''),
             (3, 'placeholder level 3', ''),
-            (4, 'headline 2.1.1',
-                'node 2.1.1, line 1\n'
-                'node 2.1.1, line 2\n'
-            ),
+            (4, 'headline 2.1.1', 'node 2.1.1, line 1\nnode 2.1.1, line 2\n'),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@+node:ekr.20211108083038.1: ** class TestTypescript (BaseTestImporter)
-class TestTypescript(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108083038.1: ** class TestTypescript (BaseTestImporter)
+class TestTypescript(BaseTestImporter):
     ext = '.ts'
 
-    #@+others
-    #@+node:ekr.20210904065459.103: *3* TestTypescript.test_class
+    # @+others
+    # @+node:ekr.20210904065459.103: *3* TestTypescript.test_class
     def test_class(self):
-
         s = '''
             class Greeter {
                 greeting: string;
@@ -4852,7 +4677,8 @@ class TestTypescript(BaseTestImporter):
 
         '''
         self.new_round_trip_test(s)
-    #@+node:ekr.20210904065459.104: *3* TestTypescript.test_module
+
+    # @+node:ekr.20210904065459.104: *3* TestTypescript.test_module
     def test_module(self):
         s = '''
             module Sayings {
@@ -4877,10 +4703,12 @@ class TestTypescript(BaseTestImporter):
             document.body.appendChild(button)
         '''
         self.new_round_trip_test(s)
-    #@-others
-#@+node:ekr.20211108065014.1: ** class TestXML (BaseTestImporter)
-class TestXML(BaseTestImporter):
 
+    # @-others
+
+
+# @+node:ekr.20211108065014.1: ** class TestXML (BaseTestImporter)
+class TestXML(BaseTestImporter):
     ext = '.xml'
 
     def setUp(self):
@@ -4892,10 +4720,9 @@ class TestXML(BaseTestImporter):
         c.config.settingsDict = settingsDict
         c.config.set(c.p, 'data', 'import-xml-tags', tags_list, warn=True)
 
-    #@+others
-    #@+node:ekr.20210904065459.105: *3* TestXml.test_standard_opening_elements
+    # @+others
+    # @+node:ekr.20210904065459.105: *3* TestXml.test_standard_opening_elements
     def test_standard_opening_elements(self):
-
         s = """
             <?xml version="1.0" encoding="UTF-8"?>
             <!DOCTYPE note SYSTEM "Note.dtd">
@@ -4910,33 +4737,27 @@ class TestXML(BaseTestImporter):
         """
 
         expected_results = (
-            (0, '',  # Ignore level 0 headlines.
-                    '@others\n'
-                    '@language xml\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore level 0 headlines.
+                '@others\n@language xml\n@tabwidth -4\n',
             ),
-            (1, '<html>',
-                    '<?xml version="1.0" encoding="UTF-8"?>\n'
-                    '<!DOCTYPE note SYSTEM "Note.dtd">\n'
-                    '<html>\n'
-                    '@others\n'
-                    '</html>\n'
+            (
+                1,
+                '<html>',
+                '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE note SYSTEM "Note.dtd">\n<html>\n@others\n</html>\n',
             ),
-            (2, '<head>',
-                    '<head>\n'
-                    '    <title>Bodystring</title>\n'
-                    '</head>\n'
-            ),
-            (2, "<body class='bodystring'>",
-                    "<body class='bodystring'>\n"
-                    "<div id='bodydisplay'></div>\n"
-                    '</body>\n'
+            (2, '<head>', '<head>\n    <title>Bodystring</title>\n</head>\n'),
+            (
+                2,
+                "<body class='bodystring'>",
+                "<body class='bodystring'>\n<div id='bodydisplay'></div>\n</body>\n",
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.106: *3* TestXml.test_xml_1
-    def test_xml_1(self):
 
+    # @+node:ekr.20210904065459.106: *3* TestXml.test_xml_1
+    def test_xml_1(self):
         s = """
             <html>
             <head>
@@ -4950,34 +4771,27 @@ class TestXML(BaseTestImporter):
             </html>
         """
         expected_results = (
-            (0, '',  # Ignore level 0 headlines.
-                    '@others\n'
-                    '@language xml\n'
-                    '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore level 0 headlines.
+                '@others\n@language xml\n@tabwidth -4\n',
             ),
-            (1, '<html>',
-                    '<html>\n'
-                    '@others\n'
-                    '</html>\n'
+            (1, '<html>', '<html>\n@others\n</html>\n'),
+            (2, '<head>', '<head>\n    <title>Bodystring</title>\n</head>\n'),
+            (
+                2,
+                "<body class='bodystring'>",
+                "<body class='bodystring'>\n@others\n</body>\n",
             ),
-            (2, '<head>',
-                    '<head>\n'
-                    '    <title>Bodystring</title>\n'
-                    '</head>\n'
-            ),
-            (2, "<body class='bodystring'>",
-                    "<body class='bodystring'>\n"
-                    '@others\n'
-                    '</body>\n'
-            ),
-            (3, "<div id='bodydisplay'>",
-                    "<div id='bodydisplay'>\n"
-                    'contents!\n'
-                    '</div>\n'
+            (
+                3,
+                "<div id='bodydisplay'>",
+                "<div id='bodydisplay'>\ncontents!\n</div>\n",
             ),
         )
         self.new_run_test(s, expected_results)
-    #@+node:ekr.20210904065459.108: *3* TestXml.test_non_ascii_tags
+
+    # @+node:ekr.20210904065459.108: *3* TestXml.test_non_ascii_tags
     def test_non_ascii_tags(self):
         s = """
             <:À.Ç>
@@ -4985,16 +4799,17 @@ class TestXML(BaseTestImporter):
             <_.ÌÑ>
         """
         expected_results = (
-            (0, '',  # Ignore level 0 headlines.
-                 '<:À.Ç>\n'
-                '<Ì>\n'
-                '<_.ÌÑ>\n'
-                '@language xml\n'
-                '@tabwidth -4\n'
+            (
+                0,
+                '',  # Ignore level 0 headlines.
+                '<:À.Ç>\n<Ì>\n<_.ÌÑ>\n@language xml\n@tabwidth -4\n',
             ),
         )
         self.new_run_test(s, expected_results)
-    #@-others
-#@-others
-#@@language python
-#@-leo
+
+    # @-others
+
+
+# @-others
+# @@language python
+# @-leo

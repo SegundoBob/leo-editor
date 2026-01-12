@@ -1,10 +1,10 @@
 #! /usr/bin/env python3
-#@+leo-ver=5-thin
-#@+node:ekr.20130805134749.12436: * @file ../external/edb.py
-#@@first
-#@@killbeautify
-#@+<< docstring >>
-#@+node:ekr.20110914171443.7240: ** << docstring >>
+# @+leo-ver=5-thin
+# @+node:ekr.20130805134749.12436: * @file ../external/edb.py
+# @@first
+# @@killbeautify
+# @+<< docstring >>
+# @+node:ekr.20110914171443.7240: ** << docstring >>
 """
 edb: The Python Debugger Pdb, modified for blender by EKR
 =========================================================
@@ -71,11 +71,11 @@ Debugger commands
 
 # NOTE: the actual command documentation is collected from docstrings of the
 # commands and is appended to __doc__ after the class has been defined.
-#@-<< docstring >>
+# @-<< docstring >>
 # pylint: disable=eval-used
 # edb: pdb modified by EKR.'''
-#@+<< imports >>
-#@+node:ekr.20110914171443.7241: ** << imports >>
+# @+<< imports >>
+# @+node:ekr.20110914171443.7241: ** << imports >>
 from __future__ import print_function
 
 import bdb
@@ -87,13 +87,15 @@ import linecache
 import os
 import pprint
 import re
+
 # import reprlib
 import signal
 import sys
 import traceback
-#@-<< imports >>
-#@+<< usage >>
-#@+node:ekr.20110914171443.7242: ** << usage >>
+
+# @-<< imports >>
+# @+<< usage >>
+# @+node:ekr.20110914171443.7242: ** << usage >>
 _usage = """\
 usage: pdb.py [-c command] ... pyfile [arg] ...
 
@@ -108,23 +110,34 @@ To let the script run up to a given line X in the debugged file, use
 "-c 'until X'".
 
 """
-#@-<< usage >>
-#@+<< data >>
-#@+node:ekr.20110914171443.7243: ** << data >>
+# @-<< usage >>
+# @+<< data >>
+# @+node:ekr.20110914171443.7243: ** << data >>
 __all__ = [
-    "run", "pm", "Pdb", "runeval", "runctx", "runcall", "set_trace",
-           "post_mortem", "help",
+    "run",
+    "pm",
+    "Pdb",
+    "runeval",
+    "runctx",
+    "runcall",
+    "set_trace",
+    "post_mortem",
+    "help",
 ]
 
-#@-<< data >>
+# @-<< data >>
 
-#@+others
-#@+node:ekr.20110914171443.7244: ** class Restart(Exception)
+
+# @+others
+# @+node:ekr.20110914171443.7244: ** class Restart(Exception)
 class Restart(Exception):
     """Causes a debugger to be restarted for the debugged python program."""
+
     pass
-#@+node:ekr.20110914171443.7245: ** Functions
-#@+node:ekr.20110914171443.7246: *3* find_function
+
+
+# @+node:ekr.20110914171443.7245: ** Functions
+# @+node:ekr.20110914171443.7246: *3* find_function
 def find_function(funcname, filename):
     cre = re.compile(r'def\s+%s\s*[(]' % re.escape(funcname))
     try:
@@ -144,9 +157,10 @@ def find_function(funcname, filename):
         lineno += 1
     fp.close()
     return answer
-#@+node:ekr.20110914171443.7247: *3* getsourcelines
-def getsourcelines(obj):
 
+
+# @+node:ekr.20110914171443.7247: *3* getsourcelines
+def getsourcelines(obj):
     print('edb.getsourcelines', obj)
 
     lines, lineno = inspect.findsource(obj)
@@ -156,7 +170,9 @@ def getsourcelines(obj):
     elif inspect.ismodule(obj):
         return lines, 1
     return inspect.getblock(lines[lineno:]), lineno + 1
-#@+node:ekr.20110914171443.7248: *3* lasti2lineno
+
+
+# @+node:ekr.20110914171443.7248: *3* lasti2lineno
 def lasti2lineno(code, lasti):
     linestarts = list(dis.findlinestarts(code))
     linestarts.reverse()
@@ -164,13 +180,17 @@ def lasti2lineno(code, lasti):
         if lasti >= i:
             return lineno
     return 0
-#@+node:ekr.20110914171443.7249: ** class _rstr
+
+
+# @+node:ekr.20110914171443.7249: ** class _rstr
 class _rstr(str):
     """String that doesn't quote its repr."""
 
     def __repr__(self):
         return self
-#@+node:ekr.20110914171443.7250: ** class Pdb (bdb.Bdb,cmd.Cmd)
+
+
+# @+node:ekr.20110914171443.7250: ** class Pdb (bdb.Bdb,cmd.Cmd)
 # Interaction prompt line will separate file and call info from code
 # text using value of line_prefix string.  A newline and arrow may
 # be to your liking.  You can set it once pdb is imported using the
@@ -181,18 +201,19 @@ line_prefix = '\n-> '  # Probably a better default
 
 
 class Pdb(bdb.Bdb, cmd.Cmd):
-
     # List of all the commands making the program resume execution.
     commands_resuming = [
-        'do_continue', 'do_step', 'do_next', 'do_return',
-        'do_quit', 'do_jump',
+        'do_continue',
+        'do_step',
+        'do_next',
+        'do_return',
+        'do_quit',
+        'do_jump',
     ]
 
-    #@+others
-    #@+node:ekr.20110914171443.7251: *3* __init__ (edb.Pdb)
-    def __init__(self, completekey='tab', stdin=None, stdout=None, skip=None,
-                 nosigint=False):
-
+    # @+others
+    # @+node:ekr.20110914171443.7251: *3* __init__ (edb.Pdb)
+    def __init__(self, completekey='tab', stdin=None, stdout=None, skip=None, nosigint=False):
         bdb.Bdb.__init__(self, skip=skip)
         cmd.Cmd.__init__(self, completekey, stdin, stdout)
 
@@ -208,6 +229,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # Try to load readline if it exists
         try:
             import readline
+
             assert readline
         except ImportError:
             pass
@@ -240,7 +262,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.commands_defining = False
         # The breakpoint number for which we are defining a list
         self.commands_bnum = None
-    #@+node:ekr.20110914171443.7252: *3* sigint_handler
+
+    # @+node:ekr.20110914171443.7252: *3* sigint_handler
     def sigint_handler(self, signum, frame):
         if self.allow_kbdint:
             raise KeyboardInterrupt
@@ -250,11 +273,12 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # restore previous signal handler
         signal.signal(signal.SIGINT, self._previous_sigint_handler)
 
-    #@+node:ekr.20110914171443.7253: *3* reset
+    # @+node:ekr.20110914171443.7253: *3* reset
     def reset(self):
         bdb.Bdb.reset(self)
         self.forget()
-    #@+node:ekr.20110914171443.7254: *3* forget
+
+    # @+node:ekr.20110914171443.7254: *3* forget
     def forget(self):
         self.lineno = None
         self.stack = []
@@ -262,7 +286,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.curframe = None
         self.tb_lineno.clear()
 
-    #@+node:ekr.20110914171443.7255: *3* setup
+    # @+node:ekr.20110914171443.7255: *3* setup
     def setup(self, f, tb):
         self.forget()
         self.stack, self.curindex = self.get_stack(f, tb)
@@ -280,7 +304,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.curframe_locals = self.curframe.f_locals
         return self.execRcLines()
 
-    #@+node:ekr.20110914171443.7256: *3* execRcLines
+    # @+node:ekr.20110914171443.7256: *3* execRcLines
     # Can be executed earlier than 'setup' if desired
 
     def execRcLines(self):
@@ -301,10 +325,9 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                     self.rcLines += reversed(rcLines)
                     return True
 
-    #@+node:ekr.20110914171443.7257: *3* Actual overrides of Bdb methods
-    #@+node:ekr.20110914171443.7258: *4* break_here (edb, overrides bdb)
+    # @+node:ekr.20110914171443.7257: *3* Actual overrides of Bdb methods
+    # @+node:ekr.20110914171443.7258: *4* break_here (edb, overrides bdb)
     def break_here(self, frame):
-
         filename = self.canonic(frame.f_code.co_filename)
 
         # EKR.
@@ -327,16 +350,17 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         (bp, flag) = bdb.effective(filename, lineno, frame)  # EKR: added bdb.
         if bp:
             self.currentbp = bp.number
-            if (flag and bp.temporary):
+            if flag and bp.temporary:
                 self.do_clear(str(bp.number))
             return True
         else:
             return False
-    #@+node:ekr.20110914171443.7259: *4* format_stack_entry (edb, overrides bdb)
-    def format_stack_entry(self, frame_lineno, lprefix=': '):
 
+    # @+node:ekr.20110914171443.7259: *4* format_stack_entry (edb, overrides bdb)
+    def format_stack_entry(self, frame_lineno, lprefix=': '):
         import linecache
         import reprlib
+
         frame, lineno = frame_lineno
         filename = self.canonic(frame.f_code.co_filename)
         # EKR.
@@ -367,10 +391,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         if line:
             s += lprefix + line.strip()
         return s
-    #@+node:ekr.20110914171443.7260: *3* Actual overrides of Pdb methods
-    #@+node:ekr.20110914171443.7261: *4* _getval (edb)
-    def _getval(self, arg, frame=None):
 
+    # @+node:ekr.20110914171443.7260: *3* Actual overrides of Pdb methods
+    # @+node:ekr.20110914171443.7261: *4* _getval (edb)
+    def _getval(self, arg, frame=None):
         # EKR: added the frame keyword argument.
         if frame:
             f_globals = frame.f_globals
@@ -387,13 +411,14 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             exc_info = sys.exc_info()[:2]
             self.error(traceback.format_exception_only(*exc_info)[-1].strip())
             raise
-    #@+node:ekr.20110914171443.7262: *4* defaultFile (edb)
+
+    # @+node:ekr.20110914171443.7262: *4* defaultFile (edb)
     def defaultFile(self):
         """Produce a reasonable default."""
         filename = self.curframe.f_code.co_filename
 
         # if filename == '<string>' and self.mainpyfile:
-            # filename = self.mainpyfile
+        # filename = self.mainpyfile
 
         # EKR:
         if filename == '<string>':
@@ -405,7 +430,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
         return filename
 
-    #@+node:ekr.20110914171443.7263: *4* do_list (edb, overrides Pdb)
+    # @+node:ekr.20110914171443.7263: *4* do_list (edb, overrides Pdb)
     def do_list(self, arg):
         """l(ist) [first [,last] | .]
 
@@ -465,10 +490,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             pass
 
     do_l = do_list
-    #@+node:ekr.20110914171443.7264: *3* May override Bdb methods...
+    # @+node:ekr.20110914171443.7264: *3* May override Bdb methods...
     # Override Bdb methods
 
-    #@+node:ekr.20110914171443.7265: *4* _cmdloop
+    # @+node:ekr.20110914171443.7265: *4* _cmdloop
     # General interaction function
 
     def _cmdloop(self):
@@ -483,7 +508,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             except KeyboardInterrupt:
                 self.message('--KeyboardInterrupt--')
 
-    #@+node:ekr.20110914171443.7266: *4* bp_commands
+    # @+node:ekr.20110914171443.7266: *4* bp_commands
     def bp_commands(self, frame):
         """Call every command that was set for the current active breakpoint
         (if there is one).
@@ -507,9 +532,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             return
         return 1
 
-    #@+node:ekr.20110914171443.7267: *4* default
+    # @+node:ekr.20110914171443.7267: *4* default
     def default(self, line):
-        if line[:1] == '!': line = line[1:]
+        if line[:1] == '!':
+            line = line[1:]
         locals = self.curframe_locals
         globals = self.curframe.f_globals
         try:
@@ -530,7 +556,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             exc_info = sys.exc_info()[:2]
             self.error(traceback.format_exception_only(*exc_info)[-1].strip())
 
-    #@+node:ekr.20110914171443.7268: *4* displayhook
+    # @+node:ekr.20110914171443.7268: *4* displayhook
     def displayhook(self, obj):
         """Custom displayhook for the exec in default(), which prevents
         assignment of the _ variable in the builtins.
@@ -539,7 +565,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         if obj is not None:
             self.message(repr(obj))
 
-    #@+node:ekr.20110914171443.7269: *4* handle_command_def
+    # @+node:ekr.20110914171443.7269: *4* handle_command_def
     def handle_command_def(self, line):
         """Handles one command line during command list definition."""
         cmd, arg, line = self.parseline(line)
@@ -568,7 +594,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             return 1
         return
 
-    #@+node:ekr.20110914171443.7270: *4* interaction
+    # @+node:ekr.20110914171443.7270: *4* interaction
     def interaction(self, frame, traceback):
         if self.setup(frame, traceback):
             # no interaction desired at this time (happens if .pdbrc contains
@@ -579,7 +605,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self._cmdloop()
         self.forget()
 
-    #@+node:ekr.20110914171443.7271: *4* onecmd
+    # @+node:ekr.20110914171443.7271: *4* onecmd
     def onecmd(self, line):
         """Interpret the argument as though it had been typed in response
         to the prompt.
@@ -592,7 +618,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         else:
             return self.handle_command_def(line)
 
-    #@+node:ekr.20110914171443.7272: *4* precmd
+    # @+node:ekr.20110914171443.7272: *4* precmd
     def precmd(self, line):
         """Handle alias expansion and ';;' separator."""
         if not line.strip():
@@ -602,8 +628,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             line = self.aliases[args[0]]
             ii = 1
             for tmpArg in args[1:]:
-                line = line.replace("%" + str(ii),
-                                      tmpArg)
+                line = line.replace("%" + str(ii), tmpArg)
                 ii += 1
             line = line.replace("%*", ' '.join(args[1:]))
             args = line.split()
@@ -618,7 +643,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 line = line[:marker].rstrip()
         return line
 
-    #@+node:ekr.20110914171443.7273: *4* preloop
+    # @+node:ekr.20110914171443.7273: *4* preloop
     # Called before loop, handles display expressions
 
     def preloop(self):
@@ -631,10 +656,9 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 # fields are changed to be displayed
                 if newvalue is not oldvalue and newvalue != oldvalue:
                     displaying[expr] = newvalue
-                    self.message('display %s: %r  [old: %r]' %
-                                 (expr, newvalue, oldvalue))
+                    self.message('display %s: %r  [old: %r]' % (expr, newvalue, oldvalue))
 
-    #@+node:ekr.20110914171443.7274: *4* user_call
+    # @+node:ekr.20110914171443.7274: *4* user_call
     def user_call(self, frame, argument_list):
         """This method is called when there is the remote possibility
         that we ever need to stop in this function."""
@@ -644,7 +668,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.message('--Call--')
             self.interaction(frame, None)
 
-    #@+node:ekr.20110914171443.7275: *4* user_exception
+    # @+node:ekr.20110914171443.7275: *4* user_exception
     def user_exception(self, frame, exc_info):
         """This function is called if an exception occurs,
         but only if we are to stop at or just below this level."""
@@ -658,21 +682,18 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
         self.interaction(frame, exc_traceback)
 
-    #@+node:ekr.20110914171443.7276: *4* user_line
+    # @+node:ekr.20110914171443.7276: *4* user_line
     def user_line(self, frame):
         """This function is called when we stop or break at this line."""
         if self._wait_for_mainpyfile:
-            if (
-                self.mainpyfile != self.canonic(frame.f_code.co_filename) or
-                frame.f_lineno <= 0
-            ):
+            if self.mainpyfile != self.canonic(frame.f_code.co_filename) or frame.f_lineno <= 0:
                 return
             self._wait_for_mainpyfile = False
 
         if self.bp_commands(frame):
             self.interaction(frame, None)
 
-    #@+node:ekr.20110914171443.7277: *4* user_return
+    # @+node:ekr.20110914171443.7277: *4* user_return
     def user_return(self, frame, return_value):
         """This function is called when a return trap is set here."""
         if self._wait_for_mainpyfile:
@@ -681,21 +702,23 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.message('--Return--')
         self.interaction(frame, None)
 
-    #@+node:ekr.20110914171443.7278: *3* Interface abstraction functions...
+    # @+node:ekr.20110914171443.7278: *3* Interface abstraction functions...
     # interface abstraction functions
 
-    #@+node:ekr.20110914171443.7279: *4* message
+    # @+node:ekr.20110914171443.7279: *4* message
     def message(self, msg):
         print(msg, file=self.stdout)
-    #@+node:ekr.20110914171443.7280: *4* error
+
+    # @+node:ekr.20110914171443.7280: *4* error
     def error(self, msg):
         print('***', msg, file=self.stdout)
-    #@+node:ekr.20110914171443.7281: *3* Command definitions...
+
+    # @+node:ekr.20110914171443.7281: *3* Command definitions...
     # Command definitions, called by cmdloop()
     # The argument is the remaining string on the command line
     # Return true to exit from the command loop
 
-    #@+node:ekr.20110914171443.7282: *4* do_commands
+    # @+node:ekr.20110914171443.7282: *4* do_commands
     def do_commands(self, arg):
         """commands [bpnumber]
         (com) ...
@@ -744,9 +767,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.commands_bnum = bnum
         # Save old definitions for the case of a keyboard interrupt.
         if bnum in self.commands:
-            old_command_defs = (self.commands[bnum],
-                                self.commands_doprompt[bnum],
-                                self.commands_silent[bnum])
+            old_command_defs = (self.commands[bnum], self.commands_doprompt[bnum], self.commands_silent[bnum])
         else:
             old_command_defs = None
         self.commands[bnum] = []
@@ -773,7 +794,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.commands_defining = False
             self.prompt = prompt_back
 
-    #@+node:ekr.20110914171443.7283: *4* do_break (Pdb)
+    # @+node:ekr.20110914171443.7283: *4* do_break (Pdb)
     def do_break(self, arg, temporary=0):
         """b(reak) [ ([filename:]lineno | function) [, condition] ]
         Without argument, list all breaks.
@@ -845,8 +866,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                     # last thing to try
                     (ok, filename, ln) = self.lineinfo(arg)
                     if not ok:
-                        self.error('The specified object %r is not a function '
-                                   'or was not found along sys.path.' % arg)
+                        self.error('The specified object %r is not a function or was not found along sys.path.' % arg)
                         return
                     funcname = ok  # ok contains a function name
                     lineno = int(ln)
@@ -861,13 +881,13 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 self.error(err)
             else:
                 bp = self.get_breaks(filename, line)[-1]
-                self.message("Breakpoint %d at %s:%d" %
-                             (bp.number, bp.file, bp.line))
+                self.message("Breakpoint %d at %s:%d" % (bp.number, bp.file, bp.line))
 
     do_b = do_break
-    #@+node:ekr.20110914171443.7284: *4* To be overridden
+
+    # @+node:ekr.20110914171443.7284: *4* To be overridden
     # To be overridden in derived debuggers
-    #@+node:ekr.20110914171443.7285: *5* _getval_except
+    # @+node:ekr.20110914171443.7285: *5* _getval_except
     def _getval_except(self, arg, frame=None):
         try:
             if frame is None:
@@ -879,7 +899,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             err = traceback.format_exception_only(*exc_info)[-1].strip()
             return _rstr('** raised %s **' % err)
 
-    #@+node:ekr.20110914171443.7286: *5* _select_frame
+    # @+node:ekr.20110914171443.7286: *5* _select_frame
     def _select_frame(self, number):
         assert 0 <= number < len(self.stack)
         self.curindex = number
@@ -888,7 +908,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.print_stack_entry(self.stack[self.curindex])
         self.lineno = None
 
-    #@+node:ekr.20110914171443.7287: *5* checkline
+    # @+node:ekr.20110914171443.7287: *5* checkline
     def checkline(self, filename, lineno):
         """Check whether specified line seems to be executable.
 
@@ -904,13 +924,12 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             return 0
         line = line.strip()
         # Don't allow setting breakpoint at a blank line
-        if (not line or (line[0] == '#') or
-             (line[:3] == '"""') or line[:3] == "'''"):
+        if not line or (line[0] == '#') or (line[:3] == '"""') or line[:3] == "'''":
             self.error('Blank or comment')
             return 0
         return lineno
 
-    #@+node:ekr.20110914171443.7288: *5* do_alias
+    # @+node:ekr.20110914171443.7288: *5* do_alias
     def do_alias(self, arg):
         """alias [name [command [parameter parameter ...] ]]
         Create an alias called 'name' that executes 'command'.  The
@@ -946,7 +965,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         else:
             self.aliases[args[0]] = ' '.join(args[1:])
 
-    #@+node:ekr.20110914171443.7289: *5* do_args
+    # @+node:ekr.20110914171443.7289: *5* do_args
     def do_args(self, arg):
         """a(rgs)
         Print the argument list of the current function.
@@ -954,8 +973,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         co = self.curframe.f_code
         dict = self.curframe_locals
         n = co.co_argcount
-        if co.co_flags & 4: n = n + 1
-        if co.co_flags & 8: n = n + 1
+        if co.co_flags & 4:
+            n = n + 1
+        if co.co_flags & 8:
+            n = n + 1
         for i in range(n):
             name = co.co_varnames[i]
             if name in dict:
@@ -964,7 +985,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 self.message('%s = *** undefined ***' % (name,))
 
     do_a = do_args
-    #@+node:ekr.20110914171443.7290: *5* do_clear
+
+    # @+node:ekr.20110914171443.7290: *5* do_clear
     def do_clear(self, arg):
         """cl(ear) filename:lineno\ncl(ear) [bpnumber [bpnumber...]]
         With a space separated list of breakpoint numbers, clear
@@ -1014,7 +1036,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     do_cl = do_clear  # 'c' is already an abbreviation for 'continue'
 
-    #@+node:ekr.20110914171443.7291: *5* do_condition
+    # @+node:ekr.20110914171443.7291: *5* do_condition
     def do_condition(self, arg):
         """condition bpnumber [condition]
         Set a new condition for the breakpoint, an expression which
@@ -1038,19 +1060,19 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             else:
                 self.message('New condition set for breakpoint %d.' % bp.number)
 
-    #@+node:ekr.20110914171443.7292: *5* do_continue
+    # @+node:ekr.20110914171443.7292: *5* do_continue
     def do_continue(self, arg):
         """c(ont(inue))
         Continue execution, only stop when a breakpoint is encountered.
         """
         if not self.nosigint:
-            self._previous_sigint_handler = signal.signal(
-                signal.SIGINT, self.sigint_handler)
+            self._previous_sigint_handler = signal.signal(signal.SIGINT, self.sigint_handler)
         self.set_continue()
         return 1
 
     do_c = do_cont = do_continue
-    #@+node:ekr.20110914171443.7293: *5* do_debug
+
+    # @+node:ekr.20110914171443.7293: *5* do_debug
     def do_debug(self, arg):
         """debug code
         Enter a recursive debugger that steps through the code
@@ -1068,7 +1090,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         sys.settrace(self.trace_dispatch)
         self.lastcmd = p.lastcmd
 
-    #@+node:ekr.20110914171443.7294: *5* do_disable
+    # @+node:ekr.20110914171443.7294: *5* do_disable
     def do_disable(self, arg):
         """disable bpnumber [bpnumber ...]
         Disables the breakpoints given as a space separated list of
@@ -1087,7 +1109,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 bp.disable()
                 self.message('Disabled %s' % bp)
 
-    #@+node:ekr.20110914171443.7295: *5* do_display
+    # @+node:ekr.20110914171443.7295: *5* do_display
     def do_display(self, arg):
         """display [expression]
 
@@ -1105,7 +1127,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.displaying.setdefault(self.curframe, {})[arg] = val
             self.message('display %s: %r' % (arg, val))
 
-    #@+node:ekr.20110914171443.7296: *5* do_down
+    # @+node:ekr.20110914171443.7296: *5* do_down
     def do_down(self, arg):
         """d(own) [count]
         Move the current frame count (default one) levels down in the
@@ -1126,7 +1148,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self._select_frame(newframe)
 
     do_d = do_down
-    #@+node:ekr.20110914171443.7297: *5* do_enable
+
+    # @+node:ekr.20110914171443.7297: *5* do_enable
     def do_enable(self, arg):
         """enable bpnumber [bpnumber ...]
         Enables the breakpoints given as a space separated list of
@@ -1142,7 +1165,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 bp.enable()
                 self.message('Enabled %s' % bp)
 
-    #@+node:ekr.20110914171443.7298: *5* do_EOF
+    # @+node:ekr.20110914171443.7298: *5* do_EOF
     def do_EOF(self, arg):
         """EOF
         Handles the receipt of EOF as a command.
@@ -1152,7 +1175,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.set_quit()
         return 1
 
-    #@+node:ekr.20110914171443.7299: *5* do_ignore
+    # @+node:ekr.20110914171443.7299: *5* do_ignore
     def do_ignore(self, arg):
         """ignore bpnumber [count]
         Set the ignore count for the given breakpoint number.  If
@@ -1178,13 +1201,11 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                     countstr = '%d crossings' % count
                 else:
                     countstr = '1 crossing'
-                self.message('Will ignore next %s of breakpoint %d.' %
-                             (countstr, bp.number))
+                self.message('Will ignore next %s of breakpoint %d.' % (countstr, bp.number))
             else:
-                self.message('Will stop next time breakpoint %d is reached.'
-                             % bp.number)
+                self.message('Will stop next time breakpoint %d is reached.' % bp.number)
 
-    #@+node:ekr.20110914171443.7300: *5* do_interact
+    # @+node:ekr.20110914171443.7300: *5* do_interact
     def do_interact(self, arg):
         """interact
 
@@ -1195,7 +1216,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         ns.update(self.curframe_locals)
         code.interact("*interactive*", local=ns)
 
-    #@+node:ekr.20110914171443.7301: *5* do_jump
+    # @+node:ekr.20110914171443.7301: *5* do_jump
     def do_jump(self, arg):
         """j(ump) lineno
         Set the next line that will be executed.  Only available in
@@ -1226,7 +1247,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     do_j = do_jump
 
-    #@+node:ekr.20110914171443.7302: *5* do_longlist
+    # @+node:ekr.20110914171443.7302: *5* do_longlist
     def do_longlist(self, arg):
         """longlist | ll
         List the whole source code for the current function or frame.
@@ -1241,7 +1262,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self._print_lines(lines, lineno, breaklist, self.curframe)
 
     do_ll = do_longlist
-    #@+node:ekr.20110914171443.7303: *5* do_next
+
+    # @+node:ekr.20110914171443.7303: *5* do_next
     def do_next(self, arg):
         """n(ext)
         Continue execution until the next line in the current function
@@ -1251,7 +1273,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         return 1
 
     do_n = do_next
-    #@+node:ekr.20110914171443.7304: *5* do_p
+
+    # @+node:ekr.20110914171443.7304: *5* do_p
     def do_p(self, arg):
         """p(rint) expression
         Print the value of the expression.
@@ -1264,7 +1287,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
     # make "print" an alias of "p" since print isn't a Python statement anymore
 
     do_print = do_p
-    #@+node:ekr.20110914171443.7305: *5* do_pp
+
+    # @+node:ekr.20110914171443.7305: *5* do_pp
     def do_pp(self, arg):
         """pp expression
         Pretty-print the value of the expression.
@@ -1274,7 +1298,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         except Exception:
             pass
 
-    #@+node:ekr.20110914171443.7306: *5* do_quit
+    # @+node:ekr.20110914171443.7306: *5* do_quit
     def do_quit(self, arg):
         """q(uit)\nexit
         Quit from the debugger. The program being executed is aborted.
@@ -1285,7 +1309,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     do_q = do_quit
     do_exit = do_quit
-    #@+node:ekr.20110914171443.7307: *5* do_return
+
+    # @+node:ekr.20110914171443.7307: *5* do_return
     def do_return(self, arg):
         """r(eturn)
         Continue execution until the current function returns.
@@ -1294,7 +1319,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         return 1
 
     do_r = do_return
-    #@+node:ekr.20110914171443.7308: *5* do_retval
+
+    # @+node:ekr.20110914171443.7308: *5* do_retval
     def do_retval(self, arg):
         """retval
         Print the return value for the last return of a function.
@@ -1305,7 +1331,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.error('Not yet returned!')
 
     do_rv = do_retval
-    #@+node:ekr.20110914171443.7309: *5* do_run
+
+    # @+node:ekr.20110914171443.7309: *5* do_run
     def do_run(self, arg):
         """run [args...]
         Restart the debugged python program. If a string is supplied
@@ -1315,6 +1342,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         """
         if arg:
             import shlex
+
             argv0 = sys.argv[0:1]
             sys.argv = shlex.split(arg)
             sys.argv[:0] = argv0
@@ -1322,7 +1350,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         raise Restart
 
     do_restart = do_run
-    #@+node:ekr.20110914171443.7310: *5* do_source & helper
+
+    # @+node:ekr.20110914171443.7310: *5* do_source & helper
     def do_source(self, arg):
         """source expression
         Try to get source code for the given object and display it.
@@ -1337,12 +1366,12 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         try:
             # print('edb.do_source: obj',repr(arg))
             lines, lineno = getsourcelines(obj)
-        except(IOError, TypeError) as err:
+        except (IOError, TypeError) as err:
             self.error(err)
             return
         self._print_lines(lines, lineno)
 
-    #@+node:ekr.20110914171443.7311: *6* _print_lines
+    # @+node:ekr.20110914171443.7311: *6* _print_lines
     def _print_lines(self, lines, start, breaks=(), frame=None):
         """Print a range of lines."""
         if frame:
@@ -1364,7 +1393,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 s += '>>'
             self.message(s + '\t' + line.rstrip())
 
-    #@+node:ekr.20110914171443.7312: *5* do_step
+    # @+node:ekr.20110914171443.7312: *5* do_step
     def do_step(self, arg):
         """s(tep)
         Execute the current line, stop at the first possible occasion
@@ -1375,7 +1404,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         return 1
 
     do_s = do_step
-    #@+node:ekr.20110914171443.7313: *5* do_tbreak
+
+    # @+node:ekr.20110914171443.7313: *5* do_tbreak
     def do_tbreak(self, arg):
         """tbreak [ ([filename:]lineno | function) [, condition] ]
         Same arguments as break, but sets a temporary breakpoint: it
@@ -1383,17 +1413,18 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         """
         self.do_break(arg, 1)
 
-    #@+node:ekr.20110914171443.7314: *5* do_unalias
+    # @+node:ekr.20110914171443.7314: *5* do_unalias
     def do_unalias(self, arg):
         """unalias name
         Delete the specified alias.
         """
         args = arg.split()
-        if len(args) == 0: return
+        if len(args) == 0:
+            return
         if args[0] in self.aliases:
             del self.aliases[args[0]]
 
-    #@+node:ekr.20110914171443.7315: *5* do_undisplay
+    # @+node:ekr.20110914171443.7315: *5* do_undisplay
     def do_undisplay(self, arg):
         """undisplay [expression]
 
@@ -1409,7 +1440,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         else:
             self.displaying.pop(self.curframe, None)
 
-    #@+node:ekr.20110914171443.7316: *5* do_until
+    # @+node:ekr.20110914171443.7316: *5* do_until
     def do_until(self, arg):
         """unt(il) [lineno]
         Without argument, continue execution until the line with a
@@ -1425,8 +1456,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 self.error('Error in argument: %r' % arg)
                 return
             if lineno <= self.curframe.f_lineno:
-                self.error('"until" line number is smaller than current '
-                           'line number')
+                self.error('"until" line number is smaller than current line number')
                 return
         else:
             lineno = None
@@ -1434,7 +1464,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         return 1
 
     do_unt = do_until
-    #@+node:ekr.20110914171443.7317: *5* do_up
+
+    # @+node:ekr.20110914171443.7317: *5* do_up
     def do_up(self, arg):
         """u(p) [count]
         Move the current frame count (default one) levels up in the
@@ -1456,7 +1487,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     do_u = do_up
 
-    #@+node:ekr.20110914171443.7318: *5* do_whatis
+    # @+node:ekr.20110914171443.7318: *5* do_whatis
     def do_whatis(self, arg):
         """whatis arg
         Print the type of the argument.
@@ -1490,7 +1521,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # None of the above...
         self.message(type(value))
 
-    #@+node:ekr.20110914171443.7319: *5* do_where
+    # @+node:ekr.20110914171443.7319: *5* do_where
     def do_where(self, arg):
         """w(here)
         Print a stack trace, with the most recent frame at the bottom.
@@ -1501,7 +1532,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
 
     do_w = do_where
     do_bt = do_where
-    #@+node:ekr.20110914171443.7320: *5* lineinfo
+
+    # @+node:ekr.20110914171443.7320: *5* lineinfo
     def lineinfo(self, identifier):
         failed = (None, None, None)
         # Input is identifier, may be in single quotes
@@ -1514,7 +1546,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             id = idstring[1].strip()
         else:
             return failed
-        if id == '': return failed
+        if id == '':
+            return failed
         parts = id.split('.')
         # Protection for derived debuggers
         if parts[0] == 'self':
@@ -1535,9 +1568,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         answer = find_function(item, fname)
         return answer or failed
 
-    #@+node:ekr.20110914171443.7321: *5* print_stack_entry (edb)
+    # @+node:ekr.20110914171443.7321: *5* print_stack_entry (edb)
     def print_stack_entry(self, frame_lineno, prompt_prefix=line_prefix):
-
         frame, lineno = frame_lineno
         if frame is self.curframe:
             prefix = '> '
@@ -1547,7 +1579,8 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # print('edb.print_stack_entry')
 
         self.message(prefix + self.format_stack_entry(frame_lineno, prompt_prefix))
-    #@+node:ekr.20110914171443.7322: *5* print_stack_trace
+
+    # @+node:ekr.20110914171443.7322: *5* print_stack_trace
     # Print a traceback starting at the top stack frame.
     # The most recently entered frame is printed last;
     # this is different from dbx and gdb, but consistent with
@@ -1563,10 +1596,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         except KeyboardInterrupt:
             pass
 
-    #@+node:ekr.20110914171443.7323: *3* Provide help
+    # @+node:ekr.20110914171443.7323: *3* Provide help
     # Provide help
 
-    #@+node:ekr.20110914171443.7324: *4* do_help
+    # @+node:ekr.20110914171443.7324: *4* do_help
     def do_help(self, arg):
         """h(elp)
         Without argument, print the list of available commands.
@@ -1586,13 +1619,13 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.error('No help for %r' % arg)
         else:
             if sys.flags.optimize >= 2:
-                self.error('No help for %r; please do not run Python with -OO '
-                           'if you need command help' % arg)
+                self.error('No help for %r; please do not run Python with -OO if you need command help' % arg)
                 return
             self.message(command.__doc__.rstrip())
 
     do_h = do_help
-    #@+node:ekr.20110914171443.7325: *4* help_exec
+
+    # @+node:ekr.20110914171443.7325: *4* help_exec
     def help_exec(self):
         """(!) statement
         Execute the (one-line) statement in the context of the current
@@ -1605,14 +1638,14 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         """
         self.message((self.help_exec.__doc__ or '').strip())
 
-    #@+node:ekr.20110914171443.7326: *4* help_pdb
+    # @+node:ekr.20110914171443.7326: *4* help_pdb
     def help_pdb(self):
         help()
 
-    #@+node:ekr.20110914171443.7327: *3* Other helper functions
+    # @+node:ekr.20110914171443.7327: *3* Other helper functions
     # other helper functions
 
-    #@+node:ekr.20110914171443.7328: *4* lookupmodule (Pdb)
+    # @+node:ekr.20110914171443.7328: *4* lookupmodule (Pdb)
     def lookupmodule(self, filename):
         """Helper function for break/clear parsing -- may be overridden.
 
@@ -1638,7 +1671,7 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                 return fullname
         return None
 
-    #@+node:ekr.20110914171443.7329: *4* _runscript
+    # @+node:ekr.20110914171443.7329: *4* _runscript
     def _runscript(self, filename):
         # The script has to run in __main__ namespace (or imports from
         # __main__ will break).
@@ -1646,11 +1679,15 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         # So we clear up the __main__ and set several special variables
         # (this gets rid of pdb's globals and cleans old variables on restarts).
         import __main__
+
         __main__.__dict__.clear()
-        __main__.__dict__.update({"__name__": "__main__",
-                                  "__file__": filename,
-                                  "__builtins__": __builtins__,
-                                 })
+        __main__.__dict__.update(
+            {
+                "__name__": "__main__",
+                "__file__": filename,
+                "__builtins__": __builtins__,
+            }
+        )
 
         # When bdb sets tracing, a number of call and line events happens
         # BEFORE debugger even reaches user's code (and the exact sequence of
@@ -1663,20 +1700,51 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         with open(filename, "rb") as fp:
             statement = "exec(compile(%r, %r, 'exec'))" % (fp.read(), self.mainpyfile)
         self.run(statement)
-    #@-others
 
-#@+<< Collect all command help into docstring >>
-#@+node:ekr.20110914171443.7330: *3* << Collect all command help into docstring >>
+    # @-others
+
+
+# @+<< Collect all command help into docstring >>
+# @+node:ekr.20110914171443.7330: *3* << Collect all command help into docstring >>
 # Collect all command help into docstring, if not run with -OO
 
 if __doc__ is not None:
     # unfortunately we can't guess this order from the class definition
     _help_order = [
-        'help', 'where', 'down', 'up', 'break', 'tbreak', 'clear', 'disable',
-        'enable', 'ignore', 'condition', 'commands', 'step', 'next', 'until',
-        'jump', 'return', 'retval', 'run', 'continue', 'list', 'longlist',
-        'args', 'print', 'pp', 'whatis', 'source', 'display', 'undisplay',
-        'interact', 'alias', 'unalias', 'debug', 'quit',
+        'help',
+        'where',
+        'down',
+        'up',
+        'break',
+        'tbreak',
+        'clear',
+        'disable',
+        'enable',
+        'ignore',
+        'condition',
+        'commands',
+        'step',
+        'next',
+        'until',
+        'jump',
+        'return',
+        'retval',
+        'run',
+        'continue',
+        'list',
+        'longlist',
+        'args',
+        'print',
+        'pp',
+        'whatis',
+        'source',
+        'display',
+        'undisplay',
+        'interact',
+        'alias',
+        'unalias',
+        'debug',
+        'quit',
     ]
     _command = None
     for _command in _help_order:
@@ -1685,32 +1753,40 @@ if __doc__ is not None:
     __doc__ += Pdb.help_exec.__doc__
 
     del _help_order, _command
-#@-<< Collect all command help into docstring >>
-#@+node:ekr.20110914171443.7331: ** Simplified interface
-#@+node:ekr.20110914171443.7332: *3* run
+
+
+# @-<< Collect all command help into docstring >>
+# @+node:ekr.20110914171443.7331: ** Simplified interface
+# @+node:ekr.20110914171443.7332: *3* run
 def run(statement, globals=None, locals=None):
     Pdb().run(statement, globals, locals)
 
-#@+node:ekr.20110914171443.7333: *3* runeval
+
+# @+node:ekr.20110914171443.7333: *3* runeval
 def runeval(expression, globals=None, locals=None):
     return Pdb().runeval(expression, globals, locals)
 
-#@+node:ekr.20110914171443.7334: *3* runctx
+
+# @+node:ekr.20110914171443.7334: *3* runctx
 def runctx(statement, globals, locals):
     # B/W compatibility
     run(statement, globals, locals)
 
-#@+node:ekr.20110914171443.7335: *3* runcall
+
+# @+node:ekr.20110914171443.7335: *3* runcall
 def runcall(*args, **kwds):
     return Pdb().runcall(*args, **kwds)
 
-#@+node:ekr.20110914171443.7336: *3* set_trace
+
+# @+node:ekr.20110914171443.7336: *3* set_trace
 def set_trace():
-
     Pdb().set_trace(sys._getframe().f_back)
-#@+node:ekr.20110914171443.7337: ** Post-mortem interface
 
-#@+node:ekr.20110914171443.7338: *3* post_mortem
+
+# @+node:ekr.20110914171443.7337: ** Post-mortem interface
+
+
+# @+node:ekr.20110914171443.7338: *3* post_mortem
 def post_mortem(t=None):
     # handling the default
     if t is None:
@@ -1718,33 +1794,40 @@ def post_mortem(t=None):
         # being handled, otherwise it returns None
         t = sys.exc_info()[2]
     if t is None:
-        raise ValueError("A valid traceback must be passed if no "
-                         "exception is being handled")
+        raise ValueError("A valid traceback must be passed if no exception is being handled")
 
     p = Pdb()
     p.reset()
     p.interaction(None, t)
 
-#@+node:ekr.20110914171443.7339: *3* pm
+
+# @+node:ekr.20110914171443.7339: *3* pm
 def pm():
     post_mortem(sys.last_traceback)
 
 
-#@+node:ekr.20110914171443.7340: ** Entries
-#@+node:ekr.20110914171443.7341: *3* test
+# @+node:ekr.20110914171443.7340: ** Entries
+# @+node:ekr.20110914171443.7341: *3* test
 # Main program for testing
 
 TESTCMD = 'import x; x.main()'
 
+
 def test():
     run(TESTCMD)
-#@+node:ekr.20110914171443.7342: *3* help
+
+
+# @+node:ekr.20110914171443.7342: *3* help
 # print help
+
 
 def help():
     import pydoc
+
     pydoc.pager(__doc__)
-#@+node:ekr.20110914171443.7343: *3* main (Pdb)
+
+
+# @+node:ekr.20110914171443.7343: *3* main (Pdb)
 def main():
     import getopt
 
@@ -1797,18 +1880,18 @@ def main():
             print("Running 'cont' or 'step' will restart the program")
             t = sys.exc_info()[2]
             pdb.interaction(None, t)
-            print("Post mortem debugger finished. The " + mainpyfile +
-                  " will be restarted")
+            print("Post mortem debugger finished. The " + mainpyfile + " will be restarted")
 
 
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
 
 # When invoked as main program, invoke the debugger on a script
 
 if __name__ == '__main__':
     import pdb
+
     pdb.main()
-#@-leo
+# @-leo

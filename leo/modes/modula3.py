@@ -146,139 +146,311 @@ keywordsDictDict = {
 
 # Rules for modula3_main ruleset.
 
+
 def modula3_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment2", begin="<*", end="*>")
+
 
 def modula3_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="(*", end="*)")
 
+
 def modula3_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def modula3_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def modula3_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
 
+
 def modula3_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="@")
+
 
 def modula3_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":=")
 
+
 def modula3_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def modula3_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<>")
 
+
 def modula3_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
+
 
 def modula3_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
 
+
 def modula3_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def modula3_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def modula3_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def modula3_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def modula3_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def modula3_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def modula3_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for modula3_main ruleset.
 rulesDict1 = {
-    "\"": [modula3_rule2,],
-    "'": [modula3_rule3,],
-    "(": [modula3_rule1,],
-    "*": [modula3_rule16,],
-    "+": [modula3_rule13,],
-    "-": [modula3_rule14,],
-    "/": [modula3_rule15,],
-    "0": [modula3_rule17,],
-    "1": [modula3_rule17,],
-    "2": [modula3_rule17,],
-    "3": [modula3_rule17,],
-    "4": [modula3_rule17,],
-    "5": [modula3_rule17,],
-    "6": [modula3_rule17,],
-    "7": [modula3_rule17,],
-    "8": [modula3_rule17,],
-    "9": [modula3_rule17,],
-    ":": [modula3_rule6,],
-    "<": [modula3_rule0, modula3_rule8, modula3_rule10, modula3_rule12,],
-    "=": [modula3_rule7,],
-    ">": [modula3_rule9, modula3_rule11,],
-    "@": [modula3_rule5, modula3_rule17,],
-    "A": [modula3_rule17,],
-    "B": [modula3_rule17,],
-    "C": [modula3_rule17,],
-    "D": [modula3_rule17,],
-    "E": [modula3_rule17,],
-    "F": [modula3_rule17,],
-    "G": [modula3_rule17,],
-    "H": [modula3_rule17,],
-    "I": [modula3_rule17,],
-    "J": [modula3_rule17,],
-    "K": [modula3_rule17,],
-    "L": [modula3_rule17,],
-    "M": [modula3_rule17,],
-    "N": [modula3_rule17,],
-    "O": [modula3_rule17,],
-    "P": [modula3_rule17,],
-    "Q": [modula3_rule17,],
-    "R": [modula3_rule17,],
-    "S": [modula3_rule17,],
-    "T": [modula3_rule17,],
-    "U": [modula3_rule17,],
-    "V": [modula3_rule17,],
-    "W": [modula3_rule17,],
-    "X": [modula3_rule17,],
-    "Y": [modula3_rule17,],
-    "Z": [modula3_rule17,],
-    "^": [modula3_rule4,],
-    "a": [modula3_rule17,],
-    "b": [modula3_rule17,],
-    "c": [modula3_rule17,],
-    "d": [modula3_rule17,],
-    "e": [modula3_rule17,],
-    "f": [modula3_rule17,],
-    "g": [modula3_rule17,],
-    "h": [modula3_rule17,],
-    "i": [modula3_rule17,],
-    "j": [modula3_rule17,],
-    "k": [modula3_rule17,],
-    "l": [modula3_rule17,],
-    "m": [modula3_rule17,],
-    "n": [modula3_rule17,],
-    "o": [modula3_rule17,],
-    "p": [modula3_rule17,],
-    "q": [modula3_rule17,],
-    "r": [modula3_rule17,],
-    "s": [modula3_rule17,],
-    "t": [modula3_rule17,],
-    "u": [modula3_rule17,],
-    "v": [modula3_rule17,],
-    "w": [modula3_rule17,],
-    "x": [modula3_rule17,],
-    "y": [modula3_rule17,],
-    "z": [modula3_rule17,],
+    "\"": [
+        modula3_rule2,
+    ],
+    "'": [
+        modula3_rule3,
+    ],
+    "(": [
+        modula3_rule1,
+    ],
+    "*": [
+        modula3_rule16,
+    ],
+    "+": [
+        modula3_rule13,
+    ],
+    "-": [
+        modula3_rule14,
+    ],
+    "/": [
+        modula3_rule15,
+    ],
+    "0": [
+        modula3_rule17,
+    ],
+    "1": [
+        modula3_rule17,
+    ],
+    "2": [
+        modula3_rule17,
+    ],
+    "3": [
+        modula3_rule17,
+    ],
+    "4": [
+        modula3_rule17,
+    ],
+    "5": [
+        modula3_rule17,
+    ],
+    "6": [
+        modula3_rule17,
+    ],
+    "7": [
+        modula3_rule17,
+    ],
+    "8": [
+        modula3_rule17,
+    ],
+    "9": [
+        modula3_rule17,
+    ],
+    ":": [
+        modula3_rule6,
+    ],
+    "<": [
+        modula3_rule0,
+        modula3_rule8,
+        modula3_rule10,
+        modula3_rule12,
+    ],
+    "=": [
+        modula3_rule7,
+    ],
+    ">": [
+        modula3_rule9,
+        modula3_rule11,
+    ],
+    "@": [
+        modula3_rule5,
+        modula3_rule17,
+    ],
+    "A": [
+        modula3_rule17,
+    ],
+    "B": [
+        modula3_rule17,
+    ],
+    "C": [
+        modula3_rule17,
+    ],
+    "D": [
+        modula3_rule17,
+    ],
+    "E": [
+        modula3_rule17,
+    ],
+    "F": [
+        modula3_rule17,
+    ],
+    "G": [
+        modula3_rule17,
+    ],
+    "H": [
+        modula3_rule17,
+    ],
+    "I": [
+        modula3_rule17,
+    ],
+    "J": [
+        modula3_rule17,
+    ],
+    "K": [
+        modula3_rule17,
+    ],
+    "L": [
+        modula3_rule17,
+    ],
+    "M": [
+        modula3_rule17,
+    ],
+    "N": [
+        modula3_rule17,
+    ],
+    "O": [
+        modula3_rule17,
+    ],
+    "P": [
+        modula3_rule17,
+    ],
+    "Q": [
+        modula3_rule17,
+    ],
+    "R": [
+        modula3_rule17,
+    ],
+    "S": [
+        modula3_rule17,
+    ],
+    "T": [
+        modula3_rule17,
+    ],
+    "U": [
+        modula3_rule17,
+    ],
+    "V": [
+        modula3_rule17,
+    ],
+    "W": [
+        modula3_rule17,
+    ],
+    "X": [
+        modula3_rule17,
+    ],
+    "Y": [
+        modula3_rule17,
+    ],
+    "Z": [
+        modula3_rule17,
+    ],
+    "^": [
+        modula3_rule4,
+    ],
+    "a": [
+        modula3_rule17,
+    ],
+    "b": [
+        modula3_rule17,
+    ],
+    "c": [
+        modula3_rule17,
+    ],
+    "d": [
+        modula3_rule17,
+    ],
+    "e": [
+        modula3_rule17,
+    ],
+    "f": [
+        modula3_rule17,
+    ],
+    "g": [
+        modula3_rule17,
+    ],
+    "h": [
+        modula3_rule17,
+    ],
+    "i": [
+        modula3_rule17,
+    ],
+    "j": [
+        modula3_rule17,
+    ],
+    "k": [
+        modula3_rule17,
+    ],
+    "l": [
+        modula3_rule17,
+    ],
+    "m": [
+        modula3_rule17,
+    ],
+    "n": [
+        modula3_rule17,
+    ],
+    "o": [
+        modula3_rule17,
+    ],
+    "p": [
+        modula3_rule17,
+    ],
+    "q": [
+        modula3_rule17,
+    ],
+    "r": [
+        modula3_rule17,
+    ],
+    "s": [
+        modula3_rule17,
+    ],
+    "t": [
+        modula3_rule17,
+    ],
+    "u": [
+        modula3_rule17,
+    ],
+    "v": [
+        modula3_rule17,
+    ],
+    "w": [
+        modula3_rule17,
+    ],
+    "x": [
+        modula3_rule17,
+    ],
+    "y": [
+        modula3_rule17,
+    ],
+    "z": [
+        modula3_rule17,
+    ],
 }
 
 # x.rulesDictDict for modula3 mode.

@@ -1029,142 +1029,325 @@ keywordsDictDict = {
 
 # Rules for ahk_main ruleset.
 
+
 def ahk_rule0(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
+
 
 def ahk_rule1(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def ahk_rule2(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<=")
+
 
 def ahk_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">=")
 
+
 def ahk_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def ahk_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
 
+
 def ahk_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<>")
+
 
 def ahk_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def ahk_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def ahk_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def ahk_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
+
 
 def ahk_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="\\")
 
+
 def ahk_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":=")
 
+
 def ahk_rule13(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":",
-          at_whitespace_end=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+
 
 def ahk_rule14(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern="::",
-          at_whitespace_end=True,
-          exclude_match=True)
+    return colorer.match_mark_previous(s, i, kind="label", pattern="::", at_whitespace_end=True, exclude_match=True)
+
 
 def ahk_rule15(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for ahk_main ruleset.
 rulesDict1 = {
-    "!": [ahk_rule15,],
-    "#": [ahk_rule15,],
-    "$": [ahk_rule15,],
-    "*": [ahk_rule9,],
-    "+": [ahk_rule7, ahk_rule15,],
-    "-": [ahk_rule8,],
-    "/": [ahk_rule10,],
-    "0": [ahk_rule15,],
-    "1": [ahk_rule15,],
-    "2": [ahk_rule15,],
-    "3": [ahk_rule15,],
-    "4": [ahk_rule15,],
-    "5": [ahk_rule15,],
-    "6": [ahk_rule15,],
-    "7": [ahk_rule15,],
-    "8": [ahk_rule15,],
-    "9": [ahk_rule15,],
-    ":": [ahk_rule12, ahk_rule13, ahk_rule14,],
-    ";": [ahk_rule0,],
-    "<": [ahk_rule1, ahk_rule2, ahk_rule6,],
-    "=": [ahk_rule5,],
-    ">": [ahk_rule3, ahk_rule4,],
-    "@": [ahk_rule15,],
-    "A": [ahk_rule15,],
-    "B": [ahk_rule15,],
-    "C": [ahk_rule15,],
-    "D": [ahk_rule15,],
-    "E": [ahk_rule15,],
-    "F": [ahk_rule15,],
-    "G": [ahk_rule15,],
-    "H": [ahk_rule15,],
-    "I": [ahk_rule15,],
-    "J": [ahk_rule15,],
-    "K": [ahk_rule15,],
-    "L": [ahk_rule15,],
-    "M": [ahk_rule15,],
-    "N": [ahk_rule15,],
-    "O": [ahk_rule15,],
-    "P": [ahk_rule15,],
-    "Q": [ahk_rule15,],
-    "R": [ahk_rule15,],
-    "S": [ahk_rule15,],
-    "T": [ahk_rule15,],
-    "U": [ahk_rule15,],
-    "V": [ahk_rule15,],
-    "W": [ahk_rule15,],
-    "X": [ahk_rule15,],
-    "Y": [ahk_rule15,],
-    "Z": [ahk_rule15,],
-    "\\": [ahk_rule11,],
-    "^": [ahk_rule15,],
-    "_": [ahk_rule15,],
-    "`": [ahk_rule15,],
-    "a": [ahk_rule15,],
-    "b": [ahk_rule15,],
-    "c": [ahk_rule15,],
-    "d": [ahk_rule15,],
-    "e": [ahk_rule15,],
-    "f": [ahk_rule15,],
-    "g": [ahk_rule15,],
-    "h": [ahk_rule15,],
-    "i": [ahk_rule15,],
-    "j": [ahk_rule15,],
-    "k": [ahk_rule15,],
-    "l": [ahk_rule15,],
-    "m": [ahk_rule15,],
-    "n": [ahk_rule15,],
-    "o": [ahk_rule15,],
-    "p": [ahk_rule15,],
-    "q": [ahk_rule15,],
-    "r": [ahk_rule15,],
-    "s": [ahk_rule15,],
-    "t": [ahk_rule15,],
-    "u": [ahk_rule15,],
-    "v": [ahk_rule15,],
-    "w": [ahk_rule15,],
-    "x": [ahk_rule15,],
-    "y": [ahk_rule15,],
-    "z": [ahk_rule15,],
-    "{": [ahk_rule15,],
-    "}": [ahk_rule15,],
-    "~": [ahk_rule15,],
+    "!": [
+        ahk_rule15,
+    ],
+    "#": [
+        ahk_rule15,
+    ],
+    "$": [
+        ahk_rule15,
+    ],
+    "*": [
+        ahk_rule9,
+    ],
+    "+": [
+        ahk_rule7,
+        ahk_rule15,
+    ],
+    "-": [
+        ahk_rule8,
+    ],
+    "/": [
+        ahk_rule10,
+    ],
+    "0": [
+        ahk_rule15,
+    ],
+    "1": [
+        ahk_rule15,
+    ],
+    "2": [
+        ahk_rule15,
+    ],
+    "3": [
+        ahk_rule15,
+    ],
+    "4": [
+        ahk_rule15,
+    ],
+    "5": [
+        ahk_rule15,
+    ],
+    "6": [
+        ahk_rule15,
+    ],
+    "7": [
+        ahk_rule15,
+    ],
+    "8": [
+        ahk_rule15,
+    ],
+    "9": [
+        ahk_rule15,
+    ],
+    ":": [
+        ahk_rule12,
+        ahk_rule13,
+        ahk_rule14,
+    ],
+    ";": [
+        ahk_rule0,
+    ],
+    "<": [
+        ahk_rule1,
+        ahk_rule2,
+        ahk_rule6,
+    ],
+    "=": [
+        ahk_rule5,
+    ],
+    ">": [
+        ahk_rule3,
+        ahk_rule4,
+    ],
+    "@": [
+        ahk_rule15,
+    ],
+    "A": [
+        ahk_rule15,
+    ],
+    "B": [
+        ahk_rule15,
+    ],
+    "C": [
+        ahk_rule15,
+    ],
+    "D": [
+        ahk_rule15,
+    ],
+    "E": [
+        ahk_rule15,
+    ],
+    "F": [
+        ahk_rule15,
+    ],
+    "G": [
+        ahk_rule15,
+    ],
+    "H": [
+        ahk_rule15,
+    ],
+    "I": [
+        ahk_rule15,
+    ],
+    "J": [
+        ahk_rule15,
+    ],
+    "K": [
+        ahk_rule15,
+    ],
+    "L": [
+        ahk_rule15,
+    ],
+    "M": [
+        ahk_rule15,
+    ],
+    "N": [
+        ahk_rule15,
+    ],
+    "O": [
+        ahk_rule15,
+    ],
+    "P": [
+        ahk_rule15,
+    ],
+    "Q": [
+        ahk_rule15,
+    ],
+    "R": [
+        ahk_rule15,
+    ],
+    "S": [
+        ahk_rule15,
+    ],
+    "T": [
+        ahk_rule15,
+    ],
+    "U": [
+        ahk_rule15,
+    ],
+    "V": [
+        ahk_rule15,
+    ],
+    "W": [
+        ahk_rule15,
+    ],
+    "X": [
+        ahk_rule15,
+    ],
+    "Y": [
+        ahk_rule15,
+    ],
+    "Z": [
+        ahk_rule15,
+    ],
+    "\\": [
+        ahk_rule11,
+    ],
+    "^": [
+        ahk_rule15,
+    ],
+    "_": [
+        ahk_rule15,
+    ],
+    "`": [
+        ahk_rule15,
+    ],
+    "a": [
+        ahk_rule15,
+    ],
+    "b": [
+        ahk_rule15,
+    ],
+    "c": [
+        ahk_rule15,
+    ],
+    "d": [
+        ahk_rule15,
+    ],
+    "e": [
+        ahk_rule15,
+    ],
+    "f": [
+        ahk_rule15,
+    ],
+    "g": [
+        ahk_rule15,
+    ],
+    "h": [
+        ahk_rule15,
+    ],
+    "i": [
+        ahk_rule15,
+    ],
+    "j": [
+        ahk_rule15,
+    ],
+    "k": [
+        ahk_rule15,
+    ],
+    "l": [
+        ahk_rule15,
+    ],
+    "m": [
+        ahk_rule15,
+    ],
+    "n": [
+        ahk_rule15,
+    ],
+    "o": [
+        ahk_rule15,
+    ],
+    "p": [
+        ahk_rule15,
+    ],
+    "q": [
+        ahk_rule15,
+    ],
+    "r": [
+        ahk_rule15,
+    ],
+    "s": [
+        ahk_rule15,
+    ],
+    "t": [
+        ahk_rule15,
+    ],
+    "u": [
+        ahk_rule15,
+    ],
+    "v": [
+        ahk_rule15,
+    ],
+    "w": [
+        ahk_rule15,
+    ],
+    "x": [
+        ahk_rule15,
+    ],
+    "y": [
+        ahk_rule15,
+    ],
+    "z": [
+        ahk_rule15,
+    ],
+    "{": [
+        ahk_rule15,
+    ],
+    "}": [
+        ahk_rule15,
+    ],
+    "~": [
+        ahk_rule15,
+    ],
 }
 
 # x.rulesDictDict for ahk mode.

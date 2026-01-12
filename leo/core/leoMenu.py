@@ -1,8 +1,9 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20031218072017.3749: * @file leoMenu.py
+# @+leo-ver=5-thin
+# @+node:ekr.20031218072017.3749: * @file leoMenu.py
 """Gui-independent menu handling for Leo."""
-#@+<< leoMenu imports & annotations >>
-#@+node:ekr.20220414095908.1: ** << leoMenu imports & annotations >>
+
+# @+<< leoMenu imports & annotations >>
+# @+node:ekr.20220414095908.1: ** << leoMenu imports & annotations >>
 from __future__ import annotations
 from collections.abc import Callable
 from typing import Any, Union, TYPE_CHECKING
@@ -10,16 +11,20 @@ from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
+
     Menu = Any
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
-#@-<< leoMenu imports & annotations >>
-#@+others
-#@+node:ekr.20031218072017.3750: ** class LeoMenu
+
+
+# @-<< leoMenu imports & annotations >>
+# @+others
+# @+node:ekr.20031218072017.3750: ** class LeoMenu
 class LeoMenu:
     """The base class for all Leo menus."""
-    #@+others
-    #@+node:ekr.20120124042346.12938: *3* LeoMenu.Birth
+
+    # @+others
+    # @+node:ekr.20120124042346.12938: *3* LeoMenu.Birth
     def __init__(self, frame: Widget) -> None:
         self.c = frame.c
         self.enable_dict: dict[str, Callable] = {}
@@ -29,17 +34,15 @@ class LeoMenu:
 
     def finishCreate(self) -> None:
         self.define_enable_dict()
-    #@+node:ekr.20120124042346.12937: *4* LeoMenu.define_enable_table
-    def define_enable_dict(self) -> None:
 
+    # @+node:ekr.20120124042346.12937: *4* LeoMenu.define_enable_table
+    def define_enable_dict(self) -> None:
         c = self.c
         if not c.commandsDict:
             return  # This is not an error: it happens during init.
 
-        #@+<< define self.enable_dict >>
-        #@+node:ekr.20250506093659.1: *5* << define self.enable_dict >>
-        #@@nobeautify
-
+        # @+<< define self.enable_dict >>
+        # @+node:ekr.20250506093659.1: *5* << define self.enable_dict >>
         self.enable_dict = d = {
 
             # File menu...
@@ -101,8 +104,8 @@ class LeoMenu:
             'mark-subheads':            lambda: c.p.hasChildren(),
             # too slow...
                 # 'mark-changed-items':   c.canMarkChangedHeadlines,
-        }
-        #@-<< define self.enable_dict >>
+        }  # fmt: skip
+        # @-<< define self.enable_dict >>
 
         for i in range(1, 9):
             d[f"expand-to-level-{i}"] = lambda: c.p.hasChildren()
@@ -112,29 +115,27 @@ class LeoMenu:
             for key in sorted(d.keys()):
                 if key not in commandKeys:
                     g.trace(f"*** bad entry for {key}")
-    #@+node:ekr.20031218072017.3775: *3* LeoMenu.error
+
+    # @+node:ekr.20031218072017.3775: *3* LeoMenu.error
     def error(self, s: str) -> None:
         g.error('', s)
-    #@+node:ekr.20031218072017.3781: *3* LeoMenu.Gui-independent menu routines
-    #@+node:ekr.20060926213642: *4* LeoMenu.capitalizeMinibufferMenuName
+
+    # @+node:ekr.20031218072017.3781: *3* LeoMenu.Gui-independent menu routines
+    # @+node:ekr.20060926213642: *4* LeoMenu.capitalizeMinibufferMenuName
     def capitalizeMinibufferMenuName(self, s: str, removeHyphens: bool) -> str:
         result = []
         for i, ch in enumerate(s):
             prev = s[i - 1] if i > 0 else ''
             prevprev = s[i - 2] if i > 1 else ''
-            if (
-                i == 0 or
-                i == 1 and prev == '&' or
-                prev == '-' or
-                prev == '&' and prevprev == '-'
-            ):
+            if i == 0 or i == 1 and prev == '&' or prev == '-' or prev == '&' and prevprev == '-':
                 result.append(ch.capitalize())
             elif removeHyphens and ch == '-':
                 result.append(' ')
             else:
                 result.append(ch)
         return ''.join(result)
-    #@+node:ekr.20031218072017.3785: *4* LeoMenu.createMenusFromTables & helpers
+
+    # @+node:ekr.20031218072017.3785: *4* LeoMenu.createMenusFromTables & helpers
     def createMenusFromTables(self) -> None:
         """(leoMenu) Usually over-ridden."""
         c = self.c
@@ -143,7 +144,8 @@ class LeoMenu:
             self.createMenusFromConfigList(aList)
         else:
             g.es_print('No @menu setting found')
-    #@+node:ekr.20070926135612: *5* LeoMenu.createMenusFromConfigList & helpers
+
+    # @+node:ekr.20070926135612: *5* LeoMenu.createMenusFromConfigList & helpers
     def createMenusFromConfigList(self, aList: list) -> None:
         """
         Create menus from aList.
@@ -175,7 +177,8 @@ class LeoMenu:
         if aList:
             # a list of dicts.
             self.createOpenWithMenuFromTable(aList)
-    #@+node:ekr.20070927082205: *6* LeoMenu.createMenuFromConfigList
+
+    # @+node:ekr.20070927082205: *6* LeoMenu.createMenuFromConfigList
     def createMenuFromConfigList(self, parentName: str, aList: list, level: int = 0) -> None:
         """Build menu based on nested list
 
@@ -203,7 +206,9 @@ class LeoMenu:
                 name = kind[5:].strip()
                 if table:
                     self.createMenuEntries(parentMenu, table)
-                if not self.handleSpecialMenus(name, parentName,
+                if not self.handleSpecialMenus(
+                    name,
+                    parentName,
                     alt_name=val2,  # 848.
                     table=table,
                 ):
@@ -217,14 +222,17 @@ class LeoMenu:
                 name = str(val)  # Item names must always be ascii.
                 if val2:
                     # Translated names can be unicode.
-                    table.append((val2, name),)
+                    table.append(
+                        (val2, name),
+                    )
                 else:
                     table.append(name)
             else:
                 g.trace('can not happen: bad kind:', kind)
         if table:
             self.createMenuEntries(parentMenu, table)
-    #@+node:ekr.20070927172712: *6* LeoMenu.handleSpecialMenus
+
+    # @+node:ekr.20070927172712: *6* LeoMenu.handleSpecialMenus
     def handleSpecialMenus(self, name: str, parentName: str, alt_name: str = None, table: list = None) -> bool:
         """
         Handle a special menu if name is the name of a special menu.
@@ -245,7 +253,8 @@ class LeoMenu:
             self.createNewMenu(alt_name or name, parentName)
             return True
         return False
-    #@+node:ekr.20031218072017.3780: *4* LeoMenu.hasSelection
+
+    # @+node:ekr.20031218072017.3780: *4* LeoMenu.hasSelection
     # Returns True if text in the outline or body text is selected.
 
     def hasSelection(self) -> bool:
@@ -255,22 +264,22 @@ class LeoMenu:
             first, last = w.getSelectionRange()
             return first != last
         return False
-    #@+node:ekr.20051022053758.1: *3* LeoMenu.Helpers
-    #@+node:ekr.20031218072017.3783: *4* LeoMenu.canonicalize*
-    def canonicalizeMenuName(self, name: str) -> str:
 
+    # @+node:ekr.20051022053758.1: *3* LeoMenu.Helpers
+    # @+node:ekr.20031218072017.3783: *4* LeoMenu.canonicalize*
+    def canonicalizeMenuName(self, name: str) -> str:
         # #1121 & #1188. Allow Chinese characters in command names
         if g.isascii(name):
             return ''.join([ch for ch in name.lower() if ch.isalnum()])
         return name
 
     def canonicalizeTranslatedMenuName(self, name: str) -> str:
-
         # #1121 & #1188. Allow Chinese characters in command names
         if g.isascii(name):
             return ''.join([ch for ch in name.lower() if ch not in '& \t\n\r'])
         return ''.join([ch for ch in name if ch not in '& \t\n\r'])
-    #@+node:ekr.20031218072017.1723: *4* LeoMenu.createMenuEntries & helpers
+
+    # @+node:ekr.20031218072017.1723: *4* LeoMenu.createMenuEntries & helpers
     def createMenuEntries(self, menu: Menu, table: list) -> None:
         """
         Create a menu entry from the table.
@@ -295,12 +304,16 @@ class LeoMenu:
             amp_index = realLabel.find("&")
             realLabel = realLabel.replace("&", "")
             # c.add_command ensures that c.outerUpdate is called.
-            c.add_command(menu, label=realLabel,
+            c.add_command(
+                menu,
+                label=realLabel,
                 accelerator='',  # The accelerator is now computed dynamically.
                 command=masterMenuCallback,
                 commandName=commandName,
-                underline=amp_index)
-    #@+node:ekr.20111102072143.10016: *5* LeoMenu.createMasterMenuCallback
+                underline=amp_index,
+            )
+
+    # @+node:ekr.20111102072143.10016: *5* LeoMenu.createMasterMenuCallback
     def createMasterMenuCallback(self, command: str, commandName: str) -> Callable:
         """
         Create a callback for the given args.
@@ -347,7 +360,8 @@ class LeoMenu:
             return c.doCommand(command, commandName, event)  # #1595
 
         return dynamic_menu_callback
-    #@+node:ekr.20111028060955.16568: *5* LeoMenu.getMenuEntryBindings
+
+    # @+node:ekr.20111028060955.16568: *5* LeoMenu.getMenuEntryBindings
     def getMenuEntryBindings(self, command: str, label: str) -> str:
         """Compute commandName from command."""
         c = self.c
@@ -360,7 +374,8 @@ class LeoMenu:
             commandName = label.strip()
         command = c.commandsDict.get(commandName)
         return commandName
-    #@+node:ekr.20111028060955.16565: *5* LeoMenu.getMenuEntryInfo
+
+    # @+node:ekr.20111028060955.16565: *5* LeoMenu.getMenuEntryInfo
     def getMenuEntryInfo(self, data: Value, menu: Menu) -> tuple[str, str, bool]:
         """
         Parse a single entry in the table passed to createMenuEntries.
@@ -401,9 +416,9 @@ class LeoMenu:
                 g.trace(f"bad data in menu table: {repr(data)}")
                 done = True  # Ignore bad data
         return label, command, done
-    #@+node:ekr.20111028060955.16563: *5* LeoMenu.traceMenuTable
-    def traceMenuTable(self, table: list) -> None:
 
+    # @+node:ekr.20111028060955.16563: *5* LeoMenu.traceMenuTable
+    def traceMenuTable(self, table: list) -> None:
         trace = False and not g.unitTesting
         if not trace:
             return
@@ -419,9 +434,9 @@ class LeoMenu:
                     print(format % (name, func and func.__name__ or '<NO FUNC>'))
             else:
                 print(format % (data, ''))
-    #@+node:ekr.20031218072017.3784: *4* LeoMenu.createMenuItemsFromTable
-    def createMenuItemsFromTable(self, menuName: str, table: list) -> None:
 
+    # @+node:ekr.20031218072017.3784: *4* LeoMenu.createMenuItemsFromTable
+    def createMenuItemsFromTable(self, menuName: str, table: list) -> None:
         if g.app.gui.isNullGui:
             return
         try:
@@ -433,7 +448,8 @@ class LeoMenu:
             g.es_print("exception creating items for", menuName, "menu")
             g.es_exception()
         g.app.menuWarningsGiven = True
-    #@+node:ekr.20031218072017.3804: *4* LeoMenu.createNewMenu
+
+    # @+node:ekr.20031218072017.3804: *4* LeoMenu.createNewMenu
     def createNewMenu(self, menuName: str, parentName: str = "top", before: str = None) -> Menu:
         try:
             parent = self.getMenu(parentName)  # parent may be None.
@@ -452,8 +468,7 @@ class LeoMenu:
                 amp_index = index_label.find("&")
                 index_label = index_label.replace("&", "")
                 index = parent.index(index_label)
-                self.insert_cascade(
-                    parent, index=index, label=label, menu=menu, underline=amp_index)
+                self.insert_cascade(parent, index=index, label=label, menu=menu, underline=amp_index)
             else:
                 self.add_cascade(parent, label=label, menu=menu, underline=amp_index)
             return menu
@@ -461,7 +476,8 @@ class LeoMenu:
             g.es("exception creating", menuName, "menu")
             g.es_exception()
             return None
-    #@+node:ekr.20031218072017.4116: *4* LeoMenu.createOpenWithMenuFromTable & helpers
+
+    # @+node:ekr.20031218072017.4116: *4* LeoMenu.createOpenWithMenuFromTable & helpers
     def createOpenWithMenuFromTable(self, table: list[dict]) -> None:
         """
         Table is a list of dictionaries, created from @openwith settings nodes.
@@ -511,7 +527,8 @@ class LeoMenu:
         self.createOpenWithMenuItemsFromTable(openWithMenu, table)
         for d in table:
             k.bindOpenWith(d)
-    #@+node:ekr.20051022043608.1: *5* LeoMenu.createOpenWithMenuItemsFromTable & callback
+
+    # @+node:ekr.20051022043608.1: *5* LeoMenu.createOpenWithMenuItemsFromTable & callback
     def createOpenWithMenuItemsFromTable(self, menu: Menu, table: list[dict]) -> None:
         """
         Create an entry in the Open with Menu from the table, a list of dictionaries.
@@ -536,14 +553,16 @@ class LeoMenu:
                 underline = realLabel.find("&")
                 realLabel = realLabel.replace("&", "")
                 callback = self.defineOpenWithMenuCallback(d)
-                c.add_command(menu,
+                c.add_command(
+                    menu,
                     label=realLabel,
                     accelerator=accel,
                     command=callback,
-                    underline=underline)
-    #@+node:ekr.20031218072017.4118: *6* LeoMenu.defineOpenWithMenuCallback
-    def defineOpenWithMenuCallback(self, d: dict[str, str] = None) -> Callable:
+                    underline=underline,
+                )
 
+    # @+node:ekr.20031218072017.4118: *6* LeoMenu.defineOpenWithMenuCallback
+    def defineOpenWithMenuCallback(self, d: dict[str, str] = None) -> Callable:
         # The first parameter must be a LeoKeyEvent, and it must default to None.
 
         def openWithMenuCallback(
@@ -555,7 +574,8 @@ class LeoMenu:
             return self.c.openWith(d=d1)
 
         return openWithMenuCallback
-    #@+node:tbrown.20080509212202.7: *4* LeoMenu.deleteRecentFilesMenuItems
+
+    # @+node:tbrown.20080509212202.7: *4* LeoMenu.deleteRecentFilesMenuItems
     def deleteRecentFilesMenuItems(self, menu: Menu) -> None:
         """Delete recent file menu entries"""
         rf = g.app.recentFilesManager
@@ -568,7 +588,8 @@ class LeoMenu:
             if menu:
                 self.destroy(menu)
                 self.destroyMenu(i)
-    #@+node:ekr.20031218072017.3805: *4* LeoMenu.deleteMenu
+
+    # @+node:ekr.20031218072017.3805: *4* LeoMenu.deleteMenu
     def deleteMenu(self, menuName: str) -> None:
         try:
             menu = self.getMenu(menuName)
@@ -580,7 +601,8 @@ class LeoMenu:
         except Exception:
             g.es("exception deleting", menuName, "menu")
             g.es_exception()
-    #@+node:ekr.20031218072017.3806: *4* LeoMenu.deleteMenuItem
+
+    # @+node:ekr.20031218072017.3806: *4* LeoMenu.deleteMenuItem
     def deleteMenuItem(self, itemName: str, menuName: str = "top") -> None:
         """Delete itemName from the menu whose name is menuName."""
         try:
@@ -593,7 +615,8 @@ class LeoMenu:
         except Exception:
             g.es("exception deleting", itemName, "from", menuName, "menu")
             g.es_exception()
-    #@+node:ekr.20031218072017.3782: *4* LeoMenu.get/setRealMenuName & setRealMenuNamesFromTable
+
+    # @+node:ekr.20031218072017.3782: *4* LeoMenu.get/setRealMenuName & setRealMenuNamesFromTable
     # Returns the translation of a menu name or an item name.
 
     def getRealMenuName(self, menuName: str) -> str:
@@ -611,7 +634,8 @@ class LeoMenu:
         except Exception:
             g.es("exception in", "setRealMenuNamesFromTable")
             g.es_exception()
-    #@+node:ekr.20031218072017.3807: *4* LeoMenu.getMenu, setMenu, destroyMenu
+
+    # @+node:ekr.20031218072017.3807: *4* LeoMenu.getMenu, setMenu, destroyMenu
     def getMenu(self, menuName: str) -> Menu:
         cmn = self.canonicalizeMenuName(menuName)
         return self.menus.get(cmn)
@@ -623,13 +647,20 @@ class LeoMenu:
     def destroyMenu(self, menuName: str) -> None:
         cmn = self.canonicalizeMenuName(menuName)
         del self.menus[cmn]
-    #@+node:ekr.20031218072017.3808: *3* LeoMenu.Must be overridden in menu subclasses
-    #@+node:ekr.20031218072017.3809: *4* LeoMenu.9 Routines with Tk spellings
+
+    # @+node:ekr.20031218072017.3808: *3* LeoMenu.Must be overridden in menu subclasses
+    # @+node:ekr.20031218072017.3809: *4* LeoMenu.9 Routines with Tk spellings
     def add_cascade(self, parent: Widget, label: str, menu: Menu, underline: int) -> None:
         pass
 
-    def add_command(self, menu: Widget,
-        accelerator: str = '', command: Callable = None, commandName: str = None, label: str = None, underline: int = 0,
+    def add_command(
+        self,
+        menu: Widget,
+        accelerator: str = '',
+        command: Callable = None,
+        commandName: str = None,
+        label: str = None,
+        underline: int = 0,
     ) -> None:
         pass
 
@@ -645,7 +676,14 @@ class LeoMenu:
     def destroy(self, menu: Menu) -> None:
         pass
 
-    def insert(self, menuName: str, position: int, label: str, command: Callable, underline: int = None) -> None:
+    def insert(
+        self,
+        menuName: str,
+        position: int,
+        label: str,
+        command: Callable,
+        underline: int = None,
+    ) -> None:
         pass
 
     def insert_cascade(self, parent: Widget, index: int, label: str, menu: Menu, underline: int) -> Widget:
@@ -653,7 +691,8 @@ class LeoMenu:
 
     def new_menu(self, parent: Widget, tearoff: int = 0, label: str = '') -> Menu:
         pass
-    #@+node:ekr.20031218072017.3810: *4* LeoMenu.9 Routines with new spellings
+
+    # @+node:ekr.20031218072017.3810: *4* LeoMenu.9 Routines with new spellings
     def activateMenu(self, menuName: str) -> None:  # New in Leo 4.4b2.
         pass
 
@@ -677,15 +716,21 @@ class LeoMenu:
 
     def setMenuLabel(self, menu: Menu, name: str, label: str, underline: int = -1) -> None:
         pass
-    #@-others
-#@+node:ekr.20031218072017.3811: ** class NullMenu(LeoMenu)
+
+    # @-others
+
+
+# @+node:ekr.20031218072017.3811: ** class NullMenu(LeoMenu)
 class NullMenu(LeoMenu):
     """A null menu class for testing and batch execution."""
+
     def __init__(self, frame: Widget) -> None:
         super().__init__(frame)
         self.isNull = True
-#@-others
-#@@language python
-#@@tabwidth -4
-#@@pagewidth 70
-#@-leo
+
+
+# @-others
+# @@language python
+# @@tabwidth -4
+# @@pagewidth 70
+# @-leo

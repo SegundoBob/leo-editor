@@ -1,5 +1,5 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20090717092906.12765: * @file leoVersion.py
+# @+leo-ver=5-thin
+# @+node:ekr.20090717092906.12765: * @file leoVersion.py
 """
 A module holding the following version-related info:
 
@@ -7,12 +7,13 @@ leoVersion.static_date: The date of official releases.
                         Also used when the git repo is not available.
 leoVersion.version:     Leo's version number.
 """
+
 # Add a suffix to change the pypi hash.
 # Build suffix: -20
-#@+<< version dates >>
-#@+node:ekr.20141117073519.12: ** << version dates >>
-#@@nocolor-node
-#@+at
+# @+<< version dates >>
+# @+node:ekr.20141117073519.12: ** << version dates >>
+# @@nocolor-node
+# @+at
 # 4.5.1:  September 14, 2008
 # 4.6.1:  July 30, 2009.
 # 4.7.1:  February 26, 2010.
@@ -61,9 +62,9 @@ leoVersion.version:     Leo's version number.
 # 6.8.6:  July 30, 2025.
 # 6.8.6.1: August 3, 2025.
 # 6.8.7:  October 11, 2025.
-#@-<< version dates >>
+# @-<< version dates >>
 version = '6.8.8-devel'
 static_date = 'October 12, 2025'
-#@@language python
-#@@tabwidth -4
-#@-leo
+# @@language python
+# @@tabwidth -4
+# @-leo

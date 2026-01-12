@@ -1,9 +1,13 @@
 # Leo colorizer control file for clojure mode.
 # This file is in the public domain.
 import re
+
 number_pat = re.compile('\\b0x[0-9a-fA-F]+|\\b\\d*\\.\\d+|\\b\\d+\\.?')
+
+
 def clojure_match_numbers(colorer, s, i):
     return colorer.match_compiled_regexp(s, i, kind='literal4', regexp=number_pat)
+
 
 # Properties for clojure mode.
 properties = {
@@ -804,425 +808,972 @@ keywordsDictDict = {
 
 # Rules for clojure_main ruleset.
 
+
 def clojure_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword4", begin="*", end="*",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="keyword4", begin="*", end="*", delegate="clojure::main")
+
 
 def clojure_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="#^(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="markup", begin="#^(", end=")", delegate="clojure::main")
+
 
 def clojure_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="@(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="@(", end=")", delegate="clojure::main")
+
 
 def clojure_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="^(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="^(", end=")", delegate="clojure::main")
+
 
 def clojure_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="`(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="`(", end=")", delegate="clojure::main")
+
 
 def clojure_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="'(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="'(", end=")", delegate="clojure::main")
+
 
 def clojure_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="#_(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="comment3", begin="#_(", end=")", delegate="clojure::main")
+
 
 def clojure_rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword1", begin="#(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="keyword1", begin="#(", end=")", delegate="clojure::main")
+
 
 def clojure_rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="(", end=")",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="markup", begin="(", end=")", delegate="clojure::main")
+
 
 def clojure_rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="#^[", end="]",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="markup", begin="#^[", end="]", delegate="clojure::main")
+
 
 def clojure_rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="@[", end="]",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="@[", end="]", delegate="clojure::main")
+
 
 def clojure_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="^[", end="]",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="^[", end="]", delegate="clojure::main")
+
 
 def clojure_rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="'[", end="]",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="'[", end="]", delegate="clojure::main")
+
 
 def clojure_rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword1", begin="[", end="]",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="keyword1", begin="[", end="]", delegate="clojure::main")
+
 
 def clojure_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="#^{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="markup", begin="#^{", end="}", delegate="clojure::main")
+
 
 def clojure_rule15(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="@{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="@{", end="}", delegate="clojure::main")
+
 
 def clojure_rule16(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="^{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="^{", end="}", delegate="clojure::main")
+
 
 def clojure_rule17(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="'{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="'{", end="}", delegate="clojure::main")
+
 
 def clojure_rule18(colorer, s, i):
-    return colorer.match_span(s, i, kind="label", begin="{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="label", begin="{", end="}", delegate="clojure::main")
+
 
 def clojure_rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="#^#{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="markup", begin="#^#{", end="}", delegate="clojure::main")
+
 
 def clojure_rule20(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="@#{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="@#{", end="}", delegate="clojure::main")
+
 
 def clojure_rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="^#{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="^#{", end="}", delegate="clojure::main")
+
 
 def clojure_rule22(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="'#{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="literal3", begin="'#{", end="}", delegate="clojure::main")
+
 
 def clojure_rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind="label", begin="#{", end="}",
-          delegate="clojure::main")
+    return colorer.match_span(s, i, kind="label", begin="#{", end="}", delegate="clojure::main")
+
 
 def clojure_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="keyword2", seq="#'")
 
+
 def clojure_rule25(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal3", pattern="'")
+
 
 def clojure_rule26(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="^")
 
+
 def clojure_rule27(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="label", pattern="@")
+
 
 def clojure_rule28(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="literal3", pattern=".")
 
+
 def clojure_rule29(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="markup", pattern="#^")
+
 
 def clojure_rule30(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment4", seq=";;;;")
 
+
 def clojure_rule31(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment3", seq=";;;")
+
 
 def clojure_rule32(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment2", seq=";;")
 
+
 def clojure_rule33(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
 
+
 def clojure_rule34(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="#\"", end="\"",
-          delegate="clojure::regexps")
+    return colorer.match_span(s, i, kind="literal2", begin="#\"", end="\"", delegate="clojure::regexps")
+
 
 def clojure_rule35(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          delegate="clojure::strings")
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="clojure::strings")
+
 
 def clojure_rule36(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="literal2", regexp="\\\\(.|newline|space|tab)")
 
+
 def clojure_rule37(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="literal4", seq=".")
+
 
 def clojure_rule38(colorer, s, i):
     return colorer.match_mark_following(s, i, kind="keyword4", pattern=":")
 
+
 def clojure_rule39(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for clojure_main ruleset.
 rulesDict1 = {
-    "!": [clojure_rule39,],
-    "\"": [clojure_rule35, clojure_rule39,],
-    "#": [clojure_rule1, clojure_rule6, clojure_rule7, clojure_rule9, clojure_rule14, clojure_rule19, clojure_rule23, clojure_rule24, clojure_rule29, clojure_rule34,],
-    "%": [clojure_rule39,],
-    "&": [clojure_rule39,],
-    "'": [clojure_rule5, clojure_rule12, clojure_rule17, clojure_rule22, clojure_rule25, clojure_rule39,],
-    "(": [clojure_rule8,],
-    "*": [clojure_rule0, clojure_rule39,],
-    "+": [clojure_rule39,],
-    "-": [clojure_rule39,],
-    ".": [clojure_match_numbers, clojure_rule28, clojure_rule37, clojure_rule39,],
-    "/": [clojure_rule39,],
-    "0": [clojure_match_numbers, clojure_rule39,],
-    "1": [clojure_match_numbers, clojure_rule39,],
-    "2": [clojure_match_numbers, clojure_rule39,],
-    "3": [clojure_match_numbers, clojure_rule39,],
-    "4": [clojure_match_numbers, clojure_rule39,],
-    "5": [clojure_match_numbers, clojure_rule39,],
-    "6": [clojure_match_numbers, clojure_rule39,],
-    "7": [clojure_match_numbers, clojure_rule39,],
-    "8": [clojure_match_numbers, clojure_rule39,],
-    "9": [clojure_match_numbers, clojure_rule39,],
-    ":": [clojure_rule38,],
-    ";": [clojure_rule30, clojure_rule31, clojure_rule32, clojure_rule33,],
-    "<": [clojure_rule39,],
-    "=": [clojure_rule39,],
-    ">": [clojure_rule39,],
-    "?": [clojure_rule39,],
-    "@": [clojure_rule2, clojure_rule10, clojure_rule15, clojure_rule20, clojure_rule27, clojure_rule39,],
-    "A": [clojure_rule39,],
-    "B": [clojure_rule39,],
-    "C": [clojure_rule39,],
-    "D": [clojure_rule39,],
-    "E": [clojure_rule39,],
-    "F": [clojure_rule39,],
-    "G": [clojure_rule39,],
-    "H": [clojure_rule39,],
-    "I": [clojure_rule39,],
-    "J": [clojure_rule39,],
-    "K": [clojure_rule39,],
-    "L": [clojure_rule39,],
-    "M": [clojure_rule39,],
-    "N": [clojure_rule39,],
-    "O": [clojure_rule39,],
-    "P": [clojure_rule39,],
-    "Q": [clojure_rule39,],
-    "R": [clojure_rule39,],
-    "S": [clojure_rule39,],
-    "T": [clojure_rule39,],
-    "U": [clojure_rule39,],
-    "V": [clojure_rule39,],
-    "W": [clojure_rule39,],
-    "X": [clojure_rule39,],
-    "Y": [clojure_rule39,],
-    "Z": [clojure_rule39,],
-    "[": [clojure_rule13,],
-    "\\": [clojure_rule36,],
-    "^": [clojure_rule3, clojure_rule11, clojure_rule16, clojure_rule21, clojure_rule26,],
-    "`": [clojure_rule4,],
-    "a": [clojure_rule39,],
-    "b": [clojure_rule39,],
-    "c": [clojure_rule39,],
-    "d": [clojure_rule39,],
-    "e": [clojure_rule39,],
-    "f": [clojure_rule39,],
-    "g": [clojure_rule39,],
-    "h": [clojure_rule39,],
-    "i": [clojure_rule39,],
-    "j": [clojure_rule39,],
-    "k": [clojure_rule39,],
-    "l": [clojure_rule39,],
-    "m": [clojure_rule39,],
-    "n": [clojure_rule39,],
-    "o": [clojure_rule39,],
-    "p": [clojure_rule39,],
-    "q": [clojure_rule39,],
-    "r": [clojure_rule39,],
-    "s": [clojure_rule39,],
-    "t": [clojure_rule39,],
-    "u": [clojure_rule39,],
-    "v": [clojure_rule39,],
-    "w": [clojure_rule39,],
-    "x": [clojure_rule39,],
-    "y": [clojure_rule39,],
-    "z": [clojure_rule39,],
-    "{": [clojure_rule18,],
+    "!": [
+        clojure_rule39,
+    ],
+    "\"": [
+        clojure_rule35,
+        clojure_rule39,
+    ],
+    "#": [
+        clojure_rule1,
+        clojure_rule6,
+        clojure_rule7,
+        clojure_rule9,
+        clojure_rule14,
+        clojure_rule19,
+        clojure_rule23,
+        clojure_rule24,
+        clojure_rule29,
+        clojure_rule34,
+    ],
+    "%": [
+        clojure_rule39,
+    ],
+    "&": [
+        clojure_rule39,
+    ],
+    "'": [
+        clojure_rule5,
+        clojure_rule12,
+        clojure_rule17,
+        clojure_rule22,
+        clojure_rule25,
+        clojure_rule39,
+    ],
+    "(": [
+        clojure_rule8,
+    ],
+    "*": [
+        clojure_rule0,
+        clojure_rule39,
+    ],
+    "+": [
+        clojure_rule39,
+    ],
+    "-": [
+        clojure_rule39,
+    ],
+    ".": [
+        clojure_match_numbers,
+        clojure_rule28,
+        clojure_rule37,
+        clojure_rule39,
+    ],
+    "/": [
+        clojure_rule39,
+    ],
+    "0": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "1": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "2": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "3": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "4": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "5": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "6": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "7": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "8": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    "9": [
+        clojure_match_numbers,
+        clojure_rule39,
+    ],
+    ":": [
+        clojure_rule38,
+    ],
+    ";": [
+        clojure_rule30,
+        clojure_rule31,
+        clojure_rule32,
+        clojure_rule33,
+    ],
+    "<": [
+        clojure_rule39,
+    ],
+    "=": [
+        clojure_rule39,
+    ],
+    ">": [
+        clojure_rule39,
+    ],
+    "?": [
+        clojure_rule39,
+    ],
+    "@": [
+        clojure_rule2,
+        clojure_rule10,
+        clojure_rule15,
+        clojure_rule20,
+        clojure_rule27,
+        clojure_rule39,
+    ],
+    "A": [
+        clojure_rule39,
+    ],
+    "B": [
+        clojure_rule39,
+    ],
+    "C": [
+        clojure_rule39,
+    ],
+    "D": [
+        clojure_rule39,
+    ],
+    "E": [
+        clojure_rule39,
+    ],
+    "F": [
+        clojure_rule39,
+    ],
+    "G": [
+        clojure_rule39,
+    ],
+    "H": [
+        clojure_rule39,
+    ],
+    "I": [
+        clojure_rule39,
+    ],
+    "J": [
+        clojure_rule39,
+    ],
+    "K": [
+        clojure_rule39,
+    ],
+    "L": [
+        clojure_rule39,
+    ],
+    "M": [
+        clojure_rule39,
+    ],
+    "N": [
+        clojure_rule39,
+    ],
+    "O": [
+        clojure_rule39,
+    ],
+    "P": [
+        clojure_rule39,
+    ],
+    "Q": [
+        clojure_rule39,
+    ],
+    "R": [
+        clojure_rule39,
+    ],
+    "S": [
+        clojure_rule39,
+    ],
+    "T": [
+        clojure_rule39,
+    ],
+    "U": [
+        clojure_rule39,
+    ],
+    "V": [
+        clojure_rule39,
+    ],
+    "W": [
+        clojure_rule39,
+    ],
+    "X": [
+        clojure_rule39,
+    ],
+    "Y": [
+        clojure_rule39,
+    ],
+    "Z": [
+        clojure_rule39,
+    ],
+    "[": [
+        clojure_rule13,
+    ],
+    "\\": [
+        clojure_rule36,
+    ],
+    "^": [
+        clojure_rule3,
+        clojure_rule11,
+        clojure_rule16,
+        clojure_rule21,
+        clojure_rule26,
+    ],
+    "`": [
+        clojure_rule4,
+    ],
+    "a": [
+        clojure_rule39,
+    ],
+    "b": [
+        clojure_rule39,
+    ],
+    "c": [
+        clojure_rule39,
+    ],
+    "d": [
+        clojure_rule39,
+    ],
+    "e": [
+        clojure_rule39,
+    ],
+    "f": [
+        clojure_rule39,
+    ],
+    "g": [
+        clojure_rule39,
+    ],
+    "h": [
+        clojure_rule39,
+    ],
+    "i": [
+        clojure_rule39,
+    ],
+    "j": [
+        clojure_rule39,
+    ],
+    "k": [
+        clojure_rule39,
+    ],
+    "l": [
+        clojure_rule39,
+    ],
+    "m": [
+        clojure_rule39,
+    ],
+    "n": [
+        clojure_rule39,
+    ],
+    "o": [
+        clojure_rule39,
+    ],
+    "p": [
+        clojure_rule39,
+    ],
+    "q": [
+        clojure_rule39,
+    ],
+    "r": [
+        clojure_rule39,
+    ],
+    "s": [
+        clojure_rule39,
+    ],
+    "t": [
+        clojure_rule39,
+    ],
+    "u": [
+        clojure_rule39,
+    ],
+    "v": [
+        clojure_rule39,
+    ],
+    "w": [
+        clojure_rule39,
+    ],
+    "x": [
+        clojure_rule39,
+    ],
+    "y": [
+        clojure_rule39,
+    ],
+    "z": [
+        clojure_rule39,
+    ],
+    "{": [
+        clojure_rule18,
+    ],
 }
 
 # Rules for clojure_strings ruleset.
 
+
 def clojure_rule40(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="label", regexp="\\\\.")
+
 
 def clojure_rule41(colorer, s, i):
     j = s.find('"', i)
     while j > 0 and s[j] == '\\':
         j = s.find('"', j + 1)
-    if j < 0: j = len(s)
+    if j < 0:
+        j = len(s)
     colorer.colorRangeWithTag(s, i, j, "literal1")
     return j - i
 
+
 # Rules dict for clojure_strings ruleset.
 rulesDict2 = {
-    "!": [clojure_rule41,],
-    "\"": [clojure_rule41,],
-    "%": [clojure_rule41,],
-    "&": [clojure_rule41,],
-    "'": [clojure_rule41,],
-    "*": [clojure_rule41,],
-    "+": [clojure_rule41,],
-    "-": [clojure_rule41,],
-    ".": [clojure_rule41,],
-    "/": [clojure_rule41,],
-    "0": [clojure_rule41,],
-    "1": [clojure_rule41,],
-    "2": [clojure_rule41,],
-    "3": [clojure_rule41,],
-    "4": [clojure_rule41,],
-    "5": [clojure_rule41,],
-    "6": [clojure_rule41,],
-    "7": [clojure_rule41,],
-    "8": [clojure_rule41,],
-    "9": [clojure_rule41,],
-    "<": [clojure_rule41,],
-    "=": [clojure_rule41,],
-    ">": [clojure_rule41,],
-    "?": [clojure_rule41,],
-    "@": [clojure_rule41,],
-    "A": [clojure_rule41,],
-    "B": [clojure_rule41,],
-    "C": [clojure_rule41,],
-    "D": [clojure_rule41,],
-    "E": [clojure_rule41,],
-    "F": [clojure_rule41,],
-    "G": [clojure_rule41,],
-    "H": [clojure_rule41,],
-    "I": [clojure_rule41,],
-    "J": [clojure_rule41,],
-    "K": [clojure_rule41,],
-    "L": [clojure_rule41,],
-    "M": [clojure_rule41,],
-    "N": [clojure_rule41,],
-    "O": [clojure_rule41,],
-    "P": [clojure_rule41,],
-    "Q": [clojure_rule41,],
-    "R": [clojure_rule41,],
-    "S": [clojure_rule41,],
-    "T": [clojure_rule41,],
-    "U": [clojure_rule41,],
-    "V": [clojure_rule41,],
-    "W": [clojure_rule41,],
-    "X": [clojure_rule41,],
-    "Y": [clojure_rule41,],
-    "Z": [clojure_rule41,],
-    "\\": [clojure_rule40,],
-    "a": [clojure_rule41,],
-    "b": [clojure_rule41,],
-    "c": [clojure_rule41,],
-    "d": [clojure_rule41,],
-    "e": [clojure_rule41,],
-    "f": [clojure_rule41,],
-    "g": [clojure_rule41,],
-    "h": [clojure_rule41,],
-    "i": [clojure_rule41,],
-    "j": [clojure_rule41,],
-    "k": [clojure_rule41,],
-    "l": [clojure_rule41,],
-    "m": [clojure_rule41,],
-    "n": [clojure_rule41,],
-    "o": [clojure_rule41,],
-    "p": [clojure_rule41,],
-    "q": [clojure_rule41,],
-    "r": [clojure_rule41,],
-    "s": [clojure_rule41,],
-    "t": [clojure_rule41,],
-    "u": [clojure_rule41,],
-    "v": [clojure_rule41,],
-    "w": [clojure_rule41,],
-    "x": [clojure_rule41,],
-    "y": [clojure_rule41,],
-    "z": [clojure_rule41,],
+    "!": [
+        clojure_rule41,
+    ],
+    "\"": [
+        clojure_rule41,
+    ],
+    "%": [
+        clojure_rule41,
+    ],
+    "&": [
+        clojure_rule41,
+    ],
+    "'": [
+        clojure_rule41,
+    ],
+    "*": [
+        clojure_rule41,
+    ],
+    "+": [
+        clojure_rule41,
+    ],
+    "-": [
+        clojure_rule41,
+    ],
+    ".": [
+        clojure_rule41,
+    ],
+    "/": [
+        clojure_rule41,
+    ],
+    "0": [
+        clojure_rule41,
+    ],
+    "1": [
+        clojure_rule41,
+    ],
+    "2": [
+        clojure_rule41,
+    ],
+    "3": [
+        clojure_rule41,
+    ],
+    "4": [
+        clojure_rule41,
+    ],
+    "5": [
+        clojure_rule41,
+    ],
+    "6": [
+        clojure_rule41,
+    ],
+    "7": [
+        clojure_rule41,
+    ],
+    "8": [
+        clojure_rule41,
+    ],
+    "9": [
+        clojure_rule41,
+    ],
+    "<": [
+        clojure_rule41,
+    ],
+    "=": [
+        clojure_rule41,
+    ],
+    ">": [
+        clojure_rule41,
+    ],
+    "?": [
+        clojure_rule41,
+    ],
+    "@": [
+        clojure_rule41,
+    ],
+    "A": [
+        clojure_rule41,
+    ],
+    "B": [
+        clojure_rule41,
+    ],
+    "C": [
+        clojure_rule41,
+    ],
+    "D": [
+        clojure_rule41,
+    ],
+    "E": [
+        clojure_rule41,
+    ],
+    "F": [
+        clojure_rule41,
+    ],
+    "G": [
+        clojure_rule41,
+    ],
+    "H": [
+        clojure_rule41,
+    ],
+    "I": [
+        clojure_rule41,
+    ],
+    "J": [
+        clojure_rule41,
+    ],
+    "K": [
+        clojure_rule41,
+    ],
+    "L": [
+        clojure_rule41,
+    ],
+    "M": [
+        clojure_rule41,
+    ],
+    "N": [
+        clojure_rule41,
+    ],
+    "O": [
+        clojure_rule41,
+    ],
+    "P": [
+        clojure_rule41,
+    ],
+    "Q": [
+        clojure_rule41,
+    ],
+    "R": [
+        clojure_rule41,
+    ],
+    "S": [
+        clojure_rule41,
+    ],
+    "T": [
+        clojure_rule41,
+    ],
+    "U": [
+        clojure_rule41,
+    ],
+    "V": [
+        clojure_rule41,
+    ],
+    "W": [
+        clojure_rule41,
+    ],
+    "X": [
+        clojure_rule41,
+    ],
+    "Y": [
+        clojure_rule41,
+    ],
+    "Z": [
+        clojure_rule41,
+    ],
+    "\\": [
+        clojure_rule40,
+    ],
+    "a": [
+        clojure_rule41,
+    ],
+    "b": [
+        clojure_rule41,
+    ],
+    "c": [
+        clojure_rule41,
+    ],
+    "d": [
+        clojure_rule41,
+    ],
+    "e": [
+        clojure_rule41,
+    ],
+    "f": [
+        clojure_rule41,
+    ],
+    "g": [
+        clojure_rule41,
+    ],
+    "h": [
+        clojure_rule41,
+    ],
+    "i": [
+        clojure_rule41,
+    ],
+    "j": [
+        clojure_rule41,
+    ],
+    "k": [
+        clojure_rule41,
+    ],
+    "l": [
+        clojure_rule41,
+    ],
+    "m": [
+        clojure_rule41,
+    ],
+    "n": [
+        clojure_rule41,
+    ],
+    "o": [
+        clojure_rule41,
+    ],
+    "p": [
+        clojure_rule41,
+    ],
+    "q": [
+        clojure_rule41,
+    ],
+    "r": [
+        clojure_rule41,
+    ],
+    "s": [
+        clojure_rule41,
+    ],
+    "t": [
+        clojure_rule41,
+    ],
+    "u": [
+        clojure_rule41,
+    ],
+    "v": [
+        clojure_rule41,
+    ],
+    "w": [
+        clojure_rule41,
+    ],
+    "x": [
+        clojure_rule41,
+    ],
+    "y": [
+        clojure_rule41,
+    ],
+    "z": [
+        clojure_rule41,
+    ],
 }
 
 # Rules for clojure_regexps ruleset.
 
+
 def clojure_rule42(colorer, s, i):
     return colorer.match_seq_regexp(s, i, kind="label", regexp="\\\\.")
+
 
 def clojure_rule43(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for clojure_regexps ruleset.
 rulesDict3 = {
-    "!": [clojure_rule43,],
-    "\"": [clojure_rule43,],
-    "%": [clojure_rule43,],
-    "&": [clojure_rule43,],
-    "'": [clojure_rule43,],
-    "*": [clojure_rule43,],
-    "+": [clojure_rule43,],
-    "-": [clojure_rule43,],
-    ".": [clojure_rule43,],
-    "/": [clojure_rule43,],
-    "0": [clojure_rule43,],
-    "1": [clojure_rule43,],
-    "2": [clojure_rule43,],
-    "3": [clojure_rule43,],
-    "4": [clojure_rule43,],
-    "5": [clojure_rule43,],
-    "6": [clojure_rule43,],
-    "7": [clojure_rule43,],
-    "8": [clojure_rule43,],
-    "9": [clojure_rule43,],
-    "<": [clojure_rule43,],
-    "=": [clojure_rule43,],
-    ">": [clojure_rule43,],
-    "?": [clojure_rule43,],
-    "@": [clojure_rule43,],
-    "A": [clojure_rule43,],
-    "B": [clojure_rule43,],
-    "C": [clojure_rule43,],
-    "D": [clojure_rule43,],
-    "E": [clojure_rule43,],
-    "F": [clojure_rule43,],
-    "G": [clojure_rule43,],
-    "H": [clojure_rule43,],
-    "I": [clojure_rule43,],
-    "J": [clojure_rule43,],
-    "K": [clojure_rule43,],
-    "L": [clojure_rule43,],
-    "M": [clojure_rule43,],
-    "N": [clojure_rule43,],
-    "O": [clojure_rule43,],
-    "P": [clojure_rule43,],
-    "Q": [clojure_rule43,],
-    "R": [clojure_rule43,],
-    "S": [clojure_rule43,],
-    "T": [clojure_rule43,],
-    "U": [clojure_rule43,],
-    "V": [clojure_rule43,],
-    "W": [clojure_rule43,],
-    "X": [clojure_rule43,],
-    "Y": [clojure_rule43,],
-    "Z": [clojure_rule43,],
-    "\\": [clojure_rule42,],
-    "a": [clojure_rule43,],
-    "b": [clojure_rule43,],
-    "c": [clojure_rule43,],
-    "d": [clojure_rule43,],
-    "e": [clojure_rule43,],
-    "f": [clojure_rule43,],
-    "g": [clojure_rule43,],
-    "h": [clojure_rule43,],
-    "i": [clojure_rule43,],
-    "j": [clojure_rule43,],
-    "k": [clojure_rule43,],
-    "l": [clojure_rule43,],
-    "m": [clojure_rule43,],
-    "n": [clojure_rule43,],
-    "o": [clojure_rule43,],
-    "p": [clojure_rule43,],
-    "q": [clojure_rule43,],
-    "r": [clojure_rule43,],
-    "s": [clojure_rule43,],
-    "t": [clojure_rule43,],
-    "u": [clojure_rule43,],
-    "v": [clojure_rule43,],
-    "w": [clojure_rule43,],
-    "x": [clojure_rule43,],
-    "y": [clojure_rule43,],
-    "z": [clojure_rule43,],
+    "!": [
+        clojure_rule43,
+    ],
+    "\"": [
+        clojure_rule43,
+    ],
+    "%": [
+        clojure_rule43,
+    ],
+    "&": [
+        clojure_rule43,
+    ],
+    "'": [
+        clojure_rule43,
+    ],
+    "*": [
+        clojure_rule43,
+    ],
+    "+": [
+        clojure_rule43,
+    ],
+    "-": [
+        clojure_rule43,
+    ],
+    ".": [
+        clojure_rule43,
+    ],
+    "/": [
+        clojure_rule43,
+    ],
+    "0": [
+        clojure_rule43,
+    ],
+    "1": [
+        clojure_rule43,
+    ],
+    "2": [
+        clojure_rule43,
+    ],
+    "3": [
+        clojure_rule43,
+    ],
+    "4": [
+        clojure_rule43,
+    ],
+    "5": [
+        clojure_rule43,
+    ],
+    "6": [
+        clojure_rule43,
+    ],
+    "7": [
+        clojure_rule43,
+    ],
+    "8": [
+        clojure_rule43,
+    ],
+    "9": [
+        clojure_rule43,
+    ],
+    "<": [
+        clojure_rule43,
+    ],
+    "=": [
+        clojure_rule43,
+    ],
+    ">": [
+        clojure_rule43,
+    ],
+    "?": [
+        clojure_rule43,
+    ],
+    "@": [
+        clojure_rule43,
+    ],
+    "A": [
+        clojure_rule43,
+    ],
+    "B": [
+        clojure_rule43,
+    ],
+    "C": [
+        clojure_rule43,
+    ],
+    "D": [
+        clojure_rule43,
+    ],
+    "E": [
+        clojure_rule43,
+    ],
+    "F": [
+        clojure_rule43,
+    ],
+    "G": [
+        clojure_rule43,
+    ],
+    "H": [
+        clojure_rule43,
+    ],
+    "I": [
+        clojure_rule43,
+    ],
+    "J": [
+        clojure_rule43,
+    ],
+    "K": [
+        clojure_rule43,
+    ],
+    "L": [
+        clojure_rule43,
+    ],
+    "M": [
+        clojure_rule43,
+    ],
+    "N": [
+        clojure_rule43,
+    ],
+    "O": [
+        clojure_rule43,
+    ],
+    "P": [
+        clojure_rule43,
+    ],
+    "Q": [
+        clojure_rule43,
+    ],
+    "R": [
+        clojure_rule43,
+    ],
+    "S": [
+        clojure_rule43,
+    ],
+    "T": [
+        clojure_rule43,
+    ],
+    "U": [
+        clojure_rule43,
+    ],
+    "V": [
+        clojure_rule43,
+    ],
+    "W": [
+        clojure_rule43,
+    ],
+    "X": [
+        clojure_rule43,
+    ],
+    "Y": [
+        clojure_rule43,
+    ],
+    "Z": [
+        clojure_rule43,
+    ],
+    "\\": [
+        clojure_rule42,
+    ],
+    "a": [
+        clojure_rule43,
+    ],
+    "b": [
+        clojure_rule43,
+    ],
+    "c": [
+        clojure_rule43,
+    ],
+    "d": [
+        clojure_rule43,
+    ],
+    "e": [
+        clojure_rule43,
+    ],
+    "f": [
+        clojure_rule43,
+    ],
+    "g": [
+        clojure_rule43,
+    ],
+    "h": [
+        clojure_rule43,
+    ],
+    "i": [
+        clojure_rule43,
+    ],
+    "j": [
+        clojure_rule43,
+    ],
+    "k": [
+        clojure_rule43,
+    ],
+    "l": [
+        clojure_rule43,
+    ],
+    "m": [
+        clojure_rule43,
+    ],
+    "n": [
+        clojure_rule43,
+    ],
+    "o": [
+        clojure_rule43,
+    ],
+    "p": [
+        clojure_rule43,
+    ],
+    "q": [
+        clojure_rule43,
+    ],
+    "r": [
+        clojure_rule43,
+    ],
+    "s": [
+        clojure_rule43,
+    ],
+    "t": [
+        clojure_rule43,
+    ],
+    "u": [
+        clojure_rule43,
+    ],
+    "v": [
+        clojure_rule43,
+    ],
+    "w": [
+        clojure_rule43,
+    ],
+    "x": [
+        clojure_rule43,
+    ],
+    "y": [
+        clojure_rule43,
+    ],
+    "z": [
+        clojure_rule43,
+    ],
 }
 
 # x.rulesDictDict for clojure mode.

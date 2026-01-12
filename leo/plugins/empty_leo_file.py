@@ -1,15 +1,15 @@
-#@+leo-ver=5-thin
-#@+node:EKR.20040517080049.1: * @file ../plugins/empty_leo_file.py
+# @+leo-ver=5-thin
+# @+node:EKR.20040517080049.1: * @file ../plugins/empty_leo_file.py
 """Allows Leo to open any empty file as a minimal .leo file."""
 
-#@@language python
-#@@tabwidth -4
+# @@language python
+# @@tabwidth -4
 
 import os
 from leo.core import leoGlobals as g
 
-#@+<< define minimal .leo file >>
-#@+node:EKR.20040517080049.2: ** << define minimal .leo file >>
+# @+<< define minimal .leo file >>
+# @+node:EKR.20040517080049.2: ** << define minimal .leo file >>
 empty_leo_file = """<?xml version="1.0" encoding="UTF-8"?>
 <leo_file>
 <leo_header/>
@@ -20,10 +20,11 @@ empty_leo_file = """<?xml version="1.0" encoding="UTF-8"?>
 <tnodes/>
 </leo_file>
 """
-#@-<< define minimal .leo file >>
+# @-<< define minimal .leo file >>
 
-#@+others
-#@+node:ekr.20100128073941.5372: ** init
+
+# @+others
+# @+node:ekr.20100128073941.5372: ** init
 def init():
     """Return True if the plugin has loaded successfully."""
     ok = not g.unitTesting
@@ -31,9 +32,10 @@ def init():
         g.registerHandler("open1", onOpen)
         g.plugin_signon(__name__)
     return ok
-#@+node:EKR.20040517080049.3: ** onOpen
-def onOpen(tag, keywords):
 
+
+# @+node:EKR.20040517080049.3: ** onOpen
+def onOpen(tag, keywords):
     file_name = keywords.get('fileName')
 
     if file_name and os.path.getsize(file_name) == 0:
@@ -44,5 +46,6 @@ def onOpen(tag, keywords):
         file.flush()
         file.close()
 
-#@-others
-#@-leo
+
+# @-others
+# @-leo

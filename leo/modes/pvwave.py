@@ -699,176 +699,378 @@ keywordsDictDict = {
 
 # Rules for pvwave_main ruleset.
 
+
 def pvwave_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", no_line_break=True)
+
 
 def pvwave_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'",
-          no_line_break=True)
+    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", no_line_break=True)
+
 
 def pvwave_rule2(colorer, s, i):
     return colorer.match_eol_span(s, i, kind="comment1", seq=";")
 
+
 def pvwave_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="(")
+
 
 def pvwave_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=")")
 
+
 def pvwave_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def pvwave_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
 
+
 def pvwave_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
+
 
 def pvwave_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def pvwave_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
+
 
 def pvwave_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="#")
 
+
 def pvwave_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def pvwave_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def pvwave_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def pvwave_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="}")
 
+
 def pvwave_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="{")
+
 
 def pvwave_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
 
+
 def pvwave_rule17(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=",")
+
 
 def pvwave_rule18(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="]")
 
+
 def pvwave_rule19(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="[")
+
 
 def pvwave_rule20(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=":")
 
+
 def pvwave_rule21(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="label", seq="$")
+
 
 def pvwave_rule22(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="label", seq="&")
 
+
 def pvwave_rule23(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="label", seq="@")
+
 
 def pvwave_rule24(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="label", seq="!")
 
+
 def pvwave_rule25(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for pvwave_main ruleset.
 rulesDict1 = {
-    "!": [pvwave_rule24,],
-    "\"": [pvwave_rule0,],
-    "#": [pvwave_rule10,],
-    "$": [pvwave_rule21,],
-    "&": [pvwave_rule22,],
-    "'": [pvwave_rule1,],
-    "(": [pvwave_rule3,],
-    ")": [pvwave_rule4,],
-    "*": [pvwave_rule9,],
-    "+": [pvwave_rule6,],
-    ",": [pvwave_rule17,],
-    "-": [pvwave_rule7,],
-    ".": [pvwave_rule16,],
-    "/": [pvwave_rule8,],
-    "0": [pvwave_rule25,],
-    "1": [pvwave_rule25,],
-    "2": [pvwave_rule25,],
-    "3": [pvwave_rule25,],
-    "4": [pvwave_rule25,],
-    "5": [pvwave_rule25,],
-    "6": [pvwave_rule25,],
-    "7": [pvwave_rule25,],
-    "8": [pvwave_rule25,],
-    "9": [pvwave_rule25,],
-    ":": [pvwave_rule20,],
-    ";": [pvwave_rule2,],
-    "<": [pvwave_rule12,],
-    "=": [pvwave_rule5,],
-    ">": [pvwave_rule11,],
-    "@": [pvwave_rule23, pvwave_rule25,],
-    "A": [pvwave_rule25,],
-    "B": [pvwave_rule25,],
-    "C": [pvwave_rule25,],
-    "D": [pvwave_rule25,],
-    "E": [pvwave_rule25,],
-    "F": [pvwave_rule25,],
-    "G": [pvwave_rule25,],
-    "H": [pvwave_rule25,],
-    "I": [pvwave_rule25,],
-    "J": [pvwave_rule25,],
-    "K": [pvwave_rule25,],
-    "L": [pvwave_rule25,],
-    "M": [pvwave_rule25,],
-    "N": [pvwave_rule25,],
-    "O": [pvwave_rule25,],
-    "P": [pvwave_rule25,],
-    "Q": [pvwave_rule25,],
-    "R": [pvwave_rule25,],
-    "S": [pvwave_rule25,],
-    "T": [pvwave_rule25,],
-    "U": [pvwave_rule25,],
-    "V": [pvwave_rule25,],
-    "W": [pvwave_rule25,],
-    "X": [pvwave_rule25,],
-    "Y": [pvwave_rule25,],
-    "Z": [pvwave_rule25,],
-    "[": [pvwave_rule19,],
-    "]": [pvwave_rule18,],
-    "^": [pvwave_rule13,],
-    "_": [pvwave_rule25,],
-    "a": [pvwave_rule25,],
-    "b": [pvwave_rule25,],
-    "c": [pvwave_rule25,],
-    "d": [pvwave_rule25,],
-    "e": [pvwave_rule25,],
-    "f": [pvwave_rule25,],
-    "g": [pvwave_rule25,],
-    "h": [pvwave_rule25,],
-    "i": [pvwave_rule25,],
-    "j": [pvwave_rule25,],
-    "k": [pvwave_rule25,],
-    "l": [pvwave_rule25,],
-    "m": [pvwave_rule25,],
-    "n": [pvwave_rule25,],
-    "o": [pvwave_rule25,],
-    "p": [pvwave_rule25,],
-    "q": [pvwave_rule25,],
-    "r": [pvwave_rule25,],
-    "s": [pvwave_rule25,],
-    "t": [pvwave_rule25,],
-    "u": [pvwave_rule25,],
-    "v": [pvwave_rule25,],
-    "w": [pvwave_rule25,],
-    "x": [pvwave_rule25,],
-    "y": [pvwave_rule25,],
-    "z": [pvwave_rule25,],
-    "{": [pvwave_rule15,],
-    "}": [pvwave_rule14,],
+    "!": [
+        pvwave_rule24,
+    ],
+    "\"": [
+        pvwave_rule0,
+    ],
+    "#": [
+        pvwave_rule10,
+    ],
+    "$": [
+        pvwave_rule21,
+    ],
+    "&": [
+        pvwave_rule22,
+    ],
+    "'": [
+        pvwave_rule1,
+    ],
+    "(": [
+        pvwave_rule3,
+    ],
+    ")": [
+        pvwave_rule4,
+    ],
+    "*": [
+        pvwave_rule9,
+    ],
+    "+": [
+        pvwave_rule6,
+    ],
+    ",": [
+        pvwave_rule17,
+    ],
+    "-": [
+        pvwave_rule7,
+    ],
+    ".": [
+        pvwave_rule16,
+    ],
+    "/": [
+        pvwave_rule8,
+    ],
+    "0": [
+        pvwave_rule25,
+    ],
+    "1": [
+        pvwave_rule25,
+    ],
+    "2": [
+        pvwave_rule25,
+    ],
+    "3": [
+        pvwave_rule25,
+    ],
+    "4": [
+        pvwave_rule25,
+    ],
+    "5": [
+        pvwave_rule25,
+    ],
+    "6": [
+        pvwave_rule25,
+    ],
+    "7": [
+        pvwave_rule25,
+    ],
+    "8": [
+        pvwave_rule25,
+    ],
+    "9": [
+        pvwave_rule25,
+    ],
+    ":": [
+        pvwave_rule20,
+    ],
+    ";": [
+        pvwave_rule2,
+    ],
+    "<": [
+        pvwave_rule12,
+    ],
+    "=": [
+        pvwave_rule5,
+    ],
+    ">": [
+        pvwave_rule11,
+    ],
+    "@": [
+        pvwave_rule23,
+        pvwave_rule25,
+    ],
+    "A": [
+        pvwave_rule25,
+    ],
+    "B": [
+        pvwave_rule25,
+    ],
+    "C": [
+        pvwave_rule25,
+    ],
+    "D": [
+        pvwave_rule25,
+    ],
+    "E": [
+        pvwave_rule25,
+    ],
+    "F": [
+        pvwave_rule25,
+    ],
+    "G": [
+        pvwave_rule25,
+    ],
+    "H": [
+        pvwave_rule25,
+    ],
+    "I": [
+        pvwave_rule25,
+    ],
+    "J": [
+        pvwave_rule25,
+    ],
+    "K": [
+        pvwave_rule25,
+    ],
+    "L": [
+        pvwave_rule25,
+    ],
+    "M": [
+        pvwave_rule25,
+    ],
+    "N": [
+        pvwave_rule25,
+    ],
+    "O": [
+        pvwave_rule25,
+    ],
+    "P": [
+        pvwave_rule25,
+    ],
+    "Q": [
+        pvwave_rule25,
+    ],
+    "R": [
+        pvwave_rule25,
+    ],
+    "S": [
+        pvwave_rule25,
+    ],
+    "T": [
+        pvwave_rule25,
+    ],
+    "U": [
+        pvwave_rule25,
+    ],
+    "V": [
+        pvwave_rule25,
+    ],
+    "W": [
+        pvwave_rule25,
+    ],
+    "X": [
+        pvwave_rule25,
+    ],
+    "Y": [
+        pvwave_rule25,
+    ],
+    "Z": [
+        pvwave_rule25,
+    ],
+    "[": [
+        pvwave_rule19,
+    ],
+    "]": [
+        pvwave_rule18,
+    ],
+    "^": [
+        pvwave_rule13,
+    ],
+    "_": [
+        pvwave_rule25,
+    ],
+    "a": [
+        pvwave_rule25,
+    ],
+    "b": [
+        pvwave_rule25,
+    ],
+    "c": [
+        pvwave_rule25,
+    ],
+    "d": [
+        pvwave_rule25,
+    ],
+    "e": [
+        pvwave_rule25,
+    ],
+    "f": [
+        pvwave_rule25,
+    ],
+    "g": [
+        pvwave_rule25,
+    ],
+    "h": [
+        pvwave_rule25,
+    ],
+    "i": [
+        pvwave_rule25,
+    ],
+    "j": [
+        pvwave_rule25,
+    ],
+    "k": [
+        pvwave_rule25,
+    ],
+    "l": [
+        pvwave_rule25,
+    ],
+    "m": [
+        pvwave_rule25,
+    ],
+    "n": [
+        pvwave_rule25,
+    ],
+    "o": [
+        pvwave_rule25,
+    ],
+    "p": [
+        pvwave_rule25,
+    ],
+    "q": [
+        pvwave_rule25,
+    ],
+    "r": [
+        pvwave_rule25,
+    ],
+    "s": [
+        pvwave_rule25,
+    ],
+    "t": [
+        pvwave_rule25,
+    ],
+    "u": [
+        pvwave_rule25,
+    ],
+    "v": [
+        pvwave_rule25,
+    ],
+    "w": [
+        pvwave_rule25,
+    ],
+    "x": [
+        pvwave_rule25,
+    ],
+    "y": [
+        pvwave_rule25,
+    ],
+    "z": [
+        pvwave_rule25,
+    ],
+    "{": [
+        pvwave_rule15,
+    ],
+    "}": [
+        pvwave_rule14,
+    ],
 }
 
 # x.rulesDictDict for pvwave mode.

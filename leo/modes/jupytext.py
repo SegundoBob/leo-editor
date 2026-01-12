@@ -1,20 +1,23 @@
-#@+leo-ver=5-thin
-#@+node:ekr.20241030151621.1: * @file ../modes/jupytext.py
+# @+leo-ver=5-thin
+# @+node:ekr.20241030151621.1: * @file ../modes/jupytext.py
 """
 leo/modes/jupytext.py, Leo's colorizer for @language jupytext.
 """
-#@+<< jupytext.py: imports >>
-#@+node:ekr.20241031140333.1: ** << jupytext.py: imports >>
+
+# @+<< jupytext.py: imports >>
+# @+node:ekr.20241031140333.1: ** << jupytext.py: imports >>
 from __future__ import annotations
 
 from typing import Any
 
 from leo.core import leoGlobals as g
-assert g
-#@-<< jupytext.py: imports >>
 
-#@+others  # Define rules.
-#@+node:ekr.20241105203501.1: ** jupytext_comment
+assert g
+# @-<< jupytext.py: imports >>
+
+
+# @+others  # Define rules.
+# @+node:ekr.20241105203501.1: ** jupytext_comment
 def jupytext_comment(colorer: Any, s: str, i: int) -> int:
     """
     Switch to md or python coloring if s is a %% comment, provided that
@@ -33,15 +36,9 @@ def jupytext_comment(colorer: Any, s: str, i: int) -> int:
     n = colorer.match_eol_span(s, i, kind="comment1", seq="#")
 
     in_jupytext_tree = any(
-        z.startswith('@language jupytext')
-        for z_p in c.p.self_and_parents()
-        for z in g.splitLines(z_p.b)
+        z.startswith('@language jupytext') for z_p in c.p.self_and_parents() for z in g.splitLines(z_p.b)
     )
-    is_any_jupytext_comment = (
-        i == 0
-        and s.startswith('# %%')
-        and in_jupytext_tree
-    )
+    is_any_jupytext_comment = i == 0 and s.startswith('# %%') and in_jupytext_tree
     if is_any_jupytext_comment:
         # Simulate @language md or @language python.
         language = 'md' if s.startswith('# %% [markdown]') else 'python'
@@ -53,10 +50,14 @@ def jupytext_comment(colorer: Any, s: str, i: int) -> int:
         colorer.setState(state_i)
 
     return n  # Succeed. Do not allow other matches.
-#@+node:ekr.20241105230332.1: ** jupytext_directive
+
+
+# @+node:ekr.20241105230332.1: ** jupytext_directive
 def jupytext_directive(colorer: Any, s: str, i: int) -> int:
     return colorer.match_leo_keywords(s, i)
-#@-others
+
+
+# @-others
 
 rulesDict1 = {
     "#": [jupytext_comment],
@@ -68,5 +69,5 @@ rulesDictDict = {
     "jupytext_main": rulesDict1,
 }
 
-#@@language python
-#@-leo
+# @@language python
+# @-leo

@@ -5,11 +5,11 @@
 # from PyQt4 import QtCore, QtGui
 from leo.core.leoQt import QtCore, QtWidgets
 from leo.core.leoQt import Policy
+
 QtGui = QtWidgets
 
 
 class Ui_LeoQuickSearchWidget:
-
     def setupUi(self, LeoQuickSearchWidget):
         LeoQuickSearchWidget.setObjectName("LeoQuickSearchWidget")
         LeoQuickSearchWidget.resize(868, 572)
@@ -50,13 +50,5 @@ class Ui_LeoQuickSearchWidget:
         LeoQuickSearchWidget.setTabOrder(self.showParents, self.listWidget)
 
     def retranslateUi(self, LeoQuickSearchWidget):
-        self.showParents.setText(
-            QtWidgets.QApplication.translate(
-                "LeoQuickSearchWidget",
-                "Show Parents",
-                None))
-        LeoQuickSearchWidget.setWindowTitle(
-            QtWidgets.QApplication.translate(
-                "LeoQuickSearchWidget",
-                "Form",
-                None))
+        self.showParents.setText(QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Show Parents", None))
+        LeoQuickSearchWidget.setWindowTitle(QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Form", None))

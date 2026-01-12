@@ -288,142 +288,326 @@ keywordsDictDict = {
 
 # Rules for sas_main ruleset.
 
+
 def sas_rule0(colorer, s, i):
     return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/")
+
 
 def sas_rule1(colorer, s, i):
     return colorer.match_span(s, i, kind="literal1", begin="'", end="'")
 
+
 def sas_rule2(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="=")
+
 
 def sas_rule3(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="<")
 
+
 def sas_rule4(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=">")
+
 
 def sas_rule5(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="_")
 
+
 def sas_rule6(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="|")
+
 
 def sas_rule7(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="~")
 
+
 def sas_rule8(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="^")
+
 
 def sas_rule9(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="@")
 
+
 def sas_rule10(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="?")
+
 
 def sas_rule11(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="/")
 
+
 def sas_rule12(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq=".")
+
 
 def sas_rule13(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="-")
 
+
 def sas_rule14(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="+")
+
 
 def sas_rule15(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="*")
 
+
 def sas_rule16(colorer, s, i):
     return colorer.match_plain_seq(s, i, kind="operator", seq="!")
+
 
 def sas_rule17(colorer, s, i):
     return colorer.match_keywords(s, i)
 
+
 # Rules dict for sas_main ruleset.
 rulesDict1 = {
-    "!": [sas_rule16,],
-    "$": [sas_rule17,],
-    "%": [sas_rule17,],
-    "'": [sas_rule1,],
-    "*": [sas_rule15,],
-    "+": [sas_rule14,],
-    "-": [sas_rule13,],
-    ".": [sas_rule12, sas_rule17,],
-    "/": [sas_rule0, sas_rule11,],
-    "0": [sas_rule17,],
-    "1": [sas_rule17,],
-    "2": [sas_rule17,],
-    "3": [sas_rule17,],
-    "4": [sas_rule17,],
-    "5": [sas_rule17,],
-    "6": [sas_rule17,],
-    "7": [sas_rule17,],
-    "8": [sas_rule17,],
-    "9": [sas_rule17,],
-    "<": [sas_rule3,],
-    "=": [sas_rule2, sas_rule17,],
-    ">": [sas_rule4,],
-    "?": [sas_rule10,],
-    "@": [sas_rule9, sas_rule17,],
-    "A": [sas_rule17,],
-    "B": [sas_rule17,],
-    "C": [sas_rule17,],
-    "D": [sas_rule17,],
-    "E": [sas_rule17,],
-    "F": [sas_rule17,],
-    "G": [sas_rule17,],
-    "H": [sas_rule17,],
-    "I": [sas_rule17,],
-    "J": [sas_rule17,],
-    "K": [sas_rule17,],
-    "L": [sas_rule17,],
-    "M": [sas_rule17,],
-    "N": [sas_rule17,],
-    "O": [sas_rule17,],
-    "P": [sas_rule17,],
-    "Q": [sas_rule17,],
-    "R": [sas_rule17,],
-    "S": [sas_rule17,],
-    "T": [sas_rule17,],
-    "U": [sas_rule17,],
-    "V": [sas_rule17,],
-    "W": [sas_rule17,],
-    "X": [sas_rule17,],
-    "Y": [sas_rule17,],
-    "Z": [sas_rule17,],
-    "^": [sas_rule8,],
-    "_": [sas_rule5, sas_rule17,],
-    "a": [sas_rule17,],
-    "b": [sas_rule17,],
-    "c": [sas_rule17,],
-    "d": [sas_rule17,],
-    "e": [sas_rule17,],
-    "f": [sas_rule17,],
-    "g": [sas_rule17,],
-    "h": [sas_rule17,],
-    "i": [sas_rule17,],
-    "j": [sas_rule17,],
-    "k": [sas_rule17,],
-    "l": [sas_rule17,],
-    "m": [sas_rule17,],
-    "n": [sas_rule17,],
-    "o": [sas_rule17,],
-    "p": [sas_rule17,],
-    "q": [sas_rule17,],
-    "r": [sas_rule17,],
-    "s": [sas_rule17,],
-    "t": [sas_rule17,],
-    "u": [sas_rule17,],
-    "v": [sas_rule17,],
-    "w": [sas_rule17,],
-    "x": [sas_rule17,],
-    "y": [sas_rule17,],
-    "z": [sas_rule17,],
-    "|": [sas_rule6,],
-    "~": [sas_rule7,],
+    "!": [
+        sas_rule16,
+    ],
+    "$": [
+        sas_rule17,
+    ],
+    "%": [
+        sas_rule17,
+    ],
+    "'": [
+        sas_rule1,
+    ],
+    "*": [
+        sas_rule15,
+    ],
+    "+": [
+        sas_rule14,
+    ],
+    "-": [
+        sas_rule13,
+    ],
+    ".": [
+        sas_rule12,
+        sas_rule17,
+    ],
+    "/": [
+        sas_rule0,
+        sas_rule11,
+    ],
+    "0": [
+        sas_rule17,
+    ],
+    "1": [
+        sas_rule17,
+    ],
+    "2": [
+        sas_rule17,
+    ],
+    "3": [
+        sas_rule17,
+    ],
+    "4": [
+        sas_rule17,
+    ],
+    "5": [
+        sas_rule17,
+    ],
+    "6": [
+        sas_rule17,
+    ],
+    "7": [
+        sas_rule17,
+    ],
+    "8": [
+        sas_rule17,
+    ],
+    "9": [
+        sas_rule17,
+    ],
+    "<": [
+        sas_rule3,
+    ],
+    "=": [
+        sas_rule2,
+        sas_rule17,
+    ],
+    ">": [
+        sas_rule4,
+    ],
+    "?": [
+        sas_rule10,
+    ],
+    "@": [
+        sas_rule9,
+        sas_rule17,
+    ],
+    "A": [
+        sas_rule17,
+    ],
+    "B": [
+        sas_rule17,
+    ],
+    "C": [
+        sas_rule17,
+    ],
+    "D": [
+        sas_rule17,
+    ],
+    "E": [
+        sas_rule17,
+    ],
+    "F": [
+        sas_rule17,
+    ],
+    "G": [
+        sas_rule17,
+    ],
+    "H": [
+        sas_rule17,
+    ],
+    "I": [
+        sas_rule17,
+    ],
+    "J": [
+        sas_rule17,
+    ],
+    "K": [
+        sas_rule17,
+    ],
+    "L": [
+        sas_rule17,
+    ],
+    "M": [
+        sas_rule17,
+    ],
+    "N": [
+        sas_rule17,
+    ],
+    "O": [
+        sas_rule17,
+    ],
+    "P": [
+        sas_rule17,
+    ],
+    "Q": [
+        sas_rule17,
+    ],
+    "R": [
+        sas_rule17,
+    ],
+    "S": [
+        sas_rule17,
+    ],
+    "T": [
+        sas_rule17,
+    ],
+    "U": [
+        sas_rule17,
+    ],
+    "V": [
+        sas_rule17,
+    ],
+    "W": [
+        sas_rule17,
+    ],
+    "X": [
+        sas_rule17,
+    ],
+    "Y": [
+        sas_rule17,
+    ],
+    "Z": [
+        sas_rule17,
+    ],
+    "^": [
+        sas_rule8,
+    ],
+    "_": [
+        sas_rule5,
+        sas_rule17,
+    ],
+    "a": [
+        sas_rule17,
+    ],
+    "b": [
+        sas_rule17,
+    ],
+    "c": [
+        sas_rule17,
+    ],
+    "d": [
+        sas_rule17,
+    ],
+    "e": [
+        sas_rule17,
+    ],
+    "f": [
+        sas_rule17,
+    ],
+    "g": [
+        sas_rule17,
+    ],
+    "h": [
+        sas_rule17,
+    ],
+    "i": [
+        sas_rule17,
+    ],
+    "j": [
+        sas_rule17,
+    ],
+    "k": [
+        sas_rule17,
+    ],
+    "l": [
+        sas_rule17,
+    ],
+    "m": [
+        sas_rule17,
+    ],
+    "n": [
+        sas_rule17,
+    ],
+    "o": [
+        sas_rule17,
+    ],
+    "p": [
+        sas_rule17,
+    ],
+    "q": [
+        sas_rule17,
+    ],
+    "r": [
+        sas_rule17,
+    ],
+    "s": [
+        sas_rule17,
+    ],
+    "t": [
+        sas_rule17,
+    ],
+    "u": [
+        sas_rule17,
+    ],
+    "v": [
+        sas_rule17,
+    ],
+    "w": [
+        sas_rule17,
+    ],
+    "x": [
+        sas_rule17,
+    ],
+    "y": [
+        sas_rule17,
+    ],
+    "z": [
+        sas_rule17,
+    ],
+    "|": [
+        sas_rule6,
+    ],
+    "~": [
+        sas_rule7,
+    ],
 }
 
 # x.rulesDictDict for sas mode.
