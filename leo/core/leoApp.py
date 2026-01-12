@@ -147,10 +147,8 @@ class LeoApp:
         self.start_fullscreen = False  # For qt_frame plugin.
         self.start_maximized = False  # For qt_frame plugin.
         self.start_minimized = False  # For qt_frame plugin.
-        # The name of a binding to trace, or None.
-        self.trace_binding: Optional[str] = None
-        # The name of a setting to trace, or None.
-        self.trace_setting: Optional[str] = None
+        self.trace_binding: Optional[str] = None  # The name of a binding to trace, or None.
+        self.trace_setting: Optional[str] = None  # The name of a setting to trace, or None.
         self.translateToUpperCase = False  # Never set to True.
         self.use_splash_screen = True  # True: put up a splash screen.
 
@@ -304,17 +302,17 @@ class LeoApp:
     def define_delegate_language_dict(self) -> None:
         self.delegate_language_dict: dict[str, str] = {
             # Keys are new language names.
-            "codon": "python",
-            "elisp": "lisp",
-            "glsl": "c",
+            "codon":      "python",
+            "elisp":      "lisp",
+            "glsl":       "c",
             "handlebars": "html",
-            "hbs": "html",
-            "less": "css",
-            "katex": "html",  # Leo 6.8.4
-            "mathjax": "html",  # Leo 6.8.4
+            "hbs":        "html",
+            "less":       "css",
+            "katex":      "html",  # Leo 6.8.4
+            "mathjax":    "html",  # Leo 6.8.4
             "toml": "ini",
             # Values are existing languages in leo/modes.
-        }
+        }  # fmt: skip
 
     # @+node:ekr.20120522160137.9911: *5* app.define_extension_dict
     def define_extension_dict(self) -> None:

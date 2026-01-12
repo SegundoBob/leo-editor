@@ -3465,7 +3465,8 @@ class FastAtRead:
     def __init__(self, c: Cmdr, gnx2vnode: dict[str, VNode]) -> None:
         self.c = c
         assert gnx2vnode is not None
-        self.gnx2vnode: dict[str, VNode] = gnx2vnode  # The global fc.gnxDict. Keys are gnx's, values are vnodes.
+        # The global fc.gnxDict. Keys are gnx's, values are vnodes.
+        self.gnx2vnode: dict[str, VNode] = gnx2vnode
         self.path: str = None
         self.root: Position = None
         # compiled patterns...
