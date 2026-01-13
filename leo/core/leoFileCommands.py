@@ -1740,8 +1740,11 @@ class FileCommands:
             result = {
                 'leoHeader': {'fileFormat': 2},
                 'vnodes': [self.leojs_vnode(sp, gnxSet)],
-                'tnodes': {p.v.gnx: p.v._bodyString for p in sp.self_and_subtree() if p.v._bodyString},
-            }
+                'tnodes': {
+                    p.v.gnx: p.v._bodyString
+                    for p in sp.self_and_subtree()
+                    if p.v._bodyString},
+            }  # fmt: skip
 
         else:  # write everything from the top node 'c.rootPosition()'
             # build uas dict
@@ -1758,9 +1761,16 @@ class FileCommands:
             # result for whole outline
             result = {
                 'leoHeader': {'fileFormat': 2},
-                'vnodes': [self.leojs_vnode(p, gnxSet) for p in c.rootPosition().self_and_siblings()],
-                'tnodes': {v.gnx: v._bodyString for v in c.all_unique_nodes() if (v._bodyString and v.isWriteBit())},
-            }
+                'vnodes': [
+                    self.leojs_vnode(p, gnxSet)
+                    for p in c.rootPosition().self_and_siblings()
+                ],
+                'tnodes': {
+                    v.gnx: v._bodyString
+                    for v in c.all_unique_nodes()
+                    if (v._bodyString and v.isWriteBit())
+                },
+            }  # fmt: skip
         self.leojs_globals()  # Call only to set db like non-json save file.
         # uas could be empty. Only add it if needed
         if uas:
@@ -2244,7 +2254,11 @@ class FileCommands:
     def putXMLLine(self) -> None:
         """Put the **properly encoded** <?xml> element."""
         # Use self.leo_file_encoding encoding.
-        self.put(f"{g.app.prolog_prefix_string}\"{self.leo_file_encoding}\"{g.app.prolog_postfix_string}\n")
+        self.put(
+            f"{g.app.prolog_prefix_string}"
+            f'"{self.leo_file_encoding}"'
+            f"{g.app.prolog_postfix_string}\n"
+        )  # fmt: skip
 
     # @-others
 
