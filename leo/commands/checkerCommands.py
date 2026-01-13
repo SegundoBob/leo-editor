@@ -351,7 +351,6 @@ class CheckNodes:
     ok_head_prefixes: list[str]
     suppressions: list[str]
 
-    ### Possible bug fix???
     def __init__(self, c: Cmdr) -> None:
         """ctor for CheckNodes class."""
         self.c = c

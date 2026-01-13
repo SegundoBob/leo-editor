@@ -502,7 +502,11 @@ class PersistenceDataController:
 
     # @+node:ekr.20140712105644.16745: *5* pd.is_foreign_file
     def is_foreign_file(self, p: Position) -> bool:
-        return self.is_at_auto_node(p) or g.match_word(p.h, 0, '@org-mode') or g.match_word(p.h, 0, '@vim-outline')
+        return (
+            self.is_at_auto_node(p)
+            or g.match_word(p.h, 0, '@org-mode')
+            or g.match_word(p.h, 0, '@vim-outline')
+        )  # fmt: skip
 
     # @+node:ekr.20140713135856.17745: *4* pd.Pickling
     # @+node:ekr.20140713062552.17737: *5* pd.pickle

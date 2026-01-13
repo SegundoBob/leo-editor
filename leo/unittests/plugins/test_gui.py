@@ -142,14 +142,20 @@ class TestQtGui(LeoUnitTest):
         # Run the tests.
         table = (
             # python.
-            (True, 'File "test_file.py", line 5'),
+            (
+                True,
+                'File "test_file.py", line 5',
+            ),
             # pylint.
             (
                 True,
                 r'leo\unittest\test_file.py:1326:8: W0101: Unreachable code (unreachable)',
             ),
             # pyflakes.
-            (True, r"test_file.py:51:13 'leo.core.leoQt5.*' imported but unused"),
+            (
+                True,
+                r"test_file.py:51:13 'leo.core.leoQt5.*' imported but unused",
+            ),
             # mypy...
             (
                 True,
@@ -159,10 +165,19 @@ class TestQtGui(LeoUnitTest):
                 True,
                 r'leo\core\test_file.py:116: note: Use "-> None" if function does not return a value',
             ),
-            (False, 'Found 1 error in 1 file (checked 1 source file)'),
-            (False, 'mypy: done'),
+            (
+                False,
+                'Found 1 error in 1 file (checked 1 source file)',
+            ),
+            (
+                False,
+                'mypy: done',
+            ),
             # Random output.
-            (False, 'Hello world\n'),
+            (
+                False,
+                'Hello world\n',
+            ),
         )
         for expected, s in table:
             s = s.replace('\\', os.sep).rstrip() + '\n'

@@ -52,7 +52,10 @@ def create_import_cisco_menu(tag, keywords):
     def importCiscoConfigCallback(event=None, c=c):
         importCiscoConfig(c)
 
-    table = (("-", None, None), ("Import C&isco Configuration", "Shift+Ctrl+I", importCiscoConfigCallback))
+    table = (
+        ("-", None, None),
+        ("Import C&isco Configuration", "Shift+Ctrl+I", importCiscoConfigCallback),
+    )
     c.frame.menu.createMenuEntries(importMenu, table)
 
 

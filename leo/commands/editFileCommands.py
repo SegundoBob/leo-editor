@@ -545,7 +545,10 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         fn = g.app.gui.runOpenFileDialog(
             c,
             title='Open Text File',
-            filetypes=[("Text", "*.txt"), ("All files", "*")],
+            filetypes=[
+                ("Text", "*.txt"),
+                ("All files", "*"),
+            ],
         )
         return fn
 
@@ -636,7 +639,10 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         fileName = g.app.gui.runSaveFileDialog(
             c,
             title='save-file',
-            filetypes=[("Text", "*.txt"), ("All files", "*")],
+            filetypes=[
+                ("Text", "*.txt"),
+                ("All files", "*"),
+            ],
         )
         if fileName:
             try:
@@ -855,7 +861,10 @@ class GitDiffController:
         # Go back at most 5 revs...
         n1, n2 = 1, 0
         while n1 <= 5:
-            ok = self.diff_revs(rev1=f"HEAD@{{{n1}}}", rev2=f"HEAD@{{{n2}}}")
+            ok = self.diff_revs(
+                rev1=f"HEAD@{{{n1}}}",
+                rev2=f"HEAD@{{{n2}}}",
+            )
             if ok:
                 return
             n1, n2 = n1 + 1, n2 + 1
@@ -1191,6 +1200,83 @@ class GitDiffController:
         else:
             g.trace('Unknown kind', repr(b.kind))
 
+    # @+node:ekr.20260112115313.1: *4* gdc.summary_diff_two_revs
+    def summary_diff_two_revs(self, rev1: str = 'HEAD', rev2: str = '') -> None:
+        """
+        Create an outline describing the git diffs for all files changed
+        between rev1 and rev2.
+        """
+        c, u = self.c, self.c.undoer
+        if not self.get_parent_of_git_directory():
+            return
+        # Get list of changed files.  This is fast.
+        files = self.get_files(rev1, rev2)
+        if not g.unitTesting:
+            n = len(files)
+            message = f"diffing {n} file{g.plural(n)}"
+            g.es_print(message)
+        c.selectPosition(c.lastTopLevel())  # pre-select to help undo-insert
+
+        # Undoably create the root node.
+        undoData = u.beforeInsertNode(c.p)  # c.p is subject of 'insertAfter'
+        self.root = c.lastTopLevel().insertAfter()
+        self.root.h = f"git summary diff revs: {rev1} {rev2}"
+        self.root.b = '@ignore\n@nosearch\n'
+        for i, fn in enumerate(files):
+            if fn.endswith('.py'):
+                self.summary_diff_python_file(fn=fn, rev1=rev1, rev2=rev2)
+            if (i % 10) == 0:
+                g.es_print(f"diff: {i} files")
+        u.afterInsertNode(self.root, 'summary-diff-two-revs', undoData)
+        print(f"done! diffed: {n} files")
+        c.selectPosition(self.root)
+        self.root.expand()
+        c.redraw(self.root)
+
+    # @+node:ekr.20260112115520.1: *4* gdc.summary_diff_python_file & helper
+    def summary_diff_python_file(self, fn: str, rev1: str = 'HEAD', rev2: str = '') -> None:
+        """
+        Create an outline summarizing the git diffs for fn, a python file.
+        Return True if this method creates a "Changed" node.
+        """
+        directory = self.get_parent_of_git_directory()
+        if not directory:
+            return
+        if not fn.endswith('.py'):
+            return
+        s1 = self.get_file_from_rev(rev1, fn)
+        s2 = self.get_file_from_rev(rev2, fn)
+        lines1 = g.splitLines(s1)
+        lines2 = g.splitLines(s2)
+        diff_list = list(difflib.unified_diff(lines1, lines2, rev1 or 'uncommitted', rev2 or 'uncommitted'))
+        child = self.create_file_node(diff_list, fn)
+        kind = 'Added' if not s1 else 'Deleted' if not s2 else 'Changed'
+        child.h = f"{kind}: {fn}"
+        result_s = self.remove_cruft(diff_list) if s1 and s2 else ''.join(diff_list)
+        child.b = f"@ignore\n@nosearch\n@language python\n{result_s}"
+
+    # @+node:ekr.20260112130340.1: *5* gdc.remove_cruft
+    def remove_cruft(self, diff_list: list[str]) -> str:
+        """Remove unwanted lines from diff_list and insert separator lines."""
+        results = []
+        changed, last = False, ''
+        for i, s in enumerate(diff_list):
+            if s.startswith(('---', '+++')):
+                pass
+            elif s.startswith('@@'):
+                changed = True
+            elif s.startswith(('+', '-')):
+                tail = s[1:].strip()
+                if tail and not tail.startswith(('#@', '# @')):
+                    if s.startswith('-') and changed:
+                        results.append('\n# ===== \n\n')
+                        changed = False
+                    elif s.startswith('+') and last.startswith('-'):
+                        results.append('\n')
+                    results.append(s)
+                    last = s
+        return ''.join(results)
+
     # @+node:ekr.20180510095801.1: *3* gdc.Utils
     # @+node:ekr.20170806191942.2: *4* gdc.create_compare_node
     def create_compare_node(
@@ -1523,7 +1609,11 @@ class GitDiffController:
     ) -> None:
         """Create an outline-oriented diff from the *hidden* outlines c1 and c2."""
         added, deleted, changed = self.compute_dicts(c1, c2)
-        table = ((added, 'Added'), (deleted, 'Deleted'), (changed, 'Changed'))
+        table = (
+            (added,   'Added'),
+            (deleted, 'Deleted'),
+            (changed, 'Changed'),
+        )  # fmt: skip
         for d, kind in table:
             self.create_compare_node(c1, c2, d, kind, rev1, rev2)
 

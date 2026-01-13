@@ -58,8 +58,10 @@ class NodeIndices:
         v2 = fc.gnxDict.get(gnx)
         if v2 and v2 != v:
             g.internalError(  # pragma: no cover
-                f"getNewIndex: gnx clash {gnx}\n          v: {v}\n         v2: {v2}"
-            )
+                f"getNewIndex: gnx clash {gnx}\n"
+                f"          v: {v}\n"
+                f"         v2: {v2}"
+            )  # fmt: skip
 
     # @+node:ekr.20150302061758.14: *3* ni.compute_last_index
     def compute_last_index(self, c: Cmdr) -> None:
@@ -1211,16 +1213,12 @@ class Position:
                 if p2 == p3:
                     # 2011/02/25: compare full positions, not just vnodes.
                     # A match with the to-be-moved node.
-                    stack.append(
-                        (v, childIndex - 1),
-                    )
+                    stack.append((v, childIndex - 1))
                     changed = True
                     break  # terminate only the inner loop.
                 p3.moveToBack()
             else:
-                stack.append(
-                    (v, childIndex),
-                )
+                stack.append((v, childIndex))
             i += 1
         if changed:
             p.stack = stack
@@ -1253,9 +1251,7 @@ class Position:
         p = self
         parent_v = parent.v
         p.stack = parent.stack[:]
-        p.stack.append(
-            (parent_v, parent._childIndex),
-        )
+        p.stack.append((parent_v, parent._childIndex))
         p._childIndex = n
         child = p.v
         child._addLink(n, parent_v)
@@ -1266,9 +1262,7 @@ class Position:
         p = self
         parent_v = parent.v
         p.stack = parent.stack[:]
-        p.stack.append(
-            (parent_v, parent._childIndex),
-        )
+        p.stack.append((parent_v, parent._childIndex))
         p._childIndex = n
         child = p.v
         child._addCopiedLink(n, parent_v)
@@ -1391,9 +1385,7 @@ class Position:
         """Move a position to it's first child's position."""
         p = self
         if p.v and p.v.children:
-            p.stack.append(
-                (p.v, p._childIndex),
-            )
+            p.stack.append((p.v, p._childIndex))
             p.v = p.v.children[0]
             p._childIndex = 0
         else:
@@ -1405,9 +1397,7 @@ class Position:
         """Move a position to it's last child's position."""
         p = self
         if p.v and p.v.children:
-            p.stack.append(
-                (p.v, p._childIndex),
-            )
+            p.stack.append((p.v, p._childIndex))
             n = len(p.v.children)
             p.v = p.v.children[n - 1]
             p._childIndex = n - 1
@@ -1456,9 +1446,7 @@ class Position:
     def moveToNthChild(self, n: int) -> Position:
         p = self
         if p.v and len(p.v.children) > n:
-            p.stack.append(
-                (p.v, p._childIndex),
-            )
+            p.stack.append((p.v, p._childIndex))
             p.v = p.v.children[n]
             p._childIndex = n
         else:
@@ -2221,8 +2209,9 @@ class VNode:
     # @+node:ekr.20031218072017.3345: *4* v.__repr__ & v.__str__
     def __repr__(self) -> str:  # pragma: no cover
         return (
-            '<VNode: hidden root>' if self.gnx == 'hidden-root-vnode-gnx' else f"<VNode {self.gnx} {self.headString()}>"
-        )
+            '<VNode: hidden root>' if self.gnx == 'hidden-root-vnode-gnx'
+            else f"<VNode {self.gnx} {self.headString()}>"
+        )  # fmt: skip
 
     __str__ = __repr__
 
@@ -2305,10 +2294,7 @@ class VNode:
         return self.findAtFileName(names)
 
     def atNoSentinelsFileNodeName(self) -> str:
-        names = (
-            "@nosent",
-            "@file-nosent",
-        )
+        names = ("@nosent", "@file-nosent")
         return self.findAtFileName(names)
 
     def atRstFileNodeName(self) -> str:
@@ -2320,17 +2306,11 @@ class VNode:
         return self.findAtFileName(names)
 
     def atSilentFileNodeName(self) -> str:
-        names = (
-            "@asis",
-            "@file-asis",
-        )
+        names = ("@asis", "@file-asis")
         return self.findAtFileName(names)
 
     def atThinFileNodeName(self) -> str:
-        names = (
-            "@thin",
-            "@file-thin",
-        )
+        names = ("@thin", "@file-thin")
         return self.findAtFileName(names)
 
     # New names, less confusing

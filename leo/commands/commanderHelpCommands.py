@@ -31,8 +31,10 @@ def about(self: Self, event: LeoKeyEvent = None) -> None:
     # Doing so would add unwanted leading tabs.
     version = g.app.signon + '\n\n'
     theCopyright = (
-        "Copyright 1999-%s by Edward K. Ream\n" + "All Rights Reserved\n" + "Leo is distributed under the MIT License"
-    ) % datetime.date.today().year
+        'Copyright 1999-%s by Edward K. Ream\n'
+        'All Rights Reserved\n'
+        'Leo is distributed under the MIT License'
+    ) % datetime.date.today().year  # fmt: skip
     url = "https://leo-editor.github.io/leo-editor/"
     email = "edreamleo@gmail.com"
     g.app.gui.runAboutLeoDialog(c, version, theCopyright, url, email)
@@ -283,7 +285,11 @@ def createMyLeoSettings(c: Cmdr) -> Optional[Cmdr]:
     nd.h = '@keys'
     nd = nd.insertAsNthChild(0)
     nd.h = '@shortcuts'
-    nd.b = "# You can define keyboard shortcuts here of the form:\n#\n#    some-command Shift-F5\n"
+    nd.b = (
+        '# You can define keyboard shortcuts here of the form:\n'
+        '#\n'
+        '#    some-command Shift-F5\n'
+    )  # fmt: skip
     c2.setChanged()
     c2.redraw()
     return c2

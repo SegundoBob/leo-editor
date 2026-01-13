@@ -2103,10 +2103,10 @@ class TestMarkdown(BaseTestImporter):
         x = markdown.Markdown_Importer(c)
         assert x.md_pattern_table
         table = (
-            (1, 'name', '# name\n'),
+            (1, 'name',   '# name\n'),
             (2, 'a test', '## a test\n'),
             (3, 'a test', '### a test\n'),
-        )
+        )  # fmt: skip
         for data in table:
             level, name, line = data
             level2, name2 = x.is_hash(line)

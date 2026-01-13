@@ -1033,7 +1033,10 @@ class EditCommandsClass(BaseEditCommandsClass):
         self.backward = backward
         self.extend = extend or self.extendMode  # Bug fix: 2010/01/19
         self.insert = self.w.getInsertPoint()
-        s = f"{'Backward find' if backward else 'Find'} character{' & extend' if extend else ''}: "
+        s = (
+            f"{'Backward find' if backward else 'Find'} "
+            f"character{' & extend' if extend else ''}: "
+        )  # fmt: skip
         k.setLabelBlue(s)
         # Get the arg without touching the focus.
         k.getArg(event, handler=self.findCharacter1, oneCharacter=True, useMinibuffer=False)
@@ -1610,7 +1613,10 @@ class EditCommandsClass(BaseEditCommandsClass):
         i = w.getInsertPoint()
         row, col = g.convertPythonIndexToRowCol(s, i)
         percent = int((i * 100) / len(s))
-        k.setLabelGrey('char: %s row: %d col: %d pos: %d (%d%% of %d)' % (repr(s[i]), row, col, i, percent, len(s)))
+        k.setLabelGrey(
+            'char: %s row: %d col: %d pos: %d (%d%% of %d)'
+            % (repr(s[i]), row, col, i, percent, len(s))
+        )  # fmt: skip
 
     # @+node:ekr.20150514063305.248: *4* ec.viewLossage
     @cmd('view-lossage')
@@ -2368,11 +2374,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         language = c.getLanguage(p)
         i, j = oldSel
         s = w.getAllText()
-        if ch in (
-            '(',
-            '[',
-            '{',
-        ):
+        if ch in ('([{'):
             automatch = language not in ('plain',)
             if automatch:
                 ch = ch + {'(': ')', '[': ']', '{': '}'}.get(ch)
@@ -3928,7 +3930,13 @@ class EditCommandsClass(BaseEditCommandsClass):
             i, junk = g.getLine(s, sel_1)
             junk, j = g.getLine(s, sel_2)
             txt = s[i:j]
-            columns = [w.get(toInt(f"{z}.{sint2}"), toInt(f"{z}.{sint4}")) for z in range(sint1, sint3 + 1)]
+            columns = [
+                w.get(
+                    toInt(f"{z}.{sint2}"),
+                    toInt(f"{z}.{sint4}"),
+                )
+                for z in range(sint1, sint3 + 1)
+            ]
             aList = g.splitLines(txt)
             zlist = list(zip(columns, aList))
             zlist.sort()

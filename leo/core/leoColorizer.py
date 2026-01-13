@@ -302,9 +302,7 @@ class BaseColorizer:
             i_size = self.zoom_dict.get(key)
         else:
             s_size: str = size or default_size
-            if s_size.endswith(
-                ('pt', 'px'),
-            ):
+            if s_size.endswith(('pt', 'px')):
                 s_size = s_size[:-2]
             try:
                 i_size = int(s_size)
@@ -1091,11 +1089,7 @@ class JEditColorizer(BaseColorizer):
                 ('\t', self.match_trailing_ws, True),
             ]
         # Replace the bound method by an unbound method.
-        for (
-            ch,
-            rule,
-            atFront,
-        ) in table:
+        for ch, rule, atFront in table:
             rule = rule.__func__
             theList = theDict.get(ch, [])
             if rule not in theList:

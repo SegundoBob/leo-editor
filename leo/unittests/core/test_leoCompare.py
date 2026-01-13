@@ -41,11 +41,11 @@ class TestCompare(LeoUnitTest):
 
         # Populate the nodes.
         table = (
-            (node1, 'node 1', '# Node 1.\n'),
-            (node2, 'node 1a', '# Node 1.\n'),  # Headlines differ.
+            (node1,  'node 1',  '# Node 1.\n'),
+            (node2,  'node 1a', '# Node 1.\n'),    # Headlines differ.
             (child1, 'child 1', '# Child 1.\n'),
             (child2, 'child 1', '# Child 1a.\n'),  # Bodies differ.
-        )
+        )  # fmt: skip
         for p, h, b in table:
             p.h = h
             p.b = b

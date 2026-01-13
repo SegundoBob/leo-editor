@@ -1021,14 +1021,9 @@ class AstDumper:  # pragma: no cover
     # @+node:ekr.20141012064706.18393: *4* dumper.get_fields
     def get_fields(self, node: Node) -> Generator:
         return (
-            (a, b)
-            for a, b in ast.iter_fields(node)
-            if a
-            not in [
-                'ctx',
-            ]
-            and b not in (None, [])
-        )
+            (a, b) for a, b in ast.iter_fields(node)
+            if a not in ['ctx',] and b not in (None, [])
+        )  # fmt: skip
 
     # @-others
 

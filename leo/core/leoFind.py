@@ -1203,7 +1203,11 @@ class LeoFind:
         n = self._change_all_helper(settings)
         # #947, #880 and #722: Set ancestor @<file> nodes by brute force.
         for p in c.all_positions():  # pragma: no cover
-            if p.anyAtFileNodeName() and not p.v.isDirty() and any(p2.v.isDirty() for p2 in p.subtree()):
+            if (
+                p.anyAtFileNodeName()
+                and not p.v.isDirty()
+                and any(p2.v.isDirty() for p2 in p.subtree())
+            ):  # fmt: skip
                 p.setDirty()
         c.redraw()
         return n
@@ -3262,14 +3266,14 @@ class LeoFind:
         # Too similar to another method...
         status = []
         table = (
-            ('whole_word', 'Word'),
-            ('ignore_case', 'Ignore Case'),
-            ('pattern_match', 'Regex'),
+            ('whole_word',      'Word'),
+            ('ignore_case',     'Ignore Case'),
+            ('pattern_match',   'Regex'),
             ('suboutline_only', '[Outline Only]'),
-            ('node_only', '[Node Only]'),
+            ('node_only',       '[Node Only]'),
             ('search_headline', 'Head'),
-            ('search_body', 'Body'),
-        )
+            ('search_body',     'Body'),
+        )  # fmt: skip
         for ivar, val in table:
             if getattr(self, ivar):
                 status.append(val)
@@ -3339,21 +3343,21 @@ class LeoFind:
         c = self.c
         ftm = c.findCommands.ftm
         table = (
-            ('Word', ftm.check_box_whole_word),
+            ('Word',    ftm.check_box_whole_word),
             ('Ig-case', ftm.check_box_ignore_case),
-            ('regeXp', ftm.check_box_regexp),
-            ('Body', ftm.check_box_search_body),
-            ('Head', ftm.check_box_search_headline),
+            ('regeXp',  ftm.check_box_regexp),
+            ('Body',    ftm.check_box_search_body),
+            ('Head',    ftm.check_box_search_headline),
             # ('wrap-Around', ftm.check_box_wrap_around),
             ('mark-Changes', ftm.check_box_mark_changes),
             ('mark-Finds', ftm.check_box_mark_finds),
-        )
+        )  # fmt: skip
         result = [option for option, ivar in table if ivar.isChecked()]
         table2 = (
             ('Suboutline', ftm.radio_button_suboutline_only),
-            ('Node', ftm.radio_button_node_only),
-            ('File', ftm.radio_button_file_only),
-        )
+            ('Node',       ftm.radio_button_node_only),
+            ('File',       ftm.radio_button_file_only),
+        )  # fmt: skip
         for option, ivar in table2:
             if ivar.isChecked():
                 result.append(f"[{option}]")

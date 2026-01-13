@@ -91,8 +91,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c = self.c
         table = (
             ('global-abbreviations', 'global'),
-            ('abbreviations', 'local'),
-        )
+            ('abbreviations',       'local'),
+        )  # fmt: skip
         for source, tag in table:
             aList = c.config.getData(source, strip_data=False) or []
             abbrev, result = [], []

@@ -1011,11 +1011,11 @@ if QtWidgets:
         def leo_dumpButton(self, event: LeoKeyEvent, tag: str) -> str:
             button = event.button()
             table = (
-                (MouseButton.NoButton, 'no button'),
-                (MouseButton.LeftButton, 'left-button'),
-                (MouseButton.RightButton, 'right-button'),
+                (MouseButton.NoButton,     'no button'),
+                (MouseButton.LeftButton,   'left-button'),
+                (MouseButton.RightButton,  'right-button'),
                 (MouseButton.MiddleButton, 'middle-button'),
-            )
+            )  # fmt: skip
             for val, s in table:
                 if button == val:
                     kind = s

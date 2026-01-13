@@ -224,11 +224,11 @@ class TestCommands(LeoUnitTest):
         seps = ('\\', '/') if g.isWindows else ('/',)
         for sep in seps:
             table = (
-                (f"~{sep}a.py", f"{home}{sep}a.py"),
+                (f"~{sep}a.py",              f"{home}{sep}a.py"),
                 (f"~{sep}x{sep}..{sep}b.py", f"{home}{sep}x{sep}..{sep}b.py"),
-                (f"$LEO_BASE{sep}b.py", f"{abs_base}{sep}b.py"),
-                ('c.py', 'c.py'),
-            )
+                (f"$LEO_BASE{sep}b.py",      f"{abs_base}{sep}b.py"),
+                ('c.py',                     'c.py'),
+            )  # fmt: skip
             for s, expected in table:
                 got = c.expand_path_expression(s)
                 self.assertEqual(got, expected, msg=s)
@@ -279,12 +279,12 @@ class TestCommands(LeoUnitTest):
         c = self.c
         p = c.p
         table = (
-            ('nl', '\n'),
-            ('lf', '\n'),
-            ('cr', '\r'),
-            ('crlf', '\r\n'),
+            ('nl',       '\n'),
+            ('lf',       '\n'),
+            ('cr',       '\r'),
+            ('crlf',     '\r\n'),
             ('platform', '\r\n' if g.isWindows else '\n'),
-        )
+        )  # fmt: skip
         for kind, expected_ending in table:
             directive = f"@lineending {kind}\n"
             p.b = directive

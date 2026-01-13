@@ -739,20 +739,20 @@ class TestFind(LeoUnitTest):
                 )
 
         plain_table = (
-            # pattern   s           i,  j   expected, expected_i, expected_j
+            # pattern   s  i,  j   expected, expected_i, expected_j
             ('a', 'abaca', 0, -1, 'a', 4, 5),
             ('A', 'Abcde', 0, -1, 'A', 0, 1),
-        )
+        )  # fmt: skip
         nocase_table = (
-            # pattern   s           i,  j   expected, expected_i, expected_j
-            ('a', 'abaAca', 0, -1, 'a', 5, 6),
-            ('A', 'Abcdca', 0, -1, 'a', 5, 6),
-        )
+            # pattern   s    i,  j   expected, expected_i, expected_j
+            ('a', 'abaAca',  0, -1, 'a', 5, 6),
+            ('A', 'Abcdca',  0, -1, 'a', 5, 6),
+        )  # fmt: skip
         word_table = (
-            # pattern   s           i,  j   expected, expected_i, expected_j
-            ('a', 'abaAca', 0, -1, '', -1, -1),
+            # pattern   s    i,  j   expected, expected_i, expected_j
+            ('a', 'abaAca',  0, -1, '', -1, -1),
             ('A', 'AA A AB', 0, -1, 'A', 3, 4),
-        )
+        )  # fmt: skip
         test(plain_table, 'plain_table', nocase=False, word=False)
         test(nocase_table, 'nocase_table', nocase=True, word=False)
         test(word_table, 'word_table', nocase=False, word=True)
@@ -785,20 +785,20 @@ class TestFind(LeoUnitTest):
                 )
 
         plain_table = (
-            # pattern   s           i,  j   expected, expected_i, expected_j
-            ('a', 'baca', 0, -1, 'a', 1, 2),
+            # pattern s    i,  j   expected, expected_i, expected_j
+            ('a', 'baca',  0, -1, 'a', 1, 2),
             ('A', 'bAcde', 0, -1, 'A', 1, 2),
-        )
+        )  # fmt: skip
         nocase_table = (
-            # pattern   s           i,  j   expected, expected_i, expected_j
+            # pattern s     i,  j   expected, expected_i, expected_j
             ('a', 'abaAca', 0, -1, 'a', 0, 1),
             ('A', 'abcdca', 0, -1, 'a', 0, 1),
-        )
+        )  # fmt: skip
         word_table = (
-            # pattern   s           i,  j   expected, expected_i, expected_j
-            ('a', 'abaAca', 0, -1, '', -1, -1),
+            # pattern s      i,  j   expected, expected_i, expected_j
+            ('a', 'abaAca',  0, -1,  '', -1, -1),
             ('A', 'AA A AAB', 0, -1, 'A', 3, 4),
-        )
+        )  # fmt: skip
         test(plain_table, 'plain_table', nocase=False, word=False)
         test(nocase_table, 'nocase_table', nocase=True, word=False)
         test(word_table, 'word_table', nocase=False, word=True)
@@ -824,20 +824,20 @@ class TestFind(LeoUnitTest):
 
         plain_table = (
             # pattern   s       expected
-            (r'.', 'A', 'A'),
-            (r'A', 'xAy', 'A'),
-        )
+            (r'.',      'A',    'A'),
+            (r'A',      'xAy',  'A'),
+        )  # fmt: skip
         nocase_table = (
             # pattern   s       expected
-            (r'.', 'A', 'A'),
-            (r'.', 'a', 'a'),
-            (r'A', 'xay', 'a'),
-            (r'a', 'xAy', 'A'),
-        )
+            (r'.',      'A',    'A'),
+            (r'.',      'a',    'a'),
+            (r'A',      'xay',  'a'),
+            (r'a',      'xAy',  'A'),
+        )  # fmt: skip
         back_table = (
             # pattern   s           expected
-            (r'a.b', 'a1b a2b', 'a2b'),
-        )
+            (r'a.b',    'a1b a2b', 'a2b'),
+        )  # fmt: skip
         test(plain_table, 'plain_table', back=False, nocase=False)
         test(nocase_table, 'nocase_table', back=False, nocase=True)
         test(back_table, 'back_table', back=True, nocase=False)
@@ -865,11 +865,11 @@ class TestFind(LeoUnitTest):
         c = self.c
         fc = c.findCommands
         plain_table = (
-            # s         find    change  count   result
-            ('aA', 'a', 'C', 1, 'CA'),
-            ('Aa', 'A', 'C', 1, 'Ca'),
-            ('Aba', 'b', 'C', 1, 'ACa'),
-        )
+            # s     find    change  count   result
+            ('aA',  'a',    'C',    1,      'CA'),
+            ('Aa',  'A',    'C',    1,      'Ca'),
+            ('Aba', 'b',    'C',    1,      'ACa'),
+        )  # fmt: skip
         for s, find, change, count, result in plain_table:
             fc.ignore_case = False
             fc.find_text = find
@@ -884,9 +884,9 @@ class TestFind(LeoUnitTest):
         fc = c.findCommands
         plain_table = (
             # s         find    change  count   result
-            ('aA', 'a', 'C', 2, 'CC'),
-            ('AbBa', 'b', 'C', 2, 'ACCa'),
-        )
+            ('aA',      'a',    'C',    2,      'CC'),
+            ('AbBa',    'b',    'C',    2,      'ACCa'),
+        )  # fmt: skip
         for s, find, change, count, result in plain_table:
             fc.ignore_case = True
             fc.find_text = find
@@ -900,12 +900,12 @@ class TestFind(LeoUnitTest):
         c = self.c
         fc = c.findCommands
         regex_table = (
-            # s                 find        change  count   result
-            ('a ba aa a ab a', r'\b\w+\b', 'C', 6, 'C C C C C C'),
-            ('a AA aa aab ab a', r'\baa\b', 'C', 1, 'a AA C aab ab a'),
+            # s                  find        change  count   result
+            ('a ba aa a ab a',   r'\b\w+\b', 'C',    6,      'C C C C C C'),
+            ('a AA aa aab ab a', r'\baa\b',  'C',    1,      'a AA C aab ab a'),
             # Multi-line
-            ('aaa AA\naa aab', r'\baa\b', 'C', 1, 'aaa AA\nC aab'),
-        )
+            ('aaa AA\naa aab',   r'\baa\b',  'C',    1,      'aaa AA\nC aab'),
+        )  # fmt: skip
         for s, find, change, count, result in regex_table:
             fc.ignore_case = False
             fc.find_text = find
@@ -920,9 +920,9 @@ class TestFind(LeoUnitTest):
         fc = c.findCommands
         word_table = (
             # s                 find    change  count   result
-            ('a ba aa a ab a', 'a', 'C', 3, 'C ba aa C ab C'),
-            ('a ba aa a ab a', 'aa', 'C', 1, 'a ba C a ab a'),
-        )
+            ('a ba aa a ab a',  'a',    'C',    3,      'C ba aa C ab C'),
+            ('a ba aa a ab a',  'aa',   'C',    1,      'a ba C a ab a'),
+        )  # fmt: skip
         for s, find, change, count, result in word_table:
             fc.ignore_case = False
             fc.find_text = find
@@ -937,9 +937,9 @@ class TestFind(LeoUnitTest):
         fc = c.findCommands
         word_table = (
             # s                 find    change  count   result
-            ('a ba aa A ab a', 'a', 'C', 3, 'C ba aa C ab C'),
-            ('a ba aa AA ab a', 'aa', 'C', 2, 'a ba C C ab a'),
-        )
+            ('a ba aa A ab a',  'a',    'C',    3,      'C ba aa C ab C'),
+            ('a ba aa AA ab a', 'aa',   'C',    2,      'a ba C C ab a'),
+        )  # fmt: skip
         for s, find, change, count, result in word_table:
             fc.ignore_case = True
             fc.find_text = find
@@ -954,27 +954,27 @@ class TestFind(LeoUnitTest):
         x = leoFind.LeoFind(c)
         table = (
             # Replace \n, \t, and \f by newline, tab, and form-feed.
-            ('\\f', '\f'),
-            ('\\n', '\n'),
-            ('\\t', '\t'),
-            ('a\\n', 'a\n'),
-            ('\\\n', '\\\n'),  # Backslash-newline!
-            ('a\\tc', 'a\tc'),
+            ('\\f',      '\f'),
+            ('\\n',      '\n'),
+            ('\\t',      '\t'),
+            ('a\\n',     'a\n'),
+            ('\\\n',     '\\\n'),  # Backslash-newline!
+            ('a\\tc',    'a\tc'),
             ('a\\t\\fc', 'a\t\fc'),
-            ('a\\nc', 'a\nc'),
+            ('a\\nc',    'a\nc'),
             # Allow escaped backslash: #4284.
-            ('\\', '\\'),
-            ('\\\\', '\\\\'),
-            ('\\\\n', '\\\\n'),
-            ('\\\\t', '\\\\t'),
+            ('\\',      '\\'),
+            ('\\\\',    '\\\\'),
+            ('\\\\n',   '\\\\n'),
+            ('\\\\t',   '\\\\t'),
             ('b\\\\nd', 'b\\\\nd'),
             # Make no other replacements.
-            (r'a\bc', r'a\bc'),
-            (r'a\\bc', r'a\\bc'),
-            (r'a \ b', r'a \ b'),
-            (r'a \\ b', r'a \\ b'),
+            (r'a\bc',    r'a\bc'),
+            (r'a\\bc',   r'a\\bc'),
+            (r'a \ b',   r'a \ b'),
+            (r'a \\ b',  r'a \\ b'),
             (r'a \\\ b', r'a \\\ b'),
-        )
+        )  # fmt: skip
         for s, expected in table:
             got = x.replace_back_slashes(s)
             self.assertEqual(expected, got, msg=s)

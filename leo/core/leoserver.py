@@ -435,7 +435,10 @@ class ServerExternalFilesController(ExternalFilesController):
             return
         path_name = g.shortFileName(path)
         kind = '@asis' if p.h.startswith('@asis') else '@nosent'
-        message = f"{path_name} has changed outside Leo.\n\nAn {kind} node created this file.\n\n"
+        message = (
+            f"{path_name} has changed outside Leo.\n\n"
+            f"An {kind} node created this file.\n\n"
+        )  # fmt: skip
         if kind == '@nosent':
             message += '@nosent nodes cannot be updated from disk.\n'
         elif kind == '@asis':
@@ -670,7 +673,9 @@ class QuickSearchController:
     # @+node:felix.20220225003906.13: *4* QSC.qsc_find_changed
     def qsc_find_changed(self) -> None:
         c = self.c
-        changed: list[tuple[Position, Match_Iter]] = [(p.copy(), None) for p in c.all_unique_positions() if p.isDirty()]
+        changed: list[tuple[Position, Match_Iter]] = [
+            (p.copy(), None) for p in c.all_unique_positions() if p.isDirty()
+        ]  # fmt: skip
         self.clear()
         self.addHeadlineMatches(changed)
 
@@ -1844,7 +1849,13 @@ class LeoServer:
         try:
             scon: QuickSearchController = c.patched_quicksearch_controller
             result: dict[str, Any] = {}
-            navlist = [{"key": k, "h": scon.its[k][0]["label"], "t": scon.its[k][0]["type"]} for k in scon.its.keys()]
+            navlist = [
+                {
+                    "key": k,
+                    "h": scon.its[k][0]["label"],
+                    "t": scon.its[k][0]["type"],
+                } for k in scon.its.keys()
+            ]  # fmt: skip
             result["navList"] = navlist
             result["messages"] = scon.lw
             result["navText"] = scon.navText
@@ -1947,9 +1958,9 @@ class LeoServer:
 
             # Find/change text boxes.
             table = (
-                ('find_findbox', 'find_text', ''),
+                ('find_findbox',    'find_text',   ''),
                 ('find_replacebox', 'change_text', ''),
-            )
+            )  # fmt: skip
             for widget_ivar, setting_name, default in table:
                 w = getattr(ftm, widget_ivar)
                 s = searchSettings.get(setting_name) or default
@@ -1957,14 +1968,14 @@ class LeoServer:
                 w.insert(s)
             # Check boxes.
             table2 = (
-                ('ignore_case', 'check_box_ignore_case'),
-                ('mark_changes', 'check_box_mark_changes'),
-                ('mark_finds', 'check_box_mark_finds'),
-                ('pattern_match', 'check_box_regexp'),
-                ('search_body', 'check_box_search_body'),
+                ('ignore_case',     'check_box_ignore_case'),
+                ('mark_changes',    'check_box_mark_changes'),
+                ('mark_finds',      'check_box_mark_finds'),
+                ('pattern_match',   'check_box_regexp'),
+                ('search_body',     'check_box_search_body'),
                 ('search_headline', 'check_box_search_headline'),
-                ('whole_word', 'check_box_whole_word'),
-            )
+                ('whole_word',      'check_box_whole_word'),
+            )  # fmt: skip
             for setting_name, widget_ivar in table2:
                 w = getattr(ftm, widget_ivar)
                 val = searchSettings.get(setting_name)
@@ -1973,11 +1984,11 @@ class LeoServer:
                     w.toggle()
             # Radio buttons
             table3 = (
-                ('node_only', 'node_only', 'radio_button_node_only'),
-                ('file_only', 'file_only', 'radio_button_file_only'),
-                ('entire_outline', None, 'radio_button_entire_outline'),
+                ('node_only',       'node_only',       'radio_button_node_only'),
+                ('file_only',       'file_only',       'radio_button_file_only'),
+                ('entire_outline',  None,              'radio_button_entire_outline'),
                 ('suboutline_only', 'suboutline_only', 'radio_button_suboutline_only'),
-            )
+            )  # fmt: skip
             for setting_name, ivar, widget_ivar in table3:
                 w = getattr(ftm, widget_ivar)
                 val = searchSettings.get(setting_name, False)
@@ -4832,9 +4843,11 @@ class LeoServer:
         except Exception:
             if self.log_flag or traces:
                 print(
-                    f"{tag}: Bad ap: {ap!r}\n{tag}: v {v!r} childIndex: {childIndex!r}\n{tag}: stack: {stack!r}",
+                    f"{tag}: Bad ap: {ap!r}\n"
+                    f"{tag}: v {v!r} childIndex: {childIndex!r}\n"
+                    f"{tag}: stack: {stack!r}",
                     flush=True,
-                )
+                )  # fmt: skip
             return None  # Return None on any error so caller can react.
         return p
 

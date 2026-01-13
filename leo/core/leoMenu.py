@@ -127,7 +127,12 @@ class LeoMenu:
         for i, ch in enumerate(s):
             prev = s[i - 1] if i > 0 else ''
             prevprev = s[i - 2] if i > 1 else ''
-            if i == 0 or i == 1 and prev == '&' or prev == '-' or prev == '&' and prevprev == '-':
+            if (
+                i == 0
+                or i == 1 and prev == '&'
+                or prev == '-'
+                or prev == '&' and prevprev == '-'
+            ):  # fmt: skip
                 result.append(ch.capitalize())
             elif removeHyphens and ch == '-':
                 result.append(' ')

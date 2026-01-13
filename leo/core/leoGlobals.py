@@ -496,7 +496,13 @@ class BindingInfo:
     def dump(self) -> str:
         result = [f"BindingInfo kind: {self.kind}"]
         # Print all existing ivars.
-        table = ('pane', 'commandName', 'func', 'stroke')  # 'nextMode',
+        table = (
+            'pane',
+            'commandName',
+            'func',
+            'stroke',
+            # 'nextMode',
+        )
         for ivar in table:
             if hasattr(self, ivar):
                 val = getattr(self, ivar)
@@ -707,7 +713,11 @@ class GeneralSetting:
     def __repr__(self) -> str:
         # Better for g.printObj.
         val = str(self.val).replace('\n', ' ')
-        return f"GS: path: {g.shortFileName(self.path or '')} source: {self.source or ''} kind: {self.kind} val: {val}"
+        return (
+            f"GS: path: {g.shortFileName(self.path or '')} "
+            f"source: {self.source or ''} "
+            f"kind: {self.kind} val: {val}"
+        )  # fmt: skip
 
     dump = __repr__
     __str__ = __repr__
@@ -1834,12 +1844,12 @@ class TkIDDialog(EmergencyDialog):
     """A class that creates an tkinter dialog to get the Leo ID."""
 
     message = (
-        "leoID.txt not found\n\n"
-        "Please enter an id that identifies you uniquely.\n"
-        "Your git/cvs/bzr login name is a good choice.\n\n"
-        "Leo uses this id to uniquely identify nodes.\n\n"
-        "Your id should contain only letters and numbers\n"
-        "and must be at least 3 characters in length."
+        'leoID.txt not found\n\n'
+        'Please enter an id that identifies you uniquely.\n'
+        'Your git/cvs/bzr login name is a good choice.\n\n'
+        'Leo uses this id to uniquely identify nodes.\n\n'
+        'Your id should contain only letters and numbers\n'
+        'and must be at least 3 characters in length.'
     )
 
     title = 'Enter Leo id'
@@ -1974,7 +1984,11 @@ class Tracer:
         if event == 'return':
             if self.stack:
                 name = self.stack.pop()
-                if self.trace and self.verbose and (self.limit == 0 or len(self.stack) < self.limit):
+                if (
+                    self.trace
+                    and self.verbose
+                    and (self.limit == 0 or len(self.stack) < self.limit)
+                ):  # fmt: skip
                     g.trace(f"{pad}ret ", name)
             else:
                 g.trace('return underflow')
@@ -2193,7 +2207,11 @@ def assert_is(obj: object, list_or_class: Any, warn: bool = True) -> bool:
     if warn:
         ok = isinstance(obj, list_or_class)
         if not ok:
-            g.es_print(f"can not happen. {obj!r}: expected {list_or_class}, got: {obj.__class__.__name__}")
+            g.es_print(
+                f"can not happen. {obj!r}: "
+                f"expected {list_or_class}, "
+                f"got: {obj.__class__.__name__}"
+            )  # fmt: skip
             g.es_print(g.callers())
         return ok
     ok = isinstance(obj, list_or_class)
@@ -2436,7 +2454,11 @@ def checkUnchangedIvars(
     for key in d:
         if key not in exceptions:
             if getattr(obj, key) != d.get(key):
-                g.trace(f"changed ivar: {key} old: {repr(d.get(key))} new: {repr(getattr(obj, key))}")
+                g.trace(
+                    f"changed ivar: {key} "
+                    f"old: {repr(d.get(key))} "
+                    f"new: {repr(getattr(obj, key))}"
+                )  # fmt: skip
                 ok = False
     return ok
 
@@ -5585,10 +5607,10 @@ def stripBOM(s_bytes: bytes) -> tuple[str, bytes]:
         # Important: test longer bom's first.
         (4, 'utf-32', codecs.BOM_UTF32_BE),
         (4, 'utf-32', codecs.BOM_UTF32_LE),
-        (3, 'utf-8', codecs.BOM_UTF8),
+        (3, 'utf-8',  codecs.BOM_UTF8),
         (2, 'utf-16', codecs.BOM_UTF16_BE),
         (2, 'utf-16', codecs.BOM_UTF16_LE),
-    )
+    )  # fmt: skip
     if s_bytes:
         for n, e, bom in table:
             assert len(bom) == n
@@ -5638,7 +5660,10 @@ def toUnicode(s: object, encoding: str = None, reportErrors: bool = False) -> st
     tag = 'g.toUnicode'
     if not isinstance(s, bytes):
         if reportErrors and not isinstance(s, (NullObject, TracingNullObject)):
-            message = f"{tag}: unexpected argument of type {s.__class__.__name__}\nCallers: {g.callers}"
+            message = (
+                f"{tag}: unexpected argument of type {s.__class__.__name__}\n"
+                f"Callers: {g.callers}"
+            )  # fmt: skip
             g.es_print_unique_message(message)
         return ''
     if not encoding:
@@ -6226,7 +6251,10 @@ def isUniqueClass(obj: object, list_or_class: Any, *, n: int = 2) -> None:
         if isinstance(obj, list_or_class):
             return
     except Exception as e:
-        print(f"\ng.isUniqueClass: {g.callers()}\nBad arg 2: {list_or_class!r}\n{e!r}\n")
+        print(
+            f"\ng.isUniqueClass: {g.callers()}\n"
+            f"Bad arg 2: {list_or_class!r}\n{e!r}\n"
+        )  # fmt: skip
         return
     key = g.callers(n)
     value_s = obj.__class__.__name__
@@ -8096,7 +8124,10 @@ def handleUrl(url: str, c: Cmdr = None, p: Position = None) -> Optional[str]:
     urll = url.lower()
     if urll.startswith('@url'):
         url = url[4:].lstrip()
-    if urll.startswith(('#', 'unl://', 'unl:gnx:')) or urll.startswith('file://') and '-->' in urll:
+    if (
+        urll.startswith(('#', 'unl://', 'unl:gnx:'))
+        or urll.startswith('file://') and '-->' in urll
+    ):  # fmt: skip
         return g.handleUnl(url, c)
     try:
         g.handleUrlHelper(url, c, p)

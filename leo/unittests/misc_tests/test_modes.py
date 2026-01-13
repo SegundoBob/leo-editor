@@ -144,13 +144,13 @@ class TestModes(LeoUnitTest):
 
         # Lifetimes.
         lifetime_table = (
-            ("'a", "'a"),
-            ("'a>", "'a"),
-            ("'a ", "'a"),
-            ("'static", "'static"),
+            ("'a",        "'a"),
+            ("'a>",       "'a"),
+            ("'a ",       "'a"),
+            ("'static",   "'static"),
             ("'static\n", "'static"),
-            ("'static ", "'static"),
-        )
+            ("'static ",  "'static"),
+        )  # fmt: skip
         for s, expected_seq in lifetime_table:
             kind, seq = rust_char(colorer, s, i=0)
             assert kind == 'literal1', kind
@@ -158,13 +158,13 @@ class TestModes(LeoUnitTest):
 
         # Errors.
         error_table = (
-            "'xx",  # Bad lifetime.
+            "'xx",                          # Bad lifetime.
             "'BSBSy'".replace('BS', '\\'),  # Too long.
-            "'BSy'".replace('BS', '\\'),  # Invalid escape: \y
-            r"'\u{ffff}'",  # Must begin with [0-7]
-            r"'\xff'",  # Must begin with [0-7]
-            r"'\u{7fhi}'",  # Invalid hex digits.
-        )
+            "'BSy'".replace('BS', '\\'),    # Invalid escape: \y
+            r"'\u{ffff}'",                  # Must begin with [0-7]
+            r"'\xff'",                      # Must begin with [0-7]
+            r"'\u{7fhi}'",                  # Invalid hex digits.
+        )  # fmt: skip
         for s in error_table:
             kind, seq = rust_char(colorer, s, i=0)
             assert kind == 'literal4', kind

@@ -65,20 +65,20 @@ class TestSpellCommands(LeoUnitTest):
 
         table = (
             # Should not be checked.
-            ('abc9: https://test1', 'abc'),
+            ('abc9: https://test1',             'abc'),
             # Should be checked.
-            ("Leo's: https://test2", 'Leo'),
-            ("we'lll", "we'll"),
-            (r'\begin', 'begin'),
-            ('beginx', 'begin'),
-            (r'\beginx', 'begin'),
-            (r'\bibliographystyle{acm}', 'bibliographystyle'),
+            ("Leo's: https://test2",            'Leo'),
+            ("we'lll",                          "we'll"),
+            (r'\begin',                         'begin'),
+            ('beginx',                          'begin'),
+            (r'\beginx',                        'begin'),
+            (r'\bibliographystyle{acm}',        'bibliographystyle'),
             # Tests of munging.
             ('_Insert_indexterm__140664580.txt', 'Insert_indexterm'),
-            ('sel_1', 'sel'),
-            ('selll_1', 'sell'),
-            ('a_b_c', 'a_b_c'),
-        )
+            ('sel_1',                           'sel'),
+            ('selll_1',                         'sell'),
+            ('a_b_c',                           'a_b_c'),
+        )  # fmt: skip
         for line, expected in table:
             p.b = line + '\n'
             result = handler.find()
