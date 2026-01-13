@@ -31,9 +31,9 @@ def about(self: Self, event: LeoKeyEvent = None) -> None:
     # Doing so would add unwanted leading tabs.
     version = g.app.signon + '\n\n'
     theCopyright = (
-        "Copyright 1999-%s by Edward K. Ream\n"
-        "All Rights Reserved\n"
-        "Leo is distributed under the MIT License"
+        'Copyright 1999-%s by Edward K. Ream\n'
+        'All Rights Reserved\n'
+        'Leo is distributed under the MIT License'
     ) % datetime.date.today().year  # fmt: skip
     url = "https://leo-editor.github.io/leo-editor/"
     email = "edreamleo@gmail.com"
