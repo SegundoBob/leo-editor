@@ -1203,7 +1203,11 @@ class LeoFind:
         n = self._change_all_helper(settings)
         # #947, #880 and #722: Set ancestor @<file> nodes by brute force.
         for p in c.all_positions():  # pragma: no cover
-            if p.anyAtFileNodeName() and not p.v.isDirty() and any(p2.v.isDirty() for p2 in p.subtree()):
+            if (
+                p.anyAtFileNodeName()
+                and not p.v.isDirty()
+                and any(p2.v.isDirty() for p2 in p.subtree())
+            ):  # fmt: skip
                 p.setDirty()
         c.redraw()
         return n
