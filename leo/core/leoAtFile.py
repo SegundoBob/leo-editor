@@ -3346,7 +3346,11 @@ class AtFile:
                     c.redraw()
                     return False
         if message is None:
-            message = f"{g.splitLongFileName(fileName)}\n{g.tr('already exists.')}\n{g.tr('Overwrite this file?')}"
+            message = (
+                f"{g.splitLongFileName(fileName)}\n"
+                f"{g.tr('already exists.')}\n"
+                f"{g.tr('Overwrite this file?')}"
+            )  # fmt: skip
         result = g.app.gui.runAskYesNoCancelDialog(
             c,
             title='Overwrite existing file?',

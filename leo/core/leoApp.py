@@ -139,8 +139,7 @@ class LeoApp:
         self.failFast = False  # True: Use the failfast option in unit tests.
         self.gui: LeoGui = None  # The gui class.
         self.guiArgName: str = None  # The gui name given in --gui option.
-        # True: load files as theme files (ignore myLeoSettings.leo).
-        self.isTheme = False
+        self.isTheme = False  # True: load files as theme files (ignore myLeoSettings.leo).
         self.listen_to_log_flag = False  # True: execute listen-to-log command.
         self.loaded_session = False  # Set by startup logic to True if no files specified on the command line.
         self.silentMode = False  # True: no signon.
@@ -1507,7 +1506,10 @@ class LeoApp:
             aList = sorted(set(g.app.already_open_files))
             g.app.already_open_files = []
             g.app.gui.dismiss_splash_screen()
-            message = 'The following files may already be open\nin another copy of Leo:\n\n' + '\n'.join(aList)
+            message = (
+                'The following files may already be open\nin another copy of Leo:\n\n'
+                '\n'.join(aList)
+            )  # fmt: skip
             g.app.gui.runAskOkDialog(c, title='Already Open Files', message=message, text="Ok")
 
     # @+node:ekr.20171127111141.1: *3* app.Import utils
@@ -3123,7 +3125,7 @@ class LoadManager:
             return True
         message = (
             f"Leo requires Python {g.minimum_python_version} or higher"
-            "You may download Python from http://python.org/download/"
+            'You may download Python from http://python.org/download/'
         )
         try:
             if not g.isValidPython:

@@ -1840,12 +1840,12 @@ class TkIDDialog(EmergencyDialog):
     """A class that creates an tkinter dialog to get the Leo ID."""
 
     message = (
-        "leoID.txt not found\n\n"
-        "Please enter an id that identifies you uniquely.\n"
-        "Your git/cvs/bzr login name is a good choice.\n\n"
-        "Leo uses this id to uniquely identify nodes.\n\n"
-        "Your id should contain only letters and numbers\n"
-        "and must be at least 3 characters in length."
+        'leoID.txt not found\n\n'
+        'Please enter an id that identifies you uniquely.\n'
+        'Your git/cvs/bzr login name is a good choice.\n\n'
+        'Leo uses this id to uniquely identify nodes.\n\n'
+        'Your id should contain only letters and numbers\n'
+        'and must be at least 3 characters in length.'
     )
 
     title = 'Enter Leo id'
@@ -2199,7 +2199,11 @@ def assert_is(obj: object, list_or_class: Any, warn: bool = True) -> bool:
     if warn:
         ok = isinstance(obj, list_or_class)
         if not ok:
-            g.es_print(f"can not happen. {obj!r}: expected {list_or_class}, got: {obj.__class__.__name__}")
+            g.es_print(
+                f"can not happen. {obj!r}: "
+                f"expected {list_or_class}, "
+                f"got: {obj.__class__.__name__}"
+            )  # fmt: skip
             g.es_print(g.callers())
         return ok
     ok = isinstance(obj, list_or_class)
@@ -5644,7 +5648,10 @@ def toUnicode(s: object, encoding: str = None, reportErrors: bool = False) -> st
     tag = 'g.toUnicode'
     if not isinstance(s, bytes):
         if reportErrors and not isinstance(s, (NullObject, TracingNullObject)):
-            message = f"{tag}: unexpected argument of type {s.__class__.__name__}\nCallers: {g.callers}"
+            message = (
+                f"{tag}: unexpected argument of type {s.__class__.__name__}\n"
+                f"Callers: {g.callers}"
+            )  # fmt: skip
             g.es_print_unique_message(message)
         return ''
     if not encoding:

@@ -435,7 +435,10 @@ class ServerExternalFilesController(ExternalFilesController):
             return
         path_name = g.shortFileName(path)
         kind = '@asis' if p.h.startswith('@asis') else '@nosent'
-        message = f"{path_name} has changed outside Leo.\n\nAn {kind} node created this file.\n\n"
+        message = (
+            f"{path_name} has changed outside Leo.\n\n"
+            f"An {kind} node created this file.\n\n"
+        )  # fmt: skip
         if kind == '@nosent':
             message += '@nosent nodes cannot be updated from disk.\n'
         elif kind == '@asis':

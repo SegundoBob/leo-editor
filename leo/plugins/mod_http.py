@@ -1043,7 +1043,10 @@ if asynchat:
             every message.
 
             """
-            message = "%s - - [%s] %s\n" % (self.address_string(), self.log_date_time_string(), format % args)
+            message = (
+                "%s - - [%s] %s\n"
+                % (self.address_string(), self.log_date_time_string(), format % args)
+            )  # fmt: skip
             g.es(message)
 
         # @+node:EKR.20040517080250.17: *3* collect_incoming_data

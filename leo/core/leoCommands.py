@@ -1917,7 +1917,10 @@ class Commands:
             if paths:
                 break
         if len(paths) > 1:
-            message = f"Multiple @path directives in {p.h!r}\nUsing the first path: @path {paths[0]}"
+            message = (
+                f"Multiple @path directives in {p.h!r}\n"
+                f"Using the first path: @path {paths[0]}"
+            )  # fmt: skip
             g.print_unique_message(message)
         return paths[0] if paths else None
 
