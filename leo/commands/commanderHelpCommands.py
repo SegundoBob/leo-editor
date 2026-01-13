@@ -285,7 +285,11 @@ def createMyLeoSettings(c: Cmdr) -> Optional[Cmdr]:
     nd.h = '@keys'
     nd = nd.insertAsNthChild(0)
     nd.h = '@shortcuts'
-    nd.b = "# You can define keyboard shortcuts here of the form:\n#\n#    some-command Shift-F5\n"
+    nd.b = (
+        '# You can define keyboard shortcuts here of the form:\n'
+        '#\n'
+        '#    some-command Shift-F5\n'
+    )  # fmt: skip
     c2.setChanged()
     c2.redraw()
     return c2
