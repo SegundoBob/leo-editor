@@ -1195,7 +1195,7 @@ class Fstringify:
         if len(values) != len(specs):  # pragma: no cover
             self.message(
                 f"can't create f-fstring: {lt_s!r}\n"
-                f":f-string mismatch: "
+                'f-string mismatch: '
                 f"{len(values)} value{g.plural(len(values))}, "
                 f"{len(specs)} spec{g.plural(len(specs))}"
             )
@@ -1211,7 +1211,7 @@ class Fstringify:
         if trace:  # pragma: no cover
             before = (lt_s + ' % ' + rt_s).replace('\n', '<NL>')
             after = result.replace('\n', '<NL>')
-            self.message(f"trace:\n:from: {before!s}\n:  to: {after!s}")
+            self.message(f"trace:\nfrom: {before!s}\n  to: {after!s}")
         # Adjust the tree and the token list.
         self.replace(node, result, values)
 
@@ -1253,10 +1253,8 @@ class Fstringify:
                 elif z.value == '}':
                     count -= 1
             if (count % 2) == 1 and '\\' in z.value:
-                if not self.silent:
-                    self.message(  # pragma: no cover (silent during unit tests)
-                        f"can't create f-fstring: {lt_s!r}\n:backslash in {{expr}}:"
-                    )
+                if not self.silent:  # pragma: no cover (silent during unit tests)
+                    self.message(f"can't create f-fstring: {lt_s!r}\nbackslash in {{expr}}:")
                 return False
         return True
 
@@ -1288,7 +1286,10 @@ class Fstringify:
             # These are the only kinds of tokens we expect to generate.
             ok = token.kind == 'string' or token.kind == 'op' and token.value in '{}'
             if not ok:  # pragma: no cover (defensive)
-                self.message(f"unexpected token: {token.kind} {token.value}\n:           lt_s: {lt_s!r}")
+                self.message(
+                    f"unexpected token: {token.kind} {token.value}\n"
+                    f"            lt_s: {lt_s!r}"
+                )  # fmt: skip
                 return False
         # These checks are important...
         if token0.value != 'f':
@@ -1309,7 +1310,7 @@ class Fstringify:
             else:
                 return True
         if not self.silent:  # pragma: no cover (silent unit test)
-            self.message(f"can't create f-fstring: {lt_s!r}\n:   conflicting delims:")
+            self.message(f"can't create f-fstring: {lt_s!r}\nconflicting delims")
         return False
 
     # @+node:ekr.20191222102831.6: *4* fs.munge_spec
@@ -1450,7 +1451,11 @@ class Fstringify:
         file_s = f"{'file':>{pad}}"
         ln_n_s = f"{'line number':>{pad}}"
         line_s = f"{'line':>{pad}}"
-        print(f"{file_s}: {self.filename}\n{ln_n_s}: {self.line_number}\n{line_s}: {self.line!r}")
+        print(
+            f"{file_s}: {self.filename}\n"
+            f"{ln_n_s}: {self.line_number}\n"
+            f"{line_s}: {self.line!r}"
+        )  # fmt: skip
 
     # @+node:ekr.20191225054848.1: *3* fs.replace
     def replace(self, node: Node, s: str, values: list[list[Token]]) -> None:
@@ -1526,7 +1531,7 @@ class InputToken:
     def dump_header(self) -> None:  # pragma: no cover
         """Print the header for token.dump"""
         print(
-            f"\n"
+            '\n'
             f"         node    {'':10} token {'':10}   token\n"
             f"line index class {'':10} index {'':10} kind value\n"
             f"==== ===== ===== {'':10} ===== {'':10} ==== =====\n"
@@ -1539,7 +1544,7 @@ class InputToken:
             node_id = obj_id(self.node)
             node_s = f"{node_id} {self.node.__class__.__name__}"
         else:
-            node_s = "None"
+            node_s = 'None'
         return f"index: {self.index:<3} {self.kind:>12} {self.show_val(20):<20} {node_s}"
 
     # @+node:ekr.20240104082325.6: *3* itoken.show_val
@@ -1682,7 +1687,7 @@ class Token:
     def dump_header(self) -> None:  # pragma: no cover
         """Print the header for token.dump"""
         print(
-            f"\n"
+            '\n'
             f"         node    {'':10} token {'':10}   token\n"
             f"line index class {'':10} index {'':10} kind value\n"
             f"==== ===== ===== {'':10} ===== {'':10} ==== =====\n"
@@ -1695,7 +1700,7 @@ class Token:
             node_id = obj_id(self.node)
             node_s = f"{node_id} {self.node.__class__.__name__}"
         else:
-            node_s = "None"
+            node_s = 'None'
         return f"index: {self.index:<3} {self.kind:>12} {self.show_val(20):<20} {node_s}"
 
     # @+node:ekr.20191113095507.1: *3* token.show_val
@@ -1753,7 +1758,7 @@ class Tokenizer:
         # Check.
         ok = result == contents and result_lines == self.lines
         assert ok, (
-            f"\n"
+            '\n'
             f"      result: {result!r}\n"
             f"    contents: {contents!r}\n"
             f"result_lines: {result_lines}\n"
