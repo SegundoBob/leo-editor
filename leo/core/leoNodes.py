@@ -2209,8 +2209,9 @@ class VNode:
     # @+node:ekr.20031218072017.3345: *4* v.__repr__ & v.__str__
     def __repr__(self) -> str:  # pragma: no cover
         return (
-            '<VNode: hidden root>' if self.gnx == 'hidden-root-vnode-gnx' else f"<VNode {self.gnx} {self.headString()}>"
-        )
+            '<VNode: hidden root>' if self.gnx == 'hidden-root-vnode-gnx'
+            else f"<VNode {self.gnx} {self.headString()}>"
+        )  # fmt: skip
 
     __str__ = __repr__
 
@@ -2293,10 +2294,7 @@ class VNode:
         return self.findAtFileName(names)
 
     def atNoSentinelsFileNodeName(self) -> str:
-        names = (
-            "@nosent",
-            "@file-nosent",
-        )
+        names = ("@nosent", "@file-nosent")
         return self.findAtFileName(names)
 
     def atRstFileNodeName(self) -> str:
@@ -2308,17 +2306,11 @@ class VNode:
         return self.findAtFileName(names)
 
     def atSilentFileNodeName(self) -> str:
-        names = (
-            "@asis",
-            "@file-asis",
-        )
+        names = ("@asis", "@file-asis")
         return self.findAtFileName(names)
 
     def atThinFileNodeName(self) -> str:
-        names = (
-            "@thin",
-            "@file-thin",
-        )
+        names = ("@thin", "@file-thin")
         return self.findAtFileName(names)
 
     # New names, less confusing
