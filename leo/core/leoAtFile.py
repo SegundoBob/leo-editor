@@ -3996,7 +3996,10 @@ class FastAtRead:
                     g.trace('Ignore bad @verbatim sentinel', repr(line))
                 else:
                     # A useful trace.
-                    g.trace(f"{g.shortFileName(self.path)}: warning: inserting unexpected line: {line.rstrip()!r}")
+                    g.trace(
+                        f"{g.shortFileName(self.path)}: "
+                        f"warning: inserting unexpected line: {line.rstrip()!r}"
+                    )  # fmt: skip
                     # #2213: *Do* insert the line, with a warning.
                     body.append(line)
             # @-<< handle remaining @ lines >>
