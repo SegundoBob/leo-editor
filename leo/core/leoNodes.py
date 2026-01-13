@@ -58,8 +58,10 @@ class NodeIndices:
         v2 = fc.gnxDict.get(gnx)
         if v2 and v2 != v:
             g.internalError(  # pragma: no cover
-                f"getNewIndex: gnx clash {gnx}\n          v: {v}\n         v2: {v2}"
-            )
+                f"getNewIndex: gnx clash {gnx}\n"
+                f"          v: {v}\n"
+                f"         v2: {v2}"
+            )  # fmt: skip
 
     # @+node:ekr.20150302061758.14: *3* ni.compute_last_index
     def compute_last_index(self, c: Cmdr) -> None:
