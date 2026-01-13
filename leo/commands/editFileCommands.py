@@ -1258,24 +1258,40 @@ class GitDiffController:
     # @+node:ekr.20260112130340.1: *5* gdc.remove_cruft
     def remove_cruft(self, diff_list: list[str]) -> str:
         """Remove unwanted lines from diff_list and insert separator lines."""
-        results = []
-        changed, last = False, ''
-        for i, s in enumerate(diff_list):
+        results1, sep = [], '# ====='
+
+        # Pass 1: Create results1 without separating blank lines.
+        for s in diff_list:
             if s.startswith(('---', '+++')):
-                pass
-            elif s.startswith('@@'):
-                changed = True
-            elif s.startswith(('+', '-')):
+                continue
+            if s.startswith('@@'):
+                results1.append(f"\n{sep}\n\n")
+                continue
+            if s.startswith(('+', '-')):
                 tail = s[1:].strip()
                 if tail and not tail.startswith(('#@', '# @')):
-                    if s.startswith('-') and changed:
-                        results.append('\n# ===== \n\n')
-                        changed = False
-                    elif s.startswith('+') and last.startswith('-'):
-                        results.append('\n')
-                    results.append(s)
-                    last = s
-        return ''.join(results)
+                    results1.append(s)
+                    # print("Insert: {s!r}")
+
+        # Pass 2: Insert blank lines.
+        results2 = []
+        for i, s in enumerate(results1):
+            try:
+                last = results1[i - 1]
+            except IndexError:
+                last = ''
+            if (
+                s.startswith('-') and last.startswith('+') or
+                s.startswith('+') and last.startswith('-')
+            ):  # fmt: skip
+                results2.append('\n')
+            results2.append(s)
+
+        # Pass 3: Remove empty separator sections.
+        results3 = ''.join(results2).replace('\n\n\n', '\n\n')
+        while f"{sep}\n\n{sep}" in results3:
+            results3 = results3.replace(f"{sep}\n\n{sep}", sep)
+        return results3
 
     # @+node:ekr.20180510095801.1: *3* gdc.Utils
     # @+node:ekr.20170806191942.2: *4* gdc.create_compare_node
