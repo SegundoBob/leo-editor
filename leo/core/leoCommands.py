@@ -2139,10 +2139,7 @@ class Commands:
                     n = parent.children.index(immediate)
                 else:
                     break
-                stack.insert(
-                    0,
-                    (immediate, n),
-                )
+                stack.insert(0, (immediate, n))
                 immediate = parent
             else:
                 v, n = stack.pop()
@@ -2165,10 +2162,7 @@ class Commands:
                 n = parent.children.index(v)
             else:
                 return None
-            stack.insert(
-                0,
-                (v, n),
-            )
+            stack.insert(0, (v, n))
             v = parent
         # v.parents includes the hidden root node.
         if not stack:
@@ -2521,11 +2515,19 @@ class Commands:
         next = p.next()
         if back:
             if not g._assert(p == back.next()):
-                g.trace(f"p!=p.back().next()\n     back: {back}\nback.next: {back.next()}")
+                g.trace(
+                    f"p!=p.back().next()\n"
+                    f"     back: {back}\n"
+                    f"back.next: {back.next()}"
+                )  # fmt: skip
                 return False
         if next:
             if not g._assert(p == next.back()):
-                g.trace(f"p!=p.next().back\n     next: {next}\nnext.back: {next.back()}")
+                g.trace(
+                    f"p!=p.next().back\n"
+                    f"     next: {next}\n"
+                    f"next.back: {next.back()}"
+                )  # fmt: skip
                 return False
         return True
 
