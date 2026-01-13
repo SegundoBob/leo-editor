@@ -49,9 +49,9 @@ def onCreate(tag, keywords):
     else:
         mess1 = "Read a Directory..."
     table = (
-        ("-", None, None),
+        ("-",   None,               None),
         (mess1, "Shift+Ctrl+Alt+D", cc.readDir),
-    )
+    )  # fmt: skip
     c.frame.menu.createMenuEntries(menu, table)
 
 

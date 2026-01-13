@@ -4163,16 +4163,16 @@ class TestEditCommands(LeoUnitTest):
 
         # New in Leo 4.10: whitespace (blank,tab,newline) *is* significant in definitions.
         table = (
-            ('ut1', 'ut1=aa', 'aa'),
-            # ('ut2','ut2 =bb','bb'),
-            ('ut3', 'ut3=cc=dd', 'cc=dd'),
-            ('ut4', 'ut4= ee', ' ee'),
-            ('ut5', 'ut5= ff = gg', ' ff = gg'),
-            ('ut6', 'ut6= hh==ii', ' hh==ii'),
-            ('ut7', 'ut7=j=k', 'j=k'),
-            ('ut8', 'ut8=l==m', 'l==m'),
-            ('@ut1', '@ut1=@a', '@a'),
-        )
+            ('ut1',  'ut1=aa',       'aa'),
+            # ('ut2','ut2 =bb',      'bb'),
+            ('ut3',  'ut3=cc=dd',    'cc=dd'),
+            ('ut4',  'ut4= ee',      ' ee'),
+            ('ut5',  'ut5= ff = gg', ' ff = gg'),
+            ('ut6',  'ut6= hh==ii',  ' hh==ii'),
+            ('ut7',  'ut7=j=k',      'j=k'),
+            ('ut8',  'ut8=l==m',     'l==m'),
+            ('@ut1', '@ut1=@a',      '@a'),
+        )  # fmt: skip
         for name, s, expected in table:
             for s2, kind in ((s, '(no nl)'), (s + '\n', '(nl)')):
                 f(s2, tag='unit-test')
@@ -4189,8 +4189,8 @@ class TestEditCommands(LeoUnitTest):
         table = (
             ('cap', 'Targetword'),
             ('low', 'targetword'),
-            ('up', 'TARGETWORD'),
-        )
+            ('up',  'TARGETWORD'),
+        )  # fmt: skip
         for which, result in table:
             w.setInsertPoint(5)  # Must be inside the target.
             c.editCommands.capitalizeHelper(event=None, which=which, undoType='X')

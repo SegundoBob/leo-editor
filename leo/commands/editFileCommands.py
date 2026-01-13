@@ -545,7 +545,10 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         fn = g.app.gui.runOpenFileDialog(
             c,
             title='Open Text File',
-            filetypes=[("Text", "*.txt"), ("All files", "*")],
+            filetypes=[
+                ("Text", "*.txt"),
+                ("All files", "*"),
+            ],
         )
         return fn
 
@@ -636,7 +639,10 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         fileName = g.app.gui.runSaveFileDialog(
             c,
             title='save-file',
-            filetypes=[("Text", "*.txt"), ("All files", "*")],
+            filetypes=[
+                ("Text", "*.txt"),
+                ("All files", "*"),
+            ],
         )
         if fileName:
             try:
@@ -855,7 +861,10 @@ class GitDiffController:
         # Go back at most 5 revs...
         n1, n2 = 1, 0
         while n1 <= 5:
-            ok = self.diff_revs(rev1=f"HEAD@{{{n1}}}", rev2=f"HEAD@{{{n2}}}")
+            ok = self.diff_revs(
+                rev1=f"HEAD@{{{n1}}}",
+                rev2=f"HEAD@{{{n2}}}",
+            )
             if ok:
                 return
             n1, n2 = n1 + 1, n2 + 1
@@ -1600,7 +1609,11 @@ class GitDiffController:
     ) -> None:
         """Create an outline-oriented diff from the *hidden* outlines c1 and c2."""
         added, deleted, changed = self.compute_dicts(c1, c2)
-        table = ((added, 'Added'), (deleted, 'Deleted'), (changed, 'Changed'))
+        table = (
+            (added,   'Added'),
+            (deleted, 'Deleted'),
+            (changed, 'Changed'),
+        )  # fmt: skip
         for d, kind in table:
             self.create_compare_node(c1, c2, d, kind, rev1, rev2)
 

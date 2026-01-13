@@ -1431,15 +1431,12 @@ class GlobalConfigManager:
         return (
             type1 is None
             or type2 is None
-            or type1.startswith('string')
-            and type2 not in shortcuts
-            or type1 == 'language'
-            and type2 == 'string'
-            or type1 == 'int'
-            and type2 == 'size'
+            or type1.startswith('string') and type2 not in shortcuts
+            or type1 == 'language' and type2 == 'string'
+            or type1 == 'int' and type2 == 'size'
             or (type1 in shortcuts and type2 in shortcuts)
             or type1 == type2
-        )
+        )  # fmt: skip
 
     # @+node:ekr.20060608224112: *4* gcm.getAbbrevDict
     def getAbbrevDict(self) -> dict[str, Value]:

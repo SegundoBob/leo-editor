@@ -1235,10 +1235,7 @@ class FileNameChooser:
             # Re-init all ivars.
             self.log = c.frame.log or NullLog(frame=c.frame, parentFrame=None)
             self.callback = callback
-            self.filterExt = filterExt or [
-                '.pyc',
-                '.bin',
-            ]
+            self.filterExt = filterExt or ['.pyc', '.bin']
             self.prompt = prompt
             self.tabName = tabName
             join = g.finalize_join
@@ -1654,11 +1651,7 @@ class GetArg:
         """Return True if ga.get_arg should return."""
         k = self.k
         return (
-            char
-            in (
-                '\n',
-                'Return',
-            )
+            char in ('\n', 'Return')
             or k.oneCharacterArg
             or stroke
             and stroke in k.getArgEscapes
@@ -3909,14 +3902,11 @@ class KeyHandlerClass:
         state = k.unboundKeyAction
         w_name = c.widget_name(w)
         pane_matches = (
-            name
-            and w_name.startswith(name)
-            or key in ('command', 'insert', 'overwrite')
-            and state == key
-            or key in ('text', 'all')
-            and g.isTextWrapper(w)
+            name and w_name.startswith(name)
+            or key in ('command', 'insert', 'overwrite') and state == key
+            or key in ('text', 'all') and g.isTextWrapper(w)
             or key in ('button', 'all')
-        )
+        )  # fmt: skip
         if not pane_matches:
             return None
         #

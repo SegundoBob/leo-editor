@@ -158,15 +158,15 @@ class TestAtFile(LeoUnitTest):
             (at.othersDirective, '@others'),
             (at.othersDirective, '@others\n'),
             (at.othersDirective, '    @others'),
-            (at.miscDirective, '@tabwidth -4'),
-            (at.miscDirective, '@tabwidth -4\n'),
-            (at.miscDirective, '@encoding'),
-            (at.noDirective, '@encoding.setter'),
-            (at.noDirective, '@encoding("abc")'),
-            (at.noDirective, 'encoding = "abc"'),
-            (at.noDirective, '@directive'),  # A crucial new test.
-            (at.noDirective, '@raw'),  # 2021/11/04.
-        )
+            (at.miscDirective,   '@tabwidth -4'),
+            (at.miscDirective,   '@tabwidth -4\n'),
+            (at.miscDirective,   '@encoding'),
+            (at.noDirective,     '@encoding.setter'),
+            (at.noDirective,     '@encoding("abc")'),
+            (at.noDirective,     'encoding = "abc"'),
+            (at.noDirective,     '@directive'),  # A crucial new test.
+            (at.noDirective,     '@raw'),  # 2021/11/04.
+        )  # fmt: skip
         for expected, s in table:
             result = at.directiveKind4(s, 0)
             self.assertEqual(expected, result, msg=repr(s))
@@ -178,13 +178,13 @@ class TestAtFile(LeoUnitTest):
         at.initWriteIvars(p)
         ref = g.angleBrackets(' abc ')
         table = (
-            (True, f"{ref}\n"),
-            (True, f"{ref}"),
-            (True, f"  {ref}  \n"),
+            (True,  f"{ref}\n"),
+            (True,  f"{ref}"),
+            (True,  f"  {ref}  \n"),
             (False, f"if {ref}:\n"),
             (False, f"{ref} # comment\n"),
             (False, f"# {ref}\n"),
-        )
+        )  # fmt: skip
         for valid, s in table:
             name, n1, n2 = at.findSectionName(s, 0, p)
             self.assertEqual(valid, bool(name), msg=repr(s))
@@ -195,14 +195,14 @@ class TestAtFile(LeoUnitTest):
         table = (
             # start, end, new_df, isThin, encoding
             # pre 4.2 formats...
-            ('#', '', False, True, 'utf-8', '#@+leo-thin-encoding=utf-8.'),
-            ('#', '', False, False, 'utf-8', '#@+leo-encoding=utf-8.'),
+            ('#', '',    False, True,  'utf-8',  '#@+leo-thin-encoding=utf-8.'),
+            ('#', '',    False, False, 'utf-8',  '#@+leo-encoding=utf-8.'),
             # 4.2 formats...
-            ('#', '', True, True, 'utf-8', '#@+leo-ver=4-thin-encoding=utf-8,.'),
-            ('/*', '*/', True, True, 'utf-8', r'\*@+leo-ver=5-thin-encoding=utf-8,.*/'),
-            ('#', '', True, True, 'utf-8', '#@+leo-ver=5-thin'),
-            ('#', '', True, True, 'utf-16', '#@+leo-ver=5-thin-encoding=utf-16,.'),
-        )
+            ('#', '',    True,  True,  'utf-8',  '#@+leo-ver=4-thin-encoding=utf-8,.'),
+            ('/*', '*/', True,  True,  'utf-8',  r'\*@+leo-ver=5-thin-encoding=utf-8,.*/'),
+            ('#', '',    True,  True,  'utf-8',  '#@+leo-ver=5-thin'),
+            ('#', '',    True,  True,  'utf-16', '#@+leo-ver=5-thin-encoding=utf-16,.'),
+        )  # fmt: skip
         try:
             for start, end, new_df, isThin, encoding, s in table:
                 valid, new_df2, start2, end2, isThin2 = at.parseLeoSentinel(s)

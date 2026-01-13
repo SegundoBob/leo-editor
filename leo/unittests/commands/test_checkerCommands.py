@@ -42,12 +42,12 @@ class TestChecker(LeoUnitTest):
                     pass
                 def eggs():
                     pass
-            """,  # Too many defs.
-            "   ",  # Empty body.
-            "\ntest\n",  # Leading blank line.
+            """,                    # Too many defs.
+            "   ",                  # Empty body.
+            "\ntest\n",             # Leading blank line.
             "\n\nclass MyClass\n",  # Trailing class line.
-            "\n\ndef spam():",  # Trailing def line.
-        )
+            "\n\ndef spam():",      # Trailing def line.
+        )  # fmt: skip
         p = c.rootPosition()
         for s in table:
             p.b = s

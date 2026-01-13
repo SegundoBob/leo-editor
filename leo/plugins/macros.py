@@ -156,7 +156,9 @@ class ParamClass:
     def addMenu(self):
         """Add a submenu in the outline menu."""
         c = self.c
-        table = (("Parameterize Section Reference", None, self.parameterize),)
+        table = (
+            ("Parameterize Section Reference", None, self.parameterize),
+        )  # fmt: skip
         c.frame.menu.createMenuItemsFromTable("Outline", table)
 
     # @-others

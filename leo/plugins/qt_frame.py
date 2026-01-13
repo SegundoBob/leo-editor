@@ -252,13 +252,13 @@ class DynamicWindow(QtWidgets.QMainWindow):
         vLayout2 = self.createVLayout(spellFrame, 'spellVLayout')
         grid = self.createGrid(None, 'spellGrid', spacing=2)
         table = (
-            ('Add', 'Add', 2, 1),
-            ('Find', 'Find', 2, 0),
-            ('Change', 'Change', 3, 0),
-            ('FindChange', 'Change,Find', 3, 1),
-            ('Ignore', 'Ignore', 4, 0),
-            ('Hide', 'Hide', 4, 1),
-        )
+            ('Add',         'Add',         2, 1),
+            ('Find',        'Find',        2, 0),
+            ('Change',      'Change',      3, 0),
+            ('FindChange',  'Change,Find', 3, 1),
+            ('Ignore',      'Ignore',      4, 0),
+            ('Hide',        'Hide',        4, 1),
+        )  # fmt: skip
         for ivar, label, row, col in table:
             name = f"spell_{label}_button"
             button = self.createButton(spellFrame, name, label)
@@ -448,13 +448,13 @@ class DynamicWindow(QtWidgets.QMainWindow):
 
         # Create Buttons in column 2 (Leo 4.11.1.)
         table = (
-            (0, 2, 'find-next'),  # 'findButton',
-            (1, 2, 'find-prev'),  # 'findPreviousButton',
-            (2, 2, 'find-all'),  # 'findAllButton',
-            (3, 2, 'replace'),  # 'changeButton',
+            (0, 2, 'find-next'),          # 'findButton',
+            (1, 2, 'find-prev'),          # 'findPreviousButton',
+            (2, 2, 'find-all'),           # 'findAllButton',
+            (3, 2, 'replace'),            # 'changeButton',
             (4, 2, 'replace-then-find'),  # 'changeThenFindButton',
-            (5, 2, 'replace-all'),  # 'changeAllButton',
-        )
+            (5, 2, 'replace-all'),        # 'changeAllButton',
+        )  # fmt: skip
         for row2, col, cmd_name in table:
             stroke = k.getStrokeForCommandName(cmd_name)
             if stroke:
@@ -1296,9 +1296,9 @@ class FindTabManager:
         find = c.findCommands
         # Find/change text boxes.
         table1 = (
-            ('find_findbox', 'find_text', '<find pattern here>'),
+            ('find_findbox',    'find_text',   '<find pattern here>'),
             ('find_replacebox', 'change_text', ''),
-        )
+        )  # fmt: skip
         for ivar, setting_name, default in table1:
             s = c.config.getString(setting_name) or default
             w = getattr(self, ivar)
@@ -1309,15 +1309,15 @@ class FindTabManager:
                 w.setSelection(0, len(s))
         # Check boxes.
         table2 = (
-            ('ignore_case', self.check_box_ignore_case),
-            ('mark_changes', self.check_box_mark_changes),
-            ('mark_finds', self.check_box_mark_finds),
-            ('pattern_match', self.check_box_regexp),
-            ('search_body', self.check_box_search_body),
+            ('ignore_case',     self.check_box_ignore_case),
+            ('mark_changes',    self.check_box_mark_changes),
+            ('mark_finds',      self.check_box_mark_finds),
+            ('pattern_match',   self.check_box_regexp),
+            ('search_body',     self.check_box_search_body),
             ('search_headline', self.check_box_search_headline),
-            ('whole_word', self.check_box_whole_word),
-            # ('wrap', self.check_box_wrap_around),
-        )
+            ('whole_word',      self.check_box_whole_word),
+            # ('wrap',          self.check_box_wrap_around),
+        )  # fmt: skip
         for setting_name, w in table2:
             val = c.config.getBool(setting_name, default=False)
             # The setting name is also the name of the LeoFind ivar.
@@ -1340,11 +1340,11 @@ class FindTabManager:
             w.stateChanged.connect(check_box_callback)
         # Radio buttons
         table3 = (
-            ('node_only', 'node_only', self.radio_button_node_only),
-            ('entire_outline', None, self.radio_button_entire_outline),
+            ('node_only',       'node_only',       self.radio_button_node_only),
+            ('entire_outline',  None,              self.radio_button_entire_outline),
             ('suboutline_only', 'suboutline_only', self.radio_button_suboutline_only),
-            ('file_only', 'file_only', self.radio_button_file_only),
-        )
+            ('file_only',       'file_only',       self.radio_button_file_only),
+        )  # fmt: skip
         for setting_name, ivar, w in table3:
             val = c.config.getBool(setting_name, default=False)
             # The setting name is also the name of the LeoFind ivar.
@@ -1381,14 +1381,14 @@ class FindTabManager:
         find.change_text = change_text
         # Check boxes...
         table1 = (
-            ('ignore_case', self.check_box_ignore_case),
-            ('mark_changes', self.check_box_mark_changes),
-            ('mark_finds', self.check_box_mark_finds),
-            ('pattern_match', self.check_box_regexp),
-            ('search_body', self.check_box_search_body),
+            ('ignore_case',     self.check_box_ignore_case),
+            ('mark_changes',    self.check_box_mark_changes),
+            ('mark_finds',      self.check_box_mark_finds),
+            ('pattern_match',   self.check_box_regexp),
+            ('search_body',     self.check_box_search_body),
             ('search_headline', self.check_box_search_headline),
-            ('whole_word', self.check_box_whole_word),
-        )
+            ('whole_word',      self.check_box_whole_word),
+        )  # fmt: skip
         for setting_name, w in table1:
             val = d.get(setting_name, False)
             # The setting name is also the name of the LeoFind ivar.
@@ -1397,11 +1397,11 @@ class FindTabManager:
             w.setChecked(val)
         # Radio buttons...
         table2 = (
-            ('node_only', 'node_only', self.radio_button_node_only),
-            ('entire_outline', None, self.radio_button_entire_outline),
+            ('node_only',       'node_only',       self.radio_button_node_only),
+            ('entire_outline',  None,              self.radio_button_entire_outline),
             ('suboutline_only', 'suboutline_only', self.radio_button_suboutline_only),
-            ('file_only', 'file_only', self.radio_button_file_only),
-        )
+            ('file_only',       'file_only',       self.radio_button_file_only),
+        )  # fmt: skip
         for setting_name, ivar, w in table2:
             val = d.get(setting_name, False)
             # The setting name is also the name of the LeoFind ivar.
@@ -1423,9 +1423,9 @@ class FindTabManager:
         if not find:
             return
         table = (
-            ('search_body', self.check_box_search_body),
+            ('search_body',     self.check_box_search_body),
             ('search_headline', self.check_box_search_headline),
-        )
+        )  # fmt: skip
         for setting_name, w in table:
             val = c.config.getBool(setting_name, default=False)
             if val != w.isChecked():
@@ -2430,12 +2430,12 @@ class LeoQtLog(leoFrame.LeoLog):
         weight: int = font.weight()
         weight_s: str = ''
         table2 = (
-            (Weight.Light, 'light'),  # #2330.
-            (Weight.Normal, 'normal'),
+            (Weight.Light,    'light'),  # #2330.
+            (Weight.Normal,   'normal'),
             (Weight.DemiBold, 'demibold'),
-            (Weight.Bold, 'bold'),
-            (Weight.Black, 'black'),
-        )
+            (Weight.Bold,     'bold'),
+            (Weight.Black,    'black'),
+        )  # fmt: skip
         for val2, name2 in table2:
             if weight == val2:
                 weight_s = name2

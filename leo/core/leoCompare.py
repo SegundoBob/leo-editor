@@ -633,7 +633,11 @@ class CompareLeoOutlines:
     def make_diff_outlines(self, c1: Cmdr, c2: Cmdr) -> None:
         """Create an outline-oriented diff from the outlines c1 and c2."""
         added, deleted, changed = self.compute_dicts(c1, c2)
-        table = ((added, 'Added'), (deleted, 'Deleted'), (changed, 'Changed'))
+        table = (
+            (added,   'Added'),
+            (deleted, 'Deleted'),
+            (changed, 'Changed'),
+        )  # fmt: skip
         for d, kind in table:
             self.create_compare_node(c1, c2, d, kind)
 

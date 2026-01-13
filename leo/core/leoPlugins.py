@@ -432,9 +432,7 @@ class LeoPluginsController:
             tags = modules_d.get(module)
             for tag in tags:
                 n = max(n, len(tag))
-                data.append(
-                    (tag, module),
-                )
+                data.append((tag, module))
         lines = sorted(list(set(["%*s %s\n" % (-n, s1, s2) for (s1, s2) in data])))
         g.es_print('', ''.join(lines), tabName=tabName)
 
