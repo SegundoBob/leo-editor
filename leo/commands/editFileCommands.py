@@ -545,7 +545,10 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         fn = g.app.gui.runOpenFileDialog(
             c,
             title='Open Text File',
-            filetypes=[("Text", "*.txt"), ("All files", "*")],
+            filetypes=[
+                ("Text", "*.txt"),
+                ("All files", "*"),
+            ],
         )
         return fn
 
@@ -636,7 +639,10 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         fileName = g.app.gui.runSaveFileDialog(
             c,
             title='save-file',
-            filetypes=[("Text", "*.txt"), ("All files", "*")],
+            filetypes=[
+                ("Text", "*.txt"),
+                ("All files", "*"),
+            ],
         )
         if fileName:
             try:

@@ -483,7 +483,13 @@ def save(self: Self, event: LeoKeyEvent = None, fileName: str = None) -> None:
             return
 
         # Prompt for fileName.
-        new_file_name = g.app.gui.runSaveFileDialog(c, title="Save", filetypes=[("Leo files", "*.leo *.leojs *.db")])
+        new_file_name = g.app.gui.runSaveFileDialog(
+            c,
+            title="Save",
+            filetypes=[
+                ("Leo files", "*.leo *.leojs *.db"),
+            ],
+        )
         if new_file_name:
             final_file_name = set_name_and_title(c, new_file_name)
             do_save(c, final_file_name)
@@ -640,7 +646,9 @@ def save_as_leojs(self: Self, event: LeoKeyEvent = None) -> None:
     fileName = g.app.gui.runSaveFileDialog(
         c,
         title="Save As JSON (.leojs)",
-        filetypes=[("Leo JSON files", "*.leojs")],
+        filetypes=[
+            ("Leo JSON files", "*.leojs"),
+        ],
     )
     if not fileName:
         return
@@ -663,7 +671,9 @@ def save_as_db(self: Self, event: LeoKeyEvent = None) -> None:
     fileName = g.app.gui.runSaveFileDialog(
         c,
         title="Save As DB",
-        filetypes=[("Leo files", "*.db")],
+        filetypes=[
+            ("Leo files", "*.db"),
+        ],
     )
     if not fileName:
         return
@@ -687,7 +697,9 @@ def save_as_xml(self: Self, event: LeoKeyEvent = None) -> None:
     fileName = g.app.gui.runSaveFileDialog(
         c,
         title="Save As XML",
-        filetypes=[("Leo files", "*.leo")],
+        filetypes=[
+            ("Leo files", "*.leo"),
+        ],
     )
     if not fileName:
         return
@@ -726,7 +738,10 @@ def save_node_as_xml_outline(self: Self, event: LeoKeyEvent = None) -> None:
 def exportHeadlines(self: Self, event: LeoKeyEvent = None) -> None:
     """Export headlines for c.p and its subtree to an external file."""
     c = self
-    filetypes = [("Text files", "*.txt"), ("All files", "*")]
+    filetypes = [
+        ("Text files", "*.txt"),
+        ("All files", "*"),
+    ]
     fileName = g.app.gui.runSaveFileDialog(c, title="Export Headlines", filetypes=filetypes)
     c.bringToFront()
     if fileName:
@@ -743,7 +758,10 @@ def flattenOutline(self: Self, event: LeoKeyEvent = None) -> None:
     The outline is represented in MORE format.
     """
     c = self
-    filetypes = [("Text files", "*.txt"), ("All files", "*")]
+    filetypes = [
+        ("Text files", "*.txt"),
+        ("All files", "*"),
+    ]
     fileName = g.app.gui.runSaveFileDialog(c, title="Flatten Selected Outline", filetypes=filetypes)
     c.bringToFront()
     if fileName:
@@ -788,7 +806,11 @@ def outlineToCWEB(self: Self, event: LeoKeyEvent = None) -> None:
     The outline is represented in CWEB format.
     """
     c = self
-    filetypes = [("CWEB files", "*.w"), ("Text files", "*.txt"), ("All files", "*")]
+    filetypes = [
+        ("CWEB files", "*.w"),
+        ("Text files", "*.txt"),
+        ("All files", "*"),
+    ]
     fileName = g.app.gui.runSaveFileDialog(c, title="Outline To CWEB", filetypes=filetypes)
     c.bringToFront()
     if fileName:
@@ -805,7 +827,11 @@ def outlineToNoweb(self: Self, event: LeoKeyEvent = None) -> None:
     The outline is represented in noweb format.
     """
     c = self
-    filetypes = [("Noweb files", "*.nw"), ("Text files", "*.txt"), ("All files", "*")]
+    filetypes = [
+        ("Noweb files", "*.nw"),
+        ("Text files", "*.txt"),
+        ("All files", "*"),
+    ]
     fileName = g.app.gui.runSaveFileDialog(c, title="Outline To Noweb", filetypes=filetypes)
     c.bringToFront()
     if fileName:
@@ -846,7 +872,10 @@ def weave(self: Self, event: LeoKeyEvent = None) -> None:
     fileName = g.app.gui.runSaveFileDialog(
         c,
         title="Weave",
-        filetypes=[("Text files", "*.txt"), ("All files", "*")],
+        filetypes=[
+            ("Text files", "*.txt"),
+            ("All files", "*"),
+        ],
     )
     c.bringToFront()
     if fileName:
