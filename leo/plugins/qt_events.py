@@ -378,13 +378,13 @@ class LeoQtEventFilter(QtCore.QObject):
         """Return the text version of the modifiers of the key event."""
         modifiers = event.modifiers()
         mod_table = (
-            (KeyboardModifier.AltModifier, 'Alt'),
+            (KeyboardModifier.AltModifier,     'Alt'),
             (KeyboardModifier.ControlModifier, 'Control'),
-            (KeyboardModifier.MetaModifier, 'Meta'),
-            (KeyboardModifier.ShiftModifier, 'Shift'),
+            (KeyboardModifier.MetaModifier,    'Meta'),
+            (KeyboardModifier.ShiftModifier,   'Shift'),
             # #1448: Replacing this by 'Key' would make separate keypad bindings impossible.
-            (KeyboardModifier.KeypadModifier, 'KeyPad'),
-        )
+            (KeyboardModifier.KeypadModifier,  'KeyPad'),
+        )  # fmt: skip
         # pylint: disable=superfluous-parens.
         mods = [b for a, b in mod_table if (modifiers & a)]
         return mods
@@ -516,15 +516,15 @@ class LeoQtEventFilter(QtCore.QObject):
         )
         option_table = (
             (traceActivate, activate_events),
-            (traceFocus, focus_events),
-            (traceHide, hide_events),
-            (traceHover, hover_events),
-            (traceKey, key_events),
-            (traceLayout, layout_events),
-            (traceMouse, mouse_events),
-            (tracePaint, paint_events),
-            (traceUpdate, update_events),
-        )
+            (traceFocus,    focus_events),
+            (traceHide,     hide_events),
+            (traceHover,    hover_events),
+            (traceKey,      key_events),
+            (traceLayout,   layout_events),
+            (traceMouse,    mouse_events),
+            (tracePaint,    paint_events),
+            (traceUpdate,   update_events),
+        )  # fmt: skip
         for option, table in option_table:
             if option:
                 show.extend(table)

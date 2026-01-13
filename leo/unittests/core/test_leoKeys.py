@@ -95,9 +95,9 @@ class TestKeys(LeoUnitTest):
         c = self.c
         table = (
             (50, 'c.'),
-            (3, 'p.ins'),
+            (3,  'p.ins'),
             (17, 'g.print'),
-        )
+        )  # fmt: skip
         ac = c.k.autoCompleter
         ac.w = c.frame.body.wrapper
         for expected, prefix in table:
@@ -196,24 +196,24 @@ class TestKeys(LeoUnitTest):
         bg = getColor('body_text_background_color') or 'white'
         fg = getColor('body_text_foreground_color') or 'black'
         table = (
-            ('command_mode_bg_color', getColor('command_mode_bg_color') or bg),
-            ('command_mode_fg_color', getColor('command_mode_fg_color') or fg),
-            ('enable_alt_ctrl_bindings', getBool('enable_alt_ctrl_bindings')),
-            ('enable_autocompleter', getBool('enable_autocompleter_initially')),
-            ('enable_calltips', getBool('enable_calltips_initially')),
-            ('ignore_unbound_non_ascii_keys', getBool('ignore_unbound_non_ascii_keys')),
-            ('insert_mode_bg_color', getColor('insert_mode_bg_color') or bg),
-            ('insert_mode_fg_color', getColor('insert_mode_fg_color') or fg),
-            ('minibuffer_background_color', getColor('minibuffer_background_color') or 'lightblue'),
-            ('minibuffer_error_color', getColor('minibuffer_error_color') or 'red'),
-            ('minibuffer_warning_color', getColor('minibuffer_warning_color') or 'lightgrey'),
-            ('overwrite_mode_bg_color', getColor('overwrite_mode_bg_color') or bg),
-            ('overwrite_mode_fg_color', getColor('overwrite_mode_fg_color') or fg),
-            # ('swap_mac_keys',                 getBool('swap_mac_keys')),
-            ('unselected_body_bg_color', getColor('unselected_body_bg_color') or bg),
-            ('unselected_body_fg_color', getColor('unselected_body_fg_color') or bg),
+            ('command_mode_bg_color',          getColor('command_mode_bg_color') or bg),
+            ('command_mode_fg_color',          getColor('command_mode_fg_color') or fg),
+            ('enable_alt_ctrl_bindings',       getBool('enable_alt_ctrl_bindings')),
+            ('enable_autocompleter',           getBool('enable_autocompleter_initially')),
+            ('enable_calltips',                getBool('enable_calltips_initially')),
+            ('ignore_unbound_non_ascii_keys',  getBool('ignore_unbound_non_ascii_keys')),
+            ('insert_mode_bg_color',           getColor('insert_mode_bg_color') or bg),
+            ('insert_mode_fg_color',           getColor('insert_mode_fg_color') or fg),
+            ('minibuffer_background_color',    getColor('minibuffer_background_color') or 'lightblue'),
+            ('minibuffer_error_color',         getColor('minibuffer_error_color') or 'red'),
+            ('minibuffer_warning_color',       getColor('minibuffer_warning_color') or 'lightgrey'),
+            ('overwrite_mode_bg_color',        getColor('overwrite_mode_bg_color') or bg),
+            ('overwrite_mode_fg_color',        getColor('overwrite_mode_fg_color') or fg),
+            # ('swap_mac_keys',                getBool('swap_mac_keys')),
+            ('unselected_body_bg_color',       getColor('unselected_body_bg_color') or bg),
+            ('unselected_body_fg_color',       getColor('unselected_body_fg_color') or bg),
             ('warn_about_redefined_shortcuts', getBool('warn_about_redefined_shortcuts')),
-        )
+        )  # fmt: skip
         for ivar, setting in table:
             self.assertTrue(hasattr(k, ivar), msg=ivar)
             val = getattr(k, ivar)

@@ -197,14 +197,14 @@ class extendForth:
         c = self.c
         assert c
         table = (
-            (self.definingwords, "forth-defwords"),
-            (self.brackets, "forth-delimiter-pairs"),
-            (self.keywords, "forth-words"),
-            (self.stringwords, "forth-string-word-pairs"),
-            (self.boldwords, "forth-bold-words"),
+            (self.definingwords,   "forth-defwords"),
+            (self.brackets,        "forth-delimiter-pairs"),
+            (self.keywords,        "forth-words"),
+            (self.stringwords,     "forth-string-word-pairs"),
+            (self.boldwords,       "forth-bold-words"),
             (self.bolditalicwords, "forth-bold-italic-words"),
-            (self.italicwords, "forth-italic-words"),
-        )
+            (self.italicwords,     "forth-italic-words"),
+        )  # fmt: skip
         # Add entries from @data nodes (if they exist) to the corresponding lists.
         for ivarList, setting in table:
             extras = []
@@ -221,9 +221,9 @@ class extendForth:
                     ivarList.extend(extras)
         # Create brackets1/2 and stringwords1/2 lists.
         table2 = (
-            ("brackets", "@data forth-delimiter-pairs"),
+            ("brackets",    "@data forth-delimiter-pairs"),
             ("stringwords", "@data forth-string-word-pairs"),
-        )
+        )  # fmt: skip
         for ivar, setting in table2:
             self.splitList(ivar, setting)
 
@@ -293,13 +293,13 @@ class extendForth:
         # global forth_main_keywords_dict
         # global forth_keyword_rule
         table = (
-            (self.keywords, 'keyword1'),
-            # (self.definingwords,    'keyword2'), # Done in createDefiningWordRules.
-            (self.boldwords, 'keyword3'),
+            (self.keywords,        'keyword1'),
+            # (self.definingwords, 'keyword2'), # Done in createDefiningWordRules.
+            (self.boldwords,       'keyword3'),
             (self.bolditalicwords, 'keyword4'),
-            (self.italicwords, 'keyword5'),
-            (self.stringwords, 'string'),
-        )
+            (self.italicwords,     'keyword5'),
+            (self.stringwords,     'string'),
+        )  # fmt: skip
         d = forth_main_keywords_dict
         for keywordList, kind in table:
             for z in keywordList:

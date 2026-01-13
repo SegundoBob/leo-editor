@@ -80,9 +80,9 @@ class TestColorizer(LeoUnitTest):
         grand = child.insertAsLastChild()
         language_table = (
             ('python', '@language rest\n@language python\n', ''),
-            ('rest', '@language rest', ''),
+            ('rest',   '@language rest', ''),
             ('python', '@language rest\n@language python\n', ''),
-        )
+        )  # fmt: skip
         for i, data in enumerate(language_table):
             language, child_s, grand_s = data
             child.b = child_s

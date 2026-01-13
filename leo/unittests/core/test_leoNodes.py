@@ -187,16 +187,16 @@ class TestNodes(LeoUnitTest):
         c, p = self.c, self.c.p
         root = p.next()
         table = (
-            ('all_positions', c.all_positions),
+            ('all_positions',        c.all_positions),
             ('all_unique_positions', c.all_unique_positions),
-            ('children', root.children),
-            ('self_and_siblings', root.self_and_siblings),
-            ('self_and_parents', root.firstChild().self_and_parents),
-            ('self_and_subtree', root.self_and_subtree),
-            ('following_siblings', root.following_siblings),
-            ('parents', root.firstChild().firstChild().parents),
-            ('unique_subtree', root.unique_subtree),
-        )
+            ('children',             root.children),
+            ('self_and_siblings',    root.self_and_siblings),
+            ('self_and_parents',     root.firstChild().self_and_parents),
+            ('self_and_subtree',     root.self_and_subtree),
+            ('following_siblings',   root.following_siblings),
+            ('parents',              root.firstChild().firstChild().parents),
+            ('unique_subtree',       root.unique_subtree),
+        )  # fmt: skip
         for kind, generator in table:
             aList = []
             for p in generator():
@@ -1035,9 +1035,9 @@ class TestNodes(LeoUnitTest):
         p = self.c.p
         table = (
             ('@auto-rst rst-file', 'rst-file', 'rst-file'),
-            ('@auto x', 'x', ''),
-            ('xyz', '', ''),
-        )
+            ('@auto x',             'x',        ''),
+            ('xyz',                 '',         ''),
+        )  # fmt: skip
         for s, expected1, expected2 in table:
             result1 = p.v.atAutoNodeName(h=s)
             result2 = p.v.atAutoRstNodeName(h=s)

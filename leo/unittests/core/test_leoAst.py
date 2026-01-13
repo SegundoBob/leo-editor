@@ -834,11 +834,11 @@ class TestTOG(BaseTest):
 
         # All examples are from PEP750: https://peps.python.org/pep-0750/
         table = (
-            'template1: Template = t"Hello {name}"',  # Plain.
-            'template2 = t"Hello {name!r}"',  # Conversion.
-            'template3 = t"Value: {value:.2f}"',  # Format.
+            'template1: Template = t"Hello {name}"',        # Plain.
+            'template2 = t"Hello {name!r}"',                # Conversion.
+            'template3 = t"Value: {value:.2f}"',            # Format.
             'template4 = t"Value: {value:.{precision}f}"',  # Format.
-        )
+        )  # fmt: skip
         debug_list = [
             # 'contents',
             # 'sync',  # Trace tog.token.
@@ -1692,11 +1692,11 @@ class TestFstringify(BaseTest):
     def test_munge_spec(self):
         # !head:tail or :tail
         table = (
-            ('+1s', '', '+1'),
-            ('-2s', '', '>2'),
-            ('3s', '', '3'),
-            ('4r', 'r', '4'),
-        )
+            ('+1s', '',  '+1'),
+            ('-2s', '',  '>2'),
+            ('3s',  '',  '3'),
+            ('4r',  'r', '4'),
+        )  # fmt: skip
         for spec, e_head, e_tail in table:
             head, tail = Fstringify().munge_spec(spec)
             assert (head, tail) == (e_head, e_tail), (
@@ -1733,12 +1733,21 @@ class TestFstringify(BaseTest):
     def test_single_quotes(self):
         table = (
             # Case 0.
-            ("""print('%r "default"' % style_name)""", """print(f'{style_name!r} "default"')\n"""),
+            (
+                """print('%r "default"' % style_name)""",
+                """print(f'{style_name!r} "default"')\n""",
+            ),
             # Case 1.
-            ("""print('%r' % "val")""", """print(f'{"val"!r}')\n"""),
+            (
+                """print('%r' % "val")""",
+                """print(f'{"val"!r}')\n""",
+            ),
             # Case 2.
-            ("""print("%r" % "val")""", """print(f'{"val"!r}')\n"""),
-        )
+            (
+                """print("%r" % "val")""",
+                """print(f'{"val"!r}')\n""",
+            ),
+        )  # fmt: skip
         for i, data in enumerate(table):
             contents, expected = data
             description = f"test_single_quotes: {i}"

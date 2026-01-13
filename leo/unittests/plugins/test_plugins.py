@@ -135,11 +135,11 @@ class TestPlugins(LeoUnitTest):
     def test_regularizeName(self):
         pc = LeoPluginsController()
         table = (
-            ('x', 'x'),
-            ('foo.bar', 'foo.bar'),
-            ('x.py', 'leo.plugins.x'),
+            ('x',             'x'),
+            ('foo.bar',       'foo.bar'),
+            ('x.py',          'leo.plugins.x'),
             ('leo.plugins.x', 'leo.plugins.x'),
-        )
+        )  # fmt: skip
         for fn, expected in table:
             result = pc.regularizeName(fn)
             self.assertEqual(result, expected, msg=fn)

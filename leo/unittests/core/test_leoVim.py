@@ -40,7 +40,11 @@ class TestVim(LeoUnitTest):
             abc
             xyz
         """)
-        table = (('a', 'a'), ('a', 'b'), ('a', '\nx'))
+        table = (
+            ('a', 'a'),
+            ('a', 'b'),
+            ('a', '\nx'),
+        )
         for (
             a,
             b,

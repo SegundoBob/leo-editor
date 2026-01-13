@@ -1015,24 +1015,24 @@ class StringFindTabManager:
         find = c.findCommands
         # Find/change text boxes.
         table = (
-            ('find_findbox', 'find_text', '<find pattern here>'),
+            ('find_findbox',    'find_text',   '<find pattern here>'),
             ('find_replacebox', 'change_text', ''),
-        )
+        )  # fmt: skip
         for ivar, setting_name, default in table:
             s = c.config.getString(setting_name) or default
             w = getattr(self, ivar)
             w.insert(s)
         # Check boxes.
         table1 = (
-            ('ignore_case', self.check_box_ignore_case),
-            ('mark_changes', self.check_box_mark_changes),
-            ('mark_finds', self.check_box_mark_finds),
-            ('pattern_match', self.check_box_regexp),
-            ('search_body', self.check_box_search_body),
+            ('ignore_case',     self.check_box_ignore_case),
+            ('mark_changes',    self.check_box_mark_changes),
+            ('mark_finds',      self.check_box_mark_finds),
+            ('pattern_match',   self.check_box_regexp),
+            ('search_body',     self.check_box_search_body),
             ('search_headline', self.check_box_search_headline),
-            ('whole_word', self.check_box_whole_word),
+            ('whole_word',      self.check_box_whole_word),
             # ('wrap', self.check_box_wrap_around),
-        )
+        )  # fmt: skip
         for setting_name, w in table1:
             val = c.config.getBool(setting_name, default=False)
             # The setting name is also the name of the LeoFind ivar.
@@ -1048,11 +1048,11 @@ class StringFindTabManager:
 
         # Radio buttons
         table2 = (
-            ('entire_outline', None, self.radio_button_entire_outline),
-            ('file_only', 'file_only', self.radio_button_file_only),
-            ('node_only', 'node_only', self.radio_button_node_only),
+            ('entire_outline',  None,              self.radio_button_entire_outline),
+            ('file_only',       'file_only',       self.radio_button_file_only),
+            ('node_only',       'node_only',       self.radio_button_node_only),
             ('suboutline_only', 'suboutline_only', self.radio_button_suboutline_only),
-        )
+        )  # fmt: skip
         for setting_name, ivar, w in table2:
             val = c.config.getBool(setting_name, default=False)
             # The setting name is also the name of the LeoFind ivar.
@@ -1599,7 +1599,9 @@ class LeoCursesGui(leoGui.LeoGui):
     # @+node:ekr.20171126191726.1: *6* CGui.monkeyPatch
     def monkeyPatch(self, c: Cmdr) -> None:
         """Monkey patch commands"""
-        table = (('start-search', self.startSearch),)
+        table = (
+            ('start-search', self.startSearch),
+        )  # fmt: skip
         for commandName, func in table:
             g.global_commands_dict[commandName] = func
             c.k.overrideCommand(commandName, func)
@@ -2230,7 +2232,9 @@ class LeoCursesGui(leoGui.LeoGui):
         c.inFindCommand = True  # A new flag.
         fc.minibuffer_mode = True
         if 0:  # Allow hard settings, for tests.
-            table = (('pattern_match', ftm.check_box_regexp, True),)
+            table = (
+                ('pattern_match', ftm.check_box_regexp, True),
+            )  # fmt: skip
             for setting_name, w, val in table:
                 assert hasattr(fc, setting_name), setting_name
                 setattr(fc, setting_name, val)
@@ -2353,13 +2357,13 @@ class CoreFrame(leoFrame.LeoFrame):
             ('box', 'mark &Finds'),
             ('box', 'mark &Changes'),
             # Right colunn.
-            ('rb', '&Entire outline'),
-            ('rb', '&Suboutline only'),
-            ('rb', '&Node only'),
-            ('rb', 'fi&Le only'),  # #2684.
+            ('rb',  '&Entire outline'),
+            ('rb',  '&Suboutline only'),
+            ('rb',  '&Node only'),
+            ('rb',  'fi&Le only'),  # #2684.
             ('box', 'search &Headline'),
             ('box', 'search &Body'),
-        )
+        )  # fmt: skip
         for kind, label in table:
             name = mungeName(kind, label)
             func = d.get(kind)
@@ -3926,15 +3930,15 @@ class LeoMLTree(npyscreen.MLTree):
         """Return a list of reasons why we must redraw."""
         trace = False and not g.unitTesting
         table = (
-            ('cache', not self._safe_to_display_cache or self.never_cache),
-            ('value', self._last_value is not self.value),
-            ('values', self.values != self._last_values),
-            ('start', self.start_display_at != self._last_start_display_at),
-            ('clear', not clear),
-            ('cursor', self._last_cursor_line != self.cursor_line),
-            ('filter', self._last_filter != self._filter),
+            ('cache',   not self._safe_to_display_cache or self.never_cache),
+            ('value',   self._last_value is not self.value),
+            ('values',  self.values != self._last_values),
+            ('start',   self.start_display_at != self._last_start_display_at),
+            ('clear',   not clear),
+            ('cursor',  self._last_cursor_line != self.cursor_line),
+            ('filter',  self._last_filter != self._filter),
             ('editing', not self.editing),
-        )
+        )  # fmt: skip
         reasons = (reason for (reason, cond) in table if cond)
         if trace:
             g.trace('line: %2s %-20s %s' % (self.cursor_line, ','.join(reasons), self.values[self.cursor_line].content))

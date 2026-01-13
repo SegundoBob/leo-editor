@@ -89,7 +89,7 @@ class TestPersistence(LeoUnitTest):
             ('', parent),  # Important special case.
             ('node1-->child11', child11),
             ('node1-->child12', child12),
-            ('node2', node2),
+            ('node2',            node2),
             ('node2-->child21', child21),
             ('node2-->child22', child22),
             # Partial matches.
@@ -98,10 +98,10 @@ class TestPersistence(LeoUnitTest):
             # ('xxx-->child21',node3_child1_child21),
             # This is ambiguous.
             # No matches.
-            ('nodex', None),
+            ('nodex',          None),
             ('node1-->childx', None),
             ('node3-->childx', None),
-        )
+        )  # fmt: skip
         for unl, expected in table:
             result = pd.find_position_for_relative_unl(parent, unl)
             self.assertEqual(result, expected, msg=unl)

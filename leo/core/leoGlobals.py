@@ -496,7 +496,13 @@ class BindingInfo:
     def dump(self) -> str:
         result = [f"BindingInfo kind: {self.kind}"]
         # Print all existing ivars.
-        table = ('pane', 'commandName', 'func', 'stroke')  # 'nextMode',
+        table = (
+            'pane',
+            'commandName',
+            'func',
+            'stroke',
+            # 'nextMode',
+        )
         for ivar in table:
             if hasattr(self, ivar):
                 val = getattr(self, ivar)
@@ -5585,10 +5591,10 @@ def stripBOM(s_bytes: bytes) -> tuple[str, bytes]:
         # Important: test longer bom's first.
         (4, 'utf-32', codecs.BOM_UTF32_BE),
         (4, 'utf-32', codecs.BOM_UTF32_LE),
-        (3, 'utf-8', codecs.BOM_UTF8),
+        (3, 'utf-8',  codecs.BOM_UTF8),
         (2, 'utf-16', codecs.BOM_UTF16_BE),
         (2, 'utf-16', codecs.BOM_UTF16_LE),
-    )
+    )  # fmt: skip
     if s_bytes:
         for n, e, bom in table:
             assert len(bom) == n

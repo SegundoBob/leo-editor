@@ -309,11 +309,11 @@ class TestGlobals(LeoUnitTest):
     def test_g_comment_delims_from_extension(self):
         # New in Leo 4.6, set_delims_from_language returns '' instead of None.
         table = (
-            ('.c', ('//', '/*', '*/')),
-            ('.html', ('', '<!--', '-->')),
-            ('.py', ('#', '', '')),
+            ('.c',       ('//', '/*', '*/')),
+            ('.html',    ('', '<!--', '-->')),
+            ('.py',      ('#', '', '')),
             ('.Globals', ('', '', '')),
-        )
+        )  # fmt: skip
         for ext, expected in table:
             result = g.comment_delims_from_extension(ext)
             self.assertEqual(result, expected, msg=repr(ext))
@@ -323,32 +323,32 @@ class TestGlobals(LeoUnitTest):
         s1 = 'abc\n\np\nxy'
         table1 = (
             (-1, (0, 0)),  # One too small.
-            (0, (0, 0)),
-            (1, (0, 1)),
-            (2, (0, 2)),
-            (3, (0, 3)),  # The newline ends a row.
-            (4, (1, 0)),
-            (5, (2, 0)),
-            (6, (2, 1)),
-            (7, (3, 0)),
-            (8, (3, 1)),
-            (9, (3, 2)),  # One too many.
+            (0,  (0, 0)),
+            (1,  (0, 1)),
+            (2,  (0, 2)),
+            (3,  (0, 3)),  # The newline ends a row.
+            (4,  (1, 0)),
+            (5,  (2, 0)),
+            (6,  (2, 1)),
+            (7,  (3, 0)),
+            (8,  (3, 1)),
+            (9,  (3, 2)),  # One too many.
             (10, (3, 2)),  # Two too many.
-        )
+        )  # fmt: skip
         s2 = 'abc\n\np\nxy\n'
         table2 = (
-            (9, (3, 2)),
+            (9,  (3, 2)),
             (10, (4, 0)),  # One too many.
             (11, (4, 0)),  # Two too many.
-        )
+        )  # fmt: skip
         s3 = 'ab'  # Test special case.  This was the cause of off-by-one problems.
         table3 = (
             (-1, (0, 0)),  # One too small.
-            (0, (0, 0)),
-            (1, (0, 1)),
-            (2, (0, 2)),  # One too many.
-            (3, (0, 2)),  # Two too many.
-        )
+            (0,  (0, 0)),
+            (1,  (0, 1)),
+            (2,  (0, 2)),  # One too many.
+            (3,  (0, 2)),  # Two too many.
+        )  # fmt: skip
         for n, s, table in ((1, s1, table1), (2, s2, table2), (3, s3, table3)):
             for i, result in table:
                 row, col = g.convertPythonIndexToRowCol(s, i)
@@ -373,9 +373,9 @@ class TestGlobals(LeoUnitTest):
             (9, (3, 2)),  # One too large.
         )
         table2 = (
-            (9, (3, 2)),
+            (9,  (3, 2)),
             (10, (4, 0)),  # One two many.
-        )
+        )  # fmt: skip
         for s, table in ((s1, table1), (s2, table2)):
             for i, data in table:
                 row, col = data
@@ -416,8 +416,8 @@ class TestGlobals(LeoUnitTest):
         table = (
             ('abc a bc x', 'bc', 0, 6),
             ('abc a bc x', 'bc', 1, 6),
-            ('abc a x', 'bc', 0, -1),
-        )
+            ('abc a x',    'bc', 0, -1),
+        )  # fmt: skip
         for s, word, i, expected in table:
             actual = g.find_word(s, word, i)
             self.assertEqual(actual, expected)
@@ -532,15 +532,15 @@ class TestGlobals(LeoUnitTest):
     # @+node:ekr.20210905203541.24: *4* TestGlobals.test_g_isDirective
     def test_g_isDirective(self):
         table = (
-            (True, '@language python\n'),
-            (True, '@tabwidth -4 #test\n'),
-            (True, '@others\n'),
-            (True, '    @others\n'),
-            (True, '@encoding\n'),
+            (True,  '@language python\n'),
+            (True,  '@tabwidth -4 #test\n'),
+            (True,  '@others\n'),
+            (True,  '    @others\n'),
+            (True,  '@encoding\n'),
             (False, '@encoding.setter\n'),
             (False, '@encoding("abc")\n'),
             (False, 'encoding = "abc"\n'),
-        )
+        )  # fmt: skip
         for expected, s in table:
             result = g.isDirective(s)
             self.assertEqual(expected, bool(result), msg=s)
@@ -548,28 +548,28 @@ class TestGlobals(LeoUnitTest):
     # @+node:ekr.20210905203541.25: *4* TestGlobals.test_g_match_word
     def test_g_match_word(self):
         table = (
-            (True, 0, 'a', 'a'),
+            (True,  0, 'a', 'a'),
             (False, 0, 'a', 'b'),
-            (True, 0, 'a', 'a b'),
+            (True,  0, 'a', 'a b'),
             (False, 1, 'a', 'aa b'),  # Tests bug fixed 2017/06/01.
             (False, 1, 'a', '_a b'),
             (False, 0, 'a', 'aw b'),
             (False, 0, 'a', 'a_'),
-            (True, 2, 'a', 'b a c'),
+            (True,  2, 'a', 'b a c'),
             (False, 0, 'a', 'b a c'),
             # Tests of #3588.
-            (True, 4, '.lws', 'self.lws = 0'),
-            (True, 4, '.lws', 'self.lws=0'),
+            (True,  4, '.lws', 'self.lws = 0'),
+            (True,  4, '.lws', 'self.lws=0'),
             (False, 4, '.lws', 'self.lws2a=0'),
             (False, 4, '.lws', 'self.lws0=0'),
-            (True, 2, '.lws', '  .lws  #comment'),
+            (True,  2, '.lws', '  .lws  #comment'),
             (False, 2, '.lws', '  .lws2  #comment'),
-            (True, 0, '###', '### comment'),
-            (True, 0, '###', '###comment'),
-            (True, 2, '###', '  ###comment'),
-            (True, 2, '###', '  ###.'),
-            (True, 1, '###', 'a###.'),
-        )
+            (True,  0, '###',  '### comment'),
+            (True,  0, '###',  '###comment'),
+            (True,  2, '###',  '  ###comment'),
+            (True,  2, '###',  '  ###.'),
+            (True,  1, '###',  'a###.'),
+        )  # fmt: skip
         for ignore_case in (True, False):
             for expected, i, word, line in table:
                 if ignore_case:
@@ -624,17 +624,17 @@ class TestGlobals(LeoUnitTest):
 
         # @-<< define class TestClass >>
         table = (
-            (s, 'String1'),
-            ('This is a test', "String2"),
-            ({'a': 1, 'b': 2}, 'Dict'),
-            (['one', 'two', 'three'], 'List'),
-            (('x', 'y'), 'Tuple'),
-            (g.printObj, 'Function'),
-            (TestClass, "Class"),
-            (TestClass(), "Instance"),
-            (TestClass.test_function, 'unbound method'),
+            (s,                         'String1'),
+            ('This is a test',          "String2"),
+            ({'a': 1, 'b': 2},          'Dict'),
+            (['one', 'two', 'three'],   'List'),
+            (('x', 'y'),                'Tuple'),
+            (g.printObj,                'Function'),
+            (TestClass,                 "Class"),
+            (TestClass(),               "Instance"),
+            (TestClass.test_function,   'unbound method'),
             (TestClass().test_function, 'bound method'),
-        )
+        )  # fmt: skip
         for data, tag in table:
             result = g.objToString(data, tag=tag)
             self.assertTrue(tag in result, msg=data)
@@ -742,20 +742,20 @@ class TestGlobals(LeoUnitTest):
         if g.isWindows:
             table = (
                 # g.relativeDirectory lowers all results.
-                ('c:\\Users\\ekr', 'c:\\Users\\ekr\\test1.py', 'test1.py'),
+                ('c:\\Users\\ekr', 'c:\\Users\\ekr\\test1.py',   'test1.py'),
                 ('c:\\Users\\ekr', 'c:\\Users\\user2\\test2.py', '..\\user2\\test2.py'),
-                ('c:\\Users\\ekr', 'd:\\Users\\ekr\\test3.py', 'd:\\users\\ekr\\test3.py'),
+                ('c:\\Users\\ekr', 'd:\\Users\\ekr\\test3.py',   'd:\\users\\ekr\\test3.py'),
                 # Unsaved outlines.
-                ('', 'c:\\Users\\ekr\\test4.py', 'c:\\Users\\ekr\\test4.py'),
-            )
+                ('',                'c:\\Users\\ekr\\test4.py',  'c:\\Users\\ekr\\test4.py'),
+            )  # fmt: skip
         else:  # Linux/MacOS tests.
             table = (
-                ('/home', '/home/test1.py', 'test1.py'),
+                ('/home',         '/home/test1.py',         'test1.py'),
                 ('/home/folder1', '/home/folder1/test2.py', 'test2.py'),
                 ('/home/folder1', '/home/folder2/test3.py', '../folder2/test3.py'),
                 # Unsaved outlines.
-                ('', '/home/test4.py', '/home/test4.py'),
-            )
+                ('',              '/home/test4.py',         '/home/test4.py'),
+            )  # fmt: skip
         for base, fn, expected in table:
             actual = g.relativeDirectory(base, fn)
             self.assertEqual(actual, expected)
@@ -784,10 +784,10 @@ class TestGlobals(LeoUnitTest):
     def test_g_removeTrailing(self):
         s = 'aa bc \n \n\t\n'
         table = (
-            ('\t\n ', 'aa bc'),
+            ('\t\n ',    'aa bc'),
             ('abc\t\n ', ''),
-            ('c\t\n ', 'aa b'),
-        )
+            ('c\t\n ',   'aa b'),
+        )  # fmt: skip
         for arg, val in table:
             result = g.removeTrailing(s, arg)
             self.assertEqual(result, val)
@@ -795,14 +795,14 @@ class TestGlobals(LeoUnitTest):
     # @+node:ekr.20210905203541.32: *4* TestGlobals.test_g_sanitize_filename
     def test_g_sanitize_filename(self):
         table = (
-            ('A25&()', 'A'),  # Non-alpha characters.
-            ('B\tc', 'B c'),  # Tabs.
-            ('"AB"', "'AB'"),  # Double quotes.
-            ('\\/:|<>*:.', '_'),  # Special characters.
+            ('A25&()', 'A'),         # Non-alpha characters.
+            ('B\tc', 'B c'),         # Tabs.
+            ('"AB"', "'AB'"),        # Double quotes.
+            ('\\/:|<>*:.', '_'),     # Special characters.
             ('_____________', '_'),  # Combining underscores.
             ('A' * 200, 'A' * 128),  # Maximum length.
-            ('abc.', 'abc_'),  # Trailing dots.
-        )
+            ('abc.', 'abc_'),        # Trailing dots.
+        )  # fmt: skip
         for s, expected in table:
             got = g.sanitize_filename(s)
             self.assertEqual(got, expected, msg=repr(s))
@@ -810,10 +810,10 @@ class TestGlobals(LeoUnitTest):
     # @+node:ekr.20210905203541.48: *4* TestGlobals.test_g_set_delims_from_language
     def test_g_set_delims_from_language(self):
         table = (
-            ('c', ('//', '/*', '*/')),
+            ('c',      ('//', '/*', '*/')),
             ('python', ('#', '', '')),
             ('xxxyyy', ('', '', '')),
-        )
+        )  # fmt: skip
         for language, expected in table:
             result = g.set_delims_from_language(language)
             self.assertEqual(result, expected, msg=language)
@@ -821,13 +821,13 @@ class TestGlobals(LeoUnitTest):
     # @+node:ekr.20210905203541.49: *4* TestGlobals.test_g_set_delims_from_string
     def test_g_set_delims_from_string(self):
         table = (
-            ('c', '@comment // /* */', ('//', '/*', '*/')),
-            ('c', '// /* */', ('//', '/*', '*/')),
-            ('python', '@comment #', ('#', '', '')),
-            ('python', '#', ('#', '', '')),
-            ('xxxyyy', '@comment a b c', ('a', 'b', 'c')),
-            ('xxxyyy', 'a b c', ('a', 'b', 'c')),
-        )
+            ('c',      '@comment // /* */', ('//', '/*', '*/')),
+            ('c',      '// /* */',          ('//', '/*', '*/')),
+            ('python', '@comment #',        ('#', '', '')),
+            ('python', '#',                 ('#', '', '')),
+            ('xxxyyy', '@comment a b c',    ('a', 'b', 'c')),
+            ('xxxyyy', 'a b c',             ('a', 'b', 'c')),
+        )  # fmt: skip
         for language, s, expected in table:
             result = g.set_delims_from_string(s)
             self.assertEqual(result, expected, msg=language)
@@ -916,20 +916,22 @@ class TestGlobals(LeoUnitTest):
 
     # @+node:ekr.20210905203541.54: *4* TestGlobals.test_g_splitLongFileName
     def test_g_splitLongFileName(self):
-        table = (r'abcd/xy\pdqabc/aaa.py',)
+        table = (
+            r'abcd/xy\pdqabc/aaa.py',
+        )  # fmt: skip
         for s in table:
             g.splitLongFileName(s, limit=3)
 
     # @+node:ekr.20210905203541.55: *4* TestGlobals.test_g_stripPathCruft
     def test_g_stripPathCruft(self):
         table = (
-            (None, None),  # Retain empty paths for warnings.
-            ('', ''),
+            (None,          None),  # Retain empty paths for warnings.
+            ('',            ''),
             (g.app.loadDir, g.app.loadDir),
-            ('<abc>', 'abc'),
-            ('"abc"', 'abc'),
-            ("'abc'", 'abc'),
-        )
+            ('<abc>',       'abc'),
+            ('"abc"',       'abc'),
+            ("'abc'",       'abc'),
+        )  # fmt: skip
         for path, expected in table:
             result = g.stripPathCruft(path)
             self.assertEqual(result, expected)
@@ -1010,10 +1012,10 @@ class TestGlobals(LeoUnitTest):
     def test_g_getUNLFilePart(self):
         table = (
             ('unl:' + 'gnx://a.leo#whatever', 'a.leo'),
-            ('unl:' + '//b.leo#whatever', 'b.leo'),
-            ('file:' + '//c.leo#whatever', 'c.leo'),
-            ('//d.leo#whatever', 'd.leo'),
-        )
+            ('unl:' + '//b.leo#whatever',     'b.leo'),
+            ('file:' + '//c.leo#whatever',    'c.leo'),
+            ('//d.leo#whatever',              'd.leo'),
+        )  # fmt: skip
         for unl, expected in table:
             self.assertEqual(expected, g.getUNLFilePart(unl), msg=unl)
 

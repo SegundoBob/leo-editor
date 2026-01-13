@@ -2183,11 +2183,11 @@ class StyleSheetManager:
         open_path = self.find_icon_path('tree-image-open')
         # Make all substitutions in the stylesheet.
         table = (
-            (open_path, re.compile(r'\bimage:\s*@tree-image-open', re.IGNORECASE)),
+            (open_path,  re.compile(r'\bimage:\s*@tree-image-open', re.IGNORECASE)),
             (close_path, re.compile(r'\bimage:\s*@tree-image-closed', re.IGNORECASE)),
             # (open_path,  re.compile(r'\bimage:\s*at-tree-image-open', re.IGNORECASE)),
             # (close_path, re.compile(r'\bimage:\s*at-tree-image-closed', re.IGNORECASE)),
-        )
+        )  # fmt: skip
         for path, pattern in table:
             for mo in pattern.finditer(sheet):
                 old = mo.group(0)

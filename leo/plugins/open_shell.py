@@ -65,9 +65,14 @@ class pluginController:
     def load_menu(self):
         c = self.c
         if sys.platform == "win32":
-            table = (("&Open Console Window", None, self.launchCmd), ("Open &Explorer", None, self.launchExplorer))
+            table = (
+                ("&Open Console Window", None, self.launchCmd),
+                ("Open &Explorer",       None, self.launchExplorer),
+            )  # fmt: skip
         else:
-            table = (("Open &xterm", None, self.launchxTerm),)
+            table = (
+                ("Open &xterm", None, self.launchxTerm),
+            )  # fmt: skip
         c.frame.menu.createNewMenu("E&xtensions", "top")
         c.frame.menu.createMenuItemsFromTable("Extensions", table)
 
