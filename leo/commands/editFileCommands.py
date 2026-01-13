@@ -861,7 +861,10 @@ class GitDiffController:
         # Go back at most 5 revs...
         n1, n2 = 1, 0
         while n1 <= 5:
-            ok = self.diff_revs(rev1=f"HEAD@{{{n1}}}", rev2=f"HEAD@{{{n2}}}")
+            ok = self.diff_revs(
+                rev1=f"HEAD@{{{n1}}}",
+                rev2=f"HEAD@{{{n2}}}",
+            )
             if ok:
                 return
             n1, n2 = n1 + 1, n2 + 1
