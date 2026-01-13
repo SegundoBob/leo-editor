@@ -395,7 +395,10 @@ class Undoer:
         if g.unitTesting:
             assert command.lower() != 'typing', g.callers()
         elif command.lower() == 'typing':  # pragma: no cover
-            g.trace('Error: undoType should not be "Typing"\nCall u.doTyping instead')
+            g.trace(
+                'Error: undoType should not be "Typing"\n'
+                'Call u.doTyping instead'
+            )  # fmt: skip
         u.updateAfterTyping(p, w)
 
     # @+node:ekr.20050315134017.4: *5* u.afterChangeGroup
@@ -1323,7 +1326,10 @@ class Undoer:
                 if g.unitTesting:
                     assert p.b == all, (w, g.callers())
                 elif p.b != all:
-                    g.trace(f"\np.b != w.getAllText() p: {p.h} \nw: {w!r} \n{g.callers()}\n")
+                    g.trace(
+                        f"\np.b != w.getAllText() p: {p.h} \n"
+                        f"w: {w!r} \n{g.callers()}\n"
+                    )  # fmt: skip
             p.v.insertSpot = ins = w.getInsertPoint()
             # From u.doTyping.
             newSel = w.getSelectionRange()

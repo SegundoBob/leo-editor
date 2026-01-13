@@ -673,7 +673,9 @@ class QuickSearchController:
     # @+node:felix.20220225003906.13: *4* QSC.qsc_find_changed
     def qsc_find_changed(self) -> None:
         c = self.c
-        changed: list[tuple[Position, Match_Iter]] = [(p.copy(), None) for p in c.all_unique_positions() if p.isDirty()]
+        changed: list[tuple[Position, Match_Iter]] = [
+            (p.copy(), None) for p in c.all_unique_positions() if p.isDirty()
+        ]  # fmt: skip
         self.clear()
         self.addHeadlineMatches(changed)
 
@@ -1847,7 +1849,13 @@ class LeoServer:
         try:
             scon: QuickSearchController = c.patched_quicksearch_controller
             result: dict[str, Any] = {}
-            navlist = [{"key": k, "h": scon.its[k][0]["label"], "t": scon.its[k][0]["type"]} for k in scon.its.keys()]
+            navlist = [
+                {
+                    "key": k,
+                    "h": scon.its[k][0]["label"],
+                    "t": scon.its[k][0]["type"],
+                } for k in scon.its.keys()
+            ]  # fmt: skip
             result["navList"] = navlist
             result["messages"] = scon.lw
             result["navText"] = scon.navText
@@ -4835,9 +4843,11 @@ class LeoServer:
         except Exception:
             if self.log_flag or traces:
                 print(
-                    f"{tag}: Bad ap: {ap!r}\n{tag}: v {v!r} childIndex: {childIndex!r}\n{tag}: stack: {stack!r}",
+                    f"{tag}: Bad ap: {ap!r}\n"
+                    f"{tag}: v {v!r} childIndex: {childIndex!r}\n"
+                    f"{tag}: stack: {stack!r}",
                     flush=True,
-                )
+                )  # fmt: skip
             return None  # Return None on any error so caller can react.
         return p
 
