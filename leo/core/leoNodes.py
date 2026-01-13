@@ -1211,16 +1211,12 @@ class Position:
                 if p2 == p3:
                     # 2011/02/25: compare full positions, not just vnodes.
                     # A match with the to-be-moved node.
-                    stack.append(
-                        (v, childIndex - 1),
-                    )
+                    stack.append((v, childIndex - 1))
                     changed = True
                     break  # terminate only the inner loop.
                 p3.moveToBack()
             else:
-                stack.append(
-                    (v, childIndex),
-                )
+                stack.append((v, childIndex))
             i += 1
         if changed:
             p.stack = stack
@@ -1253,9 +1249,7 @@ class Position:
         p = self
         parent_v = parent.v
         p.stack = parent.stack[:]
-        p.stack.append(
-            (parent_v, parent._childIndex),
-        )
+        p.stack.append((parent_v, parent._childIndex))
         p._childIndex = n
         child = p.v
         child._addLink(n, parent_v)
@@ -1266,9 +1260,7 @@ class Position:
         p = self
         parent_v = parent.v
         p.stack = parent.stack[:]
-        p.stack.append(
-            (parent_v, parent._childIndex),
-        )
+        p.stack.append((parent_v, parent._childIndex))
         p._childIndex = n
         child = p.v
         child._addCopiedLink(n, parent_v)
@@ -1391,9 +1383,7 @@ class Position:
         """Move a position to it's first child's position."""
         p = self
         if p.v and p.v.children:
-            p.stack.append(
-                (p.v, p._childIndex),
-            )
+            p.stack.append((p.v, p._childIndex))
             p.v = p.v.children[0]
             p._childIndex = 0
         else:
@@ -1405,9 +1395,7 @@ class Position:
         """Move a position to it's last child's position."""
         p = self
         if p.v and p.v.children:
-            p.stack.append(
-                (p.v, p._childIndex),
-            )
+            p.stack.append((p.v, p._childIndex))
             n = len(p.v.children)
             p.v = p.v.children[n - 1]
             p._childIndex = n - 1
@@ -1456,9 +1444,7 @@ class Position:
     def moveToNthChild(self, n: int) -> Position:
         p = self
         if p.v and len(p.v.children) > n:
-            p.stack.append(
-                (p.v, p._childIndex),
-            )
+            p.stack.append((p.v, p._childIndex))
             p.v = p.v.children[n]
             p._childIndex = n
         else:

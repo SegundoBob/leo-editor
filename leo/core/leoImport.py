@@ -2170,9 +2170,7 @@ class TabImporter:
                 grand_parent = stack[-1][1] if stack else root
                 parent = grand_parent.insertAsLastChild()  # lws == level
                 parent.h = h
-                stack.append(
-                    (level, parent),
-                )
+                stack.append((level, parent))
             elif not parent.h:
                 parent.h = h
         elif lws > level:
@@ -2180,9 +2178,7 @@ class TabImporter:
             level = lws
             parent = parent.insertAsLastChild()
             parent.h = h
-            stack.append(
-                (level, parent),
-            )
+            stack.append((level, parent))
         else:
             # Find the previous parent.
             while stack:
@@ -2192,9 +2188,7 @@ class TabImporter:
                     parent = grand_parent.insertAsLastChild()  # lws < level
                     parent.h = h
                     level = lws
-                    stack.append(
-                        (level, parent),
-                    )
+                    stack.append((level, parent))
                     break
             else:
                 level = 0
