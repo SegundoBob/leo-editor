@@ -713,7 +713,11 @@ class GeneralSetting:
     def __repr__(self) -> str:
         # Better for g.printObj.
         val = str(self.val).replace('\n', ' ')
-        return f"GS: path: {g.shortFileName(self.path or '')} source: {self.source or ''} kind: {self.kind} val: {val}"
+        return (
+            f"GS: path: {g.shortFileName(self.path or '')} "
+            f"source: {self.source or ''} "
+            f"kind: {self.kind} val: {val}"
+        )  # fmt: skip
 
     dump = __repr__
     __str__ = __repr__
@@ -1980,7 +1984,11 @@ class Tracer:
         if event == 'return':
             if self.stack:
                 name = self.stack.pop()
-                if self.trace and self.verbose and (self.limit == 0 or len(self.stack) < self.limit):
+                if (
+                    self.trace
+                    and self.verbose
+                    and (self.limit == 0 or len(self.stack) < self.limit)
+                ):  # fmt: skip
                     g.trace(f"{pad}ret ", name)
             else:
                 g.trace('return underflow')
@@ -2446,7 +2454,11 @@ def checkUnchangedIvars(
     for key in d:
         if key not in exceptions:
             if getattr(obj, key) != d.get(key):
-                g.trace(f"changed ivar: {key} old: {repr(d.get(key))} new: {repr(getattr(obj, key))}")
+                g.trace(
+                    f"changed ivar: {key} "
+                    f"old: {repr(d.get(key))} "
+                    f"new: {repr(getattr(obj, key))}"
+                )  # fmt: skip
                 ok = False
     return ok
 
@@ -6239,7 +6251,10 @@ def isUniqueClass(obj: object, list_or_class: Any, *, n: int = 2) -> None:
         if isinstance(obj, list_or_class):
             return
     except Exception as e:
-        print(f"\ng.isUniqueClass: {g.callers()}\nBad arg 2: {list_or_class!r}\n{e!r}\n")
+        print(
+            f"\ng.isUniqueClass: {g.callers()}\n"
+            f"Bad arg 2: {list_or_class!r}\n{e!r}\n"
+        )  # fmt: skip
         return
     key = g.callers(n)
     value_s = obj.__class__.__name__
@@ -8109,7 +8124,10 @@ def handleUrl(url: str, c: Cmdr = None, p: Position = None) -> Optional[str]:
     urll = url.lower()
     if urll.startswith('@url'):
         url = url[4:].lstrip()
-    if urll.startswith(('#', 'unl://', 'unl:gnx:')) or urll.startswith('file://') and '-->' in urll:
+    if (
+        urll.startswith(('#', 'unl://', 'unl:gnx:'))
+        or urll.startswith('file://') and '-->' in urll
+    ):  # fmt: skip
         return g.handleUnl(url, c)
     try:
         g.handleUrlHelper(url, c, p)
