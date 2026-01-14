@@ -2671,7 +2671,7 @@ class AtFile:
                 fromfile=f"Old: {sfn}",
                 tofile=f"New {sfn}",
             )
-            g.printObj(list(diff), tag='Diff')
+            g.printObj(list(diff), tag=f"Diff: {sfn}")
 
         # Reload the file, suppressing the reload prompt.
         g.es(f"beautified: {g.shortFileName(filename)}", color='blue')
