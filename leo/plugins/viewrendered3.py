@@ -1161,13 +1161,21 @@ MATHJAX_URL = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js'
 
 # @+<< RsT Error styles>>
 # @+node:tom.20240520232254.2: *3* << RsT Error styles>>
-RST_ERROR_BODY_STYLE = (
-    'color:#606060;background: aliceblue;padding-left:1em;padding-right:1em;border:thin solid gray;border-radius:.4em;'
-)
+RST_ERROR_BODY_STYLE = ('color:#606060;'
+                        'background: aliceblue;'
+                        'padding-left:1em;'
+                        'padding-right:1em;'
+                        'border:thin solid gray;'
+                        'border-radius:.4em;'
+)  # fmt: skip
 
-RST_ERROR_MSG_STYLE = (
-    'color:red;background:white;padding-left:1em;padding-right:1em;border:thin solid gray;border-radius:.4em;'
-)
+RST_ERROR_MSG_STYLE = ('color:red;'
+                       'background:white;'
+                       'padding-left:1em;'
+                       'padding-right:1em;'
+                       'border:thin solid gray;'
+                       'border-radius:.4em;'
+)  # fmt: skip
 # @-<< RsT Error styles>>
 # RST_HEADING_CHARS = '''=-:.`'"-~^_*+#'''# Symbol hierarchy - maybe some day
 RST_HEADING_CHARS = '''=============='''  # For now, same symbol for all levels
