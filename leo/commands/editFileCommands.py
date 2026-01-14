@@ -1271,7 +1271,6 @@ class GitDiffController:
                 tail = s[1:].strip()
                 if tail and not tail.startswith(('#@', '# @')):
                     results1.append(s)
-                    # print("Insert: {s!r}")
 
         # Pass 2: Insert blank lines.
         results2 = []

@@ -2646,11 +2646,13 @@ class AtFile:
         Run ruff format on the selected position.
         Return True if all went well.
         """
-        c = self.c
-        p = c.p
+        c, p, u = self.c, self.c.p, self.c.undoer
         efc = g.app.externalFilesController
         if not os.path.exists(filename):
             return False
+
+        # Copy the old p.b. c.refresh_from_disk clears the undo stack.
+        old_body = p.b
         old_p = p.copy()
         results = c.beautify_with_ruff(contents, root, filename)
 
@@ -2662,17 +2664,23 @@ class AtFile:
             return True
 
         if 0:  # Debugging only.
+            sfn = g.shortFileName(filename)
             diff = difflib.unified_diff(
                 g.splitLines(contents),
                 g.splitLines(results),
-                fromfile='Old',
-                tofile='New',
+                fromfile=f"Old: {sfn}",
+                tofile=f"New {sfn}",
             )
-            g.printObj(list(diff), tag='Diff')
+            g.printObj(list(diff), tag=f"Diff: {sfn}")
 
         # Reload the file, suppressing the reload prompt.
         g.es(f"beautified: {g.shortFileName(filename)}", color='blue')
         c.refreshFromDisk(root)
+
+        # Handle the undo *after* calling c.refreshFromDisk.
+        bunch = u.beforeChangeBody(old_p)
+        bunch.oldBody = old_body
+        u.afterChangeBody(old_p, 'ruff-format', bunch)
 
         # #4159: This may not restore the outline as it was,
         # but it's much better than doing nothing.
