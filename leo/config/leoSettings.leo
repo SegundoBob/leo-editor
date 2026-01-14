@@ -11700,8 +11700,8 @@ vertical-thirds2
     └───────────┴───────┴───────┘
 </t>
 <t tx="ekr.20240924055407.1">True: run Pylint on each saved file, but only if it has been changed.</t>
-<t tx="ekr.20240926065158.1"># True: beautify external files in the outline using ruff format.
-# Warnging: True slows down writes considerably.</t>
+<t tx="ekr.20240926065158.1"># True: When saving a file, beautify external files using ruff format.
+</t>
 <t tx="ekr.20241012050620.1">True: Leo's git-diff command will diff .leo and .leojs files.</t>
 <t tx="ekr.20241024123618.1"></t>
 <t tx="ekr.20241024123633.1">This option defaults to py:percent.

@@ -2525,7 +2525,6 @@
 </v>
 <v t="ekr.20251204122149.1"></v>
 <v t="ekr.20251204122305.1"></v>
-<v t="ekr.20260113093256.1"><vh>=== To do</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -33341,11 +33340,36 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - `PR #4456`_: Added leo_to_html_outline_viewer.py plugin.
 
 </t>
-<t tx="ekr.20251204122149.1">.. Use the link-pr abbreviation to create these links.
-
+<t tx="ekr.20251204122149.1">.. _`PR #4467`: https://github.com/leo-editor/leo-editor/pull/4467
 .. _`PR #4484`: https://github.com/leo-editor/leo-editor/pull/4484
+.. _`PR #4490`: https://github.com/leo-editor/leo-editor/pull/4490
+.. _`PR #4492`: https://github.com/leo-editor/leo-editor/pull/4492
+.. _`PR #4493`: https://github.com/leo-editor/leo-editor/pull/4493
+.. _`PR #4494`: https://github.com/leo-editor/leo-editor/pull/4494
+.. _`PR #4502`: https://github.com/leo-editor/leo-editor/pull/4502
+.. _`PR #4503`: https://github.com/leo-editor/leo-editor/pull/4503
+.. _`PR #4507`: https://github.com/leo-editor/leo-editor/pull/4507
 
-- `PR #4456`_: Add check_leo script.
+- `PR #4467`_: Remove support for leoflexx and --gui=browser.
+- `PR #4484`_: Add check_leo script.
+- `PR #4490`_, Add support for ruff format and retire Leo's legacy beautier.
+- `PR #4492`_, `PR #4493`_, `PR #4494`_, `PR #4503`_, `PR #4507`_: Reformat Leo using ruff format.
+- `PR #4503`_ and `PR #4506`_: Add gdc.summary_diff_two_revs script helper.
+
+**Add settings for ruff format**
+
+The defaults are shown below:
+
+- Add ``@bool write-black-sentinels = False``
+- Add ``@int black-line-length = None``
+- Add ``@string black-toml = None``
+
+**Retire settings for Leo's legacy beautifier**
+
+- Retire ``@bool beautify-allow-joined-strings``
+- Retire ``@int beautify-max-join-line-length``
+- Retire ``@int beautify-max-split-line-length``
+
 </t>
 <t tx="ekr.20251204122305.1">Leo https://leo-editor.github.io/leo-editor/ 6.8.7 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
 
@@ -33353,8 +33377,12 @@ Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor
 
 **The highlights of Leo 6.8.8**
 
-- PR #4456: Add check_leo script.
-- Fix several other minor bugs. See the `What's new` section for details.
+- Replace Leo's legacy beautify by full support for ruff format,
+  add three new settings that controll ruff format.
+- Remove support for leoflexx and --gui=browser.
+- Add check_leo script.
+- Add Add gdc.summary_diff_two_revs script helper.
+- Fix several other minor bugs.
 
 **Links**
 
@@ -33370,9 +33398,6 @@ Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor
 - [What people are saying about Leo](https://leo-editor.github.io/leo-editor/testimonials.html)
 - [More links](https://leo-editor.github.io/leo-editor/leoLinks.html)
 </t>
-<t tx="ekr.20260113093256.1">@language rest
-
-Document all recent PRs, highlighting the real changes (for Félix).</t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
 application state, and synchronize the resulting state across clients, leoserver.py
 has the ability to listen and interact with more than one concurrent client, and have
