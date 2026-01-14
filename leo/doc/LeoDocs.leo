@@ -2525,6 +2525,7 @@
 </v>
 <v t="ekr.20251204122149.1"></v>
 <v t="ekr.20251204122305.1"></v>
+<v t="ekr.20260113093256.1"><vh>=== To do</vh></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -33369,6 +33370,9 @@ Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor
 - [What people are saying about Leo](https://leo-editor.github.io/leo-editor/testimonials.html)
 - [More links](https://leo-editor.github.io/leo-editor/leoLinks.html)
 </t>
+<t tx="ekr.20260113093256.1">@language rest
+
+Document all recent PRs, highlighting the real changes (for Félix).</t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
 application state, and synchronize the resulting state across clients, leoserver.py
 has the ability to listen and interact with more than one concurrent client, and have
