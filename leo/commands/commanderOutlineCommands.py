@@ -1715,7 +1715,11 @@ def moveOutlineDown(self: Cmdr, event: LeoKeyEvent = None) -> None:
             p.setDirty()
             p.moveAfter(next)
     # Patch by nh2: 0004-Add-bool-collapse_nodes_after_move-option.patch
-    if c.collapse_nodes_after_move and moved and c.sparse_move and parent and not parent.isAncestorOf(p):
+    if (
+        c.collapse_nodes_after_move
+        and moved and c.sparse_move
+        and parent and not parent.isAncestorOf(p)
+    ):  # fmt: skip
         # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
         parent.contract()
     # @-<< Move p down & set moved if successful >>
@@ -1837,7 +1841,11 @@ def moveOutlineUp(self: Cmdr, event: LeoKeyEvent = None) -> None:
             p.setDirty()
             p.moveAfter(back2)
     # Patch by nh2: 0004-Add-bool-collapse_nodes_after_move-option.patch
-    if c.collapse_nodes_after_move and moved and c.sparse_move and parent and not parent.isAncestorOf(p):
+    if (
+        c.collapse_nodes_after_move
+        and moved and c.sparse_move
+        and parent and not parent.isAncestorOf(p)
+    ):  # fmt: skip
         # New in Leo 4.4.2: contract the old parent if it is no longer the parent of p.
         parent.contract()
     # @-<< Move p up >>

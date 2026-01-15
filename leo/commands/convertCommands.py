@@ -3041,11 +3041,9 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                     m.group(3),
                     m.group(4).rstrip(),
                 )
-                string_s = (
-                    string.replace('{', '${').replace(  # Add the '$'
-                        '! ', 'not '
-                    )  # Undo erroneous replacement.
-                )
+                # Undo erroneous replacement: # Add the '$'
+                string_s = string.replace('{', '${').replace('! ', 'not ')
+
                 # Remove format strings. Not perfect, but seemingly good enough.
                 string_s = re.sub(r'\:[0-9]\.+[0-9]+[frs]', '', string_s)
                 string_s = re.sub(r'\![frs]', '', string_s)
@@ -3220,11 +3218,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             # @+node:ekr.20150514063305.179: *6* comment_scope_ids
             def comment_scope_ids(self, lines: list[str]) -> None:
                 """convert (public|private|export) aLine to aLine # (public|private|export)"""
-                scope_ids = (
-                    'public',
-                    'private',
-                    'export',
-                )
+                scope_ids = ('public', 'private', 'export')
                 i = 0
                 if any(self.match_word(lines, i, z) for z in scope_ids):
                     i = self.handle_scope_keyword(lines, i)

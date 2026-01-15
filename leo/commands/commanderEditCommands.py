@@ -518,16 +518,16 @@ def createFirstChildNode(c: Cmdr, parent: Position, headline: str, body: str) ->
 # @+node:ekr.20171123135625.24: *3* function: extractDef
 extractDef_patterns = (
     re.compile(r'\((?:def|defn|defui|deftype|defrecord|defonce)\s+(\S+)'),  # clojure definition
-    re.compile(r'^\s*(?:def|class)\s+(\w+)'),  # python definitions
-    re.compile(r'^\bvar\s+(\w+)\s*=\s*function\b'),  # js function
-    re.compile(r'^(?:export\s)?\s*function\s+(\w+)\s*\('),  # js function
-    re.compile(r'\b(\w+)\s*:\s*function\s'),  # js function
-    re.compile(r'\.(\w+)\s*=\s*function\b'),  # js function
-    re.compile(r'(?:export\s)?\b(\w+)\s*=\s(?:=>|->)'),  # coffeescript function
-    re.compile(r'(?:export\s)?\b(\w+)\s*=\s(?:\([^)]*\))\s*(?:=>|->)'),  # coffeescript function
-    re.compile(r'\b(\w+)\s*:\s(?:=>|->)'),  # coffeescript function
-    re.compile(r'\b(\w+)\s*:\s(?:\([^)]*\))\s*(?:=>|->)'),  # coffeescript function
-)
+    re.compile(r'^\s*(?:def|class)\s+(\w+)'),                               # python definitions
+    re.compile(r'^\bvar\s+(\w+)\s*=\s*function\b'),                         # js function
+    re.compile(r'^(?:export\s)?\s*function\s+(\w+)\s*\('),                  # js function
+    re.compile(r'\b(\w+)\s*:\s*function\s'),                                # js function
+    re.compile(r'\.(\w+)\s*=\s*function\b'),                                # js function
+    re.compile(r'(?:export\s)?\b(\w+)\s*=\s(?:=>|->)'),                     # coffeescript function
+    re.compile(r'(?:export\s)?\b(\w+)\s*=\s(?:\([^)]*\))\s*(?:=>|->)'),     # coffeescript function
+    re.compile(r'\b(\w+)\s*:\s(?:=>|->)'),                                  # coffeescript function
+    re.compile(r'\b(\w+)\s*:\s(?:\([^)]*\))\s*(?:=>|->)'),                  # coffeescript function
+)  # fmt: skip
 
 
 def extractDef(c: Cmdr, s: str) -> str:
