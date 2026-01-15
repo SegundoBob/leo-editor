@@ -722,7 +722,10 @@ def diffMarkedNodes(event: LeoKeyEvent) -> None:
         n += 1
         p1, p2 = aList[0], aList[1]
         aList = aList[1:]
-        lines = difflib.Differ().compare(g.splitLines(p1.b.rstrip() + '\n'), g.splitLines(p2.b.rstrip() + '\n'))
+        lines = difflib.Differ().compare(
+            g.splitLines(p1.b.rstrip() + '\n'),
+            g.splitLines(p2.b.rstrip() + '\n')
+        )  # fmt: skip
         p = root.insertAsLastChild()
         p.h = f"diff {n}"
         p.b = f"1: {p1.h}\n2: {p2.h}\n{''.join(list(lines))}"

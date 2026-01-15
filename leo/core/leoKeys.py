@@ -1671,21 +1671,15 @@ class GetArg:
         """Trace the vars and ivars."""
         k = self.c.k
         g.trace(
-            'state',
-            state,
-            'char',
-            repr(char),
-            'stroke',
-            repr(stroke),
-            # 'isPlain',k.isPlainKey(stroke),
+            'state', state,
+            'char', repr(char),
+            'stroke', repr(stroke),
+            # 'isPlain', k.isPlainKey(stroke),
             '\n',
-            'escapes',
-            k.getArgEscapes,
-            'completion',
-            self.arg_completion,
-            'handler',
-            self.handler and self.handler.__name__ or 'None',
-        )
+            'escapes', k.getArgEscapes,
+            'completion', self.arg_completion,
+            'handler', self.handler and self.handler.__name__ or 'None',
+        )  # fmt: skip
 
     # @+node:ekr.20140818074502.18222: *3* ga.get_command
     def get_command(self, s: str) -> str:
@@ -3674,16 +3668,12 @@ class KeyHandlerClass:
         # Ignore other special keys in the minibuffer.
         if state in ('getArg', 'full-command'):
             if stroke in (
-                '\b',
-                'BackSpace',
-                '\r',
-                'Linefeed',
-                '\n',
-                'Return',
-                '\t',
-                'Tab',
+                '\b', 'BackSpace',
+                '\r', 'Linefeed',
+                '\n', 'Return',
+                '\t', 'Tab',
                 'Escape',
-            ):
+            ):  # fmt: skip
                 return False
             if k.isFKey(stroke):
                 return False
@@ -3837,7 +3827,11 @@ class KeyHandlerClass:
         # Inserting a '.' always invokes the auto-completer.
         # The auto-completer just inserts a '.' if it isn't enabled.
         stroke = event.stroke
-        if stroke.s == '.' and k.isPlainKey(stroke) and self.unboundKeyAction in ('insert', 'overwrite'):
+        if (
+            stroke.s == '.'
+            and k.isPlainKey(stroke)
+            and self.unboundKeyAction in ('insert', 'overwrite')
+        ):  # fmt: skip
             c.doCommandByName('auto-complete', event)
             return True
         #

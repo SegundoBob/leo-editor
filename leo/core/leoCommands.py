@@ -693,10 +693,7 @@ class Commands:
     # @+node:ekr.20250508044308.1: *3* @cmd beautify-tree
     @cmd('beautify-tree')
     def beautify_tree_command(self, event: LeoKeyEvent = None) -> None:
-        """
-        Undoably beautify c.p and its subtree.
-        This command can be very slow.
-        """
+        """Undoably beautify c.p and its subtree."""
         c = self
         c.beautify_script_tree(c.p)
 
@@ -1356,7 +1353,10 @@ class Commands:
         if pyflakes_flag and not g.unitTesting:
             from leo.commands import checkerCommands as cc
 
-            prefix = 'c,g,p,script_gnx=None,None,None,None;assert c and g and p and script_gnx;\n'
+            prefix = (
+                'c,g,p,script_gnx=None,None,None,None;'
+                'assert c and g and p and script_gnx;\n'
+            )  # fmt: skip
             cc.PyflakesCommand(c).check_script(script_p, prefix + script)
 
         # Execute the script!
@@ -5471,8 +5471,8 @@ class Commands:
         parent: Position = None,
         forcecreate: bool = False,
     ) -> Position:
-        """Create the proper hierarchy of nodes with headlines defined in
-        'heads' under 'parent'
+        """
+        Create the proper hierarchy of nodes with headlines defined in 'heads' under 'parent'
 
         params:
         parent - parent node to start from.  Set to None for top-level nodes
