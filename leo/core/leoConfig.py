@@ -227,9 +227,7 @@ class ParserBaseClass:
                         forcePythonSentinels=True,
                         useSentinels=True,
                     )
-                    aList.append(
-                        (p.copy(), script),
-                    )
+                    aList.append((p.copy(), script))
                 p.moveToThreadNext()
         # This setting is handled differently from most other settings,
         # because the last setting must be retrieved before any commander exists.
@@ -568,9 +566,7 @@ class ParserBaseClass:
                             aList2: list[Value] = []  # Huh?
                             kind = f"{tag} {itemName}"
                             self.doItems(p, aList2)  # Huh?
-                            aList.append(
-                                (kind, aList2, body),
-                            )  # #848: Body was None.
+                            aList.append((kind, aList2, body))  # #848: Body was None.
                             p.moveToNodeAfterTree()
                             break
                         else:
@@ -664,9 +660,7 @@ class ParserBaseClass:
                             kind = tag
                             head = itemName
                             body = p.b
-                            aList.append(
-                                (head, body),
-                            )
+                            aList.append((head, body))
                             p.moveToThreadNext()
                             break
             else:
@@ -1021,13 +1015,9 @@ class ActiveSettingsOutline:
             ('myLeoSettings', lm.my_settings_c),
         ]
         if lm.theme_c:
-            self.commanders.append(
-                ('theme_file', lm.theme_c),
-            )
+            self.commanders.append(('theme_file', lm.theme_c))
         if self.c.config.settingsRoot():
-            self.commanders.append(
-                ('local_file', self.c),
-            )
+            self.commanders.append(('local_file', self.c))
 
     # @+node:ekr.20190905091614.4: *4* aso.load_hidden_commanders
     def load_hidden_commanders(self) -> None:
