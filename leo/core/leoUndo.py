@@ -1294,11 +1294,7 @@ class Undoer:
         for key in self.optionalIvars:
             bunch[key] = getattr(u, key)
         # Put these ivars by hand.
-        for key in (
-            'bead',
-            'beads',
-            'undoType',
-        ):
+        for key in ('bead', 'beads', 'undoType'):
             bunch[key] = getattr(u, key)
         v.undo_info = bunch
 

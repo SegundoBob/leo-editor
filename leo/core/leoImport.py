@@ -1317,8 +1317,11 @@ class LeoImportCommands:
         if self.isDocStart(s, i):
             return True
         return self.webType == "cweb" and (
-            g.match(s, i, "@c") or g.match(s, i, "@p") or g.match(s, i, "@d") or g.match(s, i, "@f")
-        )
+            g.match(s, i, "@c") or
+            g.match(s, i, "@p") or
+            g.match(s, i, "@d") or
+            g.match(s, i, "@f")
+        )  # fmt: skip
 
     # @+node:ekr.20031218072017.3312: *4* ic.massageWebBody
     def massageWebBody(self, s: str) -> str:
