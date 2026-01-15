@@ -3041,7 +3041,7 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                     m.group(3),
                     m.group(4).rstrip(),
                 )
-                # Undo erroneous replacement: # Add the '$'
+                # Undo erroneous replacement: Add the '$'
                 string_s = string.replace('{', '${').replace('! ', 'not ')
 
                 # Remove format strings. Not perfect, but seemingly good enough.
