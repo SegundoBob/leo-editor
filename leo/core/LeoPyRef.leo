@@ -19,12 +19,15 @@
 <v t="ekr.20240107154430.1"><vh>@int max-find-long-lines-length = 120</vh></v>
 <v t="ekr.20140916101314.19538"><vh>@string target_language = python</vh></v>
 <v t="ekr.20260111055821.1"><vh>Beautifying files and writing black-compatible sentinels</vh>
-<v t="ekr.20260111055821.2"><vh>@bool beautify-python-code-on-write = False</vh></v>
+<v t="ekr.20260111055821.2"><vh>@bool beautify-python-code-on-write = True</vh></v>
 <v t="ekr.20260111055821.3"><vh>@bool write-black-sentinels = True</vh></v>
 <v t="ekr.20260111055821.4"><vh>@int black-line-length = 120</vh></v>
 <v t="ekr.20260111055821.5"><vh>@string black-toml = None</vh></v>
 </v>
 <v t="ekr.20160122104332.1"><vh>Buttons &amp; commands</vh>
+<v t="ekr.20260113153148.1"><vh>@@@button test bed</vh>
+<v t="ekr.20260114092617.1"><vh>&lt;&lt; define test_s &gt;&gt;</vh></v>
+</v>
 <v t="ekr.20150502050609.1"><vh>@button backup</vh></v>
 <v t="ekr.20170811173924.1"><vh>@button backup-repo</vh></v>
 <v t="ekr.20231107062256.1"><vh>@button check-leoPy.leo</vh></v>
@@ -44,6 +47,7 @@
 <v t="ekr.20201222095250.1"><vh>script: check for duplicate settings in theme files</vh></v>
 <v t="ekr.20200308193719.1"><vh>script: check gnx's</vh></v>
 <v t="ekr.20210429045101.1"><vh>script: check gnxDict</vh></v>
+<v t="ekr.20260112054444.1"><vh>script: clean diffs</vh></v>
 <v t="ekr.20210118013157.1"><vh>script: convert-LeoFind</vh>
 <v t="ekr.20210118024739.1"><vh>convert</vh></v>
 <v t="ekr.20210118013807.1"><vh>main</vh></v>
@@ -55,7 +59,7 @@
 <v t="ekr.20240708072327.1"><vh>&lt;&lt; check table &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20210829132319.1"><vh>script: cvt-tests</vh></v>
-<v t="ekr.20190402091335.1"><vh>script: diff-branches/revs (all files)</vh></v>
+<v t="ekr.20190402091335.1"><vh>script: diff-branches/revs (all files or path)</vh></v>
 <v t="ekr.20180816105258.1"><vh>script: diff-branches/revs (one file)</vh></v>
 <v t="ekr.20201208114843.1"><vh>script: diff-pr</vh></v>
 <v t="ekr.20220319145807.1"><vh>script: diff-two-revs-wo-comments</vh>
@@ -78,6 +82,7 @@
 </v>
 <v t="ekr.20210630103405.1"><vh>script: restore gnxs in leoserver.py (simple version)</vh></v>
 <v t="ekr.20200222083959.1"><vh>script: start loggin</vh></v>
+<v t="ekr.20260112121427.1"><vh>script: summary-diff</vh></v>
 <v t="ekr.20211014103433.1"><vh>script: web-to-outline</vh>
 <v t="ekr.20211014112513.1"><vh>Handlers</vh></v>
 <v t="ekr.20211014120710.1"><vh>new_node</vh></v>
@@ -116,6 +121,7 @@
 <v t="ekr.20241022090855.1"><vh>@file leoJupytext.py</vh></v>
 <v t="ekr.20190515070742.1"><vh>@file leoMarkup.py</vh></v>
 <v t="ekr.20031218072017.3320"><vh>@file leoNodes.py</vh></v>
+<v t="ekr.20040301205720"><vh>p.__str__ and p.__repr__</vh></v>
 <v t="ekr.20140821055201.18331"><vh>@file leoPersistence.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@file leoPlugins.py</vh></v>
 <v t="ekr.20150419124739.1"><vh>@file leoPrinting.py</vh></v>
@@ -674,10 +680,20 @@ These plugins create new kinds of nodes, some of which affect the file system.</
 <t tx="ekr.20031218072017.2406"># This file contains almost all of Leo's sources.
 # See the "About this file" node for important notes.
 </t>
-<t tx="ekr.20031218072017.2604"></t>
+<t tx="ekr.20031218072017.2604">
+</t>
 <t tx="ekr.20031218072017.3625">See info issue #1585
 https://github.com/leo-editor/leo-editor/issues/1585
 @language python
+</t>
+<t tx="ekr.20040301205720">def __str__(self) -&gt; str:  # pragma: no cover
+    p = self
+    if p.v:
+        return f"&lt;pos {id(p)} childIndex: {p._childIndex} lvl: {p.level()} key: {p.key()} {p.h}&gt;"
+    return f"&lt;pos {id(p)} [{len(p.stack)}] None&gt;"
+
+__repr__ = __str__
+
 </t>
 <t tx="ekr.20040331071919"></t>
 <t tx="ekr.20040722141148">@nocolor-node
@@ -1003,7 +1019,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
 
 &lt;/xsl:stylesheet&gt;
 </t>
-<t tx="ekr.20150425145248.1">execute-script
+<t tx="ekr.20150425145248.1">test-bed
+execute-script
 pylint
 
 # check-leo
@@ -1100,9 +1117,8 @@ import os
 import subprocess
 import sys
 import time
-win = sys.platform.startswith('win')
 old_dir = os.getcwd()
-if win:
+if g.isWindows:
     new_dir = r'C:\Repos\leo-editor'
     path = r'C:\Users\Edward~1\Backup\backup-repo'
 else:
@@ -1247,6 +1263,7 @@ precede the node's line that have not already been returned.
 <t tx="ekr.20180816105258.1">g.cls()
 import os
 import leo.commands.editFileCommands as efc
+
 path = g.finalize_join(g.app.loadDir, '..', '..')
 # print(f"os.chdir({path})")
 os.chdir(path)
@@ -1255,17 +1272,18 @@ os.chdir(path)
 # See https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection
 
 efc.GitDiffController(c).diff_two_branches(
-    branch1='master', # old branch/rev
-    branch2='ekr-rest-coloring2', # new branch/rev
-    fn='leo/config/leoSettings.leo',  # Don't use back slashes.
+    branch1='devel',  # old branch/rev
+    branch2='ekr-line-length-88',  # new branch/rev
+    fn='leo/plugins/cursesGui.py',  # Don't use back slashes.
 )
 </t>
 <t tx="ekr.20181030041436.1"></t>
 <t tx="ekr.20190402091335.1">from leo.commands import editFileCommands as efc
 
 efc.GitDiffController(c).diff_two_revs(
-    rev1='6.8.0-post1',  # Old
-    rev2='devel',   # New
+    rev1='master',  # Old
+    rev2='6.8.8',  # New
+    path='leo/core',  # Optional path, relative to the git directory.
 )
 </t>
 <t tx="ekr.20190607124533.1"></t>
@@ -1930,7 +1948,7 @@ assert core_p and command_p and globals_p
     # 'toString', 'toUnicode', 'trace', 'translateString',
     # 'underline', 'undoHelper', 'unl', 'values', 'visit',
     # 'warn', 'warning', 'word',</t>
-<t tx="ekr.20220823195205.1" _mod_time="4741da588ff36c8fc82e">"""
+<t tx="ekr.20220823195205.1" _mod_time="4741da5936b1ebc9422e">"""
 Stand alone GUI free index builder for Leo's full text search system::
 
   python leoftsindex.py &lt;file1&gt; &lt;file2&gt; &lt;file3&gt;...
@@ -2177,7 +2195,7 @@ print('done')</t>
 <t tx="ekr.20240107154430.1"></t>
 <t tx="ekr.20240204082420.1"></t>
 <t tx="ekr.20240204082924.1"></t>
-<t tx="ekr.20240206161713.1" _mod_time="4741da58847d4499552e">@language ini
+<t tx="ekr.20240206161713.1" _mod_time="4741da5936b20c3e062e">@language ini
 
 [bdist_wheel]
 
@@ -2703,5 +2721,601 @@ if new_b != proj_p.b:
 <t tx="ekr.20260111055821.5"># If given, this argument should be a full, absolute path to pyproject.toml or ruff.toml.
 # If not given, Leo's beautifier uses Leo's pyproject.toml file.
 </t>
+<t tx="ekr.20260112054444.1">g.cls()
+root = g.findTopLevelNode(c, 'git diff revs: master 6.8.8')
+results = g.findTopLevelNode(c, 'diff: results')
+if results:
+    results.deleteAllChildren()
+else:
+    results = c.lastTopLevel().insertAsLastChild()
+    results.h = 'diff: results'
+changed = 0
+
+
+def report(p):
+    global changed
+    changed += 1
+    child = results.insertAsLastChild()
+    child.h = p.h
+    for s in g.splitLines(p.b):
+        if s.startswith(('+ ', '- ')):
+            tail = s[2:].strip()
+            if tail and not tail.startswith(('#@', '# @')):
+                child.b += s
+
+
+for p in root.subtree():
+    if p.h.startswith('diff:'):
+        if p.h == 'diff: Changed':
+            pass
+        elif p.h.endswith('.py'):
+            report(p)
+
+print(f"changed: {changed}")
+results.expand()
+c.redraw()
+</t>
+<t tx="ekr.20260112121427.1">g.cls()
+from leo.commands import editFileCommands as efc
+
+# Any branch or rev is valid.
+efc.GitDiffController(c).summary_diff_two_revs(
+    rev1='master',    # Old
+    rev2='6.8.8',     # New
+    path='leo/core',  # Limit diffs to this directory, relative to the nearest git repo.
+)  # fmt: skip
+</t>
+<t tx="ekr.20260113153148.1">"""Generic test bed for scripts and other development"""
+g.cls()
+# g.app.log.clearLog()
+import textwrap
+
+results_p = g.findTopLevelNode(c, 'TestResults')
+if not results_p:
+    results_p = c.lastTopLevel().insertAfter()
+    results_p.h = 'TestResults'
+
+&lt;&lt; define test_s &gt;&gt;
+@others
+
+results = remove_cruft(self=None, diff_list=g.splitLines(test_s))
+results_p.b = results
+c.redraw(results_p)
+
+@language python
+</t>
+<t tx="ekr.20260114092617.1">@language diff
+
+test_s = textwrap.dedent('''
+
+@nosearch
+@language patch
+--- master
++++ devel
+@@ -1,8 +1,9 @@
+-#@+leo-ver=5-thin
+-#@+node:ekr.20150514035236.1: * @file ../commands/abbrevCommands.py
++# @+leo-ver=5-thin
++# @+node:ekr.20150514035236.1: * @file ../commands/abbrevCommands.py
+ """Leo's abbreviations commands."""
+-#@+&lt;&lt; abbrevCommands imports &amp; abbreviations &gt;&gt;
+-#@+node:ekr.20150514045700.1: ** &lt;&lt; abbrevCommands imports &amp; abbreviations &gt;&gt;
++
++# @+&lt;&lt; abbrevCommands imports &amp; abbreviations &gt;&gt;
++# @+node:ekr.20150514045700.1: ** &lt;&lt; abbrevCommands imports &amp; abbreviations &gt;&gt;
+ from __future__ import annotations
+ from collections.abc import Callable
+ import functools
+@@ -18,22 +19,31 @@
+     from leo.core.leoGui import LeoKeyEvent
+     from leo.core.leoNodes import Position
+     from leo.plugins.qt_text import QTextEditWrapper as Wrapper
+-#@-&lt;&lt; abbrevCommands imports &amp; abbreviations &gt;&gt;
++# @-&lt;&lt; abbrevCommands imports &amp; abbreviations &gt;&gt;
++
+ 
+ def cmd(name: str) -&gt; Callable:
+     """Command decorator for the abbrevCommands class."""
+-    return g.new_cmd_decorator(name, ['c', 'abbrevCommands',])
+-
+-#@+others
+-#@+node:ekr.20160514095531.1: ** class AbbrevCommands
++    return g.new_cmd_decorator(
++        name,
++        [
++            'c',
++            'abbrevCommands',
++        ],
++    )
++
++
++# @+others
++# @+node:ekr.20160514095531.1: ** class AbbrevCommands
+ class AbbrevCommandsClass(BaseEditCommandsClass):
+     """
+     A class to handle user-defined abbreviations.
+     See apropos-abbreviations for details.
+     """
+-    #@+others
+-    #@+node:ekr.20150514043850.2: *3* abbrev.Birth
+-    #@+node:ekr.20150514043850.3: *4* abbrev.ctor
++
++    # @+others
++    # @+node:ekr.20150514043850.2: *3* abbrev.Birth
++    # @+node:ekr.20150514043850.3: *4* abbrev.ctor
+     def __init__(self, c: Cmdr) -&gt; None:
+         """Ctor for AbbrevCommandsClass class."""
+         # pylint: disable=super-init-not-called
+@@ -41,8 +51,9 @@
+         # Set local ivars.
+         self.abbrevs: dict[str, tuple[str, str]] = {}  # Keys are names, values are (abbrev,tag).
+         self.dynaregex = re.compile(  # For dynamic abbreviations
+-            r'[%s%s\-_]+' % (string.ascii_letters, string.digits))
+-            # Not a unicode problem.
++            r'[%s%s\-_]+' % (string.ascii_letters, string.digits)
++        )
++        # Not a unicode problem.
+         self.n_regex = re.compile(r'(?&lt;!\\)\\n')  # to replace \\n but not \\\\n
+         self.enabled = False
+         self.expanding = False  # True: expanding abbreviations.
+@@ -54,11 +65,13 @@
+         self.store = {'rlist': [], 'stext': ''}  # For dynamic expansion.
+         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
+         self.w = None
+-    #@+node:ekr.20150514043850.5: *4* abbrev.finishCreate &amp; helpers
++
++    # @+node:ekr.20150514043850.5: *4* abbrev.finishCreate &amp; helpers
+     def finishCreate(self) -&gt; None:
+         """AbbrevCommandsClass.finishCreate."""
+         self.reload_settings()
+-    #@+node:ekr.20170221035644.1: *5* abbrev.reload_settings &amp; helpers
++
++    # @+node:ekr.20170221035644.1: *5* abbrev.reload_settings &amp; helpers
+     def reload_settings(self) -&gt; None:
+         """Reload all abbreviation settings."""
+         self.abbrevs = {}
+@@ -68,7 +81,8 @@
+         self.init_env()
+ 
+     reloadSettings = reload_settings
+-    #@+node:ekr.20150514043850.6: *6* abbrev.init_abbrev
++
++    # @+node:ekr.20150514043850.6: *6* abbrev.init_abbrev
+     def init_abbrev(self) -&gt; None:
+         """
+         Init the user abbreviations from @data global-abbreviations
+@@ -77,8 +91,8 @@
+         c = self.c
+         table = (
+             ('global-abbreviations', 'global'),
+-            ('abbreviations', 'local'),
+-        )
++            ('abbreviations',       'local'),
++        )  # fmt: skip
+         for source, tag in table:
+             aList = c.config.getData(source, strip_data=False) or []
+             abbrev, result = [], []
+@@ -103,10 +117,11 @@
+         # fake the next placeholder abbreviation
+         if c.config.getString("abbreviations-next-placeholder"):
+             self.addAbbrevHelper(
+-                f'{c.config.getString("abbreviations-next-placeholder")}'
+-                f'=__NEXT_PLACEHOLDER',
+-                'global')
+-    #@+node:ekr.20150514043850.7: *6* abbrev.init_env
++                f'{c.config.getString("abbreviations-next-placeholder")}=__NEXT_PLACEHOLDER',
++                'global',
++            )
++
++    # @+node:ekr.20150514043850.7: *6* abbrev.init_env
+     def init_env(self) -&gt; None:
+         """
+         Init c.abbrev_subst_env by executing the contents of the
+@@ -134,11 +149,7 @@
+                 v = leoNodes.VNode(context=c)
+                 root = leoNodes.Position(v)
+             # Similar to g.getScript.
+-            script = at.stringToString(
+-                root=root,
+-                s=script,
+-                forcePythonSentinels=True,
+-                sentinels=False)
++            script = at.stringToString(root=root, s=script, forcePythonSentinels=True, sentinels=False)
+             script = script.replace("\r\n", "\n")
+             try:
+                 exec(script, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
+@@ -147,7 +158,8 @@
+                 g.es_exception()
+         else:
+             c.abbrev_subst_start = ''  # Was False.
+-    #@+node:ekr.20150514043850.8: *6* abbrev.init_settings (called from reload_settings)
++
++    # @+node:ekr.20150514043850.8: *6* abbrev.init_settings (called from reload_settings)
+     def init_settings(self) -&gt; None:
+         """Called from AbbrevCommands.reload_settings aka reloadSettings."""
+         c = self.c
+@@ -157,14 +169,16 @@
+         c.abbrev_subst_end = c.config.getString('abbreviations-subst-end')
+         # The environment for all substitutions.
+         # May be augmented in init_env.
+-        c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}, }
++        c.abbrev_subst_env = {
++            'c': c,
++            'g': g,
++            '_values': {},
++        }
+         c.abbrev_subst_start = c.config.getString('abbreviations-subst-start') or ''
+         # Local settings.
+-        self.enabled = (
+-            c.config.getBool('scripting-at-script-nodes') or
+-            c.config.getBool('scripting-abbreviations'))
++        self.enabled = c.config.getBool('scripting-at-script-nodes') or c.config.getBool('scripting-abbreviations')
+         self.globalDynamicAbbrevs = c.config.getBool('globalDynamicAbbrevs')
+-        #@verbatim
++        # @verbatim
+         # @data abbreviations-subst-env must *only* be defined in leoSettings.leo or myLeoSettings.leo!
+         self.subst_env: list[str]
+         if c.config:
+@@ -174,7 +188,8 @@
+                 self.subst_env = []
+             else:
+                 self.subst_env = c.config.getData(key, strip_data=False)
+-    #@+node:ekr.20150514043850.9: *6* abbrev.init_tree_abbrev
++
++    # @+node:ekr.20150514043850.9: *6* abbrev.init_tree_abbrev
+     def init_tree_abbrev(self) -&gt; None:
+         """Init tree_abbrevs_d from @data tree-abbreviations nodes."""
+         c = self.c
+@@ -208,7 +223,8 @@
+             finally:
+                 g.app.disable_redraw = old_disable
+         self.tree_abbrevs_d = d
+-    #@+node:ekr.20170227062001.1: *7* abbrev.init_tree_abbrev_helper
++
++    # @+node:ekr.20170227062001.1: *7* abbrev.init_tree_abbrev_helper
+     def init_tree_abbrev_helper(self, d: dict[str, str], tree_s: str) -&gt; None:
+         """Init d from tree_s, the text of a copied outline."""
+         c = self.c
+@@ -228,7 +244,8 @@
+                             break
+                     else:
+                         g.trace(f"no definition for {abbrev_name}")
+-    #@+node:ekr.20150514043850.11: *3* abbrev.expandAbbrev &amp; helpers (entry point)
++
++    # @+node:ekr.20150514043850.11: *3* abbrev.expandAbbrev &amp; helpers (entry point)
+     def expandAbbrev(self, event: LeoKeyEvent, stroke: g.KeyStroke) -&gt; bool:
+         """
+         Not a command.  Expand abbreviations in event.widget.
+@@ -255,14 +272,18 @@
+         for prefix in prefixes:
+             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
+             if word:
++                # #4462: Make only one substitution in headlines.
++                if w_name.startswith('head'):
++                    ok = self.make_script_substitutions_in_headline(i, p, val)
++                    if ok:
++                        return True
+                 # Fix another part of #438.
+-                if w_name.startswith('head'):
+-                    if val == '__NEXT_PLACEHOLDER':
+-                        i = w.getInsertPoint()
+-                        if i &gt; 0:
+-                            w.delete(i - 1)
+-                            p.h = w.getAllText()
+-                    # Do not call c.endEditing here.
++                if val == '__NEXT_PLACEHOLDER':
++                    i = w.getInsertPoint()
++                    if i &gt; 0:
++                        w.delete(i - 1)
++                        p.h = w.getAllText()
++                # Do not call c.endEditing here.
+                 break
+         else:
+             if trace and verbose:
+@@ -289,19 +310,16 @@
+             if self.save_ins:
+                 ins = self.save_ins
+                 sel1, sel2 = self.save_sel
+-                if sel1 == sel2:
+-                    # New in Leo 5.5
+-                    self.post_pass()
+-                else:
+-                    # some abbreviations *set* the selection range
+-                    # so only restore non-empty ranges
+-                    w.setSelectionRange(sel1, sel2, insert=ins)
++                w.setSelectionRange(sel1, sel2, insert=ins)
+         return True
+-    #@+node:ekr.20161121121636.1: *4* abbrev.exec_content
++
++    # @+node:ekr.20161121121636.1: *4* abbrev.exec_content
+     def exec_content(self, content: str) -&gt; None:
+         """Execute the content in the environment, and return the result."""
+-    #@+node:ekr.20150514043850.12: *4* abbrev.expand_text
+-    def expand_text(self,
++
++    # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
++    def expand_text(
++        self,
+         w: Wrapper,
+         i: int,
+         j: int,
+@@ -327,7 +345,7 @@
+         else:
+             self.find_place_holder(p, do_placeholder)
+ 
+-    #@+node:ekr.20150514043850.13: *4* abbrev.expand_tree (entry) &amp; helpers
++    # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree (entry) &amp; helpers
+     def expand_tree(self, w: Wrapper, i: int, j: int, tree_s: str, word: str) -&gt; None:
+         """
+         Paste tree_s as children of c.p.
+@@ -352,7 +370,8 @@
+         for p in old_p.subtree():
+             if self.find_place_holder(p, do_placeholder):
+                 break
+-    #@+node:ekr.20150514043850.17: *5* abbrev.paste_tree
++
++    # @+node:ekr.20150514043850.17: *5* abbrev.paste_tree
+     def paste_tree(self, old_p: Position, s: str) -&gt; None:
+         """Paste the tree corresponding to s (xml) into the tree."""
+         c = self.c
+@@ -367,7 +386,8 @@
+             c.redraw(old_p)  # 2017/02/27: required.
+         else:
+             g.trace('paste failed')
+-    #@+node:ekr.20150514043850.14: *4* abbrev.find_place_holder
++
++    # @+node:ekr.20150514043850.14: *4* abbrev.find_place_holder
+     def find_place_holder(self, p: Position, do_placeholder: bool) -&gt; bool:
+         """
+         Search for the next place-holder.
+@@ -410,10 +430,11 @@
+             c.bodyWantsFocusNow()
+             return True
+         # #453: do nothing here.
+-            # c.frame.body.forceFullRecolor()
+-            # c.bodyWantsFocusNow()
++        # c.frame.body.forceFullRecolor()
++        # c.bodyWantsFocusNow()
+         return False
+-    #@+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
++
++    # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
+     def make_script_substitutions(self, i: int, j: int, val: str) -&gt; tuple[str, bool]:
+         """Make scripting substitutions in node p."""
+         c = self.c
+@@ -457,32 +478,35 @@
+             do_placeholder = False
+             c.p.v.b = w.getAllText()
+         return val, do_placeholder
+-    #@+node:ekr.20161121102113.1: *4* abbrev.make_script_substitutions_in_headline
+-    def make_script_substitutions_in_headline(self, p: Position) -&gt; bool:
+-        """Make scripting substitutions in p.h."""
+-        c = self.c
+-        p = c.p
+-        pattern = re.compile(r'^(.*)%s(.+)%s(.*)$' % (
+-            re.escape(c.abbrev_subst_start),
+-            re.escape(c.abbrev_subst_end),
+-        ))
+-        changed = False
+-        # Perform at most one scripting substitution.
+-        if m := pattern.match(p.h):
++
++    # @+node:ekr.20161121102113.1: *4* abbrev.make_script_substitutions_in_headline
++    def make_script_substitutions_in_headline(self, i: int, p: Position, val: str) -&gt; bool:
++        """Make the first scripting substitution in p.h."""
++        c = self.c
++        c.endEditing()
++        pattern = re.compile(
++            r'^(.*)%s(.+)%s(.*)$'
++            % (
++                re.escape(c.abbrev_subst_start),
++                re.escape(c.abbrev_subst_end),
++            )
++        )
++        if m := pattern.match(val):
+             content = m.group(2)
+             c.abbrev_subst_env['x'] = ''
+             try:
+                 exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
+                 x = c.abbrev_subst_env.get('x')
+                 if x:
+-                    p.h = f"{m.group(1)}{x}{m.group(3)}"
+-                    changed = True
++                    p.h = f"{p.h[:i]}{m.group(1)}{x}{m.group(3)}"
++                    return True
+             except Exception:
+                 # Leave p.h alone.
+                 g.trace('scripting error in', p.h)
+                 g.es_exception()
+-        return changed
+-    #@+node:ekr.20161121112837.1: *4* abbrev.match_prefix
++        return False
++
++    # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
+     def match_prefix(self, ch: str, i: int, j: int, prefix: str, s: str) -&gt; tuple[int, str, str, str]:
+         """A match helper."""
+         i = j - len(prefix)
+@@ -505,7 +529,8 @@
+             i -= 1
+             word, val = None, None
+         return i, tag, word, val
+-    #@+node:ekr.20150514043850.16: *4* abbrev.next_place
++
++    # @+node:ekr.20150514043850.16: *4* abbrev.next_place
+     def next_place(self, s: str, offset: int = 0) -&gt; tuple[str, int, int]:
+         """
+         Given string s containing a placeholder like &lt;| block |&gt;,
+@@ -526,18 +551,12 @@
+             return s, None, None
+         start = new_pos
+         place_holder_delim = s[new_pos : new_end + len(c.abbrev_place_end)]
+-        place_holder = place_holder_delim[
+-            len(c.abbrev_place_start) : -len(c.abbrev_place_end)]
++        place_holder = place_holder_delim[len(c.abbrev_place_start) : -len(c.abbrev_place_end)]
+         s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
+         end = start + len(place_holder)
+         return s2, start, end
+-    #@+node:ekr.20161121114504.1: *4* abbrev.post_pass
+-    def post_pass(self) -&gt; None:
+-        """The post pass: make script substitutions in all headlines."""
+-        if self.root:
+-            for p in self.root.self_and_subtree():
+-                self.make_script_substitutions_in_headline(p)
+-    #@+node:ekr.20150514043850.18: *4* abbrev.replace_selection
++
++    # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
+     def replace_selection(self, w: Wrapper, i: int, j: int, s: str) -&gt; None:
+         """Replace w[i:j] by s."""
+         p, u = self.c.p, self.c.undoer
+@@ -563,7 +582,8 @@
+             delta = len(s) - len(abbrev)
+             self.save_sel = i + delta, j + delta
+             self.save_ins = ins + delta
+-    #@+node:ekr.20161121111502.1: *4* abbrev_get_ch
++
++    # @+node:ekr.20161121111502.1: *4* abbrev_get_ch
+     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: Wrapper) -&gt; str:
+         """Get the ch from the stroke."""
+         ch = g.checkUnicode(event and event.char or '')
+@@ -578,17 +598,15 @@
+         if stroke:
+             ch = d.get(stroke.s, stroke.s)
+             if len(ch) &gt; 1:
+-                if (stroke.find('Ctrl+') &gt; -1 or
+-                    stroke.find('Alt+') &gt; -1 or
+-                    stroke.find('Meta+') &gt; -1
+-                ):
++                if stroke.find('Ctrl+') &gt; -1 or stroke.find('Alt+') &gt; -1 or stroke.find('Meta+') &gt; -1:
+                     ch = ''
+                 else:
+                     ch = event.char if event else ''
+         else:
+             ch = event.char
+         return ch
+-    #@+node:ekr.20161121112346.1: *4* abbrev_get_prefixes
++
++    # @+node:ekr.20161121112346.1: *4* abbrev_get_prefixes
+     def get_prefixes(self, w: Wrapper) -&gt; tuple[str, int, int, list[str]]:
+         """Return the prefixes at the current insertion point of w."""
+         # New code allows *any* sequence longer than 1 to be an abbreviation.
+@@ -603,8 +621,9 @@
+         if '' not in prefixes:
+             prefixes.append('')
+         return s, i, j, prefixes
+-    #@+node:ekr.20150514043850.19: *3* abbrev.dynamic abbreviation...
+-    #@+node:ekr.20150514043850.20: *4* abbrev.dynamicCompletion C-M-/
++
++    # @+node:ekr.20150514043850.19: *3* abbrev.dynamic abbreviation...
++    # @+node:ekr.20150514043850.20: *4* abbrev.dynamicCompletion C-M-/
+     @cmd('dabbrev-completion')
+     def dynamicCompletion(self, event: LeoKeyEvent = None) -&gt; None:
+         """
+@@ -638,7 +657,8 @@
+             w.setYScrollPosition(ypos)
+             c.undoer.afterChangeNodeContents(p, command='dabbrev-completion', bunch=b)
+             c.recolor()
+-    #@+node:ekr.20150514043850.21: *4* abbrev.dynamicExpansion M-/ &amp; helper
++
++    # @+node:ekr.20150514043850.21: *4* abbrev.dynamicExpansion M-/ &amp; helper
+     @cmd('dabbrev-expands')
+     def dynamicExpansion(self, event: LeoKeyEvent = None) -&gt; None:
+         """
+@@ -666,8 +686,10 @@
+         prefix = functools.reduce(g.longestCommonPrefix, aList)
+         prefix = prefix.strip()
+         self.dynamicExpandHelper(event, prefix, aList, w)
+-    #@+node:ekr.20150514043850.22: *5* abbrev.dynamicExpandHelper
+-    def dynamicExpandHelper(self,
++
++    # @+node:ekr.20150514043850.22: *5* abbrev.dynamicExpandHelper
++    def dynamicExpandHelper(
++        self,
+         event: LeoKeyEvent,
+         prefix: str = None,
+         aList: list[str] = None,
+@@ -709,7 +731,8 @@
+             w.setYScrollPosition(ypos)
+             c.undoer.afterChangeNodeContents(p, command='dabbrev-expand', bunch=b)
+             c.recolor()
+-    #@+node:ekr.20150514043850.23: *4* abbrev.getDynamicList (helper)
++
++    # @+node:ekr.20150514043850.23: *4* abbrev.getDynamicList (helper)
+     def getDynamicList(self, w: Wrapper, s: str) -&gt; list[str]:
+         """Return a list of dynamic abbreviations."""
+         if self.globalDynamicAbbrevs:
+@@ -722,8 +745,9 @@
+             items = self.dynaregex.findall(w.getAllText())
+         items = sorted(set([z for z in items if z.startswith(s)]))
+         return items
+-    #@+node:ekr.20150514043850.24: *3* abbrev.static abbrevs
+-    #@+node:ekr.20150514043850.25: *4* abbrev.addAbbrevHelper
++
++    # @+node:ekr.20150514043850.24: *3* abbrev.static abbrevs
++    # @+node:ekr.20150514043850.25: *4* abbrev.addAbbrevHelper
+     def addAbbrevHelper(self, s: str, tag: str = '') -&gt; None:
+         """Enter the abbreviation 's' into the self.abbrevs dict."""
+         if not s.strip():
+@@ -737,19 +761,30 @@
+             if val.endswith('\n'):
+                 val = val[:-1]
+             val = self.n_regex.sub('\n', val).replace('\\\\n', '\\n')
+-            old, tag = d.get(name, (None, None),)
++            old, tag = d.get(
++                name,
++                (None, None),
++            )
+             if old and old != val and not g.unitTesting:
+-                g.es_print('redefining abbreviation', name,
+-                    '\nfrom', repr(old), 'to', repr(val))
++                g.es_print(
++                    'redefining abbreviation',
++                    name,
++                    '\nfrom',
++                    repr(old),
++                    'to',
++                    repr(val),
++                )
+             d[name] = val, tag
+         except ValueError:
+             g.es_print(f"bad abbreviation: {s}")
+-    #@+node:ekr.20150514043850.28: *4* abbrev.killAllAbbrevs
++
++    # @+node:ekr.20150514043850.28: *4* abbrev.killAllAbbrevs
+     @cmd('abbrev-kill-all')
+     def killAllAbbrevs(self, event: LeoKeyEvent) -&gt; None:
+         """Delete all abbreviations."""
+         self.abbrevs = {}
+-    #@+node:ekr.20150514043850.29: *4* abbrev.listAbbrevs
++
++    # @+node:ekr.20150514043850.29: *4* abbrev.listAbbrevs
+     @cmd('abbrev-list')
+     def listAbbrevs(self, event: LeoKeyEvent = None) -&gt; None:
+         """List all abbreviations."""
+@@ -766,7 +801,8 @@
+                 g.es_print('', f"{tag}{name}={val}")
+         else:
+             g.es_print('No present abbreviations')
+-    #@+node:ekr.20150514043850.32: *4* abbrev.toggleAbbrevMode
++
++    # @+node:ekr.20150514043850.32: *4* abbrev.toggleAbbrevMode
+     @cmd('toggle-abbrev-mode')
+     def toggleAbbrevMode(self, event: LeoKeyEvent = None) -&gt; None:
+         """Toggle abbreviation mode."""
+@@ -775,6 +811,9 @@
+         k.keyboardQuit()
+         if not g.unitTesting and not g.app.batchMode:
+             g.es('Abbreviations are ' + 'on' if k.abbrevOn else 'off')
+-    #@-others
+-#@-others
+-#@-leo
++
++    # @-others
++
++
++# @-others
++# @-leo
+@language python
+'''
+)</t>
 </tnodes>
 </leo_file>

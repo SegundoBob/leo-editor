@@ -817,7 +817,7 @@ class GitDiffController:
         self.finish()
 
     # @+node:ekr.20180507212821.1: *4* gdc.diff_two_revs
-    def diff_two_revs(self, rev1: str = 'HEAD', rev2: str = '') -> None:
+    def diff_two_revs(self, rev1: str = 'HEAD', rev2: str = '', path: str = None) -> None:
         """
         Create an outline describing the git diffs for all files changed
         between rev1 and rev2.
@@ -827,7 +827,7 @@ class GitDiffController:
         if not self.get_parent_of_git_directory():
             return
         # Get list of changed files.
-        files = self.get_files(rev1, rev2)
+        files = self.get_files(rev1, rev2, path=path)
         n = len(files)
         message = f"diffing {n} file{g.plural(n)}"
         if not g.unitTesting:
@@ -1201,7 +1201,7 @@ class GitDiffController:
             g.trace('Unknown kind', repr(b.kind))
 
     # @+node:ekr.20260112115313.1: *4* gdc.summary_diff_two_revs
-    def summary_diff_two_revs(self, rev1: str = 'HEAD', rev2: str = '') -> None:
+    def summary_diff_two_revs(self, rev1: str = 'HEAD', rev2: str = '', path: str = None) -> None:
         """
         Create an outline describing the git diffs for all files changed
         between rev1 and rev2.
@@ -1210,7 +1210,7 @@ class GitDiffController:
         if not self.get_parent_of_git_directory():
             return
         # Get list of changed files.  This is fast.
-        files = self.get_files(rev1, rev2)
+        files = self.get_files(rev1, rev2, path=path)
         if not g.unitTesting:
             n = len(files)
             message = f"diffing {n} file{g.plural(n)}"
@@ -1221,7 +1221,7 @@ class GitDiffController:
         undoData = u.beforeInsertNode(c.p)  # c.p is subject of 'insertAfter'
         self.root = c.lastTopLevel().insertAfter()
         self.root.h = f"git summary diff revs: {rev1} {rev2}"
-        self.root.b = '@ignore\n@nosearch\n'
+        self.root.b = '@nosearch\n'
         for i, fn in enumerate(files):
             if fn.endswith('.py'):
                 self.summary_diff_python_file(fn=fn, rev1=rev1, rev2=rev2)
@@ -1253,7 +1253,7 @@ class GitDiffController:
         kind = 'Added' if not s1 else 'Deleted' if not s2 else 'Changed'
         child.h = f"{kind}: {fn}"
         result_s = self.remove_cruft(diff_list) if s1 and s2 else ''.join(diff_list)
-        child.b = f"@ignore\n@nosearch\n@language python\n{result_s}"
+        child.b = f"@nosearch\n@language python\n{result_s}"
 
     # @+node:ekr.20260112130340.1: *5* gdc.remove_cruft
     def remove_cruft(self, diff_list: list[str]) -> str:
@@ -1509,17 +1509,26 @@ class GitDiffController:
             return ''
 
     # @+node:ekr.20170806094320.9: *4* gdc.get_files
-    def get_files(self, rev1: str, rev2: str) -> list[str]:
+    def get_files(self, rev1: str, rev2: str, path: str = None) -> list[str]:
         """Return a list of changed files."""
         # #2143
-        directory = self.get_parent_of_git_directory()
-        if not directory:
+        git_directory = self.get_parent_of_git_directory()
+        if not git_directory:
             return []
+
+        # Check that path exists relative to the git directory.
+        if path:
+            path_directory = f"{git_directory}{os.sep}{path}"
+            if not os.path.exists(path_directory):
+                g.trace(f"Not found: {path_directory}")
+                return []
         command = f"git diff --name-only {(rev1 or '')} {(rev2 or '')}"
+        if path:
+            command = f"{command} -- {path}"
         # #1781: Allow diffs of .leo files.
         return [
             z.strip()
-            for z in g.execGitCommand(command, directory)
+            for z in g.execGitCommand(command, git_directory)
             # #3994: binary files can corrupt the outline.
             if not z.strip().endswith(
                 (
