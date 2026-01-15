@@ -420,8 +420,11 @@ class CheckNodes:
         )
         leading_blank_line = p.b.strip() and not lines[0].strip()
         empty_body = (
-            not p.b.strip() and not p.hasChildren() and not any(p.h.startswith(z) for z in self.ok_head_prefixes)
-        )
+            not p.b.strip()
+            and not p.hasChildren()
+            and not any(p.h.startswith(z)
+            for z in self.ok_head_prefixes)
+        )  # fmt: skip
         trailing_class_or_def = len(stripped_lines) > 1 and stripped_lines[-1].startswith(('class ', 'def '))
         return any((too_many_defs, leading_blank_line, empty_body, trailing_class_or_def))
 

@@ -91,8 +91,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c = self.c
         table = (
             ('global-abbreviations', 'global'),
-            ('abbreviations',       'local'),
-        )  # fmt: skip
+            ('abbreviations', 'local'),
+        )
         for source, tag in table:
             aList = c.config.getData(source, strip_data=False) or []
             abbrev, result = [], []
@@ -149,7 +149,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 v = leoNodes.VNode(context=c)
                 root = leoNodes.Position(v)
             # Similar to g.getScript.
-            script = at.stringToString(root=root, s=script, forcePythonSentinels=True, sentinels=False)
+            script = at.stringToString(
+                root=root,
+                s=script,
+                forcePythonSentinels=True,
+                sentinels=False,
+            )
             script = script.replace("\r\n", "\n")
             try:
                 exec(script, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
@@ -176,7 +181,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         }
         c.abbrev_subst_start = c.config.getString('abbreviations-subst-start') or ''
         # Local settings.
-        self.enabled = c.config.getBool('scripting-at-script-nodes') or c.config.getBool('scripting-abbreviations')
+        self.enabled = (
+            c.config.getBool('scripting-at-script-nodes') or
+            c.config.getBool('scripting-abbreviations')
+        )  # fmt: skip
         self.globalDynamicAbbrevs = c.config.getBool('globalDynamicAbbrevs')
         # @verbatim
         # @data abbreviations-subst-env must *only* be defined in leoSettings.leo or myLeoSettings.leo!
@@ -278,13 +286,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                     if ok:
                         return True
                 # Fix another part of #438.
-                if val == '__NEXT_PLACEHOLDER':
-                    i = w.getInsertPoint()
-                    if i > 0:
-                        w.delete(i - 1)
-                        p.h = w.getAllText()
-                # Do not call c.endEditing here.
-                break
+                if w_name.startswith('head'):
+                    if val == '__NEXT_PLACEHOLDER':
+                        i = w.getInsertPoint()
+                        if i > 0:
+                            w.delete(i - 1)
+                            p.h = w.getAllText()
+                    # Do not call c.endEditing here.
+                    break
         else:
             if trace and verbose:
                 g.trace(f"No prefix in {s!r}")
@@ -598,7 +607,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if stroke:
             ch = d.get(stroke.s, stroke.s)
             if len(ch) > 1:
-                if stroke.find('Ctrl+') > -1 or stroke.find('Alt+') > -1 or stroke.find('Meta+') > -1:
+                if (
+                    stroke.find('Ctrl+') > -1 or
+                    stroke.find('Alt+') > -1 or
+                    stroke.find('Meta+') > -1
+                ):  # fmt: skip
                     ch = ''
                 else:
                     ch = event.char if event else ''
@@ -767,13 +780,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             )
             if old and old != val and not g.unitTesting:
                 g.es_print(
-                    'redefining abbreviation',
-                    name,
-                    '\nfrom',
-                    repr(old),
-                    'to',
-                    repr(val),
-                )
+                    'redefining abbreviation', name,
+                    '\nfrom', repr(old),
+                    'to', repr(val),
+                )  # fmt: skip
             d[name] = val, tag
         except ValueError:
             g.es_print(f"bad abbreviation: {s}")
