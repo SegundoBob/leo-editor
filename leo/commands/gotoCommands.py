@@ -207,14 +207,10 @@ class GoToCommands:
                     node_offset = 0
                 elif s2.startswith('@-node'):
                     gnx = node_offset = None
-                elif s2.startswith(
-                    ('@+others', '@+<<'),
-                ):
+                elif s2.startswith(('@+others', '@+<<')):
                     stack.append((gnx, h, node_offset))
                     gnx, node_offset = None, None
-                elif s2.startswith(
-                    ('@-others', '@-<<'),
-                ):
+                elif s2.startswith(('@-others', '@-<<')):
                     gnx, h, node_offset = stack.pop()
             else:
                 # All non-sentinel lines are visible.

@@ -286,14 +286,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                     if ok:
                         return True
                 # Fix another part of #438.
-                if w_name.startswith('head'):
-                    if val == '__NEXT_PLACEHOLDER':
-                        i = w.getInsertPoint()
-                        if i > 0:
-                            w.delete(i - 1)
-                            p.h = w.getAllText()
-                    # Do not call c.endEditing here.
-                    break
+                if val == '__NEXT_PLACEHOLDER':
+                    i = w.getInsertPoint()
+                    if i > 0:
+                        w.delete(i - 1)
+                        p.h = w.getAllText()
+                # Do not call c.endEditing here.
+                break
         else:
             if trace and verbose:
                 g.trace(f"No prefix in {s!r}")
