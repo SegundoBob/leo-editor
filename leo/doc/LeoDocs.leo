@@ -33342,18 +33342,21 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 </t>
 <t tx="ekr.20251204122149.1">.. _`PR #4467`: https://github.com/leo-editor/leo-editor/pull/4467
 .. _`PR #4484`: https://github.com/leo-editor/leo-editor/pull/4484
+.. _`PR #4487`: https://github.com/leo-editor/leo-editor/pull/4487
 .. _`PR #4490`: https://github.com/leo-editor/leo-editor/pull/4490
-.. _`PR #4492`: https://github.com/leo-editor/leo-editor/pull/4492
-.. _`PR #4493`: https://github.com/leo-editor/leo-editor/pull/4493
-.. _`PR #4494`: https://github.com/leo-editor/leo-editor/pull/4494
 .. _`PR #4502`: https://github.com/leo-editor/leo-editor/pull/4502
 .. _`PR #4503`: https://github.com/leo-editor/leo-editor/pull/4503
-.. _`PR #4507`: https://github.com/leo-editor/leo-editor/pull/4507
+
+.. Separate PR's related to beautifying. It's simpler to refer to PR #4490.
+..  .. _`PR #4492`: https://github.com/leo-editor/leo-editor/pull/4492
+..  .. _`PR #4493`: https://github.com/leo-editor/leo-editor/pull/4493
+..  .. _`PR #4494`: https://github.com/leo-editor/leo-editor/pull/4494
+..  .. _`PR #4507`: https://github.com/leo-editor/leo-editor/pull/4507
 
 - `PR #4467`_: Remove support for leoflexx and --gui=browser.
 - `PR #4484`_: Add check_leo script.
 - `PR #4490`_, Add support for ruff format and retire Leo's legacy beautier.
-- `PR #4492`_, `PR #4493`_, `PR #4494`_, `PR #4503`_, `PR #4507`_: Reformat Leo using ruff format.
+- `PR #4487`_: Reformat Leo using ruff format.
 - `PR #4503`_ and `PR #4506`_: Add gdc.summary_diff_two_revs script helper.
 
 **Add settings for ruff format**
