@@ -11899,7 +11899,7 @@ rest_comments_literal1_font_weight = normal
 If not given, Leo's beautifier uses Leo's pyproject.toml file.
 </t>
 <t tx="ekr.20260111055136.1"># If given, this setting overrides any value in pyproject.toml or ruff.toml
-# Leo uses 120 for its own files.</t>
+# Leo uses pyproject.toml to give line length.</t>
 <t tx="felix.20220506230435.1">True: (Legacy) The goto-first-visible-node and goto-first-visible-node commands collapse all nodes that are not ancestors of the target node that is selected.
 
 False: (Recommended) The commands act as simple navigation commands, and do not change the outline state.</t>

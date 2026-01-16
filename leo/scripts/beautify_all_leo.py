@@ -26,7 +26,7 @@ os.chdir(leo_editor_dir)
 # Define components of a single command.
 arg_list = (
     f"--config {leo_editor_dir}{os.sep}pyproject.toml",
-    '--config line-length=120',
+    # '--config line-length=120',
     # '--verbose',
 )
 args = ' '.join(arg_list)
