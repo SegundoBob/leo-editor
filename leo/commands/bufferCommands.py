@@ -19,13 +19,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 def cmd(name: str) -> Callable:
     """Command decorator for the BufferCommands class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'bufferCommands',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'bufferCommands'])
 
 
 # @+others
