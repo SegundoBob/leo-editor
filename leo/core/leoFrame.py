@@ -756,9 +756,8 @@ class LeoLog:
         self.frameDict: dict[str, Widget] = {}  # Keys are page names. Values are Frames
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
-        self.textDict: dict[
-            str, Widget
-        ] = {}  # Keys are page names. Values are logCtrl's (text widgets).
+        # Keys are page names. Values are logCtrl's (text widgets).
+        self.textDict: dict[str, Widget] = {}
         self.wrapper: TextAPI = None  # For cursesGui2.py.
 
     # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
@@ -1809,9 +1808,8 @@ class NullTree(LeoTree):
         super().__init__(frame)
         assert self.frame
         self.c = frame.c
-        self.editWidgetsDict: dict[
-            VNode, Widget
-        ] = {}  # Keys are vnodes, values are StringTextWidgets.
+        # Keys are vnodes, values are StringTextWidgets.
+        self.editWidgetsDict: dict[VNode, Widget] = {}
         self.font = None
         self.fontName = None
         self.canvas = None
