@@ -2199,9 +2199,8 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             return ''.join(lines).replace(self.kill_semicolons_flag, '\n')
 
         # @+node:ekr.20231119103026.32: *8* py2rust.do_assignment
-        assignment_pat = re.compile(
-            r'^([ \t]*)(.*?)\s+=\s+(.*)$'
-        )  # Require whitespace around the '='
+        # Require whitespace around the '='
+        assignment_pat = re.compile(r'^([ \t]*)(.*?)\s+=\s+(.*)$')
 
         def do_assignment(self, lines: list[str]) -> None:
             """Add let to all non-tuple assignments."""
@@ -2261,10 +2260,10 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 assert i > progress
 
         # @+node:ekr.20231119103026.34: *8* py2rust.do_ternary
-        ternary_pat1 = re.compile(r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$')  # assignment
-        ternary_pat2 = re.compile(
-            r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$'
-        )  # return statement
+        # assignment
+        ternary_pat1 = re.compile(r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$')
+        # return statement
+        ternary_pat2 = re.compile(r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$')
 
         def do_ternary(self, lines: list[str]) -> None:
             i = 0
@@ -2984,9 +2983,8 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             self.move_docstrings(lines)
             self.do_f_strings(lines)
             self.do_ternary(lines)
-            self.do_assignment(
-                lines
-            )  # Do this last, so it doesn't add 'const' to inserted comments.
+            # Do this last, so it doesn't add 'const' to inserted comments.
+            self.do_assignment(lines)
             s = (
                 ''.join(lines)
                 .replace('@language python', '@language typescript')
@@ -2995,9 +2993,8 @@ class ConvertCommandsClass(BaseEditCommandsClass):
             return re.sub(r'\bNone\b', 'null', s)
 
         # @+node:ekr.20211021061023.1: *8* py2ts.do_assignment
-        assignment_pat = re.compile(
-            r'^([ \t]*)(.*?)\s+=\s+(.*)$'
-        )  # Require whitespace around the '='
+        # Require whitespace around the '='
+        assignment_pat = re.compile(r'^([ \t]*)(.*?)\s+=\s+(.*)$')
 
         def do_assignment(self, lines: list[str]) -> None:
             """Add const to all non-tuple assignments."""
@@ -3068,10 +3065,10 @@ class ConvertCommandsClass(BaseEditCommandsClass):
                 assert i > progress
 
         # @+node:ekr.20211021051033.1: *8* py2ts.do_ternary
-        ternary_pat1 = re.compile(r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$')  # assignment
-        ternary_pat2 = re.compile(
-            r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$'
-        )  # return statement
+        # assignment
+        ternary_pat1 = re.compile(r'^([ \t]*)(.*?)\s*=\s*(.*?) if (.*?) else (.*);$')
+        # return statement
+        ternary_pat2 = re.compile(r'^([ \t]*)return\s+(.*?) if (.*?) else (.*);$')
 
         def do_ternary(self, lines: list[str]) -> None:
             i = 0

@@ -2325,9 +2325,10 @@ class EditCommandsClass(BaseEditCommandsClass):
         else:
             w.insert(i, ch)
             w.setInsertPoint(i + 1)
-            if c.autoindent_in_nocolor or (
-                c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change"
-            ):
+            if (
+                c.autoindent_in_nocolor
+                or c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change"
+            ):  # fmt: skip
                 # No auto-indent if in @nocolor mode or after a Change command.
                 self.updateAutoIndent(p, w)
         w.seeInsertPoint()

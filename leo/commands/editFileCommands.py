@@ -927,9 +927,8 @@ class GitDiffController:
         i: int,  # The index into contents_list and revs_list
         path: str,
         contents_list: list[list[str]],  # Lines for each contents.
-        node_patterns: list[
-            tuple[str, re.Pattern]
-        ],  # Patterns matching @+node sentinels for each gnx.
+        # Patterns matching @+node sentinels for each gnx.
+        node_patterns: list[tuple[str, re.Pattern]],
         revs_list: list[str],
     ) -> Optional[g.Bunch]:
         """
