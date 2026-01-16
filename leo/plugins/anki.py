@@ -60,7 +60,9 @@ def _request(action, **params):
 
 def _invoke(action, **params):
     requestJson = json.dumps(_request(action, **params)).encode('utf-8')
-    response = json.load(urllib.request.urlopen(urllib.request.Request('http://localhost:8765', requestJson)))
+    response = json.load(
+        urllib.request.urlopen(urllib.request.Request('http://localhost:8765', requestJson))
+    )
     if len(response) != 2:
         raise TypeError('response has an unexpected number of fields')
     if 'error' not in response:
@@ -92,7 +94,10 @@ def anki_warn(deck, front, back):
 def anki_deck_check(deck):
     result = _invoke('deckNames')
     if deck not in result:
-        g.es('Specified deck is %s. But it is present in your list of desks. Creating now...' % (deck))
+        g.es(
+            'Specified deck is %s. But it is present in your list of desks. Creating now...'
+            % (deck)
+        )
         result = _invoke('createDeck', deck=deck)
         g.es('Created %s with id %s' % (deck, str(result)))
 
