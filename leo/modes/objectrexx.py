@@ -302,7 +302,9 @@ def objectrexx_rule22(colorer, s, i):
 
 
 def objectrexx_rule23(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def objectrexx_rule24(colorer, s, i):

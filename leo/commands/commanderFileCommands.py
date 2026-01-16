@@ -571,7 +571,9 @@ def saveAs(self: Self, event: LeoKeyEvent = None, fileName: str = None) -> None:
 @g.commander_command('save-to')
 @g.commander_command('file-save-to')
 @g.commander_command('save-file-to')
-def saveTo(self: Self, event: LeoKeyEvent = None, fileName: str = None, silent: bool = False) -> None:
+def saveTo(
+    self: Self, event: LeoKeyEvent = None, fileName: str = None, silent: bool = False
+) -> None:
     """
     Save a copy of the Leo outline to a file, prompting for a new file name.
     Leave the file name of the Leo outline unchanged.

@@ -519,7 +519,9 @@ class LeoImportCommands:
     # @+node:ekr.20031218072017.3303: *4* ic.removeSentinelLines
     # This does not handle @nonl properly, but that no longer matters.
 
-    def removeSentinelLines(self, s: str, line_delim: str, start_delim: str, unused_end_delim: str) -> str:
+    def removeSentinelLines(
+        self, s: str, line_delim: str, start_delim: str, unused_end_delim: str
+    ) -> str:
         """Properly remove all sentinel lines in s."""
         delim = (line_delim or start_delim or '') + '@'
         verbatim = delim + 'verbatim'
@@ -2373,7 +2375,9 @@ class ToDoTask:
         start_s = self.start_date if self.start_date else ''
         end_s = self.complete_date if self.complete_date else ''
         mark_s = '[X]' if self.completed else '[ ]'
-        result = [f"Task: {mark_s} {self.priority:1} start: {start_s:10} end: {end_s:10} {self.task_s}"]
+        result = [
+            f"Task: {mark_s} {self.priority:1} start: {start_s:10} end: {end_s:10} {self.task_s}"
+        ]
         for ivar in ('contexts', 'projects', 'key_vals'):
             aList = getattr(self, ivar, None)
             if aList:
@@ -2467,7 +2471,9 @@ class ZimImportController:
             name = result[1].decode('utf-8')
             unquote = urllib.parse.unquote
             # mypy: error: "str" has no attribute "decode"; maybe "encode"?  [attr-defined]
-            path = [g.os_path_abspath(g.os_path_join(pathToZim, unquote(result[2]).decode('utf-8')))]  # type:ignore
+            path = [
+                g.os_path_abspath(g.os_path_join(pathToZim, unquote(result[2]).decode('utf-8')))
+            ]  # type:ignore
             results.append((level, name, path))
         return results
 
@@ -2691,7 +2697,9 @@ class LegacyExternalFileImporter:
             ("Legacy external files", "*.py"),
             ("All files", "*"),
         ]
-        paths = g.app.gui.runOpenFilesDialog(c, title="Import Legacy External Files", filetypes=filetypes)
+        paths = g.app.gui.runOpenFilesDialog(
+            c, title="Import Legacy External Files", filetypes=filetypes
+        )
         c.bringToFront()
         if paths:
             g.chdir(paths[0])

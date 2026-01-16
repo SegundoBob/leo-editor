@@ -184,14 +184,22 @@ def _add_call_item_to_queue(pending_work_items, work_ids, call_queue):
             work_item = pending_work_items[work_id]
 
             if work_item.future.set_running_or_notify_cancel():
-                call_queue.put(_CallItem(work_id, work_item.fn, work_item.args, work_item.kwargs), block=True)
+                call_queue.put(
+                    _CallItem(work_id, work_item.fn, work_item.args, work_item.kwargs), block=True
+                )
             else:
                 del pending_work_items[work_id]
                 continue
 
 
 def _queue_manangement_worker(
-    executor_reference, processes, pending_work_items, work_ids_queue, call_queue, result_queue, shutdown_process_event
+    executor_reference,
+    processes,
+    pending_work_items,
+    work_ids_queue,
+    call_queue,
+    result_queue,
+    shutdown_process_event,
 ):
     """Manages the communication between this process and the worker processes.
 
@@ -301,7 +309,8 @@ class ProcessPoolExecutor(_base.Executor):
     def _adjust_process_count(self):
         for _ in range(len(self._processes), self._max_workers):
             p = multiprocessing.Process(
-                target=_process_worker, args=(self._call_queue, self._result_queue, self._shutdown_process_event)
+                target=_process_worker,
+                args=(self._call_queue, self._result_queue, self._shutdown_process_event),
             )
             p.start()
             self._processes.add(p)

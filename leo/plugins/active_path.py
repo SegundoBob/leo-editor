@@ -142,10 +142,14 @@ def attachToCommander(t, k):
     }
 
     if c.config.getData('active_path_ignore'):
-        c.__active_path['ignore'] = [re.compile(i, re.IGNORECASE) for i in c.config.getData('active_path_ignore')]
+        c.__active_path['ignore'] = [
+            re.compile(i, re.IGNORECASE) for i in c.config.getData('active_path_ignore')
+        ]
 
     if c.config.getData('active_path_autoload'):
-        c.__active_path['autoload'] = [re.compile(i, re.IGNORECASE) for i in c.config.getData('active_path_autoload')]
+        c.__active_path['autoload'] = [
+            re.compile(i, re.IGNORECASE) for i in c.config.getData('active_path_autoload')
+        ]
 
     if c.config.getBool('active-path-load-docstring'):
         c.__active_path['load_docstring'] = True
@@ -373,7 +377,9 @@ def createFile(c, parent, d):
 
     d = os.path.basename(d)
     atType = c.config.getString('active-path-attype') or 'auto'
-    ok = g.app.gui.runAskYesNoDialog(c, 'Create / load file?', 'Create file @' + atType + ' ' + d + '?')
+    ok = g.app.gui.runAskYesNoDialog(
+        c, 'Create / load file?', 'Create file @' + atType + ' ' + d + '?'
+    )
     if ok == 'no':
         return False
     parent.h = '@' + atType + ' ' + d
@@ -414,7 +420,9 @@ def openFile(c, parent, d, autoload=False):
             return
 
         if oversize:
-            if not query(c, "File size greater than %d bytes, continue?" % c.__active_path['max_size']):
+            if not query(
+                c, "File size greater than %d bytes, continue?" % c.__active_path['max_size']
+            ):
                 return
 
     if autoload and oversize:
@@ -484,7 +492,11 @@ def openDir(c, parent, d):
                 entry = entry[len(directive[0]) :].strip()
         # find existing inc/exc nodes to remove
         # using p.h allows for example exc=/ to remove all directories
-        if not checkIncExc(p.h, inc, exc, regEx) or (excdirs and entry in dirs) or (excfiles and entry in files):
+        if (
+            not checkIncExc(p.h, inc, exc, regEx)
+            or (excdirs and entry in dirs)
+            or (excfiles and entry in files)
+        ):
             toRemove.add(p.h)  # must not strip '/', so nodes can be removed
         else:
             oldlist.add(entry)
@@ -500,7 +512,10 @@ def openDir(c, parent, d):
         if d2 in oldlist:
             oldlist.discard(d2)
         else:
-            if checkIncExc(d2, [i.strip('/') for i in inc], [e.strip('/') for e in exc], regEx) and not excdirs:
+            if (
+                checkIncExc(d2, [i.strip('/') for i in inc], [e.strip('/') for e in exc], regEx)
+                and not excdirs
+            ):
                 newlist.append('/' + d2 + '/')
 
     # files trimmed by toRemove, retains original functionality of plugin
@@ -528,7 +543,11 @@ def openDir(c, parent, d):
             p.b = '@path ' + name.strip('/')
         elif c.__active_path['do_autoload'] and inReList(name, c.__active_path['autoload']):
             openFile(c, p, os.path.join(d, p.h), autoload=True)
-        elif c.__active_path['do_autoload'] and c.__active_path['load_docstring'] and name.lower().endswith(".py"):
+        elif (
+            c.__active_path['do_autoload']
+            and c.__active_path['load_docstring']
+            and name.lower().endswith(".py")
+        ):
             # do_autoload suppresses doc string loading because turning
             # autoload off is supposed to address situations where autoloading
             # causes problems, so don't still do some form of autoloading

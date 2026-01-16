@@ -359,11 +359,17 @@ class CheckLeo:
             f"in {t3 - t1:.2f} sec."
         )
         if report_times:
-            print(f"Setup: {t2 - t1:.2f} sec.\n Scan: {t3 - t2:.2f} sec.\nTotal: {t3 - t1:.2f} sec.")
+            print(
+                f"Setup: {t2 - t1:.2f} sec.\n Scan: {t3 - t2:.2f} sec.\nTotal: {t3 - t1:.2f} sec."
+            )
         if report_all_args:
             report_set(all_args, 'function/method args')
         if report_unusual_attrs:
-            unusual_attrs = [z for z in all_attrs if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')]
+            unusual_attrs = [
+                z
+                for z in all_attrs
+                if not z.startswith(('"', "'")) and any(z2 in z for z2 in '()[]{}')
+            ]
             print(f"{len(unusual_attrs)} Unusual attrs..")
             for z in sorted(list(unusual_attrs)):
                 print(f"  {z}")

@@ -238,7 +238,9 @@ class LeoMenu:
             self.createMenuEntries(parentMenu, table)
 
     # @+node:ekr.20070927172712: *6* LeoMenu.handleSpecialMenus
-    def handleSpecialMenus(self, name: str, parentName: str, alt_name: str = None, table: list = None) -> bool:
+    def handleSpecialMenus(
+        self, name: str, parentName: str, alt_name: str = None, table: list = None
+    ) -> bool:
         """
         Handle a special menu if name is the name of a special menu.
         return True if this method handles the menu.
@@ -473,7 +475,9 @@ class LeoMenu:
                 amp_index = index_label.find("&")
                 index_label = index_label.replace("&", "")
                 index = parent.index(index_label)
-                self.insert_cascade(parent, index=index, label=label, menu=menu, underline=amp_index)
+                self.insert_cascade(
+                    parent, index=index, label=label, menu=menu, underline=amp_index
+                )
             else:
                 self.add_cascade(parent, label=label, menu=menu, underline=amp_index)
             return menu
@@ -691,7 +695,9 @@ class LeoMenu:
     ) -> None:
         pass
 
-    def insert_cascade(self, parent: Widget, index: int, label: str, menu: Menu, underline: int) -> Widget:
+    def insert_cascade(
+        self, parent: Widget, index: int, label: str, menu: Menu, underline: int
+    ) -> Widget:
         pass
 
     def new_menu(self, parent: Widget, tearoff: int = 0, label: str = '') -> Menu:

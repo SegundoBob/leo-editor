@@ -228,7 +228,9 @@ class Commands:
         """Init ivars used while executing a command."""
         self.commandsDict: dict[str, Callable] = {}  # Keys are command names, values are functions.
         self.disableCommandsMessage = ''  # The presence of this message disables all commands.
-        self.hookFunction: Optional[Callable] = None  # One of three places that g.doHook looks for hook functions.
+        self.hookFunction: Optional[Callable] = (
+            None  # One of three places that g.doHook looks for hook functions.
+        )
         self.ignoreChangedPaths = False  # True: disable path changed message in at.WriteAllHelper.
         self.inCommand = False  # Interlocks to prevent premature closing of a window.
         self.outlineToNowebDefaultFileName: str = "noweb.nw"  # For Outline To Noweb dialog.
@@ -254,7 +256,9 @@ class Commands:
         self.expansionNode = None  # The last node we expanded or contracted.
         self.nodeConflictList: list[Position] = []  # List of nodes with conflicting read-time data.
         self.nodeConflictFileName: Optional[str] = None  # The fileName for c.nodeConflictList.
-        self.user_dict: dict[str, Value] = {}  # Non-persistent dictionary for free use by scripts and plugins.
+        self.user_dict: dict[
+            str, Value
+        ] = {}  # Non-persistent dictionary for free use by scripts and plugins.
 
     # @+node:ekr.20120217070122.10467: *5* c.initEventIvars
     def initEventIvars(self) -> None:
@@ -279,9 +283,13 @@ class Commands:
         self.ignored_at_file_nodes: list[Position] = []  # List of nodes for c.raise_error_dialogs.
         self.import_error_nodes: list[Position] = []  # List of nodes for c.raise_error_dialogs.
         self.last_dir: str = None  # The last used directory.
-        self.mFileName: str = fileName or ''  # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
+        self.mFileName: str = (
+            fileName or ''
+        )  # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
         self.mRelativeFileName = relativeFileName or ''
-        self.orphan_at_file_nodes: list[Position] = []  # List of orphaned nodes for c.raise_error_dialogs.
+        self.orphan_at_file_nodes: list[
+            Position
+        ] = []  # List of orphaned nodes for c.raise_error_dialogs.
 
     # @+node:ekr.20120217070122.10470: *5* c.initObjects
     def initObjects(self, gui: LeoGui) -> None:
@@ -652,7 +660,9 @@ class Commands:
         c.fixedWindowPositionData = getData('fixedWindowPosition')
         c.focus_border_color = getColor('focus-border-color') or 'red'
         c.focus_border_command_state_color = getColor('focus-border-command-state-color') or 'blue'
-        c.focus_border_overwrite_state_color = getColor('focus-border-overwrite-state-color') or 'green'
+        c.focus_border_overwrite_state_color = (
+            getColor('focus-border-overwrite-state-color') or 'green'
+        )
         c.focus_border_width = getInt('focus-border-width') or 1  # pixels
         c.forceExecuteEntireBody = getBool('force-execute-entire-body', default=False)
         c.make_node_conflicts_node = getBool('make-node-conflicts-node', default=True)
@@ -1156,14 +1166,18 @@ class Commands:
                         'Cannot find a terminal to launch the external file',
                         color='red',
                     )
-                    g.es(f'   You can specify a terminal in an "@data {MAP_SETTING_NODE}" setting node')
+                    g.es(
+                        f'   You can specify a terminal in an "@data {MAP_SETTING_NODE}" setting node'
+                    )
                     g.es('  ', SETTINGS_HELP)
                     return
 
                 shell_name = getShell()
                 execute_arg = getTermExecuteCmd(term)
                 if (not processor) and checkShebang(fullpath):
-                    cmd_ = f"""{term} {execute_arg}"{shell_name} -c 'cd {direc}; {fullpath} ;read'" """
+                    cmd_ = (
+                        f"""{term} {execute_arg}"{shell_name} -c 'cd {direc}; {fullpath} ;read'" """
+                    )
                 elif processor:
                     cmd_ = f"""{term} {execute_arg}"{shell_name} -c 'cd {direc};{processor} {fullpath} ;read'" """
                 else:
@@ -1370,7 +1384,9 @@ class Commands:
                         namespace = namespace or {}
                         namespace.update(script_gnx=script_p.gnx)
                     # We *always* execute the script with p = c.p.
-                    callResult = c.executeScriptHelper(args, define_g, define_name, namespace, script)
+                    callResult = c.executeScriptHelper(
+                        args, define_g, define_name, namespace, script
+                    )
                 except KeyboardInterrupt:
                     g.es('interrupted')
                 except Exception:
@@ -2641,7 +2657,9 @@ class Commands:
 
         # For unit testing.
         strict = 'test:strict' in g.app.debug
-        verbose = any(z in g.app.debug for z in ('test:verbose', 'gnx', 'shutdown', 'startup', 'verbose'))
+        verbose = any(
+            z in g.app.debug for z in ('test:verbose', 'gnx', 'shutdown', 'startup', 'verbose')
+        )
         error_list, messages, n = find_errors()
         if n == 0:
             return 0
@@ -2743,7 +2761,9 @@ class Commands:
             g.es_exception()
             if dump:
                 # Write the invalid ouitline to the corresponding leo.txt file.
-                filename = os.path.normpath(os.path.expanduser(f"~/.leo/BAD-{c.shortFileName()}.txt"))
+                filename = os.path.normpath(
+                    os.path.expanduser(f"~/.leo/BAD-{c.shortFileName()}.txt")
+                )
                 try:
                     with open(filename, 'bw') as f:
                         for s in g.splitLines(translated_contents):
@@ -2776,7 +2796,9 @@ class Commands:
                     g.enl()
                 # @-<< print dots >>
             if c.getLanguage(p) == "python":
-                if not g.scanForAtSettings(p) and (not ignoreAtIgnore or not g.scanForAtIgnore(c, p)):
+                if not g.scanForAtSettings(p) and (
+                    not ignoreAtIgnore or not g.scanForAtIgnore(c, p)
+                ):
                     try:
                         c.checkPythonNode(p)
                     except (SyntaxError, tokenize.TokenError, tabnanny.NannyNag):
@@ -3856,7 +3878,11 @@ class Commands:
         # @+node:ekr.20250725152709.1: *5* << calculate the list of subdirectories >>
         # Default to all direct sub-directories of the top directory.
         if not sub_directories:
-            sub_directories = [z for z in os.listdir(top_directory) if os.path.isdir(os.path.join(top_directory, z))]
+            sub_directories = [
+                z
+                for z in os.listdir(top_directory)
+                if os.path.isdir(os.path.join(top_directory, z))
+            ]
         # @-<< calculate the list of subdirectories >>
         g.es_print(f"Scanning {len(sub_directories)} directories.\nThis may take awhile.")
         # The main loop.
@@ -4230,7 +4256,9 @@ class Commands:
                 g.es_print(import_message2)
                 if use_dialogs:
                     import_dialog_message = f"{import_message1}\n{import_message2}"
-                    g.app.gui.runAskOkDialog(c, message=import_dialog_message, title='Import errors')
+                    g.app.gui.runAskOkDialog(
+                        c, message=import_dialog_message, title='Import errors'
+                    )
         if c.ignored_at_file_nodes:
             files = '\n'.join(sorted(set(c.ignored_at_file_nodes)))  # type:ignore
             if files not in self.warnings_dict:
@@ -5488,7 +5516,9 @@ class Commands:
         u.beforeChangeGroup(u_node, undoType)
         changed_node = False
         for idx, head in enumerate(heads):
-            if parent is None and idx == 0:  # if parent = None, create top level node for first head
+            if (
+                parent is None and idx == 0
+            ):  # if parent = None, create top level node for first head
                 if not forcecreate:
                     for pos in self.all_positions():
                         if pos.h == head:
@@ -5568,7 +5598,11 @@ class Commands:
         for z in aList:
             try:
                 op, p, n = z
-                ok = op in ('insert', 'delete') and isinstance(p, leoNodes.position) and isinstance(n, int)
+                ok = (
+                    op in ('insert', 'delete')
+                    and isinstance(p, leoNodes.position)
+                    and isinstance(n, int)
+                )
                 if ok:
                     aList2 = d.get(p.v, [])
                     data = n, op
@@ -5694,7 +5728,8 @@ class Commands:
         c.configurables.sort(key=lambda obj: obj.__class__.__name__.lower())
         for obj in c.configurables:
             func = (
-                getattr(obj, 'reloadSettings', None) or getattr(obj, 'reload_settings', None)  # An official alias.
+                getattr(obj, 'reloadSettings', None)
+                or getattr(obj, 'reload_settings', None)  # An official alias.
             )
             if func:
                 try:

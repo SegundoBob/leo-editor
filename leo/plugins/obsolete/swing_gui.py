@@ -73,7 +73,9 @@ class leoSwingDialog:
         self.modal = None
 
         self.buttonsFrame = None  # Frame to hold typical dialog buttons.
-        self.defaultButtonCommand = None  # Command to call when user closes the window by clicking the close box.
+        self.defaultButtonCommand = (
+            None  # Command to call when user closes the window by clicking the close box.
+        )
         self.frame = None  # The outermost frame.
         self.root = None  # g.app.root
         self.showFlag = show
@@ -264,7 +266,9 @@ class swingAboutLeo(leoSwingDialog):
 
         frame.pack(padx=6, pady=4)
 
-        self.text = w = g.app.gui.plainTextWidget(frame, height=height, width=width, bd=0, bg=frame.cget("background"))
+        self.text = w = g.app.gui.plainTextWidget(
+            frame, height=height, width=width, bd=0, bg=frame.cget("background")
+        )
         w.pack(pady=10)
 
         try:
@@ -705,10 +709,21 @@ class swingAskYesNoCancel(leoSwingDialog):
 
     # @+others
     # @+node:ekr.20081121105001.639: *4* askYesNoCancel.__init__
-    def __init__(self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes", resizeable=False):
+    def __init__(
+        self,
+        c,
+        title,
+        message=None,
+        yesMessage="Yes",
+        noMessage="No",
+        defaultButton="Yes",
+        resizeable=False,
+    ):
         """Create a dialog having three buttons."""
 
-        leoSwingDialog.__init__(self, c, title, resizeable, canClose=False)  # Initialize the base class.
+        leoSwingDialog.__init__(
+            self, c, title, resizeable, canClose=False
+        )  # Initialize the base class.
 
         if g.app.unitTesting:
             return
@@ -1360,7 +1375,13 @@ class leoSwingFrame(leoFrame.leoFrame):
     def destroyAllPanels(self):
         """Destroy all panels attached to this frame."""
 
-        panels = (self.comparePanel, self.colorPanel, self.findPanel, self.fontPanel, self.prefsPanel)
+        panels = (
+            self.comparePanel,
+            self.colorPanel,
+            self.findPanel,
+            self.fontPanel,
+            self.prefsPanel,
+        )
 
         for panel in panels:
             if panel:
@@ -1408,7 +1429,12 @@ class leoSwingFrame(leoFrame.leoFrame):
 
             bg = self.statusFrame.cget("background")
             self.textWidget = w = g.app.gui.bodyTextWidget(
-                self.statusFrame, height=1, state="disabled", bg=bg, relief="groove", name='status-line'
+                self.statusFrame,
+                height=1,
+                state="disabled",
+                bg=bg,
+                relief="groove",
+                name='status-line',
             )
             self.textWidget.pack(side="left", expand=1, fill="x")
             w.bind("<Button-1>", self.onActivate)
@@ -2317,7 +2343,9 @@ class leoSwingFrame(leoFrame.leoFrame):
             # @+node:ekr.20081121105001.743: *8* << create the scale widget >>
             top = Tk.Toplevel()
             top.title("Download progress")
-            self.scale = scale = Tk.Scale(top, state="normal", orient="horizontal", from_=0, to=total)
+            self.scale = scale = Tk.Scale(
+                top, state="normal", orient="horizontal", from_=0, to=total
+            )
             scale.pack()
             top.lift()
             # @-<< create the scale widget >>
@@ -2828,7 +2856,11 @@ class leoSwingMenu(leoMenu.leoMenu):
             weight = config.get(c, "jyshell_text_font_weight", "weight")
             slant = None
             font = config.getFontFromParams(
-                c, "jyshell_text_font_family", "jyshell_text_font_size", None, "jyshell_text_font_weight"
+                c,
+                "jyshell_text_font_family",
+                "jyshell_text_font_size",
+                None,
+                "jyshell_text_font_weight",
             )
 
             use_bgimage = g.app.config.getBool(c, "jyshell_background_image")
@@ -3419,7 +3451,13 @@ class leoSwingLog(leoFrame.leoLog):
         self.logNumber += 1
 
         log = g.app.gui.plainTextWidget(
-            parentFrame, name="log-%d" % self.logNumber, setgrid=0, wrap=self.wrap, bd=2, bg="white", relief="flat"
+            parentFrame,
+            name="log-%d" % self.logNumber,
+            setgrid=0,
+            wrap=self.wrap,
+            bd=2,
+            bg="white",
+            relief="flat",
         )
 
         return log
@@ -4796,29 +4834,47 @@ class leoSwingTree(leoFrame.leoTree):
         self.expanded_click_area = c.config.getBool('expanded_click_area')
         self.gc_before_redraw = c.config.getBool('gc_before_redraw')
 
-        self.headline_text_editing_foreground_color = c.config.getColor('headline_text_editing_foreground_color')
-        self.headline_text_editing_background_color = c.config.getColor('headline_text_editing_background_color')
+        self.headline_text_editing_foreground_color = c.config.getColor(
+            'headline_text_editing_foreground_color'
+        )
+        self.headline_text_editing_background_color = c.config.getColor(
+            'headline_text_editing_background_color'
+        )
         self.headline_text_editing_selection_foreground_color = c.config.getColor(
             'headline_text_editing_selection_foreground_color'
         )
         self.headline_text_editing_selection_background_color = c.config.getColor(
             'headline_text_editing_selection_background_color'
         )
-        self.headline_text_selected_foreground_color = c.config.getColor("headline_text_selected_foreground_color")
-        self.headline_text_selected_background_color = c.config.getColor("headline_text_selected_background_color")
+        self.headline_text_selected_foreground_color = c.config.getColor(
+            "headline_text_selected_foreground_color"
+        )
+        self.headline_text_selected_background_color = c.config.getColor(
+            "headline_text_selected_background_color"
+        )
         self.headline_text_editing_selection_foreground_color = c.config.getColor(
             "headline_text_editing_selection_foreground_color"
         )
         self.headline_text_editing_selection_background_color = c.config.getColor(
             "headline_text_editing_selection_background_color"
         )
-        self.headline_text_unselected_foreground_color = c.config.getColor('headline_text_unselected_foreground_color')
-        self.headline_text_unselected_background_color = c.config.getColor('headline_text_unselected_background_color')
+        self.headline_text_unselected_foreground_color = c.config.getColor(
+            'headline_text_unselected_foreground_color'
+        )
+        self.headline_text_unselected_background_color = c.config.getColor(
+            'headline_text_unselected_background_color'
+        )
 
         self.idle_redraw = c.config.getBool('idle_redraw')
-        self.initialClickExpandsOrContractsNode = c.config.getBool('initialClickExpandsOrContractsNode')
-        self.look_for_control_drag_on_mouse_down = c.config.getBool('look_for_control_drag_on_mouse_down')
-        self.select_all_text_when_editing_headlines = c.config.getBool('select_all_text_when_editing_headlines')
+        self.initialClickExpandsOrContractsNode = c.config.getBool(
+            'initialClickExpandsOrContractsNode'
+        )
+        self.look_for_control_drag_on_mouse_down = c.config.getBool(
+            'look_for_control_drag_on_mouse_down'
+        )
+        self.select_all_text_when_editing_headlines = c.config.getBool(
+            'select_all_text_when_editing_headlines'
+        )
 
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
         self.trace = c.config.getBool('trace_tree')
@@ -5027,7 +5083,9 @@ class leoSwingTree(leoFrame.leoTree):
             theId = self.freeLines.pop(0)
             canvas.coords(theId, x1, y1, x2, y2)
         else:
-            theId = canvas.create_line(x1, y1, x2, y2, tag="lines", fill="gray50")  # stipple="gray25")
+            theId = canvas.create_line(
+                x1, y1, x2, y2, tag="lines", fill="gray50"
+            )  # stipple="gray25")
             if self.trace_alloc:
                 g.trace("%3d %s" % (theId, p and p.h), align=-20)
 
@@ -5053,7 +5111,13 @@ class leoSwingTree(leoFrame.leoTree):
             # Tags are not valid in Tk.Text widgets.
             self.textNumber += 1
             w = g.app.gui.plainTextWidget(
-                canvas, name='head-%d' % self.textNumber, state="normal", font=self.font, bd=0, relief="flat", height=1
+                canvas,
+                name='head-%d' % self.textNumber,
+                state="normal",
+                font=self.font,
+                bd=0,
+                relief="flat",
+                height=1,
             )
             ### w.bindtags(self.textBindings) # Set the bindings for this widget.
 
@@ -5663,10 +5727,16 @@ class leoSwingTree(leoFrame.leoTree):
         self.drag_p = None  # Disable drags across redraws.
         self.dragging = False
         if trace:
-            g.trace('redrawCount', self.redrawCount, g.callers())  # 'len(c.hoistStack)',len(c.hoistStack))
+            g.trace(
+                'redrawCount', self.redrawCount, g.callers()
+            )  # 'len(c.hoistStack)',len(c.hoistStack))
             if 0:
                 delta = g.app.positions - self.prevPositions
-                g.trace("**** gen: %-3d positions: %5d +%4d" % (self.generation, g.app.positions, delta), g.callers())
+                g.trace(
+                    "**** gen: %-3d positions: %5d +%4d"
+                    % (self.generation, g.app.positions, delta),
+                    g.callers(),
+                )
 
         self.prevPositions = g.app.positions
         if self.trace_gc:
@@ -5706,7 +5776,18 @@ class leoSwingTree(leoFrame.leoTree):
         c = self.c
         yfirst = ylast = y
         h1 = None
-        data = g.doHook("draw-sub-outline", tree=tree, c=c, p=p, v=p, x=x, y=y, h=h, level=level, hoistFlag=hoistFlag)
+        data = g.doHook(
+            "draw-sub-outline",
+            tree=tree,
+            c=c,
+            p=p,
+            v=p,
+            x=x,
+            y=y,
+            h=h,
+            level=level,
+            hoistFlag=hoistFlag,
+        )
         if data is not None:
             return data
 
@@ -6895,7 +6976,12 @@ class leoSwingTree(leoFrame.leoTree):
 
         try:  # Use system defaults for selection foreground/background
             w.configure(
-                state="normal", highlightthickness=1, fg=fg, bg=bg, selectforeground=selfg, selectbackground=selbg
+                state="normal",
+                highlightthickness=1,
+                fg=fg,
+                bg=bg,
+                selectforeground=selfg,
+                selectbackground=selbg,
             )
         except:
             g.es_exception()
@@ -7069,9 +7155,13 @@ class swingGui(leoGui.leoGui):
         d = leoSwingDialog.swingAskYesNo(c, title, message)
         return d.run(modal=True)
 
-    def runAskYesNoCancelDialog(self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"):
+    def runAskYesNoCancelDialog(
+        self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"
+    ):
         """Create and run an askYesNoCancel dialog ."""
-        d = leoSwingDialog.swingAskYesNoCancel(c, title, message, yesMessage, noMessage, defaultButton)
+        d = leoSwingDialog.swingAskYesNoCancel(
+            c, title, message, yesMessage, noMessage, defaultButton
+        )
         return d.run(modal=True)
 
     # @+node:ekr.20081121105001.1039: *4* swingGui.createSpellTab
@@ -7093,17 +7183,25 @@ class swingGui(leoGui.leoGui):
         if multiple:
             # askopenfilenames requires Python 2.3 and Tk 8.4.
             version = '.'.join([str(sys.version_info[i]) for i in (0, 1, 2)])
-            if g.CheckVersion(version, "2.3") and g.CheckVersion(self.root.getvar("tk_patchLevel"), "8.4"):
-                files = swingFileDialog.askopenfilenames(title=title, filetypes=filetypes, initialdir=initialdir)
+            if g.CheckVersion(version, "2.3") and g.CheckVersion(
+                self.root.getvar("tk_patchLevel"), "8.4"
+            ):
+                files = swingFileDialog.askopenfilenames(
+                    title=title, filetypes=filetypes, initialdir=initialdir
+                )
                 # g.trace(files)
                 return list(files)
             else:
                 # Get one file and return it as a list.
-                theFile = swingFileDialog.askopenfilename(title=title, filetypes=filetypes, initialdir=initialdir)
+                theFile = swingFileDialog.askopenfilename(
+                    title=title, filetypes=filetypes, initialdir=initialdir
+                )
                 return [theFile]
         else:
             # Return a single file name as a string.
-            return swingFileDialog.askopenfilename(title=title, filetypes=filetypes, initialdir=initialdir)
+            return swingFileDialog.askopenfilename(
+                title=title, filetypes=filetypes, initialdir=initialdir
+            )
 
     # @+node:ekr.20081121105001.1042: *5* runSaveFileDialog
     def runSaveFileDialog(self, initialfile, title, filetypes, defaultextension):
@@ -7304,7 +7402,8 @@ class swingGui(leoGui.leoGui):
             self.set_focus_count += 1
             # Do not call trace here: that might affect focus!
             print(
-                'gui.set_focus: %4d %10s %s' % (self.set_focus_count, c and c.shortFileName(), c and c.widget_name(w)),
+                'gui.set_focus: %4d %10s %s'
+                % (self.set_focus_count, c and c.shortFileName(), c and c.widget_name(w)),
                 g.callers(5),
             )
 
@@ -7481,12 +7580,16 @@ class swingGui(leoGui.leoGui):
                 b.pack_forget()
             c.bodyWantsFocus()
 
-        def executeScriptCallback(event=None, b=b, c=c, buttonText=buttonText, p=p and p.copy(), script=script):
+        def executeScriptCallback(
+            event=None, b=b, c=c, buttonText=buttonText, p=p and p.copy(), script=script
+        ):
             if c.disableCommandsMessage:
                 g.es(c.disableCommandsMessage, color='blue')
             else:
                 g.app.scriptDict = {}
-                c.executeScript(p=p, script=script, define_g=define_g, define_name=define_name, silent=silent)
+                c.executeScript(
+                    p=p, script=script, define_g=define_g, define_name=define_name, silent=silent
+                )
                 # Remove the button if the script asks to be removed.
                 if g.app.scriptDict.get('removeMe'):
                     g.es("Removing '%s' button at its request" % buttonText)
@@ -7514,7 +7617,9 @@ class swingGui(leoGui.leoGui):
         buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
 
         # This will use any shortcut defined in an @shortcuts node.
-        k.registerCommand(buttonCommandName, None, executeScriptCallback, pane='button', verbose=False)
+        k.registerCommand(
+            buttonCommandName, None, executeScriptCallback, pane='button', verbose=False
+        )
         # @-<< create press-buttonText-button command >>
 
     # @+node:ekr.20081121105001.1073: *3* class leoKeyEvent (swingGui)
@@ -7541,7 +7646,10 @@ class swingGui(leoGui.leoGui):
             self.widget = self.w
 
         def __repr__(self):
-            return 'swingGui.leoKeyEvent: char: %s, keysym: %s' % (repr(self.char), repr(self.keysym))
+            return 'swingGui.leoKeyEvent: char: %s, keysym: %s' % (
+                repr(self.char),
+                repr(self.keysym),
+            )
 
     # @-others
 

@@ -108,7 +108,9 @@ class LProtoServer:
         self.receiver = None
         self.ses = {}
 
-        self.is_connected = self.srv.connect(self.srv, QtCore.SIGNAL("newConnection()"), self.connected)
+        self.is_connected = self.srv.connect(
+            self.srv, QtCore.SIGNAL("newConnection()"), self.connected
+        )
 
     # @+node:ekr.20111012070545.7255: *3* listen
     def listen(self, name):

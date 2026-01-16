@@ -87,7 +87,10 @@ class CheckboxBare(_ToggleControl):
 
         if self.do_colors():
             self.parent.curses_pad.addstr(
-                self.rely, self.relx, cb_display, self.parent.theme_manager.findPair(self, 'CONTROL')
+                self.rely,
+                self.relx,
+                cb_display,
+                self.parent.theme_manager.findPair(self, 'CONTROL'),
             )
         else:
             self.parent.curses_pad.addstr(self.rely, self.relx, cb_display)
@@ -135,7 +138,9 @@ class Checkbox(_ToggleControl):
         if l_a_width < 1:
             raise ValueError("Width of checkbox + label must be at least 6")
 
-        self.label_area = Textfield(screen, rely=self.rely, relx=self.relx + 5, width=self.width - 5, value=self.name)
+        self.label_area = Textfield(
+            screen, rely=self.rely, relx=self.relx + 5, width=self.width - 5, value=self.name
+        )
 
     # @+node:ekr.20170428084207.550: *3* CheckBox.update
     def update(self, clear=True):
@@ -154,7 +159,10 @@ class Checkbox(_ToggleControl):
 
         if self.do_colors():
             self.parent.curses_pad.addstr(
-                self.rely, self.relx, cb_display, self.parent.theme_manager.findPair(self, 'CONTROL')
+                self.rely,
+                self.relx,
+                cb_display,
+                self.parent.theme_manager.findPair(self, 'CONTROL'),
             )
         else:
             self.parent.curses_pad.addstr(self.rely, self.relx, cb_display)
@@ -216,7 +224,9 @@ class CheckBoxMultiline(Checkbox):
         self.label_area = []
         for y in range(self.height):
             self.label_area.append(
-                Textfield(screen, rely=self.rely + y, relx=self.relx + 5, width=self.width - 5, value=None)
+                Textfield(
+                    screen, rely=self.rely + y, relx=self.relx + 5, width=self.width - 5, value=None
+                )
             )
 
     # @+node:ekr.20170428084207.558: *3* _update_label_area

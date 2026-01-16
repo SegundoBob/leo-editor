@@ -562,7 +562,9 @@ class PersistenceDataController:
     # @+node:ekr.20140711111623.17896: *5* pd.unl
     def unl(self, p: Position) -> str:
         """Return the unl corresponding to the given position."""
-        return '-->'.join(reversed([self.expected_headline(p2) for p2 in p.self_and_parents(copy=False)]))
+        return '-->'.join(
+            reversed([self.expected_headline(p2) for p2 in p.self_and_parents(copy=False)])
+        )
 
     # @+node:ekr.20140711111623.17885: *5* pd.unl_tail
     def unl_tail(self, unl: str) -> str:

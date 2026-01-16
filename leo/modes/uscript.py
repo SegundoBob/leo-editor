@@ -220,7 +220,9 @@ def uscript_rule23(colorer, s, i):
 
 
 def uscript_rule24(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def uscript_rule25(colorer, s, i):

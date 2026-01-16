@@ -141,7 +141,14 @@ def openscad_rule2(colorer, s, i):
 
 def openscad_rule3(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq=")", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq=")",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
@@ -161,139 +168,300 @@ def openscad_rule4(colorer, s, i):
 
 def openscad_rule5(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="}", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="}",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule6(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="{", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="{",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule7(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="]", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="]",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule8(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="[", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="[",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule9(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="=", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="=",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule10(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq=";", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq=";",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule11(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="&&", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="&&",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule12(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="||", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="||",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule13(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="!", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="!",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule14(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="<", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="<",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule15(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="<=", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="<=",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule16(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="==", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="==",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule17(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="!=", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="!=",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule18(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq=">=", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq=">=",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule19(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq=">", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq=">",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule20(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="?", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="?",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule21(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq=":", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq=":",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule22(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="+", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="+",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule23(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="-", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="-",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule24(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="*", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="*",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule25(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="/", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="/",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule26(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="%", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="%",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 
 def openscad_rule27(colorer, s, i):
     return colorer.match_seq(
-        s, i, kind="operator", seq="#", at_line_start=False, at_whitespace_end=False, at_word_start=False, delegate=""
+        s,
+        i,
+        kind="operator",
+        seq="#",
+        at_line_start=False,
+        at_whitespace_end=False,
+        at_word_start=False,
+        delegate="",
     )
 
 

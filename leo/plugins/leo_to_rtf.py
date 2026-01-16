@@ -40,7 +40,9 @@ def createExportMenu(tag, keywords):
         return
 
     # Insert leoToRTF in #3 position of the File > Export menu.
-    c.frame.menu.insert('Export Files', 3, label='Outline to Microsoft RTF', command=lambda c=c: export_rtf(c))
+    c.frame.menu.insert(
+        'Export Files', 3, label='Outline to Microsoft RTF', command=lambda c=c: export_rtf(c)
+    )
 
 
 # @+node:danr7.20060902083957.3: ** export_rtf
@@ -63,7 +65,9 @@ def export_rtf(c):
     else:
         return
     # Write RTF header information
-    f.write("{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}}\n\n")
+    f.write(
+        "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}}\n\n"
+    )
     # Write RTF list table that provides numbered list formatting
     # @+<< listtable >>
     # @+node:danr7.20060902085826: *3* << listtable >>
@@ -83,13 +87,17 @@ def export_rtf(c):
         "{\\listlevel\\levelnfc4\\levelnfcn4\\leveljc0\\leveljcn0\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0"
     )  # NOQA
     f.write("{\\leveltext\\leveltemplateid67698713\\'02\\'01.;} {\\levelnumbers\\'01;}")
-    f.write("\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li1440\\jclisttab\\tx1440 }")  # NOQA
+    f.write(
+        "\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-360\\li1440\\jclisttab\\tx1440 }"
+    )  # NOQA
 
     f.write(
         "{\\listlevel\\levelnfc2\\levelnfcn2\\leveljc2\\leveljcn2\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0"
     )  # NOQA
     f.write("{\\leveltext\\leveltemplateid67698715\\'02\\'02.;} {\\levelnumbers\\'01;}")
-    f.write("\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1\\fi-180\\li2160\\jclisttab\\tx2160 }")
+    f.write(
+        "\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1\\fi-180\\li2160\\jclisttab\\tx2160 }"
+    )
 
     f.write("{\\listlevel\\levelnfc0\\levelnfcn0\\leveljc0\\leveljcn0\\levelfollow0\\levelstartat1")
     f.write("\\levelspace360\\levelindent0{\\leveltext\\leveltemplateid67698703\\'02\\'03.;}")
@@ -130,16 +138,22 @@ def export_rtf(c):
         "{\\listlevel\\levelnfc2\\levelnfcn2\\leveljc2\\leveljcn2\\levelfollow0\\levelstartat1\\levelspace360\\levelindent0"
     )  # NOQA
     f.write("{\\leveltext\\leveltemplateid67698715\\'02\\'08.;}{\\levelnumbers\\'01;}")
-    f.write("\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-180\\li6480\\jclisttab\\tx6480 }")
+    f.write(
+        "\\chbrdr\\brdrnone\\brdrcf1 \\chshdng0\\chcfpat1\\chcbpat1 \\fi-180\\li6480\\jclisttab\\tx6480 }"
+    )
 
     f.write("{\\listname ;}\\listid127936308}}\n\n")
 
-    f.write("{\\*\\listoverridetable{\\listoverride\\listid127936308\\listoverridecount0\\ls1}}\n\n")
+    f.write(
+        "{\\*\\listoverridetable{\\listoverride\\listid127936308\\listoverridecount0\\ls1}}\n\n"
+    )
     # @-<< listtable >>
     # Write text formatting foundation
     f.write("\\viewkind4\\uc1\\pard\\f0\\fs20\n\n")
     # Create generic level header
-    levelHeader = "\\pard \\ql \\fi-360\\ri0\\widctlpar\\jclisttab\\faauto\\ls1\\adjustright\\rin0\\itap0"
+    levelHeader = (
+        "\\pard \\ql \\fi-360\\ri0\\widctlpar\\jclisttab\\faauto\\ls1\\adjustright\\rin0\\itap0"
+    )
     myLevel = -1
     for p in c.all_positions():
         curLevel = p.level() + 1  # Store current level so method doesn't have to be called again
@@ -151,7 +165,16 @@ def export_rtf(c):
             levelIndent = str(720 * curLevel)
             # Output the generic RTF level info
             f.write(levelHeader)
-            f.write("\\li" + levelIndent + "\\tx" + levelIndent + "\\ilvl" + str(curLevel - 1) + "\\lin" + levelIndent)
+            f.write(
+                "\\li"
+                + levelIndent
+                + "\\tx"
+                + levelIndent
+                + "\\ilvl"
+                + str(curLevel - 1)
+                + "\\lin"
+                + levelIndent
+            )
             f.write("{")
         myLevel = curLevel
         myHeadline = p.h

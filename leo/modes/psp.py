@@ -67,7 +67,9 @@ keywordsDictDict = {
 
 
 def psp_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal4", begin="<%@", end="%>", delegate="psp::directive")
+    return colorer.match_span(
+        s, i, kind="literal4", begin="<%@", end="%>", delegate="psp::directive"
+    )
 
 
 def psp_rule1(colorer, s, i):
@@ -80,18 +82,30 @@ def psp_rule2(colorer, s, i):
 
 def psp_rule3(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"jscript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"jscript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def psp_rule4(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"javascript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"javascript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def psp_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main"
+    )
 
 
 def psp_rule6(colorer, s, i):
@@ -103,7 +117,9 @@ def psp_rule7(colorer, s, i):
 
 
 def psp_rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main"
+    )
 
 
 def psp_rule9(colorer, s, i):

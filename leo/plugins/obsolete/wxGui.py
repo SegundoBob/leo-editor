@@ -338,7 +338,10 @@ class wxFindPanel(wx.Panel):
 
         # Label.
         findSizer.Add(
-            wx.StaticText(self, -1, "Find:", wx.Point(-1, 10), wx.Size(50, 25), 0, ""), 0, wx.BORDER | wx.TOP, 15
+            wx.StaticText(self, -1, "Find:", wx.Point(-1, 10), wx.Size(50, 25), 0, ""),
+            0,
+            wx.BORDER | wx.TOP,
+            15,
         )  # Vertical offset.
 
         findSizer.Add(10, 0)  # Width.
@@ -370,7 +373,10 @@ class wxFindPanel(wx.Panel):
 
         # Label.
         changeSizer.Add(
-            wx.StaticText(self, -1, "Change:", wx.Point(-1, 10), wx.Size(50, 25), 0, ""), 0, wx.BORDER | wx.TOP, 15
+            wx.StaticText(self, -1, "Change:", wx.Point(-1, 10), wx.Size(50, 25), 0, ""),
+            0,
+            wx.BORDER | wx.TOP,
+            15,
         )  # Vertical offset.
 
         changeSizer.Add(10, 0)  # Width.
@@ -410,7 +416,9 @@ class wxFindPanel(wx.Panel):
 
         for var, label, style in table:
             id = wx.NewId()
-            box = wx.RadioButton(self, id, label, wx.DefaultPosition, (100, 25), style, wx.DefaultValidator, "group1")
+            box = wx.RadioButton(
+                self, id, label, wx.DefaultPosition, (100, 25), style, wx.DefaultValidator, "group1"
+            )
 
             if style == wx.RB_GROUP:
                 box.SetValue(True)  # The default entry.
@@ -422,7 +430,9 @@ class wxFindPanel(wx.Panel):
 
         for var, label in table:
             id = wx.NewId()
-            box = wx.CheckBox(self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, "")
+            box = wx.CheckBox(
+                self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, ""
+            )
 
             col1Sizer.Add(box, 0, wx.BORDER | wx.LEFT, 60)
             self.frame.dict[var] = box, id
@@ -441,7 +451,9 @@ class wxFindPanel(wx.Panel):
 
         for var, label in table:
             id = wx.NewId()
-            box = wx.CheckBox(self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, "")
+            box = wx.CheckBox(
+                self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, ""
+            )
 
             col2Sizer.Add(box, 0, wx.BORDER | wx.LEFT, 20)
             self.frame.dict[var] = box, id
@@ -460,7 +472,9 @@ class wxFindPanel(wx.Panel):
 
         for label, var, group in table:
             id = wx.NewId()
-            box = wx.RadioButton(self, id, label, wx.DefaultPosition, (100, 25), group, wx.DefaultValidator, "group2")
+            box = wx.RadioButton(
+                self, id, label, wx.DefaultPosition, (100, 25), group, wx.DefaultValidator, "group2"
+            )
 
             col3Sizer.Add(box, 0, wx.BORDER | wx.LEFT, 20)
 
@@ -480,7 +494,9 @@ class wxFindPanel(wx.Panel):
 
         for var, label in table:
             id = wx.NewId()
-            box = wx.CheckBox(self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, "")
+            box = wx.CheckBox(
+                self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, ""
+            )
 
             col4Sizer.Add(box, 0, wx.BORDER | wx.LEFT, 20)
             self.frame.dict[var] = box, id
@@ -514,9 +530,13 @@ class wxFindPanel(wx.Panel):
         for var, label, isButton in table:
             id = wx.NewId()
             if isButton:
-                widget = button = wx.Button(self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, "")
+                widget = button = wx.Button(
+                    self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, ""
+                )
             else:
-                widget = box = wx.CheckBox(self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, "")
+                widget = box = wx.CheckBox(
+                    self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, ""
+                )
 
                 self.frame.dict[var] = box, id
 
@@ -539,7 +559,9 @@ class wxFindPanel(wx.Panel):
 
         for var, label in table:
             id = wx.NewId()
-            button = wx.Button(self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, "")
+            button = wx.Button(
+                self, id, label, wx.DefaultPosition, (100, 25), 0, wx.DefaultValidator, ""
+            )
 
             row2Sizer.Add(button)
             row2Sizer.Add(
@@ -1211,7 +1233,9 @@ class headlineWidget(baseTextWidget):
         self.tree = treeCtrl
 
         # Init the base class.
-        baseTextWidget.__init__(self, c, baseClassName='headlineWidget', name='headline', widget=self)
+        baseTextWidget.__init__(
+            self, c, baseClassName='headlineWidget', name='headline', widget=self
+        )
 
         self.init(id)
 
@@ -1315,7 +1339,9 @@ class plainTextWidget(baseTextWidget):
 
         # Init the base class.
         name = keys.get('name') or '<unknown plainTextWidget>'
-        baseTextWidget.__init__(self, c, baseClassName=self.baseClassName, name=name, widget=self.widget)
+        baseTextWidget.__init__(
+            self, c, baseClassName=self.baseClassName, name=name, widget=self.widget
+        )
 
         wx.EVT_CHAR(w.widget, self.onChar)
 
@@ -1409,7 +1435,9 @@ class richTextWidget(baseTextWidget):
 
         wx.EVT_CHAR(w.widget, self.onChar)
 
-        baseTextWidget.__init__(self, c, baseClassName=self.baseClassName, name=name, widget=self.widget)
+        baseTextWidget.__init__(
+            self, c, baseClassName=self.baseClassName, name=name, widget=self.widget
+        )
 
         self.defaultFont = font = wx.Font(
             pointSize=10,
@@ -1571,8 +1599,12 @@ class stcWidget(baseTextWidget):
             w.SetMarginWidth(2, 12)
 
             # and now set up the fold markers
-            w.MarkerDefine(stc.STC_MARKNUM_FOLDEREND, stc.STC_MARK_BOXPLUSCONNECTED, "white", "black")
-            w.MarkerDefine(stc.STC_MARKNUM_FOLDEROPENMID, stc.STC_MARK_BOXMINUSCONNECTED, "white", "black")
+            w.MarkerDefine(
+                stc.STC_MARKNUM_FOLDEREND, stc.STC_MARK_BOXPLUSCONNECTED, "white", "black"
+            )
+            w.MarkerDefine(
+                stc.STC_MARKNUM_FOLDEROPENMID, stc.STC_MARK_BOXMINUSCONNECTED, "white", "black"
+            )
             w.MarkerDefine(stc.STC_MARKNUM_FOLDERMIDTAIL, stc.STC_MARK_TCORNER, "white", "black")
             w.MarkerDefine(stc.STC_MARKNUM_FOLDERTAIL, stc.STC_MARK_LCORNER, "white", "black")
             w.MarkerDefine(stc.STC_MARKNUM_FOLDERSUB, stc.STC_MARK_VLINE, "white", "black")
@@ -1581,7 +1613,9 @@ class stcWidget(baseTextWidget):
 
         # Global default style
         if wx.Platform == '__WXMSW__':
-            w.StyleSetSpec(stc.STC_STYLE_DEFAULT, 'fore:#000000,back:#FFFFFF,face:Courier New,size:9')
+            w.StyleSetSpec(
+                stc.STC_STYLE_DEFAULT, 'fore:#000000,back:#FFFFFF,face:Courier New,size:9'
+            )
         elif wx.Platform == '__WXMAC__':
             # TODO: if this looks fine on Linux too, remove the Mac-specific case
             # and use this whenever OS != MSW.
@@ -1679,7 +1713,10 @@ class stcWidget(baseTextWidget):
         lineNum = 0
         while lineNum < lineCount:
             level = self.GetFoldLevel(lineNum)
-            if level & stc.STC_FOLDLEVELHEADERFLAG and (level & stc.STC_FOLDLEVELNUMBERMASK) == stc.STC_FOLDLEVELBASE:
+            if (
+                level & stc.STC_FOLDLEVELHEADERFLAG
+                and (level & stc.STC_FOLDLEVELNUMBERMASK) == stc.STC_FOLDLEVELBASE
+            ):
                 if expanding:
                     self.SetFoldExpanded(lineNum, True)
                     lineNum = self.Expand(lineNum, True)
@@ -2087,8 +2124,20 @@ class wxComparePanel(leoCompare.leoCompare):  # ,leoWxDialog):
         # @+<< create the browser rows >>
         # @+node:ekr.20090126093408.115: *6* << create the browser rows >>
         for row, text, text2, command, var in (
-            (row1, "Compare path 1:", "Ignore first line", self.onBrowse1, self.ignoreFirstLine1Var),
-            (row2, "Compare path 2:", "Ignore first line", self.onBrowse2, self.ignoreFirstLine2Var),
+            (
+                row1,
+                "Compare path 1:",
+                "Ignore first line",
+                self.onBrowse1,
+                self.ignoreFirstLine1Var,
+            ),
+            (
+                row2,
+                "Compare path 2:",
+                "Ignore first line",
+                self.onBrowse2,
+                self.ignoreFirstLine2Var,
+            ),
             (row3, "Output file:", "Use output file", self.onBrowse3, self.useOutputFileVar),
         ):
             lab = Tk.Label(row, anchor="e", text=text, width=13)
@@ -2106,13 +2155,17 @@ class wxComparePanel(leoCompare.leoCompare):  # ,leoWxDialog):
         # @-<< create the browser rows >>
         # @+<< create the extension row >>
         # @+node:ekr.20090126093408.116: *6* << create the extension row >>
-        b = Tk.Checkbutton(row4, anchor="w", var=self.limitToExtensionVar, text="Limit directory compares to type:")
+        b = Tk.Checkbutton(
+            row4, anchor="w", var=self.limitToExtensionVar, text="Limit directory compares to type:"
+        )
         b.pack(side="left", padx=4)
 
         self.extensionEntry = e = Tk.Entry(row4, width=6)
         e.pack(side="left", padx=2)
 
-        b = Tk.Checkbutton(row4, anchor="w", var=self.appendOutputVar, text="Append output to output file")
+        b = Tk.Checkbutton(
+            row4, anchor="w", var=self.appendOutputVar, text="Append output to output file"
+        )
         b.pack(side="left", padx=4)
         # @-<< create the extension row >>
         # @+<< create the whitespace options frame >>
@@ -2502,7 +2555,9 @@ class wxLeoBody(leoFrame.leoBody):
         self.frame.lockout += 1
         try:
             # Call the base class method.
-            leoFrame.leoBody.onBodyChanged(self, undoType, oldSel=oldSel, oldText=oldText, oldYview=oldYview)
+            leoFrame.leoBody.onBodyChanged(
+                self, undoType, oldSel=oldSel, oldText=oldText, oldYview=oldYview
+            )
         finally:
             self.frame.lockout -= 1
 
@@ -2576,8 +2631,12 @@ class wxLeoFrame(leoFrame.leoFrame):
 
         # Create the splitters.
         style = wx.CLIP_CHILDREN | wx.SP_LIVE_UPDATE | wx.SP_3D
-        self.splitter1 = splitter1 = wx.SplitterWindow(top, -1, style=style)  # Contains body & splitter2
-        self.splitter2 = splitter2 = wx.SplitterWindow(splitter1, -1, style=style)  # Contains tree and log.
+        self.splitter1 = splitter1 = wx.SplitterWindow(
+            top, -1, style=style
+        )  # Contains body & splitter2
+        self.splitter2 = splitter2 = wx.SplitterWindow(
+            splitter1, -1, style=style
+        )  # Contains tree and log.
 
         # Create the tree.
         self.tree = wxLeoTree(frame, parentFrame=splitter2)
@@ -2626,7 +2685,13 @@ class wxLeoFrame(leoFrame.leoFrame):
         g.app.windowList.append(self)
         self.tree.redraw()
 
-        self.setFocus(g.choose(c.config.getBool('outline_pane_has_initial_focus'), self.tree.treeWidget, self.bodyCtrl))
+        self.setFocus(
+            g.choose(
+                c.config.getBool('outline_pane_has_initial_focus'),
+                self.tree.treeWidget,
+                self.bodyCtrl,
+            )
+        )
 
     # @+node:ekr.20090126093408.211: *6* setWindowIcon
     def setWindowIcon(self):
@@ -3100,7 +3165,9 @@ class wxLeoFrame(leoFrame.leoFrame):
             # @+node:ekr.20090126093408.246: *8* << create the scale widget >>
             top = Tk.Toplevel()
             top.title("Download progress")
-            self.scale = scale = Tk.Scale(top, state="normal", orient="horizontal", from_=0, to=total)
+            self.scale = scale = Tk.Scale(
+                top, state="normal", orient="horizontal", from_=0, to=total
+            )
             scale.pack()
             top.lift()
             # @-<< create the scale widget >>
@@ -3554,7 +3621,9 @@ class wxLeoMenu(leoMenu.leoMenu):
             # Munge accel to make it invalid.
             d = {'BackSpace': 'BkSpc', 'Return': 'Rtn', 'Tab': 'TabChr'}
             accel = d.get(accel, accel)
-            accel = accel.replace('Alt+', 'Alt-').replace('Ctrl+', 'Ctrl-').replace('Shift+', 'Shift-')
+            accel = (
+                accel.replace('Alt+', 'Alt-').replace('Ctrl+', 'Ctrl-').replace('Shift+', 'Shift-')
+            )
 
             # *** Accelerators are NOT SHOWN when the user opens the menu with the mouse!
             label = label + '\t' + accel
@@ -4690,7 +4759,12 @@ class wxGui(leoGui.leoGui):
         if g.app.unitTesting:
             return
 
-        message = "%s\n\n%s\n\n%s\n\n%s" % (version.strip(), copyright.strip(), url.strip(), email.strip())
+        message = "%s\n\n%s\n\n%s\n\n%s" % (
+            version.strip(),
+            copyright.strip(),
+            url.strip(),
+            email.strip(),
+        )
 
         wx.MessageBox(message, "About Leo", wx.Center, self.root)
 
@@ -4745,7 +4819,9 @@ class wxGui(leoGui.leoGui):
         return g.choose(answer == wx.YES, "yes", "no")
 
     # @+node:ekr.20090126093408.146: *4* runAskYesNoCancelDialog
-    def runAskYesNoCancelDialog(self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"):
+    def runAskYesNoCancelDialog(
+        self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"
+    ):
         """Create and run a wxPython askYesNoCancel dialog ."""
 
         if g.app.unitTesting:
@@ -4862,7 +4938,11 @@ class wxGui(leoGui.leoGui):
             self.w = self.widget
 
         def __repr__(self):
-            return 'leoKeyEvent char: %s keysym: %s widget: %s' % (repr(self.char), self.keysym, self.widget)
+            return 'leoKeyEvent char: %s keysym: %s widget: %s' % (
+                repr(self.char),
+                self.keysym,
+                self.widget,
+            )
 
     # @+node:ekr.20090126093408.155: *4* wxKeyDict
     wxKeyDict = {
@@ -5155,7 +5235,10 @@ class wxGui(leoGui.leoGui):
             if hasattr(event, 'c'):
                 return event.c.frame.body.bodyCtrl
             else:
-                g.trace('wx gui: k.generalModeHandler event: no event widget: event = %s' % (event), g.callers())
+                g.trace(
+                    'wx gui: k.generalModeHandler event: no event widget: event = %s' % (event),
+                    g.callers(),
+                )
                 return None
         elif hasattr(event, 'GetEventObject'):  # A wx Event.
             # Return the wrapper class
@@ -5297,7 +5380,16 @@ class wxGui(leoGui.leoGui):
             return font
         except:
             g.es("exception setting font from " + repr(family_name))
-            g.es("family,size,slant,weight:" + repr(family) + ':' + repr(size) + ':' + (slant) + ':' + repr(weight))
+            g.es(
+                "family,size,slant,weight:"
+                + repr(family)
+                + ':'
+                + repr(size)
+                + ':'
+                + (slant)
+                + ':'
+                + repr(weight)
+            )
             g.es_exception()
             return g.app.config.defaultFont
 

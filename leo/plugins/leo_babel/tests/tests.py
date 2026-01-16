@@ -53,9 +53,15 @@ def cmdLineHandler():
     @param return:  Instance of class argparse.Namespace containing all the parsed command line arguments.
     """
 
-    parser = argparse.ArgumentParser(description="Run Leo-Babel Tests", usage='%(prog)s [options] tests results')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s Revision {0}'.format(version))
-    parser.add_argument('fpnTests', help='Pathname of a Leo-Editor file containing tests. Required argument.')
+    parser = argparse.ArgumentParser(
+        description="Run Leo-Babel Tests", usage='%(prog)s [options] tests results'
+    )
+    parser.add_argument(
+        '-v', '--version', action='version', version='%(prog)s Revision {0}'.format(version)
+    )
+    parser.add_argument(
+        'fpnTests', help='Pathname of a Leo-Editor file containing tests. Required argument.'
+    )
     parser.add_argument(
         'fpnResults',
         help='Pathname of a Leo-Editor file to contain the test results. '
@@ -79,7 +85,9 @@ def main():
     args = cmdLineHandler()
     # 2024/04/09: This statement is almost certainly wrong.
     # leoG.IdleTime = idle_time.IdleTime
-    bridge = leoBridge.controller(gui='nullGui', silent=True, verbose=False, loadPlugins=True, readSettings=True)
+    bridge = leoBridge.controller(
+        gui='nullGui', silent=True, verbose=False, loadPlugins=True, readSettings=True
+    )
     cmdrT = bridge.openLeoFile(args.fpnTests)
     if os.path.exists(args.fpnResults):
         os.remove(args.fpnResults)

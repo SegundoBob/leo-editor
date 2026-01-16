@@ -115,7 +115,9 @@ def factor_rule10(colorer, s, i):
 
 
 def factor_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="(", end=")", delegate="factor::stack_effect")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="(", end=")", delegate="factor::stack_effect"
+    )
 
 
 def factor_rule12(colorer, s, i):

@@ -266,14 +266,22 @@ class BaseLeoCompare:
                 if self.ignoreBlankLines and s1.isspace():
                     s1 = None
                     continue
-                if self.ignoreSentinelLines and sentinelComment1 and self.isSentinel(s1, sentinelComment1):
+                if (
+                    self.ignoreSentinelLines
+                    and sentinelComment1
+                    and self.isSentinel(s1, sentinelComment1)
+                ):
                     s1 = None
                     continue
             if s2:
                 if self.ignoreBlankLines and s2.isspace():
                     s2 = None
                     continue
-                if self.ignoreSentinelLines and sentinelComment2 and self.isSentinel(s2, sentinelComment2):
+                if (
+                    self.ignoreSentinelLines
+                    and sentinelComment2
+                    and self.isSentinel(s2, sentinelComment2)
+                ):
                     s2 = None
                     continue
             # @-<< ignore blank lines and/or sentinels >>
@@ -552,7 +560,9 @@ class CompareLeoOutlines:
         return added, deleted, changed
 
     # @+node:ekr.20180211170333.6: *4* loc.create_compare_node
-    def create_compare_node(self, c1: Cmdr, c2: Cmdr, d: dict[str, tuple[VNode, VNode]], kind: str) -> None:
+    def create_compare_node(
+        self, c1: Cmdr, c2: Cmdr, d: dict[str, tuple[VNode, VNode]], kind: str
+    ) -> None:
         """Create nodes describing the changes."""
         if not d:
             return

@@ -48,7 +48,9 @@ class MiniButton(checkbox._ToggleControl):
             return False
 
         if self.value and self.do_colors():
-            self.parent.curses_pad.addstr(self.rely, self.relx, '>', self.parent.theme_manager.findPair(self))
+            self.parent.curses_pad.addstr(
+                self.rely, self.relx, '>', self.parent.theme_manager.findPair(self)
+            )
             self.parent.curses_pad.addstr(
                 self.rely, self.relx + self.width - 1, '<', self.parent.theme_manager.findPair(self)
             )
@@ -73,7 +75,9 @@ class MiniButton(checkbox._ToggleControl):
                 else:
                     button_attributes = self.parent.theme_manager.findPair(self, self.color)
             else:
-                button_attributes = self.parent.theme_manager.findPair(self, self.color) | button_state
+                button_attributes = (
+                    self.parent.theme_manager.findPair(self, self.color) | button_state
+                )
         else:
             button_attributes = button_state
 

@@ -365,66 +365,114 @@ def latex_rule63(colorer, s, i):
 
 
 def latex_rule64(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="\\(", end="\\)", delegate="latex::mathmode")
+    return colorer.match_span(
+        s, i, kind="markup", begin="\\(", end="\\)", delegate="latex::mathmode"
+    )
 
 
 def latex_rule65(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="\\[", end="\\]", delegate="latex::mathmode")
+    return colorer.match_span(
+        s, i, kind="markup", begin="\\[", end="\\]", delegate="latex::mathmode"
+    )
 
 
 def latex_rule66(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="\\begin{math}", end="\\end{math}", delegate="latex::mathmode")
+    return colorer.match_span(
+        s, i, kind="markup", begin="\\begin{math}", end="\\end{math}", delegate="latex::mathmode"
+    )
 
 
 def latex_rule67(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{displaymath}", end="\\end{displaymath}", delegate="latex::mathmode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{displaymath}",
+        end="\\end{displaymath}",
+        delegate="latex::mathmode",
     )
 
 
 def latex_rule68(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{equation}", end="\\end{equation}", delegate="latex::mathmode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{equation}",
+        end="\\end{equation}",
+        delegate="latex::mathmode",
     )
 
 
 def latex_rule69(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="\\ensuremath{", end="}", delegate="latex::mathmode")
+    return colorer.match_span(
+        s, i, kind="markup", begin="\\ensuremath{", end="}", delegate="latex::mathmode"
+    )
 
 
 def latex_rule70(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{eqnarray}", end="\\end{eqnarray}", delegate="latex::arraymode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{eqnarray}",
+        end="\\end{eqnarray}",
+        delegate="latex::arraymode",
     )
 
 
 def latex_rule71(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{eqnarray*}", end="\\end{eqnarray*}", delegate="latex::arraymode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{eqnarray*}",
+        end="\\end{eqnarray*}",
+        delegate="latex::arraymode",
     )
 
 
 def latex_rule72(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{tabular}", end="\\end{tabular}", delegate="latex::tabularmode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{tabular}",
+        end="\\end{tabular}",
+        delegate="latex::tabularmode",
     )
 
 
 def latex_rule73(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{tabular*}", end="\\end{tabular*}", delegate="latex::tabularmode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{tabular*}",
+        end="\\end{tabular*}",
+        delegate="latex::tabularmode",
     )
 
 
 def latex_rule74(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{tabbing}", end="\\end{tabbing}", delegate="latex::tabbingmode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{tabbing}",
+        end="\\end{tabbing}",
+        delegate="latex::tabbingmode",
     )
 
 
 def latex_rule75(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="\\begin{picture}", end="\\end{picture}", delegate="latex::picturemode"
+        s,
+        i,
+        kind="markup",
+        begin="\\begin{picture}",
+        end="\\end{picture}",
+        delegate="latex::picturemode",
     )
 
 

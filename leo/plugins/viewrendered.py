@@ -316,7 +316,9 @@ def init() -> bool:
 
 
 # @+node:ekr.20240727091022.1: *3* vr function: getVR
-def getVr(*, c: Any = None, event: Any = None, parent: QtWidgets.QWidget = None) -> Optional[QtWidgets.QWidget]:
+def getVr(
+    *, c: Any = None, event: Any = None, parent: QtWidgets.QWidget = None
+) -> Optional[QtWidgets.QWidget]:
     """Return the ViewRenderedController instance or None."""
     if g.app.gui.guiName() != 'qt':
         return None
@@ -673,7 +675,9 @@ class ViewRenderedController(QtWidgets.QWidget):  # type:ignore
         self.locked = False
         self.pdf_qwv = None  # The singleton qwv instance, with support for pdf.
         self.qwv = None  # The singleton qwv instance.
-        self.scrollbar_pos_dict: dict[VNode, Position] = {}  # Keys are vnodes, values are positions.
+        self.scrollbar_pos_dict: dict[
+            VNode, Position
+        ] = {}  # Keys are vnodes, values are positions.
         # User settings.
         self.reloadSettings()
         self.node_changed = True
@@ -1468,7 +1472,9 @@ class ViewRenderedController(QtWidgets.QWidget):  # type:ignore
         with open("temp.plantuml", "w") as f:
             f.write(s)
         pth_plantuml_jar = "~/.leo"
-        os.system("cat temp.plantuml | java -jar %s/plantuml.jar -pipe > %s" % (pth_plantuml_jar, path))
+        os.system(
+            "cat temp.plantuml | java -jar %s/plantuml.jar -pipe > %s" % (pth_plantuml_jar, path)
+        )
         template = self.image_template % (path)
         template = textwrap.dedent(template).strip()
         self.show()
@@ -1519,9 +1525,9 @@ class ViewRenderedController(QtWidgets.QWidget):  # type:ignore
             elif child.h == '@jinja inputs':
                 for template_var_node in child.children():
                     # pylint: disable=line-too-long
-                    template_data[template_var_node.h.replace('@jinja variable', '').strip()] = untangle(
-                        c, template_var_node
-                    ).strip()
+                    template_data[template_var_node.h.replace('@jinja variable', '').strip()] = (
+                        untangle(c, template_var_node).strip()
+                    )
 
         if not template_path:
             g.es(

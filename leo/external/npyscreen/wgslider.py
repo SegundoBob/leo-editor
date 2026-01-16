@@ -14,7 +14,17 @@ class Slider(widget.Widget):
 
     # @+others
     # @+node:ekr.20170428084208.300: *3* Slider.__init__
-    def __init__(self, screen, value=0, out_of=100, step=1, lowest=0, label=True, block_color=None, **keywords):
+    def __init__(
+        self,
+        screen,
+        value=0,
+        out_of=100,
+        step=1,
+        lowest=0,
+        label=True,
+        block_color=None,
+        **keywords,
+    ):
         self.out_of = out_of
         self.value = value
         self.step = step
@@ -96,23 +106,36 @@ class Slider(widget.Widget):
             xoffset = self.relx
             if self.do_colors():
                 self.parent.curses_pad.addch(
-                    self.rely, n + xoffset, BACKGROUND_CHAR, curses.A_NORMAL | self.parent.theme_manager.findPair(self)
+                    self.rely,
+                    n + xoffset,
+                    BACKGROUND_CHAR,
+                    curses.A_NORMAL | self.parent.theme_manager.findPair(self),
                 )
             else:
-                self.parent.curses_pad.addch(self.rely, n + xoffset, BACKGROUND_CHAR, curses.A_NORMAL)
+                self.parent.curses_pad.addch(
+                    self.rely, n + xoffset, BACKGROUND_CHAR, curses.A_NORMAL
+                )
 
         for n in range(int(blocks_to_fill)):
             if self.do_colors():
                 if self.block_color:
                     self.parent.curses_pad.addch(
-                        self.rely, n + xoffset, BARCHAR, self.parent.theme_manager.findPair(self, self.block_color)
+                        self.rely,
+                        n + xoffset,
+                        BARCHAR,
+                        self.parent.theme_manager.findPair(self, self.block_color),
                     )
                 else:
                     self.parent.curses_pad.addch(
-                        self.rely, n + xoffset, BARCHAR, curses.A_STANDOUT | self.parent.theme_manager.findPair(self)
+                        self.rely,
+                        n + xoffset,
+                        BARCHAR,
+                        curses.A_STANDOUT | self.parent.theme_manager.findPair(self),
                     )
             else:
-                self.parent.curses_pad.addch(self.rely, n + xoffset, BARCHAR, curses.A_STANDOUT)  # curses.ACS_BLOCK)
+                self.parent.curses_pad.addch(
+                    self.rely, n + xoffset, BARCHAR, curses.A_STANDOUT
+                )  # curses.ACS_BLOCK)
 
         self.parent.curses_pad.attroff(curses.A_BOLD)
         self.parent.curses_pad.bkgdset(curses.A_NORMAL)

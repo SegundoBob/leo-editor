@@ -34,7 +34,9 @@ class MessagePopup(Popup):
         from . import wgmultiline as multiline
 
         super(MessagePopup, self).__init__(*args, **keywords)
-        self.TextWidget = self.add(multiline.Pager, scroll_exit=True, max_height=self.widget_useable_space()[0] - 2)
+        self.TextWidget = self.add(
+            multiline.Pager, scroll_exit=True, max_height=self.widget_useable_space()[0] - 2
+        )
 
     # @-others
 

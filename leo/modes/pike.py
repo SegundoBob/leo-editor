@@ -195,12 +195,20 @@ def pike_rule3(colorer, s, i):
 
 def pike_rule4(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="literal1", begin="\"", end="\"", delegate="pike::string_literal", no_line_break=True
+        s,
+        i,
+        kind="literal1",
+        begin="\"",
+        end="\"",
+        delegate="pike::string_literal",
+        no_line_break=True,
     )
 
 
 def pike_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="#\"", end="\"", delegate="pike::string_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="#\"", end="\"", delegate="pike::string_literal"
+    )
 
 
 def pike_rule6(colorer, s, i):
@@ -208,7 +216,9 @@ def pike_rule6(colorer, s, i):
 
 
 def pike_rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="#.*?(?=($|/\\*|//))", at_line_start=True)
+    return colorer.match_seq_regexp(
+        s, i, kind="keyword2", regexp="#.*?(?=($|/\\*|//))", at_line_start=True
+    )
 
 
 def pike_rule8(colorer, s, i):
@@ -777,7 +787,9 @@ rulesDict2 = {
 
 
 def pike_rule33(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="null", seq="@decl", delegate="pike::main", exclude_match=True)
+    return colorer.match_eol_span(
+        s, i, kind="null", seq="@decl", delegate="pike::main", exclude_match=True
+    )
 
 
 def pike_rule34(colorer, s, i):
@@ -789,7 +801,9 @@ def pike_rule35(colorer, s, i):
 
 
 def pike_rule36(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="function", regexp="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})")
+    return colorer.match_seq_regexp(
+        s, i, kind="function", regexp="@(b|i|u|tt|url|pre|ref|code|expr|image)?(\\{.*@\\})"
+    )
 
 
 def pike_rule37(colorer, s, i):

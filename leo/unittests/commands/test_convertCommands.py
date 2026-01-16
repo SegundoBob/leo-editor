@@ -322,7 +322,9 @@ class TestPythonToTypeRust(LeoUnitTest):
             ),
             # Test 2
             (
-                ('if TYPE_CHECKING:  # pragma: no cover\n    from leo.core.leoCommands import Commands as Cmdr\n'),
+                (
+                    'if TYPE_CHECKING:  # pragma: no cover\n    from leo.core.leoCommands import Commands as Cmdr\n'
+                ),
                 (
                     'if TYPE_CHECKING { // # pragma: no cover\n'
                     '    from leo.core.leoCommands import Commands as Cmdr\n'

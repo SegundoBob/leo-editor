@@ -437,7 +437,11 @@ class LEP_CSVEdit(QtWidgets.QWidget):
             buttons.addWidget(QtWidgets.QLabel(what + ": "))
             for name, tip, fallback in list_:
                 button = QtWidgets.QPushButton()
-                button.setIcon(QtGui.QIcon.fromTheme(name, QtWidgets.QApplication.style().standardIcon(fallback)))
+                button.setIcon(
+                    QtGui.QIcon.fromTheme(
+                        name, QtWidgets.QApplication.style().standardIcon(fallback)
+                    )
+                )
                 button.setToolTip(tip % what)
                 button.clicked.connect(lambda checked, name=name: function(name))
                 buttons.addWidget(button)

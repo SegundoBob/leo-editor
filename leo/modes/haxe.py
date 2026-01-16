@@ -125,7 +125,9 @@ def haXe_rule6(colorer, s, i):
 
 
 def haXe_rule7(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="markup", regexp="~([[:punct:]])(?:.*?[^\\\\])*?\\1[sgiexom]*")
+    return colorer.match_seq_regexp(
+        s, i, kind="markup", regexp="~([[:punct:]])(?:.*?[^\\\\])*?\\1[sgiexom]*"
+    )
 
 
 def haXe_rule8(colorer, s, i):

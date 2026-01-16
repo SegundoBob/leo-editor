@@ -364,7 +364,9 @@ def bbj_rule16(colorer, s, i):
 
 
 def bbj_rule17(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True
+    )
 
 
 def bbj_rule18(colorer, s, i):

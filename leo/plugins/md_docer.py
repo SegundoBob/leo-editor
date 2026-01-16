@@ -147,7 +147,9 @@ def sync_transformations(event):
             h = v.h
             if h.startswith('@transformer '):
                 name = h.partition(' ')[2].strip()
-                trscripts[name] = g.getScript(c, p.copy(), useSentinels=False, forcePythonSentinels=True)
+                trscripts[name] = g.getScript(
+                    c, p.copy(), useSentinels=False, forcePythonSentinels=True
+                )
                 p.moveToNodeAfterTree()
             elif h.startswith('@transform-node '):
                 name = h.partition(' ')[2].strip()

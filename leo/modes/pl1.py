@@ -566,7 +566,9 @@ def pl1_rule2(colorer, s, i):
 
 
 def pl1_rule3(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="keyword2", regexp="\\* *process", at_line_start=True)
+    return colorer.match_eol_span_regexp(
+        s, i, kind="keyword2", regexp="\\* *process", at_line_start=True
+    )
 
 
 def pl1_rule4(colorer, s, i):
@@ -630,7 +632,9 @@ def pl1_rule18(colorer, s, i):
 
 
 def pl1_rule19(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def pl1_rule20(colorer, s, i):

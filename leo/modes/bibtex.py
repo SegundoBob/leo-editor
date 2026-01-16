@@ -922,123 +922,183 @@ def bibtex_rule0(colorer, s, i):
 
 
 def bibtex_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@article{", end="}", delegate="bibtex::article")
+    return colorer.match_span(
+        s, i, kind="function", begin="@article{", end="}", delegate="bibtex::article"
+    )
 
 
 def bibtex_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@article(", end=")", delegate="bibtex::article")
+    return colorer.match_span(
+        s, i, kind="function", begin="@article(", end=")", delegate="bibtex::article"
+    )
 
 
 def bibtex_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@book{", end="}", delegate="bibtex::book")
+    return colorer.match_span(
+        s, i, kind="function", begin="@book{", end="}", delegate="bibtex::book"
+    )
 
 
 def bibtex_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@book(", end=")", delegate="bibtex::book")
+    return colorer.match_span(
+        s, i, kind="function", begin="@book(", end=")", delegate="bibtex::book"
+    )
 
 
 def bibtex_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@booklet{", end="}", delegate="bibtex::booklet")
+    return colorer.match_span(
+        s, i, kind="function", begin="@booklet{", end="}", delegate="bibtex::booklet"
+    )
 
 
 def bibtex_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@booklet(", end=")", delegate="bibtex::booklet")
+    return colorer.match_span(
+        s, i, kind="function", begin="@booklet(", end=")", delegate="bibtex::booklet"
+    )
 
 
 def bibtex_rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@conference{", end="}", delegate="bibtex::conference")
+    return colorer.match_span(
+        s, i, kind="function", begin="@conference{", end="}", delegate="bibtex::conference"
+    )
 
 
 def bibtex_rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@conference(", end=")", delegate="bibtex::conference")
+    return colorer.match_span(
+        s, i, kind="function", begin="@conference(", end=")", delegate="bibtex::conference"
+    )
 
 
 def bibtex_rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@inbook{", end="}", delegate="bibtex::inbook")
+    return colorer.match_span(
+        s, i, kind="function", begin="@inbook{", end="}", delegate="bibtex::inbook"
+    )
 
 
 def bibtex_rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@inbook(", end=")", delegate="bibtex::inbook")
+    return colorer.match_span(
+        s, i, kind="function", begin="@inbook(", end=")", delegate="bibtex::inbook"
+    )
 
 
 def bibtex_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@incollection{", end="}", delegate="bibtex::incollection")
+    return colorer.match_span(
+        s, i, kind="function", begin="@incollection{", end="}", delegate="bibtex::incollection"
+    )
 
 
 def bibtex_rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@incollection(", end=")", delegate="bibtex::incollection")
+    return colorer.match_span(
+        s, i, kind="function", begin="@incollection(", end=")", delegate="bibtex::incollection"
+    )
 
 
 def bibtex_rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@inproceedings{", end="}", delegate="bibtex::inproceedings")
+    return colorer.match_span(
+        s, i, kind="function", begin="@inproceedings{", end="}", delegate="bibtex::inproceedings"
+    )
 
 
 def bibtex_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@inproceedings(", end=")", delegate="bibtex::inproceedings")
+    return colorer.match_span(
+        s, i, kind="function", begin="@inproceedings(", end=")", delegate="bibtex::inproceedings"
+    )
 
 
 def bibtex_rule15(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@manual{", end="}", delegate="bibtex::manual")
+    return colorer.match_span(
+        s, i, kind="function", begin="@manual{", end="}", delegate="bibtex::manual"
+    )
 
 
 def bibtex_rule16(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@manual(", end=")", delegate="bibtex::manual")
+    return colorer.match_span(
+        s, i, kind="function", begin="@manual(", end=")", delegate="bibtex::manual"
+    )
 
 
 def bibtex_rule17(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@mastersthesis{", end="}", delegate="bibtex::mastersthesis")
+    return colorer.match_span(
+        s, i, kind="function", begin="@mastersthesis{", end="}", delegate="bibtex::mastersthesis"
+    )
 
 
 def bibtex_rule18(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@mastersthesis(", end=")", delegate="bibtex::mastersthesis")
+    return colorer.match_span(
+        s, i, kind="function", begin="@mastersthesis(", end=")", delegate="bibtex::mastersthesis"
+    )
 
 
 def bibtex_rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@misc{", end="}", delegate="bibtex::misc")
+    return colorer.match_span(
+        s, i, kind="function", begin="@misc{", end="}", delegate="bibtex::misc"
+    )
 
 
 def bibtex_rule20(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@misc(", end=")", delegate="bibtex::misc")
+    return colorer.match_span(
+        s, i, kind="function", begin="@misc(", end=")", delegate="bibtex::misc"
+    )
 
 
 def bibtex_rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@phdthesis{", end="}", delegate="bibtex::phdthesis")
+    return colorer.match_span(
+        s, i, kind="function", begin="@phdthesis{", end="}", delegate="bibtex::phdthesis"
+    )
 
 
 def bibtex_rule22(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@phdthesis(", end=")", delegate="bibtex::phdthesis")
+    return colorer.match_span(
+        s, i, kind="function", begin="@phdthesis(", end=")", delegate="bibtex::phdthesis"
+    )
 
 
 def bibtex_rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@proceedings{", end="}", delegate="bibtex::proceedings")
+    return colorer.match_span(
+        s, i, kind="function", begin="@proceedings{", end="}", delegate="bibtex::proceedings"
+    )
 
 
 def bibtex_rule24(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@proceedings(", end=")", delegate="bibtex::proceedings")
+    return colorer.match_span(
+        s, i, kind="function", begin="@proceedings(", end=")", delegate="bibtex::proceedings"
+    )
 
 
 def bibtex_rule25(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@techreport{", end="}", delegate="bibtex::techreport")
+    return colorer.match_span(
+        s, i, kind="function", begin="@techreport{", end="}", delegate="bibtex::techreport"
+    )
 
 
 def bibtex_rule26(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@techreport(", end=")", delegate="bibtex::techreport")
+    return colorer.match_span(
+        s, i, kind="function", begin="@techreport(", end=")", delegate="bibtex::techreport"
+    )
 
 
 def bibtex_rule27(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@unpublished{", end="}", delegate="bibtex::unpublished")
+    return colorer.match_span(
+        s, i, kind="function", begin="@unpublished{", end="}", delegate="bibtex::unpublished"
+    )
 
 
 def bibtex_rule28(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@unpublished(", end=")", delegate="bibtex::unpublished")
+    return colorer.match_span(
+        s, i, kind="function", begin="@unpublished(", end=")", delegate="bibtex::unpublished"
+    )
 
 
 def bibtex_rule29(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@string{", end="}", delegate="bibtex::string")
+    return colorer.match_span(
+        s, i, kind="function", begin="@string{", end="}", delegate="bibtex::string"
+    )
 
 
 def bibtex_rule30(colorer, s, i):
-    return colorer.match_span(s, i, kind="function", begin="@string(", end=")", delegate="bibtex::string")
+    return colorer.match_span(
+        s, i, kind="function", begin="@string(", end=")", delegate="bibtex::string"
+    )
 
 
 # Rules dict for bibtex_main ruleset.
@@ -1084,11 +1144,15 @@ rulesDict1 = {
 
 
 def bibtex_rule31(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule32(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule33(colorer, s, i):
@@ -1357,11 +1421,15 @@ rulesDict2 = {
 
 
 def bibtex_rule45(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule46(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule47(colorer, s, i):
@@ -1630,11 +1698,15 @@ rulesDict3 = {
 
 
 def bibtex_rule59(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule60(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule61(colorer, s, i):
@@ -1903,11 +1975,15 @@ rulesDict4 = {
 
 
 def bibtex_rule73(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule74(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule75(colorer, s, i):
@@ -2176,11 +2252,15 @@ rulesDict5 = {
 
 
 def bibtex_rule87(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule88(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule89(colorer, s, i):
@@ -2449,11 +2529,15 @@ rulesDict6 = {
 
 
 def bibtex_rule101(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule102(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule103(colorer, s, i):
@@ -2722,11 +2806,15 @@ rulesDict7 = {
 
 
 def bibtex_rule115(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule116(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule117(colorer, s, i):
@@ -2995,11 +3083,15 @@ rulesDict8 = {
 
 
 def bibtex_rule129(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule130(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule131(colorer, s, i):
@@ -3268,11 +3360,15 @@ rulesDict9 = {
 
 
 def bibtex_rule143(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule144(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule145(colorer, s, i):
@@ -3541,11 +3637,15 @@ rulesDict10 = {
 
 
 def bibtex_rule157(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule158(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule159(colorer, s, i):
@@ -3814,11 +3914,15 @@ rulesDict11 = {
 
 
 def bibtex_rule171(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule172(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule173(colorer, s, i):
@@ -4087,11 +4191,15 @@ rulesDict12 = {
 
 
 def bibtex_rule185(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule186(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule187(colorer, s, i):
@@ -4360,11 +4468,15 @@ rulesDict13 = {
 
 
 def bibtex_rule199(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule200(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule201(colorer, s, i):
@@ -4633,11 +4745,15 @@ rulesDict14 = {
 
 
 def bibtex_rule213(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule214(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule215(colorer, s, i):
@@ -4910,11 +5026,15 @@ def bibtex_rule227(colorer, s, i):
 
 
 def bibtex_rule228(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule229(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule230(colorer, s, i):
@@ -4939,11 +5059,15 @@ rulesDict16 = {
 
 
 def bibtex_rule231(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="\\{", end="\\}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal3", begin="\\{", end="\\}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule232(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule233(colorer, s, i):
@@ -4965,11 +5089,15 @@ rulesDict17 = {
 
 
 def bibtex_rule234(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="bibtex::textquoted"
+    )
 
 
 def bibtex_rule235(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="{", end="}", delegate="bibtex::textbraced"
+    )
 
 
 def bibtex_rule236(colorer, s, i):

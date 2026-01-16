@@ -195,7 +195,9 @@ class ServerExternalFilesController(ExternalFilesController):
         g.app.idleTimeManager.add_callback(self.on_idle)
 
         self.waitingForAnswer = False
-        self.lastPNode: Position = None  # last p node that was asked for if not set to "AllYes\AllNo"
+        self.lastPNode: Position = (
+            None  # last p node that was asked for if not set to "AllYes\AllNo"
+        )
         self.lastCommander: Cmdr = None
 
     # @+node:felix.20210626222905.6: *3* sefc.clientResult
@@ -641,13 +643,17 @@ class QuickSearchController:
     def qsc_sort_by_gnx(self) -> None:
         """Return positions by gnx."""
         c = self.c
-        timeline: list[tuple[Position, Match_Iter]] = [(p.copy(), None) for p in c.all_unique_positions()]
+        timeline: list[tuple[Position, Match_Iter]] = [
+            (p.copy(), None) for p in c.all_unique_positions()
+        ]
         timeline.sort(key=lambda x: x[0].gnx, reverse=True)
         self.clear()
         self.addHeadlineMatches(timeline)
 
     # @+node:felix.20220225003906.15: *4* QSC.qsc_background_search
-    def qsc_background_search(self, pat: str) -> tuple[list[tuple[Position, Match_Iter]], list[Position]]:
+    def qsc_background_search(
+        self, pat: str
+    ) -> tuple[list[tuple[Position, Match_Iter]], list[Position]]:
         flags: RegexFlag
         if not pat.startswith('r:'):
             hpat = fnmatch.translate('*' + pat + '*').replace(r"\Z(?ms)", "")
@@ -765,7 +771,9 @@ class QuickSearchController:
 
     # @+node:felix.20220225003906.10: *4* QSC.qsc_get_history
     def qsc_get_history(self) -> None:
-        headlines: list[tuple[Position, Match_Iter]] = [(po[0].copy(), None) for po in self.c.nodeHistory.beadList]
+        headlines: list[tuple[Position, Match_Iter]] = [
+            (po[0].copy(), None) for po in self.c.nodeHistory.beadList
+        ]
         headlines.reverse()
         self.clear()
         self.addHeadlineMatches(headlines)
@@ -878,7 +886,9 @@ class QuickSearchController:
         return aList
 
     # @+node:felix.20220225003906.20: *4* QSC.onSelectItem (from quicksearch.py)
-    def onSelectItem(self, it: Any, it_prev: Any = None) -> None:  # it_prev not used. Hard to annotate.
+    def onSelectItem(
+        self, it: Any, it_prev: Any = None
+    ) -> None:  # it_prev not used. Hard to annotate.
         c = self.c
         tgt = self.its.get(it)
         if not tgt:
@@ -1192,7 +1202,9 @@ class LeoServer:
     # @+node:felix.20210621233316.7: *4* server.button commands
     # These will fail unless the open_file inits c.theScriptingController.
     # @+node:felix.20210621233316.8: *5* _check_button_command
-    def _check_button_command(self, c: Cmdr, tag: str) -> dict:  # pragma: no cover (no scripting controller)
+    def _check_button_command(
+        self, c: Cmdr, tag: str
+    ) -> dict:  # pragma: no cover (no scripting controller)
         """
         Check that a button command is possible.
         Raise ServerError if not. Otherwise, return sc.buttonsDict.
@@ -2041,7 +2053,9 @@ class LeoServer:
             if p.v and p.v.isAnyAtFileNode():
                 # ok, its an @file node so check if its absolute path matches the filePath
                 w_path = c.fullPath(p)
-                if w_path and g.os_path_normcase(g.finalize(w_path)) == g.os_path_normcase(g.finalize(filePath)):
+                if w_path and g.os_path_normcase(g.finalize(w_path)) == g.os_path_normcase(
+                    g.finalize(filePath)
+                ):
                     # Found the node that matches the filePath
                     c.selectPosition(p)  # Select the node in Leo's model
                     # +1 because lineNumber is 0-indexed
@@ -2771,7 +2785,9 @@ class LeoServer:
                     children = [self._get_position_d(topHoistPos, c)]
             else:
                 # this outputs all Root Children
-                children = [self._get_position_d(child, c) for child in self._yieldAllRootChildren(c)]
+                children = [
+                    self._get_position_d(child, c) for child in self._yieldAllRootChildren(c)
+                ]
         return self._make_minimal_response({"children": children})
 
     # @+node:felix.20210621233316.43: *5* server.get_focus
@@ -3000,7 +3016,9 @@ class LeoServer:
         return self._make_response({"string": s})
 
     # @+node:felix.20220815193758.1: *5* server.copy_node_as_json
-    def copy_node_as_json(self, param: Param) -> Response:  # pragma: no cover (too dangerous, for now)
+    def copy_node_as_json(
+        self, param: Param
+    ) -> Response:  # pragma: no cover (too dangerous, for now)
         """
         Copy a node as JSON, don't select it.
         Also supports 'asJSON' parameter to get as JSON
@@ -3493,7 +3511,9 @@ class LeoServer:
         if h == oldH:
             return self._make_response()
         bunch = u.beforeChangeHeadline(p)
-        c.setHeadString(p, h)  # c.setHeadString fixes the headline revert bug of p.initHeadString(h)
+        c.setHeadString(
+            p, h
+        )  # c.setHeadString fixes the headline revert bug of p.initHeadString(h)
         c.setChanged()
         p.setDirty()
         u.afterChangeHeadline(p, 'Change Headline', bunch)
@@ -5238,7 +5258,9 @@ class LeoServer:
             d['hasChildren'] = True
             # includeChildren flag is used by get_structure
             if includeChildren:
-                d['children'] = [self._get_position_d(child, c, includeChildren=True) for child in p.children()]
+                d['children'] = [
+                    self._get_position_d(child, c, includeChildren=True) for child in p.children()
+                ]
 
         if p.isCloned():
             d['cloned'] = True
@@ -5976,7 +5998,9 @@ def main() -> None:  # pragma: no cover (tested in client)
                 except OSError as e:
                     print(e)
                     print("Trying with IPv4 Family", flush=True)
-                    server = await websockets.serve(ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None)
+                    server = await websockets.serve(
+                        ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None
+                    )
                     realtime_server = server
 
                 signon = SERVER_STARTED_TOKEN + f" at {wsHost} on port: {wsPort}.\n"
@@ -6017,7 +6041,9 @@ def main() -> None:  # pragma: no cover (tested in client)
             except OSError as e:
                 print(e)
                 print("Trying with IPv4 Family", flush=True)
-                server = websockets.serve(ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None)
+                server = websockets.serve(
+                    ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None
+                )
                 realtime_server = loop.run_until_complete(server)
 
             signon = SERVER_STARTED_TOKEN + f" at {wsHost} on port: {wsPort}.\n"

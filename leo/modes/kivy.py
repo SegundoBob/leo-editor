@@ -49,7 +49,9 @@ def kivy_rule0(colorer, s, i):
 
 
 def kivy_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="kivy::literal_one")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="kivy::literal_one"
+    )
 
 
 def kivy_rule2(colorer, s, i):

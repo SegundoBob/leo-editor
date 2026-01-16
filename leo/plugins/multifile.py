@@ -94,7 +94,9 @@ def addMenu(tag, keywords):
         return
     haveseen[c] = None
     menu = c.frame.menu.getMenu('Edit')
-    c.add_command(menu, label="Insert Directory String", command=lambda c=c: insertDirectoryString(c))
+    c.add_command(
+        menu, label="Insert Directory String", command=lambda c=c: insertDirectoryString(c)
+    )
 
 
 # @+node:mork.20041019091524: *3* insertDirectoryString

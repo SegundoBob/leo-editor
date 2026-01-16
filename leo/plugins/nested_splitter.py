@@ -92,7 +92,9 @@ class NestedSplitterChoice(QtWidgets.QWidget):
         button = QtWidgets.QPushButton("Action", self)  # EKR: 2011/03/15
         self.layout().addWidget(button)
         button.setContextMenuPolicy(ContextMenuPolicy.CustomContextMenu)
-        button.customContextMenuRequested.connect(lambda pnt: self.parent().choice_menu(self, button.mapToParent(pnt)))
+        button.customContextMenuRequested.connect(
+            lambda pnt: self.parent().choice_menu(self, button.mapToParent(pnt))
+        )
         button.clicked.connect(lambda: self.parent().choice_menu(self, button.pos()))
 
     # @-others
@@ -260,7 +262,9 @@ class NestedSplitterHandle(QtWidgets.QSplitterHandle):
                     def swap_mark_callback(i=i, index=index, splitter=splitter):
                         splitter.swap_with_marked(index, i)
 
-                    self.add_item(swap_mark_callback, menu, f"Swap {count[i]:d} {lr[i]} With Marked")
+                    self.add_item(
+                        swap_mark_callback, menu, f"Swap {count[i]:d} {lr[i]} With Marked"
+                    )
         # Add.
         for i in 0, 1:
             if (
@@ -301,7 +305,11 @@ class NestedSplitterHandle(QtWidgets.QSplitterHandle):
                 self.add_item(lambda: splitter.open_window(), submenu, "Empty")
             # adapted from choice_menu()
             if splitter.root.marked and splitter.top().max_count() > 1:
-                self.add_item(lambda: splitter.open_window(action="_move_marked_there"), submenu, "Move marked there")
+                self.add_item(
+                    lambda: splitter.open_window(action="_move_marked_there"),
+                    submenu,
+                    "Move marked there",
+                )
             for provider in splitter.root.providers:
                 if hasattr(provider, 'ns_provides'):
                     for title, id_ in provider.ns_provides():
@@ -522,7 +530,8 @@ class NestedSplitter(QtWidgets.QSplitter):
             """Recursively look for this widget"""
             for n, i in enumerate(layout['content']):
                 if i == id_ or (
-                    isinstance(i, QtWidgets.QWidget) and (i.objectName() == id_ or i.__class__.__name__ == id_)
+                    isinstance(i, QtWidgets.QWidget)
+                    and (i.objectName() == id_ or i.__class__.__name__ == id_)
                 ):
                     return layout, n
                 if not isinstance(i, QtWidgets.QWidget):
@@ -577,7 +586,11 @@ class NestedSplitter(QtWidgets.QSplitter):
         """build menu on Action button"""
         menu = QtWidgets.QMenu(self.top())  # #1995
         index = self.indexOf(button)
-        if self.root.marked and not self.invalid_swap(button, self.root.marked[3]) and self.top().max_count() > 2:
+        if (
+            self.root.marked
+            and not self.invalid_swap(button, self.root.marked[3])
+            and self.top().max_count() > 2
+        ):
             act = QAction("Move marked here", self)
             act.triggered.connect(lambda checked: self.replace_widget(button, self.root.marked[3]))
             menu.addAction(act)
@@ -1118,7 +1131,9 @@ class NestedSplitter(QtWidgets.QSplitter):
         if self.count() == len(layout['sizes']):
             self.setSizes(layout['sizes'])
         else:
-            print(f"Wrong pane count at level {level:d}, count:{self.count():d}, sizes:{len(layout['sizes']):d}")
+            print(
+                f"Wrong pane count at level {level:d}, count:{self.count():d}, sizes:{len(layout['sizes']):d}"
+            )
             self.equalize_sizes()
 
     # @+node:tbrown.20110628083641.21156: *3* ns.prune_empty

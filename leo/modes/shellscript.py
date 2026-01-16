@@ -127,23 +127,33 @@ def shellscript_rule10(colorer, s, i):
 
 
 def shellscript_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="$((", end="))", delegate="shellscript::exec")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="$((", end="))", delegate="shellscript::exec"
+    )
 
 
 def shellscript_rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="$(", end=")", delegate="shellscript::exec")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="$(", end=")", delegate="shellscript::exec"
+    )
 
 
 def shellscript_rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="$[", end="]", delegate="shellscript::exec")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="$[", end="]", delegate="shellscript::exec"
+    )
 
 
 def shellscript_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="`", end="`", delegate="shellscript::exec")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="`", end="`", delegate="shellscript::exec"
+    )
 
 
 def shellscript_rule15(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="shellscript::literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="shellscript::literal"
+    )
 
 
 def shellscript_rule16(colorer, s, i):

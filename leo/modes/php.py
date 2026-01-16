@@ -2567,16 +2567,25 @@ def php_rule3(colorer, s, i):
 
 def php_rule4(colorer, s, i):
     return colorer.match_span_regexp(
-        s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>", delegate="php::php"
+        s,
+        i,
+        kind="markup",
+        begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>",
+        end="</SCRIPT>",
+        delegate="php::php",
     )
 
 
 def php_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="php::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="php::javascript"
+    )
 
 
 def php_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css"
+    )
 
 
 def php_rule7(colorer, s, i):
@@ -2627,11 +2636,15 @@ def php_rule12(colorer, s, i):
 
 
 def php_rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="php::tags_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="php::tags_literal"
+    )
 
 
 def php_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="php::tags_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="php::tags_literal"
+    )
 
 
 def php_rule15(colorer, s, i):
@@ -2692,7 +2705,9 @@ def php_rule20(colorer, s, i):
 
 
 def php_rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="php::php_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="php::php_literal"
+    )
 
 
 def php_rule22(colorer, s, i):
@@ -2700,7 +2715,9 @@ def php_rule22(colorer, s, i):
 
 
 def php_rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", delegate="php::php_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="`", end="`", delegate="php::php_literal"
+    )
 
 
 def php_rule24(colorer, s, i):
@@ -3220,7 +3237,9 @@ def php_rule68(colorer, s, i):
 
 
 def php_rule69(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True
+    )
 
 
 def php_rule70(colorer, s, i):

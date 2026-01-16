@@ -81,7 +81,9 @@ def controller(
     """Create an singleton instance of a bridge controller."""
     global gBridgeController
     if not gBridgeController:
-        gBridgeController = BridgeController(gui, loadPlugins, readSettings, silent, tracePlugins, useCaches, verbose)
+        gBridgeController = BridgeController(
+            gui, loadPlugins, readSettings, silent, tracePlugins, useCaches, verbose
+        )
     return gBridgeController
 
 

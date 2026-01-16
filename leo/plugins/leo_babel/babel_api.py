@@ -74,7 +74,9 @@ class BabelGlobals(object):
 
         if leoG.app.gui.guiName() == "qt":
             self.babelMenu = babel_lib.MenuPopUp(self)
-        self.pathBabelKill = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'babel_kill.py')
+        self.pathBabelKill = os.path.join(
+            os.path.abspath(os.path.dirname(__file__)), 'babel_kill.py'
+        )
         self.babel_api = sys.modules[__name__]
 
     # @-others
@@ -135,14 +137,22 @@ class BabelCmdr(object):
         self.babel_color_stderr = _getColor(cmdr, 'Leo-Babel-stderr', default='#ff3300')
         self.babel_color_information = _getColor(cmdr, 'Leo-Babel-completion')
         if self.babel_color_information is None:
-            self.babel_color_information = _getColor(cmdr, 'Leo-Babel-information', default='#3333ff')
-        self.babel_node_creation = cmdr.config.getBool('Leo-Babel-Node-Creation-Default', default=None)
+            self.babel_color_information = _getColor(
+                cmdr, 'Leo-Babel-information', default='#3333ff'
+            )
+        self.babel_node_creation = cmdr.config.getBool(
+            'Leo-Babel-Node-Creation-Default', default=None
+        )
         if self.babel_node_creation is None:
             self.babel_node_creation = cmdr.config.getBool('Leo-Babel-Node-Creation', default=True)
-        self.babel_interpreter_python = _getString(cmdr, 'Leo-Babel-Python', default='/usr/bin/python3')
+        self.babel_interpreter_python = _getString(
+            cmdr, 'Leo-Babel-Python', default='/usr/bin/python3'
+        )
         self.babel_interpreter_shell = _getString(cmdr, 'Leo-Babel-Shell', default='/usr/bin/bash')
         self.babel_sudo = cmdr.config.getBool('Leo-Babel-Sudo', default=False)
-        self.babel_prefix_information = _getString(cmdr, 'Leo-Babel-Prefix-Information', default="- ")
+        self.babel_prefix_information = _getString(
+            cmdr, 'Leo-Babel-Prefix-Information', default="- "
+        )
         self.babel_prefix_stdout = _getString(cmdr, 'Leo-Babel-Prefix-stdout', default="| ")
         self.babel_prefix_stderr = _getString(cmdr, 'Leo-Babel-Prefix-stderr', default="* ")
         self.babel_tab_babel = cmdr.config.getBool('Leo-Babel-Tab-Babel', default=True)

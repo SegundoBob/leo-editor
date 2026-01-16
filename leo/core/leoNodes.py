@@ -337,7 +337,9 @@ class Position:
     def __str__(self) -> str:  # pragma: no cover
         p = self
         if p.v:
-            return f"<pos {id(p)} childIndex: {p._childIndex} lvl: {p.level()} key: {p.key()} {p.h}>"
+            return (
+                f"<pos {id(p)} childIndex: {p._childIndex} lvl: {p.level()} key: {p.key()} {p.h}>"
+            )
         return f"<pos {id(p)} [{len(p.stack)}] None>"
 
     __repr__ = __str__
@@ -1349,7 +1351,9 @@ class Position:
             if g.unitTesting:
                 assert False, 'children[%s] != p.v'  # noqa
         else:
-            g.trace(f"**can not happen: bad child index: {n}, len(children): {len(parent_v.children)}")
+            g.trace(
+                f"**can not happen: bad child index: {n}, len(children): {len(parent_v.children)}"
+            )
             g.trace('parent_v.children...\n', g.listToString(parent_v.children))
             g.trace('parent_v', parent_v, 'child', child)
             g.trace('** callers:', g.callers())
@@ -1825,7 +1829,9 @@ class Position:
             if childIndex < 0:
                 p.invalidOutline(f"missing childIndex: {childIndex!r}")  # pragma: no cover
             elif childIndex >= pv.numberOfChildren():
-                p.invalidOutline("missing children entry for index: {childIndex!r}")  # pragma: no cover
+                p.invalidOutline(
+                    "missing children entry for index: {childIndex!r}"
+                )  # pragma: no cover
         elif childIndex < 0:
             p.invalidOutline("negative childIndex: {childIndex!r}")  # pragma: no cover
         if not p.v and pv:
@@ -2256,7 +2262,11 @@ class VNode:
     def anyAtFileNodeName(self) -> str:
         """Return the file name following an @file node or an empty string."""
         v = self
-        return v.findAtFileName(g.app.atAutoNames) or v.findAtFileName(g.app.atFileNames) or v.atLeoNodeName()
+        return (
+            v.findAtFileName(g.app.atAutoNames)
+            or v.findAtFileName(g.app.atFileNames)
+            or v.atLeoNodeName()
+        )
 
     # @+node:ekr.20031218072017.3348: *4* v.at...FileNodeName
     # These return the filename following @xxx, in v.headString.

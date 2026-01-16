@@ -246,7 +246,9 @@ def addMenu(tag, keywords):
 
     c.add_command(xmen, label="Set Stylesheet Node", command=lambda c=c: setStyleNode(c))
     c.add_command(xmen, label="Jump To Style Node", command=lambda c=c: jumpToStyleNode(c))
-    c.add_command(xmen, label="Process Node with Stylesheet Node", command=lambda c=c: processDocumentNode(c))
+    c.add_command(
+        xmen, label="Process Node with Stylesheet Node", command=lambda c=c: processDocumentNode(c)
+    )
     xmen.add_separator(xmen)
     c.add_command(xmen, label="Create Stylesheet Node", command=lambda c=c: addXSLTNode(c))
 
@@ -257,7 +259,9 @@ def addMenu(tag, keywords):
     xsltkeys = list(xslt.keys())
     xsltkeys.sort()
     for z in xsltkeys:
-        c.add_command(menu2, label=z, command=lambda c=c, element=xslt[z]: addXSLTElement(c, element))
+        c.add_command(
+            menu2, label=z, command=lambda c=c, element=xslt[z]: addXSLTElement(c, element)
+        )
 
     # men.add_cascade(menu = xmen, label = "XSLT-Node Commands")
     menu3 = mc.createNewMenu('XSLT-Node Commands', 'XSLT')

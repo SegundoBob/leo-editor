@@ -44,7 +44,9 @@ def createPasteAsHeadlinesMenu(tag, keywords):
     index_label = index_label.replace("&", "")
 
     # Add 'Word Count...' to the bottom of the Edit menu.
-    c.frame.menu.insert('Edit', 6, label=index_label, underline=amp_index, command=lambda c=c: paste_as_headlines(c))
+    c.frame.menu.insert(
+        'Edit', 6, label=index_label, underline=amp_index, command=lambda c=c: paste_as_headlines(c)
+    )
 
 
 # @+node:danr7.20060912105041.6: ** paste_as_headlines

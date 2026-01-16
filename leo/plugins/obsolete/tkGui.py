@@ -263,7 +263,9 @@ class tkinterGui(leoGui.leoGui):
         d = tkinterAskYesNo(c, title, message)
         return d.run(modal=True)
 
-    def runAskYesNoCancelDialog(self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"):
+    def runAskYesNoCancelDialog(
+        self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"
+    ):
         """Create and run an askYesNoCancel dialog ."""
         d = tkinterAskYesNoCancel(c, title, message, yesMessage, noMessage, defaultButton)
         return d.run(modal=True)
@@ -306,17 +308,25 @@ class tkinterGui(leoGui.leoGui):
         if multiple:
             # askopenfilenames requires Python 2.3 and Tk 8.4.
             version = '.'.join([str(sys.version_info[i]) for i in (0, 1, 2)])
-            if g.CheckVersion(version, "2.3") and g.CheckVersion(self.root.getvar("tk_patchLevel"), "8.4"):
-                files = tkFileDialog.askopenfilenames(title=title, filetypes=filetypes, initialdir=initialdir)
+            if g.CheckVersion(version, "2.3") and g.CheckVersion(
+                self.root.getvar("tk_patchLevel"), "8.4"
+            ):
+                files = tkFileDialog.askopenfilenames(
+                    title=title, filetypes=filetypes, initialdir=initialdir
+                )
                 # g.trace(files)
                 return list(files)
             else:
                 # Get one file and return it as a list.
-                theFile = tkFileDialog.askopenfilename(title=title, filetypes=filetypes, initialdir=initialdir)
+                theFile = tkFileDialog.askopenfilename(
+                    title=title, filetypes=filetypes, initialdir=initialdir
+                )
                 return [theFile]
         else:
             # Return a single file name as a string.
-            return tkFileDialog.askopenfilename(title=title, filetypes=filetypes, initialdir=initialdir)
+            return tkFileDialog.askopenfilename(
+                title=title, filetypes=filetypes, initialdir=initialdir
+            )
 
     # @+node:ekr.20081121110412.370: *5* runSaveFileDialog
     def runSaveFileDialog(self, initialfile, title, filetypes, defaultextension):
@@ -517,7 +527,8 @@ class tkinterGui(leoGui.leoGui):
             self.set_focus_count += 1
             # Do not call trace here: that might affect focus!
             g.pr(
-                'gui.set_focus: %4d %10s %s' % (self.set_focus_count, c and c.shortFileName(), c and c.widget_name(w)),
+                'gui.set_focus: %4d %10s %s'
+                % (self.set_focus_count, c and c.shortFileName(), c and c.widget_name(w)),
                 g.callers(5),
             )
 
@@ -754,7 +765,12 @@ class tkinterGui(leoGui.leoGui):
             else:
                 g.app.scriptDict = {}
                 c.executeScript(
-                    args=args, p=p, script=script, define_g=define_g, define_name=define_name, silent=silent
+                    args=args,
+                    p=p,
+                    script=script,
+                    define_g=define_g,
+                    define_name=define_name,
+                    silent=silent,
                 )
                 # Remove the button if the script asks to be removed.
                 if g.app.scriptDict.get('removeMe'):
@@ -783,7 +799,9 @@ class tkinterGui(leoGui.leoGui):
         buttonCommandName = 'press-%s-button' % buttonCommandName.lower()
 
         # This will use any shortcut defined in an @shortcuts node.
-        k.registerCommand(buttonCommandName, None, executeScriptCallback, pane='button', verbose=False)
+        k.registerCommand(
+            buttonCommandName, None, executeScriptCallback, pane='button', verbose=False
+        )
         # @-<< create press-buttonText-button command >>
 
     # @+node:ekr.20081121110412.401: *4* killPopupMenu
@@ -951,9 +969,9 @@ class TkPropertiesDialog:
         buttons.extend(("OK", "Cancel"))
 
         for name in buttons:
-            Tk.Button(box, text=name, width=6, command=lambda self=self, name=name: self.onButton(name)).pack(
-                side="left", padx=5
-            )
+            Tk.Button(
+                box, text=name, width=6, command=lambda self=self, name=name: self.onButton(name)
+            ).pack(side="left", padx=5)
 
         # @-<< Create the buttons >>
 
@@ -994,7 +1012,9 @@ class TkPropertiesDialog:
             if section not in data:
                 data[section] = {}
             s = entry.get()
-            s = g.toEncodedString(s, "ascii", reportErrors=True)  # Config params had better be ascii.
+            s = g.toEncodedString(
+                s, "ascii", reportErrors=True
+            )  # Config params had better be ascii.
             data[section][option] = s
 
         return data
@@ -1043,7 +1063,9 @@ class leoTkinterDialog:
         self.modal = None
 
         self.buttonsFrame = None  # Frame to hold typical dialog buttons.
-        self.defaultButtonCommand = None  # Command to call when user closes the window by clicking the close box.
+        self.defaultButtonCommand = (
+            None  # Command to call when user closes the window by clicking the close box.
+        )
         self.frame = None  # The outermost frame.
         self.root = None  # g.app.root
         self.showFlag = show
@@ -1293,9 +1315,9 @@ class leoTkinterPropertiesDialog:
         buttons.extend(("OK", "Cancel"))
 
         for name in buttons:
-            Tk.Button(box, text=name, width=6, command=lambda self=self, name=name: self.onButton(name)).pack(
-                side="left", padx=5
-            )
+            Tk.Button(
+                box, text=name, width=6, command=lambda self=self, name=name: self.onButton(name)
+            ).pack(side="left", padx=5)
 
         # @-<< Create the buttons >>
 
@@ -1336,7 +1358,9 @@ class leoTkinterPropertiesDialog:
             if section not in data:
                 data[section] = {}
             s = entry.get()
-            s = g.toEncodedString(s, "ascii", reportErrors=True)  # Config params had better be ascii.
+            s = g.toEncodedString(
+                s, "ascii", reportErrors=True
+            )  # Config params had better be ascii.
             data[section][option] = s
 
         return data
@@ -1552,8 +1576,20 @@ class leoTkinterComparePanel(leoCompare.leoCompare, leoTkinterDialog):
         # @+<< create the browser rows >>
         # @+node:ekr.20081121110412.15: *6* << create the browser rows >>
         for row, text, text2, command, var in (
-            (row1, "Compare path 1:", "Ignore first line", self.onBrowse1, self.ignoreFirstLine1Var),
-            (row2, "Compare path 2:", "Ignore first line", self.onBrowse2, self.ignoreFirstLine2Var),
+            (
+                row1,
+                "Compare path 1:",
+                "Ignore first line",
+                self.onBrowse1,
+                self.ignoreFirstLine1Var,
+            ),
+            (
+                row2,
+                "Compare path 2:",
+                "Ignore first line",
+                self.onBrowse2,
+                self.ignoreFirstLine2Var,
+            ),
             (row3, "Output file:", "Use output file", self.onBrowse3, self.useOutputFileVar),
         ):
             lab = Tk.Label(row, anchor="e", text=text, width=13)
@@ -1571,13 +1607,17 @@ class leoTkinterComparePanel(leoCompare.leoCompare, leoTkinterDialog):
         # @-<< create the browser rows >>
         # @+<< create the extension row >>
         # @+node:ekr.20081121110412.16: *6* << create the extension row >>
-        b = Tk.Checkbutton(row4, anchor="w", var=self.limitToExtensionVar, text="Limit directory compares to type:")
+        b = Tk.Checkbutton(
+            row4, anchor="w", var=self.limitToExtensionVar, text="Limit directory compares to type:"
+        )
         b.pack(side="left", padx=4)
 
         self.extensionEntry = e = Tk.Entry(row4, width=6)
         e.pack(side="left", padx=2)
 
-        b = Tk.Checkbutton(row4, anchor="w", var=self.appendOutputVar, text="Append output to output file")
+        b = Tk.Checkbutton(
+            row4, anchor="w", var=self.appendOutputVar, text="Append output to output file"
+        )
         b.pack(side="left", padx=4)
         # @-<< create the extension row >>
         # @+<< create the whitespace options frame >>
@@ -1803,7 +1843,9 @@ class tkinterAboutLeo(leoTkinterDialog):
     def __init__(self, c, version, theCopyright, url, email):
         """Create a Tkinter About Leo dialog."""
 
-        leoTkinterDialog.__init__(self, c, "About Leo", resizeable=True)  # Initialize the base class.
+        leoTkinterDialog.__init__(
+            self, c, "About Leo", resizeable=True
+        )  # Initialize the base class.
 
         if g.app.unitTesting:
             return
@@ -1844,7 +1886,9 @@ class tkinterAboutLeo(leoTkinterDialog):
 
         frame.pack(padx=6, pady=4)
 
-        self.text = w = g.app.gui.plainTextWidget(frame, height=height, width=width, bd=0, bg=frame.cget("background"))
+        self.text = w = g.app.gui.plainTextWidget(
+            frame, height=height, width=width, bd=0, bg=frame.cget("background")
+        )
         w.pack(pady=10)
 
         try:
@@ -2281,10 +2325,21 @@ class tkinterAskYesNoCancel(leoTkinterDialog):
 
     # @+others
     # @+node:ekr.20081121110412.69: *4* askYesNoCancel.__init__
-    def __init__(self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes", resizeable=False):
+    def __init__(
+        self,
+        c,
+        title,
+        message=None,
+        yesMessage="Yes",
+        noMessage="No",
+        defaultButton="Yes",
+        resizeable=False,
+    ):
         """Create a dialog having three buttons."""
 
-        leoTkinterDialog.__init__(self, c, title, resizeable, canClose=False)  # Initialize the base class.
+        leoTkinterDialog.__init__(
+            self, c, title, resizeable, canClose=False
+        )  # Initialize the base class.
 
         if g.app.unitTesting:
             return
@@ -2696,7 +2751,13 @@ class tkFindTab(leoFind.findTab):
         for i in range(numberOfColumns):
             for var, name, val in radioLists[i]:
                 box = underlinedTkButton(
-                    "radio", columns[i], anchor="w", text=name, variable=var, value=val, background=bg
+                    "radio",
+                    columns[i],
+                    anchor="w",
+                    text=name,
+                    variable=var,
+                    value=val,
+                    background=bg,
                 )
                 box.button.pack(fill="x")
                 c.bind(box.button, "<Button-1>", self.resetWrap)
@@ -2705,7 +2766,9 @@ class tkFindTab(leoFind.findTab):
                 box.bindHotKey(ftxt)
                 box.bindHotKey(ctxt)
             for name, var in checkLists[i]:
-                box = underlinedTkButton("check", columns[i], anchor="w", text=name, variable=var, background=bg)
+                box = underlinedTkButton(
+                    "check", columns[i], anchor="w", text=name, variable=var, background=bg
+                )
                 box.button.pack(fill="x")
                 c.bind(box.button, "<Button-1>", self.resetWrap)
                 box.bindHotKey(ftxt)
@@ -2821,7 +2884,10 @@ class tkFindTab(leoFind.findTab):
         # @+<< set radio buttons from ivars >>
         # @+node:ekr.20081121110412.100: *6* << set radio buttons from ivars >>
         found = False
-        for var, setting in (("pattern_match", "pattern-search"), ("script_search", "script-search")):
+        for var, setting in (
+            ("pattern_match", "pattern-search"),
+            ("script_search", "script-search"),
+        ):
             val = self.svarDict[var].get()
             if val:
                 self.svarDict["radio-find-type"].set(setting)
@@ -3308,7 +3374,9 @@ class leoTkinterBody(leoFrame.leoBody):
         wrap = g.choose(wrap, "word", "none")
 
         # Setgrid=1 cause severe problems with the font panel.
-        body = w = leoTkTextWidget(parentFrame, name='body-pane', bd=2, bg="white", relief="flat", setgrid=0, wrap=wrap)
+        body = w = leoTkTextWidget(
+            parentFrame, name='body-pane', bd=2, bg="white", relief="flat", setgrid=0, wrap=wrap
+        )
 
         bodyBar = Tk.Scrollbar(parentFrame, name='bodyBar')
 
@@ -3815,7 +3883,9 @@ class leoTkinterFrame(leoFrame.leoFrame):
 
     def createLeoSplitters(self, parentFrame):
         # Splitter 1 is the main splitter.
-        f1, bar1, split1Pane1, split1Pane2 = self.createLeoTkSplitter(parentFrame, self.splitVerticalFlag, 'splitter1')
+        f1, bar1, split1Pane1, split1Pane2 = self.createLeoTkSplitter(
+            parentFrame, self.splitVerticalFlag, 'splitter1'
+        )
 
         self.f1, self.bar1 = f1, bar1
         self.split1Pane1, self.split1Pane2 = split1Pane1, split1Pane2
@@ -4014,7 +4084,13 @@ class leoTkinterFrame(leoFrame.leoFrame):
     def destroyAllPanels(self):
         """Destroy all panels attached to this frame."""
 
-        panels = (self.comparePanel, self.colorPanel, self.findPanel, self.fontPanel, self.prefsPanel)
+        panels = (
+            self.comparePanel,
+            self.colorPanel,
+            self.findPanel,
+            self.fontPanel,
+            self.prefsPanel,
+        )
 
         for panel in panels:
             if panel:
@@ -4070,7 +4146,12 @@ class leoTkinterFrame(leoFrame.leoFrame):
 
             bg = self.statusFrame.cget("background")
             self.textWidget = w = g.app.gui.bodyTextWidget(
-                self.statusFrame, height=1, state="disabled", bg=bg, relief="groove", name='status-line'
+                self.statusFrame,
+                height=1,
+                state="disabled",
+                bg=bg,
+                relief="groove",
+                name='status-line',
             )
             self.textWidget.pack(side="left", expand=1, fill="x")
             c.bind(w, "<Button-1>", self.onActivate)
@@ -4447,7 +4528,9 @@ class leoTkinterFrame(leoFrame.leoFrame):
         lab = Tk.Label(f, text='mini-buffer', justify='left', anchor='nw', foreground='blue')
         lab.pack(side='left')
 
-        label = g.app.gui.plainTextWidget(f, height=1, relief='groove', background='lightgrey', name='minibuffer')
+        label = g.app.gui.plainTextWidget(
+            f, height=1, relief='groove', background='lightgrey', name='minibuffer'
+        )
         label.pack(side='left', fill='x', expand=1, padx=2, pady=1)
 
         frame.minibufferVisible = c.showMinibuffer
@@ -5107,7 +5190,9 @@ class leoTkinterFrame(leoFrame.leoFrame):
             # @+node:ekr.20081121110412.242: *8* << create the scale widget >>
             top = Tk.Toplevel()
             top.title("Download progress")
-            self.scale = scale = Tk.Scale(top, state="normal", orient="horizontal", from_=0, to=total)
+            self.scale = scale = Tk.Scale(
+                top, state="normal", orient="horizontal", from_=0, to=total
+            )
             scale.pack()
             top.lift()
             # @-<< create the scale widget >>
@@ -5262,7 +5347,13 @@ class leoTkinterLog(leoFrame.leoLog):
     def createTextWidget(self, parentFrame):
         self.logNumber += 1
         log = g.app.gui.plainTextWidget(
-            parentFrame, name="log-%d" % self.logNumber, setgrid=0, wrap=self.wrap, bd=2, bg="white", relief="flat"
+            parentFrame,
+            name="log-%d" % self.logNumber,
+            setgrid=0,
+            wrap=self.wrap,
+            bd=2,
+            bg="white",
+            relief="flat",
         )
 
         logBar = Tk.Scrollbar(parentFrame, name="logBar")
@@ -6704,29 +6795,47 @@ class leoTkinterTree(leoFrame.leoTree):
         self.expanded_click_area = c.config.getBool('expanded_click_area')
         self.gc_before_redraw = c.config.getBool('gc_before_redraw')
 
-        self.headline_text_editing_foreground_color = c.config.getColor('headline_text_editing_foreground_color')
-        self.headline_text_editing_background_color = c.config.getColor('headline_text_editing_background_color')
+        self.headline_text_editing_foreground_color = c.config.getColor(
+            'headline_text_editing_foreground_color'
+        )
+        self.headline_text_editing_background_color = c.config.getColor(
+            'headline_text_editing_background_color'
+        )
         self.headline_text_editing_selection_foreground_color = c.config.getColor(
             'headline_text_editing_selection_foreground_color'
         )
         self.headline_text_editing_selection_background_color = c.config.getColor(
             'headline_text_editing_selection_background_color'
         )
-        self.headline_text_selected_foreground_color = c.config.getColor("headline_text_selected_foreground_color")
-        self.headline_text_selected_background_color = c.config.getColor("headline_text_selected_background_color")
+        self.headline_text_selected_foreground_color = c.config.getColor(
+            "headline_text_selected_foreground_color"
+        )
+        self.headline_text_selected_background_color = c.config.getColor(
+            "headline_text_selected_background_color"
+        )
         self.headline_text_editing_selection_foreground_color = c.config.getColor(
             "headline_text_editing_selection_foreground_color"
         )
         self.headline_text_editing_selection_background_color = c.config.getColor(
             "headline_text_editing_selection_background_color"
         )
-        self.headline_text_unselected_foreground_color = c.config.getColor('headline_text_unselected_foreground_color')
-        self.headline_text_unselected_background_color = c.config.getColor('headline_text_unselected_background_color')
+        self.headline_text_unselected_foreground_color = c.config.getColor(
+            'headline_text_unselected_foreground_color'
+        )
+        self.headline_text_unselected_background_color = c.config.getColor(
+            'headline_text_unselected_background_color'
+        )
 
         self.idle_redraw = c.config.getBool('idle_redraw')
-        self.initialClickExpandsOrContractsNode = c.config.getBool('initialClickExpandsOrContractsNode')
-        self.look_for_control_drag_on_mouse_down = c.config.getBool('look_for_control_drag_on_mouse_down')
-        self.select_all_text_when_editing_headlines = c.config.getBool('select_all_text_when_editing_headlines')
+        self.initialClickExpandsOrContractsNode = c.config.getBool(
+            'initialClickExpandsOrContractsNode'
+        )
+        self.look_for_control_drag_on_mouse_down = c.config.getBool(
+            'look_for_control_drag_on_mouse_down'
+        )
+        self.select_all_text_when_editing_headlines = c.config.getBool(
+            'select_all_text_when_editing_headlines'
+        )
 
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
         self.trace = c.config.getBool('trace_tree')
@@ -7015,7 +7124,9 @@ class leoTkinterTree(leoFrame.leoTree):
             del d[theId]
             canvas.coords(theId, x1, y1, x2, y2)
         else:
-            theId = canvas.create_line(x1, y1, x2, y2, tag="lines", fill="gray50")  # stipple="gray25")
+            theId = canvas.create_line(
+                x1, y1, x2, y2, tag="lines", fill="gray50"
+            )  # stipple="gray25")
             if self.trace_alloc:
                 g.trace("%3d %s" % (theId, p and p.h), align=-20)
 
@@ -7045,7 +7156,13 @@ class leoTkinterTree(leoFrame.leoTree):
             # Tags are not valid in Tk.Text widgets.
             self.textNumber += 1
             w = g.app.gui.plainTextWidget(
-                canvas, name='head-%d' % self.textNumber, state="normal", font=self.font, bd=0, relief="flat", height=1
+                canvas,
+                name='head-%d' % self.textNumber,
+                state="normal",
+                font=self.font,
+                bd=0,
+                relief="flat",
+                height=1,
             )
             w.bindtags(self.textBindings)  # Set the bindings for this widget.
 
@@ -7695,7 +7812,9 @@ class leoTkinterTree(leoFrame.leoTree):
                     image = None
 
             if image:
-                theId = self.canvas.create_image(x + xoffset + w2, y + yoffset, anchor="nw", image=image)
+                theId = self.canvas.create_image(
+                    x + xoffset + w2, y + yoffset, anchor="nw", image=image
+                )
 
                 tag = 'userIcon-%s' % theId
                 self.canvas.itemconfigure(theId, tag=(tag, 'userIcon'))  # BJ
@@ -7754,7 +7873,11 @@ class leoTkinterTree(leoFrame.leoTree):
             # 'len(c.hoistStack)',len(c.hoistStack))
             if 0:
                 delta = g.app.positions - self.prevPositions
-                g.trace("**** gen: %-3d positions: %5d +%4d" % (self.generation, g.app.positions, delta), g.callers())
+                g.trace(
+                    "**** gen: %-3d positions: %5d +%4d"
+                    % (self.generation, g.app.positions, delta),
+                    g.callers(),
+                )
 
         self.prevPositions = g.app.positions
         if self.trace_gc:
@@ -7794,7 +7917,18 @@ class leoTkinterTree(leoFrame.leoTree):
         c = self.c
         yfirst = ylast = y
         h1 = None
-        data = g.doHook("draw-sub-outline", tree=tree, c=c, p=p, v=p, x=x, y=y, h=h, level=level, hoistFlag=hoistFlag)
+        data = g.doHook(
+            "draw-sub-outline",
+            tree=tree,
+            c=c,
+            p=p,
+            v=p,
+            x=x,
+            y=y,
+            h=h,
+            level=level,
+            hoistFlag=hoistFlag,
+        )
         if data is not None:
             return data
 
@@ -7935,7 +8069,10 @@ class leoTkinterTree(leoFrame.leoTree):
                     self.prevMoveToFrac = frac0
                     self.canvas.yview("moveto", frac0)
                     if trace:
-                        g.trace("frac0 %1.2f h1 %3d htot %3d wtot %3d" % (frac0, h1, htot, wtot), g.callers())
+                        g.trace(
+                            "frac0 %1.2f h1 %3d htot %3d wtot %3d" % (frac0, h1, htot, wtot),
+                            g.callers(),
+                        )
             else:
                 last = c.lastVisible()
                 nextToLast = last.visBack(c)
@@ -7971,14 +8108,20 @@ class leoTkinterTree(leoFrame.leoTree):
                         self.prevMoveToFrac = frac
                         self.canvas.yview("moveto", frac)
                         if trace:
-                            g.trace("frac  %1.2f h1 %3d h2 %3d lo %1.2f hi %1.2f" % (frac, h1, h2, lo, hi), g.callers())
+                            g.trace(
+                                "frac  %1.2f h1 %3d h2 %3d lo %1.2f hi %1.2f"
+                                % (frac, h1, h2, lo, hi),
+                                g.callers(),
+                            )
                 elif frac2 + (hi - lo) >= hi:  # frac2 is for scrolling up.
                     if self.prevMoveToFrac != frac2:
                         self.prevMoveToFrac = frac2
                         self.canvas.yview("moveto", frac2)
                         if trace:
                             g.trace(
-                                "frac2 %1.2f h1 %3d h2 %3d lo %1.2f hi %1.2f" % (frac2, h1, h2, lo, hi), g.callers()
+                                "frac2 %1.2f h1 %3d h2 %3d lo %1.2f hi %1.2f"
+                                % (frac2, h1, h2, lo, hi),
+                                g.callers(),
                             )
 
             if self.allocateOnlyVisibleNodes:
@@ -9076,7 +9219,12 @@ class leoTkinterTree(leoFrame.leoTree):
 
         try:  # Use system defaults for selection foreground/background
             w.configure(
-                state="normal", highlightthickness=1, fg=fg, bg=bg, selectforeground=selfg, selectbackground=selbg
+                state="normal",
+                highlightthickness=1,
+                fg=fg,
+                bg=bg,
+                selectforeground=selfg,
+                selectbackground=selbg,
             )
         except:
             g.es_exception()
@@ -9354,7 +9502,9 @@ class leoTkTextWidget(Tk.Text):
                 sel = Tk.Text.tag_ranges(w, "sel")
                 i, j = sel
                 # This is required for the unit test.
-                anchor = g.choose(hasattr(w, 'leo_text_anchor') and w.leo_text_anchor, w.leo_text_anchor, i)
+                anchor = g.choose(
+                    hasattr(w, 'leo_text_anchor') and w.leo_text_anchor, w.leo_text_anchor, i
+                )
                 extend = True
                 anchor, ins = ins, anchor
                 newIns = ins

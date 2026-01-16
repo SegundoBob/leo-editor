@@ -54,14 +54,23 @@ def newPutNl(self, s, *args, **keys):
 
 # @+node:ekr.20071212091008.1: ** newExecuteScript & helpers
 def newExecuteScript(
-    self, event=None, p=None, script=None, useSelectedText=True, define_g=True, define_name='__main__', silent=False
+    self,
+    event=None,
+    p=None,
+    script=None,
+    useSelectedText=True,
+    define_g=True,
+    define_name='__main__',
+    silent=False,
 ):
     c = self
     log = c.frame.log
     redirect(c)
 
     # Use silent to suppress 'end of script message'
-    c.script_io_to_body_oldexec(event, p, script, useSelectedText, define_g, define_name, silent=True)
+    c.script_io_to_body_oldexec(
+        event, p, script, useSelectedText, define_g, define_name, silent=True
+    )
     undirect(c)
 
     # Now issue the 'end of script' message'

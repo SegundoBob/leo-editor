@@ -144,7 +144,9 @@ def splus_rule21(colorer, s, i):
 
 
 def splus_rule22(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def splus_rule23(colorer, s, i):

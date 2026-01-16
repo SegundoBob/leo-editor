@@ -228,7 +228,14 @@ class QTextMixin:
         i, j = p.v.selectionStart, p.v.selectionLength
         oldSel = (i, i + j)
         c.undoer.doTyping(
-            p, 'Typing', oldText, newText, oldSel=oldSel, oldYview=None, newInsert=newInsert, newSel=newSel
+            p,
+            'Typing',
+            oldText,
+            newText,
+            oldSel=oldSel,
+            oldYview=None,
+            newInsert=newInsert,
+            newSel=newSel,
         )
 
     # @+node:ekr.20140901122110.18734: *3* QTextMixin.Generic high-level interface
@@ -393,7 +400,9 @@ class QLineEditWrapper(QTextMixin):
 
     # @+node:ekr.20110605121601.18118: *3* qlew.Widget-specific overrides
     # @+node:ekr.20220911105050.1: *4* qlew: do-nothings
-    def flashCharacter(self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75) -> None:
+    def flashCharacter(
+        self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75
+    ) -> None:
         pass
 
     def getXScrollPosition(self) -> int:
@@ -476,7 +485,9 @@ class QLineEditWrapper(QTextMixin):
         w.setCursorPosition(i)
 
     # @+node:ekr.20110605121601.18130: *4* qlew.setSelectionRange
-    def setSelectionRange(self, i: int, j: int, insert: Optional[int] = None, s: str = None) -> None:
+    def setSelectionRange(
+        self, i: int, j: int, insert: Optional[int] = None, s: str = None
+    ) -> None:
         """QHeadlineWrapper."""
         if not self.check():
             return
@@ -752,7 +763,9 @@ if QtWidgets:
                 # These offset are reasonable. Perhaps they should depend on font size.
                 x_offset, y_offset = 10, 60
                 # Compute the new geometry, setting the size by hand.
-                geom2_topLeft = QtCore.QPoint(geom.x() + delta_x + x_offset, geom.y() + delta_y + y_offset)
+                geom2_topLeft = QtCore.QPoint(
+                    geom.x() + delta_x + x_offset, geom.y() + delta_y + y_offset
+                )
                 geom2_size = QtCore.QSize(400, 100)
                 geom2 = QtCore.QRect(geom2_topLeft, geom2_size)
                 # These tests fail once offsets are added.
@@ -932,7 +945,9 @@ if QtWidgets:
             # @+<< Recalculate Color >>
             # @+node:tom.20210909124441.1: *5* << Recalculate Color >>
             config_setting = c.config.getString('line-highlight-color') or ''
-            config_setting = config_setting.replace("'", '').replace('"', '').lower().replace('none', '')
+            config_setting = (
+                config_setting.replace("'", '').replace('"', '').lower().replace('none', '')
+            )
 
             last_color_setting = params['last_color_setting']
             config_setting_changed = config_setting != last_color_setting
@@ -1071,7 +1086,9 @@ if QtWidgets:
                     self.leo_cursor_width = width
                     w.setCursorWidth(width)
 
-            if w == getattr(c.frame.body, 'widget', None) and c.config.getBool('show-rmargin-guide'):
+            if w == getattr(c.frame.body, 'widget', None) and c.config.getBool(
+                'show-rmargin-guide'
+            ):
                 # @+<< paint margin guides >>
                 # @+node:tom.20220423204906.1: *4* << paint margin guides  >>
                 # based on https://stackoverflow.com/questions/30371613
@@ -1166,7 +1183,9 @@ class NumberBar(QtWidgets.QFrame):
         self.fm = self.fontMetrics()  # A QFontMetrics
         self.image = QtGui.QImage(
             g.app.gui.getImageImage(
-                g.finalize_join(g.app.loadDir, '..', 'Icons', 'Tango', '16x16', 'actions', 'stop.png')
+                g.finalize_join(
+                    g.app.loadDir, '..', 'Icons', 'Tango', '16x16', 'actions', 'stop.png'
+                )
             )
         )
         self.highest_line = 0  # The highest line that is currently visible.

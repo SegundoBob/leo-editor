@@ -126,7 +126,9 @@ def aspect_j_rule0(colorer, s, i):
 
 
 def aspect_j_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="java::javadoc")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="java::javadoc"
+    )
 
 
 def aspect_j_rule2(colorer, s, i):
@@ -218,7 +220,9 @@ def aspect_j_rule23(colorer, s, i):
 
 
 def aspect_j_rule24(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def aspect_j_rule25(colorer, s, i):

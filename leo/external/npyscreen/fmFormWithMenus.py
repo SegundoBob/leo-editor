@@ -32,7 +32,13 @@ class FormBaseNewWithMenus(fmForm.FormBaseNew, wgNMenuDisplay.HasMenus):
         if isinstance(menu_advert, bytes):
             menu_advert = menu_advert.decode('utf-8', 'replace')
         y, x = self.display_menu_advert_at()
-        self.add_line(y, x, menu_advert, self.make_attributes_list(menu_advert, curses.A_NORMAL), self.columns - x - 1)
+        self.add_line(
+            y,
+            x,
+            menu_advert,
+            self.make_attributes_list(menu_advert, curses.A_NORMAL),
+            self.columns - x - 1,
+        )
 
     # @-others
 
@@ -58,7 +64,13 @@ class FormWithMenus(fmForm.Form, wgNMenuDisplay.HasMenus):
         y, x = self.display_menu_advert_at()
         if isinstance(menu_advert, bytes):
             menu_advert = menu_advert.decode('utf-8', 'replace')
-        self.add_line(y, x, menu_advert, self.make_attributes_list(menu_advert, curses.A_NORMAL), self.columns - x - 1)
+        self.add_line(
+            y,
+            x,
+            menu_advert,
+            self.make_attributes_list(menu_advert, curses.A_NORMAL),
+            self.columns - x - 1,
+        )
 
     # @-others
 
@@ -85,7 +97,13 @@ class ActionFormWithMenus(fmActionForm.ActionForm, wgNMenuDisplay.HasMenus):
 
         if isinstance(menu_advert, bytes):
             menu_advert = menu_advert.decode('utf-8', 'replace')
-        self.add_line(y, x, menu_advert, self.make_attributes_list(menu_advert, curses.A_NORMAL), self.columns - x - 1)
+        self.add_line(
+            y,
+            x,
+            menu_advert,
+            self.make_attributes_list(menu_advert, curses.A_NORMAL),
+            self.columns - x - 1,
+        )
 
     # @-others
 

@@ -200,7 +200,8 @@ class WikiView:
                 # move right to find left end of range
                 cursor.setPosition(end)
                 while (
-                    cursor.movePosition(MoveOperation.NextCharacter) and cursor.charFormat().fontPointSize() == self.pts
+                    cursor.movePosition(MoveOperation.NextCharacter)
+                    and cursor.charFormat().fontPointSize() == self.pts
                 ):
                     pass
                 # select range and restore normal size

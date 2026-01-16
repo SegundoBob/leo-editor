@@ -298,125 +298,227 @@ keywordsDictDict = {
 
 def powerdynamo_rule0(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--script", end="-->", delegate="powerdynamo::powerdynamo-script"
+        s,
+        i,
+        kind="label",
+        begin="<!--script",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-script",
     )
 
 
 def powerdynamo_rule1(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--data", end="-->", delegate="powerdynamo::powerdynamo-tag-data"
+        s,
+        i,
+        kind="label",
+        begin="<!--data",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-data",
     )
 
 
 def powerdynamo_rule2(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--document", end="-->", delegate="powerdynamo::powerdynamo-tag-document"
+        s,
+        i,
+        kind="label",
+        begin="<!--document",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-document",
     )
 
 
 def powerdynamo_rule3(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--evaluate", end="-->", delegate="powerdynamo::powerdynamo-script"
+        s,
+        i,
+        kind="label",
+        begin="<!--evaluate",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-script",
     )
 
 
 def powerdynamo_rule4(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--execute", end="-->", delegate="powerdynamo::powerdynamo-script"
+        s,
+        i,
+        kind="label",
+        begin="<!--execute",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-script",
     )
 
 
 def powerdynamo_rule5(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--formatting", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--formatting",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule6(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--/formatting", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--/formatting",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule7(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--include", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--include",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule8(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--label", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--label",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind="label", begin="<!--sql", end="-->", delegate="transact-sql::main")
+    return colorer.match_span(
+        s, i, kind="label", begin="<!--sql", end="-->", delegate="transact-sql::main"
+    )
 
 
 def powerdynamo_rule10(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--sql_error_code", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--sql_error_code",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule11(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--sql_error_info", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--sql_error_info",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule12(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--sql_state", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--sql_state",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule13(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--sql_on_no_error", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--sql_on_no_error",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule14(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--/sql_on_no_error", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--/sql_on_no_error",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule15(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--sql_on_error", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--sql_on_error",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule16(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--/sql_on_error", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--/sql_on_error",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule17(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--sql_on_no_rows", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--sql_on_no_rows",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule18(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--/sql_on_no_rows", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--/sql_on_no_rows",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule19(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--sql_on_rows", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--sql_on_rows",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
 def powerdynamo_rule20(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--/sql_on_rows", end="-->", delegate="powerdynamo::powerdynamo-tag-general"
+        s,
+        i,
+        kind="label",
+        begin="<!--/sql_on_rows",
+        end="-->",
+        delegate="powerdynamo::powerdynamo-tag-general",
     )
 
 
@@ -425,11 +527,15 @@ def powerdynamo_rule21(colorer, s, i):
 
 
 def powerdynamo_rule22(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript"
+    )
 
 
 def powerdynamo_rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css"
+    )
 
 
 def powerdynamo_rule24(colorer, s, i):
@@ -484,16 +590,25 @@ rulesDict1 = {
 
 def powerdynamo_rule27(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--script", end="--?>", delegate="powerdynamo::powerdynamo-script"
+        s,
+        i,
+        kind="label",
+        begin="<!--script",
+        end="--?>",
+        delegate="powerdynamo::powerdynamo-script",
     )
 
 
 def powerdynamo_rule28(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::tags_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::tags_literal"
+    )
 
 
 def powerdynamo_rule29(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::tags_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::tags_literal"
+    )
 
 
 def powerdynamo_rule30(colorer, s, i):
@@ -521,7 +636,12 @@ rulesDict2 = {
 
 def powerdynamo_rule31(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="label", begin="<!--script", end="?-->", delegate="powerdynamo::powerdynamo-script"
+        s,
+        i,
+        kind="label",
+        begin="<!--script",
+        end="?-->",
+        delegate="powerdynamo::powerdynamo-script",
     )
 
 
@@ -540,11 +660,15 @@ def powerdynamo_rule32(colorer, s, i):
 
 
 def powerdynamo_rule33(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule34(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule35(colorer, s, i):
@@ -944,11 +1068,15 @@ rulesDict4 = {
 
 
 def powerdynamo_rule64(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule65(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule66(colorer, s, i):
@@ -1161,11 +1289,15 @@ rulesDict5 = {
 
 
 def powerdynamo_rule67(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule68(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule69(colorer, s, i):
@@ -1378,11 +1510,15 @@ rulesDict6 = {
 
 
 def powerdynamo_rule70(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule71(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="powerdynamo::powerdynamo_literal"
+    )
 
 
 def powerdynamo_rule72(colorer, s, i):

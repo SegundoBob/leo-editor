@@ -283,7 +283,9 @@ class BaseLeoPlugin:
         if color is None:
             color = 'grey'
         script = f"c.doCommandByName('{self.commandName}')"
-        g.app.gui.makeScriptButton(self.c, args=None, script=script, buttonText=buttonText, bg=color)
+        g.app.gui.makeScriptButton(
+            self.c, args=None, script=script, buttonText=buttonText, bg=color
+        )
 
     # @-others
 
@@ -512,7 +514,9 @@ class LeoPluginsController:
                 self.loadOnePlugin(plugin.strip(), tag=tag)
 
     # @+node:ekr.20100908125007.6024: *4* plugins.loadOnePlugin & helper functions
-    def loadOnePlugin(self, moduleOrFileName: str, tag: str = 'open0', verbose: bool = False) -> Any:
+    def loadOnePlugin(
+        self, moduleOrFileName: str, tag: str = 'open0', verbose: bool = False
+    ) -> Any:
         """
         Load one plugin from a file name or module.
         Use extensive tracing if --trace-plugins is in effect.

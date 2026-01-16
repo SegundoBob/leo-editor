@@ -76,7 +76,8 @@ class FormMultiPage(fmForm.FormBaseNew):
                 maxx - len(display_text) - 2,
                 display_text,
                 self.make_attributes_list(
-                    display_text, curses.A_NORMAL | self.theme_manager.findPair(self, self.pages_label_color)
+                    display_text,
+                    curses.A_NORMAL | self.theme_manager.findPair(self, self.pages_label_color),
                 ),
                 maxx - len(display_text) - 2,
             )

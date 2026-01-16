@@ -166,7 +166,9 @@ def javascript_rule28(colorer, s, i):
 
 # @+node:ekr.20230419052250.30: *4* javascript_rule29
 def javascript_rule29(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 # @+node:ekr.20230419052250.31: *4* javascript_rule30

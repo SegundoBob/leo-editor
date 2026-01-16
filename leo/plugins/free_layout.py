@@ -266,7 +266,10 @@ class FreeLayoutController:
             else:
                 c.free_layout.original_layout = name
             if layout:
-                g.es("NOTE: embedded layout in @settings/@data free-layout-layout overrides saved layout " + name)
+                g.es(
+                    "NOTE: embedded layout in @settings/@data free-layout-layout overrides saved layout "
+                    + name
+                )
             else:
                 layout = d.get(name)
         # EKR: Create commands that will load each layout.

@@ -161,8 +161,12 @@ class LeoNodewatchWidget(QtWidgets.QWidget):  # type:ignore
         self.c = c
         self.initUI()
         self.registerCallbacks()
-        autoexecute_nodewatch_nodes = c.config.getBool('nodewatch-autoexecute-scripts', default=False)
-        if autoexecute_nodewatch_nodes and c.config.isLocalSetting('nodewatch_autoexecute_scripts', 'bool'):
+        autoexecute_nodewatch_nodes = c.config.getBool(
+            'nodewatch-autoexecute-scripts', default=False
+        )
+        if autoexecute_nodewatch_nodes and c.config.isLocalSetting(
+            'nodewatch_autoexecute_scripts', 'bool'
+        ):
             g.issueSecurityWarning('@bool nodewatch_autoexecute_scripts')
             autoexecute_nodewatch_nodes = False
         if autoexecute_nodewatch_nodes:

@@ -111,7 +111,12 @@ class Rst_Importer(Importer):
             return False
         line0 = lines[i]
         line1 = lines[i + 1]
-        return not line0.isspace() and len(line1) >= 4 and self.is_underline(line1) and not self.is_underline(line0)
+        return (
+            not line0.isspace()
+            and len(line1) >= 4
+            and self.is_underline(line1)
+            and not self.is_underline(line0)
+        )
 
     # @+node:ekr.20230529072922.5: *4* rst_i.is_underline
     def is_underline(self, line: str, extra: str = None) -> bool:

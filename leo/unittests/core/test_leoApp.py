@@ -21,7 +21,9 @@ class TestApp(LeoUnitTest):
             assert hasattr(g.app, ivar), 'missing g.app directory: %s' % ivar
             val = getattr(g.app, ivar)
             assert val is not None, 'null g.app directory: %s' % ivar
-            assert g.os_path_exists(g.os_path_abspath(val)), 'non-existent g.app directory: %s' % ivar
+            assert g.os_path_exists(g.os_path_abspath(val)), (
+                'non-existent g.app directory: %s' % ivar
+            )
         assert hasattr(g.app, 'homeDir')  # May well be None.
 
     # @+node:ekr.20210901140645.12: *3* TestApp.test_official_g_app_ivars

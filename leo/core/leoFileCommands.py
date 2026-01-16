@@ -1724,8 +1724,12 @@ class FileCommands:
             for p in sp.self_and_subtree():
                 if hasattr(p.v, 'unknownAttributes') and len(p.v.unknownAttributes.keys()):
                     try:
-                        json.dumps(p.v.unknownAttributes, skipkeys=True, cls=SetJSONEncoder)  # If this test passes ok
-                        uas[p.v.gnx] = p.v.unknownAttributes  # Valid UA's as-is. UA's are NOT encoded.
+                        json.dumps(
+                            p.v.unknownAttributes, skipkeys=True, cls=SetJSONEncoder
+                        )  # If this test passes ok
+                        uas[p.v.gnx] = (
+                            p.v.unknownAttributes
+                        )  # Valid UA's as-is. UA's are NOT encoded.
                     except TypeError:
                         g.trace(f"Can not serialize uA for {p.h}", g.callers(6))
                         g.printObj(p.v.unknownAttributes)
@@ -1787,7 +1791,9 @@ class FileCommands:
             g.trace('set window_position:', c.db['window_position'], c.shortFileName())
 
     # @+node:ekr.20210316085413.2: *6* fc.leojs_vnodes
-    def leojs_vnode(self, p: Position, gnxSet: set[Value], isIgnore: bool = False) -> dict[str, Value]:
+    def leojs_vnode(
+        self, p: Position, gnxSet: set[Value], isIgnore: bool = False
+    ) -> dict[str, Value]:
         """Return a jsonized vnode."""
         # c = self.c
         fc = self
@@ -1901,7 +1907,9 @@ class FileCommands:
     def writeZipFile(self, s: str) -> None:
         """Write string s as a .zip file."""
         # The name of the file in the archive.
-        contentsName = g.toEncodedString(g.shortFileName(self.mFileName), self.leo_file_encoding, reportErrors=True)
+        contentsName = g.toEncodedString(
+            g.shortFileName(self.mFileName), self.leo_file_encoding, reportErrors=True
+        )
         # The name of the archive itself.
         fileName = g.toEncodedString(self.mFileName, self.leo_file_encoding, reportErrors=True)
         # Write the archive.

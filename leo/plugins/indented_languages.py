@@ -274,7 +274,9 @@ class Indented_Importer:
                 if 0:
                     print('')
                     print(f"{tag} Remove")
-                    print(f"matching: {{ line: {match_line:3} column: {match_column:2} {guide_lines[match_line]!r}")
+                    print(
+                        f"matching: {{ line: {match_line:3} column: {match_column:2} {guide_lines[match_line]!r}"
+                    )
                     print(f"    this: }} line: {line_number:3} column: {column_number:2} {line!r}")
 
                 # Replace the previous line in result_lines, *not* lines.

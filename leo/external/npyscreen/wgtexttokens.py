@@ -101,7 +101,10 @@ class TextTokens(wgtextbox.Textfield, wgwidget.Widget):
 
         while (
             self.find_cursor_offset_on_screen(self.cursor_position)
-            > self.find_cursor_offset_on_screen(self.begin_at) + self.maximum_string_length - self.left_margin - 1
+            > self.find_cursor_offset_on_screen(self.begin_at)
+            + self.maximum_string_length
+            - self.left_margin
+            - 1
         ):  # -1:
             self.begin_at += 1
 
@@ -140,14 +143,20 @@ class TextTokens(wgtextbox.Textfield, wgwidget.Widget):
     # @+node:ekr.20170428084208.375: *3* TextTokens._print
     def _print(self, text, highlighting):
         self.add_line(
-            self.rely, self.relx + self.left_margin, text, highlighting, self.maximum_string_length - self.left_margin
+            self.rely,
+            self.relx + self.left_margin,
+            text,
+            highlighting,
+            self.maximum_string_length - self.left_margin,
         )
 
     # @+node:ekr.20170428084208.376: *3* TextTokens.print_cursor
     def print_cursor(self):
         # _cur_loc_x = self.cursor_position - self.begin_at + self.relx + self.left_margin
         try:
-            char_under_cur = self.decode_token(self.value[self.cursor_position])  # use the real value
+            char_under_cur = self.decode_token(
+                self.value[self.cursor_position]
+            )  # use the real value
             char_under_cur = self.safe_string(char_under_cur)
         except IndexError:
             char_under_cur = ' '

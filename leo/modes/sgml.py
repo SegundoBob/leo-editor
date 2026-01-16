@@ -38,11 +38,15 @@ def sgml_rule0(colorer, s, i):
 
 
 def sgml_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<!ENTITY", end=">", delegate="xml::entity-tags")
+    return colorer.match_span(
+        s, i, kind="keyword2", begin="<!ENTITY", end=">", delegate="xml::entity-tags"
+    )
 
 
 def sgml_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>", delegate="xml::cdata")
+    return colorer.match_span(
+        s, i, kind="keyword2", begin="<![CDATA[", end="]]>", delegate="xml::cdata"
+    )
 
 
 def sgml_rule3(colorer, s, i):

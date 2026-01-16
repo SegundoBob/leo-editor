@@ -186,13 +186,21 @@ if g.app.gui.guiName() == "qt":
                 lambda v: o.set_due_time(val=u.nxtwkTimeEdit.time(), field='nextworktime')
             )
 
-            u.dueDateToggle.stateChanged.connect(lambda v: o.set_due_date(val=u.dueDateEdit.date(), mode='check'))
-            u.dueTimeToggle.stateChanged.connect(lambda v: o.set_due_time(val=u.dueTimeEdit.time(), mode='check'))
+            u.dueDateToggle.stateChanged.connect(
+                lambda v: o.set_due_date(val=u.dueDateEdit.date(), mode='check')
+            )
+            u.dueTimeToggle.stateChanged.connect(
+                lambda v: o.set_due_time(val=u.dueTimeEdit.time(), mode='check')
+            )
             u.nxtwkDateToggle.stateChanged.connect(
-                lambda v: o.set_due_date(val=u.nxtwkDateEdit.date(), mode='check', field='nextworkdate')
+                lambda v: o.set_due_date(
+                    val=u.nxtwkDateEdit.date(), mode='check', field='nextworkdate'
+                )
             )
             u.nxtwkTimeToggle.stateChanged.connect(
-                lambda v: o.set_due_time(val=u.nxtwkTimeEdit.time(), mode='check', field='nextworktime')
+                lambda v: o.set_due_time(
+                    val=u.nxtwkTimeEdit.time(), mode='check', field='nextworktime'
+                )
             )
 
             for but in [
@@ -235,7 +243,9 @@ if g.app.gui.guiName() == "qt":
                     '+7 +0 +1 +2 +3 +4 +5 +6 +10 +14 +21 +28 +42 +60 +90 +120 +150 >7 <7 <14 >14 <28 >28'
                 ).split()
             self.date_offset_default = int(offsets[0].strip('>').replace('<', '-'))
-            offsets = sorted(set(offsets), key=lambda x: (x[0], int(x[1:].strip('>').replace('<', '-'))))
+            offsets = sorted(
+                set(offsets), key=lambda x: (x[0], int(x[1:].strip('>').replace('<', '-')))
+            )
             u.dueDateOffset.addItems(offsets)
             u.dueDateOffset.setCurrentIndex(self.date_offset_default)
 
@@ -244,7 +254,9 @@ if g.app.gui.guiName() == "qt":
             u.nxtwkDateOffset.addItems(offsets)
             u.nxtwkDateOffset.setCurrentIndex(self.date_offset_default)
 
-            self.UI.nxtwkDateOffset.activated.connect(lambda v: o.set_date_offset(field='nextworkdate'))
+            self.UI.nxtwkDateOffset.activated.connect(
+                lambda v: o.set_date_offset(field='nextworkdate')
+            )
 
             self.setDueDate = self.make_func(
                 self.UI.dueDateEdit,
@@ -254,7 +266,10 @@ if g.app.gui.guiName() == "qt":
             )
 
             self.setDueTime = self.make_func(
-                self.UI.dueTimeEdit, self.UI.dueTimeToggle, 'setTime', datetime.datetime.now().time()
+                self.UI.dueTimeEdit,
+                self.UI.dueTimeToggle,
+                'setTime',
+                datetime.datetime.now().time(),
             )
 
             self.setNextWorkDate = self.make_func(
@@ -265,7 +280,10 @@ if g.app.gui.guiName() == "qt":
             )
 
             self.setNextWorkTime = self.make_func(
-                self.UI.nxtwkTimeEdit, self.UI.nxtwkTimeToggle, 'setTime', datetime.datetime.now().time()
+                self.UI.nxtwkTimeEdit,
+                self.UI.nxtwkTimeToggle,
+                'setTime',
+                datetime.datetime.now().time(),
             )
 
             self.UI.butDetails.clicked.connect(
@@ -277,8 +295,12 @@ if g.app.gui.guiName() == "qt":
 
             self.UI.butNext.clicked.connect(lambda checked: self.owner.c.selectVisNext())
             self.UI.butNextTodo.clicked.connect(lambda checked: self.owner.find_todo())
-            self.UI.butApplyDueOffset.clicked.connect(lambda checked: o.set_date_offset(field='duedate'))
-            self.UI.butApplyOffset.clicked.connect(lambda checked: o.set_date_offset(field='nextworkdate'))
+            self.UI.butApplyDueOffset.clicked.connect(
+                lambda checked: o.set_date_offset(field='duedate')
+            )
+            self.UI.butApplyOffset.clicked.connect(
+                lambda checked: o.set_date_offset(field='nextworkdate')
+            )
 
             n = g.app.config.getInt("todo-calendar-n")
             cols = g.app.config.getInt("todo-calendar-cols")
@@ -534,7 +556,8 @@ class todoController:
             if isinstance(prog, int):
                 f = prog / 100.0
                 a = taskmenu.addAction(
-                    "(%s+%s=%s %s)" % (rnd(f * time_), rnd((1.0 - f) * time_), rnd(time_), self.time_name)
+                    "(%s+%s=%s %s)"
+                    % (rnd(f * time_), rnd((1.0 - f) * time_), rnd(time_), self.time_name)
                 )
             else:
                 a = taskmenu.addAction("(%s %s)" % (rnd(time_), self.time_name))
@@ -630,7 +653,12 @@ class todoController:
                     use = prog // 10 * 10
                     use = 'prg%03d.png' % use  # type:ignore
                     com.appendImageDictToList(
-                        icons, g.os_path_join('cleo', use), 2, on='vnode', cleoIcon='1', where=self.prog_location
+                        icons,
+                        g.os_path_join('cleo', use),
+                        2,
+                        on='vnode',
+                        cleoIcon='1',
+                        where=self.prog_location,
                     )
             elif which == 'duedate':
                 duedate = self.getat(p.v, 'duedate')
@@ -645,7 +673,12 @@ class todoController:
                         icon = "date_future.png"
                     # Append the icon to the icons list.
                     com.appendImageDictToList(
-                        icons, g.os_path_join('cleo', icon), 2, on='vnode', cleoIcon='1', where=self.prog_location
+                        icons,
+                        g.os_path_join('cleo', icon),
+                        2,
+                        on='vnode',
+                        cleoIcon='1',
+                        where=self.prog_location,
                     )
         # Set the p.v.u for the icons.
         com.setIconList(p, icons)
@@ -710,7 +743,9 @@ class todoController:
     def setat(self, node: VNode, attrib: Any, val: Any) -> None:
         "new attribute setter"
 
-        if attrib in self._datetime_fields and isinstance(val, (datetime.date, datetime.time, datetime.datetime)):
+        if attrib in self._datetime_fields and isinstance(
+            val, (datetime.date, datetime.time, datetime.datetime)
+        ):
             val = val.isoformat()
 
         if 'annotate' in node.u and 'src_unl' in node.u['annotate']:
@@ -746,14 +781,19 @@ class todoController:
             if not hasattr(node, 'unknownAttributes'):  # node has no unknownAttributes
                 node.unknownAttributes = {}
                 node.unknownAttributes["annotate"] = {}
-            elif "annotate" not in node.unknownAttributes or not isinstance(node.unknownAttributes["annotate"], dict):
+            elif "annotate" not in node.unknownAttributes or not isinstance(
+                node.unknownAttributes["annotate"], dict
+            ):
                 node.unknownAttributes["annotate"] = {}
             # node.unknownAttributes["annotate"]['created'] = datetime.datetime.now()
             node.unknownAttributes["annotate"][attrib] = val
             return
 
         # dictionary exists
-        if attrib not in node.unknownAttributes["annotate"] or node.unknownAttributes["annotate"][attrib] != val:
+        if (
+            attrib not in node.unknownAttributes["annotate"]
+            or node.unknownAttributes["annotate"][attrib] != val
+        ):
             self.c.setChanged()
             node.setDirty()
 
@@ -1082,7 +1122,9 @@ class todoController:
             self.setat(p.v, 'duedate', '')
 
     # @+node:tbrown.20130207103126.28498: *4* todoController.needs_doing
-    def needs_doing(self, v: VNode = None, pri: Any = None, due: Any = None) -> bool:  # Hard to annotate.
+    def needs_doing(
+        self, v: VNode = None, pri: Any = None, due: Any = None
+    ) -> bool:  # Hard to annotate.
         """needs_doing - Return true if the node is a todo node that needs doing
 
         :Parameters:
@@ -1147,7 +1189,9 @@ class todoController:
         return pa if pa != 24 else 0
 
     # @+node:tbrown.20110213153425.16373: *4* todoController.duekey
-    def duekey(self, v: VNode, field: str = 'due') -> tuple[bool, datetime.date, datetime.time, int]:
+    def duekey(
+        self, v: VNode, field: str = 'due'
+    ) -> tuple[bool, datetime.date, datetime.time, int]:
         """key function for sorting by due date/time"""
         # pylint: disable=boolean-datetime
         priority = self.getat(v, 'priority')
@@ -1192,7 +1236,9 @@ class todoController:
         dat: dict = {}
         for end in 'from', 'to':
             if Qt:
-                x0, ok = QtWidgets.QInputDialog.getText(None, 'Reclassify priority', '%s priorities (1-9,19)' % end)
+                x0, ok = QtWidgets.QInputDialog.getText(
+                    None, 'Reclassify priority', '%s priorities (1-9,19)' % end
+                )
                 if not ok:
                     x0 = None
                 else:
@@ -1268,7 +1314,12 @@ class todoController:
             if item[0] in self.priorities:
                 g.es(
                     '%s\t%d\t%s\t(%s)'
-                    % (self.priorities[item[0]]['short'], item[1], self.priorities[item[0]]['long'], item[0])
+                    % (
+                        self.priorities[item[0]]['short'],
+                        item[1],
+                        self.priorities[item[0]]['long'],
+                        item[0],
+                    )
                 )
 
     # @+node:tbrown.20150605111428.1: *3* todoController.updateStyle

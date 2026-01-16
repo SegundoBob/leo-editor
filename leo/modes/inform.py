@@ -152,7 +152,9 @@ def inform_rule0(colorer, s, i):
 
 
 def inform_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="inform::informinnertext")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="inform::informinnertext"
+    )
 
 
 def inform_rule2(colorer, s, i):

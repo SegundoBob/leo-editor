@@ -226,7 +226,11 @@ class MonthBox(DateEntryBase):
             title_attribute = curses.A_NORMAL
 
         self.add_line(
-            self.rely, self.relx, _title_line, self.make_attributes_list(_title_line, title_attribute), self.width - 1
+            self.rely,
+            self.relx,
+            _title_line,
+            self.make_attributes_list(_title_line, title_attribute),
+            self.width - 1,
         )
 
         if self.value:
@@ -272,10 +276,13 @@ class MonthBox(DateEntryBase):
                                     print_line,
                                     print_column,
                                     str(thisday),
-                                    curses.A_STANDOUT | self.parent.theme_manager.findPair(self, self.color),
+                                    curses.A_STANDOUT
+                                    | self.parent.theme_manager.findPair(self, self.color),
                                 )
                             else:
-                                self.parent.curses_pad.addstr(print_line, print_column, str(thisday), curses.A_STANDOUT)
+                                self.parent.curses_pad.addstr(
+                                    print_line, print_column, str(thisday), curses.A_STANDOUT
+                                )
                         else:
                             if self.do_colors():
                                 self.parent.curses_pad.addstr(
@@ -285,7 +292,9 @@ class MonthBox(DateEntryBase):
                                     self.parent.theme_manager.findPair(self, self.color),
                                 )
                             else:
-                                self.parent.curses_pad.addstr(print_line, print_column, str(thisday))
+                                self.parent.curses_pad.addstr(
+                                    print_line, print_column, str(thisday)
+                                )
                         print_column += self.__class__.DAY_FIELD_WIDTH
 
                     print_line += 1
@@ -298,7 +307,10 @@ class MonthBox(DateEntryBase):
 
             if self.do_colors():
                 self.parent.curses_pad.addstr(
-                    self.rely + 9, self.relx, key_help, self.parent.theme_manager.findPair(self, 'LABEL')
+                    self.rely + 9,
+                    self.relx,
+                    key_help,
+                    self.parent.theme_manager.findPair(self, 'LABEL'),
                 )
             else:
                 self.parent.curses_pad.addstr(self.rely + 9, self.relx, key_help)

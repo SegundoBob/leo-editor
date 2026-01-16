@@ -143,7 +143,9 @@ def shell_rule14(colorer, s, i):
 
 
 def shell_rule15(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="shell::literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="shell::literal"
+    )
 
 
 def shell_rule16(colorer, s, i):

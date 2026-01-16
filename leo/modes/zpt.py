@@ -159,11 +159,15 @@ def zpt_rule0(colorer, s, i):
 
 
 def zpt_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="zpt::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="zpt::javascript"
+    )
 
 
 def zpt_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="zpt::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="zpt::css"
+    )
 
 
 def zpt_rule3(colorer, s, i):
@@ -196,7 +200,9 @@ rulesDict1 = {
 
 
 def zpt_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="zpt::attribute")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="zpt::attribute"
+    )
 
 
 def zpt_rule7(colorer, s, i):

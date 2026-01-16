@@ -31,7 +31,11 @@ class GridColTitles(grid.SimpleGrid):
             x_offset = title_cell * (self._column_width + self.col_margin)
             self._my_col_titles.append(
                 self._col_widgets(
-                    self.parent, rely=self.rely, relx=self.relx + x_offset, width=self._column_width, height=1
+                    self.parent,
+                    rely=self.rely,
+                    relx=self.relx + x_offset,
+                    width=self._column_width,
+                    height=1,
                 )
             )
 

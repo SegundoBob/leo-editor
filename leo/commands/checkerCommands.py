@@ -196,7 +196,9 @@ def find_missing_docstrings(event: LeoKeyEvent) -> None:
         # By Виталије Милошевић.
         # It may be useful to skip __init__ methods because their docstring
         # is usually docstring of the class
-        return line.startswith(('def ', 'class ')) and not line.partition(' ')[2].startswith('__init__')
+        return line.startswith(('def ', 'class ')) and not line.partition(' ')[2].startswith(
+            '__init__'
+        )
 
     # @+node:ekr.20190615182754.1: *4* function: is_root
     def is_root(p: Position) -> bool:
@@ -425,7 +427,9 @@ class CheckNodes:
             and not any(p.h.startswith(z)
             for z in self.ok_head_prefixes)
         )  # fmt: skip
-        trailing_class_or_def = len(stripped_lines) > 1 and stripped_lines[-1].startswith(('class ', 'def '))
+        trailing_class_or_def = len(stripped_lines) > 1 and stripped_lines[-1].startswith(
+            ('class ', 'def ')
+        )
         return any((too_many_defs, leading_blank_line, empty_body, trailing_class_or_def))
 
     # @-others

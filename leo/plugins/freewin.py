@@ -1106,7 +1106,9 @@ class ZEditorWin(QtWidgets.QMainWindow):
         # Insert stylesheet if our rendering view is a web browser widget
         if self.render_pane_type == BROWSER_VIEW:
             if self.rst_stylesheet:
-                style_insert = f"<style type='text/css'>\n{self.rst_stylesheet}\n</style>\n</head>\n"
+                style_insert = (
+                    f"<style type='text/css'>\n{self.rst_stylesheet}\n</style>\n</head>\n"
+                )
                 _html = _html.replace('</head>', style_insert, 1)
         return _html
 

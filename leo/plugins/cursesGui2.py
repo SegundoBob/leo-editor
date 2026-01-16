@@ -585,7 +585,9 @@ class LeoTreeLine(npyscreen.TreeLine):
         # pylint: disable=no-member
 
         def put(char: str) -> None:
-            self.parent.curses_pad.addch(self.rely, self.relx + self.left_margin, ord(char), curses.A_NORMAL)
+            self.parent.curses_pad.addch(
+                self.rely, self.relx + self.left_margin, ord(char), curses.A_NORMAL
+            )
             self.left_margin += 1
 
         self.left_margin = left_margin

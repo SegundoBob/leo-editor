@@ -476,15 +476,21 @@ def nsis2_rule4(colorer, s, i):
 
 
 def nsis2_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="nsis2::nsis_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="nsis2::nsis_literal"
+    )
 
 
 def nsis2_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="nsis2::nsis_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="nsis2::nsis_literal"
+    )
 
 
 def nsis2_rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", delegate="nsis2::nsis_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="`", end="`", delegate="nsis2::nsis_literal"
+    )
 
 
 def nsis2_rule8(colorer, s, i):

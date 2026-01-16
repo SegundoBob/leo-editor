@@ -535,12 +535,22 @@ class LeoQtEventFilter(QtCore.QObject):
             if self.tag in exclude_names:
                 return
             if eventType == val:
-                tag = obj.objectName() if hasattr(obj, 'objectName') else f"id: {id(obj)}, {obj.__class__.__name__}"
+                tag = (
+                    obj.objectName()
+                    if hasattr(obj, 'objectName')
+                    else f"id: {id(obj)}, {obj.__class__.__name__}"
+                )
                 if traceKey:
-                    g.trace(f"{kind:>25} {self.tag:25} in-state: {repr(c.k and c.k.inState()):5} obj: {tag}")
+                    g.trace(
+                        f"{kind:>25} {self.tag:25} in-state: {repr(c.k and c.k.inState()):5} obj: {tag}"
+                    )
                 return
         if eventType not in ignore:
-            tag = obj.objectName() if hasattr(obj, 'objectName') else f"id: {id(obj)}, {obj.__class__.__name__}"
+            tag = (
+                obj.objectName()
+                if hasattr(obj, 'objectName')
+                else f"id: {id(obj)}, {obj.__class__.__name__}"
+            )
             g.trace(f"{eventType:>25} {self.tag:25} {tag}")
 
     # @+node:ekr.20131121050226.16331: *4* filter.traceWidget

@@ -835,7 +835,9 @@ def assembly_x86_rule2(colorer, s, i):
 
 
 def assembly_x86_rule3(colorer, s, i):
-    return colorer.match_mark_following(s, i, kind="label", pattern="%%", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_following(
+        s, i, kind="label", pattern="%%", at_line_start=True, exclude_match=True
+    )
 
 
 def assembly_x86_rule4(colorer, s, i):
@@ -843,7 +845,9 @@ def assembly_x86_rule4(colorer, s, i):
 
 
 def assembly_x86_rule5(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True
+    )
 
 
 def assembly_x86_rule6(colorer, s, i):

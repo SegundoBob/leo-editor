@@ -135,7 +135,9 @@ class VimCommands:
                 for key in d2:
                     f, f2 = d.get(key), d2.get(key)
                     if f2 and f and f != f2:
-                        g.trace(f"conflicting motion key in {tag} dict: {key} {f2.__name__} {f.__name__}")
+                        g.trace(
+                            f"conflicting motion key in {tag} dict: {key} {f2.__name__} {f.__name__}"
+                        )
                     elif f2 and not f:
                         g.trace(f"missing motion key in {tag} dict: {key} {f2.__name__}")
                         # d[key] = f2
@@ -450,7 +452,9 @@ class VimCommands:
         self.handler: Callable = self.do_normal_mode  # Use the handler for normal mode.
         self.in_command = False  # True: we have seen some command characters.
         self.in_motion = False  # True if parsing an *inner* motion, the 2j in d2j.
-        self.motion_func: Callable = None  # The callback handler to execute after executing an inner motion.
+        self.motion_func: Callable = (
+            None  # The callback handler to execute after executing an inner motion.
+        )
         self.motion_i: int = None  # The offset into the text at the start of a motion.
         self.n1 = 1  # The first repeat count.
         self.n = 1  # The second repeat count.
@@ -1988,7 +1992,9 @@ class VimCommands:
                 self.handler()
             if self.return_value not in (True, False):
                 # It looks like no acceptance method has been called.
-                self.oops(f"bad return_value: {repr(self.return_value)} {self.state} {self.next_func}")
+                self.oops(
+                    f"bad return_value: {repr(self.return_value)} {self.state} {self.next_func}"
+                )
                 self.done()  # Sets self.return_value to True.
         except Exception:
             g.es_exception()

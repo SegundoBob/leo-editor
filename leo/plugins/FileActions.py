@@ -144,7 +144,12 @@ def applyFileAction(p, filename, c):
             g.redirectStdout()
             g.redirectStderr()
         try:
-            namespace = {'c': c, 'g': g, 'filename': filename, 'shellScriptInWindow': shellScriptInWindow}
+            namespace = {
+                'c': c,
+                'g': g,
+                'filename': filename,
+                'shellScriptInWindow': shellScriptInWindow,
+            }
             # exec script in namespace
             exec(script, namespace)
         except Exception:

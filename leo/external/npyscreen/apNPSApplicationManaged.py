@@ -129,7 +129,9 @@ class NPSAppManaged(apNPSApplication.NPSApp):
                 self._FORM_VISIT_LIST.pop()  # Remove the current form. if it is at the end of the list
             if self._THISFORM.FORM_NAME == self.NEXT_ACTIVE_FORM:
                 # take no action if it looks as if someone has already set the next form.
-                self.setNextForm(self._FORM_VISIT_LIST.pop())  # Switch to the previous form if one exists
+                self.setNextForm(
+                    self._FORM_VISIT_LIST.pop()
+                )  # Switch to the previous form if one exists
         except IndexError:
             self.setNextForm(backup)
 

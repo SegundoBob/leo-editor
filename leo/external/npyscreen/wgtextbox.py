@@ -64,7 +64,9 @@ class TextfieldBase(widget.Widget):
         if self.on_last_line:
             self.maximum_string_length = self.width - 2  # Leave room for the cursor
         else:
-            self.maximum_string_length = self.width - 1  # Leave room for the cursor at the end of the string.
+            self.maximum_string_length = (
+                self.width - 1
+            )  # Leave room for the cursor at the end of the string.
 
     # @+node:ekr.20170428084208.323: *3* resize
     def resize(self):
@@ -111,7 +113,9 @@ class TextfieldBase(widget.Widget):
             if isinstance(self.value, bytes):
                 # use a unicode version of self.value to work out where the cursor is.
                 # not always accurate, but better than the bytes
-                value_to_use_for_calculations = self.display_value(self.value).decode(self.encoding, 'replace')
+                value_to_use_for_calculations = self.display_value(self.value).decode(
+                    self.encoding, 'replace'
+                )
             if cursor:
                 if self.cursor_position is False:
                     self.cursor_position = len(value_to_use_for_calculations)
@@ -125,12 +129,17 @@ class TextfieldBase(widget.Widget):
                 if self.cursor_position < self.begin_at:
                     self.begin_at = self.cursor_position
 
-                while self.cursor_position > self.begin_at + self.maximum_string_length - self.left_margin:  # -1:
+                while (
+                    self.cursor_position
+                    > self.begin_at + self.maximum_string_length - self.left_margin
+                ):  # -1:
                     self.begin_at += 1
             else:
                 if self.do_colors():
                     self.parent.curses_pad.bkgdset(
-                        ' ', self.parent.theme_manager.findPair(self, self.highlight_color) | curses.A_STANDOUT
+                        ' ',
+                        self.parent.theme_manager.findPair(self, self.highlight_color)
+                        | curses.A_STANDOUT,
                     )
                 else:
                     self.parent.curses_pad.bkgdset(' ', curses.A_STANDOUT)
@@ -138,7 +147,10 @@ class TextfieldBase(widget.Widget):
         if self.highlight:
             if self.do_colors():
                 if self.invert_highlight_color:
-                    attributes = self.parent.theme_manager.findPair(self, self.highlight_color) | curses.A_STANDOUT
+                    attributes = (
+                        self.parent.theme_manager.findPair(self, self.highlight_color)
+                        | curses.A_STANDOUT
+                    )
                 else:
                     attributes = self.parent.theme_manager.findPair(self, self.highlight_color)
                 self.parent.curses_pad.bkgdset(' ', attributes)
@@ -249,7 +261,9 @@ class TextfieldBase(widget.Widget):
         string_to_print = self.display_value(self.value)
         if not string_to_print:
             return None
-        string_to_print = string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin]
+        string_to_print = string_to_print[
+            self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin
+        ]
 
         if sys.version_info[0] >= 3:
             string_to_print = self.display_value(self.value)[
@@ -260,7 +274,9 @@ class TextfieldBase(widget.Widget):
             dv = self.display_value(self.value)
             if isinstance(dv, bytes):
                 dv = dv.decode(self.encoding, 'replace')
-            string_to_print = dv[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin]
+            string_to_print = dv[
+                self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin
+            ]
         return string_to_print
 
     # @+node:ekr.20170428084208.332: *3* TextfieldBase._print
@@ -268,7 +284,9 @@ class TextfieldBase(widget.Widget):
         string_to_print = self._get_string_to_print()
         if not string_to_print:
             return None
-        string_to_print = string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin]
+        string_to_print = string_to_print[
+            self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin
+        ]
 
         if sys.version_info[0] >= 3:
             string_to_print = self.display_value(self.value)[
@@ -279,13 +297,16 @@ class TextfieldBase(widget.Widget):
             dv = self.display_value(self.value)
             if isinstance(dv, bytes):
                 dv = dv.decode(self.encoding, 'replace')
-            string_to_print = dv[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin]
+            string_to_print = dv[
+                self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin
+            ]
 
         column = 0
         place_in_string = 0
         if self.syntax_highlighting:
             self.update_highlighting(
-                start=self.begin_at, end=self.maximum_string_length + self.begin_at - self.left_margin
+                start=self.begin_at,
+                end=self.maximum_string_length + self.begin_at - self.left_margin,
             )
             while column <= (self.maximum_string_length - self.left_margin):
                 if not string_to_print or place_in_string > len(string_to_print) - 1:
@@ -356,17 +377,27 @@ class TextfieldBase(widget.Widget):
 
         if self.syntax_highlighting:
             self.update_highlighting(
-                start=self.begin_at, end=self.maximum_string_length + self.begin_at - self.left_margin
+                start=self.begin_at,
+                end=self.maximum_string_length + self.begin_at - self.left_margin,
             )
             for i in range(
-                len(string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin])
+                len(
+                    string_to_print[
+                        self.begin_at : self.maximum_string_length
+                        + self.begin_at
+                        - self.left_margin
+                    ]
+                )
             ):
                 try:
                     highlight = self._highlightingdata[self.begin_at + i]
                 except Exception:
                     highlight = curses.A_NORMAL
                 self.parent.curses_pad.addstr(
-                    self.rely, self.relx + i + self.left_margin, string_to_print[self.begin_at + i], highlight
+                    self.rely,
+                    self.relx + i + self.left_margin,
+                    string_to_print[self.begin_at + i],
+                    highlight,
                 )
         elif self.do_colors():
             coltofind = 'DEFAULT'
@@ -376,7 +407,11 @@ class TextfieldBase(widget.Widget):
                 self.parent.curses_pad.addstr(
                     self.rely,
                     self.relx + self.left_margin,
-                    string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin],
+                    string_to_print[
+                        self.begin_at : self.maximum_string_length
+                        + self.begin_at
+                        - self.left_margin
+                    ],
                     self.parent.theme_manager.findPair(self, coltofind) | curses.A_BOLD,
                 )
             elif self.important:
@@ -384,14 +419,22 @@ class TextfieldBase(widget.Widget):
                 self.parent.curses_pad.addstr(
                     self.rely,
                     self.relx + self.left_margin,
-                    string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin],
+                    string_to_print[
+                        self.begin_at : self.maximum_string_length
+                        + self.begin_at
+                        - self.left_margin
+                    ],
                     self.parent.theme_manager.findPair(self, coltofind) | curses.A_BOLD,
                 )
             else:
                 self.parent.curses_pad.addstr(
                     self.rely,
                     self.relx + self.left_margin,
-                    string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin],
+                    string_to_print[
+                        self.begin_at : self.maximum_string_length
+                        + self.begin_at
+                        - self.left_margin
+                    ],
                     self.parent.theme_manager.findPair(self),
                 )
         else:
@@ -399,21 +442,33 @@ class TextfieldBase(widget.Widget):
                 self.parent.curses_pad.addstr(
                     self.rely,
                     self.relx + self.left_margin,
-                    string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin],
+                    string_to_print[
+                        self.begin_at : self.maximum_string_length
+                        + self.begin_at
+                        - self.left_margin
+                    ],
                     curses.A_BOLD,
                 )
             elif self.show_bold:
                 self.parent.curses_pad.addstr(
                     self.rely,
                     self.relx + self.left_margin,
-                    string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin],
+                    string_to_print[
+                        self.begin_at : self.maximum_string_length
+                        + self.begin_at
+                        - self.left_margin
+                    ],
                     curses.A_BOLD,
                 )
             else:
                 self.parent.curses_pad.addstr(
                     self.rely,
                     self.relx + self.left_margin,
-                    string_to_print[self.begin_at : self.maximum_string_length + self.begin_at - self.left_margin],
+                    string_to_print[
+                        self.begin_at : self.maximum_string_length
+                        + self.begin_at
+                        - self.left_margin
+                    ],
                 )
 
     # @+node:ekr.20170428084208.334: *3* update_highlighting
@@ -493,7 +548,9 @@ class Textfield(TextfieldBase):
                     ch_adding = chr(inp)
                 except TypeError:
                     ch_adding = input
-            self.value = self.value[: self.cursor_position] + ch_adding + self.value[self.cursor_position :]
+            self.value = (
+                self.value[: self.cursor_position] + ch_adding + self.value[self.cursor_position :]
+            )
             self.cursor_position += len(ch_adding)
 
             # or avoid it entirely:

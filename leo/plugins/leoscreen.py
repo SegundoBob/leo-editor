@@ -393,7 +393,9 @@ class leoscreen_Controller:
     def get_prefix(self):
         """get the prefix for insertions from get_line"""
 
-        x = g.app.gui.runAskOkCancelStringDialog(self.c, 'Prefix for text loading', 'Prefix for text loading')
+        x = g.app.gui.runAskOkCancelStringDialog(
+            self.c, 'Prefix for text loading', 'Prefix for text loading'
+        )
 
         if x is not None:
             self.get_line_prefix = x
@@ -407,7 +409,9 @@ class leoscreen_Controller:
         out = out_bytes.decode('utf-8')
 
         screens = [
-            [('CURRENT: ' if i == self.use_screen else '') + i, False, i] for i in out.split('\n') if i.startswith('\t')
+            [('CURRENT: ' if i == self.use_screen else '') + i, False, i]
+            for i in out.split('\n')
+            if i.startswith('\t')
         ]  # type:ignore
 
         ld = ListDialog(None, 'Pick screen', 'Pick screen', screens)

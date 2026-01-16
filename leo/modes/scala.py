@@ -342,7 +342,9 @@ def scala_rule2(colorer, s, i):
 
 
 def scala_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="scala::scaladoc")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="scala::scaladoc"
+    )
 
 
 def scala_rule4(colorer, s, i):
@@ -374,12 +376,17 @@ def scala_rule9(colorer, s, i):
 
 
 def scala_rule10(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="'[0-9a-zA-Z><=+]([0-9a-zA-Z><=+]|_[0-9a-zA-Z><=+])*")
+    return colorer.match_seq_regexp(
+        s, i, kind="label", regexp="'[0-9a-zA-Z><=+]([0-9a-zA-Z><=+]|_[0-9a-zA-Z><=+])*"
+    )
 
 
 def scala_rule11(colorer, s, i):
     return colorer.match_seq_regexp(
-        s, i, kind="literal3", regexp="\\[[^\\[\\]]*(\\[[^\\[\\]]*(\\[[^\\[\\]]*\\][^\\[\\]]*)*\\][^\\[\\]]*)*\\]"
+        s,
+        i,
+        kind="literal3",
+        regexp="\\[[^\\[\\]]*(\\[[^\\[\\]]*(\\[[^\\[\\]]*\\][^\\[\\]]*)*\\][^\\[\\]]*)*\\]",
     )
 
 
@@ -512,7 +519,9 @@ def scala_rule43(colorer, s, i):
 
 
 def scala_rule44(colorer, s, i):
-    return colorer.match_span(s, i, kind="", begin="case", end="=>", delegate="scala::pattern", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="", begin="case", end="=>", delegate="scala::pattern", no_line_break=True
+    )
 
 
 def scala_rule45(colorer, s, i):
@@ -838,7 +847,9 @@ def scala_rule48(colorer, s, i):
 
 
 def scala_rule49(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<pre>", end="</pre>", delegate="scala::scaladoc_pre")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<pre>", end="</pre>", delegate="scala::scaladoc_pre"
+    )
 
 
 def scala_rule50(colorer, s, i):
@@ -1107,7 +1118,9 @@ def scala_rule60(colorer, s, i):
 
 
 def scala_rule61(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", regexp=">\\s*\\)", delegate="scala::main")
+    return colorer.match_seq_regexp(
+        s, i, kind="literal3", regexp=">\\s*\\)", delegate="scala::main"
+    )
 
 
 def scala_rule62(colorer, s, i):
@@ -1141,11 +1154,15 @@ def scala_rule63(colorer, s, i):
 
 
 def scala_rule64(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="comment2", regexp="<!--", delegate="scala::xml_comment")
+    return colorer.match_seq_regexp(
+        s, i, kind="comment2", regexp="<!--", delegate="scala::xml_comment"
+    )
 
 
 def scala_rule65(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", regexp="<\\/?\\w*", delegate="scala::xml_tag")
+    return colorer.match_seq_regexp(
+        s, i, kind="literal3", regexp="<\\/?\\w*", delegate="scala::xml_tag"
+    )
 
 
 # Rules dict for scala_xml_text ruleset.
@@ -1167,7 +1184,9 @@ def scala_rule66(colorer, s, i):
 
 
 def scala_rule67(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="comment2", regexp="-->\\s*;", delegate="scala::main")
+    return colorer.match_seq_regexp(
+        s, i, kind="comment2", regexp="-->\\s*;", delegate="scala::main"
+    )
 
 
 def scala_rule68(colorer, s, i):

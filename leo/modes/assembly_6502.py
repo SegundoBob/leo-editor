@@ -154,11 +154,15 @@ def assembly_6502_rule2(colorer, s, i):
 
 
 def assembly_6502_rule3(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=" ", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=" ", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def assembly_6502_rule4(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern="\t", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern="\t", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def assembly_6502_rule5(colorer, s, i):

@@ -64,7 +64,9 @@ class TitleText(widget.Widget):
             if 'max_width' in self._passon.keys():
                 if self._passon['max_width'] > 0:
                     if self._passon['max_width'] < self.text_field_begin_at:
-                        raise ValueError("The maximum width specified is less than the text_field_begin_at value.")
+                        raise ValueError(
+                            "The maximum width specified is less than the text_field_begin_at value."
+                        )
                     else:
                         self._passon['max_width'] -= self.text_field_begin_at + 1
 
@@ -77,10 +79,14 @@ class TitleText(widget.Widget):
         if self.use_two_lines:
             if 'max_height' in self._passon and self._passon['max_height']:
                 if self._passon['max_height'] == 1:
-                    raise ValueError("I don't know how to resolve this: max_height == 1 but widget using 2 lines.")
+                    raise ValueError(
+                        "I don't know how to resolve this: max_height == 1 but widget using 2 lines."
+                    )
                 self._passon['max_height'] -= 1
             if 'height' in self._passon and self._passon['height']:
-                raise ValueError("I don't know how to resolve this: height == 1 but widget using 2 lines.")
+                raise ValueError(
+                    "I don't know how to resolve this: height == 1 but widget using 2 lines."
+                )
                 self._passon['height'] -= 1
 
         self.make_contained_widgets()

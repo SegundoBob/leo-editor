@@ -128,12 +128,19 @@ def jsp_rule0(colorer, s, i):
 
 
 def jsp_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword1", begin="<%@", end="%>", delegate="jsp::directives")
+    return colorer.match_span(
+        s, i, kind="keyword1", begin="<%@", end="%>", delegate="jsp::directives"
+    )
 
 
 def jsp_rule2(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword1", begin="<jsp:directive>", end="</jsp:directive>", delegate="jsp::directives"
+        s,
+        i,
+        kind="keyword1",
+        begin="<jsp:directive>",
+        end="</jsp:directive>",
+        delegate="jsp::directives",
     )
 
 
@@ -143,7 +150,12 @@ def jsp_rule3(colorer, s, i):
 
 def jsp_rule4(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword1", begin="<jsp:expression>", end="</jsp:expression>", delegate="java::main"
+        s,
+        i,
+        kind="keyword1",
+        begin="<jsp:expression>",
+        end="</jsp:expression>",
+        delegate="java::main",
     )
 
 
@@ -153,7 +165,12 @@ def jsp_rule5(colorer, s, i):
 
 def jsp_rule6(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword1", begin="<jsp:declaration>", end="</jsp:declaration>", delegate="java::main"
+        s,
+        i,
+        kind="keyword1",
+        begin="<jsp:declaration>",
+        end="</jsp:declaration>",
+        delegate="java::main",
     )
 
 
@@ -163,20 +180,31 @@ def jsp_rule7(colorer, s, i):
 
 def jsp_rule8(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword1", begin="<jsp:scriptlet>", end="</jsp:scriptlet>", delegate="java::main"
+        s,
+        i,
+        kind="keyword1",
+        begin="<jsp:scriptlet>",
+        end="</jsp:scriptlet>",
+        delegate="java::main",
     )
 
 
 def jsp_rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment1", begin="<!--", end="-->", delegate="jsp::comment")
+    return colorer.match_span(
+        s, i, kind="comment1", begin="<!--", end="-->", delegate="jsp::comment"
+    )
 
 
 def jsp_rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript"
+    )
 
 
 def jsp_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css"
+    )
 
 
 def jsp_rule12(colorer, s, i):
@@ -246,7 +274,9 @@ def jsp_rule18(colorer, s, i):
 
 
 def jsp_rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="jsp::attrvalue")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="jsp::attrvalue"
+    )
 
 
 def jsp_rule20(colorer, s, i):
@@ -490,7 +520,9 @@ def jsp_rule26(colorer, s, i):
 
 
 def jsp_rule27(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="jsp::attrvalue")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="jsp::attrvalue"
+    )
 
 
 def jsp_rule28(colorer, s, i):

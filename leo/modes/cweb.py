@@ -133,7 +133,9 @@ def cweb_rule0(colorer, s, i):
     global in_doc_part
     if in_doc_part:
         return 0
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="doxygen::doxygen")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="doxygen::doxygen"
+    )
 
 
 # @+node:ekr.20250123061808.2: *3* function: cweb_rule1 /*!
@@ -141,7 +143,9 @@ def cweb_rule1(colorer, s, i):
     global in_doc_part
     if in_doc_part:
         return 0
-    return colorer.match_span(s, i, kind="comment3", begin="/*!", end="*/", delegate="doxygen::doxygen")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/*!", end="*/", delegate="doxygen::doxygen"
+    )
 
 
 # @+node:ekr.20250123061808.3: *3* function: cweb_rule2 /*

@@ -86,7 +86,9 @@ class MenuViewerController:
                     _menulines.append(itm)
                     _actionsToTake.append((self._goToSubmenu, itm))
                 else:
-                    raise ValueError("menu %s contains objects I don't know how to handle." % self._menu.name)
+                    raise ValueError(
+                        "menu %s contains objects I don't know how to handle." % self._menu.name
+                    )
 
             self._DisplayArea._menuListWidget.values = _menulines
             self._DisplayArea.display()
@@ -121,7 +123,9 @@ class PreviousMenu(NewMenu.NewMenu):
 class MenuDisplay(MenuViewerController):
     # @+others
     # @+node:ekr.20170428084208.266: *3* __init__
-    def __init__(self, color='CONTROL', lines=15, columns=39, show_atx=5, show_aty=2, *args, **keywords):
+    def __init__(
+        self, color='CONTROL', lines=15, columns=39, show_atx=5, show_aty=2, *args, **keywords
+    ):
         self._DisplayArea = MenuDisplayScreen(
             lines=lines, columns=columns, show_atx=show_atx, show_aty=show_aty, color=color
         )
@@ -183,7 +187,9 @@ class wgMenuListWithSortCuts(multiline.MultiLineActionWithShortcuts):
     # @+others
     # @+node:ekr.20170428084208.273: *3* __init__
     def __init__(self, screen, allow_filtering=False, *args, **keywords):
-        return super(wgMenuListWithSortCuts, self).__init__(screen, allow_filtering=allow_filtering, *args, **keywords)
+        return super(wgMenuListWithSortCuts, self).__init__(
+            screen, allow_filtering=allow_filtering, *args, **keywords
+        )
 
     # def actionHighlighted(self, act_on_this, key_press):
     #    if isinstance(act_on_this, MenuItem):
