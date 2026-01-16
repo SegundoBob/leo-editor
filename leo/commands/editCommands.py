@@ -25,13 +25,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 def cmd(name: str) -> Callable:
     """Command decorator for the EditCommandsClass class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'editCommands',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'editCommands'])
 
 
 # @+others

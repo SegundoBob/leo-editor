@@ -23,13 +23,7 @@ if TYPE_CHECKING:  # pragma: no cover
 # @+node:ekr.20150509030349.1: ** cc.cmd (decorator)
 def cmd(name: str) -> Callable:
     """Command decorator for the ChapterController class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'chapterController',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'chapterController'])
 
 
 # @+node:ekr.20070317085437: ** class ChapterController
