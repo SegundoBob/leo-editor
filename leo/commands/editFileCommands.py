@@ -823,25 +823,30 @@ class GitDiffController:
         # Get list of changed files.
         files = self.get_files(rev1, rev2, path=path)
         n = len(files)
-        message = f"diffing {n} file{g.plural(n)}"
         if not g.unitTesting:
+            g.es_print(f"diffing {n} file{g.plural(n)}")
             if n > 5:
-                message += ". This may take awhile..."
-            g.es_print(message)
+                g.es_print('This may take awhile...')
         c.selectPosition(c.lastTopLevel())  # pre-select to help undo-insert
 
         # Create the root node.
         undoData = u.beforeInsertNode(c.p)  # c.p is subject of 'insertAfter'
         self.root = c.lastTopLevel().insertAfter()
-        self.root.h = f"git diff revs: {rev1} {rev2}"
+        root_h = f"git diff revs: {rev1} {rev2}"
+        if path and path.strip():
+            root_h += f" ({path})"
+        self.root.h = root_h
         self.root.b = '@ignore\n@nosearch\n'
 
         # Create diffs of all files.
-        for fn in files:
+        for i, fn in enumerate(files):
             self.diff_file(fn=fn, rev1=rev1, rev2=rev2)
+            if (i % 10) == 0:
+                g.es_print(f"diff: {i} files", color='blue')
 
         u.afterInsertNode(self.root, 'diff-two-revs', undoData)
         self.finish()
+        g.es_print(f"done! diffed: {n} files")
 
     # @+node:ekr.20170806094320.12: *4* gdc.git_diff & helper
     def git_diff(self, rev1: str = 'HEAD', rev2: str = '') -> None:
@@ -1205,27 +1210,31 @@ class GitDiffController:
             return
         # Get list of changed files.  This is fast.
         files = self.get_files(rev1, rev2, path=path)
+        n = len(files)
         if not g.unitTesting:
-            n = len(files)
-            message = f"diffing {n} file{g.plural(n)}"
-            g.es_print(message)
+            g.es_print(f"diffing {n} file{g.plural(n)}")
+            if n > 5:
+                g.es_print('This may take awhile...')
         c.selectPosition(c.lastTopLevel())  # pre-select to help undo-insert
 
         # Undoably create the root node.
         undoData = u.beforeInsertNode(c.p)  # c.p is subject of 'insertAfter'
         self.root = c.lastTopLevel().insertAfter()
-        self.root.h = f"git summary diff revs: {rev1} {rev2}"
+        root_h = f"git summary diff revs: {rev1} {rev2}"
+        if path and path.strip():
+            root_h += f" ({path})"
+        self.root.h = root_h
         self.root.b = '@nosearch\n'
         for i, fn in enumerate(files):
             if fn.endswith('.py'):
                 self.summary_diff_python_file(fn=fn, rev1=rev1, rev2=rev2)
             if (i % 10) == 0:
-                g.es_print(f"diff: {i} files")
+                g.es_print(f"diff: {i} files", color='blue')
         u.afterInsertNode(self.root, 'summary-diff-two-revs', undoData)
-        print(f"done! diffed: {n} files")
         c.selectPosition(self.root)
         self.root.expand()
         c.redraw(self.root)
+        print(f"done! diffed: {n} files")
 
     # @+node:ekr.20260112115520.1: *4* gdc.summary_diff_python_file & helper
     def summary_diff_python_file(self, fn: str, rev1: str = 'HEAD', rev2: str = '') -> None:
