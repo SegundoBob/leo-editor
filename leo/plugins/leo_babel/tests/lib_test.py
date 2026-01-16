@@ -161,7 +161,9 @@ class TestCmdr:
         self.colorStdout = _getColor(cmdrT, 'Leo-Babel-stdout', default='#00ff00')
         self.colorStderr = _getColor(cmdrT, 'Leo-Babel-stderr', default='#A020F0')
         self.colorCompletion = _getColor(cmdrT, 'Leo-Babel-completion', default='#FFD700')
-        self.nodeCreationDefault = cmdrT.config.getBool('Leo-Babel-Node-Creation-Default', default=True)
+        self.nodeCreationDefault = cmdrT.config.getBool(
+            'Leo-Babel-Node-Creation-Default', default=True
+        )
         self.interpreterPython = _getString(cmdrT, 'Leo-Babel-Python', default='python3')
         self.interpreterShell = _getString(cmdrT, 'Leo-Babel-Shell', default='bash')
 
@@ -170,7 +172,9 @@ class TestCmdr:
         self.testCnt = 0
         self.babelExecCnt = 0
 
-        fdR.write('||* Tests *|| {0}\n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%s')))
+        fdR.write(
+            '||* Tests *|| {0}\n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%s'))
+        )
 
     # @-others
 

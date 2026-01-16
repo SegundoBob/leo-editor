@@ -34,7 +34,10 @@ def bzr_qcommands(c, p, menu):
     def bzr_stat(c=c, p=p):
         path = c.getPath(p)
         cmd = subprocess.Popen(
-            ['bzr', 'stat', path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            ['bzr', 'stat', path],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
         stdout_bytes, stderr_bytes = cmd.communicate()
         stdout = g.toUnicode(stdout_bytes)

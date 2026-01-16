@@ -327,7 +327,12 @@ class VimCommander:
     def should_open_old_file(self, path, root):
         """Return True if we should open the old temp file."""
         v = root.v
-        return path and g.os_path_exists(path) and hasattr(v.b, '_vim_old_body') and v.b == v._vim_old_body
+        return (
+            path
+            and g.os_path_exists(path)
+            and hasattr(v.b, '_vim_old_body')
+            and v.b == v._vim_old_body
+        )
 
     # @+node:ekr.20150326175258.1: *3* vim.write_root (not used)
     def write_root(self, root):

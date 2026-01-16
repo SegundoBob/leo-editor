@@ -112,14 +112,18 @@ class CKEEditor(QtWidgets.QWidget):  # type:ignore
         template_path = g.os_path_join(g.computeLeoDir(), 'plugins', 'cke_template.html')
         self.template = open(template_path).read()
         path = g.os_path_join(g.computeLeoDir(), 'external', 'ckeditor')
-        self.template = self.template.replace('[CKEDITOR]', QtCore.QUrl.fromLocalFile(path).toString())
+        self.template = self.template.replace(
+            '[CKEDITOR]', QtCore.QUrl.fromLocalFile(path).toString()
+        )
         # make widget containing QWebView
         self.setLayout(QtWidgets.QVBoxLayout())
         self.layout().setSpacing(0)
         self.layout().setContentsMargins(0, 0, 0, 0)
         # enable inspector, if this really is QtWebKit
         if real_webkit:
-            QtWebKit.QWebSettings.globalSettings().setAttribute(QtWebKit.QWebSettings.DeveloperExtrasEnabled, True)
+            QtWebKit.QWebSettings.globalSettings().setAttribute(
+                QtWebKit.QWebSettings.DeveloperExtrasEnabled, True
+            )
         self.webview = QtWebKitWidgets.QWebView()
         self.layout().addWidget(self.webview)
         g.registerHandler('select3', self.select_node)

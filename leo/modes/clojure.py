@@ -946,11 +946,15 @@ def clojure_rule33(colorer, s, i):
 
 
 def clojure_rule34(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="#\"", end="\"", delegate="clojure::regexps")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="#\"", end="\"", delegate="clojure::regexps"
+    )
 
 
 def clojure_rule35(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="clojure::strings")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="clojure::strings"
+    )
 
 
 def clojure_rule36(colorer, s, i):

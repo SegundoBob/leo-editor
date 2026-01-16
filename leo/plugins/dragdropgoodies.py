@@ -20,7 +20,9 @@ g.assertUi('qt')  # May raise g.UiTypeException, caught by the plugins manager.
 def init():
     ok = g.app.gui.guiName() == "qt"
     if ok:
-        if 0:  # Use this if you want to create the commander class before the frame is fully created.
+        if (
+            0
+        ):  # Use this if you want to create the commander class before the frame is fully created.
             g.registerHandler('before-create-leo-frame', onCreate)
         else:  # Use this if you want to create the commander class after the frame is fully created.
             g.registerHandler('after-create-leo-frame', onCreate)

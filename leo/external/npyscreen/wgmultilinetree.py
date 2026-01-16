@@ -55,7 +55,9 @@ class TreeLine(textbox.TextfieldBase):
 
     # @+node:ekr.20170428084208.179: *3* TreeLine._print_tree
     def _print_tree(self, real_x):
-        if not hasattr(self._tree_real_value, 'find_depth') and not hasattr(self._tree_real_value, 'findDepth'):
+        if not hasattr(self._tree_real_value, 'find_depth') and not hasattr(
+            self._tree_real_value, 'findDepth'
+        ):
             margin_needed = 0
             return margin_needed
 
@@ -74,7 +76,9 @@ class TreeLine(textbox.TextfieldBase):
                     if (i < _tree_depth_next) and (not self._tree_last_line):
                         # was i+1 < # and not (_tree_depth_next==1):
                         if self.show_v_lines:
-                            self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_VLINE, curses.A_NORMAL)
+                            self.parent.curses_pad.addch(
+                                self.rely, real_x, curses.ACS_VLINE, curses.A_NORMAL
+                            )
                             if self.height > 1:
                                 for h in range(self.height - 1):
                                     self.parent.curses_pad.addch(
@@ -85,7 +89,9 @@ class TreeLine(textbox.TextfieldBase):
 
                     else:
                         if self.show_v_lines:
-                            self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_BTEE, curses.A_NORMAL)
+                            self.parent.curses_pad.addch(
+                                self.rely, real_x, curses.ACS_BTEE, curses.A_NORMAL
+                            )
                         else:
                             self.parent.curses_pad.addch(self.rely, real_x, ' ', curses.A_NORMAL)
                     real_x += 1
@@ -93,19 +99,27 @@ class TreeLine(textbox.TextfieldBase):
                     real_x += 1
 
                 if self._tree_sibling_next or _tree_depth_next > self._tree_depth:
-                    self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_LTEE, curses.A_NORMAL)
+                    self.parent.curses_pad.addch(
+                        self.rely, real_x, curses.ACS_LTEE, curses.A_NORMAL
+                    )
                     if self.height > 1:
                         for h in range(self.height - 1):
-                            self.parent.curses_pad.addch(self.rely + h + 1, real_x, curses.ACS_VLINE, curses.A_NORMAL)
+                            self.parent.curses_pad.addch(
+                                self.rely + h + 1, real_x, curses.ACS_VLINE, curses.A_NORMAL
+                            )
                 else:
-                    self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_LLCORNER, curses.A_NORMAL)
+                    self.parent.curses_pad.addch(
+                        self.rely, real_x, curses.ACS_LLCORNER, curses.A_NORMAL
+                    )
                 real_x += 1
                 self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_HLINE, curses.A_NORMAL)
                 real_x += 1
             else:  # dp >= this_safe_depth_display
                 self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_HLINE, curses.A_NORMAL)
                 real_x += 1
-                self.parent.curses_pad.addstr(self.rely, real_x, "[ %s ]" % (str(dp)), curses.A_NORMAL)
+                self.parent.curses_pad.addstr(
+                    self.rely, real_x, "[ %s ]" % (str(dp)), curses.A_NORMAL
+                )
                 real_x += len(str(dp)) + 4
                 self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_RTEE, curses.A_NORMAL)
                 real_x += 1
@@ -115,7 +129,9 @@ class TreeLine(textbox.TextfieldBase):
                 self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_TTEE, curses.A_NORMAL)
                 if self.height > 1:
                     for h in range(self.height - 1):
-                        self.parent.curses_pad.addch(self.rely + h + 1, real_x, curses.ACS_VLINE, curses.A_NORMAL)
+                        self.parent.curses_pad.addch(
+                            self.rely + h + 1, real_x, curses.ACS_VLINE, curses.A_NORMAL
+                        )
             else:  # not expanded
                 self.parent.curses_pad.addch(self.rely, real_x, curses.ACS_RARROW, curses.A_NORMAL)
 
@@ -160,7 +176,9 @@ class TreeLineAnnotated(TreeLine):
         # Must return the "Margin" needed before the entry begins
         # historical reasons.
         _annotation, _color = self.getAnnotationAndColor()
-        self.parent.curses_pad.addstr(self.rely, real_x, _annotation, self.parent.theme_manager.findPair(self, _color))
+        self.parent.curses_pad.addstr(
+            self.rely, real_x, _annotation, self.parent.theme_manager.findPair(self, _color)
+        )
         return len(_annotation)
 
     # @+node:ekr.20170428084208.185: *3* annotationNoColor
@@ -278,11 +296,17 @@ class MLTree(multiline.MultiLine):
     def _walk_tree(self, root, only_expanded=True, ignore_root=True, sort=None, sort_function=None):
         try:
             return root.walk_tree(
-                only_expanded=only_expanded, ignore_root=ignore_root, sort=sort, sort_function=sort_function
+                only_expanded=only_expanded,
+                ignore_root=ignore_root,
+                sort=sort,
+                sort_function=sort_function,
             )
         except AttributeError:
             return root.walkTree(
-                onlyExpanded=only_expanded, ignoreRoot=ignore_root, sort=sort, sort_function=sort_function
+                onlyExpanded=only_expanded,
+                ignoreRoot=ignore_root,
+                sort=sort,
+                sort_function=sort_function,
             )
 
     # @+node:ekr.20170428084208.199: *3* MLTree._walkMyValues
@@ -359,7 +383,9 @@ class MLTree(multiline.MultiLine):
     # @+node:ekr.20170502150015.1: *3* MLTree.Handlers
     # @+node:ekr.20170428084208.206: *4* MLTree.h_collapse_tree
     def h_collapse_tree(self, ch):
-        if self.values[self.cursor_line].expanded and self._has_children(self.values[self.cursor_line]):
+        if self.values[self.cursor_line].expanded and self._has_children(
+            self.values[self.cursor_line]
+        ):
             self.values[self.cursor_line].expanded = False
         else:
             look_for_depth = self._find_depth(self.values[self.cursor_line]) - 1

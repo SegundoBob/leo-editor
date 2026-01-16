@@ -6,7 +6,12 @@ try:  # These may fail with Python 3.13+
     # @+node:ekr.20170428084208.444: ** << declarations >>
     from .globals import DEBUG, DISABLE_RESIZE_SYSTEM
 
-    from .wgwidget import TEST_SETTINGS, ExhaustedTestInput, add_test_input_from_iterable, add_test_input_ch
+    from .wgwidget import (
+        TEST_SETTINGS,
+        ExhaustedTestInput,
+        add_test_input_from_iterable,
+        add_test_input_ch,
+    )
 
     from .npyssafewrapper import wrapper, wrapper_basic
 
@@ -38,7 +43,12 @@ try:  # These may fail with Python 3.13+
     from .fmFormMutt import FormMutt, FormMuttWithMenus
     from .fmFileSelector import FileSelector, selectFile
 
-    from .fmFormMuttActive import ActionControllerSimple, TextCommandBox, FormMuttActive, FormMuttActiveWithMenus
+    from .fmFormMuttActive import (
+        ActionControllerSimple,
+        TextCommandBox,
+        FormMuttActive,
+        FormMuttActiveWithMenus,
+    )
     from .fmFormMuttActive import FormMuttActiveTraditional, FormMuttActiveTraditionalWithMenus
 
     from .fmFormMultiPage import (
@@ -77,10 +87,23 @@ try:  # These may fail with Python 3.13+
         BufferPager,
         TitleBufferPager,
     )
-    from .wgmultiselect import MultiSelect, TitleMultiSelect, MultiSelectFixed, TitleMultiSelectFixed, MultiSelectAction
+    from .wgmultiselect import (
+        MultiSelect,
+        TitleMultiSelect,
+        MultiSelectFixed,
+        TitleMultiSelectFixed,
+        MultiSelectAction,
+    )
     from .wgeditmultiline import MultiLineEdit
     from .wgcombobox import ComboBox, TitleCombo
-    from .wgcheckbox import Checkbox, RoundCheckBox, CheckBoxMultiline, RoundCheckBoxMultiline, CheckBox, CheckboxBare
+    from .wgcheckbox import (
+        Checkbox,
+        RoundCheckBox,
+        CheckBoxMultiline,
+        RoundCheckBoxMultiline,
+        CheckBox,
+        CheckboxBare,
+    )
     from .wgFormControlCheckbox import FormControlCheckbox
     from .wgautocomplete import TitleFilename, Filename, Autocomplete
     from .muMenu import Menu
@@ -95,8 +118,16 @@ try:  # These may fail with Python 3.13+
     # The following are maintained for compatibility with old code only.
 
     from .compatibility_code.oldtreeclasses import MultiLineTree, SelectOneTree
-    from .compatibility_code.oldtreeclasses import MultiLineTreeNew, MultiLineTreeNewAction, TreeLine, TreeLineAnnotated
-    from .compatibility_code.oldtreeclasses import MultiLineTreeNewAnnotatedAction, MultiLineTreeNewAnnotated
+    from .compatibility_code.oldtreeclasses import (
+        MultiLineTreeNew,
+        MultiLineTreeNewAction,
+        TreeLine,
+        TreeLineAnnotated,
+    )
+    from .compatibility_code.oldtreeclasses import (
+        MultiLineTreeNewAnnotatedAction,
+        MultiLineTreeNewAnnotated,
+    )
     from .compatibility_code.npysNPSTree import NPSTreeData
 
     # End compatibility.
@@ -104,7 +135,11 @@ try:  # These may fail with Python 3.13+
     from .wgfilenamecombo import FilenameCombo, TitleFilenameCombo
     from .wgboxwidget import BoxBasic, BoxTitle
     from .wgmultiline import MultiLineActionWithShortcuts
-    from .wgmultilineeditable import MultiLineEditable, MultiLineEditableTitle, MultiLineEditableBoxed
+    from .wgmultilineeditable import (
+        MultiLineEditable,
+        MultiLineEditableTitle,
+        MultiLineEditableBoxed,
+    )
 
     from .wgmonthbox import MonthBox
     from .wggrid import SimpleGrid
@@ -128,7 +163,13 @@ try:  # These may fail with Python 3.13+
 
     # Very experimental. Don't use for anything serious
     from .apOptions import SimpleOptionForm
-    from .apOptions import OptionListDisplay, OptionChanger, OptionList, OptionLimitedChoices, OptionListDisplayLine
+    from .apOptions import (
+        OptionListDisplay,
+        OptionChanger,
+        OptionList,
+        OptionLimitedChoices,
+        OptionListDisplayLine,
+    )
     from .apOptions import (
         OptionFreeText,
         OptionSingleChoice,

@@ -696,7 +696,11 @@ class CoffeeScriptTraverser:
 
     # @+node:ekr.20160316091132.51: *4* cv.ifExp (ternary operator)
     def do_IfExp(self, node):
-        return '%s if %s else %s ' % (self.visit(node.body), self.visit(node.test), self.visit(node.orelse))
+        return '%s if %s else %s ' % (
+            self.visit(node.body),
+            self.visit(node.test),
+            self.visit(node.orelse),
+        )
 
     # @+node:ekr.20160316091132.52: *4* cv.UnaryOp
     def do_UnaryOp(self, node):
@@ -731,7 +735,11 @@ class CoffeeScriptTraverser:
     def do_AnnAssign(self, node):
         head = self.leading_string(node)
         tail = self.trailing_comment(node)
-        s = '%s:%s=%s\n' % (self.visit(node.target), self.visit(node.annotation), self.visit(node.value))
+        s = '%s:%s=%s\n' % (
+            self.visit(node.target),
+            self.visit(node.annotation),
+            self.visit(node.value),
+        )
         return head + self.indent(s) + tail
 
     # @+node:ekr.20160316091132.55: *4* cv.Assert
@@ -816,7 +824,11 @@ class CoffeeScriptTraverser:
     def do_For(self, node, async_flag=False):
         result = self.leading_lines(node)
         tail = self.trailing_comment(node)
-        s = '%sfor %s in %s:' % ('async ' if async_flag else '', self.visit(node.target), self.visit(node.iter))
+        s = '%sfor %s in %s:' % (
+            'async ' if async_flag else '',
+            self.visit(node.target),
+            self.visit(node.iter),
+        )
         result.append(self.indent(s + tail))
         for z in node.body:
             self.level += 1
@@ -1167,7 +1179,10 @@ class LeoGlobals:
             code1 = f1.f_code  # The code object
             name = code1.co_name
             if name == '__init__':
-                name = '__init__(%s,line %s)' % (self.shortFileName(code1.co_filename), code1.co_firstlineno)
+                name = '__init__(%s,line %s)' % (
+                    self.shortFileName(code1.co_filename),
+                    code1.co_firstlineno,
+                )
             if files:
                 return '%s:%s' % (self.shortFileName(code1.co_filename), name)
             return name  # The code name
@@ -1276,7 +1291,10 @@ class LeoGlobals:
             s = s.decode(encoding, 'replace')
             if reportErrors:
                 g.trace(g.callers())
-                print("toUnicode: Error converting %s... from %s encoding to unicode" % (s[:200], encoding))
+                print(
+                    "toUnicode: Error converting %s... from %s encoding to unicode"
+                    % (s[:200], encoding)
+                )
         return s
 
     # @+node:ekr.20160316091132.93: *3* g.trace (py2cs.py)
@@ -1396,7 +1414,13 @@ class MakeCoffeeScriptController:
         add = parser.add_option
         add('-c', '--config', dest='fn', help='full path to configuration file')
         add('-d', '--dir', dest='dir', help='full path to the output directory')
-        add('-o', '--overwrite', action='store_true', default=False, help='overwrite existing .coffee files')
+        add(
+            '-o',
+            '--overwrite',
+            action='store_true',
+            default=False,
+            help='overwrite existing .coffee files',
+        )
         # add('-t', '--test', action='store_true', default=False,
         # help='run unit tests on startup')
         add('-v', '--verbose', action='store_true', default=False, help='verbose output')

@@ -334,7 +334,10 @@ def xml2leo(event, from_string=None):
 
     nd.b = '<?xml version="%s"?>\n' % (xml_.docinfo.xml_version or '1.0')
     if xml_.docinfo.encoding:
-        nd.b = '<?xml version="%s" encoding="%s"?>\n' % (xml_.docinfo.xml_version or '1.0', xml_.docinfo.encoding)
+        nd.b = '<?xml version="%s" encoding="%s"?>\n' % (
+            xml_.docinfo.xml_version or '1.0',
+            xml_.docinfo.encoding,
+        )
     if NSMAP:
         for k in sorted(NSMAP):
             if k:

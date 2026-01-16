@@ -75,8 +75,9 @@ def _invoke(action, **params):
 def anki_warn(deck, front, back):
     # AnkiConnect will anyway throw an error, warn user now?
     useful_msg = (
-        'No %s specified for this card. Please create a child node to @anki called @anki %s and populate with a %s name'
-    )
+        'No %s specified for this card. '
+        'Please create a child node to @anki called @anki %s and populate with a %s name'
+    )  # fmt: skip
     if deck is None:
         g.es(useful_msg % ("deck", "deck", "deck"))
         return

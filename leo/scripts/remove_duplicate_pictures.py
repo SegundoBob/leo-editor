@@ -94,7 +94,9 @@ gWindow = None
 def get_args():
     # Automatically implements the --help option.
     description = "usage: python -m remove_duplicate_pictures [options]"
-    parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=description, formatter_class=argparse.RawTextHelpFormatter
+    )
     # Add args.
     add = parser.add_argument
     add(
@@ -165,7 +167,9 @@ def main():
 class RemoveDuplicates:
     dup_list: list[str] = []
     filename_dict: dict[str, Any] = {}  # Keys are filenames, values are hashes.
-    hash_dict: dict[Any, list[Any]] = defaultdict(list)  # Keys are hashes, values are lists of filenames.
+    hash_dict: dict[Any, list[Any]] = defaultdict(
+        list
+    )  # Keys are hashes, values are lists of filenames.
     hash_size = 8
     window_height = 900
 
@@ -226,7 +230,9 @@ class RemoveDuplicates:
         pixmap = QtGui.QPixmap(filename)
         try:
             TransformationMode = QtCore.Qt.TransformationMode
-            image = pixmap.scaledToHeight(self.window_height, TransformationMode.SmoothTransformation)
+            image = pixmap.scaledToHeight(
+                self.window_height, TransformationMode.SmoothTransformation
+            )
             picture.setPixmap(image)
             picture.adjustSize()
             return frame

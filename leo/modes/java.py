@@ -155,7 +155,9 @@ def java_rule0(colorer, s, i):
 
 
 def java_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="java::javadoc")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="java::javadoc"
+    )
 
 
 def java_rule2(colorer, s, i):
@@ -247,7 +249,9 @@ def java_rule23(colorer, s, i):
 
 
 def java_rule24(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def java_rule25(colorer, s, i):
@@ -550,7 +554,9 @@ def java_rule33(colorer, s, i):
 
 
 def java_rule34(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True
+    )
 
 
 def java_rule35(colorer, s, i):

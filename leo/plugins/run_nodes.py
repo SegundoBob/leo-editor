@@ -305,7 +305,11 @@ def OpenProcess(p):
             arg = h[4:].strip()
             args.append(arg)
         else:
-            if not g.match_word(h, 0, "@run") and not g.match_word(h, 0, "@in") and not g.match_word(h, 0, "@input"):
+            if (
+                not g.match_word(h, 0, "@run")
+                and not g.match_word(h, 0, "@in")
+                and not g.match_word(h, 0, "@input")
+            ):
                 args.append(child.b.strip())
     # @-<< append arguments from child nodes to command >>
 

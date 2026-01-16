@@ -140,11 +140,15 @@ def velocity_rule0(colorer, s, i):
 
 
 def velocity_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="velocity::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="velocity::javascript"
+    )
 
 
 def velocity_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="velocity::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="velocity::css"
+    )
 
 
 def velocity_rule3(colorer, s, i):

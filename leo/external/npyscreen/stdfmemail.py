@@ -72,7 +72,9 @@ class EmailTree(npyscreen.MultiLineTreeNew):
     # @+node:ekr.20170428084207.443: *3* h_save_message_part
     def h_save_message_part(self, ch):
         self.parent.saveMessagePart()
-        npyscreen.notify_wait("Message part saved to your downloads folder: \n %s" % self.parent.DOWNLOAD_DIR)
+        npyscreen.notify_wait(
+            "Message part saved to your downloads folder: \n %s" % self.parent.DOWNLOAD_DIR
+        )
 
     # @-others
 
@@ -103,7 +105,9 @@ class EmailPager(npyscreen.Pager):
     # @+node:ekr.20170428084207.447: *3* h_save_message_part
     def h_save_message_part(self, ch):
         self.parent.saveMessagePart()
-        npyscreen.notify_wait("Message part saved to your downloads folder: \n %s" % self.parent.DOWNLOAD_DIR)
+        npyscreen.notify_wait(
+            "Message part saved to your downloads folder: \n %s" % self.parent.DOWNLOAD_DIR
+        )
 
     # @-others
 
@@ -164,7 +168,11 @@ class EmailViewFm(npyscreen.SplitFormWithMenus):
         )
         self.nextrely = 1
         self.wSubject = self.add(
-            npyscreen.TitleText, begin_entry_at=10, editable=False, use_two_lines=False, name="Subject:"
+            npyscreen.TitleText,
+            begin_entry_at=10,
+            editable=False,
+            use_two_lines=False,
+            name="Subject:",
         )
         self.wFrom = self.add(
             npyscreen.TitleText,
@@ -212,7 +220,9 @@ class EmailViewFm(npyscreen.SplitFormWithMenus):
     # @+node:ekr.20170428084207.456: *3* when_select_part
     def when_select_part(self, vl):
         self.wEmailBody.hidden = False
-        self.wEmailBody.setValuesWrap(vl[0].getContent().get_payload(decode=True).decode(errors='replace').split("\n"))
+        self.wEmailBody.setValuesWrap(
+            vl[0].getContent().get_payload(decode=True).decode(errors='replace').split("\n")
+        )
         self.wEmailBody.start_display_at = 0
         self.wMessageTree.hidden = True
 
@@ -264,7 +274,11 @@ class EmailViewFm(npyscreen.SplitFormWithMenus):
         attempted_filename = fn
         while os.path.exists(os.path.join(self.DOWNLOAD_DIR, attempted_filename)):
             counter += 1
-            attempted_filename = "%s%s%s" % (os.path.splitext(fn)[0], counter, os.path.splitext(fn)[1])
+            attempted_filename = "%s%s%s" % (
+                os.path.splitext(fn)[0],
+                counter,
+                os.path.splitext(fn)[1],
+            )
         fn = attempted_filename
         fqfn = os.path.join(self.DOWNLOAD_DIR, fn)
         if messagePart.get_content_maintype() == "text":

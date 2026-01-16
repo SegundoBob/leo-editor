@@ -368,7 +368,11 @@ class GlobalSearch:
         if qs == "stats":
             s = self.fts.statistics()
             docs = s['documents']
-            tgt.web.setHtml("<p>Indexed documents:</p><ul>" + "".join("<li>%s</li>" % doc for doc in docs) + "</ul>")
+            tgt.web.setHtml(
+                "<p>Indexed documents:</p><ul>"
+                + "".join("<li>%s</li>" % doc for doc in docs)
+                + "</ul>"
+            )
 
     # @+node:ekr.20140919160020.17921: *3* matchlines
     def matchlines(self, b, miter):

@@ -157,7 +157,9 @@ def rest_rule1(colorer, s, i):
 
 # @+node:ekr.20250109073551.12: *3* function: rest_rule11 .. |...|
 def rest_rule11(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", regexp=r"\.\.\s\|[^|]+\|", at_line_start=True)
+    return colorer.match_seq_regexp(
+        s, i, kind="literal3", regexp=r"\.\.\s\|[^|]+\|", at_line_start=True
+    )
 
 
 # @+node:ekr.20250109073551.13: *3* function: rest_rule12 |...|
@@ -167,7 +169,9 @@ def rest_rule12(colorer, s, i):
 
 # @+node:ekr.20250109073551.14: *3* function: rest_rule13 .. word::
 def rest_rule13(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp=r"\.\.\s[A-z][A-z0-9-_]+::", at_line_start=True)
+    return colorer.match_seq_regexp(
+        s, i, kind="literal2", regexp=r"\.\.\s[A-z][A-z0-9-_]+::", at_line_start=True
+    )
 
 
 # @+node:ekr.20250109073551.17: *3* function: rest_rule16 ..

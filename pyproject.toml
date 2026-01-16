@@ -358,9 +358,10 @@ Issues = "https://github.com/leo-editor/leo-editor/issues"
 "What People Are Saying about Leo" = "http://leo-editor.github.io/leo-editor/testimonials.html"
 #@-<< urls >>
 
-# @int black-line-length  overrides the default value of 120.
+# @int black-line-length  overrides this default value.
+# black's default value is 100.
 [tool.ruff]
-line-length = 120
+line-length = 100
 
 # @string black-toml gives the path to a pyproject.toml or ruff.toml file.
 [tool.ruff.format]

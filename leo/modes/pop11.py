@@ -192,7 +192,9 @@ keywordsDictDict = {
 
 
 def pop11_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/", delegate="pop11::comment")
+    return colorer.match_span(
+        s, i, kind="comment1", begin="/*", end="*/", delegate="pop11::comment"
+    )
 
 
 def pop11_rule1(colorer, s, i):
@@ -200,15 +202,21 @@ def pop11_rule1(colorer, s, i):
 
 
 def pop11_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="pop11::string", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="pop11::string", no_line_break=True
+    )
 
 
 def pop11_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="pop11::string", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="pop11::string", no_line_break=True
+    )
 
 
 def pop11_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", delegate="pop11::string", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="`", end="`", delegate="pop11::string", no_line_break=True
+    )
 
 
 def pop11_rule5(colorer, s, i):
@@ -611,11 +619,15 @@ def pop11_rule35(colorer, s, i):
 
 
 def pop11_rule36(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="pop11::string", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="pop11::string", no_line_break=True
+    )
 
 
 def pop11_rule37(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="pop11::string", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="pop11::string", no_line_break=True
+    )
 
 
 def pop11_rule38(colorer, s, i):
@@ -623,7 +635,9 @@ def pop11_rule38(colorer, s, i):
 
 
 def pop11_rule39(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment1", begin="/*", end="*/", delegate="pop11::comment")
+    return colorer.match_span(
+        s, i, kind="comment1", begin="/*", end="*/", delegate="pop11::comment"
+    )
 
 
 def pop11_rule40(colorer, s, i):

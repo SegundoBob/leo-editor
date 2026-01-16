@@ -20,7 +20,9 @@ class MultiLineEdit(widget.Widget):
 
     # @+others
     # @+node:ekr.20170428084207.589: *3* MultiLineEdit.__init__
-    def __init__(self, screen, autowrap=True, slow_scroll=True, scroll_exit=True, value=None, **keywords):
+    def __init__(
+        self, screen, autowrap=True, slow_scroll=True, scroll_exit=True, value=None, **keywords
+    ):
         self.value = value or ''
         super(MultiLineEdit, self).__init__(screen, **keywords)
         self.cursor_position = 0
@@ -119,7 +121,9 @@ class MultiLineEdit(widget.Widget):
         for line_counter in range(self.height):
             if line_counter >= len(text_to_display) - self.start_display_at:
                 break
-            line_to_display = text_to_display[self.start_display_at + line_counter][xdisplay_offset:]
+            line_to_display = text_to_display[self.start_display_at + line_counter][
+                xdisplay_offset:
+            ]
             line_to_display = self.safe_string(line_to_display)
             if isinstance(line_to_display, bytes):
                 line_to_display = line_to_display.decode(self.encoding, 'replace')
@@ -294,7 +298,9 @@ class MultiLineEdit(widget.Widget):
                     ch_adding = chr(inp)
                 except TypeError:
                     ch_adding = input
-            self.value = self.value[: self.cursor_position] + ch_adding + self.value[self.cursor_position :]
+            self.value = (
+                self.value[: self.cursor_position] + ch_adding + self.value[self.cursor_position :]
+            )
             self.cursor_position += len(ch_adding)
         else:
             return False
@@ -315,7 +321,9 @@ class MultiLineEdit(widget.Widget):
         """Add printable characters.  However, do NOT add newlines with this function"""
         if not self.editable:
             return False
-        self.value = self.value[: self.cursor_position] + chr(input) + self.value[self.cursor_position :]
+        self.value = (
+            self.value[: self.cursor_position] + chr(input) + self.value[self.cursor_position :]
+        )
         self.cursor_position += len(chr(input))
 
         if self.autowrap:

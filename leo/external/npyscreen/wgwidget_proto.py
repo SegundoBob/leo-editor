@@ -31,7 +31,9 @@ class _LinePrinter:
             return ch.encode('utf-8', 'replace')
 
     # @+node:ekr.20170428084208.441: *3* add_line
-    def add_line(self, realy, realx, unicode_string, attributes_list, max_columns, force_ascii=False):
+    def add_line(
+        self, realy, realx, unicode_string, attributes_list, max_columns, force_ascii=False
+    ):
         if isinstance(unicode_string, bytes):
             raise ValueError("This class prints unicode strings only.")
 

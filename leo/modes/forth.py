@@ -260,7 +260,13 @@ class extendForth:
 
         def forth_bracket_rule(colorer, s, i):
             return colorer.match_span(
-                s, i, kind="bracketRange", begin=begin, end=end, at_word_start=True, no_word_break=True
+                s,
+                i,
+                kind="bracketRange",
+                begin=begin,
+                end=end,
+                at_word_start=True,
+                no_word_break=True,
             )
 
         return forth_bracket_rule
@@ -322,7 +328,9 @@ class extendForth:
         begin, end = aList
 
         def forth_string_word_rule(colorer, s, i):
-            return colorer.match_span(s, i, kind="literal1", begin=begin.strip(), end=end.strip(), at_word_start=True)
+            return colorer.match_span(
+                s, i, kind="literal1", begin=begin.strip(), end=end.strip(), at_word_start=True
+            )
 
         return forth_string_word_rule
 

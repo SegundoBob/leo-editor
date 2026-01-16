@@ -348,7 +348,9 @@ keywordsDictDict = {
 
 
 def inno_setup_rule0(colorer, s, i):
-    return colorer.match_seq(s, i, kind="keyword2", seq="[code]", at_line_start=True, delegate="pascal::main")
+    return colorer.match_seq(
+        s, i, kind="keyword2", seq="[code]", at_line_start=True, delegate="pascal::main"
+    )
 
 
 def inno_setup_rule1(colorer, s, i):
@@ -420,83 +422,123 @@ def inno_setup_rule17(colorer, s, i):
 
 
 def inno_setup_rule18(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#define", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#define", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule19(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#dim", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#dim", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule20(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#undef", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#undef", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule21(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#include", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#include", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule22(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#emit", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#emit", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule23(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#expr", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#expr", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule24(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#insert", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#insert", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule25(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#append", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#append", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule26(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#if", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#if", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule27(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#elif", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#elif", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule28(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#else", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#else", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule29(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#endif", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#endif", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule30(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#ifexist", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#ifexist", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule31(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#ifnexist", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#ifnexist", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule32(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#ifdef", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#ifdef", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule33(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#for", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#for", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule34(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#sub", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#sub", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule35(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#endsub", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#endsub", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule36(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#pragma", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#pragma", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule37(colorer, s, i):
-    return colorer.match_eol_span(s, i, kind="literal4", seq="#error", delegate="inno_setup::directive")
+    return colorer.match_eol_span(
+        s, i, kind="literal4", seq="#error", delegate="inno_setup::directive"
+    )
 
 
 def inno_setup_rule38(colorer, s, i):
@@ -508,11 +550,15 @@ def inno_setup_rule39(colorer, s, i):
 
 
 def inno_setup_rule40(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="inno_setup::string")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="inno_setup::string"
+    )
 
 
 def inno_setup_rule41(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="inno_setup::string")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="inno_setup::string"
+    )
 
 
 def inno_setup_rule42(colorer, s, i):
@@ -791,7 +837,9 @@ def inno_setup_rule46(colorer, s, i):
 
 
 def inno_setup_rule47(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="{", end="}", delegate="inno_setup::constant")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="{", end="}", delegate="inno_setup::constant"
+    )
 
 
 # Rules dict for inno_setup_string ruleset.

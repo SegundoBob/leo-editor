@@ -26,7 +26,9 @@ from .globals import DISABLE_RESIZE_SYSTEM
 
 
 # @+node:ekr.20170428084207.176: ** class _FormBase
-class _FormBase(proto_fm_screen_area.ScreenArea, widget.InputHandler, wgwidget_proto._LinePrinter, EventHandler):
+class _FormBase(
+    proto_fm_screen_area.ScreenArea, widget.InputHandler, wgwidget_proto._LinePrinter, EventHandler
+):
     BLANK_COLUMNS_RIGHT = 2
     BLANK_LINES_BASE = 2
     OK_BUTTON_TEXT = 'OK'
@@ -345,7 +347,10 @@ class _FormBase(proto_fm_screen_area.ScreenArea, widget.InputHandler, wgwidget_p
                 break
         if trace:
             w = self._widgets__[n]
-            g.trace('(_FormBase:%s) FOUND: %s --> %s %s' % (self.__class__.__name__, old_n, n, w.__class__.__name__))
+            g.trace(
+                '(_FormBase:%s) FOUND: %s --> %s %s'
+                % (self.__class__.__name__, old_n, n, w.__class__.__name__)
+            )
         self.display()
 
     # @+node:ekr.20170428084207.201: *3* _FormBase.find_previous_editable
@@ -402,7 +407,13 @@ class _FormBase(proto_fm_screen_area.ScreenArea, widget.InputHandler, wgwidget_p
                 # self.curses_pad.addstr(0,1, ' '+str(_title)+' ')
                 if isinstance(_title, bytes):
                     _title = _title.decode('utf-8', 'replace')
-                self.add_line(0, 1, _title, self.make_attributes_list(_title, curses.A_NORMAL), self.columns - 4)
+                self.add_line(
+                    0,
+                    1,
+                    _title,
+                    self.make_attributes_list(_title, curses.A_NORMAL),
+                    self.columns - 4,
+                )
         except Exception:
             pass
 
@@ -426,12 +437,16 @@ class _FormBase(proto_fm_screen_area.ScreenArea, widget.InputHandler, wgwidget_p
         if self.framed:
             if curses.has_colors() and not GlobalOptions.DISABLE_ALL_COLORS:
                 self.curses_pad.attrset(0)
-                self.curses_pad.bkgdset(' ', curses.A_NORMAL | self.theme_manager.findPair(self, self.color))
+                self.curses_pad.bkgdset(
+                    ' ', curses.A_NORMAL | self.theme_manager.findPair(self, self.color)
+                )
             self.curses_pad.border()
             self.draw_title_and_help()
 
     # @+node:ekr.20170428084207.206: *3* add_widget
-    def add_widget(self, widgetClass, w_id=None, max_height=None, rely=None, relx=None, *args, **keywords):
+    def add_widget(
+        self, widgetClass, w_id=None, max_height=None, rely=None, relx=None, *args, **keywords
+    ):
         """Add a widget to the form.  The form will do its best to decide on placing, unless you override it.
         The form of this function is add_widget(WidgetClass, ....) with any arguments or keywords supplied to
         the widget. The widget will be added to self._widgets__
@@ -535,7 +550,9 @@ class TitleFooterForm(TitleForm):
         MAXY, MAXX = self.curses_pad.getmaxyx()
 
         if self.editing:
-            self.curses_pad.hline(MAXY - 1, 0, curses.ACS_HLINE, MAXX - self.__class__.OK_BUTTON_BR_OFFSET[1] - 1)
+            self.curses_pad.hline(
+                MAXY - 1, 0, curses.ACS_HLINE, MAXX - self.__class__.OK_BUTTON_BR_OFFSET[1] - 1
+            )
         else:
             self.curses_pad.hline(MAXY - 1, 0, curses.ACS_HLINE, MAXX - 1)
 

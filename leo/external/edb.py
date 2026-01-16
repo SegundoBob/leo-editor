@@ -767,7 +767,11 @@ class Pdb(bdb.Bdb, cmd.Cmd):
         self.commands_bnum = bnum
         # Save old definitions for the case of a keyboard interrupt.
         if bnum in self.commands:
-            old_command_defs = (self.commands[bnum], self.commands_doprompt[bnum], self.commands_silent[bnum])
+            old_command_defs = (
+                self.commands[bnum],
+                self.commands_doprompt[bnum],
+                self.commands_silent[bnum],
+            )
         else:
             old_command_defs = None
         self.commands[bnum] = []
@@ -866,7 +870,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
                     # last thing to try
                     (ok, filename, ln) = self.lineinfo(arg)
                     if not ok:
-                        self.error('The specified object %r is not a function or was not found along sys.path.' % arg)
+                        self.error(
+                            'The specified object %r is not a function or was not found along sys.path.'
+                            % arg
+                        )
                         return
                     funcname = ok  # ok contains a function name
                     lineno = int(ln)
@@ -1619,7 +1626,10 @@ class Pdb(bdb.Bdb, cmd.Cmd):
             self.error('No help for %r' % arg)
         else:
             if sys.flags.optimize >= 2:
-                self.error('No help for %r; please do not run Python with -OO if you need command help' % arg)
+                self.error(
+                    'No help for %r; please do not run Python with -OO if you need command help'
+                    % arg
+                )
                 return
             self.message(command.__doc__.rstrip())
 

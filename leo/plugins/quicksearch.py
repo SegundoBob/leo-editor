@@ -201,7 +201,11 @@ def install_qt_quicksearch_tab(c: Cmdr) -> None:
     def activate_input(idx: int, c: Cmdr = c) -> None:
         wdg = c.frame.nav
         tab_widget = wdg.parent().parent()
-        if tab_widget and hasattr(tab_widget, 'currentWidget') and tab_widget.currentWidget() == wdg:
+        if (
+            tab_widget
+            and hasattr(tab_widget, 'currentWidget')
+            and tab_widget.currentWidget() == wdg
+        ):
             wdg.ui.lineEdit.selectAll()
             wdg.ui.lineEdit.setFocus()
 

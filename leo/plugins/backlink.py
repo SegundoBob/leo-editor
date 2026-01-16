@@ -152,7 +152,9 @@ class backlinkController:
                     del v.u['_bklnk']['id']
 
                 if 'links' in v.u['_bklnk']:
-                    v.u['_bklnk']['links'] = [i for i in v.u['_bklnk']['links'] if i[1] not in update]
+                    v.u['_bklnk']['links'] = [
+                        i for i in v.u['_bklnk']['links'] if i[1] not in update
+                    ]
                     v.u['_bklnk']['links'].extend(
                         [(i[0], update[i[1]]) for i in v.u['_bklnk']['links'] if i[1] in update]
                     )
@@ -415,7 +417,10 @@ class backlinkController:
 
         c = self.c
         url = g.app.gui.runAskOkCancelStringDialog(
-            c, "Link to URL/UNL", "Enter URL / UNL to link to from this node", default=g.app.gui.getTextFromClipboard()
+            c,
+            "Link to URL/UNL",
+            "Enter URL / UNL to link to from this node",
+            default=g.app.gui.getTextFromClipboard(),
         )
         if url is None or not url.strip():
             return
@@ -469,7 +474,9 @@ class backlinkController:
                     if link[0] == 'S':
                         lt = ('from', 'to')
                     # use g.es rather than showMessage here
-                    g.error('backlink: link %s %s %s ??? lost' % (lt[0], self.vnode[vnode].h, lt[1]))
+                    g.error(
+                        'backlink: link %s %s %s ??? lost' % (lt[0], self.vnode[vnode].h, lt[1])
+                    )
                     continue
 
                 # check other end has link

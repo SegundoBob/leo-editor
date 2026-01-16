@@ -124,19 +124,27 @@ keywordsDictDict = {
 
 
 def asp_rule0(colorer, s, i):
-    return colorer.match_seq(s, i, kind="markup", seq="<%@LANGUAGE=\"VBSCRIPT\"%>", delegate="asp::aspvb")
+    return colorer.match_seq(
+        s, i, kind="markup", seq="<%@LANGUAGE=\"VBSCRIPT\"%>", delegate="asp::aspvb"
+    )
 
 
 def asp_rule1(colorer, s, i):
-    return colorer.match_seq(s, i, kind="markup", seq="<%@LANGUAGE=\"JSCRIPT\"%>", delegate="asp::aspjs")
+    return colorer.match_seq(
+        s, i, kind="markup", seq="<%@LANGUAGE=\"JSCRIPT\"%>", delegate="asp::aspjs"
+    )
 
 
 def asp_rule2(colorer, s, i):
-    return colorer.match_seq(s, i, kind="markup", seq="<%@LANGUAGE=\"JAVASCRIPT\"%>", delegate="asp::aspjs")
+    return colorer.match_seq(
+        s, i, kind="markup", seq="<%@LANGUAGE=\"JAVASCRIPT\"%>", delegate="asp::aspjs"
+    )
 
 
 def asp_rule3(colorer, s, i):
-    return colorer.match_seq(s, i, kind="markup", seq="<%@LANGUAGE=\"PERLSCRIPT\"%>", delegate="asp::asppl")
+    return colorer.match_seq(
+        s, i, kind="markup", seq="<%@LANGUAGE=\"PERLSCRIPT\"%>", delegate="asp::asppl"
+    )
 
 
 def asp_rule4(colorer, s, i):
@@ -189,18 +197,30 @@ def asp_rule8(colorer, s, i):
 
 def asp_rule9(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"jscript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"jscript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def asp_rule10(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"javascript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"javascript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def asp_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main"
+    )
 
 
 def asp_rule12(colorer, s, i):
@@ -212,7 +232,9 @@ def asp_rule13(colorer, s, i):
 
 
 def asp_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main"
+    )
 
 
 def asp_rule15(colorer, s, i):
@@ -301,18 +323,30 @@ def asp_rule21(colorer, s, i):
 
 def asp_rule22(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"jscript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"jscript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def asp_rule23(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"javascript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"javascript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def asp_rule24(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main"
+    )
 
 
 def asp_rule25(colorer, s, i):
@@ -324,7 +358,9 @@ def asp_rule26(colorer, s, i):
 
 
 def asp_rule27(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main"
+    )
 
 
 def asp_rule28(colorer, s, i):
@@ -365,7 +401,9 @@ rulesDict2 = {
 
 
 def asp_rule31(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%", end="%>", delegate="javascript::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<%", end="%>", delegate="javascript::main"
+    )
 
 
 def asp_rule32(colorer, s, i):
@@ -414,18 +452,30 @@ def asp_rule35(colorer, s, i):
 
 def asp_rule36(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"jscript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"jscript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def asp_rule37(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"javascript\">", end="</script>", delegate="javascript::main"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"javascript\">",
+        end="</script>",
+        delegate="javascript::main",
     )
 
 
 def asp_rule38(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<script>", end="</script>", delegate="javascript::main"
+    )
 
 
 def asp_rule39(colorer, s, i):
@@ -437,7 +487,9 @@ def asp_rule40(colorer, s, i):
 
 
 def asp_rule41(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main"
+    )
 
 
 def asp_rule42(colorer, s, i):
@@ -527,18 +579,30 @@ def asp_rule49(colorer, s, i):
 
 def asp_rule50(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"jscript\">", end="</script>", delegate="asp::asppl_csjs"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"jscript\">",
+        end="</script>",
+        delegate="asp::asppl_csjs",
     )
 
 
 def asp_rule51(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="<script language=\"javascript\">", end="</script>", delegate="asp::asppl_csjs"
+        s,
+        i,
+        kind="markup",
+        begin="<script language=\"javascript\">",
+        end="</script>",
+        delegate="asp::asppl_csjs",
     )
 
 
 def asp_rule52(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<script>", end="</script>", delegate="asp::asppl_csjs")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<script>", end="</script>", delegate="asp::asppl_csjs"
+    )
 
 
 def asp_rule53(colorer, s, i):
@@ -550,7 +614,9 @@ def asp_rule54(colorer, s, i):
 
 
 def asp_rule55(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE>", end="</STYLE>", delegate="css::main"
+    )
 
 
 def asp_rule56(colorer, s, i):
@@ -605,7 +671,9 @@ rulesDict5 = {
 
 
 def asp_rule60(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%", end="%>", delegate="javascript::main")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<%", end="%>", delegate="javascript::main"
+    )
 
 
 # Rules dict for asp_aspjs_tags ruleset.

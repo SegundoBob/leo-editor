@@ -453,7 +453,9 @@ class quickMove:
         cnt = 0
         for mover, button in qm.buttons:
             if (
-                mover.target == v and (not type_ or mover.type_ == type_) and (not first or mover.which == first)
+                mover.target == v
+                and (not type_ or mover.type_ == type_)
+                and (not first or mover.which == first)
             ):  # TNB untested .first -> .which
                 cnt += 1
                 v.u['quickMove']['buttons'].append({'first': mover.which, 'type': mover.type_})
@@ -513,7 +515,11 @@ class quickMove:
                 def cb(c2=c2, cut=cut):
                     self.to_other(c2, cut=cut)
 
-                def wrap(checked, cb=cb, name=txt.strip('.') + ' top of ' + g.os_path_basename(c2.fileName())):
+                def wrap(
+                    checked,
+                    cb=cb,
+                    name=txt.strip('.') + ' top of ' + g.os_path_basename(c2.fileName()),
+                ):
                     self.do_wrap(cb, name)
 
                 a.triggered.connect(wrap)
@@ -537,7 +543,9 @@ class quickMove:
             def cb(c2=c2):
                 self.bookmark_other(c2)
 
-            def wrap(checked, cb=cb, name="Bookmark to top of " + g.os_path_basename(c2.fileName())):
+            def wrap(
+                checked, cb=cb, name="Bookmark to top of " + g.os_path_basename(c2.fileName())
+            ):
                 self.do_wrap(cb, name)
 
             a.triggered.connect(wrap)
@@ -641,7 +649,9 @@ class quickMove:
         # need to set 'parent' key in v.u['quickMove'] list item to gnx of parent
 
         parents = [
-            [i[0].targetHeadString, False, i[0]] for i in self.buttons if i[0] is not qmb and not i[0].has_parent
+            [i[0].targetHeadString, False, i[0]]
+            for i in self.buttons
+            if i[0] is not qmb and not i[0].has_parent
         ]
 
         if not parents:
@@ -673,7 +683,9 @@ class quickMove:
                 {'type': qmb.type_, 'first': qmb.which, 'parent': parent.gnx}
             )  # TNB untested .first -> .which
 
-        self.addButton(qmb.which, qmb.type_, v=qmb.target, parent=parent.gnx)  # TNB untested .first -> .which
+        self.addButton(
+            qmb.which, qmb.type_, v=qmb.target, parent=parent.gnx
+        )  # TNB untested .first -> .which
         self.buttons = [i for i in self.buttons if i[0] is not qmb]
         print(b)
         b.button.parent().layout().removeWidget(b.button)
@@ -847,7 +859,9 @@ class quickMove:
 
             # other lines are just ignored
 
-        g.app.db['_quickmove']['global_targets'] = [{'name': name2, 'unl': unl2} for name2, unl2 in new]
+        g.app.db['_quickmove']['global_targets'] = [
+            {'name': name2, 'unl': unl2} for name2, unl2 in new
+        ]
         # make sure g.app.db knows it's been changed
         g.app.db['_quickmove'] = g.app.db['_quickmove']
 
@@ -994,9 +1008,9 @@ class quickMoveButton:
         for z in p2.parents():
             if z == p:
                 return False
-        return c.checkMoveWithParentWithWarning(p, p2, warningFlag=False) and c.checkMoveWithParentWithWarning(
-            p2, p, warningFlag=False
-        )
+        return c.checkMoveWithParentWithWarning(
+            p, p2, warningFlag=False
+        ) and c.checkMoveWithParentWithWarning(p2, p, warningFlag=False)
 
     # @+node:tbrown.20100114111020.15726: *3* computeUNL
     def computeUNL(self, p):

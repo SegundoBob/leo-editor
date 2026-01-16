@@ -505,11 +505,15 @@ def julia_rule4(colorer, s, i):
 
 
 def julia_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="\"", end="\"", delegate="julia::stringliteral2")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="\"", end="\"", delegate="julia::stringliteral2"
+    )
 
 
 def julia_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="I\"", end="\"", delegate="julia::stringliteral2")
+    return colorer.match_span(
+        s, i, kind="literal2", begin="I\"", end="\"", delegate="julia::stringliteral2"
+    )
 
 
 def julia_rule7(colorer, s, i):
@@ -525,11 +529,15 @@ def julia_rule9(colorer, s, i):
 
 
 def julia_rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal4", begin="b\"", end="\"", delegate="julia::stringliteral4")
+    return colorer.match_span(
+        s, i, kind="literal4", begin="b\"", end="\"", delegate="julia::stringliteral4"
+    )
 
 
 def julia_rule11(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal3", begin="`", end="`", delegate="julia::stringliteral3")
+    return colorer.match_span(
+        s, i, kind="literal3", begin="`", end="`", delegate="julia::stringliteral3"
+    )
 
 
 def julia_rule12(colorer, s, i):
@@ -537,7 +545,9 @@ def julia_rule12(colorer, s, i):
 
 
 def julia_rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind="operator", begin="{", end="}", delegate="julia::typedescription")
+    return colorer.match_span(
+        s, i, kind="operator", begin="{", end="}", delegate="julia::typedescription"
+    )
 
 
 def julia_rule14(colorer, s, i):

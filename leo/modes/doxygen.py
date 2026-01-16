@@ -319,12 +319,16 @@ def doxygen_rule0(colorer, s, i):
 
 # @+node:ekr.20250110045205.2: *3* function: doxygen_rule1
 def doxygen_rule1(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="keyword1", pattern="=", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="keyword1", pattern="=", at_line_start=True, exclude_match=True
+    )
 
 
 # @+node:ekr.20250110045205.3: *3* function: doxygen_rule2
 def doxygen_rule2(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="keyword1", pattern="+=", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="keyword1", pattern="+=", at_line_start=True, exclude_match=True
+    )
 
 
 # @+node:ekr.20250110045205.4: *3* function: doxygen_rule3
@@ -626,7 +630,9 @@ def doxygen_rule11(colorer, s, i):
 
 # @+node:ekr.20250110045223.6: *3* function: doxygen_rule12
 def doxygen_rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True
+    )
 
 
 # @+node:ekr.20250110045223.7: *3* function: doxygen_rule13

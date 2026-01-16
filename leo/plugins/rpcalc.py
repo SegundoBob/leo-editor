@@ -222,7 +222,10 @@ def onCreate(tag: str, keys: Any) -> None:
     if c:
         sc = scriptingController(c)
         sc.createIconButton(
-            args=None, text='RPCalc', command=lambda: c.doCommandByName('rpcalc-toggle'), statusLine=None
+            args=None,
+            text='RPCalc',
+            command=lambda: c.doCommandByName('rpcalc-toggle'),
+            statusLine=None,
         )
 
 
@@ -305,7 +308,11 @@ class AltBaseDialog(QWidget):  # type: ignore
         self.baseBoxes[self.dlgRef.calc.base].setHighlight(False)
         self.baseBoxes[base].setHighlight(True)
         self.buttons.button(base).setChecked(True)
-        if endEntryMode and self.dlgRef.calc.base != base and self.dlgRef.calc.flag == Mode.entryMode:
+        if (
+            endEntryMode
+            and self.dlgRef.calc.base != base
+            and self.dlgRef.calc.flag == Mode.entryMode
+        ):
             self.dlgRef.calc.flag = Mode.saveMode
         self.dlgRef.calc.base = base
 
@@ -757,7 +764,9 @@ class CalcCore:
                 if self.base == 16 and 'A' <= cmdStr <= 'F':
                     return self.numEntry(cmdStr)
                 if cmdStr in '+-*/':
-                    eqn = '{0} {1} {2}'.format(self.formatNum(self.stack[1]), cmdStr, self.formatNum(self.stack[0]))
+                    eqn = '{0} {1} {2}'.format(
+                        self.formatNum(self.stack[1]), cmdStr, self.formatNum(self.stack[0])
+                    )
                     if cmdStr == '+':
                         self.stack.replaceXY(self.stack[1] + self.stack[0])
                     elif cmdStr == '-':
@@ -816,10 +825,14 @@ class CalcCore:
                 eqn = '{0}^2'.format(self.formatNum(self.stack[0]))
                 self.stack[0] = self.stack[0] * self.stack[0]
             elif cmdStr == 'Y^X':  # x power of y
-                eqn = '({0})^{1}'.format(self.formatNum(self.stack[1]), self.formatNum(self.stack[0]))
+                eqn = '({0})^{1}'.format(
+                    self.formatNum(self.stack[1]), self.formatNum(self.stack[0])
+                )
                 self.stack.replaceXY(self.stack[1] ** self.stack[0])
             elif cmdStr == 'XRTY':  # x root of y
-                eqn = '({0})^(1/{1})'.format(self.formatNum(self.stack[1]), self.formatNum(self.stack[0]))
+                eqn = '({0})^(1/{1})'.format(
+                    self.formatNum(self.stack[1]), self.formatNum(self.stack[0])
+                )
                 self.stack.replaceXY(self.stack[1] ** (1 / self.stack[0]))
             elif cmdStr == 'RCIP':  # 1/x
                 eqn = '1 / ({0})'.format(self.formatNum(self.stack[0]))
@@ -857,7 +870,9 @@ class CalcCore:
             if eqn:
                 self.history.append((eqn, self.stack[0]))
                 self.histChg += 1
-                maxLen = self.option.intData('MaxHistLength', CalcCore.minMaxHist, CalcCore.maxMaxHist)
+                maxLen = self.option.intData(
+                    'MaxHistLength', CalcCore.minMaxHist, CalcCore.maxMaxHist
+                )
                 while len(self.history) > maxLen:
                     del self.history[0]
             return True
@@ -1055,7 +1070,10 @@ class CalcDlg(QWidget):  # type: ignore
         ySize = self.calc.option.intData('MainDlgYSize', 0, 10000)
         if xSize and ySize:
             self.resize(xSize, ySize)
-        self.move(self.calc.option.intData('MainDlgXPos', 0, 10000), self.calc.option.intData('MainDlgYPos', 0, 10000))
+        self.move(
+            self.calc.option.intData('MainDlgXPos', 0, 10000),
+            self.calc.option.intData('MainDlgYPos', 0, 10000),
+        )
 
         self.updateEntryLabel('rpCalc Version {0}'.format(__version__))
         QTimer.singleShot(5000, self.updateEntryLabel)
@@ -1088,10 +1106,20 @@ class CalcDlg(QWidget):  # type: ignore
         OptionDlgBool(self.optDlg, 'ViewRegisters', 'View Registers on LCD')
         OptionDlgBool(self.optDlg, 'HideLcdHighlight', 'Hide LCD highlight')
         self.optDlg.startNewColumn()
-        OptionDlgRadio(self.optDlg, 'AngleUnit', 'Angular Units', [('deg', 'Degrees'), ('rad', 'Radians')])
+        OptionDlgRadio(
+            self.optDlg, 'AngleUnit', 'Angular Units', [('deg', 'Degrees'), ('rad', 'Radians')]
+        )
         self.optDlg.startGroupBox('Alternate Bases')
         OptionDlgInt(
-            self.optDlg, 'AltBaseBits', 'Size limit', CalcCore.minNumBits, CalcCore.maxNumBits, True, 4, False, ' bits'
+            self.optDlg,
+            'AltBaseBits',
+            'Size limit',
+            CalcCore.minNumBits,
+            CalcCore.maxNumBits,
+            True,
+            4,
+            False,
+            ' bits',
         )
         OptionDlgBool(self.optDlg, 'UseTwosComplement', 'Use two\'s complement\nnegative numbers')
         self.optDlg.startGroupBox(
@@ -1101,7 +1129,13 @@ class CalcDlg(QWidget):  # type: ignore
         OptionDlgPush(self.optDlg, 'View Other Bases', self.viewAltBases)
         OptionDlgPush(self.optDlg, 'View Help file', self.help)
         OptionDlgInt(
-            self.optDlg, 'MaxHistLength', 'Saved history steps', CalcCore.minMaxHist, CalcCore.maxMaxHist, True, 10
+            self.optDlg,
+            'MaxHistLength',
+            'Saved history steps',
+            CalcCore.minMaxHist,
+            CalcCore.maxMaxHist,
+            True,
+            10,
         )
         if self.optDlg.exec() == QDialog.DialogCode.Accepted:
             self.calc.option.writeChanges()
@@ -1124,7 +1158,11 @@ class CalcDlg(QWidget):  # type: ignore
     # @+node:tom.20230424130102.54: *3* setLcdHighlight
     def setLcdHighlight(self):
         """Set lcd highlight based on option."""
-        opt = self.calc.option.boolData('HideLcdHighlight') and SegmentStyle.Flat or SegmentStyle.Filled
+        opt = (
+            self.calc.option.boolData('HideLcdHighlight')
+            and SegmentStyle.Flat
+            or SegmentStyle.Filled
+        )
         self.lcd.setSegmentStyle(opt)
         for lcd in self.extraLcds:
             lcd.setSegmentStyle(opt)
@@ -1221,7 +1259,9 @@ class CalcDlg(QWidget):  # type: ignore
     def about(self):
         """About this program."""
         QMessageBox.about(
-            self, 'rpCalc', 'rpCalc for the Leo Editor, Version {0}\n by {1}'.format(__version__, __author__)
+            self,
+            'rpCalc',
+            'rpCalc for the Leo Editor, Version {0}\n by {1}'.format(__version__, __author__),
         )
 
     # @+node:tom.20230429090628.1: *3* license
@@ -1249,7 +1289,9 @@ class CalcDlg(QWidget):  # type: ignore
     def updateLcd(self):
         """Sets display back to CalcCore string."""
         numDigits = int(self.calc.option.numData('NumDecimalPlaces', 0, 9)) + 9
-        if self.calc.option.boolData('ThousandsSeparator') or self.calc.option.boolData('UseEngNotation'):
+        if self.calc.option.boolData('ThousandsSeparator') or self.calc.option.boolData(
+            'UseEngNotation'
+        ):
             numDigits += 2
         self.lcd.setDisplay(self.calc.xStr, numDigits)
         if self.calc.option.boolData('ViewRegisters'):
@@ -1579,7 +1621,9 @@ class HistViewWidget(ExtraViewWidget):
         """Update with current data."""
         if not self.calcRef.histChg:
             return
-        maxLen = self.calcRef.option.intData('MaxHistLength', self.calcRef.minMaxHist, self.calcRef.maxMaxHist)
+        maxLen = self.calcRef.option.intData(
+            'MaxHistLength', self.calcRef.minMaxHist, self.calcRef.maxMaxHist
+        )
         for eqn, value in self.calcRef.history[-self.calcRef.histChg :]:
             item = QTreeWidgetItem(self, [eqn, self.calcRef.formatNum(value)])
             if self.topLevelItemCount() > maxLen:
@@ -1684,7 +1728,9 @@ class ExtraDisplay(QWidget):  # type: ignore
         ySize = option.intData('ExtraViewYSize', 0, 10000)
         if xSize and ySize:
             self.resize(xSize, ySize)
-        self.move(option.intData('ExtraViewXPos', 0, 10000), option.intData('ExtraViewYPos', 0, 10000))
+        self.move(
+            option.intData('ExtraViewXPos', 0, 10000), option.intData('ExtraViewYPos', 0, 10000)
+        )
 
     # @+node:tom.20230424130102.111: *4* tabUpdate
     def tabUpdate(self, index):
@@ -2098,10 +2144,14 @@ class Option:
                 with open(self.path, 'r', encoding='utf-8') as f:
                     fileList = f.readlines()
                 for key in self.chgList[:]:
-                    hitList = [line for line in fileList if line.strip().split(None, 1)[:1] == [key]]
+                    hitList = [
+                        line for line in fileList if line.strip().split(None, 1)[:1] == [key]
+                    ]
                     if not hitList:
                         hitList = [
-                            line for line in fileList if line.replace('#', ' ', 1).strip().split(None, 1)[:1] == [key]
+                            line
+                            for line in fileList
+                            if line.replace('#', ' ', 1).strip().split(None, 1)[:1] == [key]
                         ]
                     if hitList:
                         fileList[fileList.index(hitList[-1])] = '{0}{1}\n'.format(
@@ -2109,7 +2159,9 @@ class Option:
                         )
                         self.chgList.remove(key)
                 for key in self.chgList:
-                    fileList.append('{0}{1}\n'.format(key.ljust(self.keySpaces), self.userDict[key]))
+                    fileList.append(
+                        '{0}{1}\n'.format(key.ljust(self.keySpaces), self.userDict[key])
+                    )
                 with open(self.path, 'w', encoding='utf-8') as f:
                     f.writelines([line for line in fileList])
                 return True
@@ -2130,7 +2182,9 @@ class OptionDlg(QDialog):  # type: ignore
     # @+node:tom.20230424130102.158: *4* __init__
     def __init__(self, option, parent=None):
         QDialog.__init__(self, parent)
-        self.setWindowFlags(DialogCode.Accepted | WindowType.WindowTitleHint | WindowType.WindowSystemMenuHint)
+        self.setWindowFlags(
+            DialogCode.Accepted | WindowType.WindowTitleHint | WindowType.WindowSystemMenuHint
+        )
         self.option = option
 
         topLayout = QVBoxLayout(self)

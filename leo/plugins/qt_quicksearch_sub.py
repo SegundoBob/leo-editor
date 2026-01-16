@@ -50,5 +50,9 @@ class Ui_LeoQuickSearchWidget:
         LeoQuickSearchWidget.setTabOrder(self.showParents, self.listWidget)
 
     def retranslateUi(self, LeoQuickSearchWidget):
-        self.showParents.setText(QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Show Parents", None))
-        LeoQuickSearchWidget.setWindowTitle(QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Form", None))
+        self.showParents.setText(
+            QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Show Parents", None)
+        )
+        LeoQuickSearchWidget.setWindowTitle(
+            QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Form", None)
+        )

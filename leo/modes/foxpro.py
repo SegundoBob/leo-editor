@@ -1855,7 +1855,9 @@ def foxpro_rule32(colorer, s, i):
 
 
 def foxpro_rule33(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True
+    )
 
 
 def foxpro_rule34(colorer, s, i):

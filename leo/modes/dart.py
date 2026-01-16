@@ -172,22 +172,38 @@ def dart_rule7(colorer, s, i):
 
 
 def dart_rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"\"\"", end="\"\"\"", delegate="dart::dart_literal1")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"\"\"", end="\"\"\"", delegate="dart::dart_literal1"
+    )
 
 
 def dart_rule9(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'''", end="'''", delegate="dart::dart_literal1")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'''", end="'''", delegate="dart::dart_literal1"
+    )
 
 
 def dart_rule10(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="literal1", begin="\"", end="\"", delegate="dart::dart_literal1", no_line_break=True
+        s,
+        i,
+        kind="literal1",
+        begin="\"",
+        end="\"",
+        delegate="dart::dart_literal1",
+        no_line_break=True,
     )
 
 
 def dart_rule11(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="literal1", begin="'", end="'", delegate="dart::dart_literal1", no_line_break=True
+        s,
+        i,
+        kind="literal1",
+        begin="'",
+        end="'",
+        delegate="dart::dart_literal1",
+        no_line_break=True,
     )
 
 

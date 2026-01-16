@@ -298,7 +298,9 @@ class GetImage:
     @staticmethod
     def _no_image():
         """return QGraphicsPixmapItem with "No Image" image loaded"""
-        testpath = g.os_path_abspath(g.os_path_join(g.app.loadDir, '../plugins/GraphCanvas/no_image.png'))
+        testpath = g.os_path_abspath(
+            g.os_path_join(g.app.loadDir, '../plugins/GraphCanvas/no_image.png')
+        )
         return QtWidgets.QGraphicsPixmapItem(QtGui.QPixmap(testpath))
 
 
@@ -401,7 +403,12 @@ class nodeRect(nodeBase):
     def do_update(self):
         self.text.setPlainText(self.get_text())
 
-        self.bg.setRect(-2, +2, self.text.document().size().width() + 4, self.text.document().size().height() - 2)
+        self.bg.setRect(
+            -2,
+            +2,
+            self.text.document().size().width() + 4,
+            self.text.document().size().height() - 2,
+        )
 
 
 nodeBase.node_types[nodeRect.__name__] = nodeRect
@@ -454,7 +461,12 @@ class nodeEllipse(nodeRect):
     def do_update(self):
         marginX = self.text.document().size().width() / 2
         # marginY = self.text.document().size().height()/2
-        self.bg.setRect(-marginX, 0, self.text.document().size().width() * 2, self.text.document().size().height())
+        self.bg.setRect(
+            -marginX,
+            0,
+            self.text.document().size().width() * 2,
+            self.text.document().size().height(),
+        )
 
 
 nodeBase.node_types[nodeEllipse.__name__] = nodeEllipse
@@ -516,7 +528,12 @@ class nodeComment(nodeRect):
     def do_update(self):
         self._set_text(self.text)
 
-        self.bg.setRect(-2, +2, self.text.document().size().width() + 4, self.text.document().size().height() - 2)
+        self.bg.setRect(
+            -2,
+            +2,
+            self.text.document().size().width() + 4,
+            self.text.document().size().height() - 2,
+        )
 
         self.setToolTip(self.node.h)
 
@@ -791,7 +808,9 @@ class graphcanvasController:
                     self.nodeItem[i].do_update()
         if pydot:
             x, y, width, height = map(float, G.get_bb().strip('"').split(','))
-            self.ui.canvasView.setSceneRect(self.ui.canvas.sceneRect().adjusted(x, y, width, height))
+            self.ui.canvasView.setSceneRect(
+                self.ui.canvas.sceneRect().adjusted(x, y, width, height)
+            )
         self.do_update(adjust=False)
         self.center_graph()
         # self.ui.canvasView.centerOn(self.ui.canvas.sceneRect().center())
@@ -1211,7 +1230,10 @@ class graphcanvasController:
                 # self.loadLinked('all')
                 self.loadGraph('recur', create=False)
             elif self.lastNodeItem and '_bklnk' in self.lastNodeItem.node.u:
-                x, y = self.lastNodeItem.node.u['_bklnk']['x'], self.lastNodeItem.node.u['_bklnk']['y']
+                x, y = (
+                    self.lastNodeItem.node.u['_bklnk']['x'],
+                    self.lastNodeItem.node.u['_bklnk']['y'],
+                )
                 self.ui.canvasView.centerOn(x, y)
 
         if c.p.v in self.nodeItem and self.ui.UI.chkTrack.isChecked():

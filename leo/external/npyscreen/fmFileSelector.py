@@ -127,7 +127,9 @@ class FileGrid(wggrid.SimpleGrid):
     # @+node:ekr.20170428084207.163: *3* FileGrid.h_select_file
     def h_select_file(self, *args, **keywrods):
         try:
-            select_file = os.path.join(self.parent.value, self.values[self.edit_cell[0]][self.edit_cell[1]])
+            select_file = os.path.join(
+                self.parent.value, self.values[self.edit_cell[0]][self.edit_cell[1]]
+            )
             select_file = os.path.abspath(select_file)
         except (TypeError, IndexError):
             self.edit_cell = [0, 0]
@@ -200,7 +202,9 @@ class FileSelector(fmFormMutt.FormMutt):
             utilNotify.notify_confirm(title="Error", message="Selected filename does not exist.")
             return False
         if self.select_dir and not os.path.isdir(self.value):
-            utilNotify.notify_confirm(title="Error", message="Selected filename is not a directory.")
+            utilNotify.notify_confirm(
+                title="Error", message="Selected filename is not a directory."
+            )
             return False
         self.exit_editing()
         return True

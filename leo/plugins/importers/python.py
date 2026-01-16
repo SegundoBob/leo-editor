@@ -141,7 +141,9 @@ class Python_Importer(Importer):
                     ):
                         i = end
                     else:
-                        block = Block(kind, name, start=prev_i, start_body=i, end=end, lines=self.lines)
+                        block = Block(
+                            kind, name, start=prev_i, start_body=i, end=end, lines=self.lines
+                        )
                         if trace:
                             g.printObj(block, tag=f"{g.my_name()}")
                         results.append(block)
@@ -339,7 +341,9 @@ class Python_Importer(Importer):
             at_others_indent = 4  # Default
 
         # Add the indentation of the @others statement in class body.
-        docstring_lines = [f"{' ' * at_others_indent}{z}" if z.strip() else '\n' for z in g.splitLines(docstring)]
+        docstring_lines = [
+            f"{' ' * at_others_indent}{z}" if z.strip() else '\n' for z in g.splitLines(docstring)
+        ]
         class_p.b = ''.join(class_lines[:n] + docstring_lines + class_lines[n:])
 
     # @+node:ekr.20230825111112.1: *4* python_i.move_class_docstrings

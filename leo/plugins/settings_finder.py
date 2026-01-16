@@ -90,7 +90,9 @@ class SettingsFinder:
         settings_menu = menu.getMenu('Settings')
         menu.add_separator(settings_menu)
         menu.createNewMenu('Edit Settings', 'Settings')
-        finder_menu = self._outline_data_to_python(self.c.config.getOutlineData("settings-finder-menu"))
+        finder_menu = self._outline_data_to_python(
+            self.c.config.getOutlineData("settings-finder-menu")
+        )
         aList = []
         self.tree_to_menulist(aList, finder_menu)
         # #1144: Case must match.
@@ -161,7 +163,11 @@ class SettingsFinder:
                 "behavior in more places, which may or may not be what you prefer."
             ).format(specific=setting, general=value.val)
             which = g.app.gui.runAskYesNoCancelDialog(
-                self.c, "Which setting?", message=msg, yesMessage='Edit Specific', noMessage='Edit General'
+                self.c,
+                "Which setting?",
+                message=msg,
+                yesMessage='Edit Specific',
+                noMessage='Edit General',
             )
             if which != 'no':
                 break

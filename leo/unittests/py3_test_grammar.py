@@ -42,7 +42,12 @@ class TokenTests(unittest.TestCase):
             self.assert_(0o37777777777 > 0)
             self.assert_(0xFFFFFFFF > 0)
             self.assert_(0b1111111111111111111111111111111 > 0)
-            for s in ('2147483648', '0o40000000000', '0x100000000', '0b10000000000000000000000000000000'):
+            for s in (
+                '2147483648',
+                '0o40000000000',
+                '0x100000000',
+                '0b10000000000000000000000000000000',
+            ):
                 try:
                     x = eval(s)
                 except OverflowError:
@@ -440,7 +445,10 @@ class GrammarTests(unittest.TestCase):
         def f(a, b: 1, c: 2, d, e: 3 = 4, f=5, *g: 6, h: 7, i=8, j: 9 = 10, **k: 11) -> 12:
             pass
 
-        self.assertEquals(f.__annotations__, {'b': 1, 'c': 2, 'e': 3, 'g': 6, 'h': 7, 'j': 9, 'k': 11, 'return': 12})
+        self.assertEquals(
+            f.__annotations__,
+            {'b': 1, 'c': 2, 'e': 3, 'g': 6, 'h': 7, 'j': 9, 'k': 11, 'return': 12},
+        )
 
         # Check for SF Bug #1697248 - mixing decorators and a return annotation
         def null(x):
@@ -1099,7 +1107,13 @@ class GrammarTests(unittest.TestCase):
         ]
 
         self.assertEqual(
-            x, [('Boeing', 'Airliner'), ('Boeing', 'Engine'), ('Ford', 'Engine'), ('Macdonalds', 'Cheeseburger')]
+            x,
+            [
+                ('Boeing', 'Airliner'),
+                ('Boeing', 'Engine'),
+                ('Ford', 'Engine'),
+                ('Macdonalds', 'Cheeseburger'),
+            ],
         )
 
     def testGenexps(self):
@@ -1120,22 +1134,35 @@ class GrammarTests(unittest.TestCase):
         except TypeError:
             pass
 
-        self.assertEqual(list((x, y) for x in 'abcd' for y in 'abcd'), [(x, y) for x in 'abcd' for y in 'abcd'])
-        self.assertEqual(list((x, y) for x in 'ab' for y in 'xy'), [(x, y) for x in 'ab' for y in 'xy'])
+        self.assertEqual(
+            list((x, y) for x in 'abcd' for y in 'abcd'), [(x, y) for x in 'abcd' for y in 'abcd']
+        )
+        self.assertEqual(
+            list((x, y) for x in 'ab' for y in 'xy'), [(x, y) for x in 'ab' for y in 'xy']
+        )
 
         a = [x for x in range(10)]
         b = (x for x in (y for y in a))
         self.assertEqual(sum(b), sum([x for x in range(10)]))
 
         self.assertEqual(sum(x**2 for x in range(10)), sum([x**2 for x in range(10)]))
-        self.assertEqual(sum(x * x for x in range(10) if x % 2), sum([x * x for x in range(10) if x % 2]))
-        self.assertEqual(sum(x for x in (y for y in range(10))), sum([x for x in range(10)]))
-        self.assertEqual(sum(x for x in (y for y in (z for z in range(10)))), sum([x for x in range(10)]))
-        self.assertEqual(sum(x for x in [y for y in (z for z in range(10))]), sum([x for x in range(10)]))
         self.assertEqual(
-            sum(x for x in (y for y in (z for z in range(10) if True)) if True), sum([x for x in range(10)])
+            sum(x * x for x in range(10) if x % 2), sum([x * x for x in range(10) if x % 2])
         )
-        self.assertEqual(sum(x for x in (y for y in (z for z in range(10) if True) if False) if True), 0)
+        self.assertEqual(sum(x for x in (y for y in range(10))), sum([x for x in range(10)]))
+        self.assertEqual(
+            sum(x for x in (y for y in (z for z in range(10)))), sum([x for x in range(10)])
+        )
+        self.assertEqual(
+            sum(x for x in [y for y in (z for z in range(10))]), sum([x for x in range(10)])
+        )
+        self.assertEqual(
+            sum(x for x in (y for y in (z for z in range(10) if True)) if True),
+            sum([x for x in range(10)]),
+        )
+        self.assertEqual(
+            sum(x for x in (y for y in (z for z in range(10) if True) if False) if True), 0
+        )
         check_syntax_error(self, "foo(x for x in range(10), 100)")
         check_syntax_error(self, "foo(100, x for x in range(10))")
 
@@ -1195,7 +1222,12 @@ class GrammarTests(unittest.TestCase):
         # self.assertEqual([ x() for x in lambda: True, lambda: False if x() ], [True])
         self.assertEqual([x() for x in (lambda: True, lambda: False) if x()], [True])
         self.assertEqual(
-            [x(False) for x in (lambda x: False if x else True, lambda x: True if x else False) if x(False)], [True]
+            [
+                x(False)
+                for x in (lambda x: False if x else True, lambda x: True if x else False)
+                if x(False)
+            ],
+            [True],
         )
         self.assertEqual((5 if 1 else _checkeval("check 1", 0)), 5)
         self.assertEqual((_checkeval("check 2", 0) if 0 else 5), 5)

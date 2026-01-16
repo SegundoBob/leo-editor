@@ -313,7 +313,9 @@ def typescript_rule28(colorer, s, i):
 
 
 def typescript_rule29(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def typescript_rule30(colorer, s, i):

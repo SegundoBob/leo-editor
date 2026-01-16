@@ -229,7 +229,9 @@ def _descendHdl(cmdrUnl, unlList):
 
     if unlList is None:
         return listRoots(cmdrUnl)
-    soFarList = [[(childVnode, idx)] for idx, childVnode in enumerate(cmdrUnl.hiddenRootNode.children)]
+    soFarList = [
+        [(childVnode, idx)] for idx, childVnode in enumerate(cmdrUnl.hiddenRootNode.children)
+    ]
     lastUnlIdx = len(unlList) - 1
     for idx1, hdl in enumerate(unlList):
         if idx1 == lastUnlIdx:
@@ -243,7 +245,9 @@ def _descendHdl(cmdrUnl, unlList):
             ]
         if not soFarList:
             return list()
-    return [leoNodes.position(stk[-1][0], childIndex=stk[-1][1], stack=stk[:-1]) for stk in soFarList]
+    return [
+        leoNodes.position(stk[-1][0], childIndex=stk[-1][1], stack=stk[:-1]) for stk in soFarList
+    ]
 
 
 # @+node:bob.20170726143458.9: ** class MenuPopUp(QtWidgets.QMenu)
@@ -267,7 +271,9 @@ class MenuPopUp(QtWidgets.QMenu):
 
         super(MenuPopUp, self).__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-        self.setWindowTitle('LeoPopUp')  # I configure i3 to run all windows named LeoPopUp as floating
+        self.setWindowTitle(
+            'LeoPopUp'
+        )  # I configure i3 to run all windows named LeoPopUp as floating
         self.hovered.connect(self._actionHovered)
 
         actTDL = QtWidgets.QAction('Leo-Babel Menu', self)
@@ -330,7 +336,9 @@ def babelMenu(event):
     cmdr = event.get('c')
     babelG = leoG.user_dict['leo_babel']
     babelG.cmdr = cmdr
-    babelG.babelMenu.exec_(QtWidgets.QApplication.desktop().screen().rect().center() - babelG.babelMenu.rect().center())
+    babelG.babelMenu.exec_(
+        QtWidgets.QApplication.desktop().screen().rect().center() - babelG.babelMenu.rect().center()
+    )
 
 
 # @+node:bob.20170726143458.16: ** babelExec(event)
@@ -455,7 +463,9 @@ def babelExec(event):
             babelCmdr.babelExecCnt += 1
             raise babelG.babel_api.BABEL_LANGUAGE('Unknown language "{0}"'.format(langx))
 
-        script = f'#! {interpreter}\n' + getScript(cmdrScr, scriptRoot, useSelectedText=False, language=langx)
+        script = f'#! {interpreter}\n' + getScript(
+            cmdrScr, scriptRoot, useSelectedText=False, language=langx
+        )
 
         cmdrScr.setCurrentDirectoryFromContext(scriptRoot)
         cwd = leoG.os_path_abspath(os.getcwd())
@@ -614,10 +624,13 @@ def babelExec(event):
             else:
                 s = p.b
             s = extractExecutableString(c, p, s, language)
-            script = composeScript(c, p, s, forcePythonSentinels=forcePythonSentinels, sentinels=sentinels)
+            script = composeScript(
+                c, p, s, forcePythonSentinels=forcePythonSentinels, sentinels=sentinels
+            )
         except Exception:
             leoG.es_print(
-                "unexpected exception in Leo-Babel getScript()", tabName='Babel' if babelCmdr.babel_tab_babel else 'Log'
+                "unexpected exception in Leo-Babel getScript()",
+                tabName='Babel' if babelCmdr.babel_tab_babel else 'Log',
             )
             raise
         return script
@@ -642,7 +655,9 @@ def babelExec(event):
                 for lineX in lix.decode('utf-8').split('\n'):
                     if lineX:
                         leoG.es(
-                            linePrefix + lineX, color=color, tabName='Babel' if babelCmdr.babel_tab_babel else 'Log'
+                            linePrefix + lineX,
+                            color=color,
+                            tabName='Babel' if babelCmdr.babel_tab_babel else 'Log',
                         )
             else:
                 break
@@ -712,7 +727,9 @@ def babelExec(event):
                     tabName='Babel' if babelCmdr.babel_tab_babel else 'Log',
                 )
                 if babel_node_creation:
-                    makeBabelNodes(cmdrRes, resultsRoot, reo, ree, babelCmdr.termMsg, babelCmdr.etMsg)
+                    makeBabelNodes(
+                        cmdrRes, resultsRoot, reo, ree, babelCmdr.termMsg, babelCmdr.etMsg
+                    )
                 reo.close()
                 ree.close()
                 babelCmdr.babelExecCnt += 1
@@ -730,7 +747,10 @@ def babelExec(event):
                 minutes, secs = divmod(et, 60)
                 hours, minutes = divmod(minutes, 60)
                 babelCmdr.etMsg = '{hr:02d}:{mi:02d}:{se:02d} Elapsed Time. {end} End Time'.format(
-                    hr=hours, mi=minutes, se=secs, end=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    hr=hours,
+                    mi=minutes,
+                    se=secs,
+                    end=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 )
 
     # @+node:bob.20170726143458.21: *3* makeBabelNodes(cmdrRes, resultsRoot, reo, ree, termMsg, etMsg)
@@ -804,7 +824,9 @@ def babelExec(event):
             posX = babelRoot.getNthChild({'script': 0, 'results': 1}[scrOrRes])
             if not posX:
                 childOrd = {'script': 'First', 'results': 'Second'}[scrOrRes]
-                raise babelG.babel_api.BABEL_ROOT(f'{childOrd} child of current node must be the {scrOrRes} root.')
+                raise babelG.babel_api.BABEL_ROOT(
+                    f'{childOrd} child of current node must be the {scrOrRes} root.'
+                )
         elif isinstance(posX, type('abc')):
             pathname, nodePart = unlSplit(posX)
             if pathname is None:
@@ -819,7 +841,9 @@ def babelExec(event):
             else:
                 posX = posList[0]
                 if len(posList) > 1:
-                    warning = f'{scrOrRes.capitalize()} Root UNL satisfies {len(posList)} positions.'
+                    warning = (
+                        f'{scrOrRes.capitalize()} Root UNL satisfies {len(posList)} positions.'
+                    )
                     leoG.warning(warning)
         posX = posX.copy()
         return leoCmdrX, posX

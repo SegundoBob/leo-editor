@@ -89,7 +89,9 @@ class ActionFormV2(fmForm.FormBaseNew):
         self.editw = len(self._widgets__) - 2
 
     # @+node:ekr.20170428084207.146: *3* _add_button
-    def _add_button(self, button_name, button_type, button_text, button_rely, button_relx, button_function):
+    def _add_button(
+        self, button_name, button_type, button_text, button_rely, button_relx, button_function
+    ):
         tmp_rely, tmp_relx = self.nextrely, self.nextrelx
         this_button = self.add_widget(
             button_type,

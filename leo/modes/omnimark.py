@@ -438,7 +438,9 @@ def omnimark_rule1(colorer, s, i):
 
 
 def omnimark_rule2(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="invalid", begin="\"((?!$)[^\"])*$", end="$", no_line_break=True)
+    return colorer.match_span_regexp(
+        s, i, kind="invalid", begin="\"((?!$)[^\"])*$", end="$", no_line_break=True
+    )
 
 
 def omnimark_rule3(colorer, s, i):
@@ -446,7 +448,9 @@ def omnimark_rule3(colorer, s, i):
 
 
 def omnimark_rule4(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="invalid", begin="'((?!$)[^'])*$", end="$", no_line_break=True)
+    return colorer.match_span_regexp(
+        s, i, kind="invalid", begin="'((?!$)[^'])*$", end="$", no_line_break=True
+    )
 
 
 def omnimark_rule5(colorer, s, i):

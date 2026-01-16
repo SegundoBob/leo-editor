@@ -260,7 +260,10 @@ class NodeDiffController:
         """
         ns = self.get_subtree()
         if ns is None:
-            g.es('nodediff.py: Make sure that the selected node has exactly two children.', color='red')
+            g.es(
+                'nodediff.py: Make sure that the selected node has exactly two children.',
+                color='red',
+            )
             return
         self.run_appropriate_diff(ns)
 

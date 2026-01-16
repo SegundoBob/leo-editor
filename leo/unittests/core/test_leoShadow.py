@@ -1056,7 +1056,9 @@ class TestAtShadow(LeoUnitTest):
         x = c.shadowController
         filename = 'xyzzy'
         path = x.dirName(filename)
-        expected = g.os_path_dirname(g.os_path_abspath(g.os_path_join(g.os_path_dirname(c.fileName()), filename)))
+        expected = g.os_path_dirname(
+            g.os_path_abspath(g.os_path_join(g.os_path_dirname(c.fileName()), filename))
+        )
         self.assertEqual(path, expected)
 
     # @+node:ekr.20210902210552.7: *4* TestAtShadow.test_x_findAtLeoLine
@@ -1172,7 +1174,9 @@ class TestAtShadow(LeoUnitTest):
         prefix = c.config.getString('shadow_prefix') or ''
         filename = 'xyzzy'
         path = x.shadowPathName(filename)
-        expected = g.os_path_abspath(g.os_path_join(g.os_path_dirname(c.fileName()), subdir, prefix + filename))
+        expected = g.os_path_abspath(
+            g.os_path_join(g.os_path_dirname(c.fileName()), subdir, prefix + filename)
+        )
         self.assertEqual(path, expected)
 
     # @+node:ekr.20250710065413.1: *3* TestAtShadow.readOneAtCleanNode

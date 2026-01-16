@@ -13,7 +13,9 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(691, 635)
         MainWindow.setDockNestingEnabled(False)
-        MainWindow.setDockOptions(QtGui.QMainWindow.AllowTabbedDocks | QtGui.QMainWindow.AnimatedDocks)
+        MainWindow.setDockOptions(
+            QtGui.QMainWindow.AllowTabbedDocks | QtGui.QMainWindow.AnimatedDocks
+        )
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -212,10 +214,14 @@ class Ui_MainWindow(object):
         self.leo_spell_btn_Hide.setCheckable(False)
         self.leo_spell_btn_Hide.setObjectName("leo_spell_btn_Hide")
         self.gridLayout_6.addWidget(self.leo_spell_btn_Hide, 4, 1, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(
+            20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding
+        )
         self.gridLayout_6.addItem(spacerItem, 5, 0, 1, 1)
         self.leo_spell_listBox = QtGui.QListWidget(self.leo_spell_panel)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.leo_spell_listBox.sizePolicy().hasHeightForWidth())
@@ -224,7 +230,9 @@ class Ui_MainWindow(object):
         self.leo_spell_listBox.setMaximumSize(QtCore.QSize(150, 150))
         self.leo_spell_listBox.setObjectName("leo_spell_listBox")
         self.gridLayout_6.addWidget(self.leo_spell_listBox, 1, 0, 1, 2)
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem1 = QtGui.QSpacerItem(
+            40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum
+        )
         self.gridLayout_6.addItem(spacerItem1, 2, 2, 1, 1)
         self.leo_spell_label = QtGui.QLabel(self.leo_spell_panel)
         self.leo_spell_label.setObjectName("leo_spell_label")
@@ -327,7 +335,9 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 691, 19))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Minimum)
+        sizePolicy = QtGui.QSizePolicy(
+            QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.menubar.sizePolicy().hasHeightForWidth())
@@ -347,17 +357,29 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(3)
         self.stackedWidget.setCurrentIndex(1)
-        QtCore.QObject.connect(self.leo_spell_btn_Add, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Add)
         QtCore.QObject.connect(
-            self.leo_spell_btn_Change, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Change
+            self.leo_spell_btn_Add, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Add
         )
-        QtCore.QObject.connect(self.leo_spell_btn_Find, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Find)
         QtCore.QObject.connect(
-            self.leo_spell_btn_FindChange, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_FindChange
+            self.leo_spell_btn_Change,
+            QtCore.SIGNAL("clicked()"),
+            MainWindow.do_leo_spell_btn_Change,
         )
-        QtCore.QObject.connect(self.leo_spell_btn_Hide, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Hide)
         QtCore.QObject.connect(
-            self.leo_spell_btn_Ignore, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Ignore
+            self.leo_spell_btn_Find, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Find
+        )
+        QtCore.QObject.connect(
+            self.leo_spell_btn_FindChange,
+            QtCore.SIGNAL("clicked()"),
+            MainWindow.do_leo_spell_btn_FindChange,
+        )
+        QtCore.QObject.connect(
+            self.leo_spell_btn_Hide, QtCore.SIGNAL("clicked()"), MainWindow.do_leo_spell_btn_Hide
+        )
+        QtCore.QObject.connect(
+            self.leo_spell_btn_Ignore,
+            QtCore.SIGNAL("clicked()"),
+            MainWindow.do_leo_spell_btn_Ignore,
         )
         QtCore.QObject.connect(
             self.leo_spell_listBox,
@@ -375,55 +397,91 @@ class Ui_MainWindow(object):
         )
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.tab),
-            QtGui.QApplication.translate("MainWindow", "Tab 1", None, QtGui.QApplication.UnicodeUTF8),
+            QtGui.QApplication.translate(
+                "MainWindow", "Tab 1", None, QtGui.QApplication.UnicodeUTF8
+            ),
         )
         self.checkBoxWholeWord.setText(
-            QtGui.QApplication.translate("MainWindow", "Whole Word", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Whole Word", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxEntireOutline.setText(
-            QtGui.QApplication.translate("MainWindow", "Entire Outline", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Entire Outline", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxIgnoreCase.setText(
-            QtGui.QApplication.translate("MainWindow", "Ignore Case", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Ignore Case", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxSuboutlineOnly.setText(
-            QtGui.QApplication.translate("MainWindow", "Suboutline Only", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Suboutline Only", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxWrapAround.setText(
-            QtGui.QApplication.translate("MainWindow", "Wrap Around", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Wrap Around", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxNodeOnly.setText(
-            QtGui.QApplication.translate("MainWindow", "Node Only", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Node Only", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxReverse.setText(
-            QtGui.QApplication.translate("MainWindow", "Reverse", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Reverse", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxSearchHeadline.setText(
-            QtGui.QApplication.translate("MainWindow", "Search Headline", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Search Headline", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxRexexp.setText(
-            QtGui.QApplication.translate("MainWindow", "Regexp", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Regexp", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxSearchBody.setText(
-            QtGui.QApplication.translate("MainWindow", "Search Body", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Search Body", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxMarkFinds.setText(
-            QtGui.QApplication.translate("MainWindow", "Mark Finds", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Mark Finds", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.checkBoxMarkChanges.setText(
-            QtGui.QApplication.translate("MainWindow", "Mark Changes", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Mark Changes", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
-        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Find:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(
+            QtGui.QApplication.translate(
+                "MainWindow", "Find:", None, QtGui.QApplication.UnicodeUTF8
+            )
+        )
         self.label_3.setText(
-            QtGui.QApplication.translate("MainWindow", "Change:", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Change:", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.tab_2),
-            QtGui.QApplication.translate("MainWindow", "Tab 2", None, QtGui.QApplication.UnicodeUTF8),
+            QtGui.QApplication.translate(
+                "MainWindow", "Tab 2", None, QtGui.QApplication.UnicodeUTF8
+            ),
         )
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.tab_3),
-            QtGui.QApplication.translate("MainWindow", "Page", None, QtGui.QApplication.UnicodeUTF8),
+            QtGui.QApplication.translate(
+                "MainWindow", "Page", None, QtGui.QApplication.UnicodeUTF8
+            ),
         )
         self.leo_spell_btn_Add.setText(
             QtGui.QApplication.translate("MainWindow", "Add", None, QtGui.QApplication.UnicodeUTF8)
@@ -432,26 +490,38 @@ class Ui_MainWindow(object):
             QtGui.QApplication.translate("MainWindow", "Find", None, QtGui.QApplication.UnicodeUTF8)
         )
         self.leo_spell_btn_Change.setText(
-            QtGui.QApplication.translate("MainWindow", "Change", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Change", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.leo_spell_btn_FindChange.setText(
-            QtGui.QApplication.translate("MainWindow", "Change, Find", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Change, Find", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.leo_spell_btn_Ignore.setText(
-            QtGui.QApplication.translate("MainWindow", "Ignore", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Ignore", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.leo_spell_btn_Hide.setText(
             QtGui.QApplication.translate("MainWindow", "Hide", None, QtGui.QApplication.UnicodeUTF8)
         )
         self.leo_spell_label.setText(
-            QtGui.QApplication.translate("MainWindow", "Suggestions for:", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Suggestions for:", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.tabWidget.setTabText(
             self.tabWidget.indexOf(self.leo_spell_tab),
-            QtGui.QApplication.translate("MainWindow", "Spell", None, QtGui.QApplication.UnicodeUTF8),
+            QtGui.QApplication.translate(
+                "MainWindow", "Spell", None, QtGui.QApplication.UnicodeUTF8
+            ),
         )
         self.label.setText(
-            QtGui.QApplication.translate("MainWindow", "Minibuffer", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "Minibuffer", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
         self.actionOpen.setText(
             QtGui.QApplication.translate("MainWindow", "Open", None, QtGui.QApplication.UnicodeUTF8)
@@ -460,7 +530,9 @@ class Ui_MainWindow(object):
             QtGui.QApplication.translate("MainWindow", "Save", None, QtGui.QApplication.UnicodeUTF8)
         )
         self.actionIPython.setText(
-            QtGui.QApplication.translate("MainWindow", "IPython", None, QtGui.QApplication.UnicodeUTF8)
+            QtGui.QApplication.translate(
+                "MainWindow", "IPython", None, QtGui.QApplication.UnicodeUTF8
+            )
         )
 
 

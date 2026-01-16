@@ -125,7 +125,12 @@ class ironPythonGui(leoGui.leoGui):
         if g.app.unitTesting:
             return
 
-        message = "%s\n\n%s\n\n%s\n\n%s" % (version.strip(), copyright.strip(), url.strip(), email.strip())
+        message = "%s\n\n%s\n\n%s\n\n%s" % (
+            version.strip(),
+            copyright.strip(),
+            url.strip(),
+            email.strip(),
+        )
 
         wx.MessageBox(message, "About Leo", wx.Center, self.root)
 
@@ -180,7 +185,9 @@ class ironPythonGui(leoGui.leoGui):
         return g.choose(answer == wx.YES, "yes", "no")
 
     # @+node:ekr.20081121105001.103: *4* runAskYesNoCancelDialog
-    def runAskYesNoCancelDialog(self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"):
+    def runAskYesNoCancelDialog(
+        self, c, title, message=None, yesMessage="Yes", noMessage="No", defaultButton="Yes"
+    ):
         """Create and run a wxPython askYesNoCancel dialog ."""
 
         if g.app.unitTesting:
@@ -696,7 +703,16 @@ class ironPythonGui(leoGui.leoGui):
             return font
         except:
             g.es("exception setting font from " + repr(family_name))
-            g.es("family,size,slant,weight:" + repr(family) + ':' + repr(size) + ':' + repr(slant) + ':' + repr(weight))
+            g.es(
+                "family,size,slant,weight:"
+                + repr(family)
+                + ':'
+                + repr(size)
+                + ':'
+                + repr(slant)
+                + ':'
+                + repr(weight)
+            )
             g.es_exception()
             return g.app.config.defaultFont
 

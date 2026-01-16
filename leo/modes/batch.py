@@ -155,13 +155,25 @@ def batch_rule7(colorer, s, i):
 # @+node:ekr.20221129095311.9: ** batch_rule8
 def batch_rule8(colorer, s, i):
     return colorer.match_eol_span(
-        s, i, kind="comment1", seq="REM", at_line_start=True, at_whitespace_end=True, at_word_start=True
+        s,
+        i,
+        kind="comment1",
+        seq="REM",
+        at_line_start=True,
+        at_whitespace_end=True,
+        at_word_start=True,
     )
 
 
 def batch_rule8a(colorer, s, i):
     return colorer.match_eol_span(
-        s, i, kind="comment1", seq="rem", at_line_start=True, at_whitespace_end=True, at_word_start=True
+        s,
+        i,
+        kind="comment1",
+        seq="rem",
+        at_line_start=True,
+        at_whitespace_end=True,
+        at_word_start=True,
     )
 
 

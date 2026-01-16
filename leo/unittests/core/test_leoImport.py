@@ -80,7 +80,11 @@ class TestLeoImport(BaseTestImporter):
         x.parse_body(target)
 
         expected_results = (
-            (0, 'def spam', 'import os\n\ndef spam():\n    """A docstring"""\n    print(\'a string\')\n\n'),
+            (
+                0,
+                'def spam',
+                'import os\n\ndef spam():\n    """A docstring"""\n    print(\'a string\')\n\n',
+            ),
             (0, 'def eggs', 'def eggs():\n    pass\n\n'),
             (0, 'class NewClass', 'class NewClass\n    def f1(self):\n        pass\n'),
         )

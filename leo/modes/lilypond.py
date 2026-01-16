@@ -1528,7 +1528,9 @@ def lilypond_rule341(colorer, s, i):
 
 
 def lilypond_rule342(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="keyword2", regexp="\\\\AncientRemoveEmptyStaffContext\\>")
+    return colorer.match_seq_regexp(
+        s, i, kind="keyword2", regexp="\\\\AncientRemoveEmptyStaffContext\\>"
+    )
 
 
 def lilypond_rule343(colorer, s, i):

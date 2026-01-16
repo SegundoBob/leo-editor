@@ -17,7 +17,9 @@ import curses
 class DateCombo(textbox.Textfield, monthbox.DateEntryBase):
     # @+others
     # @+node:ekr.20170428084207.578: *3* __init__
-    def __init__(self, screen, allowPastDate=True, allowTodaysDate=True, allowClear=True, **keywords):
+    def __init__(
+        self, screen, allowPastDate=True, allowTodaysDate=True, allowClear=True, **keywords
+    ):
         super(DateCombo, self).__init__(screen, **keywords)
         self.allow_date_in_past = allowPastDate
         self.allow_todays_date = allowTodaysDate
@@ -58,7 +60,9 @@ class DateCombo(textbox.Textfield, monthbox.DateEntryBase):
                 ),
             )
         else:
-            self.parent.curses_pad.addnstr(self.rely, self.relx, self.display_value(self.value), self.width)
+            self.parent.curses_pad.addnstr(
+                self.rely, self.relx, self.display_value(self.value), self.width
+            )
 
     # @+node:ekr.20170428084207.583: *3* h_change_value
     def h_change_value(self, *arg):

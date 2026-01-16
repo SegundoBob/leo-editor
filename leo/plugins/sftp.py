@@ -261,7 +261,8 @@ class SFTPController:
         cached_hostkey = self.get_hostkey(host)
         if cached_hostkey is None:
             store = self.confirm_hostkey(
-                'Unknown host: %s' % host, 'Add the server key for host \'%s\' to the trusted host list?' % host
+                'Unknown host: %s' % host,
+                'Add the server key for host \'%s\' to the trusted host list?' % host,
             )
             if store:
                 self.set_hostkey(host, hostkey)

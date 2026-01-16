@@ -798,7 +798,9 @@ def actionscript_rule29(colorer, s, i):
 
 
 def actionscript_rule30(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True
+    )
 
 
 def actionscript_rule31(colorer, s, i):

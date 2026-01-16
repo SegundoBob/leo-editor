@@ -171,7 +171,11 @@ class GeoTagRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-            self.wfile.write(open(os.path.join(self.owner.basedir, self.staticMap[path[0]])).read().encode('utf-8'))
+            self.wfile.write(
+                open(os.path.join(self.owner.basedir, self.staticMap[path[0]]))
+                .read()
+                .encode('utf-8')
+            )
             return
 
         if self.path.startswith("/sendPos?"):

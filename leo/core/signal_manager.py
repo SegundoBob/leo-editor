@@ -92,7 +92,9 @@ def disconnect_all(listener: object) -> None:
     for emitter in listener._signal_data.emitters:
         for signal in emitter._signal_data.listeners:
             emitter._signal_data.listeners[signal] = [
-                i for i in emitter._signal_data.listeners[signal] if getattr(i, '__self__', None) != listener
+                i
+                for i in emitter._signal_data.listeners[signal]
+                if getattr(i, '__self__', None) != listener
             ]
 
 

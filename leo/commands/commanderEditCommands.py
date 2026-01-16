@@ -1101,7 +1101,9 @@ def startsParagraph(s: str) -> bool:
 
 # @+node:ekr.20201124191844.1: ** c_ec.reformatSelection
 @g.commander_command('reformat-selection')
-def reformatSelection(self: Self, event: LeoKeyEvent = None, undoType: str = 'Reformat Selection') -> None:
+def reformatSelection(
+    self: Self, event: LeoKeyEvent = None, undoType: str = 'Reformat Selection'
+) -> None:
     """
     Reformat the selected text, as in reformat-paragraph, but without
     expanding the selection past the selected lines.
@@ -1209,7 +1211,9 @@ def toggleAngleBrackets(self: Self, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20171123135625.49: ** c_ec.unformatParagraph & helper
 @g.commander_command('unformat-paragraph')
-def unformatParagraph(self: Self, event: LeoKeyEvent = None, undoType: str = 'Unformat Paragraph') -> None:
+def unformatParagraph(
+    self: Self, event: LeoKeyEvent = None, undoType: str = 'Unformat Paragraph'
+) -> None:
     """
     Unformat a text paragraph. Removes all extra whitespace in a paragraph.
 

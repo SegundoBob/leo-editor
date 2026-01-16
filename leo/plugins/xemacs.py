@@ -79,7 +79,12 @@ def open_in_emacs_helper(c, p):
     efc = g.app.externalFilesController
     path = efc and efc.find_path_for_node(p)
     emacs_cmd = c.config.getString('xemacs-exe') or _emacs_cmd
-    if not path or not g.os_path_exists(path) or not hasattr(v, 'OpenWithOldBody') or v.b != v.OpenWithOldBody:
+    if (
+        not path
+        or not g.os_path_exists(path)
+        or not hasattr(v, 'OpenWithOldBody')
+        or v.b != v.OpenWithOldBody
+    ):
         # Open a new temp file.
         if path:
             # Don't do this: it prevents efc from reopening paths.

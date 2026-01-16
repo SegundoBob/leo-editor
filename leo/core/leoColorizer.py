@@ -905,7 +905,9 @@ class BaseColorizer:
 
     # @+node:ekr.20170127142001.8: *5* BaseColorizer.findColorDirectives
     # Order is important: put longest matches first.
-    color_directives_pat = re.compile(r'(^@color|^@killcolor|^@nocolor-node|^@nocolor)', re.MULTILINE)
+    color_directives_pat = re.compile(
+        r'(^@color|^@killcolor|^@nocolor-node|^@nocolor)', re.MULTILINE
+    )
 
     def findColorDirectives(self, p: Position) -> dict[str, str]:
         """Return a dict with each color directive in p.b, without the leading '@'."""
@@ -963,9 +965,12 @@ class JEditColorizer(BaseColorizer):
         self.nested = False  # True: allow nested comments, etc.
         self.nested_level = 0  # Nesting level if self.nested is True.
         self.nextState = 1  # Don't use 0.
-        self.restartDict: dict[int, Callable] = {}  # Keys are state numbers, values are restart functions.
-        self.stateDict: dict[int, str] = {}  # Keys are state numbers, values state names.
-        self.stateNameDict: dict[str, int] = {}  # Keys are state names, values are state numbers.
+        # Keys are state numbers, values are restart functions.
+        self.restartDict: dict[int, Callable] = {}
+        # Keys are state numbers, values state names.
+        self.stateDict: dict[int, str] = {}
+        # Keys are state names, values are state numbers.
+        self.stateNameDict: dict[str, int] = {}
 
         # #2276: Set by init_section_delims.
         self.section_delim1 = '<<'
@@ -1028,7 +1033,9 @@ class JEditColorizer(BaseColorizer):
             self.section_delim2 = '>>'
 
     # @+node:ekr.20110605121601.18576: *4* jedit.addImportedRules
-    def addImportedRules(self, mode: JEditModeDescriptor, rulesDict: dict[str, RuleSet], rulesetName: str) -> None:
+    def addImportedRules(
+        self, mode: JEditModeDescriptor, rulesDict: dict[str, RuleSet], rulesetName: str
+    ) -> None:
         """Append any imported rules at the end of the rulesets specified in mode.importDict"""
         if self.importedRulesets.get(rulesetName):
             return
@@ -2242,7 +2249,11 @@ class JEditColorizer(BaseColorizer):
             return 0
         if at_word_start and i > 0 and s[i - 1] in self.word_chars:
             return 0  # 7/5/2008
-        if at_word_start and i + len(pattern) + 1 < len(s) and s[i + len(pattern)] in self.word_chars:
+        if (
+            at_word_start
+            and i + len(pattern) + 1 < len(s)
+            and s[i + len(pattern)] in self.word_chars
+        ):
             return 0
         if g.match(s, i, pattern):
             j = i + len(pattern)
@@ -3102,7 +3113,9 @@ if QtGui:
         # This is c.frame.body.colorizer.highlighter
         # @+others
         # @+node:ekr.20110605121601.18566: *3* leo_h.ctor (sets style)
-        def __init__(self, c: Cmdr, colorizer: BaseColorizer, document: QtGui.QTextDocument) -> None:
+        def __init__(
+            self, c: Cmdr, colorizer: BaseColorizer, document: QtGui.QTextDocument
+        ) -> None:
             """ctor for LeoHighlighter class."""
             self.c = c
             self.colorizer = colorizer
@@ -3384,7 +3397,9 @@ class PygmentsColorizer(BaseColorizer):
 
     # @+node:ekr.20190319151826.78: *3* pyg_c.mainLoop & helpers
     format_dict: dict[str, str] = {}  # Keys are repr(Token), values are formats.
-    lexers_dict: dict[str, Lexer] = {}  # Keys are language names, values are instantiated, patched lexers.
+    lexers_dict: dict[
+        str, Lexer
+    ] = {}  # Keys are language names, values are instantiated, patched lexers.
     state_s_dict: dict[str, int] = {}  # Keys are strings, values are ints.
     state_n_dict: dict[int, str] = {}  # # Keys are ints, values are strings.
     state_index = 1  # Index of state number to be allocated.

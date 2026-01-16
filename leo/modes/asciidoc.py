@@ -77,7 +77,9 @@ def asciidoc_rule4(colorer, s, i):
 
 
 def asciidoc_rule5(colorer, s, i):
-    return colorer.match_eol_span_regexp(s, i, kind="markup", regexp="^[=-]{4,}", at_line_start=True)
+    return colorer.match_eol_span_regexp(
+        s, i, kind="markup", regexp="^[=-]{4,}", at_line_start=True
+    )
 
 
 def asciidoc_rule6(colorer, s, i):
@@ -94,7 +96,12 @@ def asciidoc_rule8(colorer, s, i):
 
 def asciidoc_rule9(colorer, s, i):
     return colorer.match_span_regexp(
-        s, i, kind="comment2", begin="^\\/\\/\\/\\/+\\s*$", end="\\/\\/\\/\\/\\s*$", at_line_start=True
+        s,
+        i,
+        kind="comment2",
+        begin="^\\/\\/\\/\\/+\\s*$",
+        end="\\/\\/\\/\\/\\s*$",
+        at_line_start=True,
     )
 
 
@@ -103,29 +110,48 @@ def asciidoc_rule10(colorer, s, i):
 
 
 def asciidoc_rule11(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="literal1", begin="^----+\\s*$", end="----\\s*$", at_line_start=True)
+    return colorer.match_span_regexp(
+        s, i, kind="literal1", begin="^----+\\s*$", end="----\\s*$", at_line_start=True
+    )
 
 
 def asciidoc_rule12(colorer, s, i):
     return colorer.match_span_regexp(
-        s, i, kind="literal2", begin="^\\+\\+\\+\\++\\s*$", end="\\+\\+\\+\\+\\s*$", at_line_start=True
+        s,
+        i,
+        kind="literal2",
+        begin="^\\+\\+\\+\\++\\s*$",
+        end="\\+\\+\\+\\+\\s*$",
+        at_line_start=True,
     )
 
 
 def asciidoc_rule13(colorer, s, i):
     return colorer.match_span_regexp(
-        s, i, kind="literal3", begin="^\\.\\.\\.\\.+\\s*$", end="\\.\\.\\.\\.\\s*$", at_line_start=True
+        s,
+        i,
+        kind="literal3",
+        begin="^\\.\\.\\.\\.+\\s*$",
+        end="\\.\\.\\.\\.\\s*$",
+        at_line_start=True,
     )
 
 
 def asciidoc_rule14(colorer, s, i):
     return colorer.match_span_regexp(
-        s, i, kind="literal4", begin="^\\*\\*\\*\\*+\\s*$", end="\\*\\*\\*\\*\\s*$", at_line_start=True
+        s,
+        i,
+        kind="literal4",
+        begin="^\\*\\*\\*\\*+\\s*$",
+        end="\\*\\*\\*\\*\\s*$",
+        at_line_start=True,
     )
 
 
 def asciidoc_rule15(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="comment4", begin="^____+\\s*$", end="____\\s*$", at_line_start=True)
+    return colorer.match_span_regexp(
+        s, i, kind="comment4", begin="^____+\\s*$", end="____\\s*$", at_line_start=True
+    )
 
 
 def asciidoc_rule16(colorer, s, i):
@@ -153,15 +179,21 @@ def asciidoc_rule21(colorer, s, i):
 
 
 def asciidoc_rule22(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="comment1", begin="(^|[\\s\\.,\\(\\)\\[\\]])_\\S", end="_")
+    return colorer.match_span_regexp(
+        s, i, kind="comment1", begin="(^|[\\s\\.,\\(\\)\\[\\]])_\\S", end="_"
+    )
 
 
 def asciidoc_rule23(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="comment1", begin="(^|[\\s\\.,\\(\\)\\[\\]])'\\S", end="'")
+    return colorer.match_span_regexp(
+        s, i, kind="comment1", begin="(^|[\\s\\.,\\(\\)\\[\\]])'\\S", end="'"
+    )
 
 
 def asciidoc_rule24(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="(^|[\\s\\.,\\(])\\*[^\\*\\s]", end="*")
+    return colorer.match_span_regexp(
+        s, i, kind="keyword1", begin="(^|[\\s\\.,\\(])\\*[^\\*\\s]", end="*"
+    )
 
 
 def asciidoc_rule25(colorer, s, i):
@@ -225,7 +257,9 @@ def asciidoc_rule39(colorer, s, i):
 
 
 def asciidoc_rule40(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="comment4", pattern="::::", at_whitespace_end=True)
+    return colorer.match_mark_previous(
+        s, i, kind="comment4", pattern="::::", at_whitespace_end=True
+    )
 
 
 def asciidoc_rule41(colorer, s, i):
@@ -233,7 +267,9 @@ def asciidoc_rule41(colorer, s, i):
 
 
 def asciidoc_rule42(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="\\s*NOTE:", end=" ", at_line_start=True)
+    return colorer.match_span_regexp(
+        s, i, kind="markup", begin="\\s*NOTE:", end=" ", at_line_start=True
+    )
 
 
 def asciidoc_rule43(colorer, s, i):

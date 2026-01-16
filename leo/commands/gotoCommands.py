@@ -69,7 +69,9 @@ class GoToCommands:
                 return p, 0
             # #4355: Print a warning once.
             if not g.unitTesting:
-                g.es_print_unique_message('goto-global-line works only for @file, @clean, @edit and single @asis nodes')
+                g.es_print_unique_message(
+                    'goto-global-line works only for @file, @clean, @edit and single @asis nodes'
+                )
             return None, -1
         # Step 1: Get the lines of external files *with* sentinels,
         #         even if the actual external file actually contains no sentinels.
@@ -180,7 +182,9 @@ class GoToCommands:
         return None, -1
 
     # @+node:ekr.20181003080042.1: *3* goto.node_offset_to_file_line
-    def node_offset_to_file_line(self, target_offset: int, target_p: Position, root: Position) -> int:
+    def node_offset_to_file_line(
+        self, target_offset: int, target_p: Position, root: Position
+    ) -> int:
         """
         Given a zero-based target_offset within target_p.b, return the line
         number of the corresponding line within root's file.
@@ -222,7 +226,9 @@ class GoToCommands:
         return None
 
     # @+node:ekr.20150624085605.1: *3* goto.scan_nonsentinel_lines
-    def scan_nonsentinel_lines(self, lines: list[str], n: int, root: Position) -> tuple[str, str, int]:
+    def scan_nonsentinel_lines(
+        self, lines: list[str], n: int, root: Position
+    ) -> tuple[str, str, int]:
         """
         Scan a list of lines containing sentinels, looking for the node and
         offset within the node of the n'th (one-based) line.

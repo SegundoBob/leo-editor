@@ -508,7 +508,9 @@ class LeoCloud:
                 read = True
             elif read_on_load == 'ask':
                 try:
-                    last_read = datetime.strptime(lc_v.u['_leo_cloud']['last_read'], "%Y-%m-%dT%H:%M:%S.%f")
+                    last_read = datetime.strptime(
+                        lc_v.u['_leo_cloud']['last_read'], "%Y-%m-%dT%H:%M:%S.%f"
+                    )
                 except KeyError:
                     last_read = None
                 message = "Read cloud data '%s', overwriting local nodes?" % kwargs['ID']
@@ -521,14 +523,18 @@ class LeoCloud:
                         int(delta.seconds / 60) % 60,
                         delta.seconds % 60,
                     )
-                read = g.app.gui.runAskYesNoCancelDialog(self.c, "Read cloud data?", message=message)
+                read = g.app.gui.runAskYesNoCancelDialog(
+                    self.c, "Read cloud data?", message=message
+                )
                 read = str(read).lower() == 'yes'
             if read:
                 self.read_current(p=self.c.vnode2position(lc_v))
             elif read_on_load == 'background':
                 # second time round, with from_background data, this will
                 # have been changed to 'ask' (above), so no infinite loop
-                background.append((lc_v, kwargs, self.recursive_hash(lc_v, [], include_current=False)))
+                background.append(
+                    (lc_v, kwargs, self.recursive_hash(lc_v, [], include_current=False))
+                )
             elif read_on_load == 'no':
                 g.es("NOTE: not reading '%s' from cloud" % kwargs['ID'])
             elif read_on_load != 'ask':
@@ -538,7 +544,8 @@ class LeoCloud:
                 self.c,
                 "Unloaded cloud data",
                 message="There is unloaded (possibly stale) cloud data, use\nread_on_load: yes|no|ask\n"
-                "in @leo_cloud nodes to avoid this message.\nUnloaded data:\n%s" % ', '.join(skipped),
+                "in @leo_cloud nodes to avoid this message.\nUnloaded data:\n%s"
+                % ', '.join(skipped),
             )
 
         if background:
@@ -603,7 +610,9 @@ class LeoCloud:
         childs: list = []
         hashes: list = [LeoCloud.recursive_hash(child, childs) for child in nd.children]
         if include_current:
-            hashes.extend([nd.h + nd.b.rstrip('\n') + json.dumps(LeoCloud._ua_clean(nd.u), sort_keys=True)])
+            hashes.extend(
+                [nd.h + nd.b.rstrip('\n') + json.dumps(LeoCloud._ua_clean(nd.u), sort_keys=True)]
+            )
         whole_hash = sha1(''.join(hashes).encode('utf-8')).hexdigest()
         tree.append([whole_hash, childs])
         return whole_hash
@@ -642,7 +651,8 @@ class LeoCloud:
                 self.c,
                 "Unsaved cloud data",
                 message="There is unsaved cloud data, use\nwrite_on_save: yes|no|ask\n"
-                "in @leo_cloud nodes to avoid this message.\nUnsaved data:\n%s" % ', '.join(skipped),
+                "in @leo_cloud nodes to avoid this message.\nUnsaved data:\n%s"
+                % ', '.join(skipped),
             )
         if unchanged:
             g.es("Unchanged cloud data: %s" % ', '.join(unchanged))

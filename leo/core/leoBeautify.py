@@ -81,7 +81,9 @@ def blacken_files_diff(event: LeoKeyEvent) -> None:
         path = c.fullPath(root)
         if path and os.path.exists(path):
             g.es_print(f"{tag}: {path}")
-            g.execute_shell_commands(f'&"{python}" -m black --skip-string-normalization --diff "{path}"')
+            g.execute_shell_commands(
+                f'&"{python}" -m black --skip-string-normalization --diff "{path}"'
+            )
         else:
             print(f"{tag}: file not found:{path}")
             g.es(f"{tag}: file not found:\n{path}")
@@ -269,7 +271,9 @@ class CPrettyPrinter:
         c.bodyWantsFocus()
 
     # @+node:ekr.20110917174948.6911: *3* cpp.indent & helpers
-    def indent(self, p: Position, toList: bool = False, giveWarnings: bool = True) -> Union[str, list[str]]:
+    def indent(
+        self, p: Position, toList: bool = False, giveWarnings: bool = True
+    ) -> Union[str, list[str]]:
         """Beautify a node with @language C in effect."""
         if not should_beautify(p):
             return [] if toList else ''  # #2271

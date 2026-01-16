@@ -30,4 +30,6 @@ class Ui_LeoQuickSearchWidget:
         QtCore.QMetaObject.connectSlotsByName(LeoQuickSearchWidget)
 
     def retranslateUi(self, LeoQuickSearchWidget):
-        LeoQuickSearchWidget.setWindowTitle(QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Form", None))
+        LeoQuickSearchWidget.setWindowTitle(
+            QtWidgets.QApplication.translate("LeoQuickSearchWidget", "Form", None)
+        )

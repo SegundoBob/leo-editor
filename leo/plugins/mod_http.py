@@ -281,7 +281,10 @@ def init():
         try:
             Server(config.http_ip, config.http_port, RequestHandler)
         except socket.error as e:
-            g.es("mod_http server initialization failed (%s:%s): %s" % (config.http_ip, config.http_port, e))
+            g.es(
+                "mod_http server initialization failed (%s:%s): %s"
+                % (config.http_ip, config.http_port, e)
+            )
             return False
         asyncore.read = a_read
         g.registerHandler("idle", plugin_wrapper)

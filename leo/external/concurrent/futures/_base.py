@@ -319,7 +319,10 @@ class Future(object):
                         _STATE_TO_DESCRIPTION_MAP[self._state],
                         self._result.__class__.__name__,
                     )
-            return '<Future at %s state=%s>' % (hex(id(self)), _STATE_TO_DESCRIPTION_MAP[self._state])
+            return '<Future at %s state=%s>' % (
+                hex(id(self)),
+                _STATE_TO_DESCRIPTION_MAP[self._state],
+            )
 
     def cancel(self):
         """Cancel the future if possible.
@@ -478,7 +481,9 @@ class Future(object):
                 self._state = RUNNING
                 return True
             else:
-                LOGGER.critical('Future %s in unexpected state: %s', id(self.future), self.future._state)
+                LOGGER.critical(
+                    'Future %s in unexpected state: %s', id(self.future), self.future._state
+                )
                 raise RuntimeError('Future in unexpected state')
 
     def set_result(self, result):

@@ -73,8 +73,11 @@ class RstCommands:
         self.n_docutils = 0  # Number of docutils files written.
 
         # Http support for HtmlParserClass.  See http_addNodeMarker.
-        self.anchor_map: dict[str, Position] = {}  # Keys are anchors. Values are positions
-        self.http_map: dict[str, Position] = {}  # Keys are named hyperlink targets.  Value are positions.
+
+        # Keys are anchors. Values are positions
+        self.anchor_map: dict[str, Position] = {}
+        # Keys are named hyperlink targets.  Value are positions.
+        self.http_map: dict[str, Position] = {}
         self.nodeNumber = 0  # Unique node number.
 
         # For writing.
@@ -118,13 +121,17 @@ class RstCommands:
         self.default_path = getString('rst3-default-path') or ''
         self.generate_rst_header_comment = getBool('rst3-generate-rst-header-comment', default=True)
         self.remove_leo_directives = getBool('rst3-remove-leo-directives', default=False)
-        self.underline_characters = getString('rst3-underline-characters') or self.default_underline_characters
+        self.underline_characters = (
+            getString('rst3-underline-characters') or self.default_underline_characters
+        )
         self.write_intermediate_file = getBool('rst3-write-intermediate-file', default=True)
         self.write_intermediate_extension = getString('rst3-write-intermediate-extension') or '.txt'
 
         # Docutils options.
         self.call_docutils = getBool('rst3-call-docutils', default=True)
-        self.publish_argv_for_missing_stylesheets = getString('rst3-publish-argv-for-missing-stylesheets') or ''
+        self.publish_argv_for_missing_stylesheets = (
+            getString('rst3-publish-argv-for-missing-stylesheets') or ''
+        )
         self.stylesheet_embed = getBool('rst3-stylesheet-embed', default=False)
         self.stylesheet_name = getString('rst3-stylesheet-name') or 'default.css'
         self.stylesheet_path = getString('rst3-stylesheet-path') or ''
@@ -707,7 +714,13 @@ class RstCommands:
                 return p.b
         if self.remove_leo_directives:
             # Only remove a few directives, and only if they start the line.
-            return ''.join([z for z in g.splitLines(p.b) if not z.startswith(('@language ', '@others', '@wrap'))])
+            return ''.join(
+                [
+                    z
+                    for z in g.splitLines(p.b)
+                    if not z.startswith(('@language ', '@others', '@wrap'))
+                ]
+            )
         return p.b
 
     # @+node:ekr.20230205101652.1: *4* rst.filter_h

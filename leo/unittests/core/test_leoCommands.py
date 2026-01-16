@@ -327,7 +327,9 @@ class TestCommands(LeoUnitTest):
     # @+node:ekr.20210906075242.9: *3* TestCommands.test_c_hiddenRootNode_fileIndex
     def test_c_hiddenRootNode_fileIndex(self):
         c = self.c
-        assert c.hiddenRootNode.fileIndex.startswith('hidden-root-vnode-gnx'), c.hiddenRootNode.fileIndex
+        assert c.hiddenRootNode.fileIndex.startswith('hidden-root-vnode-gnx'), (
+            c.hiddenRootNode.fileIndex
+        )
 
     # @+node:ekr.20210906075242.10: *3* TestCommands.test_c_hoist_chapter_node
     def test_c_hoist_chapter_node(self):

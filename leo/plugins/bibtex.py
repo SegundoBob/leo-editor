@@ -222,7 +222,9 @@ def writeTreeAsBibTex(c, fn, root):
     for p in root.subtree():
         h = p.h
         if h.lower() == '@string':
-            strings.extend([('@string{%s}\n\n' % z.rstrip()) for z in g.splitLines(p.b) if z.strip()])
+            strings.extend(
+                [('@string{%s}\n\n' % z.rstrip()) for z in g.splitLines(p.b) if z.strip()]
+            )
         else:
             i = h.find(' ')
             kind, rest = h[:i].lower(), h[i + 1 :].rstrip()

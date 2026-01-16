@@ -745,7 +745,10 @@ if 1:  # pragma: no cover
     # @+node:ekr.20200120110005.1: *4* function: is_statement_node
     def is_statement_node(node: Node) -> bool:
         """Return True if node is a top-level statement."""
-        return is_long_statement(node) or isinstance(node, (ast.Break, ast.Continue, ast.Pass, ast.Try))
+        return (
+            is_long_statement(node)
+            or isinstance(node, (ast.Break, ast.Continue, ast.Pass, ast.Try))
+        )  # fmt: skip
 
     # @+node:ekr.20191231082137.1: *4* function: nearest_common_ancestor
     def nearest_common_ancestor(node1: Node, node2: Node) -> Optional[Node]:
@@ -1005,7 +1008,9 @@ class AstDumper:  # pragma: no cover
         if isinstance(node, ast.AST):
             fields = [(a, self.dump_ast(b, level + 1)) for a, b in self.get_fields(node)]
             if self.include_attributes and node._attributes:
-                fields.extend([(a, self.dump_ast(getattr(node, a), level + 1)) for a in node._attributes])
+                fields.extend(
+                    [(a, self.dump_ast(getattr(node, a), level + 1)) for a in node._attributes]
+                )
             if self.annotate_fields:
                 aList = ['%s=%s' % (a, b) for a, b in fields]
             else:
@@ -1055,7 +1060,11 @@ class Fstringify:
         # Main pass.
         string_node = ast.Str if g.python_version_tuple < (3, 12, 0) else ast.Constant  # pylint: disable=no-member
         for node in ast.walk(tree):
-            if isinstance(node, ast.BinOp) and op_name(node.op) == '%' and isinstance(node.left, string_node):
+            if (
+                isinstance(node, ast.BinOp)
+                and op_name(node.op) == '%'
+                and isinstance(node.left, string_node)
+            ):
                 self.make_fstring(node)
         results = tokens_to_string(self.tokens)
         return results
@@ -1382,7 +1391,9 @@ class Fstringify:
         return [tokens]
 
     # @+node:ekr.20191226155316.1: *4* fs.substitute_values
-    def substitute_values(self, lt_s: str, specs: list[re.Match], values: list[list[Token]]) -> list[Token]:
+    def substitute_values(
+        self, lt_s: str, specs: list[re.Match], values: list[list[Token]]
+    ) -> list[Token]:
         """
         Replace specifiers with values in lt_s string.
 
@@ -1933,7 +1944,9 @@ class TokenOrderGenerator:
         self.token('endmarker', '')
 
     # @+node:ekr.20191229071733.1: *4* tog.init_from_file
-    def init_from_file(self, filename: str) -> tuple[str, str, list[Token], Node]:  # pragma: no cover
+    def init_from_file(
+        self, filename: str
+    ) -> tuple[str, str, list[Token], Node]:  # pragma: no cover
         """
         Create the tokens and ast tree for the given file.
         Create links between tokens and the parse tree.
@@ -1950,7 +1963,9 @@ class TokenOrderGenerator:
         return contents, encoding, tokens, tree
 
     # @+node:ekr.20191229071746.1: *4* tog.init_from_string
-    def init_from_string(self, contents: str, filename: str) -> tuple[list[Token], Node]:  # pragma: no cover
+    def init_from_string(
+        self, contents: str, filename: str
+    ) -> tuple[list[Token], Node]:  # pragma: no cover
         """
         Tokenize, parse and create links in the contents string.
 
@@ -3520,7 +3535,9 @@ def scan_ast_args() -> tuple[object, dict[str, object], list[str]]:
     description = textwrap.dedent("""\
         Execute fstringify or beautify commands contained in leoAst.py.
     """)
-    parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=description, formatter_class=argparse.RawTextHelpFormatter
+    )
     parser.add_argument('PATHS', nargs='*', help='directory or list of files')
     group = parser.add_mutually_exclusive_group(required=False)  # Don't require any args.
     add = group.add_argument

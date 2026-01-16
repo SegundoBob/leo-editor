@@ -271,7 +271,9 @@ def bcel_rule0(colorer, s, i):
 
 
 def bcel_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="bcel::javadoc")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="bcel::javadoc"
+    )
 
 
 def bcel_rule2(colorer, s, i):
@@ -299,7 +301,9 @@ def bcel_rule7(colorer, s, i):
 
 
 def bcel_rule8(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True
+    )
 
 
 def bcel_rule9(colorer, s, i):

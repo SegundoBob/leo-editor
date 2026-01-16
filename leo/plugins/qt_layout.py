@@ -459,7 +459,10 @@ VERTICAL_THIRDS_LAYOUT = {
             (VR3_OBJ_NAME, 'main_splitter'),
         )
     ),
-    'ORIENTATIONS': {'secondary_splitter': Orientation.Vertical, 'main_splitter': Orientation.Horizontal},
+    'ORIENTATIONS': {
+        'secondary_splitter': Orientation.Vertical,
+        'main_splitter': Orientation.Horizontal,
+    },
     'name': 'vertical-thirds',
 }
 

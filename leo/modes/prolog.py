@@ -146,7 +146,9 @@ def prolog_rule3(colorer, s, i):
 
 
 def prolog_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="[", end="]", delegate="prolog::list", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal2", begin="[", end="]", delegate="prolog::list", no_line_break=True
+    )
 
 
 def prolog_rule5(colorer, s, i):
@@ -600,7 +602,9 @@ rulesDict1 = {
 
 
 def prolog_rule45(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="[", end="]", delegate="prolog::list", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal2", begin="[", end="]", delegate="prolog::list", no_line_break=True
+    )
 
 
 # Rules dict for prolog_list ruleset.

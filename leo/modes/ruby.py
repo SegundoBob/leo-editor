@@ -106,7 +106,13 @@ def ruby_rule1(colorer, s, i):
 
 def ruby_rule2(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="literal1", begin="\"", end="\"", delegate="ruby::doublequoteliteral", no_line_break=True
+        s,
+        i,
+        kind="literal1",
+        begin="\"",
+        end="\"",
+        delegate="ruby::doublequoteliteral",
+        no_line_break=True,
     )
 
 
@@ -231,7 +237,9 @@ def ruby_rule32(colorer, s, i):
 
 
 def ruby_rule33(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def ruby_rule34(colorer, s, i):

@@ -13,7 +13,14 @@ class NewMenu:
 
     # @+others
     # @+node:ekr.20170428084207.335: *3* __init__
-    def __init__(self, name=None, shortcut=None, preDisplayFunction=None, pdfuncArguments=None, pdfuncKeywords=None):
+    def __init__(
+        self,
+        name=None,
+        shortcut=None,
+        preDisplayFunction=None,
+        pdfuncArguments=None,
+        pdfuncKeywords=None,
+    ):
         self.name = name
         self._menuList = []
         self.enabled = True
@@ -65,7 +72,9 @@ class MenuItem:
 
     # @+others
     # @+node:ekr.20170428084207.343: *3* __init__
-    def __init__(self, text='', onSelect=None, shortcut=None, document=None, arguments=None, keywords=None):
+    def __init__(
+        self, text='', onSelect=None, shortcut=None, document=None, arguments=None, keywords=None
+    ):
         self.setText(text)
         self.setOnSelect(onSelect)
         self.setDocumentation(document)
