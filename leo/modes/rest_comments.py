@@ -150,7 +150,9 @@ def rest_comments_rule1(colorer, s, i):
 
 # @+node:ekr.20250115040652.20: *3* function: rest_comments_rule11 .. |...|
 def rest_comments_rule11(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal3", regexp=r"\.\.\s\|[^|]+\|", at_line_start=True)
+    return colorer.match_seq_regexp(
+        s, i, kind="literal3", regexp=r"\.\.\s\|[^|]+\|", at_line_start=True
+    )
 
 
 # @+node:ekr.20250115040652.21: *3* function: rest_comments_rule12 |...|
@@ -160,7 +162,9 @@ def rest_comments_rule12(colorer, s, i):
 
 # @+node:ekr.20250115040652.22: *3* function: rest_comments_rule13 .. word::
 def rest_comments_rule13(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="literal2", regexp=r"\.\.\s[A-z][A-z0-9-_]+::", at_line_start=True)
+    return colorer.match_seq_regexp(
+        s, i, kind="literal2", regexp=r"\.\.\s[A-z][A-z0-9-_]+::", at_line_start=True
+    )
 
 
 # @+node:ekr.20250115040652.23: *3* function: rest_comments_rule16 ..

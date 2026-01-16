@@ -170,7 +170,9 @@ if TYPE_CHECKING:  # pragma: no cover
 # @+others
 # @+node:ekr.20180328085010.1: ** Top level (mod_scripting)
 # @+node:tbrown.20140819100840.37719: *3* mod_scripting.build_rclick_tree
-def build_rclick_tree(command_p: Position, rclicks: RClicks = None, top_level: bool = False) -> list:
+def build_rclick_tree(
+    command_p: Position, rclicks: RClicks = None, top_level: bool = False
+) -> list:
     """
     Return a list of top level RClicks for the button at command_p, which can be
     used later to add the rclick menus.
@@ -240,7 +242,10 @@ def init() -> bool:
     ok = bool(g.app.gui) and g.app.gui.guiName() in ('qt', 'nullGui')
     if ok:
         sc = 'ScriptingControllerClass'
-        if not hasattr(g.app.gui, sc) or getattr(g.app.gui, sc) is leoGui.NullScriptingControllerClass:
+        if (
+            not hasattr(g.app.gui, sc)
+            or getattr(g.app.gui, sc) is leoGui.NullScriptingControllerClass
+        ):
             setattr(g.app.gui, sc, ScriptingController)
         # Note: call onCreate _after_ reading the .leo file.
         # That is, the 'after-create-leo-frame' hook is too early!
@@ -355,7 +360,9 @@ class ScriptingController:
         getBool = c.config.getBool
         self.scanned = False
         kind = c.config.getString('debugger-kind') or 'idle'
-        self.buttonsDict: dict[QtWidgets.QButton, str] = {}  # Keys are buttons, values are button names (strings).
+        self.buttonsDict: dict[
+            QtWidgets.QButton, str
+        ] = {}  # Keys are buttons, values are button names (strings).
         self.debuggerKind = kind.lower()
         # True: adds a button for every @button node.
         self.atButtonNodes = getBool('scripting-at-button-nodes')
@@ -443,8 +450,12 @@ class ScriptingController:
                     elif self.debuggerKind == 'winpdb':
                         # pylint: disable=line-too-long
                         f.write('import rpdb2\n')
-                        f.write('if rpdb2.g_debugger is not None: # don\'t hang if the debugger isn\'t running.\n')
-                        f.write('  rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.\n')
+                        f.write(
+                            'if rpdb2.g_debugger is not None: # don\'t hang if the debugger isn\'t running.\n'
+                        )
+                        f.write(
+                            '  rpdb2.start_embedded_debugger(pwd="",fAllowUnencrypted=True) # Hard breakpoint.\n'
+                        )
                     # f.write('# Remove all previous variables.\n')
                     f.write('# Predefine c, g and p.\n')
                     f.write('from leo.core import leoGlobals as g\n')
@@ -575,7 +586,12 @@ class ScriptingController:
         # At last we can define the command and use the shortcut.
         # registerAllCommands recomputes the shortcut.
         self.registerAllCommands(
-            args=self.getArgs(p), func=cb, h=h, pane='button', source_c=p.v.context, tag='local @button'
+            args=self.getArgs(p),
+            func=cb,
+            h=h,
+            pane='button',
+            source_c=p.v.context,
+            tag='local @button',
         )
         return b
 
@@ -616,9 +632,13 @@ class ScriptingController:
         if statusLine:
             self.createBalloon(b, statusLine)
         if command:
-            self.registerAllCommands(args=args, func=command, h=text, pane='button', source_c=c, tag='icon button')
+            self.registerAllCommands(
+                args=args, func=command, h=text, pane='button', source_c=c, tag='icon button'
+            )
 
-        def deleteButtonCallback(event: Event = None, self: Any = self, b: QtWidgets.QButton = b) -> None:
+        def deleteButtonCallback(
+            event: Event = None, self: Any = self, b: QtWidgets.QButton = b
+        ) -> None:
             self.deleteButton(b, event=event)
 
         # Register the delete-x-button command.
@@ -773,7 +793,9 @@ class ScriptingController:
         )
         self.handleRclicks(rclicks)
         # At last we can define the command.
-        self.registerAllCommands(args=args, func=cb, h=p.h, pane='button', source_c=p.v.context, tag='@button')
+        self.registerAllCommands(
+            args=args, func=cb, h=p.h, pane='button', source_c=p.v.context, tag='@button'
+        )
 
     # @+node:ekr.20080312071248.2: *4* sc.createCommonCommands
     def createCommonCommands(self) -> None:
@@ -908,7 +930,12 @@ class ScriptingController:
 
         if p.b.strip():
             self.registerAllCommands(
-                args=args, func=atCommandCallback, h=p.h, pane='all', source_c=p.v.context, tag='local @rclick'
+                args=args,
+                func=atCommandCallback,
+                h=p.h,
+                pane='all',
+                source_c=p.v.context,
+                tag='local @rclick',
             )
         g.app.config.atLocalCommandsList.append(p.copy())
 
@@ -1151,7 +1178,9 @@ class ScriptingController:
                 commandName2 = commandName[len(prefix) :].strip()
                 # Create a *second* func, to avoid collision in c.commandsDict.
 
-                def registerAllCommandsCallback(event: Event = None, func: Callable = func) -> Callable:
+                def registerAllCommandsCallback(
+                    event: Event = None, func: Callable = func
+                ) -> Callable:
                     return func()
 
                 # Fix bug 1251252: https://bugs.launchpad.net/leo-editor/+bug/1251252

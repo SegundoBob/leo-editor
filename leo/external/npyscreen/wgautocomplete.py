@@ -92,14 +92,18 @@ class Filename(Autocomplete):
             else:
                 filelist = flist  # os.listdir(os.path.dirname(self.value))
 
-            filelist = list(map((lambda x: os.path.normpath(os.path.join(self.value, x))), filelist))
+            filelist = list(
+                map((lambda x: os.path.normpath(os.path.join(self.value, x))), filelist)
+            )
             files_only = []
             dirs_only = []
 
             if fname.startswith('.'):
                 filelist = list(filter((lambda x: os.path.basename(x).startswith('.')), filelist))
             else:
-                filelist = list(filter((lambda x: not os.path.basename(x).startswith('.')), filelist))
+                filelist = list(
+                    filter((lambda x: not os.path.basename(x).startswith('.')), filelist)
+                )
 
             for index1 in range(len(filelist)):
                 if os.path.isdir(filelist[index1]) and not filelist[index1].endswith(os.sep):

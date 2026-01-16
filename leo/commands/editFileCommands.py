@@ -292,7 +292,9 @@ class EditFileCommandsClass(BaseEditCommandsClass):
                 ("Leo files", "*.leo *.leojs *.db"),
                 ("All files", "*"),
             ]
-            fileName = g.app.gui.runOpenFileDialog(c, title="Compare Leo Files", filetypes=filetypes)
+            fileName = g.app.gui.runOpenFileDialog(
+                c, title="Compare Leo Files", filetypes=filetypes
+            )
             if not fileName:
                 return
             # Read the file into the hidden commander.
@@ -925,7 +927,8 @@ class GitDiffController:
         i: int,  # The index into contents_list and revs_list
         path: str,
         contents_list: list[list[str]],  # Lines for each contents.
-        node_patterns: list[tuple[str, re.Pattern]],  # Patterns matching @+node sentinels for each gnx.
+        # Patterns matching @+node sentinels for each gnx.
+        node_patterns: list[tuple[str, re.Pattern]],
         revs_list: list[str],
     ) -> Optional[g.Bunch]:
         """
@@ -1251,7 +1254,9 @@ class GitDiffController:
         s2 = self.get_file_from_rev(rev2, fn)
         lines1 = g.splitLines(s1)
         lines2 = g.splitLines(s2)
-        diff_list = list(difflib.unified_diff(lines1, lines2, rev1 or 'uncommitted', rev2 or 'uncommitted'))
+        diff_list = list(
+            difflib.unified_diff(lines1, lines2, rev1 or 'uncommitted', rev2 or 'uncommitted')
+        )
         child = self.create_file_node(diff_list, fn)
         kind = 'Added' if not s1 else 'Deleted' if not s2 else 'Changed'
         child.h = f"{kind}: {fn}"
@@ -1593,7 +1598,9 @@ class GitDiffController:
         old_public_lines, junk = x.separate_sentinels(old_private_lines, marker)
         if old_public_lines:
             # Fix #1136: The old lines might not exist.
-            new_private_lines = x.propagate_changed_lines(new_public_lines, old_private_lines, marker, p=hidden_root)
+            new_private_lines = x.propagate_changed_lines(
+                new_public_lines, old_private_lines, marker, p=hidden_root
+            )
             at.fast_read_into_root(
                 c=hidden_c,
                 contents=''.join(new_private_lines),

@@ -87,7 +87,9 @@ def gettext_rule7(colorer, s, i):
 
 
 def gettext_rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="gettext::quoted")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="gettext::quoted"
+    )
 
 
 def gettext_rule9(colorer, s, i):

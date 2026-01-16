@@ -453,7 +453,9 @@ class TestTOG(BaseTest):
     # @+node:ekr.20210320095504.8: *5* test_line_337
     def test_line_337(self):
         if py_version >= (3, 8):  # Requires neither line_no nor col_offset fields.
-            contents = '''def f(a, b:1, c:2, d, e:3=4, f=5, *g:6, h:7, i=8, j:9=10, **k:11) -> 12: pass'''
+            contents = (
+                '''def f(a, b:1, c:2, d, e:3=4, f=5, *g:6, h:7, i=8, j:9=10, **k:11) -> 12: pass'''
+            )
         else:
             contents = '''def f(a, b, d=4, *arg, **keys): pass'''  # pragma: no cover
         contents, tokens, tree = self.make_data(contents)
@@ -1919,7 +1921,9 @@ class TestTokens(BaseTest):
                         children_s = ', '.join(z.__class__.__name__ for z in children)
                     else:
                         children_s = 'None'
-                    print(f"\n    node: {node.__class__.__name__}\n  parent: {parent_s}\nchildren: {children_s}")
+                    print(
+                        f"\n    node: {node.__class__.__name__}\n  parent: {parent_s}\nchildren: {children_s}"
+                    )
             # Print the resulting tokens.
             g.printObj(tokens, tag='Tokens')
 

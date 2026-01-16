@@ -222,11 +222,15 @@ def mqsc_rule0(colorer, s, i):
 
 
 def mqsc_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="('", end="')", exclude_match=True, no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="('", end="')", exclude_match=True, no_line_break=True
+    )
 
 
 def mqsc_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal2", begin="(", end=")", exclude_match=True, no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal2", begin="(", end=")", exclude_match=True, no_line_break=True
+    )
 
 
 def mqsc_rule3(colorer, s, i):

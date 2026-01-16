@@ -418,7 +418,9 @@ def vbscript_rule19(colorer, s, i):
 
 
 def vbscript_rule20(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True
+    )
 
 
 def vbscript_rule21(colorer, s, i):

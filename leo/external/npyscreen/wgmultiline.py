@@ -278,7 +278,9 @@ class MultiLine(widget.Widget):
                         self.parent.theme_manager.findPair(self, 'CONTROL'),
                     )
                 else:
-                    self.parent.curses_pad.addstr(self.rely + self.height - 1, self.relx, MORE_LABEL)
+                    self.parent.curses_pad.addstr(
+                        self.rely + self.height - 1, self.relx, MORE_LABEL
+                    )
             else:
                 # line.value = MORE_LABEL
                 line.name = MORE_LABEL
@@ -300,7 +302,9 @@ class MultiLine(widget.Widget):
                         MORE_LABEL,
                     )
             if self.editing or self.always_show_cursor:
-                self.set_is_line_cursor(self._my_widgets[(self.cursor_line - self.start_display_at)], True)
+                self.set_is_line_cursor(
+                    self._my_widgets[(self.cursor_line - self.start_display_at)], True
+                )
                 self._my_widgets[(self.cursor_line - self.start_display_at)].update(clear=True)
             else:
                 # There is a bug somewhere that affects the first line.  This cures it.
@@ -313,7 +317,10 @@ class MultiLine(widget.Widget):
         self._last_value = copy.copy(self.value)
         # Prevent the program crashing if the user has changed values and
         # the cursor is now on the bottom line.
-        if self._my_widgets[self.cursor_line - self.start_display_at].task in (MORE_LABEL, "PRINTLINELASTOFSCREEN"):
+        if self._my_widgets[self.cursor_line - self.start_display_at].task in (
+            MORE_LABEL,
+            "PRINTLINELASTOFSCREEN",
+        ):
             if self.slow_scroll:
                 self.start_display_at += 1
             else:
@@ -870,7 +877,10 @@ class Pager(MultiLine):
     # @+node:ekr.20170428084208.136: *3* Pager.h_scroll_line_down
     def h_scroll_line_down(self, input):
         self.start_display_at += 1
-        if self.scroll_exit and self.start_display_at >= len(self.values) - self.start_display_at + 1:
+        if (
+            self.scroll_exit
+            and self.start_display_at >= len(self.values) - self.start_display_at + 1
+        ):
             self.editing = False
             self.how_exited = widget.EXITED_DOWN
 

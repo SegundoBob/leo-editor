@@ -190,7 +190,9 @@ def createExportMenus(tag, keywords):
         ('Save Node as HTML', 'export-html-node'),
         ('Save Outline as HTML', 'export-html'),
     ):
-        c.frame.menu.insert('Export Files', 3, label=item, command=lambda c=c, cmd=cmd: c.doCommandByName(cmd))
+        c.frame.menu.insert(
+            'Export Files', 3, label=item, command=lambda c=c, cmd=cmd: c.doCommandByName(cmd)
+        )
 
 
 # @+node:bob.20080107154757: ** class pluginController
@@ -418,7 +420,9 @@ class Leo_to_HTML:
         if not self.include_body:
             return
 
-        self.xhtml.append(self.openBodyString + '<pre>' + safe(pp.b) + '</pre>' + self.closeBodyString)
+        self.xhtml.append(
+            self.openBodyString + '<pre>' + safe(pp.b) + '</pre>' + self.closeBodyString
+        )
 
     # @+node:bob.20080107175336: *4* showSubtree
     def showSubtree(self, p):

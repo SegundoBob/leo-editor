@@ -189,13 +189,26 @@ def getStyleSheet():
         return None
     stylesheet = StyleSheet1()
     stylesheet.add(
-        ParagraphStyle(name='Normal', fontName='Times-Roman', fontSize=10, leading=12, spaceBefore=4, spaceAfter=4)
+        ParagraphStyle(
+            name='Normal',
+            fontName='Times-Roman',
+            fontSize=10,
+            leading=12,
+            spaceBefore=4,
+            spaceAfter=4,
+        )
     )
-    stylesheet.add(ParagraphStyle(name='DocInfo', parent=stylesheet['Normal'], leading=12, spaceBefore=0, spaceAfter=0))
+    stylesheet.add(
+        ParagraphStyle(
+            name='DocInfo', parent=stylesheet['Normal'], leading=12, spaceBefore=0, spaceAfter=0
+        )
+    )
     stylesheet.add(ParagraphStyle(name='Comment', fontName='Times-Italic'))
     stylesheet.add(ParagraphStyle(name='Indent1', leftIndent=36, firstLineIndent=0))
     stylesheet.add(ParagraphStyle(name='BodyText', parent=stylesheet['Normal'], spaceBefore=6))
-    stylesheet.add(ParagraphStyle(name='Italic', parent=stylesheet['BodyText'], fontName='Times-Italic'))
+    stylesheet.add(
+        ParagraphStyle(name='Italic', parent=stylesheet['BodyText'], fontName='Times-Italic')
+    )
     stylesheet.add(
         ParagraphStyle(
             name='Heading1',
@@ -357,12 +370,21 @@ def getStyleSheet():
     )
     stylesheet.add(
         ParagraphStyle(
-            name='FunctionHeader', parent=stylesheet['Normal'], fontName='Courier-Bold', fontSize=8, leading=8.8
+            name='FunctionHeader',
+            parent=stylesheet['Normal'],
+            fontName='Courier-Bold',
+            fontSize=8,
+            leading=8.8,
         )
     )
     stylesheet.add(
         ParagraphStyle(
-            name='DocString', parent=stylesheet['Normal'], fontName='Courier', fontSize=8, leftIndent=18, leading=8.8
+            name='DocString',
+            parent=stylesheet['Normal'],
+            fontName='Courier',
+            fontSize=8,
+            leftIndent=18,
+            leading=8.8,
         )
     )
     stylesheet.add(
@@ -377,12 +399,18 @@ def getStyleSheet():
     )
     stylesheet.add(
         ParagraphStyle(
-            name='URL', parent=stylesheet['Normal'], fontName='Courier', textColor=colors.navy, alignment=TA_CENTER
+            name='URL',
+            parent=stylesheet['Normal'],
+            fontName='Courier',
+            textColor=colors.navy,
+            alignment=TA_CENTER,
         ),
         alias='u',
     )
     stylesheet.add(ParagraphStyle(name='Centred', parent=stylesheet['Normal'], alignment=TA_CENTER))
-    stylesheet.add(ParagraphStyle(name='Caption', parent=stylesheet['Centred'], fontName='Times-Italic'))
+    stylesheet.add(
+        ParagraphStyle(name='Caption', parent=stylesheet['Centred'], fontName='Times-Italic')
+    )
     return stylesheet
 
 
@@ -441,7 +469,9 @@ class Bunch:
 
     def toString(self):
         tag = self.__dict__.get('tag')
-        entries = ["%s: %s" % (key, str(self.__dict__.get(key))) for key in self.ivars() if key != 'tag']
+        entries = [
+            "%s: %s" % (key, str(self.__dict__.get(key))) for key in self.ivars() if key != 'tag'
+        ]
         if tag:
             return "Bunch(tag=%s)...\n%s\n" % (tag, '\n'.join(entries))
         return "Bunch...\n%s\n" % '\n'.join(entries)
@@ -491,7 +521,11 @@ if docutils:
                 (
                     'Format for footnote references: one of "superscript" or "brackets".  Default is "brackets".',
                     ['--footnote-references'],
-                    {'choices': ['superscript', 'brackets'], 'default': 'brackets', 'metavar': '<FORMAT>'},
+                    {
+                        'choices': ['superscript', 'brackets'],
+                        'default': 'brackets',
+                        'metavar': '<FORMAT>',
+                    },
                 ),
             ),
         )
@@ -786,7 +820,9 @@ if docutils:  # NOQA
             else:
                 # if node.has_key('id'):
                 if 'id' in node:
-                    self.body.append(self.starttag({}, 'setLink', '', destination=node['id'], caller=caller))
+                    self.body.append(
+                        self.starttag({}, 'setLink', '', destination=node['id'], caller=caller)
+                    )
                     markup.append('</setLink>')
                 # if node.has_key('refid'):
                 if 'refid' in node:
@@ -816,7 +852,9 @@ if docutils:  # NOQA
                 self.body.append(
                     "%s%s"
                     % (
-                        self.starttag(node, 'setLink', suffix='', destination=href, caller='visit_targtet'),
+                        self.starttag(
+                            node, 'setLink', suffix='', destination=href, caller='visit_targtet'
+                        ),
                         '</setLink>',
                     )
                 )
@@ -848,10 +886,14 @@ if docutils:  # NOQA
                 self.dumpNode(node, tag='node')
             # Bug fix: 8/21/05: changed 'id' to 'ids'.
             if node.parent.hasattr('ids'):
-                self.body.append(self.starttag({}, 'setLink', '', destination=node.parent['ids'], caller=caller))
+                self.body.append(
+                    self.starttag({}, 'setLink', '', destination=node.parent['ids'], caller=caller)
+                )
                 markup.append('</setLink>')
             if node.hasattr('refid'):
-                self.body.append(self.starttag({}, 'setLink', '', destination=node['refid'], caller=caller))
+                self.body.append(
+                    self.starttag({}, 'setLink', '', destination=node['refid'], caller=caller)
+                )
                 markup.append('</setLink>')
 
             self.push(kind='title', markup=markup, start=start, style=style)
@@ -1533,7 +1575,11 @@ if docutils:  # NOQA
         def visit_topic(self, node):
             if node.hasattr('id'):
                 self.push(kind='topic-id', markup='</setLink>')
-                self.body.append(self.starttag({}, 'setLink', suffix='', destination=node['id'], caller='visit_topic'))
+                self.body.append(
+                    self.starttag(
+                        {}, 'setLink', suffix='', destination=node['id'], caller='visit_topic'
+                    )
+                )
 
         def depart_topic(self, node):
             if node.hasattr('id'):
@@ -1564,7 +1610,9 @@ if docutils:  # NOQA
         # @+node:ekr.20090704103932.5292: *5*  literal_blocks...
         def visit_literal_block(self, node):
             if reportlab:
-                self.story.append(reportlab.platypus.Preformatted(node.astext(), self.styleSheet.get('Code')))
+                self.story.append(
+                    reportlab.platypus.Preformatted(node.astext(), self.styleSheet.get('Code'))
+                )
 
             raise docutils.nodes.SkipNode
 
@@ -1615,7 +1663,9 @@ if docutils:  # NOQA
 
         # @+node:ekr.20090704103932.5299: *4* unimplemented_visit
         def unimplemented_visit(self, node):
-            raise NotImplementedError('visiting unimplemented node type: %s' % node.__class__.__name__)
+            raise NotImplementedError(
+                'visiting unimplemented node type: %s' % node.__class__.__name__
+            )
 
         # @+node:ekr.20090704103932.5300: *4* visit_raw
         def visit_raw(self, node):

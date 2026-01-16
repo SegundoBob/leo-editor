@@ -103,13 +103,24 @@ def tex_rule6(colorer, s, i):
 
 def tex_rule7(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword1", begin="\\begin{verbatim}", end="\\end{verbatim}", delegate="tex::verbatim"
+        s,
+        i,
+        kind="keyword1",
+        begin="\\begin{verbatim}",
+        end="\\end{verbatim}",
+        delegate="tex::verbatim",
     )
 
 
 def tex_rule8(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword1", begin="\\verb|", end="|", delegate="tex::verbatim", no_line_break=True
+        s,
+        i,
+        kind="keyword1",
+        begin="\\verb|",
+        end="|",
+        delegate="tex::verbatim",
+        no_line_break=True,
     )
 
 

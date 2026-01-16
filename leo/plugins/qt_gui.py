@@ -198,7 +198,12 @@ class LeoQtGui(leoGui.LeoGui):
         ]
         # @-<< define specialChars >>
         # Put up the splash screen()
-        if g.app.use_splash_screen and not g.app.batchMode and not g.app.silentMode and not g.unitTesting:
+        if (
+            g.app.use_splash_screen
+            and not g.app.batchMode
+            and not g.app.silentMode
+            and not g.unitTesting
+        ):
             self.splashScreen = self.createSplashScreen()
         # qtFrame.finishCreate does all the other work.
         self.frameFactory = qt_frame.TabbedFrameFactory()
@@ -358,7 +363,9 @@ class LeoQtGui(leoGui.LeoGui):
         """Create a new Leo frame."""
         return qt_frame.LeoQtFrame(c, title, gui=self)
 
-    def createSpellTab(self, c: Cmdr, spellHandler: Callable, tabName: str) -> qt_frame.LeoQtSpellTab:
+    def createSpellTab(
+        self, c: Cmdr, spellHandler: Callable, tabName: str
+    ) -> qt_frame.LeoQtSpellTab:
         if g.unitTesting:
             return None
         return qt_frame.LeoQtSpellTab(c, spellHandler, tabName)
@@ -572,7 +579,9 @@ class LeoQtGui(leoGui.LeoGui):
         dialog.setTextValue(default)
         if wide:
             # pylint: disable=unsubscriptable-object
-            dialog.resize(int(g.windows()[0].get_window_info()[0] * 0.9), 100)  # g.windows is a list.
+            dialog.resize(
+                int(g.windows()[0].get_window_info()[0] * 0.9), 100
+            )  # g.windows is a list.
         if cancelButtonText:
             dialog.setCancelButtonText(cancelButtonText)
         if okButtonText:
@@ -651,7 +660,9 @@ class LeoQtGui(leoGui.LeoGui):
             yes_to_all = dialog.addButton(yesToAllMessage, ButtonRole.YesRole)
             yes_to_all.setObjectName('yes-to-all')
 
-        dialog.setDefaultButton(yes if defaultButton == 'Yes' else no if defaultButton == 'No' else cancel)
+        dialog.setDefaultButton(
+            yes if defaultButton == 'Yes' else no if defaultButton == 'No' else cancel
+        )
 
         # Run the dialog, saving and restoring focus.
         try:
@@ -776,11 +787,15 @@ class LeoQtGui(leoGui.LeoGui):
         if c:
             try:
                 c.in_qt_dialog = True
-                dialog_val = dialog.getOpenFileName(parent=None, caption=title, directory=startpath, filter=filter_)
+                dialog_val = dialog.getOpenFileName(
+                    parent=None, caption=title, directory=startpath, filter=filter_
+                )
             finally:
                 c.in_qt_dialog = False
         else:
-            dialog_val = dialog.getOpenFileName(parent=None, caption=title, directory=startpath, filter=filter_)
+            dialog_val = dialog.getOpenFileName(
+                parent=None, caption=title, directory=startpath, filter=filter_
+            )
         # This is a *PyQt* change, not a Qt change.
         val, junk_selected_filter = dialog_val
         s = g.os_path_normslashes(val)
@@ -818,12 +833,16 @@ class LeoQtGui(leoGui.LeoGui):
         if c:
             try:
                 c.in_qt_dialog = True
-                dialog_val = dialog.getOpenFileNames(parent=None, caption=title, directory=startpath, filter=filter_)
+                dialog_val = dialog.getOpenFileNames(
+                    parent=None, caption=title, directory=startpath, filter=filter_
+                )
             finally:
                 c.in_qt_dialog = False
 
         else:
-            dialog_val = dialog.getOpenFileNames(parent=None, caption=title, directory=startpath, filter=filter_)
+            dialog_val = dialog.getOpenFileNames(
+                parent=None, caption=title, directory=startpath, filter=filter_
+            )
         # This is a *PyQt* change, not a Qt change.
         val, _ = dialog_val  # type:ignore
         files = [g.os_path_normslashes(s) for s in val]
@@ -903,7 +922,15 @@ class LeoQtGui(leoGui.LeoGui):
             return None
 
         def send() -> Any:
-            return g.doHook('scrolledMessage', short_title=short_title, title=title, label=label, msg=msg, c=c, **keys)
+            return g.doHook(
+                'scrolledMessage',
+                short_title=short_title,
+                title=title,
+                label=label,
+                msg=msg,
+                c=c,
+                **keys,
+            )
 
         if not c or not c.exists:
             # @+<< no c error>>
@@ -1330,7 +1357,9 @@ class LeoQtGui(leoGui.LeoGui):
         # @-<< create the button b >>
         # @+<< define the callbacks for b >>
         # @+node:ekr.20110605121601.18530: *4* << define the callbacks for b >>
-        def deleteButtonCallback(event: LeoKeyEvent = None, b: QPushButton = b, c: Cmdr = c) -> None:
+        def deleteButtonCallback(
+            event: LeoKeyEvent = None, b: QPushButton = b, c: Cmdr = c
+        ) -> None:
             if b:
                 b.pack_forget()
             c.bodyWantsFocus()
@@ -1348,7 +1377,12 @@ class LeoQtGui(leoGui.LeoGui):
             else:
                 g.app.scriptDict = {'script_gnx': p.gnx}
                 c.executeScript(
-                    args=args, p=p, script=script, define_g=define_g, define_name=define_name, silent=silent
+                    args=args,
+                    p=p,
+                    script=script,
+                    define_g=define_g,
+                    define_name=define_name,
+                    silent=silent,
                 )
                 # Remove the button if the script asks to be removed.
                 if g.app.scriptDict.get('removeMe'):
@@ -1731,7 +1765,9 @@ class LeoQtGui(leoGui.LeoGui):
         return w
 
     # @+node:ekr.20190819091851.1: *4* LeoQtGui.createGrid
-    def createGrid(self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0) -> QGridLayout:
+    def createGrid(
+        self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0
+    ) -> QGridLayout:
         w = QtWidgets.QGridLayout(parent)
         w.setContentsMargins(QtCore.QMargins(margin, margin, margin, margin))
         w.setSpacing(spacing)
@@ -1739,14 +1775,18 @@ class LeoQtGui(leoGui.LeoGui):
         return w
 
     # @+node:ekr.20190819093830.1: *4* LeoQtGui.createHLayout & createVLayout
-    def createHLayout(self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0) -> QHBoxLayout:
+    def createHLayout(
+        self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0
+    ) -> QHBoxLayout:
         hLayout = QtWidgets.QHBoxLayout(parent)
         hLayout.setObjectName(name)
         hLayout.setSpacing(spacing)
         hLayout.setContentsMargins(QtCore.QMargins(0, 0, 0, 0))
         return hLayout
 
-    def createVLayout(self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0) -> QVBoxLayout:
+    def createVLayout(
+        self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0
+    ) -> QVBoxLayout:
         vLayout = QtWidgets.QVBoxLayout(parent)
         vLayout.setObjectName(name)
         vLayout.setSpacing(spacing)
@@ -2247,7 +2287,9 @@ class StyleSheetManager:
         To avoid false mismatches, this should approximate what Qt does.
         To avoid false matches, this should not munge too much.
         """
-        s = ''.join([s.lstrip().replace('  ', ' ').replace(' \n', '\n') for s in g.splitLines(stylesheet)])
+        s = ''.join(
+            [s.lstrip().replace('  ', ' ').replace(' \n', '\n') for s in g.splitLines(stylesheet)]
+        )
         return s.rstrip()  # Don't care about ending newline.
 
     # @+node:tom.20220310224019.1: *4* ssm.rescale_sizes

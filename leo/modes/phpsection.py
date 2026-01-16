@@ -2547,7 +2547,9 @@ keywordsDictDict = {
 
 
 def phpsection_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php"
+    )
 
 
 def phpsection_rule1(colorer, s, i):
@@ -2555,7 +2557,9 @@ def phpsection_rule1(colorer, s, i):
 
 
 def phpsection_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php"
+    )
 
 
 def phpsection_rule3(colorer, s, i):
@@ -2564,16 +2568,25 @@ def phpsection_rule3(colorer, s, i):
 
 def phpsection_rule4(colorer, s, i):
     return colorer.match_span_regexp(
-        s, i, kind="markup", begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>", end="</SCRIPT>", delegate="phpsection::php"
+        s,
+        i,
+        kind="markup",
+        begin="<SCRIPT\\s+LANGUAGE=\"?PHP\"?>",
+        end="</SCRIPT>",
+        delegate="phpsection::php",
     )
 
 
 def phpsection_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="phpsection::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="phpsection::javascript"
+    )
 
 
 def phpsection_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css"
+    )
 
 
 def phpsection_rule7(colorer, s, i):
@@ -2612,7 +2625,9 @@ rulesDict1 = {
 
 
 def phpsection_rule10(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php"
+    )
 
 
 def phpsection_rule11(colorer, s, i):
@@ -2620,15 +2635,21 @@ def phpsection_rule11(colorer, s, i):
 
 
 def phpsection_rule12(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php"
+    )
 
 
 def phpsection_rule13(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="phpsection::tags_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="phpsection::tags_literal"
+    )
 
 
 def phpsection_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="'", end="'", delegate="phpsection::tags_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="'", end="'", delegate="phpsection::tags_literal"
+    )
 
 
 def phpsection_rule15(colorer, s, i):
@@ -2657,7 +2678,9 @@ rulesDict2 = {
 
 
 def phpsection_rule16(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<?php", end="?>", delegate="phpsection::php"
+    )
 
 
 def phpsection_rule17(colorer, s, i):
@@ -2665,7 +2688,9 @@ def phpsection_rule17(colorer, s, i):
 
 
 def phpsection_rule18(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<%=", end="%>", delegate="phpsection::php"
+    )
 
 
 # Rules dict for phpsection_tags_literal ruleset.
@@ -2681,7 +2706,9 @@ rulesDict3 = {
 
 
 def phpsection_rule19(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="phpsection::phpdoc")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="phpsection::phpdoc"
+    )
 
 
 def phpsection_rule20(colorer, s, i):
@@ -2689,7 +2716,9 @@ def phpsection_rule20(colorer, s, i):
 
 
 def phpsection_rule21(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="phpsection::php_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="phpsection::php_literal"
+    )
 
 
 def phpsection_rule22(colorer, s, i):
@@ -2697,7 +2726,9 @@ def phpsection_rule22(colorer, s, i):
 
 
 def phpsection_rule23(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", delegate="phpsection::php_literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="`", end="`", delegate="phpsection::php_literal"
+    )
 
 
 def phpsection_rule24(colorer, s, i):
@@ -3217,7 +3248,9 @@ def phpsection_rule68(colorer, s, i):
 
 
 def phpsection_rule69(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True
+    )
 
 
 def phpsection_rule70(colorer, s, i):

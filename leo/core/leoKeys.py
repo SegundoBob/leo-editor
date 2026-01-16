@@ -199,7 +199,8 @@ class AutoCompleterClass:
         self.warnings: dict[str, str] = {}  # Keys are language names.
         # Codewise pre-computes...
         self.codewiseSelfList: list[str] = []  # The (global) completions for "self."
-        self.completionsDict: dict[str, list[str]] = {}  # Keys are prefixes, values are completion lists.
+        # Keys are prefixes, values are completion lists.
+        self.completionsDict: dict[str, list[str]] = {}
         self.reloadSettings()
 
     def reloadSettings(self) -> None:
@@ -509,9 +510,13 @@ class AutoCompleterClass:
         key, options = self.get_cached_options(prefix)
         if not options:
             options = self.get_completions(prefix)
-        tabList, common_prefix = g.itemsMatchingPrefixInList(prefix, options, matchEmptyPrefix=False)
+        tabList, common_prefix = g.itemsMatchingPrefixInList(
+            prefix, options, matchEmptyPrefix=False
+        )
         if not common_prefix:
-            tabList, common_prefix = g.itemsMatchingPrefixInList(prefix, options, matchEmptyPrefix=True)
+            tabList, common_prefix = g.itemsMatchingPrefixInList(
+                prefix, options, matchEmptyPrefix=True
+            )
         if tabList:
             self.show_completion_list(common_prefix, prefix, tabList)
         return common_prefix, prefix, tabList
@@ -2410,7 +2415,9 @@ class KeyHandlerClass:
             widgets = [w]
         else:
             # New in Leo 4.5: we *must* make the binding in the binding widget.
-            bindingWidget = f.tree and hasattr(f.tree, 'bindingWidget') and f.tree.bindingWidget or None
+            bindingWidget = (
+                f.tree and hasattr(f.tree, 'bindingWidget') and f.tree.bindingWidget or None
+            )
             wrapper = f.body and hasattr(f.body, 'wrapper') and f.body.wrapper or None
             canvas = f.tree and hasattr(f.tree, 'canvas') and f.tree.canvas or None
             widgets = [c.miniBufferWidget, wrapper, canvas, bindingWidget]
@@ -2774,7 +2781,9 @@ class KeyHandlerClass:
 
                 # Compute paths to leoSettings.leo and myLeoSettings.leo.
                 local_fn = c.fileName()
-                settings_path = g.os_path_finalize_join(g.app.loadDir, '..', 'config', 'leoSettings.leo')
+                settings_path = g.os_path_finalize_join(
+                    g.app.loadDir, '..', 'config', 'leoSettings.leo'
+                )
                 user_settings_path = g.app.loadManager.my_settings_path
 
                 # Open two or three files.
@@ -2956,7 +2965,9 @@ class KeyHandlerClass:
                     manylines = True
                 n = min(2, len(binding))
                 if manylines:
-                    doc = textwrap.fill(doc, width=50, initial_indent=' ' * 4, subsequent_indent=' ' * 4)
+                    doc = textwrap.fill(
+                        doc, width=50, initial_indent=' ' * 4, subsequent_indent=' ' * 4
+                    )
                 data.append((binding, cmd, doc))
         lines = ['[%*s] %s%s\n' % (-n, binding, cmd, doc) for binding, cmd, doc in data]
         g.es(''.join(lines), tabName=tabName)
@@ -3694,7 +3705,9 @@ class KeyHandlerClass:
         return False
 
     # @+node:ekr.20180418114300.1: *7* k.handleMinibufferHelper
-    def handleMinibufferHelper(self, event: LeoKeyEvent, pane: str, state: str, stroke: Stroke) -> str:
+    def handleMinibufferHelper(
+        self, event: LeoKeyEvent, pane: str, state: str, stroke: Stroke
+    ) -> str:
         """
         Execute a pane binding in the minibuffer.
         Return 'continue', 'ignore', 'found'
@@ -4362,7 +4375,9 @@ class KeyHandlerClass:
         """
         k = self
         d = k.masterBindingsDict  # Dict[scope, g.BindingInfo]
-        result_d: dict[str, list[tuple[str, Stroke]]] = {}  # Dict[command-name, tuple[pane, stroke]]
+        result_d: dict[
+            str, list[tuple[str, Stroke]]
+        ] = {}  # Dict[command-name, tuple[pane, stroke]]
         for scope in sorted(d):
             d2 = d.get(scope, {})  # Dict[stroke, g.BindingInfo]
             for stroke in d2:
@@ -4495,7 +4510,9 @@ class KeyHandlerClass:
         # k.showStateAndMode()
 
     # @+node:ekr.20061031131434.192: *4* k.showStateAndMode
-    def showStateAndMode(self, w: Wrapper = None, prompt: str = None, setFocus: bool = True) -> None:
+    def showStateAndMode(
+        self, w: Wrapper = None, prompt: str = None, setFocus: bool = True
+    ) -> None:
         """Show the state and mode at the start of the minibuffer."""
         c, k = self.c, self
         state = k.unboundKeyAction

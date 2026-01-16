@@ -207,7 +207,9 @@ def groovy_rule0(colorer, s, i):
 
 
 def groovy_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="groovy::groovydoc")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="groovy::groovydoc"
+    )
 
 
 def groovy_rule2(colorer, s, i):
@@ -215,7 +217,9 @@ def groovy_rule2(colorer, s, i):
 
 
 def groovy_rule3(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="groovy::literal")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="groovy::literal"
+    )
 
 
 def groovy_rule4(colorer, s, i):
@@ -224,7 +228,12 @@ def groovy_rule4(colorer, s, i):
 
 def groovy_rule5(colorer, s, i):
     return colorer.match_span_regexp(
-        s, i, kind="literal1", begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*", end="$1", delegate="groovy::literal"
+        s,
+        i,
+        kind="literal1",
+        begin="<<<([[:alpha:]_][[:alnum:]_]*)\\s*",
+        end="$1",
+        delegate="groovy::literal",
     )
 
 
@@ -581,7 +590,9 @@ def groovy_rule29(colorer, s, i):
 
 
 def groovy_rule30(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="markup", begin="<", end=">", delegate="xml::tags", no_line_break=True
+    )
 
 
 def groovy_rule31(colorer, s, i):

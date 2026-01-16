@@ -578,7 +578,10 @@ class PutToOPML:
     # @+node:ekr.20141020112451.18339: *3* putXMLLine
     def putXMLLine(self):
         """Put the **properly encoded** <?xml> element."""
-        self.put('%s"%s"%s\n' % (g.app.prolog_prefix_string, self.leo_file_encoding, g.app.prolog_postfix_string))
+        self.put(
+            '%s"%s"%s\n'
+            % (g.app.prolog_prefix_string, self.leo_file_encoding, g.app.prolog_postfix_string)
+        )
 
     # @-others
 
@@ -640,7 +643,9 @@ class SaxContentHandler(xml.sax.saxutils.XMLGenerator):
     def printStartElement(self, name, attrs):
         indent = '\t' * self.level or ''
         if attrs.getLength() > 0:
-            print('%s<%s %s>' % (indent, self.clean(name).strip(), self.attrsToString(attrs, sep=' ')))
+            print(
+                '%s<%s %s>' % (indent, self.clean(name).strip(), self.attrsToString(attrs, sep=' '))
+            )
         else:
             print('%s<%s>' % (indent, self.clean(name).strip()))
         if name.lower() in [

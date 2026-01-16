@@ -109,11 +109,15 @@ def xml_rule0(colorer, s, i):
 
 
 def xml_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<!ENTITY", end=">", delegate="xml::entity-tags")
+    return colorer.match_span(
+        s, i, kind="keyword2", begin="<!ENTITY", end=">", delegate="xml::entity-tags"
+    )
 
 
 def xml_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword2", begin="<![CDATA[", end="]]>", delegate="xml::cdata")
+    return colorer.match_span(
+        s, i, kind="keyword2", begin="<![CDATA[", end="]]>", delegate="xml::cdata"
+    )
 
 
 def xml_rule3(colorer, s, i):

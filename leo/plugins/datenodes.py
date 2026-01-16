@@ -186,7 +186,9 @@ class DateNodes:
         month_fmt = self.settings["month_node_month_headline"]
         omit_saturdays = self.settings["month_node_omit_saturdays"]
         omit_sundays = self.settings["month_node_omit_sundays"]
-        month_node = self._insert_month_node(c.p, today, day_fmt, month_fmt, omit_saturdays, omit_sundays)
+        month_node = self._insert_month_node(
+            c.p, today, day_fmt, month_fmt, omit_saturdays, omit_sundays
+        )
         c.selectPosition(month_node)
         c.redraw()
 
@@ -199,7 +201,9 @@ class DateNodes:
         year_fmt = self.settings["year_node_year_headline"]
         omit_saturdays = self.settings["year_node_omit_saturdays"]
         omit_sundays = self.settings["year_node_omit_sundays"]
-        year_node = self._insert_year_node(c.p, today, day_fmt, month_fmt, year_fmt, omit_saturdays, omit_sundays)
+        year_node = self._insert_year_node(
+            c.p, today, day_fmt, month_fmt, year_fmt, omit_saturdays, omit_sundays
+        )
         c.selectPosition(year_node)
         c.redraw()
 

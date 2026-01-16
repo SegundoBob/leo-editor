@@ -337,7 +337,9 @@ def python_comment(colorer, s, i):
 
     # Leo 6.8.3. Add special case for @language jupytext.
     in_jupytext_tree = any(
-        z.startswith('@language jupytext') for z_p in c.p.self_and_parents() for z in g.splitLines(z_p.b)
+        z.startswith('@language jupytext')
+        for z_p in c.p.self_and_parents()
+        for z in g.splitLines(z_p.b)
     )
     is_any_jupytext_comment = i == 0 and s.startswith('# %%') and in_jupytext_tree
     if is_any_jupytext_comment:

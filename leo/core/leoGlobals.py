@@ -2438,7 +2438,11 @@ getLineAfter = get_line_after
 def getIvarsDict(obj: object) -> dict[str, Value]:
     """Return a dictionary of ivars:values for non-methods of obj."""
     d: dict[str, Value] = dict(
-        [[key, getattr(obj, key)] for key in dir(obj) if not isinstance(getattr(obj, key), types.MethodType)]
+        [
+            [key, getattr(obj, key)]
+            for key in dir(obj)
+            if not isinstance(getattr(obj, key), types.MethodType)
+        ]
     )
     return d
 
@@ -2976,7 +2980,10 @@ def isDirective(s: str) -> bool:
 # @+node:ekr.20200810074755.1: *3* g.isValidLanguage
 def isValidLanguage(language: str) -> bool:
     """True if the given language may be used as an external file."""
-    return bool(language and (language in g.app.language_delims_dict or language in g.app.delegate_language_dict))
+    return bool(
+        language
+        and (language in g.app.language_delims_dict or language in g.app.delegate_language_dict)
+    )
 
 
 # @+node:ekr.20250403040834.1: *3* --- to be deprecated! Using directives list
@@ -4015,7 +4022,11 @@ def skip_braces(s: str, i: int) -> int:
         elif g.match(s, i, '/*'):
             i = g.skip_block_comment(s, i)
         # 7/29/02: be more careful handling conditional code.
-        elif g.match_word(s, i, "#if") or g.match_word(s, i, "#ifdef") or g.match_word(s, i, "#ifndef"):
+        elif (
+            g.match_word(s, i, "#if")
+            or g.match_word(s, i, "#ifdef")
+            or g.match_word(s, i, "#ifndef")
+        ):
             i, delta = g.skip_pp_if(s, i)
             level += delta
         else:
@@ -4174,7 +4185,9 @@ def skip_pp_directive(s: str, i: int) -> int:
 
 def skip_pp_if(s: str, i: int) -> tuple[int, int]:
     start_line = g.get_line(s, i)  # used for error messages.
-    assert g.match_word(s, i, "#if") or g.match_word(s, i, "#ifdef") or g.match_word(s, i, "#ifndef")
+    assert (
+        g.match_word(s, i, "#if") or g.match_word(s, i, "#ifdef") or g.match_word(s, i, "#ifndef")
+    )
     i = g.skip_line(s, i)
     i, delta1 = g.skip_pp_part(s, i)
     i = g.skip_ws(s, i)
@@ -4200,7 +4213,11 @@ def skip_pp_part(s: str, i: int) -> tuple[int, int]:
     delta = 0
     while i < len(s):
         c = s[i]
-        if g.match_word(s, i, "#if") or g.match_word(s, i, "#ifdef") or g.match_word(s, i, "#ifndef"):
+        if (
+            g.match_word(s, i, "#if")
+            or g.match_word(s, i, "#ifdef")
+            or g.match_word(s, i, "#ifndef")
+        ):
             i, delta1 = g.skip_pp_if(s, i)
             delta += delta1
         elif g.match_word(s, i, "#else") or g.match_word(s, i, "#endif"):
@@ -4713,7 +4730,9 @@ class GitIssueController:
             g.es_print('state must be in (None, "open", "closed")')
 
     # @+node:ekr.20180325024334.1: *5* git.get_all_issues
-    def get_all_issues(self, label_list: list, root: Position, state: str, limit: int = 100) -> None:
+    def get_all_issues(
+        self, label_list: list, root: Position, state: str, limit: int = 100
+    ) -> None:
         """Get all issues for the base url."""
         try:
             import requests
@@ -4814,7 +4833,8 @@ class GitIssueController:
             aList = [
                 z
                 for z in r.json()
-                if z.get('milestone') is not None and self.milestone == z.get('milestone').get('title')
+                if z.get('milestone') is not None
+                and self.milestone == z.get('milestone').get('title')
             ]
         else:
             aList = [z for z in r.json()]
@@ -5395,7 +5415,9 @@ def longestCommonPrefix(s1: str, s2: str) -> str:
     return prefix
 
 
-def itemsMatchingPrefixInList(s: str, aList: list[str], matchEmptyPrefix: bool = False) -> tuple[list, str]:
+def itemsMatchingPrefixInList(
+    s: str, aList: list[str], matchEmptyPrefix: bool = False
+) -> tuple[list, str]:
     """This method returns a sorted list items of aList whose prefix is s.
 
     It also returns the longest common prefix of all the matches.
@@ -7439,7 +7461,9 @@ def findNodeByPath(c: Cmdr, path: str) -> Optional[Position]:
 
 
 # @+node:ekr.20210303123423.1: *4* g.findNodeInChildren
-def findNodeInChildren(c: Cmdr, p: Position, headline: str, exact: bool = True) -> Optional[Position]:
+def findNodeInChildren(
+    c: Cmdr, p: Position, headline: str, exact: bool = True
+) -> Optional[Position]:
     """Search for a node in v's tree matching the given headline."""
     p1 = p.copy()
     h = headline.strip()
@@ -7830,7 +7854,9 @@ def computeFileUrl(fn: str, c: Cmdr = None, p: Position = None) -> str:
 
 
 # @+node:ekr.20190608090856.1: *3* g.es_clickable_link (not used)
-def es_clickable_link(c: Cmdr, p: Position, line_number: int, message: str) -> None:  # pragma: no cover
+def es_clickable_link(
+    c: Cmdr, p: Position, line_number: int, message: str
+) -> None:  # pragma: no cover
     """
     Write a clickable message to the given line number of p.b.
 

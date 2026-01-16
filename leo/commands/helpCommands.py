@@ -399,7 +399,9 @@ class HelpCommandsClass(BaseEditCommandsClass):
                     s = title + textwrap.dedent(s)
                 else:
                     # Fixes bug 618570:
-                    s = title + ''.join([line.lstrip() if line.strip() else '\n' for line in g.splitLines(s)])
+                    s = title + ''.join(
+                        [line.lstrip() if line.strip() else '\n' for line in g.splitLines(s)]
+                    )
             else:
                 # @+<< set s to about help-for-command >>
                 # @+node:ekr.20150514063305.384: *5* << set s to about help-for-command >>

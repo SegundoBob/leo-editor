@@ -363,10 +363,16 @@ class TextEditSearch(QtWidgets.QWidget):  # type:ignore
         self.textedit = QtWidgets.QTextEdit(*args, **kwargs)
         # need to call focusin/out set on parent by FocusingPlaintextEdit / mknote
         self.textedit.focusInEvent = self._call_old_first(self.textedit.focusInEvent, self.focusin)
-        self.textedit.focusOutEvent = self._call_old_first(self.textedit.focusOutEvent, self.focusout)
+        self.textedit.focusOutEvent = self._call_old_first(
+            self.textedit.focusOutEvent, self.focusout
+        )
         self.searchbox = QLineEdit()
-        self.searchbox.focusInEvent = self._call_old_first(self.searchbox.focusInEvent, self.focusin)
-        self.searchbox.focusOutEvent = self._call_old_first(self.searchbox.focusOutEvent, self.focusout)
+        self.searchbox.focusInEvent = self._call_old_first(
+            self.searchbox.focusInEvent, self.focusin
+        )
+        self.searchbox.focusOutEvent = self._call_old_first(
+            self.searchbox.focusOutEvent, self.focusout
+        )
 
         # invoke find when return pressed
         self.searchbox.returnPressed.connect(self.search)
@@ -807,7 +813,9 @@ class Tabula(QtWidgets.QMainWindow):  # type:ignore
         self.update_notes()
 
         # n.parent() because the wrapper QMdiSubWindow holds the geom relative to parent
-        geoms = dict((gnx, n.parent().saveGeometry()) for (gnx, n) in self.notes.items() if n.isVisible())
+        geoms = dict(
+            (gnx, n.parent().saveGeometry()) for (gnx, n) in self.notes.items() if n.isVisible()
+        )
 
         geoms['mainwindow'] = self.saveState()
 

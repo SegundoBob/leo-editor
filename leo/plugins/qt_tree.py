@@ -85,7 +85,9 @@ class LeoQtTree(leoFrame.LeoTree):
             w.setDragDropMode(w.InternalMove)
             if 1:  # Does not work
 
-                def dropMimeData(self, data: str, action: str, row: str, col: str, parent: str) -> None:
+                def dropMimeData(
+                    self, data: str, action: str, row: str, col: str, parent: str
+                ) -> None:
                     g.trace()
 
                 # w.dropMimeData = dropMimeData
@@ -135,11 +137,15 @@ class LeoQtTree(leoFrame.LeoTree):
         c = self.c
         self.auto_edit = c.config.getBool('single-click-auto-edits-headline', False)
         self.enable_drag_messages = c.config.getBool("enable-drag-messages")
-        self.select_all_text_when_editing_headlines = c.config.getBool('select_all_text_when_editing_headlines')
+        self.select_all_text_when_editing_headlines = c.config.getBool(
+            'select_all_text_when_editing_headlines'
+        )
         self.stayInTree = c.config.getBool('stayInTreeAfterSelect')
         self.use_chapters = c.config.getBool('use-chapters')
         self.use_declutter = c.config.getBool('tree-declutter', default=False)
-        self.use_mouse_expand_gestures = c.config.getBool('use-mouse-expand-gestures', default=False)
+        self.use_mouse_expand_gestures = c.config.getBool(
+            'use-mouse-expand-gestures', default=False
+        )
 
     # @+node:ekr.20110605121601.17868: *3* qtree.Debugging & tracing
     def error(self, s: str) -> None:
@@ -242,7 +248,10 @@ class LeoQtTree(leoFrame.LeoTree):
                 try:
                     s = pattern.sub(arg, text)
                 except re.error as e:
-                    g.app.log(f'Error in declutter: {e!r}"\n  REPLACE:{arg!r}\n  HEADLINE:{text!r}', color='error')
+                    g.app.log(
+                        f'Error in declutter: {e!r}"\n  REPLACE:{arg!r}\n  HEADLINE:{text!r}',
+                        color='error',
+                    )
             elif cmd == 'REPLACE-HEAD':
                 s = text[: m.start()].rstrip()
             elif cmd == 'REPLACE-TAIL':
@@ -347,7 +356,9 @@ class LeoQtTree(leoFrame.LeoTree):
             return modifier, param
 
         # @+node:vitalije.20200327163522.1: *7* apply_declutter_rules
-        def apply_declutter_rules(cmds: list[tuple[Callable, str]], pattern: str) -> list[tuple[Value, str]]:
+        def apply_declutter_rules(
+            cmds: list[tuple[Callable, str]], pattern: str
+        ) -> list[tuple[Value, str]]:
             """
             Applies all commands for the matched rule. Returns the list
             of the applied operations paired with their single parameter.

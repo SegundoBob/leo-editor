@@ -145,7 +145,13 @@ def rpmspec_rule4(colorer, s, i):
 
 def rpmspec_rule5(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="markup", begin="%verify(", end=")", delegate="rpmspec::verify", no_line_break=True
+        s,
+        i,
+        kind="markup",
+        begin="%verify(",
+        end=")",
+        delegate="rpmspec::verify",
+        no_line_break=True,
     )
 
 

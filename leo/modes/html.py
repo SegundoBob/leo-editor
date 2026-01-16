@@ -63,7 +63,9 @@ def html_rule4(colorer, s, i):
     for m in tag_pat.finditer(s, i):  # Don't create substrings.
         if m.group(0) and m.start() == i:
             tag = m.group(0)
-            return colorer.match_span(s, i, kind="markup", begin=tag, end=">", delegate="html::tags")
+            return colorer.match_span(
+                s, i, kind="markup", begin=tag, end=">", delegate="html::tags"
+            )
 
     # An error.
     return colorer.match_span(s, i, kind="comment", begin="<", end=">")

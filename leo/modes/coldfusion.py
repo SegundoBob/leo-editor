@@ -529,19 +529,27 @@ def coldfusion_rule4(colorer, s, i):
 
 
 def coldfusion_rule5(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="<CF", end=">", delegate="coldfusion::cftags")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="<CF", end=">", delegate="coldfusion::cftags"
+    )
 
 
 def coldfusion_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="</CF", end=">", delegate="coldfusion::cftags")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="</CF", end=">", delegate="coldfusion::cftags"
+    )
 
 
 def coldfusion_rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript"
+    )
 
 
 def coldfusion_rule8(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css"
+    )
 
 
 def coldfusion_rule9(colorer, s, i):
@@ -589,11 +597,15 @@ def coldfusion_rule13(colorer, s, i):
 
 
 def coldfusion_rule14(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="<CF", end=">", delegate="coldfusion::cftags")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="<CF", end=">", delegate="coldfusion::cftags"
+    )
 
 
 def coldfusion_rule15(colorer, s, i):
-    return colorer.match_span(s, i, kind="keyword3", begin="</CF", end=">", delegate="coldfusion::cftags")
+    return colorer.match_span(
+        s, i, kind="keyword3", begin="</CF", end=">", delegate="coldfusion::cftags"
+    )
 
 
 def coldfusion_rule16(colorer, s, i):

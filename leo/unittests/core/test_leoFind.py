@@ -483,19 +483,27 @@ class TestFind(LeoUnitTest):
             whole_word=False,
         )
         # Test 1: Match in body.
-        n = x.batch_change(root=c.rootPosition(), replacements=((r'^def\b', 'DEF'),), settings=settings)
+        n = x.batch_change(
+            root=c.rootPosition(), replacements=((r'^def\b', 'DEF'),), settings=settings
+        )
         assert n > 3, n  # Test 1.
         # Test 2: Match in headline.
-        n = x.batch_change(root=c.rootPosition(), replacements=((r'^Node\b', 'DEF'),), settings=settings)
+        n = x.batch_change(
+            root=c.rootPosition(), replacements=((r'^Node\b', 'DEF'),), settings=settings
+        )
         self.assertEqual(n, 2)
         # Test 3: node-only.
         settings['node_only'] = True
-        n = x.batch_change(root=c.rootPosition(), replacements=((r'^DEF\b', 'def'),), settings=settings)
+        n = x.batch_change(
+            root=c.rootPosition(), replacements=((r'^DEF\b', 'def'),), settings=settings
+        )
         self.assertEqual(n, 1)
         # Test 4: suboutline-only.
         settings['node_only'] = False
         settings['suboutline_only'] = True
-        n = x.batch_change(root=c.rootPosition(), replacements=((r'^def\b', 'DEF'),), settings=settings)
+        n = x.batch_change(
+            root=c.rootPosition(), replacements=((r'^def\b', 'DEF'),), settings=settings
+        )
         self.assertEqual(n, 1)
 
     # @+node:ekr.20210219175850.1: *4* testFind.test_batch_change_word
@@ -735,7 +743,18 @@ class TestFind(LeoUnitTest):
                     '\n     got i: %s'
                     '\nexpected j: %s'
                     '\n     got j: %s'
-                    % (table_name, test_n, pattern, s, expected, got, expected_i, got_i, expected_j, got_j)
+                    % (
+                        table_name,
+                        test_n,
+                        pattern,
+                        s,
+                        expected,
+                        got,
+                        expected_i,
+                        got_i,
+                        expected_j,
+                        got_j,
+                    )
                 )
 
         plain_table = (
@@ -781,7 +800,18 @@ class TestFind(LeoUnitTest):
                     '\n     got i: %s'
                     '\nexpected j: %s'
                     '\n     got j: %s'
-                    % (table_name, test_n, pattern, s, expected, got, expected_i, got_i, expected_j, got_j)
+                    % (
+                        table_name,
+                        test_n,
+                        pattern,
+                        s,
+                        expected,
+                        got,
+                        expected_i,
+                        got_i,
+                        expected_j,
+                        got_j,
+                    )
                 )
 
         plain_table = (
@@ -812,14 +842,19 @@ class TestFind(LeoUnitTest):
             for pattern, s, expected in table:
                 flags = re.IGNORECASE if nocase else 0
                 x.re_obj = re.compile(pattern, flags)
-                pos, new_pos = x._inner_search_regex(s, 0, len(s), pattern, backwards=back, nocase=nocase)
+                pos, new_pos = x._inner_search_regex(
+                    s, 0, len(s), pattern, backwards=back, nocase=nocase
+                )
                 got = s[pos:new_pos]
-                assert expected == got, '\n   table: %s\n pattern: %r\n       s: %r\nexpected: %r\n     got: %r' % (
-                    table_name,
-                    pattern,
-                    s,
-                    expected,
-                    got,
+                assert expected == got, (
+                    '\n   table: %s\n pattern: %r\n       s: %r\nexpected: %r\n     got: %r'
+                    % (
+                        table_name,
+                        pattern,
+                        s,
+                        expected,
+                        got,
+                    )
                 )
 
         plain_table = (

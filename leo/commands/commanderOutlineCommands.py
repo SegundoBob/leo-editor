@@ -1296,7 +1296,9 @@ def insertHeadlineHelper(
     elif as_last_child:
         p = current.insertAsLastChild()
     elif (
-        as_child or (current.hasChildren() and current.isExpanded()) or (c.hoistStack and current == c.hoistStack[-1].p)
+        as_child
+        or (current.hasChildren() and current.isExpanded())
+        or (c.hoistStack and current == c.hoistStack[-1].p)
     ):
         # Make sure the new node is visible when hoisting.
         if c.config.getBool('insert-new-nodes-at-end'):
@@ -1959,7 +1961,9 @@ def reverseSortSiblings(self: Cmdr, event: LeoKeyEvent = None, key: str = None) 
 
 # @+node:ekr.20050415134809: *3* c_oc.sortChildren
 @g.commander_command('sort-children')
-def sortChildren(self: Cmdr, event: LeoKeyEvent = None, key: Callable = None, reverse: bool = False) -> None:
+def sortChildren(
+    self: Cmdr, event: LeoKeyEvent = None, key: Callable = None, reverse: bool = False
+) -> None:
     """Sort the children of a node."""
     # This method no longer supports the 'cmp' keyword arg.
     c, p = self, self.p

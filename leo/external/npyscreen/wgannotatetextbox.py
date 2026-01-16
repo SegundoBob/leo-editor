@@ -52,7 +52,11 @@ class AnnotateTextboxBase(wgwidget.Widget):
         displayy, displayx = self._display_annotation_at()
         _annotation, _color = self.getAnnotationAndColor()
         self.parent.curses_pad.addnstr(
-            displayy, displayx, _annotation, self.ANNOTATE_WIDTH, self.parent.theme_manager.findPair(self, _color)
+            displayy,
+            displayx,
+            _annotation,
+            self.ANNOTATE_WIDTH,
+            self.parent.theme_manager.findPair(self, _color),
         )
 
     # @+node:ekr.20170428084207.488: *3* annotationNoColor
@@ -113,7 +117,11 @@ class AnnotateTextboxBaseRight(AnnotateTextboxBase):
     # @+node:ekr.20170428084207.492: *3* _init_text_area
     def _init_text_area(self, screen):
         self.text_area = Textfield(
-            screen, rely=self.rely, relx=self.relx, width=self.width - self.ANNOTATE_WIDTH, value=self.name
+            screen,
+            rely=self.rely,
+            relx=self.relx,
+            width=self.width - self.ANNOTATE_WIDTH,
+            value=self.name,
         )
 
     # @+node:ekr.20170428084207.493: *3* _display_annotation_at

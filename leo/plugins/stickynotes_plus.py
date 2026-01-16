@@ -186,7 +186,9 @@ class notetextedit(QTextEdit):
         document = self.document()
         document.setDefaultFont(font)
         self.font = font
-        document.setDefaultStyleSheet("pre{margin-top:0px; margin-bottom:0px} li{margin-top:0px; margin-bottom:0px}")
+        document.setDefaultStyleSheet(
+            "pre{margin-top:0px; margin-bottom:0px} li{margin-top:0px; margin-bottom:0px}"
+        )
         QTimer.singleShot(0, get_markdown)
 
     # @+node:ekr.20100103100944.5398: *3* focusOutEvent
@@ -511,7 +513,9 @@ class notetextedit(QTextEdit):
         references = ''
         i = 1
         doc = ''
-        block = self.document().begin()  # block is like a para; text fragment is sequence of same char format
+        block = (
+            self.document().begin()
+        )  # block is like a para; text fragment is sequence of same char format
         while block.isValid():
             if block.blockFormat().nonBreakableLines():
                 doc += '    ' + block.text() + '\n'

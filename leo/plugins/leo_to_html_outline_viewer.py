@@ -57,7 +57,9 @@ def createExportMenu(tag, keywords):
         'Export Files',
         2,
         label='Export HTML Outline Viewer',
-        command=lambda c=c, cmd='export-html-outline-viewer': c.doCommandByName('export-html-outline-viewer'),
+        command=lambda c=c, cmd='export-html-outline-viewer': c.doCommandByName(
+            'export-html-outline-viewer'
+        ),
     )
 
 

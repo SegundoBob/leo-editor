@@ -76,7 +76,9 @@ class BoxBasic(Widget):
                     self, self.color
                 )  # | curses.A_BOLD
             elif self.editing:
-                name_attributes = name_attributes | self.parent.theme_manager.findPair(self, 'HILIGHT')
+                name_attributes = name_attributes | self.parent.theme_manager.findPair(
+                    self, 'HILIGHT'
+                )
             else:
                 name_attributes = name_attributes  # | curses.A_BOLD
 
@@ -84,7 +86,11 @@ class BoxBasic(Widget):
                 name_attributes = name_attributes | curses.A_BOLD
 
             self.add_line(
-                self.rely, self.relx + 4, name, self.make_attributes_list(name, name_attributes), self.width - 8
+                self.rely,
+                self.relx + 4,
+                name,
+                self.make_attributes_list(name, name_attributes),
+                self.width - 8,
             )
             # end draw title
 
@@ -105,7 +111,11 @@ class BoxBasic(Widget):
                 placing = 4
 
             self.add_line(
-                self.rely + HEIGHT, self.relx + placing, footer_text, footer_attributes, self.width - placing - 2
+                self.rely + HEIGHT,
+                self.relx + placing,
+                footer_text,
+                footer_attributes,
+                self.width - placing - 2,
             )
 
     # @+node:ekr.20170428084207.508: *3* get_footer_attributes
@@ -116,7 +126,9 @@ class BoxBasic(Widget):
                 self, self.color
             )  # | curses.A_BOLD
         elif self.editing:
-            footer_attributes = footer_attributes | self.parent.theme_manager.findPair(self, 'HILIGHT')
+            footer_attributes = footer_attributes | self.parent.theme_manager.findPair(
+                self, 'HILIGHT'
+            )
         else:
             footer_attributes = footer_attributes  # | curses.A_BOLD
 

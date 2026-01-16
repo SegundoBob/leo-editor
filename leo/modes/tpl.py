@@ -73,11 +73,15 @@ def tpl_rule0(colorer, s, i):
 
 
 def tpl_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<SCRIPT", end="</SCRIPT>", delegate="html::javascript"
+    )
 
 
 def tpl_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css")
+    return colorer.match_span(
+        s, i, kind="markup", begin="<STYLE", end="</STYLE>", delegate="html::css"
+    )
 
 
 def tpl_rule3(colorer, s, i):

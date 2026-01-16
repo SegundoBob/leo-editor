@@ -444,7 +444,9 @@ def screenshot_helper(window_id):
     screen = app.primaryScreen()
     if screen is not None:
         # Save to the home directory.
-        file_name = os.path.normpath(os.path.expanduser(f"~/.leo/screenshot-{screenshot_number}.png"))
+        file_name = os.path.normpath(
+            os.path.expanduser(f"~/.leo/screenshot-{screenshot_number}.png")
+        )
         pixmap = screen.grabWindow(window_id)
         pixmap.save(file_name, 'png')
         print(f"Screenshot saved in {file_name}")
@@ -1985,7 +1987,9 @@ class ScreenShotController:
         if not sc.match(p, '@slideshow'):
             return g.error('not a @slideshow node: %s', p.h)
         if n1 != (n2 - n3):
-            return g.error('%s wink slides\n%s @slide nodes\n%s @no_screenshot nodes' % (n1, n2, n3))
+            return g.error(
+                '%s wink slides\n%s @slide nodes\n%s @no_screenshot nodes' % (n1, n2, n3)
+            )
         return True
 
     # @+node:ekr.20101113193341.5454: *5* check_dir

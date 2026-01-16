@@ -370,7 +370,9 @@ class Rust_Importer(Importer):
                     assert i1 + 1 <= end <= i2, (i1, end, i2)
                     # Don't generate small blocks.
                     if min_size == 0 or end - prev_i > min_size:
-                        block = Block(kind, name, start=prev_i, start_body=i, end=end, lines=self.lines)
+                        block = Block(
+                            kind, name, start=prev_i, start_body=i, end=end, lines=self.lines
+                        )
                         results.append(block)
                         i = prev_i = end
                     else:

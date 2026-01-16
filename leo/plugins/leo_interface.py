@@ -254,7 +254,9 @@ class leo_node(LeoNode, node_with_parent):
 
     # @+node:ekr.20101110092416.5755: *3* gen_t_elements
     def gen_t_elements(self, file):
-        self.mark_with_attributes(file, "t", (("tx", "T" + repr(self.nr)),), self.gen_t_elements1, newline=False)
+        self.mark_with_attributes(
+            file, "t", (("tx", "T" + repr(self.nr)),), self.gen_t_elements1, newline=False
+        )
         for child in self.children:
             child.gen_t_elements(file)
 
@@ -271,7 +273,9 @@ class leo_node(LeoNode, node_with_parent):
             # Also number all nodes for easier error hunting.
             vnode_stack.append(self)
             if self in allvnodes:
-                print("Fix this; This is an endless recursive call in leo_interface.leo_node.gen_v_elements")
+                print(
+                    "Fix this; This is an endless recursive call in leo_interface.leo_node.gen_v_elements"
+                )
                 x = vnode_stack[:]
                 x.reverse()
                 for i in x:

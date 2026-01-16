@@ -34,7 +34,9 @@ class TestOutlineCommands(LeoUnitTest):
         # @+node:ekr.20230724130959.5: *4* function: test_tree (test_paste_as_template)
         def test_tree(pasted_flag: bool, tag: str) -> None:
             """Test the tree."""
-            tag_s = f"kind: {test_kind} is_json? {int(is_json)} pasted? {int(pasted_flag)} {target_p.h}"
+            tag_s = (
+                f"kind: {test_kind} is_json? {int(is_json)} pasted? {int(pasted_flag)} {target_p.h}"
+            )
             try:
                 # Test clone status and gnx. Set seen.
                 seen = set()
@@ -214,7 +216,9 @@ class TestOutlineCommands(LeoUnitTest):
 
         # All nodes except cc and its children itself are valid targets.
         valid_target_headlines = list(
-            sorted(z.h for z in c.all_unique_positions() if z.h not in ('cc', 'cc:child1', 'cc:child2'))
+            sorted(
+                z.h for z in c.all_unique_positions() if z.h not in ('cc', 'cc:child1', 'cc:child2')
+            )
         )
         # g.printObj(valid_target_headlines, tag='valid_target_headlines')
         for target_headline in valid_target_headlines:

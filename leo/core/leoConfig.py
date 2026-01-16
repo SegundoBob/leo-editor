@@ -558,7 +558,11 @@ class ParserBaseClass:
                 if g.match_word(h, 0, tag):
                     itemName = h[len(tag) :].strip()
                     if itemName:
-                        lines = [z for z in g.splitLines(p.b) if z.strip() and not z.strip().startswith('#')]
+                        lines = [
+                            z
+                            for z in g.splitLines(p.b)
+                            if z.strip() and not z.strip().startswith('#')
+                        ]
                         # Only the first body line is significant.
                         # This allows following comment lines.
                         body = lines[0].strip() if lines else ''
@@ -678,7 +682,9 @@ class ParserBaseClass:
             self.valueError(p, kind, name, val)
 
     # @+node:ekr.20041120105609: *4* pbc.doShortcuts
-    def doShortcuts(self, p: Position, kind: str, junk_name: str, junk_val: Value, s: str = None) -> None:
+    def doShortcuts(
+        self, p: Position, kind: str, junk_name: str, junk_val: Value, s: str = None
+    ) -> None:
         """Handle an @shortcut or @shortcuts node."""
         c, d = self.c, self.shortcutsDict
         if s is None:
@@ -941,7 +947,9 @@ class ParserBaseClass:
     def traverse(self) -> tuple[Value, Value]:
         """Traverse the entire settings tree."""
         c = self.c
-        self.settingsDict: dict[str, list[g.GeneralSetting]] = g.SettingsDict(f"settingsDict for {c.shortFileName()}")
+        self.settingsDict: dict[str, list[g.GeneralSetting]] = g.SettingsDict(
+            f"settingsDict for {c.shortFileName()}"
+        )
         self.shortcutsDict = g.SettingsDict(f"shortcutsDict for {c.shortFileName()}")
         # This must be called after the outline has been inited.
         p = c.config.settingsRoot()
@@ -1316,7 +1324,11 @@ class GlobalConfigManager:
                 val = gs.val
                 if gs.kind == 'data':
                     # #748: Remove comments
-                    aList = [' ' * 8 + z.rstrip() for z in val if z.strip() and not z.strip().startswith('#')]
+                    aList = [
+                        ' ' * 8 + z.rstrip()
+                        for z in val
+                        if z.strip() and not z.strip().startswith('#')
+                    ]
                     if not aList:
                         val = '[]'
                     elif limit == 0 or len(aList) < limit:
@@ -1614,8 +1626,12 @@ class LocalConfigManager:
         if previousSettings:
             self.settingsDict = previousSettings.settingsDict
             self.shortcutsDict = previousSettings.shortcutsDict
-            assert isinstance(self.settingsDict, g.SettingsDict), self.settingsDict.__class__.__name__
-            assert isinstance(self.shortcutsDict, g.SettingsDict), self.shortcutsDict.__class__.__name__
+            assert isinstance(self.settingsDict, g.SettingsDict), (
+                self.settingsDict.__class__.__name__
+            )
+            assert isinstance(self.shortcutsDict, g.SettingsDict), (
+                self.shortcutsDict.__class__.__name__
+            )
         else:
             self.settingsDict = d1 = lm.globalSettingsDict
             self.shortcutsDict = d2 = lm.globalBindingsDict

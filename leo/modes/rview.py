@@ -142,7 +142,9 @@ def rview_rule0(colorer, s, i):
 
 
 def rview_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/", delegate="rview::javadoc")
+    return colorer.match_span(
+        s, i, kind="comment2", begin="/**", end="*/", delegate="rview::javadoc"
+    )
 
 
 def rview_rule2(colorer, s, i):

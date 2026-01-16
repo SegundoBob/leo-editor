@@ -581,7 +581,9 @@ def povray_rule20(colorer, s, i):
 
 
 def povray_rule21(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_line_start=True, exclude_match=True
+    )
 
 
 def povray_rule22(colorer, s, i):

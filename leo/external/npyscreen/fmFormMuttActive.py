@@ -66,7 +66,9 @@ class ActionControllerSimple:
 class TextCommandBox(wgtextbox.Textfield):
     # @+others
     # @+node:ekr.20170428084207.267: *3* __init__
-    def __init__(self, screen, history=False, history_max=100, set_up_history_keys=False, *args, **keywords):
+    def __init__(
+        self, screen, history=False, history_max=100, set_up_history_keys=False, *args, **keywords
+    ):
         super(TextCommandBox, self).__init__(screen, *args, **keywords)
         self.history = history
         self._history_store = collections.deque(maxlen=history_max)
@@ -164,9 +166,16 @@ class TextCommandBoxTraditional(TextCommandBox):
 
     # @+others
     # @+node:ekr.20170428084207.275: *3* __init__
-    def __init__(self, screen, history=True, history_max=100, set_up_history_keys=True, *args, **keywords):
+    def __init__(
+        self, screen, history=True, history_max=100, set_up_history_keys=True, *args, **keywords
+    ):
         super(TextCommandBoxTraditional, self).__init__(
-            screen, history=history, history_max=history_max, set_up_history_keys=set_up_history_keys, *args, **keywords
+            screen,
+            history=history,
+            history_max=history_max,
+            set_up_history_keys=set_up_history_keys,
+            *args,
+            **keywords,
         )
         self.linked_widget = None
         self.always_pass_to_linked_widget = []
@@ -196,7 +205,10 @@ class TextCommandBoxTraditional(TextCommandBox):
             return rtn
 
         if inputchstr and (self.value == '' or self.value == None):
-            if inputchstr in self.BEGINNING_OF_COMMAND_LINE_CHARS or inputch in self.BEGINNING_OF_COMMAND_LINE_CHARS:
+            if (
+                inputchstr in self.BEGINNING_OF_COMMAND_LINE_CHARS
+                or inputch in self.BEGINNING_OF_COMMAND_LINE_CHARS
+            ):
                 return super(TextCommandBoxTraditional, self).handle_input(inputch)
 
         if self.value:
@@ -269,7 +281,9 @@ class FormMuttActiveTraditional(fmFormMutt.FormMutt):
 
 
 # @+node:ekr.20170428084207.283: ** class FormMuttActiveTraditionalWithMenus
-class FormMuttActiveTraditionalWithMenus(FormMuttActiveTraditional, fmFormWithMenus.FormBaseNewWithMenus):
+class FormMuttActiveTraditionalWithMenus(
+    FormMuttActiveTraditional, fmFormWithMenus.FormBaseNewWithMenus
+):
     # @+others
     # @+node:ekr.20170428084207.284: *3* __init__
     def __init__(self, *args, **keywords):

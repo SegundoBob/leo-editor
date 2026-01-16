@@ -27,7 +27,13 @@ from leo.core.leoQt import QAction, Qsci
 from leo.core.leoQt import AlignLeft
 from leo.core.leoQt import ContextMenuPolicy, DropAction, FocusReason, KeyboardModifier
 from leo.core.leoQt import MoveOperation, Orientation, MouseButton
-from leo.core.leoQt import Policy, ScrollBarPolicy, SelectionBehavior, SelectionMode, SizeAdjustPolicy
+from leo.core.leoQt import (
+    Policy,
+    ScrollBarPolicy,
+    SelectionBehavior,
+    SelectionMode,
+    SizeAdjustPolicy,
+)
 from leo.core.leoQt import Shadow, Shape, Style
 from leo.core.leoQt import TextInteractionFlag, ToolBarArea, Type, Weight, WindowState, WrapMode
 from leo.plugins import qt_events
@@ -359,7 +365,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
         return row
 
     # @+node:ekr.20131118152731.16851: *5* dw.create_find_checkboxes
-    def create_find_checkboxes(self, grid: QGridLayout, parent: QWidget, max_row2: int, row: int) -> int:
+    def create_find_checkboxes(
+        self, grid: QGridLayout, parent: QWidget, max_row2: int, row: int
+    ) -> int:
         """Create check boxes and radio buttons."""
         c, dw = self.leo_c, self
         fc = c.findCommands
@@ -428,13 +436,17 @@ class DynamicWindow(QtWidgets.QMainWindow):
     def create_help_row(self, grid: QGridLayout, parent: QWidget, row: int) -> int:
         # Help row.
         if False:
-            w = self.createLabel(parent, 'findHelp', 'For help: <alt-x>help-for-find-commands<return>')
+            w = self.createLabel(
+                parent, 'findHelp', 'For help: <alt-x>help-for-find-commands<return>'
+            )
             grid.addWidget(w, row, 0, 1, 3)
             row += 1
         return row
 
     # @+node:ekr.20131118152731.16852: *5* dw.create_find_buttons
-    def create_find_buttons(self, grid: QGridLayout, parent: QWidget, max_row2: int, row: int) -> int:
+    def create_find_buttons(
+        self, grid: QGridLayout, parent: QWidget, max_row2: int, row: int
+    ) -> int:
         """
         Per #1342, this method now creates labels, not real buttons.
         """
@@ -563,7 +575,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
                 # #2094: Use code similar to the end of LeoQtEventFilter.eventFilter.
                 #        The ctor converts <Alt-X> to <Alt-x> !!
                 #        That is, we must use the stroke, not the binding.
-                key_event = leoGui.LeoKeyEvent(c=self.c, char=ch, event=event, binding=binding, w=self.w)
+                key_event = leoGui.LeoKeyEvent(
+                    c=self.c, char=ch, event=event, binding=binding, w=self.w
+                )
                 if key_event.stroke:
                     cmd_name = self.d.get(key_event.stroke)
                     if cmd_name:
@@ -639,14 +653,18 @@ class DynamicWindow(QtWidgets.QMainWindow):
         return w
 
     # @+node:ekr.20110605121601.18157: *4* dw.createHLayout & createVLayout
-    def createHLayout(self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0) -> QBoxLayout:
+    def createHLayout(
+        self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0
+    ) -> QBoxLayout:
         hLayout = QtWidgets.QHBoxLayout(parent)
         hLayout.setSpacing(spacing)
         hLayout.setContentsMargins(QtCore.QMargins(0, 0, 0, 0))
         self.setName(hLayout, name)
         return hLayout
 
-    def createVLayout(self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0) -> QBoxLayout:
+    def createVLayout(
+        self, parent: QWidget, name: str, margin: int = 0, spacing: int = 0
+    ) -> QBoxLayout:
         vLayout = QtWidgets.QVBoxLayout(parent)
         vLayout.setSpacing(spacing)
         vLayout.setContentsMargins(QtCore.QMargins(0, 0, 0, 0))
@@ -668,7 +686,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
         return w
 
     # @+node:ekr.20110605121601.18160: *4* dw.createRadioButton
-    def createRadioButton(self, parent: QWidget, name: str, label: str) -> QWidget:  # QtWidgets.QRadioButton:
+    def createRadioButton(
+        self, parent: QWidget, name: str, label: str
+    ) -> QWidget:  # QtWidgets.QRadioButton:
         w = QtWidgets.QRadioButton(parent)
         self.setName(w, name)
         w.setText(self.tr(label))
@@ -909,7 +929,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
         #
         # Create the log frame.
         logFrame = self.createFrame(parent, 'logFrame', vPolicy=Policy.Minimum)
-        innerFrame = self.createFrame(logFrame, 'logInnerFrame', hPolicy=Policy.Preferred, vPolicy=Policy.Expanding)
+        innerFrame = self.createFrame(
+            logFrame, 'logInnerFrame', hPolicy=Policy.Preferred, vPolicy=Policy.Expanding
+        )
         tabWidget = self.createTabWidget(innerFrame, 'logTabWidget')
         #
         # Pack.
@@ -984,7 +1006,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
     def createMiniBuffer(self, parent: QWidget) -> QWidget:
         """Create the widgets for Leo's minibuffer area."""
         # Create widgets.
-        frame = self.createFrame(parent, 'minibufferFrame', hPolicy=Policy.MinimumExpanding, vPolicy=Policy.Fixed)
+        frame = self.createFrame(
+            parent, 'minibufferFrame', hPolicy=Policy.MinimumExpanding, vPolicy=Policy.Fixed
+        )
         frame.setMinimumSize(QtCore.QSize(100, 0))
         label = self.createLabel(frame, 'minibufferLabel', 'Minibuffer:')
 
@@ -1139,7 +1163,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
             super().setGeometry(rect)
 
     # @+node:ekr.20110605121601.18170: *4* dw.set_widget_size_policy
-    def set_widget_size_policy(self, widget: QWidget, kind1: Policy = None, kind2: Policy = None) -> None:
+    def set_widget_size_policy(
+        self, widget: QWidget, kind1: Policy = None, kind2: Policy = None
+    ) -> None:
         if kind1 is None:
             kind1 = Policy.Ignored
         if kind2 is None:
@@ -1347,7 +1373,9 @@ class FindTabManager:
                 setattr(find, setting_name, val)
                 w.toggle()
 
-            def radio_button_callback(n: int, ivar: str = ivar, setting_name: str = setting_name, w: str = w) -> None:
+            def radio_button_callback(
+                n: int, ivar: str = ivar, setting_name: str = setting_name, w: str = w
+            ) -> None:
                 val = w.isChecked()
                 if ivar:
                     assert hasattr(find, ivar), ivar
@@ -2313,7 +2341,9 @@ class LeoQtLog(leoFrame.LeoLog):
         self.logCtrl: QWidget = None  # A union.
         self.logDict: dict[str, QWidget] = {}  # Keys are tab names.
         self.logWidget: LeoLog = None  # Set in finishCreate.
-        self.menu: qt_text.LeoQTextBrowser = None  # A Qt menu that pops up on right clicks in the hull or in tabs.
+        self.menu: qt_text.LeoQTextBrowser = (
+            None  # A Qt menu that pops up on right clicks in the hull or in tabs.
+        )
         self.tabWidget: QTabWidget = c.frame.top.tabWidget  # A QTabWidget that holds all the tabs.
         tw = self.tabWidget
 
@@ -2847,7 +2877,9 @@ class LeoQtMenu(leoMenu.LeoMenu):
         action.leo_command_name = commandName or ''
         if command:
 
-            def qt_add_command_callback(checked: int, label: str = label, command: Callable = command) -> None:
+            def qt_add_command_callback(
+                checked: int, label: str = label, command: Callable = command
+            ) -> None:
                 return command()
 
             action.triggered.connect(qt_add_command_callback)
@@ -2901,7 +2933,9 @@ class LeoQtMenu(leoMenu.LeoMenu):
             action = menu.addAction(label)
             if command:
 
-                def insert_callback(checked: str, label: str = label, command: Callable = command) -> None:
+                def insert_callback(
+                    checked: str, label: str = label, command: Callable = command
+                ) -> None:
                     command()
 
                 action.triggered.connect(insert_callback)
@@ -2931,7 +2965,9 @@ class LeoQtMenu(leoMenu.LeoMenu):
         return menu
 
     # @+node:ekr.20110605121601.18353: *5* LeoQtMenu.new_menu
-    def new_menu(self, parent: QWidget, tearoff: int = 0, label: str = '') -> QtMenuWrapper:  # label is for debugging.
+    def new_menu(
+        self, parent: QWidget, tearoff: int = 0, label: str = ''
+    ) -> QtMenuWrapper:  # label is for debugging.
         """Wrapper for the Tkinter new_menu menu method."""
         c, leoFrame = self.c, self.frame
         # Parent can be None, in which case it will be added to the menuBar.
@@ -2957,7 +2993,9 @@ class LeoQtMenu(leoMenu.LeoMenu):
         self.createMenusFromTables()  # This is LeoMenu.createMenusFromTables.
 
     # @+node:ekr.20110605121601.18357: *5* LeoQtMenu.createOpenWithMenu
-    def createOpenWithMenu(self, parent: QWidget, label: str, index: int, amp_index: int) -> QtMenuWrapper:
+    def createOpenWithMenu(
+        self, parent: QWidget, label: str, index: int, amp_index: int
+    ) -> QtMenuWrapper:
         """
         Create the File:Open With submenu.
 
@@ -3246,7 +3284,11 @@ class LeoQTreeWidget(QtWidgets.QTreeWidget):
                     z.setDirty()
             c.setChanged()
             u.afterMoveNode(p1, 'Drag', undoData)
-            if not as_child or p2.isExpanded() or c.config.getBool("drag-alt-drag-expands") is not False:
+            if (
+                not as_child
+                or p2.isExpanded()
+                or c.config.getBool("drag-alt-drag-expands") is not False
+            ):
                 c.redraw(p1)
             else:
                 c.redraw(p2)
@@ -4055,7 +4097,9 @@ class QtIconBarClass:
             else:  # recurse submenu
                 sub_menu = QtWidgets.QMenu(action_container)
                 act.setMenu(sub_menu)
-                self.add_rclick_menu(sub_menu, rc.children, controller, top_level=False, button=button)
+                self.add_rclick_menu(
+                    sub_menu, rc.children, controller, top_level=False, button=button
+                )
             if top_level:
                 # insert act before Remove Button
                 action_container.insertAction(action_container.actions()[top_offset], act)
@@ -4065,7 +4109,9 @@ class QtIconBarClass:
             act = QAction('---', action_container)
             act.setSeparator(True)
             action_container.insertAction(action_container.actions()[top_offset], act)
-            action_container.setText(action_container.text() + (c.config.getString('mod-scripting-subtext') or ''))
+            action_container.setText(
+                action_container.text() + (c.config.getString('mod-scripting-subtext') or '')
+            )
 
     # @-others
 
@@ -4236,9 +4282,13 @@ class QtStatusLineClass:
             # put(msg, status) where status is None, 'info', or 'fail'.
             # Just as a quick hack to avoid dealing with propagating those changes
             # back upstream, infer status like this:
-            if fg == c.config.getColor('find-found-fg') and bg == c.config.getColor('find-found-bg'):
+            if fg == c.config.getColor('find-found-fg') and bg == c.config.getColor(
+                'find-found-bg'
+            ):
                 status = 'info'
-            elif fg == c.config.getColor('find-not-found-fg') and bg == c.config.getColor('find-not-found-bg'):
+            elif fg == c.config.getColor('find-not-found-fg') and bg == c.config.getColor(
+                'find-not-found-bg'
+            ):
                 status = 'fail'
             else:
                 status = None
@@ -4784,7 +4834,11 @@ def showQtWidgets(event: LeoKeyEvent) -> None:
             children = [z for z in w.children() if any(z2 in z.__class__.__name__ for z2 in wanted)]
         else:  # Specifiy unwanted classes...
             ignore = ('action', 'animation', 'menu')
-            children = [z for z in w.children() if not any(z2 in z.__class__.__name__.lower() for z2 in ignore)]
+            children = [
+                z
+                for z in w.children()
+                if not any(z2 in z.__class__.__name__.lower() for z2 in ignore)
+            ]
         if children:
             for i, child in enumerate(children):
                 dump(child, level + 1)

@@ -648,7 +648,10 @@ class CodeWise:
         for name, idd in self.classcache.items():
             if name in clset:
                 c = self.cursor()
-                c.execute('select name, class, file, searchpattern from function where class = (?)', (idd,))
+                c.execute(
+                    'select name, class, file, searchpattern from function where class = (?)',
+                    (idd,),
+                )
                 for name, klassid, fileid, pat in c:
                     result.append((name, pat))
         return result
@@ -660,7 +663,10 @@ class CodeWise:
             c.execute('select name, class, file, searchpattern from function')
         else:
             prefix = str(prefix)
-            c.execute('select name, class, file, searchpattern from function where name like (?)', (prefix + '%',))
+            c.execute(
+                'select name, class, file, searchpattern from function where name like (?)',
+                (prefix + '%',),
+            )
         return [(name, pat, klassid, fileid) for name, klassid, fileid, pat in c]
 
     # @+node:ekr.20110310091639.14265: *3* file_id
@@ -696,7 +702,8 @@ class CodeWise:
         fid = self.file_id(file_name)
         c = self.cursor()
         c.execute(
-            'insert into function(class, name, searchpattern, file) values (?, ?, ?, ?)', [clid, func_name, aux, fid]
+            'insert into function(class, name, searchpattern, file) values (?, ?, ?, ?)',
+            [clid, func_name, aux, fid],
         )
 
     # @+node:ekr.20110310091639.14267: *3* feed_scintilla
@@ -741,7 +748,10 @@ class CodeWise:
                 idd = 0
             c = self.cursor()
             fid = self.file_id(fil)
-            c.execute('insert into function(class, name, searchpattern, file) values (?, ?, ?, ?)', [idd, m, pat, fid])
+            c.execute(
+                'insert into function(class, name, searchpattern, file) values (?, ?, ?, ?)',
+                [idd, m, pat, fid],
+            )
         self.dbconn.commit()
 
     # @+node:ekr.20110310091639.14269: *3* add_source

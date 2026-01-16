@@ -351,7 +351,9 @@ keywordsDictDict = {
 
 
 def netrexx_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment2", begin="/**", end="*/", delegate="java::javadoc")
+    return colorer.match_span(
+        s, i, kind="comment2", begin="/**", end="*/", delegate="java::javadoc"
+    )
 
 
 def netrexx_rule1(colorer, s, i):

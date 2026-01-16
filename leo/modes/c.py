@@ -128,12 +128,16 @@ keywordsDictDict = {
 # @+others
 # @+node:ekr.20250330150257.6: *3* function: c_rule0 /**
 def c_rule0(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="doxygen::doxygen")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="doxygen::doxygen"
+    )
 
 
 # @+node:ekr.20250330150257.7: *3* function: c_rule1 /*!
 def c_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/*!", end="*/", delegate="doxygen::doxygen")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/*!", end="*/", delegate="doxygen::doxygen"
+    )
 
 
 # @+node:ekr.20250330150257.8: *3* function: c_rule2 /*

@@ -142,7 +142,12 @@ def coffeescript_rule1(colorer, s, i):
 
 def coffeescript_rule2(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="literal1", begin="\"\"\"", end="\"\"\"", delegate="coffeescript::doublequoteliteral"
+        s,
+        i,
+        kind="literal1",
+        begin="\"\"\"",
+        end="\"\"\"",
+        delegate="coffeescript::doublequoteliteral",
     )
 
 
@@ -151,7 +156,9 @@ def coffeescript_rule3(colorer, s, i):
 
 
 def coffeescript_rule4(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="coffeescript::doublequoteliteral")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="coffeescript::doublequoteliteral"
+    )
 
 
 def coffeescript_rule5(colorer, s, i):
@@ -159,15 +166,21 @@ def coffeescript_rule5(colorer, s, i):
 
 
 def coffeescript_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="`", end="`", delegate="javascript::main")
+    return colorer.match_span(
+        s, i, kind="literal1", begin="`", end="`", delegate="javascript::main"
+    )
 
 
 def coffeescript_rule7(colorer, s, i):
-    return colorer.match_span(s, i, kind="markup", begin="///", end="///", delegate="coffeescript::hereregexp")
+    return colorer.match_span(
+        s, i, kind="markup", begin="///", end="///", delegate="coffeescript::hereregexp"
+    )
 
 
 def coffeescript_rule8(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="markup", begin="/(?![\\s=*])", end="/[igmy]{0,4}", no_line_break=True)
+    return colorer.match_span_regexp(
+        s, i, kind="markup", begin="/(?![\\s=*])", end="/[igmy]{0,4}", no_line_break=True
+    )
 
 
 def coffeescript_rule9(colorer, s, i):
@@ -573,7 +586,9 @@ rulesDict1 = {
 
 
 def coffeescript_rule37(colorer, s, i):
-    return colorer.match_span(s, i, kind="operator", begin="#{", end="}", delegate="coffeescript::main")
+    return colorer.match_span(
+        s, i, kind="operator", begin="#{", end="}", delegate="coffeescript::main"
+    )
 
 
 # Rules dict for coffeescript_doublequoteliteral ruleset.
@@ -587,7 +602,9 @@ rulesDict2 = {
 
 
 def coffeescript_rule38(colorer, s, i):
-    return colorer.match_span(s, i, kind="operator", begin="#{", end="}", delegate="coffeescript::main")
+    return colorer.match_span(
+        s, i, kind="operator", begin="#{", end="}", delegate="coffeescript::main"
+    )
 
 
 def coffeescript_rule39(colorer, s, i):

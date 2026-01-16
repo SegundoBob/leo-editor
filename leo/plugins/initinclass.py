@@ -37,7 +37,9 @@ def InitInClass(tag, keywords):
             if '__init__' in p.headString():
                 cull.append(p.copy())
                 old = parent.bodyString().strip().split('\n')
-                new = '\n'.join(['    ' + i if i.strip() else '' for i in p.bodyString().strip().split('\n')])
+                new = '\n'.join(
+                    ['    ' + i if i.strip() else '' for i in p.bodyString().strip().split('\n')]
+                )
                 new = '\n%s\n' % new
 
                 # insert before @others

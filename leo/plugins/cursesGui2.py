@@ -127,7 +127,10 @@ class LeoBodyTextfield(npyscreen.Textfield):
         c = parent_w.leo_c
         p = c.p
         if trace:
-            g.trace('LeoBodyTextfield. row: %s len(p.b): %4s ch_i: %s' % (parent_w.cursor_line, len(p.b), ch_i))
+            g.trace(
+                'LeoBodyTextfield. row: %s len(p.b): %4s ch_i: %s'
+                % (parent_w.cursor_line, len(p.b), ch_i)
+            )
         try:
             # Careful: chr can fail.
             ch = g.toUnicode(chr(ch_i))
@@ -582,7 +585,9 @@ class LeoTreeLine(npyscreen.TreeLine):
         # pylint: disable=no-member
 
         def put(char: str) -> None:
-            self.parent.curses_pad.addch(self.rely, self.relx + self.left_margin, ord(char), curses.A_NORMAL)
+            self.parent.curses_pad.addch(
+                self.rely, self.relx + self.left_margin, ord(char), curses.A_NORMAL
+            )
             self.left_margin += 1
 
         self.left_margin = left_margin
@@ -1035,7 +1040,9 @@ class StringFindTabManager:
             if val:
                 w.toggle()
 
-            def check_box_callback(n: int, setting_name: str = setting_name, w: Wrapper = w) -> None:
+            def check_box_callback(
+                n: int, setting_name: str = setting_name, w: Wrapper = w
+            ) -> None:
                 val = w.isChecked()
                 assert hasattr(find, setting_name), setting_name
                 setattr(find, setting_name, val)
@@ -1157,7 +1164,11 @@ class KeyEvent:
 
     # @+node:edward.20170428174322.3: *4* KeyEvent.__repr__
     def __repr__(self) -> str:
-        return 'KeyEvent: stroke: %s, char: %s, w: %s' % (repr(self.stroke), repr(self.char), repr(self.w))
+        return 'KeyEvent: stroke: %s, char: %s, w: %s' % (
+            repr(self.stroke),
+            repr(self.char),
+            repr(self.w),
+        )
 
     # @+node:edward.20170428174322.4: *4* KeyEvent.get & __getitem__
     def get(self, attr: str) -> Value:
@@ -1262,7 +1273,14 @@ class KeyHandler:
         # Switch the Shift modifier to handle the cap-lock key.
         if isinstance(ch, int):
             g.trace('can not happen: ch: %r binding: %r' % (ch, binding))
-        elif ch and len(ch) == 1 and binding and len(binding) == 1 and ch.isalpha() and binding.isalpha():
+        elif (
+            ch
+            and len(ch) == 1
+            and binding
+            and len(binding) == 1
+            and ch.isalpha()
+            and binding.isalpha()
+        ):
             if ch != binding:
                 if trace:
                     g.trace('caps-lock')
@@ -1719,7 +1737,9 @@ class LeoCursesGui(leoGui.LeoGui):
                 g.pr(s.rstrip())
 
     # @+node:ekr.20171126182120.2: *5* CGui.runAboutLeoDialog
-    def runAboutLeoDialog(self, c: Cmdr, version: str, theCopyright: str, url: str, email: str) -> None:
+    def runAboutLeoDialog(
+        self, c: Cmdr, version: str, theCopyright: str, url: str, email: str
+    ) -> None:
         """Create and run Leo's About Leo dialog."""
         if not g.unitTesting:
             message = '%s\n%s\n%s\n%s' % (version, theCopyright, url, email)
@@ -1898,7 +1918,11 @@ class LeoCursesGui(leoGui.LeoGui):
     def dump_keys(self) -> None:
         """Show all defined curses.KEY_ constants."""
         if 0:
-            aList = ['%3s %s' % (getattr(curses, z), z) for z in dir(curses) if isinstance(getattr(curses, z), int)]
+            aList = [
+                '%3s %s' % (getattr(curses, z), z)
+                for z in dir(curses)
+                if isinstance(getattr(curses, z), int)
+            ]
             g.trace()
             g.printList(sorted(aList))
 
@@ -1934,7 +1958,9 @@ class LeoCursesGui(leoGui.LeoGui):
         self.set_focus(c, c.frame.miniBufferWidget)
 
     # @+node:ekr.20170502101347.1: *5* CGui.get_focus
-    def get_focus(self, c: Cmdr = None, raw: bool = False, at_idle: bool = False) -> Optional[Wrapper]:
+    def get_focus(
+        self, c: Cmdr = None, raw: bool = False, at_idle: bool = False
+    ) -> Optional[Wrapper]:
         """
         Return the Leo wrapper for the npyscreen widget that is being edited.
         """
@@ -2529,6 +2555,9 @@ class CoreLog(leoFrame.LeoLog):
 
     # @+node:ekr.20170419143731.15: *4* CLog.put
     # Signature is different.
+
+    # fmt: off
+
     def put(self, s: str, color: str = None, tabName: str = 'Log', from_redirect: bool = False) -> None:  # type:ignore
         """All output to the log stream eventually comes here."""
         c, w = self.c, self.widget
@@ -2544,6 +2573,8 @@ class CoreLog(leoFrame.LeoLog):
         w.cursor_line += len(lines)
         w.start_display_at += len(lines)
         w.update()
+
+    # fmt: on
 
     # @+node:ekr.20170419143731.16: *4* CLog.putnl
     def putnl(self, tabName: str = 'Log') -> None:
@@ -2745,7 +2776,9 @@ class CoreTree(leoFrame.LeoTree):
         return HeadWrapper(c=self.c, name='head', p=p)
 
     # @+node:ekr.20170511095353.1: *5* CTree.editLabel (cursesGui2) (not used)
-    def editLabel(self, p: Position, selectAll: bool = False, selection: tuple = None) -> tuple[None, None]:
+    def editLabel(
+        self, p: Position, selectAll: bool = False, selection: tuple = None
+    ) -> tuple[None, None]:
         """Start editing p's headline."""
         return None, None
 
@@ -3223,7 +3256,10 @@ class LeoForm(npyscreen.Form):
     def display(self, *args: Args, **kwargs: KWargs) -> None:
         changed = any(z.c.isChanged() for z in g.app.windowList)
         c = g.app.log.c
-        self.name = 'Welcome to Leo: %s%s' % ('(changed) ' if changed else '', c.fileName() if c else '')
+        self.name = 'Welcome to Leo: %s%s' % (
+            '(changed) ' if changed else '',
+            c.fileName() if c else '',
+        )
         super().display(*args, **kwargs)
 
 
@@ -3506,7 +3542,9 @@ class LeoMLTree(npyscreen.MLTree):
         trace = False and not g.unitTesting
         assert self.values, g.callers()
         try:
-            active_line: "LeoTreeLine" = self._my_widgets[(self.cursor_line - self.start_display_at)]
+            active_line: "LeoTreeLine" = self._my_widgets[
+                (self.cursor_line - self.start_display_at)
+            ]
             assert isinstance(active_line, LeoTreeLine)
             if trace:
                 g.trace('LeoMLTree.active_line: %r' % active_line)
@@ -3935,7 +3973,10 @@ class LeoMLTree(npyscreen.MLTree):
         )  # fmt: skip
         reasons = (reason for (reason, cond) in table if cond)
         if trace:
-            g.trace('line: %2s %-20s %s' % (self.cursor_line, ','.join(reasons), self.values[self.cursor_line].content))
+            g.trace(
+                'line: %2s %-20s %s'
+                % (self.cursor_line, ','.join(reasons), self.values[self.cursor_line].content)
+            )
         return reasons
 
     # @+node:ekr.20170513122427.1: *5* LeoMLTree._redraw & helpers
@@ -4094,7 +4135,9 @@ class LeoValues(npyscreen.TreeData):
         """Ctor for LeoValues class."""
         super().__init__()  # Init the base class.
         self.c: Cmdr = c  # The commander of this outline.
-        self.data_cache: dict[int, LeoTreeData] = {}  # Keys are ints, values are LeoTreeData objects.
+        self.data_cache: dict[
+            int, LeoTreeData
+        ] = {}  # Keys are ints, values are LeoTreeData objects.
         self.last_generation = -1  # The last value of c.frame.tree.generation.
         self.last_len = 0  # The last computed value of the number of visible nodes.
         self.n_refreshes = 0  # Number of calls to refresh_cache.

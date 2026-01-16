@@ -383,7 +383,11 @@ def cmd_bookmark(event, child=False, organizer=False, container=None):
     bp = bc.vnode2position(container)
     nd = bp.insertAsNthChild(0)
     # pylint: disable=consider-using-ternary
-    nd.h = c.frame.body.wrapper.hasSelection() and c.frame.body.wrapper.getSelectedText() or bm.fix_text(c.p.h)
+    nd.h = (
+        c.frame.body.wrapper.hasSelection()
+        and c.frame.body.wrapper.getSelectedText()
+        or bm.fix_text(c.p.h)
+    )
     if not organizer:
         nd.b = new_url
     else:
@@ -470,7 +474,9 @@ def cmd_mark_as_target(event):
     c = event.get('c')
     g._bookmarks_target = c.p.get_UNL()
     g._bookmarks_target_v = c.p.v
-    g.es("Node noted - now use\nbookmarks-use-other-outline\nin the outline you want to\nstore bookmarks in this node")
+    g.es(
+        "Node noted - now use\nbookmarks-use-other-outline\nin the outline you want to\nstore bookmarks in this node"
+    )
 
 
 # @+node:ekr.20190619132530.1: ** bookmarks-use-other-outline
@@ -638,7 +644,9 @@ class BookMarkDisplay:
         KeyboardModifier.AltModifier: 'Alt',
         KeyboardModifier.AltModifier | KeyboardModifier.ControlModifier: 'AltControl',
         (
-            KeyboardModifier.AltModifier | KeyboardModifier.ControlModifier | KeyboardModifier.ShiftModifier
+            KeyboardModifier.AltModifier
+            | KeyboardModifier.ControlModifier
+            | KeyboardModifier.ShiftModifier
         ): 'AltControlShift',
         KeyboardModifier.AltModifier | KeyboardModifier.ShiftModifier: 'AltShift',
         KeyboardModifier.ControlModifier: 'Control',
@@ -794,7 +802,10 @@ class BookMarkDisplay:
             ("Re-name", self.rename_bookmark),
             ("Edit in tree", self.edit_bookmark),
             ("Delete", self.delete_bookmark),
-            ("Add this node as child bookmark", lambda e: cmd_bookmark_child(event={'c': bm.v.context})),
+            (
+                "Add this node as child bookmark",
+                lambda e: cmd_bookmark_child(event={'c': bm.v.context}),
+            ),
             ("Add bookmark folder", lambda e: cmd_bookmark_organizer(event={'c': bm.v.context})),
         ]
         for action in actions:
@@ -1043,7 +1054,14 @@ class BookMarkDisplay:
 
         if self.levels:  # drop excess levels
             if (
-                (not self.second and current_url and current_url.strip() and self.levels == 1 or up or self.upwards)
+                (
+                    not self.second
+                    and current_url
+                    and current_url.strip()
+                    and self.levels == 1
+                    or up
+                    or self.upwards
+                )
                 and current_level < self.w.layout().count()
                 and self.levels < self.w.layout().count()
             ):
@@ -1202,7 +1220,10 @@ class BookMarkDisplayProvider:
                             if factory and hasattr(factory, 'setTabForCommander'):
                                 factory.setTabForCommander(c)
 
-                        g.es("NOTE: bookmarks for this outline\nare in a different outline:\n  '%s'" % file_)
+                        g.es(
+                            "NOTE: bookmarks for this outline\nare in a different outline:\n  '%s'"
+                            % file_
+                        )
                     other_p = g.findAnyUnl(UNL, other_c)
                     if other_p:
                         v = other_p.v

@@ -81,7 +81,9 @@ class SimpleGrid(widget.Widget):
     def make_contained_widgets(self):
         if self.column_width_requested:
             # don't need a margin for the final column
-            self.columns = (self.width + self.col_margin) // (self.column_width_requested + self.col_margin)
+            self.columns = (self.width + self.col_margin) // (
+                self.column_width_requested + self.col_margin
+            )
         elif self.columns_requested:
             self.columns = self.columns_requested
         else:
@@ -158,7 +160,10 @@ class SimpleGrid(widget.Widget):
         self._cell_widget_show_value(cell, cell_value)
 
         if self.value:
-            if cell.grid_current_value_index in self.value or cell.grid_current_value_index == self.value:
+            if (
+                cell.grid_current_value_index in self.value
+                or cell.grid_current_value_index == self.value
+            ):
                 self._cell_widget_show_value_selected(cell, True)
             else:
                 self._cell_widget_show_value_selected(cell, False)
@@ -287,7 +292,9 @@ class SimpleGrid(widget.Widget):
 
     # @+node:ekr.20170428084208.24: *3* SimpleGrid.h_move_cell_right
     def h_move_cell_right(self, inpt):
-        if self.edit_cell[1] <= len(self.values[self.edit_cell[0]]) - 2:  # Only allow move to end of current line
+        if (
+            self.edit_cell[1] <= len(self.values[self.edit_cell[0]]) - 2
+        ):  # Only allow move to end of current line
             self.edit_cell[1] += 1
 
         if self.edit_cell[1] > self.begin_col_display_at + self.columns - 1:

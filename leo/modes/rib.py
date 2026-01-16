@@ -253,7 +253,9 @@ def rib_rule5(colorer, s, i):
 
 
 def rib_rule6(colorer, s, i):
-    return colorer.match_span(s, i, kind="literal1", begin="\"", end="\"", delegate="rib::literals", no_line_break=True)
+    return colorer.match_span(
+        s, i, kind="literal1", begin="\"", end="\"", delegate="rib::literals", no_line_break=True
+    )
 
 
 def rib_rule7(colorer, s, i):

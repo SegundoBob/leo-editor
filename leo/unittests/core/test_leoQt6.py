@@ -28,7 +28,11 @@ class TestQt6(BaseTestImporter):
         if 1:  # A real unit test.
             # Optional modules.
             exceptions = ('Qsci', 'QtSvg', 'QWebEngineSettings', 'WebEngineAttribute', 'uic')
-            fails = [attr for attr in attrs if attr not in exceptions and getattr(Qt6, attr, None) is None]
+            fails = [
+                attr
+                for attr in attrs
+                if attr not in exceptions and getattr(Qt6, attr, None) is None
+            ]
             self.assertFalse(fails, msg=','.join(fails))
 
         else:  # Inspection.

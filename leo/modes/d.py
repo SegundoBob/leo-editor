@@ -137,11 +137,15 @@ def d_rule0(colorer, s, i):
 
 
 def d_rule1(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/**", end="*/", delegate="doxygen::doxygen")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/**", end="*/", delegate="doxygen::doxygen"
+    )
 
 
 def d_rule2(colorer, s, i):
-    return colorer.match_span(s, i, kind="comment3", begin="/*!", end="*/", delegate="doxygen::doxygen")
+    return colorer.match_span(
+        s, i, kind="comment3", begin="/*!", end="*/", delegate="doxygen::doxygen"
+    )
 
 
 def d_rule3(colorer, s, i):
@@ -229,7 +233,9 @@ def d_rule23(colorer, s, i):
 
 
 def d_rule24(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def d_rule25(colorer, s, i):

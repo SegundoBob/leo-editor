@@ -192,7 +192,9 @@ def onCreate(tag, keywords):
 
 
 # @+node:ekr.20050806101253: *3* code_block
-def code_block(name, arguments, options, content, lineno, content_offset, block_text, state, state_machine):
+def code_block(
+    name, arguments, options, content, lineno, content_offset, block_text, state, state_machine
+):
     '''Implement the code-block directive for docutils.'''
 
     try:
@@ -549,7 +551,15 @@ class link_htmlparserClass(linkAnchorParserClass):
                         http_node_ref = mod_http.node_reference(href_node)
                         line, column = self.getpos()
                         if bwm_file:
-                            print >> bwm_file, "link(2):", line, column, href, href_file, http_node_ref
+                            (
+                                print >> bwm_file,
+                                "link(2):",
+                                line,
+                                column,
+                                href,
+                                href_file,
+                                http_node_ref,
+                            )
                         self.replacements.append((line, column, href, href_file, http_node_ref))
 
     # @+node:ekr.20050805162550.56: *4* get_replacements
@@ -765,7 +775,10 @@ class rstClass(object):
     def getOption(self, name):
         bwm = False
         if bwm:
-            g.trace("bwm: getOption self:%s, name:%s, value:%s" % (self, name, self.optionsDict.get(name)))
+            g.trace(
+                "bwm: getOption self:%s, name:%s, value:%s"
+                % (self, name, self.optionsDict.get(name))
+            )
 
         return self.optionsDict.get(name)
 
@@ -1117,7 +1130,9 @@ class rstClass(object):
             h = p.h.strip()
             if g.match_word(h, 0, "@rst"):
                 self.outputFileName = h[4:].strip()
-                if (self.outputFileName and self.outputFileName[0] != '-') or (toString and not self.outputFileName):
+                if (self.outputFileName and self.outputFileName[0] != '-') or (
+                    toString and not self.outputFileName
+                ):
                     found = True
                     self.toplevel = p.level()  # Define toplevel separately for each rst file.
                     if toString:
@@ -1396,13 +1411,18 @@ class rstClass(object):
             lines = self.handleDocOnlyMode(p, lines)
         else:
             lines = self.handleSpecialDocParts(lines, '@rst-options', retainContents=False)
-            lines = self.handleSpecialDocParts(lines, '@rst-markup', retainContents=self.getOption('generate_rst'))
+            lines = self.handleSpecialDocParts(
+                lines, '@rst-markup', retainContents=self.getOption('generate_rst')
+            )
             if self.getOption('show_doc_parts_in_rst_mode') is True:
                 pass  # original behaviour, treat as plain text
             elif self.getOption('show_doc_parts_in_rst_mode'):
                 # use value as class for content
                 lines = self.handleSpecialDocParts(
-                    lines, None, retainContents=True, asClass=self.getOption('show_doc_parts_in_rst_mode')
+                    lines,
+                    None,
+                    retainContents=True,
+                    asClass=self.getOption('show_doc_parts_in_rst_mode'),
                 )
             else:  # option evaluates to false, cut them out
                 lines = self.handleSpecialDocParts(lines, None, retainContents=False)
@@ -1940,13 +1960,17 @@ class rstClass(object):
                     marker = marker_parts[1]
                     replacement = "%s#%s" % (http_node_ref, marker)
                     try:
-                        attr[line + 2] = attr[line + 2].replace('href="%s"' % href, 'href="%s"' % replacement)
+                        attr[line + 2] = attr[line + 2].replace(
+                            'href="%s"' % href, 'href="%s"' % replacement
+                        )
                     except Exception:
                         g.es("Skipped ", attr[line + 2])
                 else:
                     # filename = marker_parts [0]
                     try:
-                        attr[line + 2] = attr[line + 2].replace('href="%s"' % href, 'href="%s"' % http_node_ref)
+                        attr[line + 2] = attr[line + 2].replace(
+                            'href="%s"' % href, 'href="%s"' % http_node_ref
+                        )
                     except Exception:
                         g.es("Skipped", attr[line + 2])
         # g.trace('after %s\n\n\n',attr)

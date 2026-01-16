@@ -57,7 +57,9 @@ def on_icondclick(tag, keywords):
     h = p.h
     if g.match_word(h, 0, "@expfolder"):
         if p.hasChildren():
-            result = g.app.gui.runAskYesNoDialog(c, "Reread?", "Reread contents of folder " + h[11:] + "?")
+            result = g.app.gui.runAskYesNoDialog(
+                c, "Reread?", "Reread contents of folder " + h[11:] + "?"
+            )
             if result == "no":
                 return
             kids = []

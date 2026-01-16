@@ -232,7 +232,9 @@ class AtFile:
 
         # Set other ivars.
         at.sentinels = True
-        at.force_newlines_in_at_nosent_bodies = c.config.getBool('force-newlines-in-at-nosent-bodies')
+        at.force_newlines_in_at_nosent_bodies = c.config.getBool(
+            'force-newlines-in-at-nosent-bodies'
+        )
         # For at.putBody only.
 
         at.encoding = c.getEncoding(root)
@@ -764,12 +766,16 @@ class AtFile:
             at.bodies_dict[p.v] = p.b
 
         # Calculate data.
-        new_public_lines = g.splitLines(new_contents) if new_contents else at.read_at_clean_lines(fileName)
+        new_public_lines = (
+            g.splitLines(new_contents) if new_contents else at.read_at_clean_lines(fileName)
+        )
         old_private_lines = self.write_at_clean_sentinels(root)
         marker = x.markerFromFileLines(old_private_lines, fileName)
         old_public_lines, junk = x.separate_sentinels(old_private_lines, marker)
         if old_public_lines:
-            new_private_lines = x.propagate_changed_lines(new_public_lines, old_private_lines, marker, p=root)
+            new_private_lines = x.propagate_changed_lines(
+                new_public_lines, old_private_lines, marker, p=root
+            )
         else:
             new_private_lines = []
             root.b = ''.join(new_public_lines)
@@ -889,9 +895,13 @@ class AtFile:
         new_public_lines = g.splitLines(contents)
         old_private_lines = self.write_at_clean_sentinels(root)
         old_public_lines, junk = x.separate_sentinels(old_private_lines, marker)
-        new_private_lines = x.propagate_changed_lines(new_public_lines, old_private_lines, marker, p=root)
+        new_private_lines = x.propagate_changed_lines(
+            new_public_lines, old_private_lines, marker, p=root
+        )
         if old_public_lines:  # Don't even *think* about removing this test.
-            new_private_lines = x.propagate_changed_lines(new_public_lines, old_private_lines, marker, p=root)
+            new_private_lines = x.propagate_changed_lines(
+                new_public_lines, old_private_lines, marker, p=root
+            )
         else:
             # This is not an error, it is
             # the first time the @jupytext has been read.
@@ -1398,7 +1408,9 @@ class AtFile:
         g.es('unless you can save the file successfully.', color='red')
 
     # @+node:ekr.20190108112519.1: *6* at.reportEndOfWrite
-    def reportEndOfWrite(self, files: list[Position], all: bool, dirty: bool) -> None:  # pragma: no cover
+    def reportEndOfWrite(
+        self, files: list[Position], all: bool, dirty: bool
+    ) -> None:  # pragma: no cover
         at = self
         if g.unitTesting:
             return
@@ -1774,7 +1786,9 @@ class AtFile:
                 # The hook must print an error message.
                 return False
 
-            contents = ''.join([s for s in g.splitLines(p.b) if at.directiveKind4(s, 0) == at.noDirective])
+            contents = ''.join(
+                [s for s in g.splitLines(p.b) if at.directiveKind4(s, 0) == at.noDirective]
+            )
             at.replaceFile(contents, at.encoding, fileName, root)
             c.raise_error_dialogs(kind='write')
             return True
@@ -1839,7 +1853,9 @@ class AtFile:
 
             # Write a minimal Jupyter file if the @jupytext tree is empty.
             if not root.b.strip() and not root.hasChildren():
-                prefix_list = c.config.getData('jupyter-prefix', strip_comments=False, strip_data=False)
+                prefix_list = c.config.getData(
+                    'jupyter-prefix', strip_comments=False, strip_data=False
+                )
                 if prefix_list:
                     prefix = ''.join(prefix_list)
                     root.b = prefix.strip() + '\n\n'
@@ -2049,7 +2065,9 @@ class AtFile:
             if not fileName:
                 at.addToOrphanList(root)
                 return ''
-            contents = ''.join([s for s in g.splitLines(root.b) if at.directiveKind4(s, 0) == at.noDirective])
+            contents = ''.join(
+                [s for s in g.splitLines(root.b) if at.directiveKind4(s, 0) == at.noDirective]
+            )
             return contents
         except Exception:
             at.writeException(fileName, root)
@@ -2194,7 +2212,9 @@ class AtFile:
                 status.at_comment_seen = True
             elif g.match_word(s, i, '@delims'):
                 status.at_delims_seen = True
-            if status.at_comment_seen and status.at_delims_seen and not status.at_warning_given:  # pragma: no cover
+            if (
+                status.at_comment_seen and status.at_delims_seen and not status.at_warning_given
+            ):  # pragma: no cover
                 status.at_warning_given = True
                 at.error(f"@comment and @delims in node {p.h}")
             at.putDirective(s, i, p)
@@ -2402,7 +2422,10 @@ class AtFile:
             at.putCodeLine(s, i)
         else:  # pragma: no cover
             # Do give this error even if unit testing.
-            at.writeError(f"undefined section: {g.truncate(name, 60)}\n  referenced from: {g.truncate(p.h, 60)}")
+            at.writeError(
+                f"undefined section: {g.truncate(name, 60)}\n"
+                f"  referenced from: {g.truncate(p.h, 60)}"
+            )  # fmt: skip
 
     # @+node:ekr.20041005105605.180: *5* writing doc lines...
     # @+node:ekr.20041005105605.181: *6* at.putBlankDocLine
@@ -2578,7 +2601,9 @@ class AtFile:
         c.orphan_at_file_nodes.append(root.h)
 
     # @+node:ekr.20090514111518.5661: *5* at.checkPythonCode & helpers
-    def checkPythonCode(self, contents: str, fileName: str, root: Position) -> None:  # pragma: no cover
+    def checkPythonCode(
+        self, contents: str, fileName: str, root: Position
+    ) -> None:  # pragma: no cover
         """Perform python-related checks on root."""
         if not g.app.log:
             return  # We are auto-saving.
@@ -3332,7 +3357,9 @@ class AtFile:
         p.v.tempAttributes['read-path'] = d
 
     # @+node:ekr.20090712050729.6017: *4* at.promptForDangerousWrite
-    def promptForDangerousWrite(self, fileName: str, message: str = None) -> bool:  # pragma: no cover
+    def promptForDangerousWrite(
+        self, fileName: str, message: str = None
+    ) -> bool:  # pragma: no cover
         """Raise a dialog asking the user whether to overwrite an existing file."""
         at, c, root = self, self.c, self.root
         if at.cancelFlag:
@@ -3950,7 +3977,9 @@ class FastAtRead:
                     # Carefully update the section reference pattern!
                     section_delim1 = d1 = re.escape(m.group(1))
                     section_delim2 = d2 = re.escape(m.group(2) or '')
-                    self.ref_pat = re.compile(rf'^(\s*){comment_delim1}@(\+|-){d1}(.*){d2}\s*{comment_delim2}$')
+                    self.ref_pat = re.compile(
+                        rf'^(\s*){comment_delim1}@(\+|-){d1}(.*){d2}\s*{comment_delim2}$'
+                    )
                 body.append(f"@section-delims {m.group(1)} {m.group(2)}\n")
                 continue
             # @-<< handle @section-delims >>

@@ -200,10 +200,19 @@ class AttributeGetterUA(AttributeGetter):
                             type_ = self.typeMap[ek]
                             for ekt in d[k][ek]:
                                 ans.append(
-                                    (self, ekt, d[k][ek][ekt], tuple(path + ['_edit', ek, ekt]), type_, k != '_edit')
+                                    (
+                                        self,
+                                        ekt,
+                                        d[k][ek][ekt],
+                                        tuple(path + ['_edit', ek, ekt]),
+                                        type_,
+                                        k != '_edit',
+                                    )
                                 )
                         else:
-                            ans.append((self, ek, d[k][ek], tuple(path + ['_edit', ek]), str, k != '_edit'))
+                            ans.append(
+                                (self, ek, d[k][ek], tuple(path + ['_edit', ek]), str, k != '_edit')
+                            )
 
     # @+node:tbrown.20091103080354.1410: *3* getAttribs
     def getAttribs(self, v):
@@ -709,7 +718,10 @@ class attrib_edit_Controller:
                 g.es("For '%s' attributes:\n  %s" % (getter.name(), getter.helpCreate()))
 
         if len(ans) > 1:
-            g.error('Eror: more than one attribute type (%s) active' % ', '.join([i.name() for i in ans]))
+            g.error(
+                'Eror: more than one attribute type (%s) active'
+                % ', '.join([i.name() for i in ans])
+            )
         elif ans:
             ans[0].createAttrib(self.c.currentPosition().v, gui_parent=self.parent)
             self.updateEditorInt()
@@ -730,7 +742,12 @@ class attrib_edit_Controller:
         dat.sort(key=lambda x: x[0])
 
         res: QWidget
-        res = ListDialog(self.parent, "Enter attribute path", "Enter path to attribute (space separated words)", dat)
+        res = ListDialog(
+            self.parent,
+            "Enter attribute path",
+            "Enter path to attribute (space separated words)",
+            dat,
+        )
         res.exec()
         if res.result() == DialogCode.Rejected:
             return
@@ -763,7 +780,12 @@ class attrib_edit_Controller:
     def manageModes(self):
         modes = [[i[0].name(), i[1]] for i in self.getsetters]
 
-        res = ListDialog(self.parent, "Enter attribute path", "Enter path to attribute (space separated words)", modes)
+        res = ListDialog(
+            self.parent,
+            "Enter attribute path",
+            "Enter path to attribute (space separated words)",
+            modes,
+        )
 
         res.exec()
         if res.result() == DialogCode.Rejected:

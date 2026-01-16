@@ -1083,11 +1083,15 @@ def ahk_rule12(colorer, s, i):
 
 
 def ahk_rule13(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern=":", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def ahk_rule14(colorer, s, i):
-    return colorer.match_mark_previous(s, i, kind="label", pattern="::", at_whitespace_end=True, exclude_match=True)
+    return colorer.match_mark_previous(
+        s, i, kind="label", pattern="::", at_whitespace_end=True, exclude_match=True
+    )
 
 
 def ahk_rule15(colorer, s, i):

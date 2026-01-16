@@ -55,7 +55,10 @@ class chapterHoist:
             c.hoist()
 
         b = sc.createIconButton(
-            args=None, text='save-hoist', command=saveHoistCallback, statusLine='Create hoist button current node'
+            args=None,
+            text='save-hoist',
+            command=saveHoistCallback,
+            statusLine='Create hoist button current node',
         )
 
         return b
@@ -69,7 +72,9 @@ class chapterHoist:
         # Fix #426 with a kludge that satisfies k.registerCommand.
         dehoistCallback.__name__ = 'wrapper: dehoist'
 
-        b = sc.createIconButton(args=None, text='dehoist', command=dehoistCallback, statusLine='Dehoist')
+        b = sc.createIconButton(
+            args=None, text='dehoist', command=dehoistCallback, statusLine='Dehoist'
+        )
 
         return b
 
@@ -87,7 +92,9 @@ class chapterHoist:
             c.hoist()
             return 'break'
 
-        sc.createIconButton(args=None, text=buttonText, command=hoistButtonCallback, statusLine=statusLine)
+        sc.createIconButton(
+            args=None, text=buttonText, command=hoistButtonCallback, statusLine=statusLine
+        )
 
     # @-others
 

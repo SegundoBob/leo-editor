@@ -76,7 +76,9 @@ def doPara(word, text, style=None):
 
 
 # @+node:EKR.20040517075715.18: ** writeNodeAndTree
-def writeNodeAndTree(c, word, header_style, level, maxlevel=3, usesections=1, sectionhead="", vnode=None):
+def writeNodeAndTree(
+    c, word, header_style, level, maxlevel=3, usesections=1, sectionhead="", vnode=None
+):
     """Write a node and its children to Word"""
     if vnode is None:
         vnode = c.currentVnode()

@@ -511,7 +511,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return False
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
-    def match_prefix(self, ch: str, i: int, j: int, prefix: str, s: str) -> tuple[int, str, str, str]:
+    def match_prefix(
+        self, ch: str, i: int, j: int, prefix: str, s: str
+    ) -> tuple[int, str, str, str]:
         """A match helper."""
         i = j - len(prefix)
         word = g.checkUnicode(prefix) + g.checkUnicode(ch)

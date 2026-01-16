@@ -46,7 +46,9 @@ def moin_rule2(colorer, s, i):
 
 
 def moin_rule3(colorer, s, i):
-    return colorer.match_seq_regexp(s, i, kind="label", regexp="\\s+\\w[[:alnum:][:blank:]]+::", at_line_start=True)
+    return colorer.match_seq_regexp(
+        s, i, kind="label", regexp="\\s+\\w[[:alnum:][:blank:]]+::", at_line_start=True
+    )
 
 
 def moin_rule4(colorer, s, i):
@@ -66,7 +68,9 @@ def moin_rule7(colorer, s, i):
 
 
 def moin_rule8(colorer, s, i):
-    return colorer.match_span_regexp(s, i, kind="keyword1", begin="(={1,5})", end="$1", at_line_start=True)
+    return colorer.match_span_regexp(
+        s, i, kind="keyword1", begin="(={1,5})", end="$1", at_line_start=True
+    )
 
 
 def moin_rule9(colorer, s, i):

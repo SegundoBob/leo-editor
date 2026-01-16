@@ -199,7 +199,9 @@ class Importer:
         return ok
 
     # @+node:ekr.20230529075138.39: *5* 1B: i.regularize_whitespace
-    def regularize_whitespace(self, lines: list[str]) -> list[str]:  # pragma: no cover (missing test)
+    def regularize_whitespace(
+        self, lines: list[str]
+    ) -> list[str]:  # pragma: no cover (missing test)
         """
         Importer.regularize_whitespace.
 
@@ -227,7 +229,9 @@ class Importer:
                     count += 1
                 result.append(s)
         if count and not g.unitTesting:
-            print(f"{self.root.h}:\nchanged leading {kind2} to {kind} in {count} line{g.plural(count)}")
+            print(
+                f"{self.root.h}:\nchanged leading {kind2} to {kind} in {count} line{g.plural(count)}"
+            )
         return result
 
     # @+node:ekr.20230529075138.38: *5* 1C: i.preprocess_lines
@@ -400,7 +404,9 @@ class Importer:
                     assert i1 + 1 <= end <= i2, (i1, end, i2)
                     # Don't generate small blocks.
                     if min_size == 0 or end - prev_i > min_size:
-                        block = Block(kind, name, start=prev_i, start_body=i, end=end, lines=self.lines)
+                        block = Block(
+                            kind, name, start=prev_i, start_body=i, end=end, lines=self.lines
+                        )
                         results.append(block)
                         i = prev_i = end
                     else:
@@ -448,7 +454,9 @@ class Importer:
         return f"{block.kind} {name_s}"
 
     # @+node:ekr.20230920165923.1: *5* 2D: i.generate_all_bodies & helpers
-    def generate_all_bodies(self, parent: Position, outer_block: Block, result_blocks: list[Block]) -> None:
+    def generate_all_bodies(
+        self, parent: Position, outer_block: Block, result_blocks: list[Block]
+    ) -> None:
         """Carefully generate bodies from the given blocks."""
         c = self.c
         at = c.atFileCommands

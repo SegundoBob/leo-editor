@@ -1574,7 +1574,9 @@ def init() -> bool:
         return False
     if not QtWidgets or not g.app.gui.guiName().startswith('qt'):
         if (
-            not g.unitTesting and not g.app.batchMode and g.app.gui.guiName() in ('browser', 'curses')  # EKR.
+            not g.unitTesting
+            and not g.app.batchMode
+            and g.app.gui.guiName() in ('browser', 'curses')  # EKR.
         ):
             g.es_print('viewrendered3 requires Qt')
         return False
@@ -2505,10 +2507,14 @@ class ViewRenderedController3(QtWidgets.QWidget):
             self.asciidoctor = find_exe(self.prefer_external) or None
 
         self.asciidoc_show_proc_fail_msgs = True
-        self.asciidoctor_suppress_footer = c.config.getBool('vr3-asciidoctor-nofooter', default=False)
+        self.asciidoctor_suppress_footer = c.config.getBool(
+            'vr3-asciidoctor-nofooter', default=False
+        )
         self.asciidoctor_icons = c.config.getString('vr3-asciidoctor-icons') or ''
         self.asciidoctor_imagesdir = c.config.getString('vr3-asciidoctor-imagesdir') or ''
-        self.asciidoctor_diagram = asciidoc_has_diagram and c.config.getBool('vr3-asciidoctor-diagram', default=False)
+        self.asciidoctor_diagram = asciidoc_has_diagram and c.config.getBool(
+            'vr3-asciidoctor-diagram', default=False
+        )
         # @-<< configure asciidoc >>
 
         self.external_editor = c.config.getString('vr3-ext-editor') or ''
@@ -2874,7 +2880,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
         if use_default:
             leo_theme_path = g.app.loadManager.computeThemeFilePath()
             leo_theme_name = g.os_path_basename(leo_theme_path)
-            use_dark_theme = self.use_dark_theme or 'dark' in leo_theme_name or leo_theme_name == LEO_THEME_NAME
+            use_dark_theme = (
+                self.use_dark_theme or 'dark' in leo_theme_name or leo_theme_name == LEO_THEME_NAME
+            )
             if use_dark_theme:
                 stylesheet = RST_DEFAULT_DARK_STYLESHEET
             else:
@@ -3386,7 +3394,12 @@ class ViewRenderedController3(QtWidgets.QWidget):
             elif self.gnx != p.v.gnx and not self.lock_to_tree:
                 _must_update = True
                 self.cancel_scroll()
-            elif doc.isModified() or len(p.b) != self.length or self.last_text != p.b or self.last_headline != p.h:
+            elif (
+                doc.isModified()
+                or len(p.b) != self.length
+                or self.last_text != p.b
+                or self.last_headline != p.h
+            ):
                 if self.get_kind(p) in ('html', 'pyplot'):
                     _must_update = False  # Only update explicitly.
                 else:
@@ -4317,7 +4330,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
                 execution_result, err_result = self.exec_code(code, environment)
             # Otherwise check VR3_CONFIG_FILE to see if we know how to run this language
             elif self.controlling_code_lang in exepaths:
-                execution_result, err_result = self.ext_execute_code(self.controlling_code_lang, code)
+                execution_result, err_result = self.ext_execute_code(
+                    self.controlling_code_lang, code
+                )
             else:
                 err_result = f"Can't execute {self.controlling_code_lang} today."
 
@@ -4656,7 +4671,13 @@ class ViewRenderedController3(QtWidgets.QWidget):
             # @+<< fill_chunks >>
             # @+node:TomP.20200112103729.5: *7* << fill_chunks >>
             _cleanline = line.strip()
-            _starts_with_at = not _got_language and line and line[0] == '@' and _cleanline != '@' and _cleanline != '@c'
+            _starts_with_at = (
+                not _got_language
+                and line
+                and line[0] == '@'
+                and _cleanline != '@'
+                and _cleanline != '@c'
+            )
 
             if i == 0 and not _got_language:
                 # Set up the first chunk (unless the first line changes the language)
@@ -5644,7 +5665,10 @@ class StateMachine:
         (State.FENCED_MATH, Marker.MARKER_NONE): (Action.add_line, State.FENCED_MATH),
         (State.FENCED_MATH, Marker.MD_FENCE_MARKER): (Action.add_math_block_end, State.BASE),
         # ========== ASCIIDOC-specific states =================
-        (State.BASE, Marker.ASCDOC_CODE_LANG_MARKER): (Action.no_action, State.ASCDOC_READY_FOR_FENCE),
+        (State.BASE, Marker.ASCDOC_CODE_LANG_MARKER): (
+            Action.no_action,
+            State.ASCDOC_READY_FOR_FENCE,
+        ),
         (State.ASCDOC_READY_FOR_FENCE, Marker.ASCDOC_CODE_MARKER):
         # Start a new code chunk
         (Action.new_chunk, State.FENCED_CODE),

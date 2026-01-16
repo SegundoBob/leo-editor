@@ -517,7 +517,9 @@ class EditCommandsClass(BaseEditCommandsClass):
             start_text = w.getAllText()[: w.getInsertPoint()]
             if start_text:
                 # make non-path characters whitespace
-                start_text = ''.join(i if i not in '\'"`()[]{}<>!|*,@#$&' else ' ' for i in start_text)
+                start_text = ''.join(
+                    i if i not in '\'"`()[]{}<>!|*,@#$&' else ' ' for i in start_text
+                )
                 if start_text[-1].isspace():  # use node path if nothing typed
                     start_text = ''
                 else:
@@ -1491,7 +1493,9 @@ class EditCommandsClass(BaseEditCommandsClass):
         c.setChanged()
 
     # @+node:ekr.20150514063305.241: *4* ec.insertIconFromFile
-    def insertIconFromFile(self, path: str, p: Position = None, pos: int = None, **kargs: KWargs) -> None:
+    def insertIconFromFile(
+        self, path: str, p: Position = None, pos: int = None, **kargs: KWargs
+    ) -> None:
         c = self.c
         if not p:
             p = c.p
@@ -2277,7 +2281,9 @@ class EditCommandsClass(BaseEditCommandsClass):
         w.flashCharacter(i, bg, fg, flashes, delay)
 
     # @+node:ekr.20150514063305.272: *5* ec.flashMatchingBracketsHelper
-    def flashMatchingBracketsHelper(self, c: Cmdr, ch: str, i: int, p: Position, w: Wrapper) -> None:
+    def flashMatchingBracketsHelper(
+        self, c: Cmdr, ch: str, i: int, p: Position, w: Wrapper
+    ) -> None:
         """Flash matching brackets at char ch at position i at widget w."""
         d = {}
         # pylint: disable=consider-using-enumerate
@@ -2319,7 +2325,10 @@ class EditCommandsClass(BaseEditCommandsClass):
         else:
             w.insert(i, ch)
             w.setInsertPoint(i + 1)
-            if c.autoindent_in_nocolor or (c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change"):
+            if (
+                c.autoindent_in_nocolor
+                or c.frame.body.colorizer.useSyntaxColoring(p) and undoType != "Change"
+            ):  # fmt: skip
                 # No auto-indent if in @nocolor mode or after a Change command.
                 self.updateAutoIndent(p, w)
         w.seeInsertPoint()
@@ -2363,7 +2372,9 @@ class EditCommandsClass(BaseEditCommandsClass):
             w.seeInsertPoint()  # 2011/10/02: Fix cursor-movement bug.
 
     # @+node:ekr.20150514063305.276: *5* ec.updateAutomatchBracket
-    def updateAutomatchBracket(self, p: Position, w: Wrapper, ch: str, oldSel: tuple[int, int]) -> None:
+    def updateAutomatchBracket(
+        self, p: Position, w: Wrapper, ch: str, oldSel: tuple[int, int]
+    ) -> None:
         c = self.c
         language = c.getLanguage(p)
         i, j = oldSel
@@ -3021,7 +3032,9 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.302: *4* ec.extend-to-word
     @cmd('extend-to-word')
-    def extendToWord(self, event: LeoKeyEvent, select: bool = True, w: Wrapper = None) -> tuple[int, int]:
+    def extendToWord(
+        self, event: LeoKeyEvent, select: bool = True, w: Wrapper = None
+    ) -> tuple[int, int]:
         """Compute the word at the cursor. Select it if select arg is True."""
         if not w:
             w = self.editWidget(event)
@@ -3174,7 +3187,9 @@ class EditCommandsClass(BaseEditCommandsClass):
         self.movePageHelper(event, kind='forward', extend=True)
 
     # @+node:ekr.20150514063305.307: *5* ec.movePageHelper
-    def movePageHelper(self, event: LeoKeyEvent, kind: str, extend: bool) -> None:  # kind in back/forward.
+    def movePageHelper(
+        self, event: LeoKeyEvent, kind: str, extend: bool
+    ) -> None:  # kind in back/forward.
         """Move the cursor up/down one page, possibly extending the selection."""
         w = self.editWidget(event)
         if not w:
@@ -3958,7 +3973,9 @@ class EditCommandsClass(BaseEditCommandsClass):
         return self.sortLines(event, ignoreCase=True)
 
     @cmd('sort-lines')
-    def sortLines(self, event: LeoKeyEvent, ignoreCase: bool = False, reverse: bool = False) -> None:
+    def sortLines(
+        self, event: LeoKeyEvent, ignoreCase: bool = False, reverse: bool = False
+    ) -> None:
         """Sort the selected lines."""
         w = self.editWidget(event)
         if not self._chckSel(event):

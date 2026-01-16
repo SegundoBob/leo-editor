@@ -162,7 +162,9 @@ def runOpenFileDialog(title=None, filetypes=None, defaultextension=None, multipl
     ok, data = callGtkDialogs(data)
 
     if not ok:
-        return oldopen(title=title, filetypes=filetypes, defaultextension=defaultextension, multiple=multiple)
+        return oldopen(
+            title=title, filetypes=filetypes, defaultextension=defaultextension, multiple=multiple
+        )
 
     if data is None:
         return ''

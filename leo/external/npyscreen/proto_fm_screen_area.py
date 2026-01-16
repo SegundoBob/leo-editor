@@ -53,7 +53,16 @@ class ScreenArea:
 
     # @+others
     # @+node:ekr.20170428084207.427: *3* ScreenArea.__init__
-    def __init__(self, lines=0, columns=0, minimum_lines=24, minimum_columns=80, show_atx=0, show_aty=0, **keywords):
+    def __init__(
+        self,
+        lines=0,
+        columns=0,
+        minimum_lines=24,
+        minimum_columns=80,
+        show_atx=0,
+        show_aty=0,
+        **keywords,
+    ):
         # Putting a default in here will override the system in _create_screen. For testing?
         if not lines:
             lines = self.__class__.DEFAULT_LINES
@@ -125,7 +134,9 @@ class ScreenArea:
         # let's see how big we could be: create a temp screen
         # and see the size curses makes it.  No good to keep, though
         try:
-            mxy, mxx = struct.unpack('hh', fcntl.ioctl(sys.stderr.fileno(), termios.TIOCGWINSZ, 'xxxx'))
+            mxy, mxx = struct.unpack(
+                'hh', fcntl.ioctl(sys.stderr.fileno(), termios.TIOCGWINSZ, 'xxxx')
+            )
             if (mxy, mxx) == (0, 0):
                 raise ValueError
         except (ValueError, NameError):
@@ -157,12 +168,17 @@ class ScreenArea:
         # Getting strange errors on OS X, with curses sometimes crashing at this point.
         # Suspect screen size not updated in time. This try: seems to solve it with no ill effects.
         try:
-            self.curses_pad.refresh(self.show_from_y, self.show_from_x, self.show_aty, self.show_atx, _my, _mx)
+            self.curses_pad.refresh(
+                self.show_from_y, self.show_from_x, self.show_aty, self.show_atx, _my, _mx
+            )
         except curses.error:
             pass
         self.ALL_SHOWN = (
             # #1525: change 'is' to '==' to avoid deprecation warning.
-            self.show_from_y == 0 and self.show_from_x == 0 and _my >= self.lines and _mx >= self.columns
+            self.show_from_y == 0
+            and self.show_from_x == 0
+            and _my >= self.lines
+            and _mx >= self.columns
         )
 
     # @+node:ekr.20170428084207.433: *3* erase

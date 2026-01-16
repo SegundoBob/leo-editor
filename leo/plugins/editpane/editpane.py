@@ -110,7 +110,9 @@ class LeoEditPane(QtWidgets.QWidget):
         self._register_handlers()
 
     # @+node:tbrown.20171028115438.6: *3* _add_checkbox
-    def _add_checkbox(self, text, state_changed, tooltip, checked=True, enabled=True, button_label=True):
+    def _add_checkbox(
+        self, text, state_changed, tooltip, checked=True, enabled=True, button_label=True
+    ):
         """
         _add_checkbox - helper to add a checkbox
 
@@ -246,10 +248,18 @@ class LeoEditPane(QtWidgets.QWidget):
         self.control = self._add_frame()
         # checkboxes
         txt = ",\ncheck to do this always"
-        self.cb_track = self._add_checkbox("Track", self.change_track, "Track the node selected in the tree" + txt)
-        self.cb_goto = self._add_checkbox("Goto", self.change_goto, "Make the tree go to this node" + txt)
-        self.cb_update = self._add_checkbox("Update", self.change_update, "Update view to match changed node" + txt)
-        self.cb_recurse = self._add_checkbox("Recurse", self.change_recurse, "Recursive view" + txt, checked=recurse)
+        self.cb_track = self._add_checkbox(
+            "Track", self.change_track, "Track the node selected in the tree" + txt
+        )
+        self.cb_goto = self._add_checkbox(
+            "Goto", self.change_goto, "Make the tree go to this node" + txt
+        )
+        self.cb_update = self._add_checkbox(
+            "Update", self.change_update, "Update view to match changed node" + txt
+        )
+        self.cb_recurse = self._add_checkbox(
+            "Recurse", self.change_recurse, "Recursive view" + txt, checked=recurse
+        )
         # mode menu
         btn = self.btn_mode = QtWidgets.QPushButton("Mode", self)
         self.control.layout().addWidget(btn)
@@ -292,7 +302,9 @@ class LeoEditPane(QtWidgets.QWidget):
         self.line_edit.setText("test")
 
         # toggle control visibility
-        self.toggle_ctrl.clicked.connect(lambda checked: self.control.setVisible(not self.control.isVisible()))
+        self.toggle_ctrl.clicked.connect(
+            lambda checked: self.control.setVisible(not self.control.isVisible())
+        )
 
     # @+node:tbrown.20171028115438.14: *3* header_visible
     @property
@@ -376,7 +388,11 @@ class LeoEditPane(QtWidgets.QWidget):
     def load_modules(self):
         """load_modules - load modules to find widgets"""
         module_dir = os.path.dirname(__file__)
-        names = [os.path.splitext(i) for i in os.listdir(module_dir) if os.path.isfile(os.path.join(module_dir, i))]
+        names = [
+            os.path.splitext(i)
+            for i in os.listdir(module_dir)
+            if os.path.isfile(os.path.join(module_dir, i))
+        ]
         # FIXME: sort 'plain' to start of list for devel.
         names.sort(key=lambda x: (not x[0].startswith('plain'), x[0]))
         modules = []

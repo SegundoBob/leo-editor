@@ -810,7 +810,11 @@ class SpellTabHandler:
                         alts2 = sc.process_word(alt_word)
                         if alts2:
                             # Add the top three *new* suggestions to the top of alts.
-                            new_alts = [alts2[i] for i in range(3) if i < len(alts2) and alts2[i] not in alts]
+                            new_alts = [
+                                alts2[i]
+                                for i in range(3)
+                                if i < len(alts2) and alts2[i] not in alts
+                            ]
                             for z in reversed(new_alts):
                                 alts.insert(0, z)
                         else:

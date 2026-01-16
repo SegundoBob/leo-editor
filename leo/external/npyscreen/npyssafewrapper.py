@@ -91,7 +91,9 @@ def external_reset():
 def wrapper_no_fork(call_function, reset=False):
     global _NEVER_RUN_INITSCR
     if not _NEVER_RUN_INITSCR:
-        warnings.warn("""Repeated calls of endwin may cause a memory leak. Use wrapper_fork to avoid.""")
+        warnings.warn(
+            """Repeated calls of endwin may cause a memory leak. Use wrapper_fork to avoid."""
+        )
     global _SCREEN
     return_code = None
     if _NEVER_RUN_INITSCR:

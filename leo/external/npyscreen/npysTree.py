@@ -238,7 +238,9 @@ class TreeData:
                     if sort:
                         if key:
                             # must be reverse because about to use extendleft() below.
-                            nodes_to_yield.extendleft(sorted(child.get_children(), key=key, reverse=True))
+                            nodes_to_yield.extendleft(
+                                sorted(child.get_children(), key=key, reverse=True)
+                            )
                         else:
                             nodes_to_yield.extendleft(sorted(child.get_children(), reverse=True))
                     else:

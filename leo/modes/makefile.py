@@ -75,13 +75,25 @@ def makefile_rule0(colorer, s, i):
 
 def makefile_rule1(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword2", begin="$(", end=")", delegate="makefile::variable", no_line_break=True
+        s,
+        i,
+        kind="keyword2",
+        begin="$(",
+        end=")",
+        delegate="makefile::variable",
+        no_line_break=True,
     )
 
 
 def makefile_rule2(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword2", begin="${", end="}", delegate="makefile::variable", no_line_break=True
+        s,
+        i,
+        kind="keyword2",
+        begin="${",
+        end="}",
+        delegate="makefile::variable",
+        no_line_break=True,
     )
 
 
@@ -334,13 +346,25 @@ def makefile_rule9(colorer, s, i):
 
 def makefile_rule10(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword2", begin="$(", end=")", delegate="makefile::variable", no_line_break=True
+        s,
+        i,
+        kind="keyword2",
+        begin="$(",
+        end=")",
+        delegate="makefile::variable",
+        no_line_break=True,
     )
 
 
 def makefile_rule11(colorer, s, i):
     return colorer.match_span(
-        s, i, kind="keyword2", begin="${", end="}", delegate="makefile::variable", no_line_break=True
+        s,
+        i,
+        kind="keyword2",
+        begin="${",
+        end="}",
+        delegate="makefile::variable",
+        no_line_break=True,
     )
 
 

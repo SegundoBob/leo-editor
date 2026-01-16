@@ -255,7 +255,9 @@ class AstFormatter:
         asynch_prefix = 'asynch ' if async_flag else ''
         if getattr(node, 'returns', None):  # Python 3.
             returns = self.visit(node.returns)
-            result.append(self.indent('%sdef %s(%s): -> %s\n' % (asynch_prefix, name, args, returns)))
+            result.append(
+                self.indent('%sdef %s(%s): -> %s\n' % (asynch_prefix, name, args, returns))
+            )
         else:
             result.append(self.indent('%sdef %s(%s):\n' % (asynch_prefix, name, args)))
         for z in node.body:
@@ -383,7 +385,10 @@ class AstFormatter:
     # Attribute(expr value, identifier attr, expr_context ctx)
 
     def do_Attribute(self, node):
-        return '%s.%s' % (self.visit(node.value), node.attr)  # Don't visit node.attr: it is always a string.
+        return '%s.%s' % (
+            self.visit(node.value),
+            node.attr,
+        )  # Don't visit node.attr: it is always a string.
 
     # @+node:ekr.20160317055215.21: *4* f.Bytes
     def do_Bytes(self, node):  # Python 3.x only.
@@ -446,7 +451,10 @@ class AstFormatter:
             # result.append(',\n'.join(items))
             # result.append('\n}' if keys else '}')
         else:
-            print('Error: f.Dict: len(keys) != len(values)\nkeys: %s\nvals: %s' % (repr(keys), repr(values)))
+            print(
+                'Error: f.Dict: len(keys) != len(values)\nkeys: %s\nvals: %s'
+                % (repr(keys), repr(values))
+            )
         return ''.join(result)
 
     # @+node:ekr.20160317055215.26: *4* f.Ellipsis
@@ -599,7 +607,11 @@ class AstFormatter:
 
     # @+node:ekr.20160317055215.43: *4* f.ifExp (ternary operator)
     def do_IfExp(self, node):
-        return '%s if %s else %s ' % (self.visit(node.body), self.visit(node.test), self.visit(node.orelse))
+        return '%s if %s else %s ' % (
+            self.visit(node.body),
+            self.visit(node.test),
+            self.visit(node.orelse),
+        )
 
     # @+node:ekr.20160317055215.44: *3* f.Statements
 
@@ -629,7 +641,9 @@ class AstFormatter:
 
     # @+node:ekr.20160317055215.46: *4* f.Assign
     def do_Assign(self, node):
-        return self.indent('%s=%s\n' % ('='.join([self.visit(z) for z in node.targets]), self.visit(node.value)))
+        return self.indent(
+            '%s=%s\n' % ('='.join([self.visit(z) for z in node.targets]), self.visit(node.value))
+        )
 
     # @+node:ekr.20160317055215.47: *4* f.AugAssign
     def do_AugAssign(self, node):
@@ -699,7 +713,8 @@ class AstFormatter:
         result = []
         result.append(
             self.indent(
-                '%sfor %s in %s:\n' % ('asynch ' if async_flag else '', self.visit(node.target), self.visit(node.iter))
+                '%sfor %s in %s:\n'
+                % ('asynch ' if async_flag else '', self.visit(node.target), self.visit(node.iter))
             )
         )
         for z in node.body:
@@ -1101,7 +1116,10 @@ class LeoGlobals:
             code1 = f1.f_code  # The code object
             name = code1.co_name
             if name == '__init__':
-                name = '__init__(%s,line %s)' % (self.shortFileName(code1.co_filename), code1.co_firstlineno)
+                name = '__init__(%s,line %s)' % (
+                    self.shortFileName(code1.co_filename),
+                    code1.co_firstlineno,
+                )
             if files:
                 return '%s:%s' % (self.shortFileName(code1.co_filename), name)
             else:
@@ -1800,14 +1818,32 @@ class StandAloneMakeStubFile:
         add = parser.add_option
         add('-c', '--config', dest='fn', help='full path to configuration file')
         add('-d', '--dir', dest='dir', help='full path to the output directory')
-        add('-o', '--overwrite', action='store_true', default=False, help='overwrite existing stub (.pyi) files')
+        add(
+            '-o',
+            '--overwrite',
+            action='store_true',
+            default=False,
+            help='overwrite existing stub (.pyi) files',
+        )
         add('-t', '--test', action='store_true', default=False, help='run unit tests on startup')
         add('--trace-matches', action='store_true', default=False, help='trace Pattern.matches')
         add('--trace-patterns', action='store_true', default=False, help='trace pattern creation')
         add('--trace-reduce', action='store_true', default=False, help='trace st.reduce_types')
         add('--trace-visitors', action='store_true', default=False, help='trace visitor methods')
-        add('-u', '--update', action='store_true', default=False, help='update stubs in existing stub file')
-        add('-v', '--verbose', action='store_true', default=False, help='verbose output in .pyi file')
+        add(
+            '-u',
+            '--update',
+            action='store_true',
+            default=False,
+            help='update stubs in existing stub file',
+        )
+        add(
+            '-v',
+            '--verbose',
+            action='store_true',
+            default=False,
+            help='verbose output in .pyi file',
+        )
         add('-w', '--warn', action='store_true', default=False, help='warn about unannotated args')
         # Parse the options
         options, args = parser.parse_args()
@@ -2246,7 +2282,10 @@ class StubFormatter(AstFormatter):
     def do_Attribute(self, node):
         '''StubFormatter.do_Attribute.'''
         trace = False
-        s = '%s.%s' % (self.visit(node.value), node.attr)  # Don't visit node.attr: it is always a string.
+        s = '%s.%s' % (
+            self.visit(node.value),
+            node.attr,
+        )  # Don't visit node.attr: it is always a string.
         s2 = self.names_dict.get(s)
         if trace and s2 and s2 not in self.attrs_seen:
             self.attrs_seen.append(s2)
@@ -2283,7 +2322,10 @@ class StubFormatter(AstFormatter):
             result.append(', '.join(items))
             result.append('}')
         else:
-            print('Error: f.Dict: len(keys) != len(values)\nkeys: %s\nvals: %s' % (repr(keys), repr(values)))
+            print(
+                'Error: f.Dict: len(keys) != len(values)\nkeys: %s\nvals: %s'
+                % (repr(keys), repr(values))
+            )
         # return ''.join(result)
         return 'Dict[%s]' % ''.join(result)
 
@@ -2604,7 +2646,9 @@ class StubTraverser(ast.NodeVisitor):
     def output_time_stamp(self):
         '''Put a time-stamp in the output file.'''
         if self.output_file:
-            self.output_file.write('# make_stub_files: %s\n' % time.strftime("%a %d %b %Y at %H:%M:%S"))
+            self.output_file.write(
+                '# make_stub_files: %s\n' % time.strftime("%a %d %b %Y at %H:%M:%S")
+            )
 
     # @+node:ekr.20160317054700.169: *4* st.update & helpers
     def update(self, fn, new_root):
@@ -2912,7 +2956,10 @@ class StubTraverser(ast.NodeVisitor):
         # if self.trace_matches or self.trace_reduce:
         # if not self.class_name_stack:
         # print('def %s\n' % node.name)
-        self.out('def %s(%s) -> %s' % (node.name, self.format_arguments(node.args), self.format_returns(node)))
+        self.out(
+            'def %s(%s) -> %s'
+            % (node.name, self.format_arguments(node.args), self.format_returns(node))
+        )
         self.parent_stub = old_stub
 
     # @+node:ekr.20160317054700.181: *4* st.format_arguments & helper

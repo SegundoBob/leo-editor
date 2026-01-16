@@ -124,7 +124,11 @@ class Xml_Importer(Importer):
             m3 = self.tag_name_pat.match(m.group(3))
             tag_name2 = m2 and m2.group(1) or ''
             tag_name3 = m3 and m3.group(1) or ''
-            same_element = tag_name2 == tag_name3 and not m.group(2).startswith('</') and m.group(3).startswith('</')
+            same_element = (
+                tag_name2 == tag_name3
+                and not m.group(2).startswith('</')
+                and m.group(3).startswith('</')
+            )
             lws = g.get_leading_ws(m.group(1))
             sep = '' if same_element else '\n' + lws
             return m.group(1) + m.group(2).rstrip() + sep + m.group(3)
