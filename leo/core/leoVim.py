@@ -452,9 +452,8 @@ class VimCommands:
         self.handler: Callable = self.do_normal_mode  # Use the handler for normal mode.
         self.in_command = False  # True: we have seen some command characters.
         self.in_motion = False  # True if parsing an *inner* motion, the 2j in d2j.
-        self.motion_func: Callable = (
-            None  # The callback handler to execute after executing an inner motion.
-        )
+        # The callback handler to execute after executing an inner motion.
+        self.motion_func: Callable = None
         self.motion_i: int = None  # The offset into the text at the start of a motion.
         self.n1 = 1  # The first repeat count.
         self.n = 1  # The second repeat count.

@@ -195,9 +195,8 @@ class ServerExternalFilesController(ExternalFilesController):
         g.app.idleTimeManager.add_callback(self.on_idle)
 
         self.waitingForAnswer = False
-        self.lastPNode: Position = (
-            None  # last p node that was asked for if not set to "AllYes\AllNo"
-        )
+        # last p node that was asked for if not set to "AllYes\AllNo"
+        self.lastPNode: Position = None
         self.lastCommander: Cmdr = None
 
     # @+node:felix.20210626222905.6: *3* sefc.clientResult

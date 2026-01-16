@@ -73,10 +73,11 @@ class RstCommands:
         self.n_docutils = 0  # Number of docutils files written.
 
         # Http support for HtmlParserClass.  See http_addNodeMarker.
-        self.anchor_map: dict[str, Position] = {}  # Keys are anchors. Values are positions
-        self.http_map: dict[
-            str, Position
-        ] = {}  # Keys are named hyperlink targets.  Value are positions.
+
+        # Keys are anchors. Values are positions
+        self.anchor_map: dict[str, Position] = {}
+        # Keys are named hyperlink targets.  Value are positions.
+        self.http_map: dict[str, Position] = {}
         self.nodeNumber = 0  # Unique node number.
 
         # For writing.

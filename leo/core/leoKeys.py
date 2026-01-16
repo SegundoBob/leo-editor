@@ -199,9 +199,8 @@ class AutoCompleterClass:
         self.warnings: dict[str, str] = {}  # Keys are language names.
         # Codewise pre-computes...
         self.codewiseSelfList: list[str] = []  # The (global) completions for "self."
-        self.completionsDict: dict[
-            str, list[str]
-        ] = {}  # Keys are prefixes, values are completion lists.
+        # Keys are prefixes, values are completion lists.
+        self.completionsDict: dict[str, list[str]] = {}
         self.reloadSettings()
 
     def reloadSettings(self) -> None:
