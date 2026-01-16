@@ -159,9 +159,8 @@ class LeoApp:
         self.disable_redraw = False  # True: disable all redraws.
         self.disableSave = False  # May be set by plugins.
         self.idle_timers: list[IdleTime] = []  # A list of IdleTime instances, so they persist.
-        self.log_listener: Optional[Popen] = (
-            None  # The external process created by the 'listen-for-log' command.
-        )
+        # The external process created by the 'listen-for-log' command.
+        self.log_listener: Optional[Popen] = None
         self.positions = 0  # The number of positions generated.
         self.scanErrors = 0  # The number of errors seen by g.scanError.
         self.statsDict: dict[str, Value] = {}  # dict used by g.stat, g.clear_stats, g.print_stats.
@@ -183,9 +182,8 @@ class LeoApp:
         self.leoEditorDir: str = None  # The leo-editor directory.
         self.loadDir: str = None  # The leo/core directory.
         self.machineDir: str = None  # The machine-specific directory.
-        self.theme_directory: str = (
-            None  # The directory from which the theme file was loaded, if any.
-        )
+        # The directory from which the theme file was loaded, if any.
+        self.theme_directory: str = None
         # @-<< LeoApp: global directories >>
         # @+<< LeoApp: global data >>
         # @+node:ekr.20161028035956.1: *5* << LeoApp: global data >>
