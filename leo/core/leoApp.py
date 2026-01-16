@@ -141,9 +141,8 @@ class LeoApp:
         self.guiArgName: str = None  # The gui name given in --gui option.
         self.isTheme = False  # True: load files as theme files (ignore myLeoSettings.leo).
         self.listen_to_log_flag = False  # True: execute listen-to-log command.
-        self.loaded_session = (
-            False  # Set by startup logic to True if no files specified on the command line.
-        )
+        # Set by startup logic to True if no files specified on the command line.
+        self.loaded_session = False
         self.silentMode = False  # True: no signon.
         self.start_fullscreen = False  # For qt_frame plugin.
         self.start_maximized = False  # For qt_frame plugin.
