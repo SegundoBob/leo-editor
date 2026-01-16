@@ -167,13 +167,7 @@ def ac_cmd(name: str) -> Callable:
 # @+node:ekr.20150509035028.1: ** cmd (decorator)
 def cmd(name: str) -> Callable:
     """Command decorator for the leoKeys class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'k',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'k'])
 
 
 # @+node:ekr.20061031131434.4: ** class AutoCompleterClass

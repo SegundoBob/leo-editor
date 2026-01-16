@@ -45,13 +45,7 @@ if TYPE_CHECKING:  # pragma: no cover
 # @+node:ekr.20150509194827.1: ** cmd (decorator)
 def cmd(name: str) -> Callable:
     """Command decorator for the FileCommands class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'fileCommands',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'fileCommands'])
 
 
 # @+node:ekr.20210316035506.1: **  commands (leoFileCommands.py)

@@ -85,13 +85,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 def cmd(name: str) -> Callable:
     """Command decorator for the findCommands class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'findCommands',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'findCommands'])
 
 
 # @+others

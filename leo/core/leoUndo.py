@@ -62,13 +62,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 def cmd(name: str) -> Callable:
     """Command decorator for the Undoer class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'undoer',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'undoer'])
 
 
 # @+others
