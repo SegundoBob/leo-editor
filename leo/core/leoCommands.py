@@ -228,9 +228,8 @@ class Commands:
         """Init ivars used while executing a command."""
         self.commandsDict: dict[str, Callable] = {}  # Keys are command names, values are functions.
         self.disableCommandsMessage = ''  # The presence of this message disables all commands.
-        self.hookFunction: Optional[Callable] = (
-            None  # One of three places that g.doHook looks for hook functions.
-        )
+        # One of three places that g.doHook looks for hook functions.
+        self.hookFunction: Optional[Callable] = None
         self.ignoreChangedPaths = False  # True: disable path changed message in at.WriteAllHelper.
         self.inCommand = False  # Interlocks to prevent premature closing of a window.
         self.outlineToNowebDefaultFileName: str = "noweb.nw"  # For Outline To Noweb dialog.
@@ -283,13 +282,11 @@ class Commands:
         self.ignored_at_file_nodes: list[Position] = []  # List of nodes for c.raise_error_dialogs.
         self.import_error_nodes: list[Position] = []  # List of nodes for c.raise_error_dialogs.
         self.last_dir: str = None  # The last used directory.
-        self.mFileName: str = (
-            fileName or ''
-        )  # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
+        # Do _not_ use os_path_norm: it converts an empty path to '.' (!!)
+        self.mFileName: str = fileName or ''
         self.mRelativeFileName = relativeFileName or ''
-        self.orphan_at_file_nodes: list[
-            Position
-        ] = []  # List of orphaned nodes for c.raise_error_dialogs.
+        # List of orphaned nodes for c.raise_error_dialogs.
+        self.orphan_at_file_nodes: list[Position] = []
 
     # @+node:ekr.20120217070122.10470: *5* c.initObjects
     def initObjects(self, gui: LeoGui) -> None:
@@ -5516,9 +5513,8 @@ class Commands:
         u.beforeChangeGroup(u_node, undoType)
         changed_node = False
         for idx, head in enumerate(heads):
-            if (
-                parent is None and idx == 0
-            ):  # if parent = None, create top level node for first head
+            # if parent = None, create top level node for first head
+            if parent is None and idx == 0:
                 if not forcecreate:
                     for pos in self.all_positions():
                         if pos.h == head:
@@ -5727,10 +5723,8 @@ class Commands:
         c.configurables = list(set(c.configurables))
         c.configurables.sort(key=lambda obj: obj.__class__.__name__.lower())
         for obj in c.configurables:
-            func = (
-                getattr(obj, 'reloadSettings', None)
-                or getattr(obj, 'reload_settings', None)  # An official alias.
-            )
+            # An official alias.
+            func = getattr(obj, 'reloadSettings', None) or getattr(obj, 'reload_settings', None)
             if func:
                 try:
                     func()  # pylint: disable=not-callable

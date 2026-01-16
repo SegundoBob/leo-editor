@@ -203,13 +203,12 @@ class LeoApp:
         # @+<< LeoApp: global controller/manager objects >>
         # @+node:ekr.20161028040028.1: *5* << LeoApp: global controller/manager objects >>
         # Singleton applications objects...
-        self.backgroundProcessManager: BackgroundProcessManager = (
-            None  # A BackgroundProcessManager.
-        )
+
+        # A BackgroundProcessManager.
+        self.backgroundProcessManager: BackgroundProcessManager = None
         self.config: GlobalConfigManager = None  # g.app.config.
-        self.db: Union[dict, SqlitePickleShare] = (
-            None  # A global db, managed by g.app.global_cacher.
-        )
+        # A global db, managed by g.app.global_cacher.
+        self.db: Union[dict, SqlitePickleShare] = None
         self.externalFilesController: ExternalFilesController = None
         self.global_cacher: Union[dict, GlobalCacher] = None
         self.idleTimeManager: IdleTimeManager = None
@@ -249,9 +248,8 @@ class LeoApp:
         # @-<< LeoApp: global importer/reader/writer data >>
         # @+<< LeoApp: global status vars >>
         # @+node:ekr.20161028040054.1: *5* << LeoApp: global status vars >>
-        self.already_open_files: list[
-            str
-        ] = []  # A list of file names that *might* be open in another copy of Leo.
+        # A list of file names that *might* be open in another copy of Leo.
+        self.already_open_files: list[str] = []
         self.dragging = False  # True: dragging.
         self.inBridge = False  # True: running from leoBridge module.
         self.inScript = False  # True: executing a script.
@@ -268,13 +266,16 @@ class LeoApp:
         # @-<< LeoApp: global status vars >>
         # @+<< LeoApp: the global log >>
         # @+node:ekr.20161028040141.1: *5* << LeoApp: the global log >>
-        self.log: LeoFrame = None  # The LeoFrame containing the present log.
-        self.logInited = False  # False: all log message go to logWaiting list.
-        self.logIsLocked = False  # True: no changes to log are allowed.
-        self.logWaiting: list[
-            tuple
-        ] = []  # List of tuples (s, color, newline) waiting to go to a log.
-        self.printWaiting: list[str] = []  # Queue of messages to be sent to the printer.
+        # The LeoFrame containing the present log.
+        self.log: LeoFrame = None
+        # False: all log message go to logWaiting list.
+        self.logInited = False
+        # True: no changes to log are allowed.
+        self.logIsLocked = False
+        # List of tuples (s, color, newline) waiting to go to a log.
+        self.logWaiting: list[tuple] = []
+        # Queue of messages to be sent to the printer.
+        self.printWaiting: list[str] = []
         self.signon = ''
         self.signon1 = ''
         self.signon2 = ''
@@ -2638,10 +2639,10 @@ class LoadManager:
 
         # Allow plugins to be defined in ~/.leo/plugins.
         for pattern in (
-            g.finalize_join(g.app.homeDir, '.leo', 'plugins'),  # ~/.leo/plugins.
-            g.finalize_join(
-                g.app.loadDir, '..', 'plugins', 'writers', '*.py'
-            ),  # leo/plugins/writers
+            # ~/.leo/plugins.
+            g.finalize_join(g.app.homeDir, '.leo', 'plugins'),
+            # leo/plugins/writers
+            g.finalize_join(g.app.loadDir, '..', 'plugins', 'writers', '*.py'),
         ):
             for filename in g.glob_glob(pattern):
                 sfn = g.shortFileName(filename)
@@ -3311,10 +3312,10 @@ class LoadManager:
             c.selectPosition(p)
             c.redraw()
         elif c.looksLikeDerivedFile(fn):
-            # 2011/10/10: Create an @file node.
+            # Create an @file node. Not undoable!
             p = c.importCommands.importDerivedFiles(
                 parent=c.rootPosition(), paths=[fn], command=None
-            )  # Not undoable.
+            )
             if not p:
                 return None
             if p.hasBack():
@@ -3440,10 +3441,10 @@ class LoadManager:
             return  # Should not happen.
 
         if c.looksLikeDerivedFile(fn):
-            # Create an @file node.
+            # Create an @file node. Not undoable!
             p = c.importCommands.importDerivedFiles(
                 parent=c.rootPosition(), paths=[fn], command=None
-            )  # Not undoable.
+            )
             if not p:
                 return
             if p.hasBack():

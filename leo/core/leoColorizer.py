@@ -965,11 +965,12 @@ class JEditColorizer(BaseColorizer):
         self.nested = False  # True: allow nested comments, etc.
         self.nested_level = 0  # Nesting level if self.nested is True.
         self.nextState = 1  # Don't use 0.
-        self.restartDict: dict[
-            int, Callable
-        ] = {}  # Keys are state numbers, values are restart functions.
-        self.stateDict: dict[int, str] = {}  # Keys are state numbers, values state names.
-        self.stateNameDict: dict[str, int] = {}  # Keys are state names, values are state numbers.
+        # Keys are state numbers, values are restart functions.
+        self.restartDict: dict[int, Callable] = {}
+        # Keys are state numbers, values state names.
+        self.stateDict: dict[int, str] = {}
+        # Keys are state names, values are state numbers.
+        self.stateNameDict: dict[str, int] = {}
 
         # #2276: Set by init_section_delims.
         self.section_delim1 = '<<'

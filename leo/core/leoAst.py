@@ -745,9 +745,10 @@ if 1:  # pragma: no cover
     # @+node:ekr.20200120110005.1: *4* function: is_statement_node
     def is_statement_node(node: Node) -> bool:
         """Return True if node is a top-level statement."""
-        return is_long_statement(node) or isinstance(
-            node, (ast.Break, ast.Continue, ast.Pass, ast.Try)
-        )
+        return (
+            is_long_statement(node)
+            or isinstance(node, (ast.Break, ast.Continue, ast.Pass, ast.Try))
+        )  # fmt: skip
 
     # @+node:ekr.20191231082137.1: *4* function: nearest_common_ancestor
     def nearest_common_ancestor(node1: Node, node2: Node) -> Optional[Node]:
