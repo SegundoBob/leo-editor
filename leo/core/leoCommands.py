@@ -255,9 +255,8 @@ class Commands:
         self.expansionNode = None  # The last node we expanded or contracted.
         self.nodeConflictList: list[Position] = []  # List of nodes with conflicting read-time data.
         self.nodeConflictFileName: Optional[str] = None  # The fileName for c.nodeConflictList.
-        self.user_dict: dict[
-            str, Value
-        ] = {}  # Non-persistent dictionary for free use by scripts and plugins.
+        # Non-persistent dictionary for free use by scripts and plugins.
+        self.user_dict: dict[str, Value] = {}
 
     # @+node:ekr.20120217070122.10467: *5* c.initEventIvars
     def initEventIvars(self) -> None:
