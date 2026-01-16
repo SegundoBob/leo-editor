@@ -253,6 +253,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         Not a command.  Expand abbreviations in event.widget.
 
         Words start with '@'.
+
+        Return True if the abbreviation was expanded.
         """
         # Trace for *either* 'abbrev' or 'keys'
         trace = any(z in g.app.debug for z in ('abbrev', 'keys'))
@@ -277,14 +279,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 # #4462: Make only one substitution in headlines.
                 if w_name.startswith('head'):
                     ok = self.make_script_substitutions_in_headline(i, p, val)
-                    if ok:
-                        return True
-                # Fix another part of #438.
+                    return ok
                 if val == '__NEXT_PLACEHOLDER':
                     i = w.getInsertPoint()
                     if i > 0:
                         w.delete(i - 1)
-                        p.h = w.getAllText()
                 # Do not call c.endEditing here.
                 break
         else:
@@ -483,7 +482,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20161121102113.1: *4* abbrev.make_script_substitutions_in_headline
     def make_script_substitutions_in_headline(self, i: int, p: Position, val: str) -> bool:
-        """Make the first scripting substitution in p.h."""
+        """
+        Make the first scripting substitution in p.h.
+        Return True if the substition was made successfully.
+        """
         c = self.c
         c.endEditing()
         pattern = re.compile(
@@ -772,11 +774,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 (None, None),
             )
             if old and old != val and not g.unitTesting:
-                g.es_print(
-                    'redefining abbreviation', name,
-                    '\nfrom', repr(old),
-                    'to', repr(val),
-                )  # fmt: skip
+                g.es_print(f"redefining abbreviation {name}\nfrom {old!r} to {val!r}")
             d[name] = val, tag
         except ValueError:
             g.es_print(f"bad abbreviation: {s}")
