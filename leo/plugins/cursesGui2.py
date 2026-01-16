@@ -914,13 +914,7 @@ def method_name(f: Callable) -> str:
 # @+node:ekr.20210228141208.1: **  decorators (curses2)
 def frame_cmd(name: str) -> Callable:
     """Command decorator for the LeoFrame class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'frame',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'frame'])
 
 
 def log_cmd(name: str) -> Callable:

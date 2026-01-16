@@ -89,13 +89,7 @@ def body_cmd(name: str) -> Callable:
 
 def frame_cmd(name: str) -> Callable:
     """Command decorator for the LeoFrame class."""
-    return g.new_cmd_decorator(
-        name,
-        [
-            'c',
-            'frame',
-        ],
-    )
+    return g.new_cmd_decorator(name, ['c', 'frame'])
 
 
 # @-<< leoFrame command decorators >>
