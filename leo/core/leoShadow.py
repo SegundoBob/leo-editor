@@ -446,12 +446,7 @@ class ShadowController:
             if written:
                 x.message(f"updated private {shadow_fn} from public {fn}")
         else:
-            pass
-            # Don't write *anything*.
-            # if 0: # This causes considerable problems.
-            # # Create the public file from the private shadow file.
-            # x.copy_file_removing_sentinels(shadow_fn,fn)
-            # x.message("created public %s from private %s " % (fn, shadow_fn))
+            pass  # Don't write *anything*.
 
     # @+node:ekr.20080708094444.89: *3* x.Utils...
     # @+node:ekr.20080708094444.85: *4* x.error & message & verbatim_error

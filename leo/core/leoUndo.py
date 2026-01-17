@@ -172,7 +172,6 @@ class Undoer:
                     return
                 i -= 1
             # This work regardless of how many items appear after bead n.
-            # g.trace('Cutting undo stack to %d entries' % (n))
             u.beads = u.beads[-n:]
             u.bead = n - 1
         if 'undo' in g.app.debug and 'verbose' in g.app.debug:  # pragma: no cover

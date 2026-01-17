@@ -363,7 +363,6 @@ class LeoPluginsController:
             if c:
                 # Make sure c exists and has a frame.
                 if not c.exists or not hasattr(c, 'frame'):
-                    # g.pr('skipping tag %s: c does not exist or does not have a frame.' % tag)
                     return None
         # Calls to registerHandler from inside the handler belong to moduleName.
         self.loadingModuleNameStack.append(moduleName)
@@ -585,8 +584,6 @@ class LeoPluginsController:
                 report(f"plugin {moduleName} does not support {g.app.gui.guiName()} gui")
             except ImportError:
                 report(f"error importing plugin: {moduleName}")
-            # except ModuleNotFoundError:
-            # report('module not found: %s' % moduleName)
             except SyntaxError:
                 report(f"syntax error importing plugin: {moduleName}")
             except Exception:

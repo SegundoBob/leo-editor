@@ -1254,7 +1254,6 @@ class JEditColorizer(BaseColorizer):
         # But it is needed for forth.py.
         for ch in (' ', '\t'):
             if ch in chars:
-                # g.es_print('removing %s from word_chars' % (repr(ch)))
                 chars.remove(ch)
         # Convert chars to a dict for faster access.
         self.word_chars: dict[str, str] = {}
@@ -3155,7 +3154,6 @@ if QtGui:
             # Init pygments style.
             try:
                 self.setStyle(style_name)
-                # print('using %r pygments style in %r' % (style_name, c.shortFileName()))
             except Exception:
                 print(f'pygments {style_name!r} style not found. Using "default" style')
                 self.setStyle('default')
@@ -3716,9 +3714,8 @@ class QScintillaColorizer(BaseColorizer):
                 except Exception:
                     g.trace('bad color', color)
             else:
-                pass
                 # Not an error. Not all lexers have all styles.
-                # g.trace('bad style: %s.%s' % (lexer.__class__.__name__, style))
+                pass
 
     # @+node:ekr.20170128031840.1: *3* qsc.init
     def init(self) -> None:

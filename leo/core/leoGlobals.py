@@ -6078,7 +6078,6 @@ def es(*args: Args, **kwargs: KWargs) -> None:
     newline = d.get('newline')
     s = g.translateArgs(args, d)
     # Do not call g.es, g.es_print, g.pr or g.trace here!
-    # sys.__stdout__.write('\n===== g.es: %r\n' % s)
     if app.batchMode:
         if app.log:
             app.log.put(s)

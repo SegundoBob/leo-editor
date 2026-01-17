@@ -673,7 +673,6 @@ class AtFile:
         junk, ext = g.os_path_splitext(fn)
         # Remember the full fileName.
         at.rememberReadPath(fn, p)
-        # if not g.unitTesting: g.es("reading: @asis %s" % (g.shortFileName(fn)))
         s, e = g.readFileIntoString(fn, kind='@edit')
         if s is None:
             return
@@ -840,7 +839,6 @@ class AtFile:
         junk, ext = g.os_path_splitext(fn)
         # Fix bug 889175: Remember the full fileName.
         at.rememberReadPath(fn, p)
-        # if not g.unitTesting: g.es("reading: @edit %s" % (g.shortFileName(fn)))
         s, e = g.readFileIntoString(fn, kind='@edit')
         if s is None:
             return

@@ -1647,8 +1647,6 @@ class VimCommands:
         if self.n1_seen:
             self.ignore()
             self.quit()
-            # self.beep('%sv not valid' % self.n1)
-            # self.done()
         elif self.is_text_wrapper(self.w):
             # Enter visual mode.
             self.vis_mode_w = w = self.w
@@ -2590,9 +2588,6 @@ class VimCommands:
         self.set_border()
         if k.state.kind:
             pass
-        # elif self.state == 'visual':
-        # s = '%8s:' % self.state.capitalize()
-        # k.setLabelBlue(s)
         else:
             if self.visual_line_flag:
                 state_s = 'Visual Line'
@@ -2600,7 +2595,6 @@ class VimCommands:
                 state_s = self.state.capitalize()
             command_s = self.show_command()
             dot_s = self.show_dot()
-            # if self.in_motion: state_s = state_s + '(in_motion)'
             if 1:  # Don't show the dot:
                 s = f"{state_s:8}: {command_s}"
             else:
