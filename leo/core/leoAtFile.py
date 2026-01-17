@@ -1484,8 +1484,11 @@ class AtFile:
             return
         ok = at.promptForDangerousWrite(
             fileName=None,
-            message=(f"{g.tr('path changed for %s' % (p.h))}\n{g.tr('write this file anyway?')}"),
-        )
+            message=(
+                f"{g.tr('path changed for %s' % (p.h))}\n"
+                f"{g.tr('write this file anyway?')}"
+            ),
+        )  # fmt: skip
         if not ok:
             raise IOError
         at.setPathUa(p, newPath)  # Remember that we have changed paths.

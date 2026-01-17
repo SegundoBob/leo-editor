@@ -84,8 +84,7 @@ def adoc_command(event: LeoKeyEvent = None, verbose: bool = True) -> File_List:
         import os
         paths = c.markupCommands.adoc_command(event=g.Bunch(p=p))
         paths = [z.replace('/', os.path.sep) for z in paths]
-        input_paths = ' '.join(paths)
-        g.execute_shell_commands(['asciidoctor %s' % input_paths])
+        g.execute_shell_commands([f"asciidoctor {' '.join(paths)}"])
 
     """
     # @-<< adoc command docstring >>
@@ -146,8 +145,7 @@ def pandoc_command(event: LeoKeyEvent, verbose: bool = True) -> File_List:
         import os
         paths = c.markupCommands.pandoc_command(event=g.Bunch(p=p))
         paths = [z.replace('/', os.path.sep) for z in paths]
-        input_paths = ' '.join(paths)
-        g.execute_shell_commands(['asciidoctor %s' % input_paths])
+        g.execute_shell_commands([f"asciidoctor {' '.join(paths)}"])
 
     """
     # @-<< pandoc command docstring >>
@@ -211,8 +209,7 @@ def sphinx_command(event: LeoKeyEvent, verbose: bool = True) -> File_List:
         import os
         paths = c.markupCommands.sphinx_command(event=g.Bunch(p=p))
         paths = [z.replace('/', os.path.sep) for z in paths]
-        input_paths = ' '.join(paths)
-        g.execute_shell_commands(['asciidoctor %s' % input_paths])
+        g.execute_shell_commands([f"asciidoctor {' '.join(paths)}"])
 
     """
     # @-<< sphinx command docstring >>
