@@ -16,12 +16,12 @@
 <v t="ekr.20210530065000.2"><vh>@data exec-script-commands</vh></v>
 <v t="ekr.20210530065000.3"><vh>@data exec-script-patterns</vh></v>
 <v t="ekr.20150425145248.1"><vh>@data history-list</vh></v>
-<v t="ekr.20240107154430.1"><vh>@int max-find-long-lines-length = 120</vh></v>
+<v t="ekr.20240107154430.1"><vh>@int max-find-long-lines-length = 100</vh></v>
 <v t="ekr.20140916101314.19538"><vh>@string target_language = python</vh></v>
 <v t="ekr.20260111055821.1"><vh>Beautifying files and writing black-compatible sentinels</vh>
 <v t="ekr.20260111055821.2"><vh>@bool beautify-python-code-on-write = True</vh></v>
 <v t="ekr.20260111055821.3"><vh>@bool write-black-sentinels = True</vh></v>
-<v t="ekr.20260111055821.4"><vh>@int black-line-length = 120</vh></v>
+<v t="ekr.20260111055821.4"><vh>@int black-line-length = 100</vh></v>
 <v t="ekr.20260111055821.5"><vh>@string black-toml = None</vh></v>
 </v>
 <v t="ekr.20160122104332.1"><vh>Buttons &amp; commands</vh>
@@ -59,7 +59,7 @@
 <v t="ekr.20240708072327.1"><vh>&lt;&lt; check table &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20210829132319.1"><vh>script: cvt-tests</vh></v>
-<v t="ekr.20190402091335.1"><vh>script: diff-branches/revs (all files or path)</vh></v>
+<v t="ekr.20190402091335.1"><vh>script: diff-branches/revs (master, 6.8.8, leo/core)</vh></v>
 <v t="ekr.20180816105258.1"><vh>script: diff-branches/revs (one file)</vh></v>
 <v t="ekr.20201208114843.1"><vh>script: diff-pr</vh></v>
 <v t="ekr.20220319145807.1"><vh>script: diff-two-revs-wo-comments</vh>
@@ -82,7 +82,8 @@
 </v>
 <v t="ekr.20210630103405.1"><vh>script: restore gnxs in leoserver.py (simple version)</vh></v>
 <v t="ekr.20200222083959.1"><vh>script: start loggin</vh></v>
-<v t="ekr.20260112121427.1"><vh>script: summary-diff</vh></v>
+<v t="ekr.20260116001413.1"><vh>script: summary-diff (master, 6.8.8, leo/commands)</vh></v>
+<v t="ekr.20260112121427.1"><vh>script: summary-diff (master, 6.8.8, leo/core)</vh></v>
 <v t="ekr.20211014103433.1"><vh>script: web-to-outline</vh>
 <v t="ekr.20211014112513.1"><vh>Handlers</vh></v>
 <v t="ekr.20211014120710.1"><vh>new_node</vh></v>
@@ -689,7 +690,9 @@ https://github.com/leo-editor/leo-editor/issues/1585
 <t tx="ekr.20040301205720">def __str__(self) -&gt; str:  # pragma: no cover
     p = self
     if p.v:
-        return f"&lt;pos {id(p)} childIndex: {p._childIndex} lvl: {p.level()} key: {p.key()} {p.h}&gt;"
+        return (
+            f"&lt;pos {id(p)} childIndex: {p._childIndex} lvl: {p.level()} key: {p.key()} {p.h}&gt;"
+        )
     return f"&lt;pos {id(p)} [{len(p.stack)}] None&gt;"
 
 __repr__ = __str__
@@ -1272,9 +1275,9 @@ os.chdir(path)
 # See https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection
 
 efc.GitDiffController(c).diff_two_branches(
-    branch1='devel',  # old branch/rev
-    branch2='ekr-line-length-88',  # new branch/rev
-    fn='leo/plugins/cursesGui.py',  # Don't use back slashes.
+    branch1='master',  # old branch/rev
+    branch2='6.8.8',  # new branch/rev
+    fn='leo/commands/abbrevCommands.py',  # Don't use back slashes.
 )
 </t>
 <t tx="ekr.20181030041436.1"></t>
@@ -1948,7 +1951,7 @@ assert core_p and command_p and globals_p
     # 'toString', 'toUnicode', 'trace', 'translateString',
     # 'underline', 'undoHelper', 'unl', 'values', 'visit',
     # 'warn', 'warning', 'word',</t>
-<t tx="ekr.20220823195205.1" _mod_time="4741da5936b1ebc9422e">"""
+<t tx="ekr.20220823195205.1" _mod_time="4741da5a5b1af6c1882e">"""
 Stand alone GUI free index builder for Leo's full text search system::
 
   python leoftsindex.py &lt;file1&gt; &lt;file2&gt; &lt;file3&gt;...
@@ -2195,7 +2198,7 @@ print('done')</t>
 <t tx="ekr.20240107154430.1"></t>
 <t tx="ekr.20240204082420.1"></t>
 <t tx="ekr.20240204082924.1"></t>
-<t tx="ekr.20240206161713.1" _mod_time="4741da5936b20c3e062e">@language ini
+<t tx="ekr.20240206161713.1" _mod_time="4741da5a5b1b109fac2e">@language ini
 
 [bdist_wheel]
 
@@ -2341,7 +2344,7 @@ extend-ignore =
     # global `whatever` is unused: name is never assigned in scope.
     # F824
 </t>
-<t tx="ekr.20240317061516.1" _mod_time="4741da264b746fde092e">@language python
+<t tx="ekr.20240317061516.1" _mod_time="4741da5a5ae8fea4c22e">@language python
 
 # Order matters!
 
@@ -3317,5 +3320,15 @@ test_s = textwrap.dedent('''
 @language python
 '''
 )</t>
+<t tx="ekr.20260116001413.1">g.cls()
+from leo.commands import editFileCommands as efc
+
+# Any branch or rev is valid.
+efc.GitDiffController(c).summary_diff_two_revs(
+    rev1='master',    # Old
+    rev2='6.8.8',     # New
+    path='leo/commands',  # Limit diffs to this directory, relative to the nearest git repo.
+)  # fmt: skip
+</t>
 </tnodes>
 </leo_file>
