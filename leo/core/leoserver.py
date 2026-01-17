@@ -680,7 +680,7 @@ class QuickSearchController:
         c = self.c
         changed: list[tuple[Position, Match_Iter]] = [
             (p.copy(), None) for p in c.all_unique_positions() if p.isDirty()
-        ]  # fmt: skip
+        ]
         self.clear()
         self.addHeadlineMatches(changed)
 
