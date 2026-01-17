@@ -673,7 +673,6 @@ class AtFile:
         junk, ext = g.os_path_splitext(fn)
         # Remember the full fileName.
         at.rememberReadPath(fn, p)
-        # if not g.unitTesting: g.es("reading: @asis %s" % (g.shortFileName(fn)))
         s, e = g.readFileIntoString(fn, kind='@edit')
         if s is None:
             return
@@ -840,7 +839,6 @@ class AtFile:
         junk, ext = g.os_path_splitext(fn)
         # Fix bug 889175: Remember the full fileName.
         at.rememberReadPath(fn, p)
-        # if not g.unitTesting: g.es("reading: @edit %s" % (g.shortFileName(fn)))
         s, e = g.readFileIntoString(fn, kind='@edit')
         if s is None:
             return
@@ -1486,8 +1484,11 @@ class AtFile:
             return
         ok = at.promptForDangerousWrite(
             fileName=None,
-            message=(f"{g.tr('path changed for %s' % (p.h))}\n{g.tr('write this file anyway?')}"),
-        )
+            message=(
+                f"{g.tr('path changed for %s' % (p.h))}\n"
+                f"{g.tr('write this file anyway?')}"
+            ),
+        )  # fmt: skip
         if not ok:
             raise IOError
         at.setPathUa(p, newPath)  # Remember that we have changed paths.

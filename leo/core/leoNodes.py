@@ -1349,7 +1349,7 @@ class Position:
             g.trace('child', child)
             g.trace('** callers:', g.callers())
             if g.unitTesting:
-                assert False, 'children[%s] != p.v'  # noqa
+                assert False, f"children[{n}] != p.v"
         else:
             g.trace(
                 f"**can not happen: bad child index: {n}, len(children): {len(parent_v.children)}"
@@ -1358,7 +1358,7 @@ class Position:
             g.trace('parent_v', parent_v, 'child', child)
             g.trace('** callers:', g.callers())
             if g.unitTesting:
-                assert False, f"bad child index: {n}"  # noqa
+                assert False, f"bad child index: {n}"
 
     # @+node:ekr.20080416161551.199: *3* p.moveToX
     # @+at These routines change self to a new position "in place".
@@ -2227,10 +2227,8 @@ class VNode:
 
     def dump(self, label: str = "") -> None:  # pragma: no cover
         v = self
-        # s = '-' * 10
         print('')
         print(f"dump of vnode: {label} {v}")
-        # print('gnx: %s' % v.gnx)
         print(f"len(parents): {len(v.parents)} len(children): {len(v.children)}")
         if v.parents:
             print(f"parents: {g.listToString(v.parents)}")
