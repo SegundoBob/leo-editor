@@ -2320,7 +2320,6 @@ class LoadManager:
             print(d)
             for key in sorted(list(d.keys())):
                 val = d.get(key)
-                # print('%20s %s' % (key,val.dump()))
                 print(f"{key:35} {[z.stroke for z in val]}")
             if d:
                 print('')

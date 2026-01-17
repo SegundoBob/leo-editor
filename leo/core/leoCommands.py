@@ -3660,8 +3660,6 @@ class Commands:
         except Exception:
             g.es_exception()
             g.es(f"Failed to write script to {path}")
-            # g.es("Check your configuration of script_file_path, currently %s" %
-            # c.config.getString('script-file-path'))
             path = None
         return path
 
@@ -4733,9 +4731,7 @@ class Commands:
         if c.expansionLevel != old_expansion_level:
             c.redraw()
         # It's always useful to announce the level.
-        # c.k.setLabelBlue('level: %s' % (max_level+1))
-        # g.es('level', max_level + 1)
-        c.frame.putStatusLine(f"level: {max_level + 1}")  # bg='red', fg='red')
+        c.frame.putStatusLine(f"level: {max_level + 1}")
 
     # @+node:ekr.20141028061518.23: *4* c.Focus
     # @+node:ekr.20080514131122.9: *5* c.get/request/set_focus

@@ -511,8 +511,7 @@ class BindingInfo:
                         val = val.__name__
                     s = f"{ivar}: {val!r}"
                     result.append(s)
-        # Clearer w/o f-string.
-        return "<%s>" % ' '.join(result).strip()
+        return "<{' '.join(result).strip()}>"
 
     # @+node:ekr.20120129040823.10226: *4* BindingInfo.isModeBinding
     def isModeBinding(self) -> bool:
@@ -6078,7 +6077,6 @@ def es(*args: Args, **kwargs: KWargs) -> None:
     newline = d.get('newline')
     s = g.translateArgs(args, d)
     # Do not call g.es, g.es_print, g.pr or g.trace here!
-    # sys.__stdout__.write('\n===== g.es: %r\n' % s)
     if app.batchMode:
         if app.log:
             app.log.put(s)

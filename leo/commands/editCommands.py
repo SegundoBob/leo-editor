@@ -1610,8 +1610,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         s = w.getAllText()
         i = w.getInsertPoint()
         row, col = g.convertPythonIndexToRowCol(s, i)
-        percent = int((i * 100) / len(s))
-        k.setLabelGrey(f"char: {s[i]!r} row: {row} col: {col} ({percent}% of {len(s)})")
+        k.setLabelGrey(f"char: {s[i]!r} row: {row} col: {col} of {len(s)}")
 
     # @+node:ekr.20150514063305.248: *4* ec.viewLossage
     @cmd('view-lossage')

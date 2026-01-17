@@ -2936,12 +2936,7 @@ class KeyHandlerClass:
         key: str
         dataList: list[tuple[str, str]]
         for commandName in sorted(c.commandsDict):
-            dataList = inverseBindingDict.get(
-                commandName,
-                [
-                    ('', ''),
-                ],
-            )
+            dataList = inverseBindingDict.get(commandName, [('', '')])
             for pane, key in dataList:
                 key = k.prettyPrintKey(key)
                 binding = pane + key

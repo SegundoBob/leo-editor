@@ -1009,7 +1009,7 @@ def writeFileFromNode(self: Self, event: LeoKeyEvent = None) -> None:
                 f.flush()
                 g.blue('wrote:', fileName)
         except IOError:
-            g.error('can not write %s', fileName)
+            g.error(f"can not write {fileName}")
 
 
 # @+node:tom.20230201124905.1: *3* c_file.writeFileFromSubtree
@@ -1051,7 +1051,7 @@ def writeFileFromSubtree(self: Self, event: LeoKeyEvent = None) -> None:
                 f.flush()
                 g.blue('wrote:', fileName)
         except IOError:
-            g.error('can not write %s', fileName)
+            g.error(f"can not write {fileName}")
 
 
 # @+node:ekr.20031218072017.2079: ** Recent Files
