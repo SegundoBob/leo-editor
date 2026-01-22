@@ -33340,24 +33340,27 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - `PR #4456`_: Added leo_to_html_outline_viewer.py plugin.
 
 </t>
-<t tx="ekr.20251204122149.1">.. _`PR #4467`: https://github.com/leo-editor/leo-editor/pull/4467
+<t tx="ekr.20251204122149.1">.. _`PR #4464`: https://github.com/leo-editor/leo-editor/pull/4464
+.. _`PR #4467`: https://github.com/leo-editor/leo-editor/pull/4467
+.. _`PR #4477`: https://github.com/leo-editor/leo-editor/pull/4477
 .. _`PR #4484`: https://github.com/leo-editor/leo-editor/pull/4484
+.. _`PR #4486`: https://github.com/leo-editor/leo-editor/pull/4486
 .. _`PR #4487`: https://github.com/leo-editor/leo-editor/pull/4487
 .. _`PR #4490`: https://github.com/leo-editor/leo-editor/pull/4490
+.. _`PR #4498`: https://github.com/leo-editor/leo-editor/pull/4498
 .. _`PR #4502`: https://github.com/leo-editor/leo-editor/pull/4502
 .. _`PR #4503`: https://github.com/leo-editor/leo-editor/pull/4503
 
-.. Separate PR's related to beautifying. It's simpler to refer to PR #4490.
-..  .. _`PR #4492`: https://github.com/leo-editor/leo-editor/pull/4492
-..  .. _`PR #4493`: https://github.com/leo-editor/leo-editor/pull/4493
-..  .. _`PR #4494`: https://github.com/leo-editor/leo-editor/pull/4494
-..  .. _`PR #4507`: https://github.com/leo-editor/leo-editor/pull/4507
-
+- `PR #4464`_ and `PR #0000`_: Fix abbreviation bugs.
 - `PR #4467`_: Remove support for leoflexx and --gui=browser.
+- `PR #4477`_: Fix colorizer bug.
 - `PR #4484`_: Add check_leo script.
+- `PR #4486`_: Improve the flatten-outline-to-node command.
 - `PR #4490`_, Add support for ruff format and retire Leo's legacy beautier.
+  This PR summarizes several other PRs relating to this project.
+- `PR #4498`_: Fix bug: the external files controller leaves ``c.p`` unchanged.
 - `PR #4487`_: Reformat Leo using ruff format.
-- `PR #4503`_ and `PR #4506`_: Add gdc.summary_diff_two_revs script helper.
+- `PR #4503`_ and `PR #4506`_: Add ``gdc.summary_diff_two_revs`` script helper.
 
 **Add settings for ruff format**
 
@@ -33380,12 +33383,12 @@ Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor
 
 **The highlights of Leo 6.8.8**
 
-- Replace Leo's legacy beautify by full support for ruff format,
-  add three new settings that controll ruff format.
+- Replace Leo's legacy beautifier commands by full support for
+  [ruff format](https://docs.astral.sh/ruff/formatter/).
 - Remove support for leoflexx and --gui=browser.
-- Add check_leo script.
-- Add Add gdc.summary_diff_two_revs script helper.
-- Fix several other minor bugs.
+- Add check_leo.py script.
+- Add gdc.summary_diff_two_revs script helper.
+- Fix several minor bugs.
 
 **Links**
 
