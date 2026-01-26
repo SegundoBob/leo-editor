@@ -1602,7 +1602,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.247: *4* ec.lineNumber
     @cmd('line-number')
     def lineNumber(self, event: LeoKeyEvent) -> None:
-        """Print the line and column number and percentage of insert point."""
+        """Print the character, line number, column number and total number of columns."""
         k = self.c.k
         w = self.editWidget(event)
         if not w:
