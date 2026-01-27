@@ -497,9 +497,9 @@ def contractNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
     c = self
     p = c.p
     c.endEditing()
-    p.contract()
-    c.redraw_after_contract(p)
     c.selectPosition(p)
+    p.contract()
+    c.redraw()
 
 
 # @+node:ekr.20040930064232: *3* c_oc.contractNodeOrGoToParent
@@ -539,8 +539,9 @@ def contractParent(self: Cmdr, event: LeoKeyEvent = None) -> None:
     parent = p.parent()
     if not parent:
         return
+    c.selectPosition(parent)
     parent.contract()
-    c.redraw_after_contract(p=parent)
+    c.redraw()
 
 
 # @+node:ekr.20031218072017.2903: *3* c_oc.expandAllHeadlines

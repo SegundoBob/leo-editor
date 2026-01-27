@@ -538,21 +538,6 @@ class LeoQtTree(leoFrame.LeoTree):
         self.vnode2itemsDict = {}
         self.editWidgetsDict = {}
 
-    # @+node:ekr.20110605121601.17880: *4* qtree.redraw_after_contract
-    def redraw_after_contract(self, p: Position) -> None:
-        if self.busy:
-            return
-        self.update_expansion(p)
-
-    # @+node:ekr.20110605121601.17881: *4* qtree.redraw_after_expand
-    def redraw_after_expand(self, p: Position) -> None:
-        if 0:  # Does not work. Newly visible nodes do not show children correctly.
-            c = self.c
-            c.selectPosition(p)
-            self.update_expansion(p)
-        else:
-            self.full_redraw(p)  # Don't try to shortcut this!
-
     # @+node:ekr.20110605121601.17882: *4* qtree.redraw_after_head_changed
     def redraw_after_head_changed(self) -> None:
         """Redraw all Qt outline items cloned to c.p."""
@@ -583,30 +568,6 @@ class LeoQtTree(leoFrame.LeoTree):
         w = self.treeWidget
         w.repaint()
         w.resizeColumnToContents(0)  # 2009/12/22
-
-    # @+node:ekr.20180817043619.1: *4* qtree.update_expansion
-    def update_expansion(self, p: Position) -> None:
-        """Update expansion bits for p, including all clones."""
-        c = self.c
-        w = self.treeWidget
-        expand = c.shouldBeExpanded(p)
-        if 'drawing' in g.app.debug:
-            g.trace('expand' if expand else 'contract')
-        item = self.position2itemDict.get(p.key())
-        if p:
-            try:
-                # These generate events, which would trigger a full redraw.
-                self.busy = True
-                if expand:
-                    w.expandItem(item)
-                else:
-                    w.collapseItem(item)
-            finally:
-                self.busy = False
-            w.repaint()
-        else:
-            g.trace('NO P')
-            c.redraw()
 
     # @+node:ekr.20110605121601.17885: *3* qtree.Event handlers
     # @+node:ekr.20110605121601.17887: *4*  qtree.Click Box
@@ -733,7 +694,6 @@ class LeoQtTree(leoFrame.LeoTree):
         # Only methods that actually generate events should set lockouts.
         if p.isExpanded():
             p.contract()
-            c.redraw_after_contract(p)
         self.select(p)
         c.outerUpdate()
 

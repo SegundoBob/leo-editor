@@ -4516,19 +4516,6 @@ class Commands:
     force_redraw = redraw
     redraw_now = redraw
 
-    # @+node:ekr.20090110131802.2: *6* c.redraw_after_contract
-    def redraw_after_contract(self, p: Position = None) -> None:
-        c = self
-        if c.enableRedrawFlag:
-            if p:
-                c.setCurrentPosition(p)
-            else:
-                p = c.currentPosition()
-            c.frame.tree.redraw_after_contract(p)
-            c.treeFocusHelper()
-        else:
-            c.requestLaterRedraw = True
-
     # @+node:ekr.20090112065525.1: *6* c.redraw_after_expand
     def redraw_after_expand(self, p: Position) -> None:
         c = self
