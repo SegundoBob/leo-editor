@@ -683,6 +683,8 @@ class LeoQtTree(leoFrame.LeoTree):
 
     # @+node:ekr.20110605121601.17895: *4* qtree.onItemCollapsed
     def onItemCollapsed(self, item: QTreeWidgetItem) -> None:
+        if 'drawing' in g.app.debug:
+            g.trace(g.callers(1))
         if self.busy:
             return
         c = self.c
@@ -722,6 +724,8 @@ class LeoQtTree(leoFrame.LeoTree):
     # @+node:ekr.20110605121601.17898: *4* qtree.onItemExpanded
     def onItemExpanded(self, item: QTreeWidgetItem) -> None:
         """Handle and tree-expansion event."""
+        if 'drawing' in g.app.debug:
+            g.trace(g.callers(1))
         if self.busy:  # Required
             return
         c = self.c
@@ -733,7 +737,6 @@ class LeoQtTree(leoFrame.LeoTree):
         # Only methods that actually generate events should set lockouts.
         if not p.isExpanded():
             p.expand()
-            c.redraw_after_expand(p)
         self.select(p)
         c.outerUpdate()
 

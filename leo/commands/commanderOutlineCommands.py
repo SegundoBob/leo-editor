@@ -556,7 +556,7 @@ def expandAllHeadlines(self: Cmdr, event: LeoKeyEvent = None) -> None:
     while p:
         c.expandSubtree(p)
         p.moveToNext()
-    c.redraw_after_expand(p0)  # Keep focus on original position
+    c.redraw(p0)  # Keep focus on original position
     c.expansionLevel = 0  # Reset expansion level.
 
 
@@ -653,7 +653,7 @@ def expandNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
     p = c.p
     c.endEditing()
     p.expand()
-    c.redraw_after_expand(p)
+    c.redraw(p)
     c.selectPosition(p)
 
 
@@ -683,7 +683,7 @@ def expandNodeOrGoToFirstChild(self: Cmdr, event: LeoKeyEvent = None) -> None:
     c.endEditing()
     if p.hasChildren():
         if p.isExpanded():
-            c.redraw_after_expand(p.firstChild())
+            c.redraw(p.firstChild())
         else:
             c.expandNode()
 

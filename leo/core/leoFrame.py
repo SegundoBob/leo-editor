@@ -997,12 +997,6 @@ class LeoTree:
 
     # Hints for optimization. The proper default is c.redraw()
 
-    def redraw_after_contract(self, p: Position) -> None:
-        self.c.redraw()
-
-    def redraw_after_expand(self, p: Position) -> None:
-        self.c.redraw()
-
     def redraw_after_head_changed(self) -> None:
         self.c.redraw()
 
@@ -1855,19 +1849,11 @@ class NullTree(LeoTree):
     def redraw(self, p: Position = None) -> None:
         self.redrawCount += 1
 
+    redraw_after_contract = redraw
+    redraw_after_expand = redraw
+    redraw_after_head_changed = redraw
+    redraw_after_select = redraw
     redraw_now = redraw
-
-    def redraw_after_contract(self, p: Position) -> None:
-        self.redraw()
-
-    def redraw_after_expand(self, p: Position) -> None:
-        self.redraw()
-
-    def redraw_after_head_changed(self) -> None:
-        self.redraw()
-
-    def redraw_after_select(self, p: Position = None) -> None:
-        self.redraw()
 
     def scrollTo(self, p: Position) -> None:
         pass

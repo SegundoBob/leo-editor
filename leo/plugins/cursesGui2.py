@@ -2647,12 +2647,6 @@ class CoreTree(leoFrame.LeoTree):
     repaint = redraw
 
     # @+node:ekr.20170511100356.1: *5* CTree.redraw_after...
-    def redraw_after_contract(self, p: Position = None) -> None:
-        self.redraw(p)
-
-    def redraw_after_expand(self, p: Position = None) -> None:
-        self.redraw(p)
-
     def redraw_after_head_changed(self) -> None:
         self.redraw()
 
