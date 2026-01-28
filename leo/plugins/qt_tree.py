@@ -519,7 +519,7 @@ class LeoQtTree(leoFrame.LeoTree):
                 p.moveToNext()
         if trace:
             t2 = time.process_time()
-            g.trace(f"{t2 - t1:5.2f} sec.", g.callers(6))
+            g.trace(f"{t2 - t1:5.2f} sec.", g.callers(3))
 
     # @+node:ekr.20110605121601.17877: *5* qtree.drawTree
     def drawTree(self, p: Position, parent_item: QTreeWidgetItem = None) -> None:
