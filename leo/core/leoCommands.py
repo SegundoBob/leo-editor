@@ -4552,7 +4552,7 @@ class Commands:
         """
         c = self
         if not c.requestLaterRedraw and 'drawing' in g.app.debug:
-            g.trace('set c.requestLaterRedraw', c.shortFileName(), g.callers(1))
+            g.trace(f"set c.requestLaterRedraw: {c.shortFileName():>20} {g.callers(1)}")
         c.requestLaterRedraw = True
 
     # @+node:ekr.20080514131122.17: *5* c.widget_name
