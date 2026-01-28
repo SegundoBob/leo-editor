@@ -2618,11 +2618,7 @@ class CoreTree(leoFrame.LeoTree):
         self.redrawCount = 0  # For unit tests.
         self.widget: Wrapper = None  # A LeoMLTree set by CGui.createCursesTree.
         # self.setConfigIvars()
-        # Status flags, for busy()
-        self.contracting = False
-        self.expanding = False
-        self.redrawing = False
-        self.selecting = False
+        self.redrawing = False  # Lockout..
 
     # @+node:ekr.20170511094217.1: *4* CTree.Drawing
     # @+node:ekr.20170511094217.3: *5* CTree.redraw
@@ -2636,7 +2632,7 @@ class CoreTree(leoFrame.LeoTree):
             return  # There is no need. At present, the tests hang.
         if trace:
             g.trace(g.callers())
-        if self.widget and not self.busy():
+        if self.widget and not self.redrawing:
             self.redrawCount += 1  # To keep a unit test happy.
             self.widget.update()
 
@@ -2652,14 +2648,8 @@ class CoreTree(leoFrame.LeoTree):
 
     def redraw_after_select(self, p: Position = None) -> None:
         """Redraw the entire tree when an invisible node is selected."""
-        # Prevent the selecting lockout from disabling the redraw.
-        oldSelecting = self.selecting
-        self.selecting = False
-        try:
-            if not self.busy():
-                self.redraw(p=p)
-        finally:
-            self.selecting = oldSelecting
+        if not self.redrawing:
+            self.redraw(p=p)
 
     # @+node:ekr.20170511104032.1: *4* CTree.error
     def error(self, s: str) -> None:
@@ -2667,17 +2657,6 @@ class CoreTree(leoFrame.LeoTree):
             g.trace('LeoQtTree Error: %s' % (s), g.callers())
 
     # @+node:ekr.20170511104533.1: *4* CTree.Event handlers
-    # @+node:ekr.20170511104533.10: *5* CTree.busy
-    def busy(self) -> str:
-        """Return True (actually, a debugging string)
-        if any lockout is set."""
-        trace = False
-        table = ('contracting', 'expanding', 'redrawing', 'selecting')
-        kinds = ','.join([z for z in table if getattr(self, z)])
-        if kinds and trace:
-            g.trace(kinds)
-        return kinds  # Return the string for debugging
-
     # @+node:ekr.20170511104533.12: *5* CTree.onHeadChanged (cursesGui2)
     # Tricky code: do not change without careful thought and testing.
 
