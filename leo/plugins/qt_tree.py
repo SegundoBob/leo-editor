@@ -519,7 +519,7 @@ class LeoQtTree(leoFrame.LeoTree):
                 p.moveToNext()
         if trace:
             t2 = time.process_time()
-            g.trace(f"{t2 - t1:5.2f} sec.", g.callers(5))
+            g.trace(f"{t2 - t1:5.2f} sec.")
 
     # @+node:ekr.20110605121601.17877: *5* qtree.drawTree
     def drawTree(self, p: Position, parent_item: QTreeWidgetItem = None) -> None:
@@ -557,6 +557,8 @@ class LeoQtTree(leoFrame.LeoTree):
     def redraw_after_select(self, p: Position = None) -> None:
         """Redraw the entire tree when an invisible node is selected."""
         if self.busy:
+            if 'drawing' in g.app.debug:
+                g.trace('busy!', g.callers(1))
             return
         self.full_redraw(p)
         # c.redraw_after_select calls tree.select indirectly.
@@ -683,9 +685,9 @@ class LeoQtTree(leoFrame.LeoTree):
 
     # @+node:ekr.20110605121601.17895: *4* qtree.onItemCollapsed
     def onItemCollapsed(self, item: QTreeWidgetItem) -> None:
-        if 'drawing' in g.app.debug:
-            g.trace(g.callers(1))
         if self.busy:
+            if 'drawing' in g.app.debug:
+                g.trace('busy!', g.callers(1))
             return
         c = self.c
         p = self.item2position(item)
@@ -724,9 +726,9 @@ class LeoQtTree(leoFrame.LeoTree):
     # @+node:ekr.20110605121601.17898: *4* qtree.onItemExpanded
     def onItemExpanded(self, item: QTreeWidgetItem) -> None:
         """Handle and tree-expansion event."""
-        if 'drawing' in g.app.debug:
-            g.trace(g.callers(1))
         if self.busy:  # Required
+            if 'drawing' in g.app.debug:
+                g.trace('busy!', g.callers(1))
             return
         c = self.c
         p = self.item2position(item)

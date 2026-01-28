@@ -4551,9 +4551,9 @@ class Commands:
         c.outerUpdate will call c.redraw() only if no other code calls c.redraw().
         """
         c = self
+        if not c.requestLaterRedraw and 'drawing' in g.app.debug:
+            g.trace('set c.requestLaterRedraw', c.shortFileName(), g.callers(1))
         c.requestLaterRedraw = True
-        if 'drawing' in g.app.debug:
-            g.trace(g.callers(1))
 
     # @+node:ekr.20080514131122.17: *5* c.widget_name
     def widget_name(self, widget: Widget) -> str:

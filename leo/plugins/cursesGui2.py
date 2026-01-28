@@ -2660,7 +2660,6 @@ class CoreTree(leoFrame.LeoTree):
                 self.redraw(p=p)
         finally:
             self.selecting = oldSelecting
-        # Do *not* call redraw_after_select here!
 
     # @+node:ekr.20170511104032.1: *4* CTree.error
     def error(self, s: str) -> None:
