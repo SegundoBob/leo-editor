@@ -685,6 +685,7 @@ class LeoQtTree(leoFrame.LeoTree):
 
     # @+node:ekr.20110605121601.17895: *4* qtree.onItemCollapsed
     def onItemCollapsed(self, item: QTreeWidgetItem) -> None:
+        """Handle Qt tree-collapsed events."""
         if self.busy:
             return
         if 'drawing' in g.app.debug:
@@ -725,7 +726,7 @@ class LeoQtTree(leoFrame.LeoTree):
 
     # @+node:ekr.20110605121601.17898: *4* qtree.onItemExpanded
     def onItemExpanded(self, item: QTreeWidgetItem) -> None:
-        """Handle and tree-expansion event."""
+        """Handle Qt tree-expansion events."""
         if self.busy:  # Required
             return
         if 'drawing' in g.app.debug:
