@@ -646,21 +646,6 @@ def findMatchingBracket(self: Self, event: LeoKeyEvent = None) -> None:
         g.MatchBrackets(c, p, language).run()
 
 
-# @+node:ekr.20110402084740.14490: ** c_ec.goToNext/PrevHistory
-@g.commander_command('goto-next-history-node')
-def goToNextHistory(self: Self, event: LeoKeyEvent = None) -> None:
-    """Go to the next node in the history list."""
-    c = self
-    c.nodeHistory.goNext()
-
-
-@g.commander_command('goto-prev-history-node')
-def goToPrevHistory(self: Self, event: LeoKeyEvent = None) -> None:
-    """Go to the previous node in the history list."""
-    c = self
-    c.nodeHistory.goPrev()
-
-
 # @+node:ekr.20171123135625.30: ** c_ec.alwaysIndentBody (always-indent-region)
 @g.commander_command('always-indent-region')
 def alwaysIndentBody(self: Self, event: LeoKeyEvent = None) -> None:
