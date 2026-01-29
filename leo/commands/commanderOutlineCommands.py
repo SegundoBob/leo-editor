@@ -497,9 +497,9 @@ def contractNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
     c = self
     p = c.p
     c.endEditing()
-    p.contract()
-    c.redraw_after_contract(p)
     c.selectPosition(p)
+    p.contract()
+    c.redraw()
 
 
 # @+node:ekr.20040930064232: *3* c_oc.contractNodeOrGoToParent
@@ -539,8 +539,9 @@ def contractParent(self: Cmdr, event: LeoKeyEvent = None) -> None:
     parent = p.parent()
     if not parent:
         return
+    c.selectPosition(parent)
     parent.contract()
-    c.redraw_after_contract(p=parent)
+    c.redraw()
 
 
 # @+node:ekr.20031218072017.2903: *3* c_oc.expandAllHeadlines
@@ -555,7 +556,7 @@ def expandAllHeadlines(self: Cmdr, event: LeoKeyEvent = None) -> None:
     while p:
         c.expandSubtree(p)
         p.moveToNext()
-    c.redraw_after_expand(p0)  # Keep focus on original position
+    c.redraw(p0)  # Keep focus on original position
     c.expansionLevel = 0  # Reset expansion level.
 
 
@@ -652,7 +653,7 @@ def expandNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
     p = c.p
     c.endEditing()
     p.expand()
-    c.redraw_after_expand(p)
+    c.redraw(p)
     c.selectPosition(p)
 
 
@@ -682,7 +683,7 @@ def expandNodeOrGoToFirstChild(self: Cmdr, event: LeoKeyEvent = None) -> None:
     c.endEditing()
     if p.hasChildren():
         if p.isExpanded():
-            c.redraw_after_expand(p.firstChild())
+            c.redraw(p.firstChild())
         else:
             c.expandNode()
 

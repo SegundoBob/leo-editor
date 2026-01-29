@@ -997,12 +997,6 @@ class LeoTree:
 
     # Hints for optimization. The proper default is c.redraw()
 
-    def redraw_after_contract(self, p: Position) -> None:
-        self.c.redraw()
-
-    def redraw_after_expand(self, p: Position) -> None:
-        self.c.redraw()
-
     def redraw_after_head_changed(self) -> None:
         self.c.redraw()
 
@@ -1183,10 +1177,7 @@ class LeoTree:
         if g.app.killed or self.tree_select_lockout:  # Essential.
             return
         if trace:
-            print(f"----- {tag}: {p.h}")
-            # print(f"{tag:>30}: {c.frame.body.wrapper} {p.h}")
-            # Format matches traces in retired leoflexx.py
-            # print(f"{tag:30}: {len(p.b):4} {p.gnx} {p.h}")
+            print(tag, p.h)
         try:
             self.tree_select_lockout = True
             self.prev_v = c.p.v
@@ -1855,19 +1846,11 @@ class NullTree(LeoTree):
     def redraw(self, p: Position = None) -> None:
         self.redrawCount += 1
 
+    redraw_after_contract = redraw
+    redraw_after_expand = redraw
+    redraw_after_head_changed = redraw
+    redraw_after_select = redraw
     redraw_now = redraw
-
-    def redraw_after_contract(self, p: Position) -> None:
-        self.redraw()
-
-    def redraw_after_expand(self, p: Position) -> None:
-        self.redraw()
-
-    def redraw_after_head_changed(self) -> None:
-        self.redraw()
-
-    def redraw_after_select(self, p: Position = None) -> None:
-        self.redraw()
 
     def scrollTo(self, p: Position) -> None:
         pass
