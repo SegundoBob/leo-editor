@@ -2498,6 +2498,7 @@ class LoadManager:
             # The usual directory does not exist. Create an empty file.
             c = self.openEmptyLeoFile(fn, gui=g.app.gui, old_c=None)
             c.rootPosition().h = 'Workbook'
+            g.app.numberOfUntitledWindows += 1
         else:
             # Open the workbook or create an empty file.
             c = g.openWithFileName(fn, gui=g.app.gui, old_c=None)
