@@ -4694,7 +4694,6 @@ class Commands:
     def expandToLevel(self, level: int) -> None:
         c = self
         n = c.p.level()
-        old_expansion_level = c.expansionLevel
         max_level = 0
         for p in c.p.self_and_subtree(copy=False):
             if p.level() - n + 1 < level:
@@ -4704,8 +4703,7 @@ class Commands:
                 p.contract()
         c.expansionNode = c.p.copy()
         c.expansionLevel = max_level + 1
-        if c.expansionLevel != old_expansion_level:
-            c.redraw()
+        c.redraw()
         # It's always useful to announce the level.
         c.frame.putStatusLine(f"level: {max_level + 1}")
 
