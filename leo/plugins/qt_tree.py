@@ -519,7 +519,7 @@ class LeoQtTree(leoFrame.LeoTree):
                 p.moveToNext()
         if trace:
             t2 = time.process_time()
-            g.trace(f"{t2 - t1:5.2f} sec.", g.callers(5))
+            g.trace(f"{t2 - t1:5.2f} sec.", g.callers(3))
 
     # @+node:ekr.20110605121601.17877: *5* qtree.drawTree
     def drawTree(self, p: Position, parent_item: QTreeWidgetItem = None) -> None:
@@ -537,21 +537,6 @@ class LeoQtTree(leoFrame.LeoTree):
         self.position2itemDict = {}
         self.vnode2itemsDict = {}
         self.editWidgetsDict = {}
-
-    # @+node:ekr.20110605121601.17880: *4* qtree.redraw_after_contract
-    def redraw_after_contract(self, p: Position) -> None:
-        if self.busy:
-            return
-        self.update_expansion(p)
-
-    # @+node:ekr.20110605121601.17881: *4* qtree.redraw_after_expand
-    def redraw_after_expand(self, p: Position) -> None:
-        if 0:  # Does not work. Newly visible nodes do not show children correctly.
-            c = self.c
-            c.selectPosition(p)
-            self.update_expansion(p)
-        else:
-            self.full_redraw(p)  # Don't try to shortcut this!
 
     # @+node:ekr.20110605121601.17882: *4* qtree.redraw_after_head_changed
     def redraw_after_head_changed(self) -> None:
@@ -572,6 +557,8 @@ class LeoQtTree(leoFrame.LeoTree):
     def redraw_after_select(self, p: Position = None) -> None:
         """Redraw the entire tree when an invisible node is selected."""
         if self.busy:
+            if 'drawing' in g.app.debug:
+                g.trace('busy!', g.callers(1))
             return
         self.full_redraw(p)
         # c.redraw_after_select calls tree.select indirectly.
@@ -583,30 +570,6 @@ class LeoQtTree(leoFrame.LeoTree):
         w = self.treeWidget
         w.repaint()
         w.resizeColumnToContents(0)  # 2009/12/22
-
-    # @+node:ekr.20180817043619.1: *4* qtree.update_expansion
-    def update_expansion(self, p: Position) -> None:
-        """Update expansion bits for p, including all clones."""
-        c = self.c
-        w = self.treeWidget
-        expand = c.shouldBeExpanded(p)
-        if 'drawing' in g.app.debug:
-            g.trace('expand' if expand else 'contract')
-        item = self.position2itemDict.get(p.key())
-        if p:
-            try:
-                # These generate events, which would trigger a full redraw.
-                self.busy = True
-                if expand:
-                    w.expandItem(item)
-                else:
-                    w.collapseItem(item)
-            finally:
-                self.busy = False
-            w.repaint()
-        else:
-            g.trace('NO P')
-            c.redraw()
 
     # @+node:ekr.20110605121601.17885: *3* qtree.Event handlers
     # @+node:ekr.20110605121601.17887: *4*  qtree.Click Box
@@ -722,8 +685,11 @@ class LeoQtTree(leoFrame.LeoTree):
 
     # @+node:ekr.20110605121601.17895: *4* qtree.onItemCollapsed
     def onItemCollapsed(self, item: QTreeWidgetItem) -> None:
+        """Handle Qt tree-collapsed events."""
         if self.busy:
             return
+        if 'drawing' in g.app.debug:
+            g.trace(g.callers(1))
         c = self.c
         p = self.item2position(item)
         if not p:
@@ -731,11 +697,10 @@ class LeoQtTree(leoFrame.LeoTree):
             return
         # Do **not** set lockouts here.
         # Only methods that actually generate events should set lockouts.
+        self.select(p)
         if p.isExpanded():
             p.contract()
-            c.redraw_after_contract(p)
-        self.select(p)
-        c.outerUpdate()
+        c.redraw()
 
     # @+node:ekr.20110605121601.17897: *4* qtree.onItemDoubleClicked
     def onItemDoubleClicked(self, item: QTreeWidgetItem, col: int) -> None:  # col not used.
@@ -761,9 +726,11 @@ class LeoQtTree(leoFrame.LeoTree):
 
     # @+node:ekr.20110605121601.17898: *4* qtree.onItemExpanded
     def onItemExpanded(self, item: QTreeWidgetItem) -> None:
-        """Handle and tree-expansion event."""
+        """Handle Qt tree-expansion events."""
         if self.busy:  # Required
             return
+        if 'drawing' in g.app.debug:
+            g.trace(g.callers(1))
         c = self.c
         p = self.item2position(item)
         if not p:
@@ -771,11 +738,10 @@ class LeoQtTree(leoFrame.LeoTree):
             return
         # Do **not** set lockouts here.
         # Only methods that actually generate events should set lockouts.
+        self.select(p)
         if not p.isExpanded():
             p.expand()
-            c.redraw_after_expand(p)
-        self.select(p)
-        c.outerUpdate()
+        c.redraw()
 
     # @+node:ekr.20110605121601.17899: *4* qtree.onTreeSelect
     def onTreeSelect(self) -> None:

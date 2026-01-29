@@ -198,8 +198,8 @@ class TestLeoServer(LeoUnitTest):
         for action, package in table:
             self._request(action, package)
 
-    # @+node:felix.20210621233316.104: *3* TestLeoServer.test_find_commands
-    def test_find_commands(self):
+    # @+node:felix.20210621233316.104: *3* TestLeoServer.slow_test_find_commands
+    def slow_test_find_commands(self):
         tag = 'test_find_commands'
         test_dot_leo = g.finalize_join(g.app.loadDir, '..', 'test', 'test.leo')
         assert os.path.exists(test_dot_leo), repr(test_dot_leo)

@@ -433,12 +433,6 @@ class TreeAPI:
 
     # Hints for optimization. The proper default is c.redraw()
 
-    def redraw_after_contract(self, p: Position) -> None:
-        pass
-
-    def redraw_after_expand(self, p: Position) -> None:
-        pass
-
     def redraw_after_head_changed(self) -> None:
         pass
 

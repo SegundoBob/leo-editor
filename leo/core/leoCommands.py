@@ -4511,36 +4511,13 @@ class Commands:
         # Clear the redraw request, again.
         c.requestLaterRedraw = False
 
-    # Compatibility with old scripts
+    # Compatibility with old scripts.
+    # Do *not* delete redraw_after_select or redraw_after_head_changed.
 
     force_redraw = redraw
+    redraw_after_contract = redraw
+    redraw_after_expand = redraw
     redraw_now = redraw
-
-    # @+node:ekr.20090110131802.2: *6* c.redraw_after_contract
-    def redraw_after_contract(self, p: Position = None) -> None:
-        c = self
-        if c.enableRedrawFlag:
-            if p:
-                c.setCurrentPosition(p)
-            else:
-                p = c.currentPosition()
-            c.frame.tree.redraw_after_contract(p)
-            c.treeFocusHelper()
-        else:
-            c.requestLaterRedraw = True
-
-    # @+node:ekr.20090112065525.1: *6* c.redraw_after_expand
-    def redraw_after_expand(self, p: Position) -> None:
-        c = self
-        if c.enableRedrawFlag:
-            if p:
-                c.setCurrentPosition(p)
-            else:
-                p = c.currentPosition()
-            c.frame.tree.redraw_after_expand(p)
-            c.treeFocusHelper()
-        else:
-            c.requestLaterRedraw = True
 
     # @+node:ekr.20090110073010.2: *6* c.redraw_after_head_changed
     def redraw_after_head_changed(self) -> None:
@@ -4574,10 +4551,9 @@ class Commands:
         c.outerUpdate will call c.redraw() only if no other code calls c.redraw().
         """
         c = self
+        if not c.requestLaterRedraw and 'drawing' in g.app.debug:
+            g.trace(f"set c.requestLaterRedraw: {c.shortFileName():>20} {g.callers(1)}")
         c.requestLaterRedraw = True
-        if 'drawing' in g.app.debug:
-            # g.trace('\n' + g.callers(8))
-            g.trace(g.callers())
 
     # @+node:ekr.20080514131122.17: *5* c.widget_name
     def widget_name(self, widget: Widget) -> str:
@@ -4718,7 +4694,6 @@ class Commands:
     def expandToLevel(self, level: int) -> None:
         c = self
         n = c.p.level()
-        old_expansion_level = c.expansionLevel
         max_level = 0
         for p in c.p.self_and_subtree(copy=False):
             if p.level() - n + 1 < level:
@@ -4728,8 +4703,7 @@ class Commands:
                 p.contract()
         c.expansionNode = c.p.copy()
         c.expansionLevel = max_level + 1
-        if c.expansionLevel != old_expansion_level:
-            c.redraw()
+        c.redraw()
         # It's always useful to announce the level.
         c.frame.putStatusLine(f"level: {max_level + 1}")
 
