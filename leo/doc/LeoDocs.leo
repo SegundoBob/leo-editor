@@ -33376,6 +33376,11 @@ The defaults are shown below:
 - Retire ``@int beautify-max-join-line-length``
 - Retire ``@int beautify-max-split-line-length``
 
+**Minor breaking API change**
+
+- Retire two Commands methods: ``c.goToNextHistory`` and ``c.goToPrevHistory``.
+  Use ``c.goNextVisitedNode`` and ``c.goPrevVisitedNode`` instead.
+
 </t>
 <t tx="ekr.20251204122305.1">Leo https://leo-editor.github.io/leo-editor/ 6.8.7 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
 

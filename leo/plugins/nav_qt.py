@@ -93,8 +93,8 @@ class NavController:
         act_l = QAction(icon_l, 'prev', w)
         act_r = QAction(icon_r, 'next', w)
         # Use the new commands.
-        act_l.triggered.connect(lambda checked: c.goToPrevHistory())
-        act_r.triggered.connect(lambda checked: c.goToNextHistory())
+        act_l.triggered.connect(lambda checked: c.goPrevVisitedNode())
+        act_r.triggered.connect(lambda checked: c.goNextVisitedNode())
         # Don't execute the command twice.
         self.c.frame.iconBar.add(qaction=act_l)
         self.c.frame.iconBar.add(qaction=act_r)

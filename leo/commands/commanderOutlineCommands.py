@@ -763,6 +763,7 @@ def findNextClone(self: Cmdr, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20031218072017.1628: *3* c_oc.goNextVisitedNode
 @g.commander_command('go-forward')
+@g.commander_command('goto-next-history-node')
 def goNextVisitedNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
     """Select the next visited node."""
     c = self
@@ -771,6 +772,7 @@ def goNextVisitedNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20031218072017.1627: *3* c_oc.goPrevVisitedNode
 @g.commander_command('go-back')
+@g.commander_command('goto-prev-history-node')
 def goPrevVisitedNode(self: Cmdr, event: LeoKeyEvent = None) -> None:
     """Select the previously visited node."""
     c = self

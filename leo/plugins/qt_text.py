@@ -1928,8 +1928,8 @@ class QTextEditWrapper(QTextMixin):
             cursor = w.textCursor()
             anchor = cursor.anchor()
             pos = cursor.position()
-            cursor.setPosition(pos, MoveOperation.MoveAnchor)
-            cursor.setPosition(anchor, MoveOperation.KeepAnchor)
+            cursor.setPosition(pos, MoveMode.MoveAnchor)
+            cursor.setPosition(anchor, MoveMode.KeepAnchor)
             w.setTextCursor(cursor)
         else:
             cursor = w.textCursor()
