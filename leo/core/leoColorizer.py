@@ -41,6 +41,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position, VNode
     from leo.core.leoGlobals import GeneralSetting
+    from leo.core.leoGui import LeoKeyEvent
 
     try:
         from typing import Self  # Introduced in Python 3.11
@@ -61,6 +62,15 @@ def make_colorizer(c: Cmdr, widget: QWidget) -> Union[JEditColorizer, PygmentsCo
     if use_pygments:
         return PygmentsColorizer(c, widget)
     return JEditColorizer(c, widget)
+
+
+# @+node:ekr.20260215050008.1: ** command: dump-last-colorizer-trace
+@g.command('dump-last-colorizer-trace')
+def dump_colorizer_last_colorizer_traces(event: LeoKeyEvent) -> None:
+    c = event['c']
+    colorizer = c.frame.body.colorizer
+    if hasattr(colorizer, 'last_trace'):
+        print('\n'.join(colorizer.last_trace))
 
 
 # @+node:ekr.20170127141855.1: ** class BaseColorizer
@@ -94,6 +104,7 @@ class BaseColorizer:
         self.full_recolor_count = 0  # For unit tests.
         self.recolorCount = 0
         # For traces...
+        self.last_trace: list[str] = []
         self.matcher_name: str = ''
         self.rulesetName: str = ''
         self.delegate_name: str = ''
@@ -718,9 +729,13 @@ class BaseColorizer:
             rule_name = g.caller(4)
             matcher_s = f"{self.rulesetName}::{rule_name}:{matcher_name}"
             s2 = s[i:j]  # Show only the colored string.
-            print(
-                f"setTag: {self.recolorCount:4} {matcher_s:<50} color: {colorName:7} tag: {full_tag:<20} {i_j_s:7} {s2}"
+            trace_line = (
+                f"setTag: {self.recolorCount:4} {matcher_s:<50} color: {colorName:7} "
+                f"tag: {full_tag:<20} {i_j_s:7} {s2}"
             )
+            self.last_trace.append(trace_line)
+            if trace:
+                print(trace_line)
 
         self.n_setTag += 1
         if i == j:
@@ -785,8 +800,7 @@ class BaseColorizer:
             format.setForeground(color)
             format.setUnderlineStyle(UnderlineStyle.NoUnderline)
         self.tagCount += 1
-        if trace:
-            report(color)  # A superb trace.
+        report(color)  # A superb trace, cached for the dump-last-colorizer-trace command.
         self.highlighter.setFormat(i, j - i, format)
 
     # @+node:ekr.20190324050727.1: *3* BaseColorizer.init_style_ivars
@@ -1449,17 +1463,20 @@ class JEditColorizer(BaseColorizer):
         self.init_mode(self.language)
 
         # Do not delete these traces!
-        if trace:
-            if prev_state == -1:
+        if prev_state == -1:
+            message = f"New node: prev_state: {prev_state} p.h: {p.h}"
+            # Init the queued messages for the dump-last-colorizer-trace command.
+            self.last_trace = [message]
+            if trace:  # Print the trace immediately.
                 print('')
-                g.trace(f"New node: prev_state: {prev_state} p.h: {p.h}")
-            if 0:  # Distracting.
-                g.trace(
-                    f"recolorCount: {self.recolorCount:<4} "
-                    f"line: {self.currentBlockNumber():<4} "
-                    f"state: {state}: {self.stateNumberToStateString(state):<10} "
-                    f"s: {s!r}"
-                )
+                g.trace(message)
+        if 0:  # Distracting.
+            g.trace(
+                f"recolorCount: {self.recolorCount:<4} "
+                f"line: {self.currentBlockNumber():<4} "
+                f"state: {state}: {self.stateNumberToStateString(state):<10} "
+                f"s: {s!r}"
+            )
 
         # mainLoop will do nothing if s is empty.
         if s:
