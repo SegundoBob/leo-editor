@@ -1464,19 +1464,19 @@ class JEditColorizer(BaseColorizer):
 
         # Do not delete these traces!
         if prev_state == -1:
-            message = f"New node: prev_state: {prev_state} p.h: {p.h}"
+            message = f"New node: p.h: {p.h}"
             # Init the queued messages for the dump-last-colorizer-trace command.
             self.last_trace = [message]
             if trace:  # Print the trace immediately.
                 print('')
                 g.trace(message)
-        if 0:  # Distracting.
-            g.trace(
-                f"recolorCount: {self.recolorCount:<4} "
+        else:
+            verbose_message = (
+                # f"recolorCount: {self.recolorCount:<4} "
                 f"line: {self.currentBlockNumber():<4} "
-                f"state: {state}: {self.stateNumberToStateString(state):<10} "
-                f"s: {s!r}"
+                f"state: {state}: {self.stateNumberToStateString(state)} "
             )
+            self.last_trace.append(verbose_message)
 
         # mainLoop will do nothing if s is empty.
         if s:
