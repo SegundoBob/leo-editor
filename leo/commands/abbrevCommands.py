@@ -278,7 +278,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if word:
                 # #4462: Make only one substitution in headlines.
                 if w_name.startswith('head'):
-                    self.make_first_headline_substitution(i, p, val)
+                    self.make_first_headline_substitution(i, j, p, val)
                     return True
                 if val == '__NEXT_PLACEHOLDER':
                     i = w.getInsertPoint()
@@ -481,7 +481,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return val, do_placeholder
 
     # @+node:ekr.20161121102113.1: *4* abbrev.make_script_substitutions_in_headline
-    def make_first_headline_substitution(self, i: int, p: Position, val: str) -> None:
+    def make_first_headline_substitution(self, i: int, j: int, p: Position, val: str) -> None:
         """
         Make *only* the first scripting substitution in p.h.
         """
@@ -508,7 +508,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 g.trace('scripting error in', p.h)
                 g.es_exception()
         # #4529
-        p.h = val
+        p.h = f"{p.h[:i]}{val}{p.h[j:]}"
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
     def match_prefix(
