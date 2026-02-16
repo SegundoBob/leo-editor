@@ -69,8 +69,7 @@ def make_colorizer(c: Cmdr, widget: QWidget) -> Union[JEditColorizer, PygmentsCo
 def dump_colorizer_last_colorizer_traces(event: LeoKeyEvent) -> None:
     c = event['c']
     colorizer = c.frame.body.colorizer
-    if hasattr(colorizer, 'last_trace'):
-        print('\n'.join(colorizer.last_trace))
+    print('\n'.join(colorizer.last_trace))
 
 
 # @+node:ekr.20170127141855.1: ** class BaseColorizer
