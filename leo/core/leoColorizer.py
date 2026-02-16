@@ -728,10 +728,21 @@ class BaseColorizer:
             rule_name = g.caller(4)
             matcher_s = f"{self.rulesetName}::{rule_name}:{matcher_name}"
             s2 = s[i:j]  # Show only the colored string.
+            state = self.currentState()
+            state_repr = self.stateNumberToStateString(state)
+            state_s = f"{self.currentState()}={state_repr}"
             trace_line = (
-                f"setTag: {self.recolorCount:4} {matcher_s:<50} color: {colorName:7} "
-                f"tag: {full_tag:<20} {i_j_s:7} {s2}"
+                f"{self.recolorCount:5} {self.currentBlockNumber():<4} {state_s:<25}"
+                f"{matcher_s:<55} {colorName:7} {full_tag:<20} {i_j_s} {s2}"
             )
+            if len(self.last_trace) < 2:
+                # Append a caption.  jedit.recolor adds the first line.
+                self.last_trace.append(
+                    f"count line state {' ':18} matcher {' ':47} color   tag {' ':18} i:j   string"
+                )
+                self.last_trace.append(
+                    f"----- ---- ----- {' ':18} ------- {' ':47} -----   --- {' ':18} ---   -----"
+                )
             self.last_trace.append(trace_line)
             if trace:
                 print(trace_line)
@@ -1469,7 +1480,7 @@ class JEditColorizer(BaseColorizer):
             if trace:  # Print the trace immediately.
                 print('')
                 g.trace(message)
-        else:
+        elif 0:
             verbose_message = (
                 # f"recolorCount: {self.recolorCount:<4} "
                 f"line: {self.currentBlockNumber():<4} "
