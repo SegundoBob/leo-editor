@@ -1484,13 +1484,6 @@ class JEditColorizer(BaseColorizer):
             if trace:  # Print the trace immediately.
                 print('')
                 g.trace(message)
-        elif 0:
-            verbose_message = (
-                # f"recolorCount: {self.recolorCount:<4} "
-                f"line: {self.currentBlockNumber():<4} "
-                f"state: {state}: {self.stateNumberToStateString(state)} "
-            )
-            self.last_trace.append(verbose_message)
 
         # mainLoop will do nothing if s is empty.
         if s:
