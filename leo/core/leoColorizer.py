@@ -41,6 +41,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position, VNode
     from leo.core.leoGlobals import GeneralSetting
+    from leo.core.leoGui import LeoKeyEvent
 
     try:
         from typing import Self  # Introduced in Python 3.11
@@ -61,6 +62,14 @@ def make_colorizer(c: Cmdr, widget: QWidget) -> Union[JEditColorizer, PygmentsCo
     if use_pygments:
         return PygmentsColorizer(c, widget)
     return JEditColorizer(c, widget)
+
+
+# @+node:ekr.20260215050008.1: ** command: dump-last-colorizer-trace
+@g.command('dump-last-colorizer-trace')
+def dump_colorizer_last_colorizer_traces(event: LeoKeyEvent) -> None:
+    c = event['c']
+    colorizer = c.frame.body.colorizer
+    print('\n'.join(colorizer.last_trace))
 
 
 # @+node:ekr.20170127141855.1: ** class BaseColorizer
@@ -94,6 +103,7 @@ class BaseColorizer:
         self.full_recolor_count = 0  # For unit tests.
         self.recolorCount = 0
         # For traces...
+        self.last_trace: list[str] = []
         self.matcher_name: str = ''
         self.rulesetName: str = ''
         self.delegate_name: str = ''
@@ -602,6 +612,10 @@ class BaseColorizer:
             s = s[1:]
         return s.replace(' ', '').replace('-', '').replace('_', '').lower().strip()
 
+    # @+node:ekr.20260216112007.1: *3* BaseColorizer.setTag
+    def setTag(self, tag: str, s: str, i: int, j: int) -> None:
+        pass
+
     # @+node:ekr.20171114041307.1: *3* BaseColorizer.reloadSettings
 
     def reloadSettings(self) -> None:
@@ -701,93 +715,6 @@ class BaseColorizer:
         elif style_name != self.prev_style:
             g.es_print(f"New pygments style: {style_name}")
             self.prev_style = style_name
-
-    # @+node:ekr.20110605121601.18641: *3* BaseColorizer.setTag
-    def setTag(self, tag: str, s: str, i: int, j: int) -> None:
-        """Set the tag in the highlighter."""
-        trace = 'coloring' in g.app.debug and not g.unitTesting
-
-        default_tag = f"{tag}_font"  # See default_font_dict.
-        full_tag = f"{self.language}.{tag}"
-        font: QtGui.QFont = None  # Set below. Define here for report().
-
-        def report(color: QtGui.QColor) -> None:
-            """A superb trace. Don't remove it."""
-            i_j_s = f"{i:>3}:{j:<3}"
-            matcher_name = g.caller(3)
-            rule_name = g.caller(4)
-            matcher_s = f"{self.rulesetName}::{rule_name}:{matcher_name}"
-            s2 = s[i:j]  # Show only the colored string.
-            print(
-                f"setTag: {self.recolorCount:4} {matcher_s:<50} color: {colorName:7} tag: {full_tag:<20} {i_j_s:7} {s2}"
-            )
-
-        self.n_setTag += 1
-        if i == j:
-            return
-        if not tag or not tag.strip():
-            return
-        tag = tag.lower().strip()
-        # A hack to allow continuation dots on any tag.
-        dots = tag.startswith('dots')
-        if dots:
-            tag = tag[len('dots') :]
-        # This color name should already be valid.
-        d = self.configDict
-        color_key = self.language.replace('_', '')
-        colorName: str = (
-            d.get(f"{self.language}.{tag}")  # Legacy.
-            or d.get(f"{color_key}.{tag}")  # Leo 6.8.4.
-            or d.get(tag)  # Legacy default.
-        )
-        if not colorName:
-            return
-        # New in Leo 5.8.1: allow symbolic color names here.
-        #                   (All keys in leo_color_database are normalized.)
-        colorName = self.normalize(colorName)
-        colorName = leo_color_database.get(colorName, colorName)
-        # Get the actual color.
-        color: QtGui.QColor = self.actualColorDict.get(colorName)
-        if not color:
-            color = QtGui.QColor(colorName)
-            if color.isValid():
-                self.actualColorDict[colorName] = color
-            else:
-                # Leo 6.7.2: This should never happen: configure_colors does a pre-check.
-                message = (
-                    "jedit.setTag: can not happen: "
-                    f"full_tag: {full_tag} = {d.get(full_tag)!r} "
-                    f"tag: {tag} = {d.get(tag)!r}"
-                )
-                g.print_unique_message(message)
-                return
-        underline = self.configUnderlineDict.get(tag)
-        format = QtGui.QTextCharFormat()
-        for font_name in (full_tag, tag, default_tag):
-            font = self.fonts.get(font_name)
-            if font:
-                format.setFont(font)
-                self.configure_hard_tab_width(font)  # #1919.
-                break
-        if tag in ('blank', 'tab'):
-            if tag == 'tab' or colorName == 'black':
-                format.setFontUnderline(True)
-            if colorName != 'black':
-                format.setBackground(color)
-        elif underline:
-            format.setForeground(color)
-            format.setUnderlineStyle(UnderlineStyle.SingleUnderline)
-            format.setFontUnderline(True)
-        elif dots or tag == 'trailing_whitespace':
-            format.setForeground(color)
-            format.setUnderlineStyle(UnderlineStyle.DotLine)
-        else:
-            format.setForeground(color)
-            format.setUnderlineStyle(UnderlineStyle.NoUnderline)
-        self.tagCount += 1
-        if trace:
-            report(color)  # A superb trace.
-        self.highlighter.setFormat(i, j - i, format)
 
     # @+node:ekr.20190324050727.1: *3* BaseColorizer.init_style_ivars
     def init_style_ivars(self) -> None:
@@ -1362,6 +1289,107 @@ class JEditColorizer(BaseColorizer):
         g.es_print(f"recolor: `{p.h}`", color='blue')
         self.highlighter.rehighlight()
 
+    # @+node:ekr.20110605121601.18641: *3* jedit.setTag
+    def setTag(self, tag: str, s: str, i: int, j: int) -> None:
+        """Set the tag in the highlighter."""
+        trace = 'coloring' in g.app.debug and not g.unitTesting
+
+        default_tag = f"{tag}_font"  # See default_font_dict.
+        full_tag = f"{self.language}.{tag}"
+        font: QtGui.QFont = None  # Set below. Define here for report().
+
+        def report(color: QtGui.QColor) -> None:
+            """A superb trace. Don't remove it."""
+            i_j_s = f"{i:>3}:{j:<3}"
+            matcher_name = g.caller(3)
+            rule_name = g.caller(4)
+            matcher_s = f"{self.rulesetName}::{rule_name}:{matcher_name}"
+            s2 = s[i:j]  # Show only the colored string.
+            state = self.currentState()
+            state_repr = self.stateNumberToStateString(state)
+            state_s = f"{self.currentState()}={state_repr}"
+            trace_line = (
+                f"{self.recolorCount:5} {self.currentBlockNumber():<4} {state_s:<25}"
+                f"{matcher_s:<55} {colorName:7} {full_tag:<20} {i_j_s} {s2}"
+            )
+            if len(self.last_trace) < 2:
+                # Append a caption.  jedit.recolor adds the first line.
+                self.last_trace.append(
+                    f"count line state {' ':18} matcher {' ':47} color   tag {' ':18} i:j   string"
+                )
+                self.last_trace.append(
+                    f"----- ---- ----- {' ':18} ------- {' ':47} -----   --- {' ':18} ---   -----"
+                )
+            self.last_trace.append(trace_line)
+            if trace:
+                print(trace_line)
+
+        self.n_setTag += 1
+        if i == j:
+            return
+        if not tag or not tag.strip():
+            return
+        tag = tag.lower().strip()
+        # A hack to allow continuation dots on any tag.
+        dots = tag.startswith('dots')
+        if dots:
+            tag = tag[len('dots') :]
+        # This color name should already be valid.
+        d = self.configDict
+        color_key = self.language.replace('_', '')
+        colorName: str = (
+            d.get(f"{self.language}.{tag}")  # Legacy.
+            or d.get(f"{color_key}.{tag}")  # Leo 6.8.4.
+            or d.get(tag)  # Legacy default.
+        )
+        if not colorName:
+            return
+        # New in Leo 5.8.1: allow symbolic color names here.
+        #                   (All keys in leo_color_database are normalized.)
+        colorName = self.normalize(colorName)
+        colorName = leo_color_database.get(colorName, colorName)
+        # Get the actual color.
+        color: QtGui.QColor = self.actualColorDict.get(colorName)
+        if not color:
+            color = QtGui.QColor(colorName)
+            if color.isValid():
+                self.actualColorDict[colorName] = color
+            else:
+                # Leo 6.7.2: This should never happen: configure_colors does a pre-check.
+                message = (
+                    "jedit.setTag: can not happen: "
+                    f"full_tag: {full_tag} = {d.get(full_tag)!r} "
+                    f"tag: {tag} = {d.get(tag)!r}"
+                )
+                g.print_unique_message(message)
+                return
+        underline = self.configUnderlineDict.get(tag)
+        format = QtGui.QTextCharFormat()
+        for font_name in (full_tag, tag, default_tag):
+            font = self.fonts.get(font_name)
+            if font:
+                format.setFont(font)
+                self.configure_hard_tab_width(font)  # #1919.
+                break
+        if tag in ('blank', 'tab'):
+            if tag == 'tab' or colorName == 'black':
+                format.setFontUnderline(True)
+            if colorName != 'black':
+                format.setBackground(color)
+        elif underline:
+            format.setForeground(color)
+            format.setUnderlineStyle(UnderlineStyle.SingleUnderline)
+            format.setFontUnderline(True)
+        elif dots or tag == 'trailing_whitespace':
+            format.setForeground(color)
+            format.setUnderlineStyle(UnderlineStyle.DotLine)
+        else:
+            format.setForeground(color)
+            format.setUnderlineStyle(UnderlineStyle.NoUnderline)
+        self.tagCount += 1
+        report(color)  # A superb trace, cached for the dump-last-colorizer-trace command.
+        self.highlighter.setFormat(i, j - i, format)
+
     # @+node:ekr.20110605121601.18638: *3* jedit.mainLoop
     tot_time = 0.0
 
@@ -1449,17 +1477,13 @@ class JEditColorizer(BaseColorizer):
         self.init_mode(self.language)
 
         # Do not delete these traces!
-        if trace:
-            if prev_state == -1:
+        if prev_state == -1:
+            message = f"New node: p.h: {p.h}"
+            # Init the queued messages for the dump-last-colorizer-trace command.
+            self.last_trace = [message]
+            if trace:  # Print the trace immediately.
                 print('')
-                g.trace(f"New node: prev_state: {prev_state} p.h: {p.h}")
-            if 0:  # Distracting.
-                g.trace(
-                    f"recolorCount: {self.recolorCount:<4} "
-                    f"line: {self.currentBlockNumber():<4} "
-                    f"state: {state}: {self.stateNumberToStateString(state):<10} "
-                    f"s: {s!r}"
-                )
+                g.trace(message)
 
         # mainLoop will do nothing if s is empty.
         if s:
