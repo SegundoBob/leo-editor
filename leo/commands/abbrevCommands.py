@@ -486,7 +486,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         Make *only* the first scripting substitution in p.h.
         """
         c = self.c
-        c.endEditing()
+        c.endEditing()  # Required.
         pattern = re.compile(
             r'^(.*)%s(.+)%s(.*)$'
             % (
@@ -501,14 +501,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
                 x = c.abbrev_subst_env.get('x')
                 if x:
-                    p.h = f"{p.h[:i]}{m.group(1)}{x}{m.group(3)}"
-                    return
+                    val = f"{m.group(1)}{x}{m.group(3)}"
             except Exception:
                 # Leave p.h alone.
                 g.trace('scripting error in', p.h)
                 g.es_exception()
         # #4529
         p.h = f"{p.h[:i]}{val}{p.h[j:]}"
+        # Set the insertion point and continue editing the headline.
+        ins = i + len(val)
+        c.frame.tree.editLabel(p, selection=(ins, ins, ins))
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
     def match_prefix(
