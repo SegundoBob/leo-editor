@@ -278,8 +278,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if word:
                 # #4462: Make only one substitution in headlines.
                 if w_name.startswith('head'):
-                    ok = self.make_script_substitutions_in_headline(i, p, val)
-                    return ok
+                    self.make_first_headline_substitution(i, j, p, val)
+                    return True
                 if val == '__NEXT_PLACEHOLDER':
                     i = w.getInsertPoint()
                     if i > 0:
@@ -481,13 +481,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return val, do_placeholder
 
     # @+node:ekr.20161121102113.1: *4* abbrev.make_script_substitutions_in_headline
-    def make_script_substitutions_in_headline(self, i: int, p: Position, val: str) -> bool:
+    def make_first_headline_substitution(self, i: int, j: int, p: Position, val: str) -> None:
         """
-        Make the first scripting substitution in p.h.
-        Return True if the substition was made successfully.
+        Make *only* the first scripting substitution in p.h.
         """
         c = self.c
-        c.endEditing()
+        c.endEditing()  # Required.
         pattern = re.compile(
             r'^(.*)%s(.+)%s(.*)$'
             % (
@@ -502,13 +501,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
                 x = c.abbrev_subst_env.get('x')
                 if x:
-                    p.h = f"{p.h[:i]}{m.group(1)}{x}{m.group(3)}"
-                    return True
+                    val = f"{m.group(1)}{x}{m.group(3)}"
             except Exception:
                 # Leave p.h alone.
                 g.trace('scripting error in', p.h)
                 g.es_exception()
-        return False
+        # #4529
+        p.h = f"{p.h[:i]}{val}{p.h[j:]}"
+        # Set the insertion point and continue editing the headline.
+        ins = i + len(val)
+        c.frame.tree.editLabel(p, selection=(ins, ins, ins))
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
     def match_prefix(
