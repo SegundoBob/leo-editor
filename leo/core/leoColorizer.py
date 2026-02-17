@@ -58,9 +58,13 @@ if TYPE_CHECKING:  # pragma: no cover
 # @+node:ekr.20190323044524.1: ** function: make_colorizer
 def make_colorizer(c: Cmdr, widget: QWidget) -> Union[JEditColorizer, PygmentsColorizer]:
     """Return an instance of JEditColorizer or PygmentsColorizer."""
-    use_pygments = pygments and c.config.getBool('use-pygments', default=False)
+    use_pygments = c.config.getBool('use-pygments', default=False)
     if use_pygments:
-        return PygmentsColorizer(c, widget)
+        if pygments:
+            return PygmentsColorizer(c, widget)
+        if not g.unitTesting:
+            g.es_print('ignoring @bool use-pygments', color='red')
+            g.es_print('pip install pygments', color='red')
     return JEditColorizer(c, widget)
 
 
