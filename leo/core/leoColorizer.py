@@ -346,75 +346,6 @@ class BaseColorizer:
             s = s[1:]
         return s.replace(' ', '').replace('-', '').replace('_', '').lower().strip()
 
-    # @+node:ekr.20260216112007.1: *3* BaseColorizer.setTag
-    def setTag(self, tag: str, s: str, i: int, j: int) -> None:
-        pass
-
-    # @+node:ekr.20190324050727.1: *3* BaseColorizer.init_style_ivars
-    def init_style_ivars(self) -> None:
-        """Init Style data common to JEdit and Pygments colorizers."""
-        # init() properly sets these for each language.
-        self.actualColorDict: dict[str, QtGui.QColor] = {}  # Used only by setTag.
-        self.hyperCount = 0
-        # Attributes dict ivars: defaults are as shown...
-        self.default = 'null'
-        self.digit_re = ''
-        self.escape = ''
-        self.highlight_digits = True
-        self.ignore_case = True
-        self.no_word_sep = ''
-        # Debugging...
-        self.allow_mark_prev = True
-        self.n_setTag = 0
-        self.tagCount = 0
-        # Profiling...
-        self.recolorCount = 0  # Total calls to recolor
-        self.stateCount = 0  # Total calls to setCurrentState
-        self.totalStates = 0
-        self.maxStateNumber = 0
-        self.totalKeywordsCalls = 0
-        self.totalLeoKeywordsCalls = 0
-        # Mode data...
-        self.importedRulesets: dict[str, bool] = {}
-        self.fonts: dict[str, QtGui.QFont] = {}  # Keys are config names.  Values are actual fonts.
-        self.keywords: dict[str, int] = {}  # Keys are keywords, values are 0..5.
-        self.modes: dict[str, JEditModeDescriptor] = {}  # Keys are languages, values are modes.
-        self.mode: JEditModeDescriptor = None  # The mode descriptor for the present language.
-        self.modeStack: list[JEditModeDescriptor] = []
-        self.rulesDict: dict[str, RuleSet] = {}
-        # self.defineAndExtendForthWords()
-        self.word_chars: dict[str, str] = {}  # Inited by init_keywords().
-        self.tags = [
-            # 8 Leo-specific tags.
-            "blank",  # show_invisibles_space_color
-            "docpart",
-            "leokeyword",
-            "link",  # section reference.
-            "name",
-            "namebrackets",
-            "tab",  # show_invisibles_space_color
-            "url",
-            # jEdit tags.
-            'comment1',
-            'comment2',
-            'comment3',
-            'comment4',
-            # default, # exists, but never generated.
-            'function',
-            'keyword1',
-            'keyword2',
-            'keyword3',
-            'keyword4',
-            'label',
-            'literal1',
-            'literal2',
-            'literal3',
-            'literal4',
-            'markup',
-            'operator',
-            'trailing_whitespace',
-        ]
-
     # @+node:ekr.20170127142001.1: *3* BaseColorizer.updateSyntaxColorer & helpers
     # Note: these are used by unit tests.
 
@@ -1022,14 +953,15 @@ class JEditColorizer(BaseColorizer):
                     d[ch] = aList
         self.rulesDict = d
 
-    # @+node:ekr.20110605121601.18578: *3* jedit.configureTags & helpers
+    # @+node:ekr.20260217075917.1: *3*  jedit: configuration
+    # @+node:ekr.20110605121601.18578: *4* jedit.configureTags & helpers
     def configureTags(self) -> None:
         """Configure all tags."""
         self.configure_fonts()
         self.configure_colors()
         self.configure_variable_tags()
 
-    # @+node:ekr.20190324172632.1: *4* BaseColorizer.configure_colors & helper
+    # @+node:ekr.20190324172632.1: *5* BaseColorizer.configure_colors & helper
     def configure_colors(self) -> None:
         """Configure all colors in the default colors dict."""
         c = self.c
@@ -1038,7 +970,7 @@ class JEditColorizer(BaseColorizer):
         # color = color.replace(' ', '').lower().strip()
 
         # @+<< function: resolve_color_key >>
-        # @+node:ekr.20230314052558.1: *5* << function: resolve_color_key >>
+        # @+node:ekr.20230314052558.1: *6* << function: resolve_color_key >>
         def resolve_color_key(key: str) -> str:
             """
             Resolve the given color name to a *valid* color.
@@ -1079,7 +1011,7 @@ class JEditColorizer(BaseColorizer):
         for key in sorted(all_color_keys):
             self.configDict[key] = resolve_color_key(key)
 
-    # @+node:ekr.20190324172242.1: *4* BaseColorizer.configure_fonts & helpers
+    # @+node:ekr.20190324172242.1: *5* BaseColorizer.configure_fonts & helpers
     def configure_fonts(self) -> None:
         """
         Configure:
@@ -1157,7 +1089,7 @@ class JEditColorizer(BaseColorizer):
                     self.configure_hard_tab_width(font)
                     break
 
-    # @+node:ekr.20230314052820.1: *5* BaseColorizer.resolve_font
+    # @+node:ekr.20230314052820.1: *6* BaseColorizer.resolve_font
     def resolve_font(self, setting: str, language: str, tag: str, val: str) -> None:
         """
         Resolve the arguments to a selector and font name.
@@ -1171,7 +1103,7 @@ class JEditColorizer(BaseColorizer):
                 font_info[selector] = val
                 self.new_fonts[font_name] = font_info
 
-    # @+node:ekr.20190326034006.1: *5* BaseColorizer.create_font
+    # @+node:ekr.20190326034006.1: *6* BaseColorizer.create_font
     # Keys are key::settings_names. Values are cumulative font size.
     zoom_dict: dict[str, int] = {}
 
@@ -1206,7 +1138,7 @@ class JEditColorizer(BaseColorizer):
                     return font
         return None
 
-    # @+node:ekr.20230317072911.1: *5* BaseColorizer.zoomed_size
+    # @+node:ekr.20230317072911.1: *6* BaseColorizer.zoomed_size
     def zoomed_size(self, key: str, size: str) -> str:
         """
         Return the effect size (as a string) of the font after zooming.
@@ -1236,7 +1168,7 @@ class JEditColorizer(BaseColorizer):
             self.zoom_dict[key] = i_size
         return str(i_size)
 
-    # @+node:ekr.20111024091133.16702: *4* BaseColorizer.configure_hard_tab_width
+    # @+node:ekr.20111024091133.16702: *5* BaseColorizer.configure_hard_tab_width
     def configure_hard_tab_width(self, font: QtGui.QFont) -> None:
         """
         Set the width of a hard tab.
@@ -1262,7 +1194,7 @@ class JEditColorizer(BaseColorizer):
             # To do: configure the QScintilla widget.
             pass
 
-    # @+node:ekr.20110605121601.18579: *4* BaseColorizer.configure_variable_tags
+    # @+node:ekr.20110605121601.18579: *5* BaseColorizer.configure_variable_tags
     def configure_variable_tags(self) -> None:
         c = self.c
         use_pygments = pygments and c.config.getBool('use-pygments', default=False)
@@ -1279,6 +1211,71 @@ class JEditColorizer(BaseColorizer):
                 option_name, default_color = self.default_colors_dict.get(name, (None, None))
                 color = c.config.getColor(option_name) if option_name else ''
             self.configDict[name] = color  # 2022/05/20: Discovered by pyflakes.
+
+    # @+node:ekr.20190324050727.1: *4* jedit.init_style_ivars
+    def init_style_ivars(self) -> None:
+        """Init Style data common to JEdit and Pygments colorizers."""
+        # init() properly sets these for each language.
+        self.actualColorDict: dict[str, QtGui.QColor] = {}  # Used only by setTag.
+        self.hyperCount = 0
+        # Attributes dict ivars: defaults are as shown...
+        self.default = 'null'
+        self.digit_re = ''
+        self.escape = ''
+        self.highlight_digits = True
+        self.ignore_case = True
+        self.no_word_sep = ''
+        # Debugging...
+        self.allow_mark_prev = True
+        self.n_setTag = 0
+        self.tagCount = 0
+        # Profiling...
+        self.recolorCount = 0  # Total calls to recolor
+        self.stateCount = 0  # Total calls to setCurrentState
+        self.totalStates = 0
+        self.maxStateNumber = 0
+        self.totalKeywordsCalls = 0
+        self.totalLeoKeywordsCalls = 0
+        # Mode data...
+        self.importedRulesets: dict[str, bool] = {}
+        self.fonts: dict[str, QtGui.QFont] = {}  # Keys are config names.  Values are actual fonts.
+        self.keywords: dict[str, int] = {}  # Keys are keywords, values are 0..5.
+        self.modes: dict[str, JEditModeDescriptor] = {}  # Keys are languages, values are modes.
+        self.mode = None  # The mode descriptor for the present language.
+        self.modeStack: list[JEditModeDescriptor] = []
+        self.rulesDict = {}
+        # self.defineAndExtendForthWords()
+        self.word_chars = {}  # Inited by init_keywords().
+        self.tags = [
+            # 8 Leo-specific tags.
+            "blank",  # show_invisibles_space_color
+            "docpart",
+            "leokeyword",
+            "link",  # section reference.
+            "name",
+            "namebrackets",
+            "tab",  # show_invisibles_space_color
+            "url",
+            # jEdit tags.
+            'comment1',
+            'comment2',
+            'comment3',
+            'comment4',
+            # default, # exists, but never generated.
+            'function',
+            'keyword1',
+            'keyword2',
+            'keyword3',
+            'keyword4',
+            'label',
+            'literal1',
+            'literal2',
+            'literal3',
+            'literal4',
+            'markup',
+            'operator',
+            'trailing_whitespace',
+        ]
 
     # @+node:ekr.20241116071343.1: *3* jedit.force_recolor
     def force_recolor(self) -> None:
