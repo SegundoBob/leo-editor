@@ -24,7 +24,18 @@ if TYPE_CHECKING:  # pragma: no cover
     File_List = Optional[list[str]]
 # @-<< leoMarkup imports & annotations >>
 
-asciidoctor_exec = which('asciidoctor')
+# Try RVM Ruby asciidoctor first, then fallback to system asciidoctor
+try:
+    import subprocess
+    rvm_gemdir = subprocess.check_output(['rvm', 'gemdir'], text=True).strip()
+    rvm_asciidoctor = os.path.join(rvm_gemdir, 'bin', 'asciidoctor')
+    if os.path.exists(rvm_asciidoctor):
+        asciidoctor_exec = rvm_asciidoctor
+    else:
+        asciidoctor_exec = which('asciidoctor')
+except Exception as e:
+    asciidoctor_exec = which('asciidoctor')
+    print("e:", e)
 asciidoc3_exec = which('asciidoc3')
 pandoc_exec = which('pandoc')
 sphinx_build = which('sphinx-build')
@@ -360,7 +371,7 @@ class MarkupCommands:
         assert asciidoctor_exec or asciidoc3_exec, g.callers()
         # Call the external program to write the output file.
         # The -e option deletes css.
-        prog = 'asciidoctor' if asciidoctor_exec else 'asciidoc3'
+        prog = asciidoctor_exec if asciidoctor_exec else asciidoc3_exec
         command = f"{prog} {i_path} -o {o_path} -b html5"
         g.execute_shell_commands(command)
 
@@ -465,7 +476,8 @@ class MarkupCommands:
         """Generate an AsciiDoctor section"""
         if not p.h.strip():
             return
-        level = max(0, self.level_offset + p.level() - self.root_level)
+        effective_level = self.compute_effective_level(p)
+        level = max(0, self.level_offset + effective_level - self.root_level)
         if self.kind == 'sphinx':
             # For now, assume rST markup!
             # Hard coded characters. Never use '#' underlining.
@@ -499,6 +511,17 @@ class MarkupCommands:
             result.append(s)
         return ''.join(result)
 
+    # @+node:swot.20260218221512.1: *4* compute_effective_level
+    def compute_effective_level(self, p: Position) -> int:
+        """Compute the effective level of a node, accounting for @ignore-node ancestors."""
+        effective_level = p.level()
+        # Walk up the tree and subtract levels for @ignore-node ancestors
+        current = p.parent()
+        while current and current.level() >= self.root_level:
+            if g.match_word(current.h.rstrip(), 0, '@ignore-node'):
+                effective_level -= 1
+            current = current.parent()
+            return effective_level
     # @+node:ekr.20191006155051.1: *3* markup.commands
     def adoc_command(
         self,
