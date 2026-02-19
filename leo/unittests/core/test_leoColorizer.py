@@ -46,7 +46,7 @@ class TestColorizer(LeoUnitTest):
         x.enabled = True
         x.init()
         for s in g.splitLines(text):
-            x.mainLoop(s)
+            x.pygmentsMainLoop(s)
 
     # @+node:ekr.20210905170507.2: *3* TestColorizer.test__comment_after_language_plain
     def test__comment_after_language_plain(self):
