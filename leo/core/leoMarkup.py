@@ -448,7 +448,15 @@ class MarkupCommands:
             if not g.match_word(h, 0, '@no-head'):
                 self.write_headline(p)
             self.write_body(p)
-            p.moveToThreadNext()
+            # --- solve @others rendered below again ---
+            # check current node whether including @others or not
+            if re.search(r'^[ \t]*@others\b', p.b, re.MULTILINE):
+                # including @others: g.getScript has got all the subnodes
+                # then skip all subnodes for not to be rendered
+                p.moveToNodeAfterTree()
+            else:
+                # not including @others: mote to next node
+                p.moveToThreadNext()
 
     # @+node:ekr.20190515114836.1: *4* markup.compute_level_offset
     adoc_title_pat = re.compile(r'^= ')
