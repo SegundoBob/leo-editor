@@ -914,7 +914,6 @@ def readAtFileNodes(self: Self, event: LeoKeyEvent = None) -> None:
     """
     c, p = self, self.p
     c.endEditing()
-    c.endEditing()
     c.atFileCommands.readAllSelected(p)
 
     # Force an update of the body pane.
