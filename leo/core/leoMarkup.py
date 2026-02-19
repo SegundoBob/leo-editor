@@ -441,7 +441,8 @@ class MarkupCommands:
             if g.match_word(h, 0, '@ignore-tree'):
                 p.moveToNodeAfterTree()
                 continue
-            if g.match_word(h, 0, '@ignore-node'):
+            is_section_def = h.startswith('<<') and h.endswith('>>')
+            if g.match_word(h, 0, '@ignore-node') or is_section_def:
                 p.moveToThreadNext()
                 continue
             if not g.match_word(h, 0, '@no-head'):
@@ -468,7 +469,8 @@ class MarkupCommands:
         """Write p.b"""
         # We no longer add newlines to the start of nodes because
         # we write a blank line after all sections.
-        s = self.remove_directives(p.b)
+        script = g.getScript(self.c, p, useSentinels=False)
+        s = self.remove_directives(script)
         self.output_file.write(g.ensureTrailingNewlines(s, 2))
 
     # @+node:ekr.20190515070742.47: *4* markup.write_headline
