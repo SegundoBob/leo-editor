@@ -1,13 +1,13 @@
-#@+leo-ver=5-thin
-#@+node:swot.20260222193522.1: * @file /Users/swot/app/leo-editor/leo/plugins/body_style.py
-#@@language python
-#@+others
-#@+node:swot.20260222193522.2: ** import
+# @+leo-ver=5-thin
+# @+node:swot.20260222193522.1: * @file /Users/swot/app/leo-editor/leo/plugins/body_style.py
+# @@language python
+# @+others
+# @+node:swot.20260222193522.2: ** import
 from leo.core import leoGlobals as g
 from PyQt6.QtGui import QTextBlockFormat, QTextCursor, QFont, QTextCharFormat
 from PyQt6.QtCore import QTimer
 
-#@+node:swot.20260222193522.3: ** var
+# @+node:swot.20260222193522.3: ** var
 # Eliminate Pyflakes false positives during save
 try:
     c
@@ -15,7 +15,7 @@ except NameError:
     c = None
 
 
-#@+node:swot.20260222193522.4: ** def init
+# @+node:swot.20260222193522.4: ** def init
 def init():
     """Plugin entry point"""
     # 1. For newly opened windows (Ctrl+O, Ctrl+N)
@@ -33,7 +33,7 @@ def init():
     return True
 
 
-#@+node:swot.20260222193522.5: ** def on_window_init
+# @+node:swot.20260222193522.5: ** def on_window_init
 def on_window_init(tag, keywords):
     """Universal window initialization function, handles startup, new windows, and reloads"""
     c = keywords.get("c")
@@ -48,15 +48,14 @@ def on_window_init(tag, keywords):
     # First time mount
     c._body_styler = BodyStyleController(c)
 
-
-#@+node:swot.20260222193522.6: ** class BodyStyleController
+# @+node:swot.20260222193522.6: ** class BodyStyleController
 class BodyStyleController:
     """
     Independent style controller for each Commander.
     """
 
-    #@+others
-    #@+node:swot.20260222193522.7: *3* def __init__
+    # @+others
+    # @+node:swot.20260222193522.7: *3* def __init__
     def __init__(self, c):
         self.c = c
 
@@ -75,7 +74,7 @@ class BodyStyleController:
         # Delayed application on startup
         QTimer.singleShot(100, self.setup_qt_signals)
 
-    #@+node:swot.20260222193522.8: *3* def get_config
+    # @+node:swot.20260222193522.8: *3* def get_config
     def get_config(self):
         """Load settings from Leo's @data body-style-settings node"""
         # Default configuration fallback
@@ -108,20 +107,20 @@ class BodyStyleController:
                                 g.es(f"BodyStyle Warning: Invalid number for {key}")
         return conf
 
-    #@+node:swot.20260222193522.9: *3* def on_select
+    # @+node:swot.20260222193522.9: *3* def on_select
     def on_select(self, tag, keywords):
         """Apply style when switching nodes"""
         if keywords.get("c") != self.c:
             return
         QTimer.singleShot(0, self.apply_style)
 
-    #@+node:swot.20260222193522.10: *3* def on_command
+    # @+node:swot.20260222193522.10: *3* def on_command
     def on_command(self, tag, keywords):
         """catch not trigger textChanged command"""
         if keywords.get("c") == self.c:
             QTimer.singleShot(0, self.apply_style)
 
-    #@+node:swot.20260222193522.11: *3* def setup_qt_signals
+    # @+node:swot.20260222193522.11: *3* def setup_qt_signals
     def setup_qt_signals(self):
         """Bind Qt document contentsChange signal"""
         editor = self.get_editor()
@@ -140,7 +139,7 @@ class BodyStyleController:
         doc.contentsChange.connect(self.on_contents_change)
         self.apply_style()
 
-    #@+node:swot.20260222193522.12: *3* def on_contents_change
+    # @+node:swot.20260222193522.12: *3* def on_contents_change
     def on_contents_change(self, position, charsRemoved, charsAdded):
         """Differentiate normal typing from abbrev expansion/paste"""
         if charsRemoved > 1 or charsAdded > 1:
@@ -148,7 +147,7 @@ class BodyStyleController:
         else:
             self._debounce_timer.start()
 
-    #@+node:swot.20260222193522.13: *3* def get_editor
+    # @+node:swot.20260222193522.13: *3* def get_editor
     def get_editor(self):
         """Safely get Qt editor widget"""
         try:
@@ -156,7 +155,7 @@ class BodyStyleController:
         except AttributeError:
             return None
 
-    #@+node:swot.20260222193522.14: *3* def apply_style
+    # @+node:swot.20260222193522.14: *3* def apply_style
     def apply_style(self):
         """Entry point: Prepare font object and apply formats"""
         editor = self.get_editor()
@@ -185,7 +184,7 @@ class BodyStyleController:
 
         self._apply_formats(editor, doc, config)
 
-    #@+node:swot.20260222193522.15: *3* def _apply_formats
+    # @+node:swot.20260222193522.15: *3* def _apply_formats
     def _apply_formats(self, editor, doc, config):
         """Apply paragraph (line height) and character (letter spacing) formats simultaneously"""
         v_scrollbar = editor.verticalScrollBar()
@@ -221,8 +220,8 @@ class BodyStyleController:
             if v_scrollbar:
                 v_scrollbar.setValue(current_scroll_value)
 
-    #@-others
+    # @-others
 
 
-#@-others
-#@-leo
+# @-others
+# @-leo
