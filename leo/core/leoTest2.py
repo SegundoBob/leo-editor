@@ -131,9 +131,6 @@ class LeoUnitTest(unittest.TestCase):
         fileName = g.os_path_finalize_join(g.app.loadDir, 'LeoPyRef.leo')
         self.c = c = leoCommands.Commands(fileName=fileName, gui=g.app.gui)
 
-        # Default.
-        c.write_black_sentinels = False
-
         # Init the 'root' and '@settings' nodes.
         self.root_p = c.rootPosition()
         self.root_p.h = 'root'
