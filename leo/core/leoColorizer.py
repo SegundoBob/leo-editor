@@ -2034,6 +2034,8 @@ class JEditColorizer(BaseColorizer):
         if at_word_start and i + len(seq) + 1 < len(s) and s[i + len(seq)] in self.word_chars:
             return 0
         # if g.match(s, i, seq):
+        if not g.match(s, i, seq):
+            return 0
         j = len(s)
         self.colorRangeWithTag(s, i, j, kind, delegate=delegate, exclude_match=exclude_match)
         return j  # (was j-1) With a delegate, this could clear state.
