@@ -33350,6 +33350,7 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 .. _`PR #4498`: https://github.com/leo-editor/leo-editor/pull/4498
 .. _`PR #4502`: https://github.com/leo-editor/leo-editor/pull/4502
 .. _`PR #4503`: https://github.com/leo-editor/leo-editor/pull/4503
+.. _`PR #4551`: https://github.com/leo-editor/leo-editor/pull/4551.
 
 - `PR #4464`_ and `PR #0000`_: Fix abbreviation bugs.
 - `PR #4467`_: Remove support for leoflexx and --gui=browser.
@@ -33359,14 +33360,13 @@ Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/prefac
 - `PR #4490`_, Add support for ruff format and retire Leo's legacy beautier.
   This PR summarizes several other PRs relating to this project.
 - `PR #4498`_: Fix bug: the external files controller leaves ``c.p`` unchanged.
-- `PR #4487`_: Reformat Leo using ruff format.
+- `PR #4487`_ and `PR #4551`_: Reformat Leo using ruff format.
 - `PR #4503`_ and `PR #4506`_: Add ``gdc.summary_diff_two_revs`` script helper.
 
 **Add settings for ruff format**
 
 The defaults are shown below:
 
-- Add ``@bool write-black-sentinels = False``
 - Add ``@int black-line-length = None``
 - Add ``@string black-toml = None``
 
