@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 Edward K. Ream -->
+<component type="desktop">
+  <id>leo.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT and BSD-3-Clause</project_license>
+  <name>Leo</name>
+  <summary>An outline-oriented editor</summary>
+  <description>
+    <p>
+      Leo is a scriptable outliner that accelerates the work flow of
+      programmers, authors and web designers. Outline nodes may appear in more
+      than one place, allowing multidimensional views of data, including
+      computer programs, within a single outline.
+    </p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://leo-editor.github.io/leo-editor/screen-shots/DarkScreenShot.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://leo-editor.github.io/leo-editor/</url>
+</component>
