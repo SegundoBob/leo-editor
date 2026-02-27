@@ -442,9 +442,14 @@ class MarkupCommands:
                 p.moveToNodeAfterTree()
                 continue
             is_section_def = h.startswith('<<') and h.endswith('>>')
-            if g.match_word(h, 0, '@ignore-node') or is_section_def:
+            if g.match_word(h, 0, '@ignore-node'):
                 p.moveToThreadNext()
                 continue
+
+            if is_section_def:
+                p.moveToNodeAfterTree()
+                continue
+
             if not g.match_word(h, 0, '@no-head'):
                 self.write_headline(p)
             self.write_body(p)
@@ -531,7 +536,7 @@ class MarkupCommands:
             if g.match_word(current.h.rstrip(), 0, '@ignore-node'):
                 effective_level -= 1
             current = current.parent()
-            return effective_level
+        return effective_level
     # @+node:ekr.20191006155051.1: *3* markup.commands
     def adoc_command(
         self,
