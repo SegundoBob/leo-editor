@@ -18,9 +18,8 @@
 <v t="ekr.20150425145248.1"><vh>@data history-list</vh></v>
 <v t="ekr.20240107154430.1"><vh>@int max-find-long-lines-length = 100</vh></v>
 <v t="ekr.20140916101314.19538"><vh>@string target_language = python</vh></v>
-<v t="ekr.20260111055821.1"><vh>Beautifying files and writing black-compatible sentinels</vh>
+<v t="ekr.20260111055821.1"><vh>Beautifying files</vh>
 <v t="ekr.20260111055821.2"><vh>@bool beautify-python-code-on-write = True</vh></v>
-<v t="ekr.20260111055821.3"><vh>@bool write-black-sentinels = True</vh></v>
 <v t="ekr.20260111055821.4"><vh>@int black-line-length = 100</vh></v>
 <v t="ekr.20260111055821.5"><vh>@string black-toml = None</vh></v>
 </v>
@@ -1951,7 +1950,7 @@ assert core_p and command_p and globals_p
     # 'toString', 'toUnicode', 'trace', 'translateString',
     # 'underline', 'undoHelper', 'unl', 'values', 'visit',
     # 'warn', 'warning', 'word',</t>
-<t tx="ekr.20220823195205.1" _mod_time="4741da5a5b1af6c1882e">"""
+<t tx="ekr.20220823195205.1" _mod_time="4741da5f236354a72b2e">"""
 Stand alone GUI free index builder for Leo's full text search system::
 
   python leoftsindex.py &lt;file1&gt; &lt;file2&gt; &lt;file3&gt;...
@@ -2198,7 +2197,7 @@ print('done')</t>
 <t tx="ekr.20240107154430.1"></t>
 <t tx="ekr.20240204082420.1"></t>
 <t tx="ekr.20240204082924.1"></t>
-<t tx="ekr.20240206161713.1" _mod_time="4741da5a5b1b109fac2e">@language ini
+<t tx="ekr.20240206161713.1" _mod_time="4741da5f23637719e82e">@language ini
 
 [bdist_wheel]
 
@@ -2716,9 +2715,6 @@ if new_b != proj_p.b:
 <t tx="ekr.20260111055821.1"># These settings control ruff format, which is compatible with black.</t>
 <t tx="ekr.20260111055821.2"># True: beautify all @&lt;file&gt; nodes in the outline using Leo's token-based beautifier.
 # True can result in much slower writes.</t>
-<t tx="ekr.20260111055821.3"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
-# This setting is **strongly recommended** so that you can use ruff format to beautify your code.
-</t>
 <t tx="ekr.20260111055821.4"># This setting overrides any value in pyproject.toml or ruff.toml
 # Leo uses 120 for its own files.</t>
 <t tx="ekr.20260111055821.5"># If given, this argument should be a full, absolute path to pyproject.toml or ruff.toml.

@@ -674,8 +674,6 @@ class Commands:
         c.target_language = getString('target-language') or 'python'
         c.verbose_check_outline = getBool('verbose-check-outline', default=False)
         c.vim_mode = getBool('vim-mode', default=False)
-        # New in Leo 6.8.8.
-        c.write_black_sentinels = getBool('write-black-sentinels', default=False)
         c.write_script_file = getBool('write-script-file')
 
     # @+node:ekr.20090213065933.7: *4* c.setWindowPosition
