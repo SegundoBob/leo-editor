@@ -489,9 +489,8 @@
 <v t="ekr.20180525053145.1"><vh>@bool use-jedi = False</vh></v>
 <v t="ekr.20110510071925.14589"><vh>@bool use-qcompleter = True</vh></v>
 </v>
-<v t="ekr.20260111055007.1"><vh>Beautifying files and writing black-compatible sentinels</vh>
+<v t="ekr.20260111055007.1"><vh>Beautifying files</vh>
 <v t="ekr.20240926065158.1"><vh>@bool beautify-python-code-on-write = False</vh></v>
-<v t="ekr.20260109162430.1"><vh>@bool write-black-sentinels = False</vh></v>
 <v t="ekr.20260111055136.1"><vh>@int black-line-length = None</vh></v>
 <v t="ekr.20260111055045.1"><vh>@string black-toml = None</vh></v>
 </v>
@@ -11891,9 +11890,6 @@ rest_comments_literal1_font_weight = normal
 <t tx="ekr.20250502045601.1">Percentage zoom.</t>
 <t tx="ekr.20250715195720.1">True: Leo will create an "update review tree" when any @file node changes externally.</t>
 <t tx="ekr.20250730050535.1">True: report changed files when saving a .leo file.</t>
-<t tx="ekr.20260109162430.1"># New in Leo 6.8.8. This setting replaces the --black-sentinels command-line argument.
-# This setting is **strongly recommended** so that you can use ruff format to beautify your code.
-</t>
 <t tx="ekr.20260111055007.1"># These settings control ruff format, which is compatible with black.</t>
 <t tx="ekr.20260111055045.1">If given, this argument should be a full, absolute path to pyproject.toml or ruff.toml.
 If not given, Leo's beautifier uses Leo's pyproject.toml file.
