@@ -23,7 +23,7 @@ def init():
         for existing_c in g.app.commanders():
             on_window_init("reload", {"c": existing_c})
 
-    g.es("Body Style Plugin loaded (Final English Version).")
+    g.es("Body Style Plugin loaded (Zoom Compatibility Fixed).")
     return True
 
 
@@ -45,6 +45,7 @@ class BodyStyleController:
     def __init__(self, c):
         self.c = c
         self._is_formatting = False
+        self._initial_size_set = False  # Track if initial config size was applied
 
         # State tracking for Undo/Redo operations
         self._is_undoing = False
@@ -191,19 +192,31 @@ class BodyStyleController:
             doc = editor.document()
             config = self.get_config()
 
-            # Set global font properties if changed
             current_font = editor.font()
-            if (
-                current_font.family() != config["family"]
-                or current_font.pointSize() != config["size"]
-            ):
-                font = QFont(config["family"])
-                font.setPointSize(config["size"])
-                font.setLetterSpacing(
+            font_needs_update = False
+
+            # 1. Apply configured size ONLY ONCE on initialization
+            if not self._initial_size_set:
+                if current_font.pointSize() != config["size"]:
+                    current_font.setPointSize(config["size"])
+                    font_needs_update = True
+                self._initial_size_set = True
+
+            # 2. Enforce Font Family
+            if current_font.family() != config["family"]:
+                current_font.setFamily(config["family"])
+                font_needs_update = True
+
+            # 3. Enforce Letter Spacing
+            if current_font.letterSpacing() != config["letter_spacing"]:
+                current_font.setLetterSpacing(
                     QFont.SpacingType.PercentageSpacing, config["letter_spacing"]
                 )
-                editor.setFont(font)
-                doc.setDefaultFont(font)
+                font_needs_update = True
+
+            if font_needs_update:
+                editor.setFont(current_font)
+                doc.setDefaultFont(current_font)
 
             self._apply_formats(editor, doc, config, position, length)
         finally:
@@ -258,10 +271,9 @@ class BodyStyleController:
             block_fmt.setLineHeight(config["line_height"], config["line_height_type"])
             cursor.mergeBlockFormat(block_fmt)
 
-            # Apply Letter Spacing and Font
+            # Apply Letter Spacing and Font Family (DO NOT apply point size here to preserve zoom)
             char_fmt = QTextCharFormat()
             char_fmt.setFontFamily(config["family"])
-            char_fmt.setFontPointSize(config["size"])
             char_fmt.setFontLetterSpacingType(QFont.SpacingType.PercentageSpacing)
             char_fmt.setFontLetterSpacing(config["letter_spacing"])
             cursor.mergeCharFormat(char_fmt)
