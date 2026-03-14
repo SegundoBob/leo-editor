@@ -572,7 +572,7 @@ class QuickSearchController:
         if not pat.startswith('r:'):
             hpat = fnmatch.translate('*' + pat + '*').replace(r"\Z(?ms)", "")
             bpat = fnmatch.translate(pat).rstrip('$').replace(r"\Z(?ms)", "")
-            bpat = bpat.replace(r'\Z', '')
+            bpat = bpat.replace(r'\Z', '').replace(r'\z', '')
             flags = re.IGNORECASE
         else:
             hpat = pat[2:]
