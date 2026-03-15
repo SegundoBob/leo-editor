@@ -2153,7 +2153,7 @@
                 BODY_PANE.style.whiteSpace = "pre-wrap"; // Wrap text
             }
             let text = data[node.gnx].bodyString || "";
-            
+
             // Escape HTML entities first to preserve literal characters
             text = text.replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
@@ -2385,10 +2385,10 @@
                 } else {
                     OUTLINE_FIND_CONTAINER.style.height = (minWidth - 3) + 'px';
                 }
-                renderTree(); // Resizing vertically, so need to re-render tree
                 CONFIG_BTN.style.inset = `${newHeight - 33}px 7px auto auto`;
             }
             positionCrossDragger();
+            renderTree();
             updateCollapseAllPosition();
         }, 33);
 
@@ -2464,7 +2464,6 @@
                     OUTLINE_PANE.style.flex = `0 0 ${relativeY - 8}px`;
                     FIND_PANE.style.flex = '1 1 auto'; // Let it take the remaining space
                 }
-                renderTree(); // Resizing vertically, so need to re-render tree
             } else {
                 let clientX = e.clientX;
                 if (e.touches) {
@@ -2479,6 +2478,7 @@
                 }
             }
             positionCrossDragger();
+            renderTree();
             updateCollapseAllPosition();
         }, 33);
 
@@ -2551,8 +2551,7 @@
                 }
             }
             positionCrossDragger();
-
-            renderTree(); // Render afterward as it would be in each branch of the if/else
+            renderTree();
             updateCollapseAllPosition();
         }, 33);
 

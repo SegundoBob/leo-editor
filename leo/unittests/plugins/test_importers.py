@@ -2031,6 +2031,34 @@ class TestMarkdown(BaseTestImporter):
         )
         self.new_run_test(s, expected_results)
 
+    # @+node:ekr.20260306105013.1: *3* TestMarkdown.test_markdown_importer_blank lines
+    def test_markdown_importer_blank_lines(self):
+        # Must be in standard form, with a space after '#'.
+        s = """
+            # Chapter 1: one
+
+            This is the first chapter
+
+            ## 1.1 Something
+
+            This is something
+
+            # Chapter 2: two
+
+            Welcome to chapter 2
+        """
+        expected_results = (
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@language md\n@tabwidth -4\n',
+            ),
+            (1, 'Chapter 1: one', '\nThis is the first chapter\n\n'),
+            (2, '1.1 Something', '\nThis is something\n\n'),
+            (1, 'Chapter 2: two', '\nWelcome to chapter 2\n'),
+        )
+        self.new_run_test(s, expected_results)  # check=False)
+
     # @+node:ekr.20210904065459.112: *3* TestMarkdown.test_markdown_importer_implicit_section
     def test_markdown_importer_implicit_section(self):
         s = """
