@@ -3,19 +3,15 @@
 # @@language python
 # @+others
 # @+node:swot.20260222193522.2: ** import
-from leo.core import leoGlobals as g
 from PyQt6.QtGui import QTextBlockFormat, QTextCursor, QFont, QTextCharFormat
 from PyQt6.QtCore import QTimer
-
-# @+node:swot.20260222193522.3: ** var
-try:
-    c
-except NameError:
-    c = None
+from leo.core import leoGlobals as g
 
 
 # @+node:swot.20260222193522.4: ** def init
 def init():
+    g.assertUi("qt")
+
     g.registerHandler("open2", on_window_init)
     g.registerHandler("start2", on_window_init)
 
