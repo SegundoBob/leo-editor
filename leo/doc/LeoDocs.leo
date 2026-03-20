@@ -33040,9 +33040,9 @@ Scripts can define their own conventions, including:
         return any(z.h == context for z in p.parents())
  
     for p in c.all_positions():
-        if in_context('FAQ'):
+        if in_context(p, 'FAQ'):
             handle_faq_node(p)
-        elif in_context('Reference'):
+        elif in_context(p, 'Reference'):
             handle_ref_node(p)
 
 **Simulating half clones**
