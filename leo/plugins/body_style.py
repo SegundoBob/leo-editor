@@ -160,9 +160,7 @@ class BodyStyleController:
             return
 
         if charsAdded > 0:
-            QTimer.singleShot(
-                0, lambda p=position, l=charsAdded: self.apply_style(p, l)
-            )
+            QTimer.singleShot(0, lambda p=position, l=charsAdded: self.apply_style(p, l))
         elif charsRemoved > 0:
             QTimer.singleShot(0, lambda p=position: self.apply_style(p, 0))
 
@@ -253,9 +251,7 @@ class BodyStyleController:
 
                 if length > 0:
                     safe_length = min(length, max_pos - safe_pos)
-                    cursor.setPosition(
-                        safe_pos + safe_length, QTextCursor.MoveMode.KeepAnchor
-                    )
+                    cursor.setPosition(safe_pos + safe_length, QTextCursor.MoveMode.KeepAnchor)
                 else:
                     cursor.select(QTextCursor.SelectionType.BlockUnderCursor)
             else:
@@ -295,15 +291,11 @@ class BodyStyleController:
 
                 # Secondary restoration with a short delay for precise layout alignment
                 if was_at_bottom:
-                    QTimer.singleShot(
-                        20, lambda: v_scrollbar.setValue(v_scrollbar.maximum())
-                    )
+                    QTimer.singleShot(20, lambda: v_scrollbar.setValue(v_scrollbar.maximum()))
                 else:
                     QTimer.singleShot(
                         20,
-                        lambda: v_scrollbar.setValue(
-                            min(saved_scroll_val, v_scrollbar.maximum())
-                        ),
+                        lambda: v_scrollbar.setValue(min(saved_scroll_val, v_scrollbar.maximum())),
                     )
 
     # @-others
