@@ -32,8 +32,8 @@ args = " ".join(
         # '--verbose',
     )
 )
-isWindows = sys.platform.startswith("win")
-python = "py" if isWindows else "python"
+isWindows = sys.platform.startswith('win')
+python = 'py' if isWindows else 'python'
 targets = (
     f"leo{os.sep}commands",
     f"leo{os.sep}core",
