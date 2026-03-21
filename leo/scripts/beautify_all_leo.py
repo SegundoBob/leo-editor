@@ -20,7 +20,7 @@ import sys
 print(os.path.basename(__file__))
 
 # cd to leo-editor
-leo_editor_dir = os.path.abspath(os.path.join(__file__, "..", "..", ".."))
+leo_editor_dir = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 os.chdir(leo_editor_dir)
 
 # Define components of a single command.
