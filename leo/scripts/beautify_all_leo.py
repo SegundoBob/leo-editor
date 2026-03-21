@@ -45,7 +45,5 @@ targets = (
 )
 # Use -m so that __name__ == '__main__'.
 command = f"{python} -m ruff format {args} {' '.join(targets)}"
-# command = f"{python} -m black {args} {' '.join(targets)}"
-# print('command:', command)
 subprocess.Popen(command, shell=True).communicate()
 # @-leo
