@@ -20,18 +20,20 @@ import sys
 print(os.path.basename(__file__))
 
 # cd to leo-editor
-leo_editor_dir = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
+leo_editor_dir = os.path.abspath(os.path.join(__file__, "..", "..", ".."))
 os.chdir(leo_editor_dir)
 
 # Define components of a single command.
-arg_list = (
-    f"--config {leo_editor_dir}{os.sep}pyproject.toml",
-    # '--config line-length=120',
-    # '--verbose',
+toml_file = f"{leo_editor_dir}{os.sep}pyproject.toml"
+assert os.path.exists(toml_file), toml_file
+args = " ".join(
+    (
+        f"--config {toml_file}",
+        # '--verbose',
+    )
 )
-args = ' '.join(arg_list)
-isWindows = sys.platform.startswith('win')
-python = 'py' if isWindows else 'python'
+isWindows = sys.platform.startswith("win")
+python = "py" if isWindows else "python"
 targets = (
     f"leo{os.sep}commands",
     f"leo{os.sep}core",
@@ -43,6 +45,7 @@ targets = (
 )
 # Use -m so that __name__ == '__main__'.
 command = f"{python} -m ruff format {args} {' '.join(targets)}"
+# command = f"{python} -m black {args} {' '.join(targets)}"
 # print('command:', command)
 subprocess.Popen(command, shell=True).communicate()
 # @-leo
