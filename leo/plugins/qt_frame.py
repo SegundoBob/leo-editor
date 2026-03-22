@@ -1638,13 +1638,15 @@ class LeoBaseTabWidget(QtWidgets.QTabWidget):
                     self.setTabText(i, title)
 
     # @+node:ekr.20131115120119.17396: *3* qt_base_tab.setTabName
-    def setTabName(self, c: Cmdr, fileName: str) -> None:
-        """Set the tab name for c's tab to fileName."""
+    def setTabName(self, c: Cmdr, fileName: str, tooltip: str | None = None) -> None:
+        """Set the tab name and optional tooltip for c's tab to fileName."""
         # Find the tab corresponding to c.
         dw = c.frame.top  # A DynamicWindow
         i = self.indexOf(dw)
         if i > -1:
             self.setTabText(i, g.shortFileName(fileName))
+            if tooltip is not None:
+                self.setTabToolTip(i, tooltip)  # #4558 also update tooltip if given.
 
     # @+node:ekr.20131115120119.17397: *3* qt_base_tab.closeEvent
     def closeEvent(self, event: QEvent) -> None:
