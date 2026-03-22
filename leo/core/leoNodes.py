@@ -2734,21 +2734,17 @@ class VNode:
 
         Modified by EKR.
         """
-        v = self
-        seen: set[VNode] = set([v.context.hiddenRootNode])
+        result: set[VNode] = set()
 
-        def v_and_parents(v: VNode) -> Generator:
-            if v in seen:
-                return
-            seen.add(v)
-            yield v
+        def find_all_ancestor_at_file_nodes(v: VNode) -> None:
+            if v.isAnyAtFileNode():
+                result.add(v)
             for parent_v in v.parents:
-                if parent_v not in seen:
-                    yield from v_and_parents(parent_v)
+                find_all_ancestor_at_file_nodes(parent_v)
 
-        for v2 in v_and_parents(v):
-            if v2.isAnyAtFileNode():
-                v2.setDirty()
+        for v in list(result):
+            g.trace(v)
+            v.setDirty()
 
     # @+node:ekr.20040315032144: *4* v.setBodyString & v.setHeadString
     def setBodyString(self, s: object) -> None:

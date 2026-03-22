@@ -203,10 +203,13 @@ class ExternalFilesController:
             if p.isAtJupytextNode():
                 g.app.jupytextManager.update(c, p, path)
                 continue
+            g.trace(path)  ###
             if state in ('yes', 'no'):
                 state = self.ask(c, path, p=p)
             if state in ('yes', 'yes-all'):
                 c.refreshFromDisk(p, silent=False)
+                p.setDirty()  # #4565.
+                c.redraw()  # #4565.
 
     # @+node:ekr.20201207055713.1: *5* efc.idle_check_leo_file
     def idle_check_leo_file(self, c: Cmdr) -> None:
