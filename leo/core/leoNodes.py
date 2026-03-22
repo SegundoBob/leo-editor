@@ -2734,16 +2734,19 @@ class VNode:
 
         Modified by EKR.
         """
+        v = self
+        ### g.trace(v)  ###
         result: set[VNode] = set()
 
         def find_all_ancestor_at_file_nodes(v: VNode) -> None:
+            ### g.trace(v.h)
             if v.isAnyAtFileNode():
                 result.add(v)
             for parent_v in v.parents:
                 find_all_ancestor_at_file_nodes(parent_v)
 
+        find_all_ancestor_at_file_nodes(v)
         for v in list(result):
-            g.trace(v)
             v.setDirty()
 
     # @+node:ekr.20040315032144: *4* v.setBodyString & v.setHeadString
