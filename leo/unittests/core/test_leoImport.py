@@ -180,6 +180,56 @@ class TestLeoImport(BaseTestImporter):
             u.undo()
             self.assertEqual(c.lastTopLevel(), root)
 
+    # @+node:ekr.20260322090512.1: *3* TestLeoImport.test_tabbed_python_importer
+    def test_tabbed_python_importer(self):
+        # See #4542
+        c = self.c
+        u = c.undoer
+        x = c.importCommands
+        target = c.p.insertAfter()
+        c.selectPosition(target)
+        target.h = 'target'
+
+        body_1 = self.prep(
+            '''
+            import os
+
+            def spam():
+            \t"""A docstring"""
+            \tprint('a string')
+
+
+            class NewClass:
+            \tdef f1(self):
+            \t\tpass
+        '''
+        )
+        target.b = body_1
+        x.parse_body(target)
+
+        expected_results = (
+            (
+                0,
+                'def spam',
+                'import os\n\ndef spam():\n\t"""A docstring"""\n\tprint(\'a string\')\n\n',
+            ),
+            (
+                0,
+                'class NewClass',
+                'class NewClass\n\tdef f1(self):\n\t\tpass\n',
+            ),
+        )
+        # Don't call run_test.
+        self.check_outline(target, expected_results)
+
+        # Test undo
+        u.undo()
+        self.assertEqual(target.b, body_1, msg='undo test')
+        self.assertFalse(target.hasChildren(), msg='undo test')
+        # Test redo
+        u.redo()
+        self.check_outline(target, expected_results)
+
     # @-others
 
 
