@@ -2164,11 +2164,11 @@ class TabImporter:
         if stack:
             level, parent = stack[-1]
         else:
-            level, parent = 0, root  # #4540: create a default parent.
+            level, parent = 0, None
         lws = len(self.lws(s))
         h = s.strip()
         if lws == level:
-            if separate:
+            if separate or not parent:
                 # Replace the top of the stack with a new entry.
                 if stack:
                     stack.pop()
@@ -2181,7 +2181,7 @@ class TabImporter:
         elif lws > level:
             # Create a new parent.
             level = lws
-            parent = parent.insertAsLastChild()
+            parent = parent.insertAsLastChild() if parent else root.insertAsLastChild()
             parent.h = h
             stack.append((level, parent))
         else:
