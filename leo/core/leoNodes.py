@@ -2736,7 +2736,7 @@ class VNode:
         """
         v = self
         result: set[VNode] = set()
-        seen: set[VNode] = set()
+        seen: set[VNode] = set([v.context.hiddenRootNode])
         to_do: list[VNode] = [v] + [z for z in v.parents]
         # #4565: Rewrite using a loop.
         while to_do:
