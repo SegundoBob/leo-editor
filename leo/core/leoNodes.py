@@ -2741,9 +2741,9 @@ class VNode:
         # #4565: Rewrite using a loop.
         while to_do:
             v2 = to_do.pop()
+            seen.add(v2)
             if v2.isAnyAtFileNode():
                 result.add(v2)
-                seen.add(v2)
             else:
                 for parent_v in v2.parents:
                     if parent_v not in seen:
