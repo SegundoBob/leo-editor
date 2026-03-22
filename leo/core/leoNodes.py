@@ -2735,26 +2735,20 @@ class VNode:
         Modified by EKR.
         """
         v = self
-        to_do: list[VNode] = [v]
-        for v2 in v.parents:
-            to_do.append(v2)
         result: set[VNode] = set()
         seen: set[VNode] = set()
-
-        def find_all_ancestor_at_file_nodes() -> None:
-            while to_do:
-                v2 = to_do.pop()
+        to_do: list[VNode] = [v] + [z for z in v.parents]
+        # #4565: Rewrite using a loop.
+        while to_do:
+            v2 = to_do.pop()
+            if v2.isAnyAtFileNode():
+                result.add(v2)
                 seen.add(v2)
-                if v2.isAnyAtFileNode():
-                    result.add(v2)
+            else:
                 for parent_v in v2.parents:
                     if parent_v not in seen:
                         to_do.append(parent_v)
-
-        find_all_ancestor_at_file_nodes()
-        if not g.unitTesting:  ###
-            g.printObj([z.h for z in list(result)], tag=v.h)
-        for v2 in list(result):
+        for v2 in result:
             v2.setDirty()
 
     # @+node:ekr.20040315032144: *4* v.setBodyString & v.setHeadString
