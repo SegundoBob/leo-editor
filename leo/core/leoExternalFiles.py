@@ -209,11 +209,11 @@ class ExternalFilesController:
                 c.refreshFromDisk(p, silent=False)
                 # #4565: set all ancestor file nodes dirty and redraw.
                 p.v.setDirty()
-                to_do: set[VNode] = set()
+                to_do_set: set[VNode] = set()
                 for p2 in c.all_positions():
                     if p2.isDirty():
-                        to_do.add(p2.v)
-                p.v.setAllAncestorAtFileNodesDirty(to_do=to_do)
+                        to_do_set.add(p2.v)
+                p.v.setAllAncestorAtFileNodesDirty(to_do_set=to_do_set)
                 c.redraw()
 
     # @+node:ekr.20201207055713.1: *5* efc.idle_check_leo_file

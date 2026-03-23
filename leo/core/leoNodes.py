@@ -2728,7 +2728,7 @@ class VNode:
             pass
 
     # @+node:ekr.20191213161023.1: *4* v.setAllAncestorAtFileNodesDirty
-    def setAllAncestorAtFileNodesDirty(self, *, to_do: set[VNode] = None) -> None:
+    def setAllAncestorAtFileNodesDirty(self, *, to_do_set: set[VNode] = None) -> None:
         """
         Original idea by Виталије Милошевић (Vitalije Milosevic).
 
@@ -2737,9 +2737,9 @@ class VNode:
         v = self
         result: set[VNode] = set()
         seen: set[VNode] = set([v.context.hiddenRootNode])
-        to_do_list: list[VNode] = list(to_do) if to_do else [v] + v.parents
-        if to_do:
-            for v2 in to_do:
+        to_do_list: list[VNode] = list(to_do_set) if to_do_set else [v] + v.parents
+        if to_do_set:
+            for v2 in to_do_set:
                 to_do_list.extend(v2.parents)
         to_do_list = list(set(to_do_list))
         while to_do_list:
