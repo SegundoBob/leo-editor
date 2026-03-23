@@ -2732,19 +2732,16 @@ class VNode:
         """
         Original idea by Виталије Милошевић (Vitalije Milosevic).
 
-        rewritten by EKR.
+        #4565: Add the optional initial to_do set.
         """
         v = self
         result: set[VNode] = set()
         seen: set[VNode] = set([v.context.hiddenRootNode])
-        # to_do: list[VNode] = [v] + [z for z in v.parents]
         to_do_list: list[VNode] = list(to_do) if to_do else [v] + v.parents
         if to_do:
             for v2 in to_do:
                 to_do_list.extend(v2.parents)
         to_do_list = list(set(to_do_list))
-
-        # #4565: Rewrite using a loop.
         while to_do_list:
             v2 = to_do_list.pop()
             seen.add(v2)
