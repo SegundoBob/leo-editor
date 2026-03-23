@@ -453,11 +453,11 @@ def extract(self: Self, event: LeoKeyEvent = None) -> None:
     h = lines[0].strip()
     ref_h = extractRef(c, h).strip()
     language = (c.getLanguage(c.p) or '').lower()
-    # Note: Adjust as necessary for other languages, maybe clearing top comments!
+    # Note: Adjust as necessary for other languages, maybe clearing top comments, etc.
     if language in ('javascript', 'typescript'):
         def_h = extractDef_find(c, [lines[0]])  # Only look at the first line for a definition.
     else:
-        def_h = extractDef_find(c, lines)  ## Default to look at all lines for a definition.
+        def_h = extractDef_find(c, lines)  # Default to look at all lines for a definition.
     #
     # First check for reference, then definition, then default to the first line.
     if ref_h:
