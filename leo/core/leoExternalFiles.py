@@ -13,7 +13,7 @@ from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoNodes import Position
+    from leo.core.leoNodes import Position, VNode
 
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
@@ -209,9 +209,11 @@ class ExternalFilesController:
                 c.refreshFromDisk(p, silent=False)
                 # #4565: set all ancestor file nodes dirty and redraw.
                 p.v.setDirty()
+                to_do: set[VNode] = set()
                 for p2 in c.all_positions():
                     if p2.isDirty():
-                        p2.v.setAllAncestorAtFileNodesDirty()
+                        to_do.add(p2.v)
+                p.v.setAllAncestorAtFileNodesDirty(to_do=to_do)
                 c.redraw()
 
     # @+node:ekr.20201207055713.1: *5* efc.idle_check_leo_file
