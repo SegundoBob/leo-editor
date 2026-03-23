@@ -5516,7 +5516,7 @@ class Commands:
         *Undoably* delete all vnodes corresponding to the positions in aList.
         """
         c = self
-        u, undoType = c.undoer, 'deletePositionsInList'
+        u, undoType = c.undoer, 'c.deletePositionsInList'
         root = c.rootPosition()
 
         # Ensure all positions are valid.
