@@ -5535,7 +5535,7 @@ class Commands:
                         to_be_deleted.remove(p2)
                 bunch = u.beforeDeleteNode(p)
                 p.doDelete()
-                u.afterDeleteNode(p, 'Inner Undo Node', bunch)
+                u.afterDeleteNode(c.rootPosition(), 'Inner Undo Node', bunch)
             else:
                 for child in reversed(list(p.children())):
                     delete(child)
@@ -5553,6 +5553,7 @@ class Commands:
 
         u.afterChangeGroup(c.p, undoType, reportFlag=True)
 
+    # For compatibility.
     undoableDeletePositions = deletePositionsInList
 
     # @+node:ekr.20091211111443.6265: *4* c.doBatchOperations & helpers

@@ -506,6 +506,7 @@
 <v t="ekr.20230111164618.1"><vh>get_paths (not used, from make-sphinx)</vh></v>
 <v t="ekr.20230303065849.1"><vh>last_timestamp (not used from make-sphinx)</vh></v>
 </v>
+<v t="ekr.20200319035525.1"><vh>Theory of operation: c.deletePositionsInList</vh></v>
 </v>
 <v t="matt.20200331213038.1"><vh>PyPi install caveat</vh></v>
 <v t="ekr.20230121110345.1"><vh>Script files</vh>
@@ -1574,7 +1575,6 @@
 <v t="EKR.20040524104904.357"><vh>Format of .leo files</vh></v>
 <v t="ekr.20060921064744.1"><vh>Format of external files</vh></v>
 <v t="ekr.20190414193500.1"><vh>The Leonine way to refactor code</vh></v>
-<v t="ekr.20200319035525.1"><vh>Theory of operation: c.deletePositionsInList</vh></v>
 <v t="ekr.20241112030815.1"><vh>Leo's Colorizer: Theory of Operation</vh>
 <v t="ekr.20241112094914.1"><vh>Components of the jedit class</vh></v>
 <v t="ekr.20241112044810.1"><vh>The big challenge</vh></v>
