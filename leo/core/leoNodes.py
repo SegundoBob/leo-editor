@@ -2732,7 +2732,7 @@ class VNode:
         """
         Original idea by Виталије Милошевић (Vitalije Milosevic).
 
-        #4565: Add the optional initial to_do set.
+        #4565: Rewritten by EKR to use the to_do_set kwarg.
         """
         v = self
         result: set[VNode] = set()
