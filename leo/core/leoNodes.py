@@ -2749,10 +2749,11 @@ class VNode:
             seen.add(v2)
             if v2.isAnyAtFileNode():
                 v2.setDirty()
-            else:
-                for parent_v in v2.parents:
-                    if parent_v not in seen:
-                        to_do_list.append(parent_v)
+            # Scan all parents of v2, even if v2 is and @<file> node.
+            # Doing so maintains compatibility with legacy code.
+            for parent_v in v2.parents:
+                if parent_v not in seen:
+                    to_do_list.append(parent_v)
 
     # @+node:ekr.20040315032144: *4* v.setBodyString & v.setHeadString
     def setBodyString(self, s: object) -> None:
