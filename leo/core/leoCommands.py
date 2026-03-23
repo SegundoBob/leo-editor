@@ -5511,28 +5511,16 @@ class Commands:
         return parent  # actually the last created/found position
 
     # @+node:ekr.20100802121531.5804: *4* c.deletePositionsInList
-    # def deletePositionsInList(self, aList: list) -> list[tuple[str, int, str]]:
     def deletePositionsInList(self, aList: list) -> list[Position]:
         """
         Delete all vnodes corresponding to the positions in aList.
 
-        Set c.p if the old position no longer exists.
-
         Return the list of positions that were actually deleted, for undo.
-
-        Leo 6.8.8: A new, simplified, iterative, top-down algorithm:
-        - Delete subtrees in reverse so that to-be positions never change.
-        - When deleting a subtree, remove to-be-deleted postions if they are
-          contained in the higher-level deleted position.
-
         """
-        # New implementation by Vitalije 2020-03-17 17:29
-        # Rewritten by EKR: 2026/03/23.
         c = self
         root = c.rootPosition()
 
         # Ensure all positions are valid.
-        # undo_data: list[tuple[str, int, str]] = []
         deleted_positions: list[Position] = []
         to_be_deleted: list[Position] = []
         for p in aList:
@@ -5557,10 +5545,15 @@ class Commands:
                 for child in reversed(list(p.children())):
                     delete(child)
 
+        # The main line.
         to_do: list[Position] = list(reversed(list(root.self_and_siblings())))
         while to_do:
             p = to_do.pop()
             delete(p)
+
+        # Set c.p if necessary.
+        if not c.positionExists(c.p):
+            c.selectPosition(c.rootPosition())
         return deleted_positions
 
     # @+node:ekr.20091211111443.6265: *4* c.doBatchOperations & helpers
