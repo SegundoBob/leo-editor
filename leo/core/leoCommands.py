@@ -5511,34 +5511,57 @@ class Commands:
         return parent  # actually the last created/found position
 
     # @+node:ekr.20100802121531.5804: *4* c.deletePositionsInList
-    def deletePositionsInList(self, aList: list) -> list[tuple[str, int, str]]:
+    # def deletePositionsInList(self, aList: list) -> list[tuple[str, int, str]]:
+    def deletePositionsInList(self, aList: list) -> list[Position]:
         """
         Delete all vnodes corresponding to the positions in aList.
 
         Set c.p if the old position no longer exists.
 
-        See "Theory of operation of c.deletePositionsInList" in LeoDocs.leo.
+        Return the list of positions that were actually deleted, for undo.
+
+        Leo 6.8.8: A new, simplified, iterative, top-down algorithm:
+        - Delete subtrees in reverse so that to-be positions never change.
+        - When deleting a subtree, remove to-be-deleted postions if they are
+          contained in the higher-level deleted position.
+
         """
         # New implementation by Vitalije 2020-03-17 17:29
+        # Rewritten by EKR: 2026/03/23.
         c = self
+        root = c.rootPosition()
+
         # Ensure all positions are valid.
-        aList = [p for p in aList if c.positionExists(p)]
-        if not aList:
+        # undo_data: list[tuple[str, int, str]] = []
+        deleted_positions: list[Position] = []
+        to_be_deleted: list[Position] = []
+        for p in aList:
+            if c.positionExists(p) and p not in to_be_deleted:
+                to_be_deleted.append(p)
+        if not to_be_deleted:
             return []
 
-        def p2link(p: Position) -> tuple[int, VNode]:
-            parent_v = p.stack[-1][0] if p.stack else c.hiddenRootNode
-            return p._childIndex, parent_v
+        def delete(p: Position) -> None:
+            """
+            Delete all to-be-deleted positions in p and p's subtree.
+            Carefully update deleted_positions list for undo.
+            """
+            if p in to_be_deleted:
+                # Remove all to-be-deleted positions in p's subtree.
+                for p2 in p.subtree():
+                    if p2 in to_be_deleted:
+                        to_be_deleted.remove(p2)
+                deleted_positions.append(p.copy())
+                p.doDelete()
+            else:
+                for child in reversed(list(p.children())):
+                    delete(child)
 
-        links_to_be_cut = sorted(set(map(p2link, aList)), key=lambda x: -x[0])
-        undodata = []
-        for i, v in links_to_be_cut:
-            ch = v.children.pop(i)
-            ch.parents.remove(v)
-            undodata.append((v.gnx, i, ch.gnx))
-        if not c.positionExists(c.p):
-            c.selectPosition(c.rootPosition())
-        return undodata
+        to_do: list[Position] = list(reversed(list(root.self_and_siblings())))
+        while to_do:
+            p = to_do.pop()
+            delete(p)
+        return deleted_positions
 
     # @+node:ekr.20091211111443.6265: *4* c.doBatchOperations & helpers
     def doBatchOperations(self, aList: list = None) -> None:
@@ -5621,41 +5644,79 @@ class Commands:
             return []
 
     # @+node:vitalije.20200318161844.1: *4* c.undoableDeletePositions
-    def undoableDeletePositions(self, aList: list) -> None:
+    def undoableDeletePositions(self, aList: list[Position]) -> None:
         """
         Deletes all vnodes corresponding to the positions in aList,
         and make changes undoable.
         """
         c = self
         u = c.undoer
-        data = c.deletePositionsInList(aList)
-        gnx2v = c.fileCommands.gnxDict
+        deleted_positions: list[Position] = c.deletePositionsInList(aList)
+        if not deleted_positions:
+            return
 
         def undo() -> None:
-            for pgnx, i, chgnx in reversed(u.getBead(u.bead).data):
-                v = gnx2v[pgnx]
-                ch = gnx2v[chgnx]
-                v.children.insert(i, ch)
-                ch.parents.append(v)
+            for p in reversed(deleted_positions):
+                parent_v = p.stack[-1][0] if p.stack else c.hiddenRootNode
+                parent_v.children.insert(p._childIndex, p.v)
+                p.v.parents.append(parent_v)
+            # for pgnx, i, chgnx in reversed(u.getBead(u.bead).data):
+            # v = gnx2v[pgnx]
+            # ch = gnx2v[chgnx]
+            # v.children.insert(i, ch)
+            # ch.parents.append(v)
             if not c.positionExists(c.p):
                 c.setCurrentPosition(c.rootPosition())
 
         def redo() -> None:
-            for pgnx, i, _chgnx in u.getBead(u.bead + 1).data:
-                v = gnx2v[pgnx]
-                ch = v.children.pop(i)
-                ch.parents.remove(v)
+            for p in deleted_positions:
+                p.doDelete()
+            # for pgnx, i, _chgnx in u.getBead(u.bead + 1).data:
+            # v = gnx2v[pgnx]
+            # ch = v.children.pop(i)
+            # ch.parents.remove(v)
             if not c.positionExists(c.p):
                 c.setCurrentPosition(c.rootPosition())
 
         u.pushBead(
             g.Bunch(
-                data=data,
+                # data=data,
                 undoType='delete nodes',
                 undoHelper=undo,
                 redoHelper=redo,
             )
         )
+
+    # ================
+
+    # data = c.deletePositionsInList(aList)
+    # gnx2v = c.fileCommands.gnxDict
+
+    # def undo() -> None:
+    # for pgnx, i, chgnx in reversed(u.getBead(u.bead).data):
+    # v = gnx2v[pgnx]
+    # ch = gnx2v[chgnx]
+    # v.children.insert(i, ch)
+    # ch.parents.append(v)
+    # if not c.positionExists(c.p):
+    # c.setCurrentPosition(c.rootPosition())
+
+    # def redo() -> None:
+    # for pgnx, i, _chgnx in u.getBead(u.bead + 1).data:
+    # v = gnx2v[pgnx]
+    # ch = v.children.pop(i)
+    # ch.parents.remove(v)
+    # if not c.positionExists(c.p):
+    # c.setCurrentPosition(c.rootPosition())
+
+    # u.pushBead(
+    # g.Bunch(
+    # data=data,
+    # undoType='delete nodes',
+    # undoHelper=undo,
+    # redoHelper=redo,
+    # )
+    # )
 
     # @+node:ekr.20171124155725.1: *3* c.Settings
     # @+node:ekr.20171114114908.1: *4* c.registerReloadSettings
