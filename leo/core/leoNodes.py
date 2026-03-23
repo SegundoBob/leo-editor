@@ -2737,7 +2737,7 @@ class VNode:
         v = self
         # Init seen and to_do_list.
         seen: set[VNode] = set([v.context.hiddenRootNode])
-        to_do_list: list[VNode] = list(to_do_set) if to_do_set else [v] + v.parents
+        to_do_list: list[VNode] = list(to_do_set) if to_do_set else [v]
         if to_do_set:
             for v2 in to_do_set:
                 to_do_list.extend(v2.parents)
