@@ -5511,41 +5511,37 @@ class Commands:
         return parent  # actually the last created/found position
 
     # @+node:ekr.20100802121531.5804: *4* c.deletePositionsInList
-    def deletePositionsInList(self, aList: list) -> list[Position]:
+    def deletePositionsInList(self, aList: list) -> None:
         """
-        Delete all vnodes corresponding to the positions in aList.
-
-        Return the list of positions that were actually deleted, for undo.
+        *Undoably* delete all vnodes corresponding to the positions in aList.
         """
         c = self
+        u, undoType = c.undoer, 'deletePositionsInList'
         root = c.rootPosition()
 
         # Ensure all positions are valid.
-        deleted_positions: list[Position] = []
         to_be_deleted: list[Position] = []
         for p in aList:
             if c.positionExists(p) and p not in to_be_deleted:
                 to_be_deleted.append(p)
         if not to_be_deleted:
-            return []
+            return
 
         def delete(p: Position) -> None:
-            """
-            Delete all to-be-deleted positions in p and p's subtree.
-            Carefully update deleted_positions list for undo.
-            """
             if p in to_be_deleted:
                 # Remove all to-be-deleted positions in p's subtree.
                 for p2 in p.subtree():
                     if p2 in to_be_deleted:
                         to_be_deleted.remove(p2)
-                deleted_positions.append(p.copy())
+                bunch = u.beforeDeleteNode(p)
                 p.doDelete()
+                u.afterDeleteNode(p, 'Inner Undo Node', bunch)
             else:
                 for child in reversed(list(p.children())):
                     delete(child)
 
         # The main line.
+        u.beforeChangeGroup(c.p, undoType, verboseUndoGroup=True)
         to_do: list[Position] = list(reversed(list(root.self_and_siblings())))
         while to_do:
             p = to_do.pop()
@@ -5554,7 +5550,10 @@ class Commands:
         # Set c.p if necessary.
         if not c.positionExists(c.p):
             c.selectPosition(c.rootPosition())
-        return deleted_positions
+
+        u.afterChangeGroup(c.p, undoType, reportFlag=True)
+
+    undoableDeletePositions = deletePositionsInList
 
     # @+node:ekr.20091211111443.6265: *4* c.doBatchOperations & helpers
     def doBatchOperations(self, aList: list = None) -> None:
@@ -5635,81 +5634,6 @@ class Commands:
             g.es_error('Exception in c.find_h')
             g.es_exception()
             return []
-
-    # @+node:vitalije.20200318161844.1: *4* c.undoableDeletePositions
-    def undoableDeletePositions(self, aList: list[Position]) -> None:
-        """
-        Deletes all vnodes corresponding to the positions in aList,
-        and make changes undoable.
-        """
-        c = self
-        u = c.undoer
-        deleted_positions: list[Position] = c.deletePositionsInList(aList)
-        if not deleted_positions:
-            return
-
-        def undo() -> None:
-            for p in reversed(deleted_positions):
-                parent_v = p.stack[-1][0] if p.stack else c.hiddenRootNode
-                parent_v.children.insert(p._childIndex, p.v)
-                p.v.parents.append(parent_v)
-            # for pgnx, i, chgnx in reversed(u.getBead(u.bead).data):
-            # v = gnx2v[pgnx]
-            # ch = gnx2v[chgnx]
-            # v.children.insert(i, ch)
-            # ch.parents.append(v)
-            if not c.positionExists(c.p):
-                c.setCurrentPosition(c.rootPosition())
-
-        def redo() -> None:
-            for p in deleted_positions:
-                p.doDelete()
-            # for pgnx, i, _chgnx in u.getBead(u.bead + 1).data:
-            # v = gnx2v[pgnx]
-            # ch = v.children.pop(i)
-            # ch.parents.remove(v)
-            if not c.positionExists(c.p):
-                c.setCurrentPosition(c.rootPosition())
-
-        u.pushBead(
-            g.Bunch(
-                # data=data,
-                undoType='delete nodes',
-                undoHelper=undo,
-                redoHelper=redo,
-            )
-        )
-
-    # ================
-
-    # data = c.deletePositionsInList(aList)
-    # gnx2v = c.fileCommands.gnxDict
-
-    # def undo() -> None:
-    # for pgnx, i, chgnx in reversed(u.getBead(u.bead).data):
-    # v = gnx2v[pgnx]
-    # ch = gnx2v[chgnx]
-    # v.children.insert(i, ch)
-    # ch.parents.append(v)
-    # if not c.positionExists(c.p):
-    # c.setCurrentPosition(c.rootPosition())
-
-    # def redo() -> None:
-    # for pgnx, i, _chgnx in u.getBead(u.bead + 1).data:
-    # v = gnx2v[pgnx]
-    # ch = v.children.pop(i)
-    # ch.parents.remove(v)
-    # if not c.positionExists(c.p):
-    # c.setCurrentPosition(c.rootPosition())
-
-    # u.pushBead(
-    # g.Bunch(
-    # data=data,
-    # undoType='delete nodes',
-    # undoHelper=undo,
-    # redoHelper=redo,
-    # )
-    # )
 
     # @+node:ekr.20171124155725.1: *3* c.Settings
     # @+node:ekr.20171114114908.1: *4* c.registerReloadSettings
