@@ -5537,10 +5537,11 @@ class Commands:
                 p.doDelete()
                 u.afterDeleteNode(c.rootPosition(), 'Inner Undo Node', bunch)
             else:
+                # Recursively handle all p's children.
                 for child in reversed(list(p.children())):
                     delete(child)
 
-        # The main line.
+        # The main line. Start the recursion with the top-level nodes.
         u.beforeChangeGroup(c.p, undoType, verboseUndoGroup=True)
         to_do: list[Position] = list(reversed(list(root.self_and_siblings())))
         while to_do:
@@ -5550,7 +5551,6 @@ class Commands:
         # Set c.p if necessary.
         if not c.positionExists(c.p):
             c.selectPosition(c.rootPosition())
-
         u.afterChangeGroup(c.p, undoType, reportFlag=True)
 
     # For compatibility.
