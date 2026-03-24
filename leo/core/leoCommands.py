@@ -5511,34 +5511,51 @@ class Commands:
         return parent  # actually the last created/found position
 
     # @+node:ekr.20100802121531.5804: *4* c.deletePositionsInList
-    def deletePositionsInList(self, aList: list) -> list[tuple[str, int, str]]:
+    def deletePositionsInList(self, aList: list) -> None:
         """
-        Delete all vnodes corresponding to the positions in aList.
-
-        Set c.p if the old position no longer exists.
-
-        See "Theory of operation of c.deletePositionsInList" in LeoDocs.leo.
+        *Undoably* delete all vnodes corresponding to the positions in aList.
         """
-        # New implementation by Vitalije 2020-03-17 17:29
         c = self
+        u, undoType = c.undoer, 'c.deletePositionsInList'
+        root = c.rootPosition()
+
         # Ensure all positions are valid.
-        aList = [p for p in aList if c.positionExists(p)]
-        if not aList:
-            return []
+        to_be_deleted: list[Position] = []
+        for p in aList:
+            if c.positionExists(p) and p not in to_be_deleted:
+                to_be_deleted.append(p)
+        if not to_be_deleted:
+            return
 
-        def p2link(p: Position) -> tuple[int, VNode]:
-            parent_v = p.stack[-1][0] if p.stack else c.hiddenRootNode
-            return p._childIndex, parent_v
+        def delete(p: Position) -> None:
+            if p in to_be_deleted:
+                # Remove all to-be-deleted positions in p's subtree from the to-be-deleted list.
+                for p2 in p.subtree():
+                    if p2 in to_be_deleted:
+                        to_be_deleted.remove(p2)
+                # Delete p.
+                bunch = u.beforeDeleteNode(p)
+                p.doDelete()
+                u.afterDeleteNode(c.rootPosition(), 'Inner Undo Node', bunch)
+            else:
+                # Recursively handle all p's children.
+                for child in reversed(list(p.children())):
+                    delete(child)
 
-        links_to_be_cut = sorted(set(map(p2link, aList)), key=lambda x: -x[0])
-        undodata = []
-        for i, v in links_to_be_cut:
-            ch = v.children.pop(i)
-            ch.parents.remove(v)
-            undodata.append((v.gnx, i, ch.gnx))
+        # The main line. Start the recursion with the top-level nodes.
+        u.beforeChangeGroup(c.p, undoType, verboseUndoGroup=True)
+        to_do: list[Position] = list(reversed(list(root.self_and_siblings())))
+        while to_do:
+            p = to_do.pop()
+            delete(p)
+
+        # Set c.p if necessary.
         if not c.positionExists(c.p):
             c.selectPosition(c.rootPosition())
-        return undodata
+        u.afterChangeGroup(c.p, undoType, reportFlag=True)
+
+    # For compatibility.
+    undoableDeletePositions = deletePositionsInList
 
     # @+node:ekr.20091211111443.6265: *4* c.doBatchOperations & helpers
     def doBatchOperations(self, aList: list = None) -> None:
@@ -5619,43 +5636,6 @@ class Commands:
             g.es_error('Exception in c.find_h')
             g.es_exception()
             return []
-
-    # @+node:vitalije.20200318161844.1: *4* c.undoableDeletePositions
-    def undoableDeletePositions(self, aList: list) -> None:
-        """
-        Deletes all vnodes corresponding to the positions in aList,
-        and make changes undoable.
-        """
-        c = self
-        u = c.undoer
-        data = c.deletePositionsInList(aList)
-        gnx2v = c.fileCommands.gnxDict
-
-        def undo() -> None:
-            for pgnx, i, chgnx in reversed(u.getBead(u.bead).data):
-                v = gnx2v[pgnx]
-                ch = gnx2v[chgnx]
-                v.children.insert(i, ch)
-                ch.parents.append(v)
-            if not c.positionExists(c.p):
-                c.setCurrentPosition(c.rootPosition())
-
-        def redo() -> None:
-            for pgnx, i, _chgnx in u.getBead(u.bead + 1).data:
-                v = gnx2v[pgnx]
-                ch = v.children.pop(i)
-                ch.parents.remove(v)
-            if not c.positionExists(c.p):
-                c.setCurrentPosition(c.rootPosition())
-
-        u.pushBead(
-            g.Bunch(
-                data=data,
-                undoType='delete nodes',
-                undoHelper=undo,
-                redoHelper=redo,
-            )
-        )
 
     # @+node:ekr.20171124155725.1: *3* c.Settings
     # @+node:ekr.20171114114908.1: *4* c.registerReloadSettings
