@@ -608,6 +608,7 @@ def peep_hole(self, opcodes):
         result.append(op0)
         i += 1
     return result
+# @+node:ekr.20260323083734.1: ** Temporary Attic
 # @+node:ekr.20181103094900.1: *3* ../plugins/leoflexx.py
 
 # Disable mypy checking.
@@ -11237,6 +11238,665 @@ def orange_settings(c: Cmdr) -> dict[str, object]:
     }
 
 
+# @+node:ekr.20260323083821.1: *3* from LeoDocs.leo
+# @+node:ekr.20260323083821.2: *4* Obsolete installation, FAQ & HowTo entries
+# @+node:ekr.20260323083821.3: *5* FAQ: Getting Leo
+# @+node:ekr.20260323083821.4: *6* Where can I get official releases of Leo?
+See Leo's download page <download.html>
+# @+node:ekr.20260323083821.5: *6* Installing Leo with git
+.. _`git`: https://git-scm.com/
+
+**Important**: This section tells how to set up `git`_ so that you can grab
+the latest sources using ``git clone``.
+
+Many users will want to track the development version of Leo, in order to stay
+on top of the latest features and bug fixes. Running the development version is
+quite safe and easy, and it's also a requirement if you want to contribute to
+Leo.
+
+1. First, you need to get git from http://git-scm.com/.
+2. Get Leo from GitHub by doing:
+
+    ``git clone --depth=500 --no-single-branch https://github.com/leo-editor/leo-editor`` (http access)
+
+    or:
+
+    ``git clone --depth=500  --no-single-branch git@github.com:leo-editor/leo-editor.git`` (ssh access)
+
+    followed by checking out the _devel_ branch:
+
+``git checkout devel`` 
+
+3. Install dependencies and create leo script launcher::
+
+        pip install --editable path/to/leo-editor
+
+And that's it! You can run leo with `PYTHONHOME/Scripts/leo` or `python leo-editor/launchLeo.py`. When you want to refresh the code with latest modifications from GitHub, run ``git pull``.
+# @+node:ekr.20260323083821.6: *6* How can I get recent snapshots of Leo?
+Daily snapshots are available at download.html
+# @+node:ekr.20260323083821.7: *5* FAQ: Installing Leo
+# @+node:ekr.20260323083821.8: *6* How to  Pip install from GitHub?
+**Problem**
+
+When installing Leo from GitHub with
+``pip install https://github.com/leo-editor/leo-editor/archive/devel.zip``
+numerous files are left out.
+
+**Solution**
+
+Installing from Github into a new environment must be done in discrete
+steps: download, unpack, and install in editable mode.
+
+Example::
+
+   wget https://github.com/leo-editor/leo-editor/archive/devel.zip
+   7z x devel.zip -o C:\apps
+   pip install --editable C:\apps\leo-editor-devel
+
+On Windows there are powershell versions of wget if needed.
+
+For easier upgrading substitute ``git clone`` for ``wget`` & ``7z``
+steps::
+
+   git clone --single-branch -b devel --depth=100 https://github.com/leo-editor/leo-editor.git
+   pip install --editable leo-editor
+
+Time passes, upgrade desired::
+
+   pushd c:\apps\leo-editor
+   git pull
+
+``single-branch``, ``b`` and ``depth`` are all optional, but will
+dramatically speed up download time as it only grabs the latest
+development branch and skips all but the last couple weeks or months of
+history.
+# @+node:ekr.20260323083821.9: *6* Leo's installer failed, what do I do?
+You can simply unpack Leo anywhere and run from there.  You don't need the installer.
+
+From a console window, cd to the top-level leo folder.  Run Leo as follows::
+
+    python launchLeo.py
+
+To run Leo with Qt look and feel, use the --gui=qt option::
+
+    python launchLeo.py --gui=qt
+
+To load Leo's source, load leoPyRef.leo::
+
+    python launchLeo.py --gui=qt leo\\core\\leoPyRef.leo
+# @+node:ekr.20260323083821.10: *6* Common problems
+Missing modules can cause installation problems. If the installer doesn't work (or puts up a dialog containing no text), you may install Leo from the .zip file as described at `How to install Leo on Windows`_. However you are installing Leo, be sure to `run Leo in a console`_. because as a last resort Leo prints error messages to the console.
+# @+node:ekr.20260323083821.11: *6* Tip: use shallow git clones to speed pip install
+Tip: faster dev pip installs with shallow clones
+
+When running `pip install --editable path/to/leo` the  "Installing build dependencies ..." step can take a loooong time. Apparently this is because it creates a copy of the folder tree including the `.git` folder, which can be quite large (ref). My machine right now: .git is 183 MB, while Leo is only 40 MB.
+
+Solution: periodically create a new leo-editor shallow clone:
+
+cd d:\code
+git clone --depth=100 https://github.com/leo-editor/leo-editor.git d:/code/shallow-leo-editor
+move d:\code\leo-editor d:\code\leo-editor-bloated
+move d:\code\shallow-leo-editor d:\code\leo-editor
+
+At current commit rate:
+
+    depth=100 is 6 months of history and 60mb (.git & Leo together)
+    depth=500 is 2 years and 73 MB
+    depth={infinity} is 11 years and 242 MB
+
+The command shown only fetches master branch, and checkout of other branches will fail. Two solutions:
+
+# add all remote branch names
+# use 'devel' instead of '*' to get only devel branch
+# quotes are significant
+git remote set-branches origin '*'
+git fetch
+git checkout devel
+
+Or:
+
+# shallow clone each branch
+git clone --depth=nn --no-single-branch ...
+
+# @+node:ekr.20260323083821.12: *5* FAQ: What's the recommended way to upgrade Leo?
+.. .. http://groups.google.com/group/leo-editor/browse_thread/thread/61019e45d75a6f18/71ee770ee4421222
+
+1. Archive and remove the previous version of Leo.
+2. Download the nightly snapshot zip file.
+3. Unzip it into the same place as the previous version.
+4. Enjoy your up-to-date Leo code...
+
+To make this work, it's important to keep your folder containing Leo separate from your .mySettings.leo and any data files.
+# @+node:ekr.20260323083821.13: *5* How to...
+# @+node:ekr.20260323083821.14: *6* How to generate odt/rtf/pdf files
+To generate .odt or .rtf or .pdf files, you create an intermediate file and ignore the the "official" output file, in this case test.html. The intermediate file contains the rST text corresponding to the @rst tree.
+
+To tell the rst3 command to generate an intermediate file, do::
+
+    write_intermediate_file = True
+
+After you create the intermediate file, in this case, test.html.txt, You can create an odt file as follows::
+
+    python <path-to-python>/scripts/rst2odt.py test.html.txt test.odt
+
+I use a batch file, rst2odt.bat, like this:
+
+    rst2odt test
+
+Note that rst3odt.py is in the tools directory of the DocUtils distribution.
+
+To generate .rtf, you can use PanDoc to convert test.html.txt to RTF.
+
+To generate .pdf files, you would first convert test.html.txt to LaTeX::
+
+    python rst2newlatex.py test.html.txt test.tex
+
+    -- OR --
+
+    cd leo\docs\html
+    make latex
+
+You can then use one of the LaTeX to .pdf converters to create the final .pdf file. See http://docutils.sourceforge.net/docs/user/latex.html#pdf-generation for details.
+# @+node:ekr.20260323083821.15: *7* Post from ville
+I just tweaked conf.py a bit to enable pdf generation.
+
+Howto:
+
+QQQ
+
+4. To create pdf (probably easiest on Linux, with necessary latex
+packages installed):
+
+- make latex
+- cd _build/latex
+- make all-pdf
+
+QQQ
+
+There were several errors in the pdf generation process. Notably,
+there are probably lots of unicode errors (and toc doesn't appear).
+Nevertheless, you can steal a peek at the doc here:
+
+http://vvtools.googlecode.com/files/Leodocumentation.pdf 
+# @+node:ekr.20260323083821.16: *7* @@rst test.html
+====
+Test
+====
+
+This is a test.
+# @+node:ekr.20260323083821.17: *8* section 1
+This is section 1
+# @+node:ekr.20260323083821.18: *6* How to generate these docs
+- Select the node "Leo's Documentation"
+
+- Run the make-sphinx command or click the make-sphinx button.
+
+
+To generate these docs by hand:
+
+    - From this file, run rst3 on desired tree.
+    - cd leo\doc\html
+    - make html
+
+To create pdf (probably easiest on Linux, with necessary latex packages installed):
+
+    - make latex
+    - cd _build/latex
+    - make all-pdf
+
+Important files:
+
+- doc\html\conf.py contains settings, including the name of the master toctree
+  document: leo_toc.html.txt.
+
+# @+node:ekr.20260323083821.19: *5* Dependencies
+.. _`Anaconda`:   https://pypi.org/project/anaconda/
+.. _`Miniconda`:  https://docs.anaconda.com/free/miniconda/index.html
+.. _`Docutils`:   https://pypi.org/project/docutils/
+.. _`feedparser`: https://pypi.org/project/feedparser/
+.. _`Markdown`:   https://pypi.org/project/Markdown/
+.. _`Python`:     https://www.python.org/
+.. _`PyEnchant`:  https://pypi.org/project/pyenchant/
+.. _`PyQt6`:      https://pypi.org/project/PyQt6/
+.. _`Sphinx`:     https://pypi.org/project/Sphinx/
+
+Leo's minimal dependencies are:
+
+* `Python`_ 3.9 or later.
+* `PyQt6`_.
+
+The following packages are optional, but recommended:
+
+* `Docutils`_: required for the rst3 command and the viewrendered plugins.
+* `Sphinx`_: required to regenerate Leo's documentation.
+* `PyEnchant`_: required for spell checking.
+
+Plugins may require other packages.  For example, viewrendered requires `Markdown`_ if one wishes to use markdown rendering, but it is optional. rss.py will not function without `feedparser`_. Etc.
+# @+node:ekr.20260323083821.20: *5* @auto-rst treecaching.txt
+@language rest
+@tabwidth -4
+# @+node:ekr.20260323083821.21: *6* Python list based description of trees ('objtrees')
+
+Positions and trees are objects that exists only within Leo instance. However, trees can have "serialized" representation in .leo xml files (where structure is described by xml hierarchy), or @file nodes (where structure is described by sentinels).
+
+Sometimes, both formats are too heavyweight. Both xml and "flat" text files involve nontrivial callback-based (or worse) parsing. Luckily, trees can be represented naturally with python lists, which can be pickled and passed around with almost zero cost in CPU consumption or code complexity. In theory position objects can be passed around in this fashion as well, but positions always have to exist in the tree (there is no concept of 'detached' position) and they can't be pickled or moved around outside the Leo instance.
+
+For the purposes of this discussion (and for the sheer narcissistic pleasure of inventing new terminology), I'm calling these data structures `objtrees`.
+
+The structure of objtrees is a standard Python list of the form::
+
+    [headline, bodystring, gnx, [children...]]
+
+Where `children` is a recursive tree. Here's an example objtree (from ILeo session)::
+
+    ileo[~/hashcache]|11> g.tree_at_position(p)
+                     <11>
+    [u'root',
+     u'Root body',
+     'ville.20090601215420.1449',
+     [[u'ch1 head',
+       u'child 1 body',
+       'ville.20090609184451.5679',
+       [[u'ch1.1 head', u'ch1.1 body', 'ville.20090609184451.5680', []],
+        [u'ch1.2 head', u'ch1.2 body', 'ville.20090609184451.5681', []]]],
+      [u'ch2 head',
+       u'ch2 body',
+       'ville.20090609184451.5682',
+       [[u'ch2.1 head', u'', 'ville.20090609184451.5683', []]]]]]
+
+Note that these trees are constructed using `g.tree_at_position(pos)`. These objtrees can be re-incorporated to Leo document using `g.create_tree_at_vnode(c, v, tree)`, which rebuilds the structure at position p. The "vnode" is available as p.v attribute. This functions also creates clones if necessary (according to gnx). If you want to avoid creating clones (e.g. to implement simple copy-paste functionality), you can use `g.create_tree_at_position(p)`. create_tree_at_position also server as a trivial example for recursing through objtree data structure::
+
+    def create_tree_at_position(p, tree):
+        """ Like create_tree_at_vnode, but slower, simpler, without clone/gnx support
+        """
+        h,b,gnx,chi = tree
+
+        p.h = h
+        p.b = b
+
+        for el in chi:
+            chpos = p.insertAsLastChild().copy()
+            # recurse
+            create_tree_at_position(chpos, el)
+
+`g.create_tree_at_vnode` is more complex, but faster and supports clones. It relies on `g.fast_add_last_child(c, parent_v, gnxString)`, which adds a new node to the tree as last child of parent_v (vnode), It either returns the created vnode, or None if it created a clone (i.e. a node with same gnx was already found in the document). This is a conscious design choice, as it prevents you from accidentally manipulating the tree of the clone (since it already has a tree of its own!).
+
+# @+node:ekr.20260323083821.22: *6* Using objtrees for caching
+
+Objtrees are not without real life applications. They are used to implement the content hash based node cache that radically speeds up Leo's startup (effectively eliminating the delay caused by Leo parsing @file / @auto nodes - something which made trees with several @auto or @file nodes intolerable in practice. The trick here relies on the fact that:
+
+- The whole content of external file (say, foo.py) can be described by calculating an md5sum of the file - The same external file content will always create the same leo tree.
+
+In brief,
+
+- When we are reading in a @file node foo.cpp, we first read in the whole file and calculate md5sum of its contents. Let's say the md5 sum is 8095e2dabbfe90b349066209fb090df6.
+
+- Leo tries to look for existing cached version in ~/.leo/db/LeoDocs.leo/fcache/8095e2dabbfe90b349066209fb090df6. Initially, it doesn't exist, so Leo executes the standard (slow) @file code parsing routine and creates the tree normally
+
+- After creating the tree, Leo executes g.tree_at_position and pickles the objtree to file ~/.leo/db/LeoDocs.leo/fcache/8095e2dabbfe90b349066209fb090df6
+
+- Now, on the next startup, Leo *will* find the cached pickle, read it in and execute `g.create_tree_at_vnode`
+
+# @+node:ekr.20260323083821.23: *6* The `Leo database` (c.db, g.app.db)
+
+Previous discussion omitted one fact - Leo doesn't actually operate on files directly, but uses the `pickleshare` library (shipped with Leo) to access the cached pickles. In essence, the database is always associated with one specific Leo document, and is available through c.db. So, storing a tree is (in simplified form) about doing::
+
+   cachename = "fcache/8095e2dabbfe90b349066209fb090df6"
+   if cachename in c.db:
+        g.trace('Already cached')
+    else:
+        tree = g.tree_at_position(pos)
+        c.db[cachename] = tree
+
+Pickleshare (as used by Leo) stores the pickles in zlib-compressed form, which yields significant size benefits for large pickles like objtrees.
+
+Note that c.db is available to all plugins and scripts, and in no way limited to this specific caching purpose. In practice, it's useful for data you want to persist through Leo sessions, but not added to .leo document (which is what unknownAttributes are used for).
+
+In addition to c.db, there is g.app.db that can be used for global (non-document specific) persisted data. E.g.::
+
+    g.app.db['foo'] = [1,2,3]  
+
+The underlying files for c.db are at under ~/.leo/db/somedocument.leo_somehash.
+
+Files for g.app.db are at ~/.leo/db/global.
+
+# @+node:ekr.20260323083821.24: *5* set-reference-file
+# @+node:ekr.20260323083821.25: *5* Operations on reference .leo files
+.. .. https://groups.google.com/forum/#!topic/leo-editor/yAtfcG6AL70
+
+.. _`reference .leo files`: FAQ.html#what-is-a-reference-leo-file
+
+These commands make it easier to use Leo's `reference .leo files`_. From time to time, developers needs to open reference Leo file and copy its content to and from their personal file. These commands use a **separation node**, a top-level node whose headline is::
+
+    ---begin-private-area---
+
+The body of the separation node contains the **.leo reference**, a path to the reference .leo file. Everything above this node is the **public part** of the outline.  Everything below this node is the **private part** of the outline.
+
+**set-reference-file** selects the reference .leo file corresponding to the local .leo file. It creates the separation node if it doesn't exists, changing the .leo reference as needed.
+
+**read-ref-file** reads the public part of this outline from the reference .leo file given in the separation node. **Warning**: This command **deletes all nodes above separation node**, recreating them from the reference file.
+
+**update-ref-file** saves public part of this outline to reference .leo file.
+
+Developers will typically execute the ``read-ref-file`` command after any git pull that changes any reference .leo file.  Similarly, devs will typically execute the ``update-ref-file`` command before doing a git commit that changes a reference .leo file.
+# @+node:ekr.20260323083821.26: *5* How can I customize the clone-find-all commands?
+The c.cloneFindAllAtNode and c.cloneFindAllFlattenedAtNode methods start the clone-find-all and clone-find-all-flattened commands at a particular node. For example, here is the body of ``@button cfa-code @args add`` in leoPy.leo::
+
+    c.cloneFindAllFlattenedAtNode('Code',top_level=True)
+
+The ``@args add`` part of the headline causes Leo to add the ``cfa-code`` command to Leo's history list, so there is no urgent need to use a separate key binding for this command.
+# @+node:ekr.20260323083821.27: *5* ILeo - the IPython bridge
+# @+node:ekr.20260323083821.28: *6* @@@rst html\IPythonBridge.html
+##########################
+ILeo: Leo's IPython Bridge
+##########################
+
+.. contents:: Contents
+    :depth: 2
+    :local:
+
+# @+node:ekr.20260323083821.29: *7* Overview
+Leo's ``--ipython`` command-line option enables two-way communication (**ILeo**, the **IPython bridge**) between Leo and IPython: you can run Leo scripts from IPython, and IPython scripts from Leo.
+
+The level of integration is much deeper than conventional integration in IDEs. Most notably, you are able to store and manipulate *data* in Leo nodes, in addition to mere program code--essentially making ILeo a hierarchical spreadsheet, albeit with non-grid view of the data. The possibilities of this are endless, and the approach can be applied in wide range of problem domains with very little actual coding.
+# @+node:ekr.20260323083821.30: *7* Starting ILeo
+.. _`run Leo in a console window`: installing.html#running-leo-from-a-console-window
+
+To run Leo's IPython bridge:
+
+1. Install IPython 4.0 and above and Jupyter.
+
+2. `run Leo in a console window`_ with the ``--ipython`` command-line option enabled. This option starts an instance of the IPython shell in the console. Leo and IPython run simultaneously and independently. Their separate event loops do not interfere with each other. The ipython-new command launches new terminals connected to the same IPython kernel.
+# @+node:ekr.20260323083821.31: *7* Running Leo scripts from IPython
+*You can run any Leo script from IPython*. The IPython bridge injects an object called _leo into IPython's namespace. IPython scripts may access Leo's c and g objects as follows::
+
+    c,g = _leo.c, _leo.g
+
+This allows IPython scripts to do *anything* that a Leo script can do. Scripts run from IPython *immediately* change Leo, *exactly* as if the script were run from Leo.
+
+**Important**: the _leo object is an instance of LeoNameSpace class, defined in leo.core.leoIPython.py. This class allows IPython scripts to access multiple Leo outlines at once. See the actual code for details.
+
+**Note**: _leo.c is a property which can return None in some situations. Here is its definition::
+
+    def __get_c(self):
+        '''Return the designated commander, or the only open commander.'''
+        self.update()
+        if self.commander and self.commander in self.commanders_list:
+            return self.commander
+        elif len(self.commanders_list) == 1:
+            return self.commanders_list[0]
+        else:
+            return None
+
+    def __set_c(self,c):
+        '''Designate the commander to be returned by the getter.'''
+        self.update()
+        if c in self.commanders_list:
+            self.commander = c
+        else:
+            g.trace(g.callers())
+            raise ValueError(c)
+
+    c = property(
+        __get_c, __set_c,
+        doc = "LeoNameSpace c property")
+# @+node:ekr.20260323083821.32: *7* Running IPython scripts from Leo
+*You can run any IPython script from Leo*. Leo's ipython-exec command executes the body text of the presently selected Leo node in the address space of the IPython shell. Such scripts *immediately* affect the IPython interpreter.
+
+The IPython bridge sets several global variables *within Leo*, allowing Leo scripts *complete* access to all of IPython's code and data:
+
+- g.app.ipk is a *singleton* instance of the InternalIPKernel class,
+  defined in leoIPython.py.
+- g.app.ipk.namespace is IPython's namespace.
+- g.app.ipk.kernelApp is an IPython IPKernelApp object.
+- g.app.ipk.kernelApp.shell is an IPython InteractiveShell object.
+  Depending on your installation, this may be a ZMQInteractiveShell.
+# @+node:ekr.20260323083821.33: *7* ILeo as an IPython notebook
+.. _`IPython Notebook`: http://projects.scipy.org/ipython/ipython/wiki/NoteBook
+
+The IPython bridge turns Leo into another kind of `IPython Notebook`_. IPython users typically use %edit to produce non-trivial functions/classes instead of entering them directly on the interactive prompt. But this is a bit clumsy. With Leo, *every Leo node works like an IPython %edit file*:
+
+- You can execute any Leo node in IPython with ipython-exec.
+- Saving your Leo outline saves all your IPython scripts.
+- You can use Leo as always to organize all your IPython scripts.
+# @+node:ekr.20260323083821.34: *7* ILeo and the valuespace plugin
+Leo's valuespace.py plugin uses the ipython namespace when the ``--ipython`` command line switch is in effect.
+
+This plugin provides a "workbook" like way to get data from Leo document to the namespace, and do calculations based on that data. Having this data be accessible to the ipython instance makes it convenient to interact and poke around with the same data.
+# @+node:ekr.20260323083821.35: *7* Acknowledgements and history
+This idea got started when I (Ville M. Vainio) saw this post by Edward Ream on IPython developer mailing list: http://lists.ipython.scipy.org/pipermail/ipython-dev/2008-January/003551.html
+
+I was using FreeMind as mind mapping software, and so I had an immediate use case for Leo (which, incidentally, is superior to FreeMind as mind mapper). The wheels started rolling, I got obsessed with the power of this concept (everything clicked together), and Edwards excitement paralleled mine. Everything was mind-bogglingly easy/trivial, something that is typical of all promising technologies.
+
+The goal of close cooperation between Leo and IPython went from vague dream to completed reality over the span of about 10 days. The IPython bridge has continued to evolve since then.
+# @+node:ekr.20260323083821.36: *4* Obsolete scripts
+@nosearch
+# @+node:ekr.20260323083821.37: *5* From @button make-sphinx
+# @+node:ekr.20260323083821.38: *5* copy_files (not used, from make-sphinx)
+def copy_files(from_directory, to_directory, last_timestamp):
+    """Copy only *changed* html files from `from_directory` to `to_directory`."""
+    if not os.path.exists(to_directory):
+        print(f"Directory not found: {to_directory!r}")
+        return
+    files = glob.glob(f"{from_directory}{os.sep}*")
+    if 1:
+        print('')
+        g.trace(f"Copy {from_directory} to {to_directory}")
+        print('')
+    written = 0
+    for f in files:
+        timestamp = os.path.getmtime(f)
+        if timestamp > last_timestamp:
+            written += 1
+            print(f"copy {timestamp:>24}: {g.shortFileName(f)}")
+            shutil.copy2(f, to_directory)
+    print(f"copied {written} file{g.plural(written)} to {to_directory}")
+# @+node:ekr.20260323083821.39: *5* get_paths (not used, from make-sphinx)
+def get_paths():
+    """
+    Return (build_path, docs_path, html_path), that is: 
+    (
+        leo-editor/leo/doc/_build/html,
+        leo-editor/docs,
+        leo-editor/leo/doc/html,
+    )
+    """
+    join = g.os_path_finalize_join
+    norm = os.path.normpath
+    build_path = norm(join(g.app.loadDir, '..', 'doc', 'html', '_build', 'html'))
+    docs_path = norm(join(g.app.loadDir,'..','..','docs'))
+    html_path = norm(join(g.app.loadDir,'..','doc','html'))
+    paths = build_path, docs_path, html_path
+    # build_path need not exist.
+    return paths
+    # if all((os.path.exists(z) for z in paths)):
+        # return paths
+    # for path in paths:
+        # if not os.path.exists(path):
+            # g.es_print(f"Not found: {path!r}")
+    # return None, None, None
+# @+node:ekr.20260323083821.40: *5* last_timestamp (not used from make-sphinx)
+def last_timestamp(directory: str) -> str:
+    """Return the last time stamp for all the files in the given directory."""
+    files = glob.glob(f"{directory}{os.sep}*")
+    last_file = max(files, key=os.path.getmtime)
+    timestamp = os.path.getmtime(last_file)
+    # g.trace('Last timestamp:', timestamp, last_file)
+    return timestamp
+# @+node:ekr.20260323083821.41: *4* Theory of operation: c.deletePositionsInList
+The positions passed to p.deletePositionsInList only *specify* the desired
+changes; the only way to *make* those changes is to operate on vnodes!
+
+Consider this outline, containing no clones::
+
+    + ROOT
+      - A
+      - B
+
+The fundamental problem is this. If we delete node A, the index of
+node B in ROOT.children will change. This problem has (almost) nothing
+to do with clones or positions.
+
+**Proof that c.deletePositionsInList is correct**
+
+Clearly, deleting a positions ultimately means changing vnodes,
+specifically, v.parents and v.children for v in some set of vnodes. We must
+show that the particular set of changed vnodes in the new code is the
+correct set of vnodes, and that the changes made to that set are correct.
+This is far from obvious at first glance.
+
+**The new code**
+
+Here is Vitalije's version of c.deletePositionsInList, without the docstring:
+
+.. code-block:: python
+
+    def deletePositionsInList(self, aList):
+        c = self
+
+        # Ensure all positions are valid.
+        aList = [p for p in aList if c.positionExists(p)]
+        if not aList:
+            return
+
+        def p2link(p):
+            parent_v = p.stack[-1][0] if p.stack else c.hiddenRootNode
+            return p._childIndex, parent_v
+
+        links_to_be_cut = sorted(set(map(p2link, aList)), key=lambda x:-x[0])
+
+        # The main loop.
+        for i, v in links_to_be_cut:
+            child_v = v.children.pop(i)
+            child_v.parents.remove(v)
+
+To begin the proof, note that the main loop has the expected "form". That
+is, when we delete a node, we will:
+
+1. Delete child_v = v.children[i] for some v and i.
+
+2. Delete child_v from its parents array.
+
+v.parents is an unordered array, so child_v.parents.remove(v) is all that
+is needed. This line might crash if one of the positions is invalid. It
+will also crash if v is not present in child_v.parents. I'll discuss this
+later.
+
+To complete the proof, we must show that the main loop deletes all and only
+those vnodes implied by the positions in aList. We can tentatively assume
+that the main loop will work properly if that data in links_to_be_cut is
+correct, but there are some subtleties lurking here which I'll discuss later.
+
+The following code creates links_to_be_cut:
+
+.. code-block:: python
+
+    def p2link(p):
+        parent_v = p.stack[-1][0] if p.stack else c.hiddenRootNode
+        return p._childIndex, parent_v
+
+    links_to_be_cut = sorted(set(map(p2link, aList)), key=lambda x:-x[0])
+
+This is elegant (compressed) code. Let's examine it carefully...
+
+p2link produces tuples (childIndex, parent_v). These become bound to i, v
+in the main loop:
+
+.. code-block:: python
+
+    # The main loop.
+    for i, v in links_to_be_cut:
+        child_v = v.children.pop(i)
+        child_v.parents.remove(v)
+
+To make this work, parent_v must be the vnode whose i'th child should be
+deleted:
+
+.. code-block:: python
+
+    parent_v = p.stack[-1][0] if p.stack else c.hiddenRootNode
+
+- p.stack entries have the form (v, childIndex), so p.stack[-1] is the
+  position p's immediate parent vnode, if p has a parent. Otherwise,
+  c.hiddenRootNode is the proper parent vnode.
+
+- p._childIndex is also the correct value for i.
+
+We have just proved the following::
+
+    Deleting position p means executing the main loop for (i, v) returned by p2link(p)
+
+**Sorting and filtering**
+
+The following line filters and sorts the results produced by p2link:
+
+.. code-block:: python
+
+    links_to_be_cut = sorted(set(map(p2link, aList)), key=lambda x:-x[0]
+
+Let's break this into parts, from "inside" to "outside"
+
+- ``map(p2link, aList)`` applies ``p2link`` to every position in ``aList``.
+  The result is a list of tuples ``(i, v)``. This list may contain
+  duplicates.
+
+- ``set(map(p2link, aList)`` removes those duplicates.
+  Let **theSet** be ``set(map(p2link, aList)``.
+
+- Finally, ``sorted(theSet, key=lambda x:-x[0])`` creates a generator
+  equivalent to a sorted list.
+
+The generator will deliver the tuples in descending order of ``i``, when
+several tuples have the same vnode ``v``. The generator does not order
+tuples on ``v``, and there is no need to do so.
+
+It's easy to understand the intent of this sort order. The main loop
+contains this line:
+
+.. code-block:: python
+
+    child_v = v.children.pop(i)
+
+The sort order means that ``pop(i)`` happens before ``pop(j)`` if ``i >
+j``. This condition ensures that the precomputed values of ``i`` won't
+change in the main loop.
+
+**Completing the proof**
+
+The algorithm appears sound. The tuples ``(i, v)`` computed from
+``p2link(p)`` correctly describe the work to be done. Filtering ensures
+that the work is done once. Sorting ensures that child indices ``i`` will
+not change during the main loop.
+
+The tuples are sorted on ``i``, but not ``v``. ``aList`` can contain positions
+in any order, so we know only that for any particular vnode ``v`` the main loop
+will handle tuples ``(i1, v), (i2, v), ...`` in the correct order.
+
+There are two final questions to consider:
+
+First, does the order in which the main loop handles vnodes matter?
+
+No. The vnode data are independent. The main loop works regardless of
+whether a vnode has already been unlinked.
+
+Second, could the following lines ever fail?
+
+.. code-block:: python
+
+    child_v = v.children.pop(i)
+    child_v.parents.remove(v)
+
+No. Sorting and filtering ensure that tuples are unique. ``v`` is guaranteed to
+be in ``child_v.parents`` because ``v.children[i]`` must exist.
+
+This concludes the proof.
+
+**Discussion**
+
+The algorithm is sound because the tuples ``(i, v)`` contain no duplicates.
+For any particular ``v``, the main loop will process the tuples in descending
+order of ``i``. This resolves the question of whether deleting already deleted
+positions is valid.
 # @-all
 # @@nosearch
 # @-leo

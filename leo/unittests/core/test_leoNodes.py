@@ -843,7 +843,7 @@ class TestNodes(LeoUnitTest):
 
     # @+node:ekr.20210830095545.25: *4* TestNodes.test_p_deletePositionsInList
     def test_p_deletePositionsInList(self):
-        c, p = self.c, self.c.p
+        c, p, u = self.c, self.c.p, self.c.undoer
         root = p.insertAsLastChild()
         root.h = 'root'
         # Top level
@@ -872,6 +872,9 @@ class TestNodes(LeoUnitTest):
                 aList.append(p.copy())
         self.assertEqual(len(aList), 6)
         c.deletePositionsInList(aList)
+        for i in range(3):
+            u.undo()
+            u.redo()
         c.redraw()
 
     # @+node:ekr.20210830095545.31: *4* TestNodes.test_p_isRootPosition
