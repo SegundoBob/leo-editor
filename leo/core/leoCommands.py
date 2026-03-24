@@ -5529,10 +5529,11 @@ class Commands:
 
         def delete(p: Position) -> None:
             if p in to_be_deleted:
-                # Remove all to-be-deleted positions in p's subtree.
+                # Remove all to-be-deleted positions in p's subtree from the to-be-deleted list.
                 for p2 in p.subtree():
                     if p2 in to_be_deleted:
                         to_be_deleted.remove(p2)
+                # Delete p.
                 bunch = u.beforeDeleteNode(p)
                 p.doDelete()
                 u.afterDeleteNode(c.rootPosition(), 'Inner Undo Node', bunch)
