@@ -2735,6 +2735,7 @@ class VNode:
         #4565: Rewritten by EKR to use the to_do_set kwarg.
         """
         v = self
+
         # Init seen and to_do_list.
         seen: set[VNode] = set([v.context.hiddenRootNode])
         to_do_list: list[VNode] = list(to_do_set) if to_do_set else [v]
@@ -2749,7 +2750,7 @@ class VNode:
             seen.add(v2)
             if v2.isAnyAtFileNode():
                 v2.setDirty()
-            # Scan all parents of v2, even if v2 is and @<file> node.
+            # Scan all parents of v2, even if v2 is an @<file> node.
             # Doing so maintains compatibility with legacy code.
             for parent_v in v2.parents:
                 if parent_v not in seen:
