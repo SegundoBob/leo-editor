@@ -215,7 +215,7 @@ class ExternalFilesController:
                 p.v.setDirty()
                 to_do_set: set[VNode] = set()
                 for p2 in c.all_positions():
-                    if p2.isDirty():
+                    if p2.v.isDirty():
                         to_do_set.add(p2.v)
                 p.v.setAllAncestorAtFileNodesDirty(to_do_set=to_do_set)
                 c.redraw()
