@@ -207,6 +207,10 @@ class ExternalFilesController:
                 state = self.ask(c, path, p=p)
             if state in ('yes', 'yes-all'):
                 c.refreshFromDisk(p, silent=False)
+                # #4565: set all clones in p's subtree dirty.
+                for p2 in p.subtree():
+                    if p2.v.isCloned():
+                        p2.v.setDirty()
                 # #4565: set all ancestor file nodes dirty and redraw.
                 p.v.setDirty()
                 to_do_set: set[VNode] = set()
