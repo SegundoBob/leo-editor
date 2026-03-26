@@ -220,16 +220,17 @@ class ExternalFilesController:
                     if p2.v.isDirty():
                         to_do_set.add(p2.v)
                 p.v.setAllAncestorAtFileNodesDirty(to_do_set=to_do_set)
+        if not changed:
+            return
         # #4570: Write all update messages here, and only here.
-        if changed and not g.unitTesting:
+        if g.unitTesting:
             changed_roots: set[str] = set()
             for p2 in c.all_positions():
                 if p2.isAnyAtFileNode() and p2.isDirty():
                     changed_roots.add(p2.h)
             for s in sorted(list(changed_roots)):
                 g.es_print('update:', s, color='blue')
-        if changed:
-            c.redraw()
+        c.redraw()
 
     # @+node:ekr.20201207055713.1: *5* efc.idle_check_leo_file
     def idle_check_leo_file(self, c: Cmdr) -> None:
