@@ -228,7 +228,8 @@ class ExternalFilesController:
                     changed_roots.add(p2.h)
             for s in sorted(list(changed_roots)):
                 g.es_print('update:', s, color='blue')
-        c.redraw()
+        if changed:
+            c.redraw()
 
     # @+node:ekr.20201207055713.1: *5* efc.idle_check_leo_file
     def idle_check_leo_file(self, c: Cmdr) -> None:
