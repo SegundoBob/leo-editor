@@ -781,8 +781,6 @@ class AtFile:
             return
         if new_private_lines == old_private_lines:
             return
-        if not g.unitTesting:
-            g.es_print("updating:", root.h)
         root.clearVisitedInTree()
         gnx2vnode = at.fileCommands.gnxDict
         contents = ''.join(new_private_lines)
@@ -910,8 +908,6 @@ class AtFile:
             return
         if new_private_lines == old_private_lines:
             return
-        if not g.unitTesting:
-            g.es_print('updating:', fileName)
         root.clearVisitedInTree()
         gnx2vnode = at.fileCommands.gnxDict
         new_contents = '@language python\n' + ''.join(new_private_lines)
