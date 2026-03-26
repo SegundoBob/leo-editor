@@ -223,7 +223,7 @@ class ExternalFilesController:
         if not changed:
             return
         # #4570: Write all update messages here, and only here.
-        if g.unitTesting:
+        if not g.unitTesting:
             changed_roots: set[str] = set()
             for p2 in c.all_positions():
                 if p2.isAnyAtFileNode() and p2.isDirty():
