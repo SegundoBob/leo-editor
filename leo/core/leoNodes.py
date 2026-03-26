@@ -2728,27 +2728,33 @@ class VNode:
             pass
 
     # @+node:ekr.20191213161023.1: *4* v.setAllAncestorAtFileNodesDirty
-    def setAllAncestorAtFileNodesDirty(self) -> None:
+    def setAllAncestorAtFileNodesDirty(self, *, to_do_set: set[VNode] = None) -> None:
         """
         Original idea by Виталије Милошевић (Vitalije Milosevic).
 
-        Modified by EKR.
+        #4565: Rewritten by EKR to use the to_do_set kwarg.
         """
         v = self
+
+        # Init seen and to_do_list.
         seen: set[VNode] = set([v.context.hiddenRootNode])
+        to_do_list: list[VNode] = list(to_do_set) if to_do_set else [v]
+        if to_do_set:
+            for v2 in to_do_set:
+                to_do_list.extend(v2.parents)
+        to_do_list = list(set(to_do_list))
 
-        def v_and_parents(v: VNode) -> Generator:
-            if v in seen:
-                return
-            seen.add(v)
-            yield v
-            for parent_v in v.parents:
-                if parent_v not in seen:
-                    yield from v_and_parents(parent_v)
-
-        for v2 in v_and_parents(v):
+        # The main loop.
+        while to_do_list:
+            v2 = to_do_list.pop()
+            seen.add(v2)
             if v2.isAnyAtFileNode():
                 v2.setDirty()
+            else:
+                # Nested @<file> nodes are no longer valid.
+                for parent_v in v2.parents:
+                    if parent_v not in seen:
+                        to_do_list.append(parent_v)
 
     # @+node:ekr.20040315032144: *4* v.setBodyString & v.setHeadString
     def setBodyString(self, s: object) -> None:
