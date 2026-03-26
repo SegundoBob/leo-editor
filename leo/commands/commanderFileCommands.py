@@ -57,7 +57,7 @@ def set_name_and_title(c: Cmdr, fileName: str) -> str:
     c.frame.setTitle(title)
     try:
         # Does not exist during unit testing. May not exist in all guis.
-        c.frame.top.leo_master.setTabName(c, c.mFileName)
+        c.frame.top.leo_master.setTabName(c, c.mFileName, title)  # #4558 title as tooltip.
     except AttributeError:
         pass
     return c.mFileName
