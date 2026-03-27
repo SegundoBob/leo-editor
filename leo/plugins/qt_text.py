@@ -627,9 +627,6 @@ if QtWidgets:
 
                 # Inject leo_c into this class, a QtWidgets.QTextBrowser
                 self.leo_c = c
-
-                # A weird hack.
-                self.leo_geom_set = False  # When true, self.geom returns global coords!
                 self.itemClicked.connect(self.select_callback)
 
             # @+node:ekr.20110605121601.18011: *5* lqlw.closeEvent
@@ -734,7 +731,7 @@ if QtWidgets:
                 w.setInsertPoint(i)
                 c.k.autoCompleter.compute_completion_list()
 
-            # @+node:ekr.20110605121601.18015: *5* lqlw.set_position (to be changed more??)
+            # @+node:ekr.20110605121601.18015: *5* lqlw.set_position
             def set_position(self, c: Cmdr) -> None:
                 """Set the position of the QListWidget."""
 
@@ -748,11 +745,6 @@ if QtWidgets:
                 r = w.cursorRect()
                 geom = self.geometry()  # In viewport coordinates.
                 gr_topLeft = to_global(w, r.topLeft())
-                # As a workaround to the Qt setGeometry bug,
-                # The window is destroyed instead of being hidden.
-                if self.leo_geom_set:
-                    g.trace('Error: leo_geom_set')
-                    return
                 gg_topLeft = to_global(vp, geom.topLeft())
                 delta_x = gr_topLeft.x() - gg_topLeft.x()
                 delta_y = gr_topLeft.y() - gg_topLeft.y()
@@ -764,21 +756,7 @@ if QtWidgets:
                 )
                 geom2_size = QtCore.QSize(400, 100)
                 geom2 = QtCore.QRect(geom2_topLeft, geom2_size)
-                # These tests fail once offsets are added.
-                if x_offset == 0 and y_offset == 0:
-                    if self.leo_geom_set:
-                        if geom2.topLeft() != to_global(w, r.topLeft()):
-                            g.trace(
-                                f"Error: geom.topLeft: {geom2.topLeft()}, geom2.topLeft: {to_global(w, r.topLeft())}"
-                            )
-                    else:
-                        if to_global(vp, geom2.topLeft()) != to_global(w, r.topLeft()):
-                            g.trace(
-                                f"Error 2: geom.topLeft: {to_global(vp, geom2.topLeft())}, "
-                                f"geom2.topLeft: {to_global(w, r.topLeft())}"
-                            )
                 self.setGeometry(geom2)
-                self.leo_geom_set = True
 
             # @+node:ekr.20110605121601.18016: *5* lqlw.show_completions
             def show_completions(self, aList: list[str]) -> None:
