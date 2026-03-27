@@ -571,18 +571,13 @@ if QtWidgets:
         # @+node:ekr.20110605121601.18006: *3*  lqtb.ctor
         def __init__(self, parent: QWidget, c: Cmdr, wrapper: BaseTextAPI) -> None:
             """
-            ctor for LeoQTextBrowser class.
+            ctor for LeoQTextBrowser class, a subclass of QtWidgets.QTextBrowser.
 
             wrapper is a LeoQtBody or LeoQtLog.
             """
-            for attr in (
-                'leo_c',
-                'leo_wrapper',
-            ):
-                assert not hasattr(QtWidgets.QTextBrowser, attr), attr
+            assert not hasattr(QtWidgets.QTextBrowser, 'leo_c')
             self.leo_c = c
             self.leo_s = ''  # The cached text.
-            self.leo_wrapper = wrapper
             self.htmlFlag = True
             super().__init__(parent)
             self.setCursorWidth(c.config.getInt('qt-cursor-width') or 1)
@@ -629,10 +624,10 @@ if QtWidgets:
                 """ctor for LeoQListWidget class"""
                 super().__init__()
                 self.setWindowFlags(WindowType.Popup | self.windowFlags())
-                # Inject the ivars
-                # A LeoQTextBrowser, a subclass of QtWidgets.QTextBrowser.
-                self.leo_w = c.frame.body.wrapper.widget
+
+                # Inject leo_c into this class, a QtWidgets.QTextBrowser
                 self.leo_c = c
+
                 # A weird hack.
                 self.leo_geom_set = False  # When true, self.geom returns global coords!
                 self.itemClicked.connect(self.select_callback)
@@ -739,7 +734,7 @@ if QtWidgets:
                 w.setInsertPoint(i)
                 c.k.autoCompleter.compute_completion_list()
 
-            # @+node:ekr.20110605121601.18015: *5* lqlw.set_position
+            # @+node:ekr.20110605121601.18015: *5* lqlw.set_position (to be changed more??)
             def set_position(self, c: Cmdr) -> None:
                 """Set the position of the QListWidget."""
 
@@ -747,7 +742,8 @@ if QtWidgets:
                     """Convert pt from obj's local coordinates to global coordinates."""
                     return obj.mapToGlobal(pt)
 
-                w = self.leo_w
+                c = self.leo_c
+                w = c.frame.body.wrapper.widget
                 vp = self.viewport()
                 r = w.cursorRect()
                 geom = self.geometry()  # In viewport coordinates.
