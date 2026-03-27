@@ -50,24 +50,20 @@ class TestUndo(LeoUnitTest):
             @language python
 
             def addCommentTest():
-
                 if 1:
                     a = 2
                     b = 3
-
                 pass
-        """
+            """
         )
         after = self.prep(
             """
             @language python
 
             def addCommentTest():
-
                 # if 1:
-                    # a = 2
-                    # b = 3
-
+                #     a = 2
+                #     b = 3
                 pass
         """
         )
