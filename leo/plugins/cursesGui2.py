@@ -2827,6 +2827,7 @@ class TopFrame:
 
     def __init__(self, c: Cmdr) -> None:
         self.c = c
+        self.leo_master = g.NullObject()  # #4577.
 
     def select(self, *args: Args, **kwargs: KWargs) -> None:
         pass

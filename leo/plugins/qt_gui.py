@@ -1097,23 +1097,11 @@ class LeoQtGui(leoGui.LeoGui):
                 factory.setTabForCommander(c)
                 c.bodyWantsFocusNow()
 
-    # @+node:ekr.20190601054958.1: *4* LeoQtGui.get_focus (no longer used)
+    # @+node:ekr.20190601054958.1: *4* LeoQtGui.get_focus
     def get_focus(self, c: Cmdr = None, raw: bool = False, at_idle: bool = False) -> QWidget:
         """Returns the widget that has focus."""
-        trace = 'focus' in g.app.debug
-        trace_idle = False
-        trace = trace and (trace_idle or not at_idle)
-        app = QtWidgets.QApplication
-        w = app.focusWidget()
-        if w and not raw and isinstance(w, qt_text.LeoQTextBrowser):
-            has_w = getattr(w, 'leo_wrapper', None)
-            if has_w:
-                if trace:
-                    g.trace(w)
-            elif c:
-                # Kludge: DynamicWindow creates the body pane
-                # with wrapper = None, so return the LeoQtBody.
-                w = c.frame.body
+        trace = 'focus' in g.app.debug and not at_idle
+        w = QtWidgets.QApplication.focusWidget()
         if trace:
             name = w.objectName() if hasattr(w, 'objectName') else w.__class__.__name__
             g.trace('(LeoQtGui)', name)

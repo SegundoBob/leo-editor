@@ -301,7 +301,7 @@ class LeoGui:
         raise NotImplementedError
 
     # @+node:ekr.20061109212618.1: *3* LeoGui: Must be defined only in base class
-    # @+node:ekr.20110605121601.18847: *4* LeoGui.create_key_event (LeoGui)
+    # @+node:ekr.20110605121601.18847: *4* LeoGui.create_key_event
     def create_key_event(
         self,
         c: Cmdr,
@@ -331,7 +331,7 @@ class LeoGui:
         self.script = script
         self.scriptFileName = scriptFileName
 
-    # @+node:ekr.20110605121601.18845: *4* LeoGui.event_generate (LeoGui)
+    # @+node:ekr.20110605121601.18845: *4* LeoGui.event_generate
     def event_generate(self, c: Cmdr, char: str, shortcut: str, w: Wrapper) -> None:
         event = self.create_key_event(c, binding=shortcut, char=char, w=w)
         c.k.masterKeyHandler(event)
