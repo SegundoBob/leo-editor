@@ -510,7 +510,6 @@
 <v t="ekr.20210506073820.1"><vh>@bool allow-text-zoom = True</vh></v>
 <v t="ekr.20241012050620.1"><vh>@bool diff-leo-files = True</vh></v>
 <v t="ekr.20131112150804.18737"><vh>@bool force-execute-entire-body = False</vh></v>
-<v t="ekr.20111115083813.12518"><vh>@bool indent-added-comments = True</vh></v>
 <v t="ekr.20150227102835.1"><vh>@bool make-node-conflicts-node = True</vh></v>
 <v t="ekr.20220624062948.1"><vh>@bool redirect-execute-script-output-to-log_pane = False</vh></v>
 <v t="ekr.20230804112912.1"><vh>@bool search-links-backwards=True</vh></v>
@@ -5205,7 +5204,6 @@ True (Recommended):
     The contract-or-goto-parent (Alt-RtArrow) contracts all
     children of the to-be-selected parent.
 </t>
-<t tx="ekr.20111115083813.12518"></t>
 <t tx="ekr.20120205022040.15410">These are needed to handle shortcuts for the find panel!</t>
 <t tx="ekr.20120305084218.11271"># Unbound F-Keys cause problems on Ubuntu
 help            = F1
