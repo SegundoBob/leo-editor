@@ -103,13 +103,12 @@ class LeoBody:
 
     # @+others
     # @+node:ekr.20031218072017.3657: *3* LeoBody.__init__
-    def __init__(self, frame: Widget, parentFrame: Widget) -> None:
+    def __init__(self, frame: Union[LeoQtFrame, NullFrame]) -> None:
         """Ctor for LeoBody class."""
         c = frame.c
         frame.body = self
         self.c = c
         self.frame = frame
-        self.parentFrame: Widget = parentFrame
         # May be overridden in subclasses...
         self.widget: Widget = None
         self.wrapper: TextAPI = None
@@ -741,11 +740,10 @@ class LeoLog:
 
     # @+others
     # @+node:ekr.20150509054436.1: *3* LeoLog.Birth
-    # @+node:ekr.20031218072017.3695: *4* LeoLog.ctor
-    def __init__(self, frame: Union[LeoLog, LeoQtFrame, NullFrame], parentFrame: LeoFrame) -> None:
+    # @+node:ekr.20031218072017.3695: *4* LeoLog.__init__
+    def __init__(self, frame: Union[LeoLog, LeoQtFrame, NullFrame]) -> None:
         """Ctor for LeoLog class."""
-        assert frame is None or issubclass(frame.__class__, LeoFrame), frame
-        assert parentFrame is None or issubclass(parentFrame.__class__, LeoLog), parentFrame
+        g._assert(frame is None or issubclass(frame.__class__, LeoFrame))
         self.frame = frame
         self.c: Cmdr = frame.c if frame else None
         self.enabled = True
@@ -1371,9 +1369,9 @@ class NullBody(LeoBody):
 
     # @+others
     # @+node:ekr.20031218072017.2192: *3*  NullBody.__init__
-    def __init__(self, frame: Widget = None, parentFrame: Widget = None) -> None:
+    def __init__(self, frame: Widget = None) -> None:
         """Ctor for NullBody class."""
-        super().__init__(frame, parentFrame)
+        super().__init__(frame)
         self.insertPoint = 0
         self.selection = 0, 0
         self.s = ""  # The body text
@@ -1415,7 +1413,7 @@ class NullFrame(LeoFrame):
     """A null frame class for tests and batch execution."""
 
     # @+others
-    # @+node:ekr.20040327105706: *3*  NullFrame.ctor
+    # @+node:ekr.20040327105706: *3*  NullFrame.__init__
     def __init__(self, c: Cmdr, title: str, gui: LeoGui) -> None:
         """Ctor for the NullFrame class."""
         super().__init__(c, gui)
@@ -1427,8 +1425,8 @@ class NullFrame(LeoFrame):
         self.statusLine = NullStatusLineClass(self.c, None)
         self.title = title
         # Create the component objects.
-        self.body = NullBody(frame=self, parentFrame=None)
-        self.log = NullLog(frame=self, parentFrame=None)
+        self.body = NullBody(frame=self)
+        self.log = NullLog(frame=self)
         self.menu = leoMenu.NullMenu(frame=self)
         self.tree = NullTree(frame=self)
         # Default window position.
@@ -1660,13 +1658,12 @@ class NullLog(LeoLog):
     # @+others
     # @+node:ekr.20070302095500: *3* NullLog.Birth
     # @+node:ekr.20041012083237: *4* NullLog.__init__
-    def __init__(self, *, frame: NullFrame = None, parentFrame: NullFrame = None) -> None:
-        super().__init__(frame, parentFrame)
+    def __init__(self, *, frame: NullFrame = None) -> None:
+        super().__init__(frame)
         c = self.c
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
-        self.logNumber = 1
-        self.widget = StringTextWrapper(c=c, name=f"log-{self.logNumber}")
+        self.widget = StringTextWrapper(c=c, name='null-log')
         self.wrapper: TextAPI = None  # For cursesGui2.py.
 
     # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate

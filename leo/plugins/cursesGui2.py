@@ -2279,7 +2279,7 @@ class CoreBody(leoFrame.LeoBody):
 
     def __init__(self, c: Cmdr) -> None:
         # Init the base class.
-        super().__init__(frame=c.frame, parentFrame=None)
+        super().__init__(frame=c.frame)
         self.c: Cmdr = c
         self.colorizer: Wrapper = leoFrame.NullColorizer(c)
         self.widget: Wrapper = None
@@ -2516,7 +2516,7 @@ class CoreLog(leoFrame.LeoLog):
     # @+node:ekr.20170419143731.4: *4* CLog.__init__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for CLog class."""
-        super().__init__(frame=None, parentFrame=None)
+        super().__init__(frame=None)
         self.c = c
         self.enabled = True  # Required by Leo's core.
         self.isNull = False  # Required by Leo's core.

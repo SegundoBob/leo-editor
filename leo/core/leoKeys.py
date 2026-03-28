@@ -1117,7 +1117,7 @@ class FileNameChooser:
         self.c = c
         self.k = c.k
         assert c and c.k
-        self.log: Union[NullLog, LeoQtLog] = c.frame.log or NullLog(frame=c.frame, parentFrame=None)
+        self.log: Union[NullLog, LeoQtLog] = c.frame.log or NullLog(frame=c.frame)
         self.callback: Callable = None
         self.filterExt: list[str] = None
         self.prompt: str = None
@@ -1232,7 +1232,7 @@ class FileNameChooser:
         char = event.char if event else ''
         if state == 0:
             # Re-init all ivars.
-            self.log = c.frame.log or NullLog(frame=c.frame, parentFrame=None)
+            self.log = c.frame.log or NullLog(frame=c.frame)
             self.callback = callback
             self.filterExt = filterExt or ['.pyc', '.bin']
             self.prompt = prompt

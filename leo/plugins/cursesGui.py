@@ -228,8 +228,8 @@ class TextFrame(leoFrame.LeoFrame):
     def finishCreate(self):
         c, f = self.c, self
         f.tree = textTree(self)
-        f.body = textBody(frame=self, parentFrame=None)
-        f.log = textLog(frame=self, parentFrame=None)
+        f.body = textBody(frame=self)
+        f.log = textLog(frame=self)
         f.menu = textLeoMenu(self)
         if f.body.use_chapters:
             c.chapterController = leoChapters.ChapterController(c)
@@ -294,9 +294,9 @@ class TextFrame(leoFrame.LeoFrame):
 # @+node:ekr.20150107090324.31: ** class textBody
 class textBody(leoFrame.LeoBody):
     # @+others
-    # @+node:ekr.20150107090324.32: *3* __init__
-    def __init__(self, frame, parentFrame):
-        super().__init__(frame, parentFrame)
+    # @+node:ekr.20150107090324.32: *3* textBody.__init__
+    def __init__(self, frame):
+        super().__init__(frame)
         c = frame.c
         name = 'body'
         self.bodyCtrl = textBodyCtrl(c, name)

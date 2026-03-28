@@ -1671,10 +1671,10 @@ class LeoQtBody(leoFrame.LeoBody):
 
     # @+others
     # @+node:ekr.20110605121601.18182: *3* LeoQtBody.ctor & helpers
-    def __init__(self, frame: LeoQtFrame, parentFrame: QWidget) -> None:
+    def __init__(self, frame: LeoQtFrame) -> None:
         """Ctor for LeoQtBody class."""
         # Call the base class constructor.
-        super().__init__(frame, parentFrame)
+        super().__init__(frame)
         c = self.c
         assert c.frame == frame and frame.c == c
         self.colorizer: BaseColorizer = None
@@ -1881,8 +1881,8 @@ class LeoQtFrame(leoFrame.LeoFrame):
     def createSplitterComponents(self) -> None:
         c = self.c
         self.tree = LeoQtTree(c, self)
-        self.log = LeoQtLog(self, None)
-        self.body = LeoQtBody(self, None)
+        self.log = LeoQtLog(self)
+        self.body = LeoQtBody(self)
         self.splitVerticalFlag, ratio, secondary_ratio = self.initialRatios()
         self.resizePanesToRatio(ratio, secondary_ratio)
 
@@ -2330,9 +2330,9 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+others
     # @+node:ekr.20110605121601.18313: *3* LeoQtLog.Birth
     # @+node:ekr.20110605121601.18314: *4* LeoQtLog.__init__ & reloadSettings
-    def __init__(self, frame: LeoQtFrame, parentFrame: LeoQtFrame) -> None:
+    def __init__(self, frame: LeoQtFrame) -> None:
         """Ctor for LeoQtLog class."""
-        super().__init__(frame, parentFrame)  # Calls createControl.
+        super().__init__(frame)  # Calls createControl.
         # Set in finishCreate.
         # Important: depending on the log *tab*,
         # logCtrl may be either a wrapper or a widget.
