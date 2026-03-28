@@ -752,7 +752,7 @@ class LeoLog:
         self.newTabCount = 0  # Number of new tabs created.
         # Keys are page names. Values are logCtrl's (text widgets).
         self.textDict: dict[str, Widget] = {}
-        self.wrapper: TextAPI = None  # For cursesGui2.py.
+        self.wrapper: TextAPI = None  # To keep mypy happy.
 
     # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
@@ -1640,7 +1640,7 @@ class NullLog(LeoLog):
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
         self.widget = StringTextWrapper(c=c, name='null-log')
-        self.wrapper: TextAPI = None  # For cursesGui2.py.
+        self.wrapper: TextAPI = None  # To keep mypy happy.
 
     # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
     def finishCreate(self) -> None:

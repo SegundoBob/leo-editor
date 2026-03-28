@@ -2279,8 +2279,6 @@ class CoreBody(leoFrame.LeoBody):
         super().__init__(frame=c.frame)
         self.c: Cmdr = c
         self.colorizer: Wrapper = leoFrame.NullColorizer(c)
-        self.widget: Wrapper = None
-        self.wrapper: Wrapper = None
 
 
 # @+node:ekr.20170419105852.1: *3* class CoreFrame (leoFrame.LeoFrame)
