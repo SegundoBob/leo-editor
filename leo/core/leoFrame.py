@@ -22,24 +22,36 @@ from leo.core import leoMenu
 from leo.core import leoNodes
 from leo.core.leoAPI import StringTextWrapper
 
-if TYPE_CHECKING:
-    from leo.plugins.qt_frame import LeoQtFrame
-
 # @-<< leoFrame imports >>
 # @+<< leoFrame annotations >>
 # @+node:ekr.20220415013957.1: ** << leoFrame annotations >>
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoColorizer import BaseColorizer
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoGui import LeoKeyEvent
-    from leo.core.leoGui import LeoGui
-    from leo.core.leoMenu import LeoMenu, NullMenu
+    from leo.core.leoGui import (
+        LeoKeyEvent,
+        LeoGui,
+        LeoMenu,
+        NullMenu,
+    )
     from leo.core.leoNodes import Position, VNode
     from leo.plugins.mod_scripting import ScriptingController
-    from leo.plugins.qt_frame import DynamicWindow
-    from leo.plugins.qt_frame import LeoQtBody, LeoQtLog, LeoQtMenu, LeoQtTree
-    from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
-    from leo.plugins.qt_text import QScintillaWrapper, QTextEditWrapper, QMinibufferWrapper
+    from leo.plugins.qt_frame import (
+        DynamicWindow,
+        LeoQtBody,
+        LeoQtFrame,
+        LeoQtLog,
+        LeoQtMenu,
+        LeoQtTree,
+        QtIconBarClass,
+        QtStatusLineClass,
+    )
+    from leo.plugins.qt_text import (
+        LeoQTextBrowser,
+        QMinibufferWrapper,
+        QScintillaWrapper,
+        QTextEditWrapper,
+    )
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
     from leo.plugins.cursesGui2 import BodyWrapper as CursesBodyWrapper
 
@@ -740,10 +752,10 @@ class LeoLog:
         # Official ivars...
 
         # Depending on the log *tab*, logCtrl may be either a wrapper or a widget.
-        self.logCtrl: Widget = None  # Set below. Same as self.textDict.get(self.tabName)
+        self.logCtrl: Widget = None
         self.tabName: str = None  # The name of the active tab.
-        self.tabFrame: Widget = None  # Same as self.frameDict.get(self.tabName)
-        self.frameDict: dict[str, Widget] = {}  # Keys: page names. Values: Frames
+        self.tabFrame: Union[LeoQTextBrowser, str] = None
+        self.frameDict: dict[str, str] = {}
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
         self.textDict: dict[str, Widget] = {}  # Keys: page names. Values: text widgets.
@@ -765,7 +777,6 @@ class LeoLog:
         wrap: str = 'none',
     ) -> Widget:
         # Do not change the signature above.
-        ### self.canvasDict[tabName] = None
         self.textDict[tabName] = None
         self.frameDict[tabName] = tabName
 
@@ -777,7 +788,6 @@ class LeoLog:
         elif tabName in ('Find', 'Spell'):
             self.selectTab('Log')
         else:
-            ### for d in (self.canvasDict, self.textDict, self.frameDict):
             for d in (self.textDict, self.frameDict):
                 if tabName in d:
                     del d[tabName]
@@ -953,14 +963,12 @@ class LeoLog:
             self.createTab(tabName, createText=True)
         # Update the status vars.
         self.tabName = tabName
-        ### self.canvasCtrl = self.canvasDict.get(tabName)
         self.logCtrl = self.textDict.get(tabName)
         self.tabFrame = self.frameDict.get(tabName)
         if 0:
             # Absolutely do not do this here!
             # It is a cause of the 'sticky focus' problem.
             c.widgetWantsFocusNow(self.logCtrl)
-        return tabFrame
 
     # @-others
 

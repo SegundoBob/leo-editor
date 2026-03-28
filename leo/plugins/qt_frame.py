@@ -54,7 +54,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position
     from leo.plugins.leoFrame import LeoLog
     from leo.plugins.mod_scripting import ScriptingController
-    from leo.plugins.qt_text import QScintillaWrapper, QTextEditWrapper
+    from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
 
     Args = Any
     KWargs = Any
@@ -2333,29 +2333,24 @@ class LeoQtLog(leoFrame.LeoLog):
     def __init__(self, frame: LeoQtFrame) -> None:
         """Ctor for LeoQtLog class."""
         super().__init__(frame)  # Calls createControl.
-        # Set in finishCreate.
-        # Important: depending on the log *tab*,
-        # logCtrl may be either a wrapper or a widget.
         assert self.logCtrl is None, self.logCtrl
         self.c = c = frame.c  # Also set in the base constructor, but we need it here.
-        self.contentsDict: dict[str, QWidget] = {}  # Keys are tab names.
-        self.eventFilters: list = []  # Apparently needed to make filters work!
+        self.contentsDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
+        self.eventFilters: list = []  # To make filters work!
+        self.qtFrameDict: dict[str, QTabWidget] = {}
         self.logCtrl: QWidget = None  # A union.
-        self.logDict: dict[str, QWidget] = {}  # Keys are tab names.
-        self.logWidget: LeoLog = None  # Set in finishCreate.
-        self.menu: qt_text.LeoQTextBrowser = (
-            None  # A Qt menu that pops up on right clicks in the hull or in tabs.
-        )
-        self.tabWidget: QTabWidget = c.frame.top.tabWidget  # A QTabWidget that holds all the tabs.
-        tw = self.tabWidget
+        self.logDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
+        self.logWidget: LeoLog = None
+        self.menu: qt_text.LeoQTextBrowser = None
+        self.qtTabWidget: QWidget = c.frame.top.tabWidget
+        tw = self.qtTabWidget
 
         # Bug 917814: Switching Log Pane tabs is done incompletely.
         tw.currentChanged.connect(self.onCurrentChanged)
         if 0:  # Not needed to make onActivateEvent work.
-            # Works only for .tabWidget, *not* the individual tabs!
+            # Works only for .qtTabWidget, *not* the individual tabs!
             theFilter = qt_events.LeoQtEventFilter(c, w=tw, tag='tabWidget')
             tw.installEventFilter(theFilter)
-        # Partial fix for bug 1251755: Log-pane refinements
         tw.setMovable(True)
         self.reloadSettings()
 
@@ -2366,7 +2361,7 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20110605121601.18315: *4* LeoQtLog.finishCreate
     def finishCreate(self) -> None:
         """Finish creating the LeoQtLog class."""
-        c, log, w = self.c, self, self.tabWidget
+        c, log, w = self.c, self, self.qtTabWidget
 
         # Create the log tab as the leftmost tab.
         log.createTab('Log')
@@ -2499,7 +2494,7 @@ class LeoQtLog(leoFrame.LeoLog):
 
     # @+node:ekr.20120304214900.9940: *3* LeoQtLog.onCurrentChanged
     def onCurrentChanged(self, idx: int) -> None:
-        tabw = self.tabWidget
+        tabw = self.qtTabWidget
         w = tabw.widget(idx)
 
         # #917814: Switching Log Pane tabs is done incompletely
@@ -2671,7 +2666,7 @@ class LeoQtLog(leoFrame.LeoLog):
             # Set binding on all log pane widgets.
             g.app.gui.setFilter(c, widget, self, tag='log')
             self.contentsDict[tabName] = widget
-            self.tabWidget.addTab(widget, tabName)
+            self.qtTabWidget.addTab(widget, tabName)
         else:
             # #1161: Don't set the wrapper unless it has the correct type.
             contents = widget  # Unlike text widgets, contents is the actual widget.
@@ -2681,7 +2676,7 @@ class LeoQtLog(leoFrame.LeoLog):
                 widget.leo_log_wrapper = None  # Tell the truth.
             g.app.gui.setFilter(c, widget, contents, 'tabWidget')
             self.contentsDict[tabName] = contents
-            self.tabWidget.addTab(contents, tabName)
+            self.qtTabWidget.addTab(contents, tabName)
         return contents
 
     # @+node:ekr.20110605121601.18328: *4* LeoQtLog.deleteTab
@@ -2690,7 +2685,7 @@ class LeoQtLog(leoFrame.LeoLog):
         Delete the tab if it exists.  Otherwise do *nothing*.
         """
         c = self.c
-        w = self.tabWidget
+        w = self.qtTabWidget
         i = self.findTabIndex(tabName)
         if i is None:
             return
@@ -2702,7 +2697,7 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20190603062456.1: *4* LeoQtLog.findTabIndex
     def findTabIndex(self, tabName: str) -> Optional[int]:
         """Return the tab index for tabName, or None."""
-        w = self.tabWidget
+        w = self.qtTabWidget
         for i in range(w.count()):
             if tabName == w.tabText(i):
                 return i
@@ -2715,13 +2710,13 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20111122080923.10185: *4* LeoQtLog.orderedTabNames
     def orderedTabNames(self, LeoLog: str = None) -> list[str]:  # Unused: LeoLog
         """Return a list of tab names in the order in which they appear in the QTabbedWidget."""
-        w = self.tabWidget
+        w = self.qtTabWidget
         return [w.tabText(i) for i in range(w.count())]
 
     # @+node:ekr.20221022062949.1: *4* LeoQtLog.renameTab
     def renameTab(self, oldTabName: str, tabName: str) -> None:
         """Rename the text tab"""
-        w = self.tabWidget
+        w = self.qtTabWidget
         i = self.findTabIndex(oldTabName)
         if i is None:
             self.createTab(tabName)
@@ -2735,7 +2730,6 @@ class LeoQtLog(leoFrame.LeoLog):
 
     # @+node:ekr.20110605121601.18330: *4* LeoQtLog.numberOfVisibleTabs
     def numberOfVisibleTabs(self) -> int:
-        # **Note**: the base-class version of this uses frameDict.
         return len([val for val in self.contentsDict.values() if val is not None])
 
     # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab & helpers
@@ -2752,14 +2746,15 @@ class LeoQtLog(leoFrame.LeoLog):
         """Finish creating the given tab. Do not set focus!"""
         c = self.c
         i = self.findTabIndex(tabName)
+        widget: LeoQTextBrowser = None
+        wrapper: LeoQTextBrowser = None
         if i is None:
             g.trace('Can not happen', tabName)
             self.tabName: str = None
             return
         # #1161.
         if tabName == 'Log':
-            wrapper: QWidget = None
-            widget: QWidget = self.contentsDict.get('Log')
+            widget = self.contentsDict.get('Log')
             if widget:
                 wrapper = getattr(widget, 'leo_log_wrapper', None)
                 if wrapper and isinstance(wrapper, qt_text.QTextEditWrapper):
@@ -2778,13 +2773,12 @@ class LeoQtLog(leoFrame.LeoLog):
                     findbox.setFocus()
         if tabName == 'Spell':
             # Set a flag for the spell system.
-            widget = self.tabWidget.widget(i)
-            self.frameDict['Spell'] = widget
+            self.qtFrameDict['Spell'] = self.qtTabWidget.widget(i)
 
     # @+node:ekr.20190603064816.1: *5* LeoQtLog.finishSelectTab
     def finishSelectTab(self, tabName: str) -> None:
         """Select the proper tab."""
-        w = self.tabWidget
+        w = self.qtTabWidget
         # Special case for Spell tab.
         if tabName == 'Spell':
             return
