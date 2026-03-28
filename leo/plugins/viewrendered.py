@@ -1674,10 +1674,8 @@ class ViewRenderedController(QtWidgets.QWidget):  # type:ignore
         text_name = 'body-text-renderer'
         w.setObjectName(text_name)
         w.setReadOnly(True)
-        # Create the standard Leo bindings.
-        wrapper_name = 'rendering-pane-wrapper'
-        wrapper = qt_text.QTextEditWrapper(w, wrapper_name, c)
-        w.leo_wrapper = wrapper
+        # Create the standard Leo bindings in a wrapper widget.
+        wrapper = qt_text.QTextEditWrapper(w, 'rendering-pane-wrapper', c)
         c.k.completeAllBindingsForWidget(wrapper)
         w.setWordWrapMode(WrapMode.WrapAtWordBoundaryOrAnywhere)
 

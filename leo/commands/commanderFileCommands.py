@@ -57,7 +57,7 @@ def set_name_and_title(c: Cmdr, fileName: str) -> str:
     c.frame.setTitle(title)
     try:
         # Does not exist during unit testing. May not exist in all guis.
-        c.frame.top.leo_master.setTabName(c, c.mFileName)
+        c.frame.top.leo_master.setTabName(c, c.mFileName, title)  # #4558 title as tooltip.
     except AttributeError:
         pass
     return c.mFileName
@@ -377,7 +377,7 @@ def refreshFromDisk(
     p: Position = None,  # For compatibility with existing scripts.
     *,
     event: LeoKeyEvent = None,  # Required for all commands.
-    silent: bool = True,
+    silent: bool = True,  # No longer used.
 ) -> None:
     """
     Refresh an @<file> node from disk.
@@ -418,10 +418,6 @@ def refreshFromDisk(
         c.selectPosition(update_p)
     else:
         update_p = p  # #4495: Do *not* change the position!
-
-    # #4495: Report the updated file.
-    if not silent and not g.unitTesting:
-        g.es_print(f"update: {update_p.h}", color='blue')
 
     # Create the 'Recovered Nodes' tree.
     at.changed_roots = []

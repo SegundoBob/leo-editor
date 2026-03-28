@@ -510,7 +510,6 @@
 <v t="ekr.20210506073820.1"><vh>@bool allow-text-zoom = True</vh></v>
 <v t="ekr.20241012050620.1"><vh>@bool diff-leo-files = True</vh></v>
 <v t="ekr.20131112150804.18737"><vh>@bool force-execute-entire-body = False</vh></v>
-<v t="ekr.20111115083813.12518"><vh>@bool indent-added-comments = True</vh></v>
 <v t="ekr.20150227102835.1"><vh>@bool make-node-conflicts-node = True</vh></v>
 <v t="ekr.20220624062948.1"><vh>@bool redirect-execute-script-output-to-log_pane = False</vh></v>
 <v t="ekr.20230804112912.1"><vh>@bool search-links-backwards=True</vh></v>
@@ -632,11 +631,12 @@
 <v t="ekr.20170706103843.1"><vh>Checking files</vh>
 <v t="ekr.20150403055250.1"><vh>@bool check-for-changed-external-files = True</vh></v>
 <v t="ekr.20090514111518.8379"><vh>@bool check-python-code-on-write = True</vh></v>
+<v t="ekr.20260326111743.1"><vh>@bool raise-file-update-dialogs = False</vh></v>
 <v t="ekr.20221128115636.1"><vh>@bool run-flake8-on-write = False</vh></v>
 <v t="ekr.20161021095001.1"><vh>@bool run-pyflakes-on-write = False</vh></v>
 <v t="ekr.20240924055407.1"><vh>@bool run-pylint-on-write = False</vh></v>
-<v t="ekr.20150321090958.1"><vh>@bool verbose-check-outline = False</vh></v>
 <v t="ekr.20150710084507.1"><vh>@bool syntax-error-popup = False</vh></v>
+<v t="ekr.20150321090958.1"><vh>@bool verbose-check-outline = False</vh></v>
 </v>
 <v t="ekr.20041119034357.12"><vh>External files</vh>
 <v t="ekr.20041119034357.14"><vh>@bool at-root-bodies-start-in-doc-mode = True</vh></v>
@@ -5204,7 +5204,6 @@ True (Recommended):
     The contract-or-goto-parent (Alt-RtArrow) contracts all
     children of the to-be-selected parent.
 </t>
-<t tx="ekr.20111115083813.12518"></t>
 <t tx="ekr.20120205022040.15410">These are needed to handle shortcuts for the find panel!</t>
 <t tx="ekr.20120305084218.11271"># Unbound F-Keys cause problems on Ubuntu
 help            = F1
@@ -11896,6 +11895,10 @@ If not given, Leo's beautifier uses Leo's pyproject.toml file.
 </t>
 <t tx="ekr.20260111055136.1"># If given, this setting overrides any value in pyproject.toml or ruff.toml
 # Leo uses pyproject.toml to give line length.</t>
+<t tx="ekr.20260326111743.1">New in Leo 6.8.8:
+
+True (Legacy):       Raise a dialog when any file changes externally.
+False (Recommended): Print a log message when any file changes externally.</t>
 <t tx="felix.20220506230435.1">True: (Legacy) The goto-first-visible-node and goto-first-visible-node commands collapse all nodes that are not ancestors of the target node that is selected.
 
 False: (Recommended) The commands act as simple navigation commands, and do not change the outline state.</t>

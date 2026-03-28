@@ -24,7 +24,19 @@ if TYPE_CHECKING:  # pragma: no cover
     File_List = Optional[list[str]]
 # @-<< leoMarkup imports & annotations >>
 
-asciidoctor_exec = which('asciidoctor')
+# Try RVM Ruby asciidoctor first, then fallback to system asciidoctor
+try:
+    import subprocess
+
+    rvm_gemdir = subprocess.check_output(['rvm', 'gemdir'], text=True).strip()
+    rvm_asciidoctor = os.path.join(rvm_gemdir, 'bin', 'asciidoctor')
+    if os.path.exists(rvm_asciidoctor):
+        asciidoctor_exec = rvm_asciidoctor
+    else:
+        asciidoctor_exec = which('asciidoctor')
+except Exception:
+    asciidoctor_exec = which('asciidoctor')
+
 asciidoc3_exec = which('asciidoc3')
 pandoc_exec = which('pandoc')
 sphinx_build = which('sphinx-build')
@@ -360,7 +372,7 @@ class MarkupCommands:
         assert asciidoctor_exec or asciidoc3_exec, g.callers()
         # Call the external program to write the output file.
         # The -e option deletes css.
-        prog = 'asciidoctor' if asciidoctor_exec else 'asciidoc3'
+        prog = asciidoctor_exec if asciidoctor_exec else asciidoc3_exec
         command = f"{prog} {i_path} -o {o_path} -b html5"
         g.execute_shell_commands(command)
 
@@ -430,13 +442,27 @@ class MarkupCommands:
             if g.match_word(h, 0, '@ignore-tree'):
                 p.moveToNodeAfterTree()
                 continue
+            is_section_def = h.startswith('<<') and h.endswith('>>')
             if g.match_word(h, 0, '@ignore-node'):
                 p.moveToThreadNext()
                 continue
+
+            if is_section_def:
+                p.moveToNodeAfterTree()
+                continue
+
             if not g.match_word(h, 0, '@no-head'):
                 self.write_headline(p)
             self.write_body(p)
-            p.moveToThreadNext()
+            # --- solve @others rendered below again ---
+            # check current node whether including @others or not
+            if re.search(r'^[ \t]*@others\b', p.b, re.MULTILINE):
+                # including @others: g.getScript has got all the subnodes
+                # then skip all subnodes for not to be rendered
+                p.moveToNodeAfterTree()
+            else:
+                # not including @others: mote to next node
+                p.moveToThreadNext()
 
     # @+node:ekr.20190515114836.1: *4* markup.compute_level_offset
     adoc_title_pat = re.compile(r'^= ')
@@ -457,7 +483,8 @@ class MarkupCommands:
         """Write p.b"""
         # We no longer add newlines to the start of nodes because
         # we write a blank line after all sections.
-        s = self.remove_directives(p.b)
+        script = g.getScript(self.c, p, useSentinels=False)
+        s = self.remove_directives(script)
         self.output_file.write(g.ensureTrailingNewlines(s, 2))
 
     # @+node:ekr.20190515070742.47: *4* markup.write_headline
@@ -465,7 +492,8 @@ class MarkupCommands:
         """Generate an AsciiDoctor section"""
         if not p.h.strip():
             return
-        level = max(0, self.level_offset + p.level() - self.root_level)
+        effective_level = self.compute_effective_level(p)
+        level = max(0, self.level_offset + effective_level - self.root_level)
         if self.kind == 'sphinx':
             # For now, assume rST markup!
             # Hard coded characters. Never use '#' underlining.
@@ -498,6 +526,18 @@ class MarkupCommands:
                     continue
             result.append(s)
         return ''.join(result)
+
+    # @+node:swot.20260218221512.1: *4* compute_effective_level
+    def compute_effective_level(self, p: Position) -> int:
+        """Compute the effective level of a node, accounting for @ignore-node ancestors."""
+        effective_level = p.level()
+        # Walk up the tree and subtract levels for @ignore-node ancestors
+        current = p.parent()
+        while current and current.level() >= self.root_level:
+            if g.match_word(current.h.rstrip(), 0, '@ignore-node'):
+                effective_level -= 1
+            current = current.parent()
+        return effective_level
 
     # @+node:ekr.20191006155051.1: *3* markup.commands
     def adoc_command(

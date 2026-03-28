@@ -13,7 +13,7 @@ from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoNodes import Position
+    from leo.core.leoNodes import Position, VNode
 
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
@@ -184,6 +184,7 @@ class ExternalFilesController:
 
         # #1100: always scan the entire file for @<file> nodes.
         # #1134: Nested @<file> nodes are no longer valid, but this will do no harm.
+        changed = False
         state = 'no'
         for p in c.all_unique_positions():
             if not p.isAnyAtFileNode():
@@ -206,7 +207,30 @@ class ExternalFilesController:
             if state in ('yes', 'no'):
                 state = self.ask(c, path, p=p)
             if state in ('yes', 'yes-all'):
+                changed = True
                 c.refreshFromDisk(p, silent=False)
+                # #4565: set all clones in p's subtree dirty.
+                for p2 in p.subtree():
+                    if p2.v.isCloned():
+                        p2.v.setDirty()
+                # #4565: set all ancestor file nodes dirty and redraw.
+                p.v.setDirty()
+                to_do_set: set[VNode] = set()
+                for p2 in c.all_positions():
+                    if p2.v.isDirty():
+                        to_do_set.add(p2.v)
+                p.v.setAllAncestorAtFileNodesDirty(to_do_set=to_do_set)
+        if not changed:
+            return
+        # #4570: Write all update messages here, and only here.
+        if not g.unitTesting:
+            changed_roots: set[str] = set()
+            for p2 in c.all_positions():
+                if p2.isAnyAtFileNode() and p2.isDirty():
+                    changed_roots.add(p2.h)
+            for s in sorted(list(changed_roots)):
+                g.es_print('update:', s, color='blue')
+        c.redraw()
 
     # @+node:ekr.20201207055713.1: *5* efc.idle_check_leo_file
     def idle_check_leo_file(self, c: Cmdr) -> None:
@@ -527,10 +551,13 @@ class ExternalFilesController:
 
         Return one of ('yes', 'no', 'yes-all', 'no-all')
         """
-        if g.unitTesting or g.app.restarting:
+        if g.unitTesting or g.app.restarting or c not in g.app.commanders():
             return ''
-        if c not in g.app.commanders():
-            return ''
+
+        # #4570: Don't raise dialogs unless the user setting is True.
+        if not c.config.getBool('raise-file-update-dialogs', default=False):
+            return 'yes'
+
         is_leo = path.endswith(('.leo', '.db'))
         is_external_file = not is_leo
 
