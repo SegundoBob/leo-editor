@@ -1039,8 +1039,6 @@ class LeoTree:
         """Ctor for the LeoTree class."""
         self.frame = frame
         self.c = frame.c
-        # New in 3.12: keys vnodes, values are edit_widgets.
-        # New in 4.2: keys are vnodes, values are pairs (p,edit widgets).
         self.edit_text_dict: dict[VNode, tuple[Position, Widget]] = {}
         # "public" ivars: correspond to setters & getters.
         self.drag_p = None
@@ -1403,7 +1401,7 @@ class NullFrame(LeoFrame):
         self.iconBar = NullIconBarClass(self.c)
         self.initComplete = True
         self.isNullFrame = True
-        self.statusLine = NullStatusLineClass(self.c, None)
+        self.statusLine = NullStatusLineClass(self.c)
         self.title = title
         # Create the component objects.
         self.body = NullBody(frame=self)
@@ -1717,11 +1715,10 @@ class NullLog(LeoLog):
 class NullStatusLineClass:
     """A do-nothing status line."""
 
-    def __init__(self, c: Cmdr, parentFrame: Widget) -> None:
+    def __init__(self, c: Cmdr) -> None:
         """Ctor for NullStatusLine class."""
         self.c = c
         self.enabled = False
-        self.parentFrame = parentFrame
         self.textWidget = StringTextWrapper(c, name='status-line')
 
     # @+others
