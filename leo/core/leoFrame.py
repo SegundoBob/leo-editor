@@ -738,17 +738,15 @@ class LeoLog:
         self.newlines = 0
         self.isNull = False
         # Official ivars...
-        self.canvasCtrl: Widget = None  # Set below. Same as self.canvasDict.get(self.tabName)
+
         # Depending on the log *tab*, logCtrl may be either a wrapper or a widget.
         self.logCtrl: Widget = None  # Set below. Same as self.textDict.get(self.tabName)
         self.tabName: str = None  # The name of the active tab.
         self.tabFrame: Widget = None  # Same as self.frameDict.get(self.tabName)
-        self.canvasDict: dict[str, Widget] = {}  # Keys are page names.  Values are Widgets.
-        self.frameDict: dict[str, Widget] = {}  # Keys are page names. Values are Frames
+        self.frameDict: dict[str, Widget] = {}  # Keys: page names. Values: Frames
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
-        # Keys are page names. Values are logCtrl's (text widgets).
-        self.textDict: dict[str, Widget] = {}
+        self.textDict: dict[str, Widget] = {}  # Keys: page names. Values: text widgets.
         self.wrapper: TextAPI = None  # To keep mypy happy.
 
     # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
@@ -767,7 +765,7 @@ class LeoLog:
         wrap: str = 'none',
     ) -> Widget:
         # Do not change the signature above.
-        self.canvasDict[tabName] = None
+        ### self.canvasDict[tabName] = None
         self.textDict[tabName] = None
         self.frameDict[tabName] = tabName
 
@@ -779,7 +777,8 @@ class LeoLog:
         elif tabName in ('Find', 'Spell'):
             self.selectTab('Log')
         else:
-            for d in (self.canvasDict, self.textDict, self.frameDict):
+            ### for d in (self.canvasDict, self.textDict, self.frameDict):
+            for d in (self.textDict, self.frameDict):
                 if tabName in d:
                     del d[tabName]
             self.tabName = None
@@ -954,7 +953,7 @@ class LeoLog:
             self.createTab(tabName, createText=True)
         # Update the status vars.
         self.tabName = tabName
-        self.canvasCtrl = self.canvasDict.get(tabName)
+        ### self.canvasCtrl = self.canvasDict.get(tabName)
         self.logCtrl = self.textDict.get(tabName)
         self.tabFrame = self.frameDict.get(tabName)
         if 0:
