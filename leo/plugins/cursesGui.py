@@ -538,11 +538,10 @@ class textTree(leoFrame.LeoTree):
     redraw_now = redraw
 
     # @+node:ekr.20150107090324.63: *3* endUpdate
-    # @+node:ekr.20150107090324.64: *3* __init__
+    # @+node:ekr.20150107090324.64: *3* textTree.__init__
     def __init__(self, frame):
         # undoc: openWithFileName -> treeWantsFocus -> c.frame.tree.canvas
         self.c = frame.c
-        self.canvas = None
         super().__init__(frame)
 
     # @+node:ekr.20150107090324.65: *3* select

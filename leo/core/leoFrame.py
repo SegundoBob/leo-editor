@@ -1046,7 +1046,7 @@ class LeoTree:
         self.redrawCount = 0  # For traces
         self.use_chapters = False  # May be overridden in subclasses.
         # Define these here to keep pylint happy.
-        self.canvas: Widget = None
+        self.canvas = None
 
     # @+node:ekr.20061109165848: *3* LeoTree.Must be defined in base class
     # @+node:ekr.20040803072955.126: *4* LeoTree.endEditLabel
@@ -1765,15 +1765,8 @@ class NullTree(LeoTree):
     def __init__(self, frame: NullFrame) -> None:
         """Ctor for NullTree class."""
         super().__init__(frame)
-        assert self.frame
         self.c = frame.c
         self.editWidgetsDict: dict[VNode, StringTextWrapper] = {}
-        self.font = None
-        self.fontName = None
-        self.canvas = None
-        self.treeWidget = g.NullObject()
-        self.redrawCount = 0
-        self.updateCount = 0
 
     # @+node:ekr.20070228163350.2: *3* NullTree.edit_widget
     def edit_widget(self, p: Position) -> TextAPI:
