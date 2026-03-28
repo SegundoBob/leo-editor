@@ -22,6 +22,9 @@ from leo.core import leoMenu
 from leo.core import leoNodes
 from leo.core.leoAPI import StringTextWrapper
 
+if TYPE_CHECKING:
+    from leo.plugins.qt_frame import LeoQtFrame
+
 # @-<< leoFrame imports >>
 # @+<< leoFrame annotations >>
 # @+node:ekr.20220415013957.1: ** << leoFrame annotations >>
@@ -739,10 +742,12 @@ class LeoLog:
     # @+others
     # @+node:ekr.20150509054436.1: *3* LeoLog.Birth
     # @+node:ekr.20031218072017.3695: *4* LeoLog.ctor
-    def __init__(self, frame: Widget, parentFrame: Widget) -> None:
+    def __init__(self, frame: Union[LeoLog, LeoQtFrame], parentFrame: LeoFrame) -> None:
         """Ctor for LeoLog class."""
+        ### assert frame is None or issubclass(frame.__class__, LeoFrame), frame
+        ### assert parentFrame is None or issubclass(parentFrame.__class__, LeoLog), parentFrame
         self.frame = frame
-        self.c = frame.c if frame else None
+        self.c: Cmdr = frame.c if frame else None
         self.enabled = True
         self.newlines = 0
         self.isNull = False
@@ -932,7 +937,7 @@ class LeoLog:
             return False  # The caller must handle s.
 
         # Compute the list of @<file> nodes.
-        at_file_nodes = [z for z in c.all_positions() if z.isAnyAtFileNode()]
+        at_file_nodes: list[Position] = [z for z in c.all_positions() if z.isAnyAtFileNode()]
 
         # Output each line using log.put, with or without a nodeLink.
         found_matches = 0
