@@ -3357,11 +3357,9 @@ class ViewRenderedController3(QtWidgets.QWidget):
             # Do not do this! It interferes with themes.
             # self.setBackgroundColor(self.background_color, text_name, w)
             w.setReadOnly(True)
-            # Create the standard Leo bindings.
-            wrapper_name = 'rendering-pane-wrapper'
-            wrapper = qt_text.QTextEditWrapper(w, wrapper_name, c)
-            w.leo_wrapper = wrapper
-            c.k.completeAllBindingsForWidget(wrapper)
+            # Create the standard Leo bindings in a wrapper widget.
+            wrapper_widget = qt_text.QTextEditWrapper(w, 'rendering-pane-wrapper', c)
+            c.k.completeAllBindingsForWidget(wrapper_widget)
             w.setWordWrapMode(WrapMode.WrapAtWordBoundaryOrAnywhere)
 
     # @+node:TomP.20191215195433.52: *4* vr3.setBackgroundColor

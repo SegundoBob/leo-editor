@@ -27,38 +27,15 @@ if TYPE_CHECKING:  # pragma: no cover
 # @+node:ekr.20171123135625.34: ** c_ec.addComments
 @g.commander_command('add-comments')
 def addComments(self: Self, event: LeoKeyEvent = None) -> None:
-    # @+<< addComments docstring >>
-    # @+node:ekr.20171123135625.35: *3* << addComments docstring >>
-    # @@pagewidth 50
-    """
-    Converts all selected lines to comment lines using
-    the comment delimiters given by the applicable @language directive.
-
-    Inserts single-line comments if possible; inserts
-    block comments for languages like html that lack
-    single-line comments.
-
-    @bool indent_added_comments
-
-    If True (the default), inserts opening comment
-    delimiters just before the first non-whitespace
-    character of each line. Otherwise, inserts opening
-    comment delimiters at the start of each line.
-
-    *See also*: delete-comments.
-    """
-    # @-<< addComments docstring >>
+    """Undoably add comments to the selected text."""
     c, p, u, w = self, self.p, self.undoer, self.frame.body.wrapper
-    #
     # "Before" snapshot.
     bunch = u.beforeChangeBody(p)
-    #
     # Make sure there is a selection.
     head, lines, tail, oldSel, oldYview = self.getBodyLines()
     if not lines:
         g.warning('no text selected')
         return
-    #
     # The default language in effect at p.
     language = c.frame.body.colorizer.scanLanguageDirectives(p)
     if c.hasAmbiguousLanguage(p):
@@ -70,35 +47,26 @@ def addComments(self: Self, event: LeoKeyEvent = None) -> None:
         openDelim, closeDelim = d1 + ' ', ''
     else:
         openDelim, closeDelim = d2 + ' ', ' ' + d3
-    #
     # Calculate the result.
-    indent = c.config.getBool('indent-added-comments', default=True)
     result = []
+    i: int = None
     for line in lines:
         if line.strip():
-            i = g.skip_ws(line, 0)
-            if indent:
-                s = line[i:].replace('\n', '')
-                result.append(line[0:i] + openDelim + s + closeDelim + '\n')
-            else:
-                s = line.replace('\n', '')
-                result.append(openDelim + s + closeDelim + '\n')
+            if i is None:
+                i = g.skip_ws(line, 0)
+            s = line[i:].replace('\n', '')
+            result.append(line[0:i] + openDelim + s + closeDelim + '\n')
         else:
             result.append(line)
-    #
     # Set p.b and w's text first.
     middle = ''.join(result)
     p.b = head + middle + tail  # Sets dirty and changed bits.
     w.setAllText(head + middle + tail)
-    #
-    # Calculate the proper selection range (i, j, ins).
+    # Set the selection range and scroll position.
     i = len(head)
     j = max(i, len(head) + len(middle) - 1)
-    #
-    # Set the selection range and scroll position.
     w.setSelectionRange(i, j, insert=j)
     w.setYScrollPosition(oldYview)
-    #
     # "after" snapshot.
     u.afterChangeBody(p, 'Add Comments', bunch)
 
