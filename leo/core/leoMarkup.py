@@ -34,9 +34,9 @@ try:
         asciidoctor_exec = rvm_asciidoctor
     else:
         asciidoctor_exec = which('asciidoctor')
-except Exception as e:
+except Exception:
     asciidoctor_exec = which('asciidoctor')
-    print("e:", e)
+
 asciidoc3_exec = which('asciidoc3')
 pandoc_exec = which('pandoc')
 sphinx_build = which('sphinx-build')
