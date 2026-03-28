@@ -1542,7 +1542,7 @@ class NullIconBarClass:
         pass
 
     # @+node:ekr.20070301164543.2: *3* NullIconBarClass.add
-    def add(self, *args: Args, **keys: KWargs) -> Widget:
+    def add(self, *args: Args, **keys: KWargs) -> Any:
         """Add a (virtual) button to the (virtual) icon bar."""
         command: Callable = keys.get('command')
         text = keys.get('text')
@@ -1554,7 +1554,7 @@ class NullIconBarClass:
 
             command = commandCallback
 
-        class nullButtonWidget:
+        class NullButtonWidget:
             def __init__(self, c: Cmdr, command: Callable, name: str, text: str) -> None:
                 self.c = c
                 self.command = command
@@ -1564,7 +1564,7 @@ class NullIconBarClass:
             def __repr__(self) -> str:
                 return self.name
 
-        b = nullButtonWidget(self.c, command, name, text)
+        b = NullButtonWidget(self.c, command, name, text)
         return b
 
     # @+node:ekr.20140904043623.18574: *3* NullIconBarClass.clear

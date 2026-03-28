@@ -15,29 +15,46 @@ import time
 import urllib
 from typing import Any, Optional, Union, TYPE_CHECKING
 from leo.core import leoGlobals as g
-from leo.core import leoColor
-from leo.core import leoColorizer
-from leo.core import leoFrame
-from leo.core import leoGui
-from leo.core import leoMenu
+from leo.core import (
+    leoColor,
+    leoColorizer,
+    leoFrame,
+    leoGui,
+    leoMenu,
+)
 from leo.commands import gotoCommands
 from leo.core.leoAPI import StringTextWrapper
-from leo.core.leoQt import QtCore, QtGui, QtWidgets
-from leo.core.leoQt import QAction, Qsci
-from leo.core.leoQt import AlignLeft
-from leo.core.leoQt import ContextMenuPolicy, DropAction, FocusReason, KeyboardModifier
-from leo.core.leoQt import MoveOperation, Orientation, MouseButton
 from leo.core.leoQt import (
+    AlignLeft,
+    ContextMenuPolicy,
+    DropAction,
+    FocusReason,
+    KeyboardModifier,
+    MouseButton,
+    MoveOperation,
+    Orientation,
     Policy,
+    QAction,
+    Qsci,
+    QtCore,
+    QtGui,
+    QtWidgets,
     ScrollBarPolicy,
     SelectionBehavior,
     SelectionMode,
     SizeAdjustPolicy,
+    Shadow,
+    Shape,
+    Style,
+    TextInteractionFlag,
+    ToolBarArea,
+    Type,
+    Weight,
+    WindowState,
+    WrapMode,
 )
-from leo.core.leoQt import Shadow, Shape, Style
-from leo.core.leoQt import TextInteractionFlag, ToolBarArea, Type, Weight, WindowState, WrapMode
-from leo.plugins import qt_events
-from leo.plugins import qt_text
+from leo.plugins import qt_events, qt_text
+from leo.plugins.qt_text import QTextEditWrapper
 from leo.plugins.qt_tree import LeoQtTree
 from leo.plugins.mod_scripting import build_rclick_tree
 from leo.plugins.qt_layout import LayoutCacheWidget
@@ -54,7 +71,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position
     from leo.plugins.leoFrame import LeoLog
     from leo.plugins.mod_scripting import ScriptingController
-    from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
+    from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper
 
     Args = Any
     KWargs = Any
@@ -82,7 +99,6 @@ if TYPE_CHECKING:  # pragma: no cover
     RClicks = list[RClick]
 
     # LeoFrame defines TextAPI as:
-    # TextAPI = Union[QScintillaWrapper, QTextEditWrapper, StringTextWrapper]
     QtWrapper = Union[QScintillaWrapper, QTextEditWrapper]
 
 
@@ -2333,12 +2349,11 @@ class LeoQtLog(leoFrame.LeoLog):
     def __init__(self, frame: LeoQtFrame) -> None:
         """Ctor for LeoQtLog class."""
         super().__init__(frame)  # Calls createControl.
-        assert self.logCtrl is None, self.logCtrl
         self.c = c = frame.c  # Also set in the base constructor, but we need it here.
         self.contentsDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
         self.eventFilters: list = []  # To make filters work!
         self.qtFrameDict: dict[str, QTabWidget] = {}
-        self.logCtrl: QWidget = None  # A union.
+        self.qtLogCtrl: QTextEditWrapper = None
         self.logDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
         self.logWidget: LeoLog = None
         self.menu: qt_text.LeoQTextBrowser = None
@@ -2403,8 +2418,7 @@ class LeoQtLog(leoFrame.LeoLog):
     @log_cmd('log-clear')
     def clearLog(self, event: LeoKeyEvent = None) -> None:
         """Clear the log pane."""
-        # self.logCtrl may be either a wrapper or a widget.
-        w = self.logCtrl.widget
+        w = self.qtLogCtrl.widget
         if w:
             w.clear()
 
@@ -2412,8 +2426,7 @@ class LeoQtLog(leoFrame.LeoLog):
     @log_cmd('log-dump')
     def dumpLog(self, event: LeoKeyEvent = None) -> None:
         """Clear the log pane."""
-        # self.logCtrl may be either a wrapper or a widget.
-        w = self.logCtrl.widget
+        w = self.qtLogCtrl.widget
         if not w:
             return
 
@@ -2501,8 +2514,8 @@ class LeoQtLog(leoFrame.LeoLog):
         obj = getattr(w, 'leo_log_wrapper', None)
 
         # #1161: Don't change logs unless the wrapper is correct.
-        if obj and isinstance(obj, qt_text.QTextEditWrapper):
-            self.logCtrl = obj
+        if obj and isinstance(obj, QTextEditWrapper):
+            self.qtLogCtrl = obj
 
     # @+node:ekr.20200304132424.1: *3* LeoQtLog.onContextMenu
     def onContextMenu(self, point: QPoint) -> None:
@@ -2538,7 +2551,7 @@ class LeoQtLog(leoFrame.LeoLog):
         color = self.resolve_color(color)
         self.selectTab(tabName or 'Log')
         # Must be done after the call to selectTab.
-        wrapper = self.logCtrl
+        wrapper = self.qtLogCtrl
         if not isinstance(wrapper, qt_text.QTextEditWrapper):
             g.trace('BAD wrapper', wrapper.__class__.__name__)
             return
@@ -2580,7 +2593,7 @@ class LeoQtLog(leoFrame.LeoLog):
             return
         if tabName:
             self.selectTab(tabName)
-        wrapper = self.logCtrl
+        wrapper = self.qtLogCtrl
         if not isinstance(wrapper, qt_text.QTextEditWrapper):
             g.trace('BAD wrapper', wrapper.__class__.__name__)
             return
@@ -2619,7 +2632,7 @@ class LeoQtLog(leoFrame.LeoLog):
             return
         if tabName:
             self.selectTab(tabName)
-        w = self.logCtrl.widget
+        w = self.qtLogCtrl.widget
         if not w:
             return
         sb = w.horizontalScrollBar()
@@ -2661,7 +2674,7 @@ class LeoQtLog(leoFrame.LeoLog):
             widget.setReadOnly(False)  # Allow edits.
             self.logDict[tabName] = widget
             if tabName == 'Log':
-                self.logCtrl = contents
+                self.qtLogCtrl = contents
                 widget.setObjectName('log-widget')
             # Set binding on all log pane widgets.
             g.app.gui.setFilter(c, widget, self, tag='log')
@@ -2758,7 +2771,7 @@ class LeoQtLog(leoFrame.LeoLog):
             if widget:
                 wrapper = getattr(widget, 'leo_log_wrapper', None)
                 if wrapper and isinstance(wrapper, qt_text.QTextEditWrapper):
-                    self.logCtrl = wrapper
+                    self.qtLogCtrl = wrapper
             if not wrapper:
                 g.trace('NO LOG WRAPPER')
         if tabName == 'Find':
