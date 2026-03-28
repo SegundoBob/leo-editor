@@ -764,14 +764,10 @@ class LeoLog:
         widget: Widget = None,
         wrap: str = 'none',
     ) -> Widget:
-        # Important: widget *is* used in subclasses. Do not change the signature above.
-        if createText:
-            self.canvasDict[tabName] = None
-            self.textDict[tabName] = None
-        else:
-            self.canvasDict[tabName] = None
-            self.textDict[tabName] = None
-            self.frameDict[tabName] = tabName
+        # Do not change the signature above.
+        self.canvasDict[tabName] = None
+        self.textDict[tabName] = None
+        self.frameDict[tabName] = tabName
 
     # @+node:ekr.20070302094848.5: *3* LeoLog.deleteTab
     def deleteTab(self, tabName: str) -> None:
