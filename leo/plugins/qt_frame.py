@@ -98,9 +98,6 @@ if TYPE_CHECKING:  # pragma: no cover
     RClick = tuple  # Union[tuple, namedtuple('RClick', 'position,children')]
     RClicks = list[RClick]
 
-    # LeoFrame defines TextAPI as:
-    QtWrapper = Union[QScintillaWrapper, QTextEditWrapper]
-
 
 # @-<< qt_frame annotations >>
 # @+<< qt_frame decorators >>
@@ -1694,7 +1691,7 @@ class LeoQtBody(leoFrame.LeoBody):
         c = self.c
         assert c.frame == frame and frame.c == c
         self.colorizer: BaseColorizer = None
-        self.wrapper: QtWrapper = None
+        self.wrapper: Union[QScintillaWrapper, QTextEditWrapper] = None
         self.widget: QWidget = None
         self.reloadSettings()
         self.set_widget()  # Sets self.widget and self.wrapper.
