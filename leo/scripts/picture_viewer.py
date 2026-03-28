@@ -497,7 +497,10 @@ class Slides(QtWidgets.QWidget):  # type:ignore
             self.scale = 1.0
             self.dx = self.dy = 0
         if self.trace:  # Don't remove.
-            print(f"load_data: {g.caller():<20} {self.slide_number} scale: {self.scale:9.8} x: {self.dx} y: {self.dy}")
+            print(
+                f"load_data: {g.caller():<20} {self.slide_number} "
+                f"scale: {self.scale:9.8} x: {self.dx} y: {self.dy}"
+            )
 
     # @+node:ekr.20230218180340.1: *4* Slides.save_data
     def save_data(self):
