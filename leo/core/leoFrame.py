@@ -937,7 +937,7 @@ class LeoLog:
             return False  # The caller must handle s.
 
         # Compute the list of @<file> nodes.
-        at_file_nodes: list[Position] = [z for z in c.all_positions() if z.isAnyAtFileNode()]
+        at_file_nodes = [z for z in c.all_positions() if z.isAnyAtFileNode()]
 
         # Output each line using log.put, with or without a nodeLink.
         found_matches = 0
