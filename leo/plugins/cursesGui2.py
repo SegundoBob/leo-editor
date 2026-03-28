@@ -1435,15 +1435,12 @@ class LeoCursesGui(leoGui.LeoGui):
             g.trace('\nBODY', w, '\nBOX', box)
         assert isinstance(w, LeoBody), repr(w)
         # Link and check.
-        # The generic LeoFrame class
         assert isinstance(c.frame, leoFrame.LeoFrame), repr(c.frame)
-        # The generic LeoBody class
         assert isinstance(c.frame.body, leoFrame.LeoBody), repr(c.frame.body)
         assert c.frame.body.widget is None, repr(c.frame.body.widget)
         c.frame.body.widget = w
         assert c.frame.body.wrapper is None, repr(c.frame.body.wrapper)
-        # A Union: hard to annotate.
-        c.frame.body.wrapper = wrapper = BodyWrapper(c, 'body', w)  # type:ignore
+        c.frame.body.wrapper = wrapper = BodyWrapper(c, 'body', w)
         # Inject the wrapper for get_focus.
         box.leo_wrapper = wrapper
         w.leo_wrapper = wrapper

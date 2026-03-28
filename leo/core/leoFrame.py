@@ -44,6 +44,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.notebook import NbController
     from leo.plugins.qt_text import QMinibufferWrapper
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
+    from leo.plugins.cursesGui2 import BodyWrapper as CursesBodyWrapper
 
     Args = Any
     KWargs = Any
@@ -111,9 +112,11 @@ class LeoBody:
         frame.body = self
         self.c = c
         self.frame = frame
-        # May be overridden in subclasses...
-        self.widget: Widget = None
-        self.wrapper: TextAPI = None
+        # Define these here to keep mypy happy.
+        self.widget: Any = None  # cursesGui2.py: will be an npyscreen widget.
+        self.wrapper: Union[
+            StringTextWrapper, QScintillaWrapper, QTextEditWrapper, CursesBodyWrapper
+        ] = None
         # Must be overridden in subclasses...
         self.colorizer: BaseColorizer = None
         # Init user settings.
