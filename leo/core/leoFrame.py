@@ -1357,7 +1357,6 @@ class NullBody(LeoBody):
         self.insertPoint = 0
         self.selection = 0, 0
         self.s = ""  # The body text
-        self.widget: Widget = None
         self.wrapper = StringTextWrapper(c=self.c, name='body')
         self.colorizer = NullColorizer(self.c)
 
