@@ -1351,7 +1351,7 @@ class NullBody(LeoBody):
 
     # @+others
     # @+node:ekr.20031218072017.2192: *3*  NullBody.__init__
-    def __init__(self, frame: Widget = None) -> None:
+    def __init__(self, frame: NullFrame) -> None:
         """Ctor for NullBody class."""
         super().__init__(frame)
         self.insertPoint = 0
@@ -1401,7 +1401,7 @@ class NullFrame(LeoFrame):
         super().__init__(c, gui)
         assert self.c
         self.wrapper: TextAPI = None
-        self.iconBar = NullIconBarClass(self.c, self)
+        self.iconBar = NullIconBarClass(self.c)
         self.initComplete = True
         self.isNullFrame = True
         self.statusLine = NullStatusLineClass(self.c, None)
@@ -1548,12 +1548,9 @@ class NullIconBarClass:
 
     # @+others
     # @+node:ekr.20070301164543.1: *3*  NullIconBarClass.ctor
-    def __init__(self, c: Cmdr, parentFrame: Widget) -> None:
+    def __init__(self, c: Cmdr) -> None:
         """Ctor for NullIconBarClass."""
         self.c = c
-        self.iconFrame = None
-        self.parentFrame: Widget = parentFrame
-        self.w: Widget = g.NullObject()
 
     # @+node:ekr.20070301165343: *3*  NullIconBarClass.Do nothing
     def addRow(self, height: str = None) -> None:
