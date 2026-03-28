@@ -27,6 +27,7 @@ if TYPE_CHECKING:  # pragma: no cover
 # Try RVM Ruby asciidoctor first, then fallback to system asciidoctor
 try:
     import subprocess
+
     rvm_gemdir = subprocess.check_output(['rvm', 'gemdir'], text=True).strip()
     rvm_asciidoctor = os.path.join(rvm_gemdir, 'bin', 'asciidoctor')
     if os.path.exists(rvm_asciidoctor):
@@ -537,6 +538,7 @@ class MarkupCommands:
                 effective_level -= 1
             current = current.parent()
         return effective_level
+
     # @+node:ekr.20191006155051.1: *3* markup.commands
     def adoc_command(
         self,
