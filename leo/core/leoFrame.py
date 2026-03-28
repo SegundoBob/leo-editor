@@ -29,7 +29,6 @@ if TYPE_CHECKING:
 # @+<< leoFrame annotations >>
 # @+node:ekr.20220415013957.1: ** << leoFrame annotations >>
 if TYPE_CHECKING:  # pragma: no cover
-    from leo.core.leoChapters import ChapterController
     from leo.core.leoColorizer import BaseColorizer
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
@@ -40,9 +39,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import DynamicWindow
     from leo.plugins.qt_frame import LeoQtBody, LeoQtLog, LeoQtMenu, LeoQtTree
     from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
-    from leo.plugins.qt_text import QScintillaWrapper, QTextEditWrapper
-    from leo.plugins.notebook import NbController
-    from leo.plugins.qt_text import QMinibufferWrapper
+    from leo.plugins.qt_text import QScintillaWrapper, QTextEditWrapper, QMinibufferWrapper
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
     from leo.plugins.cursesGui2 import BodyWrapper as CursesBodyWrapper
 
@@ -742,7 +739,7 @@ class LeoLog:
         self.isNull = False
         # Official ivars...
         self.canvasCtrl: Widget = None  # Set below. Same as self.canvasDict.get(self.tabName)
-        # Important: depending on the log *tab*, logCtrl may be either a wrapper or a widget.
+        # Depending on the log *tab*, logCtrl may be either a wrapper or a widget.
         self.logCtrl: Widget = None  # Set below. Same as self.textDict.get(self.tabName)
         self.tabName: str = None  # The name of the active tab.
         self.tabFrame: Widget = None  # Same as self.frameDict.get(self.tabName)
@@ -1302,43 +1299,6 @@ class LeoTree:
         if p and p.v:
             s = c.frame.computeStatusUnl(p)
             c.frame.putStatusLine(s)
-
-    # @-others
-
-
-# @+node:ekr.20070317073627: ** class LeoTreeTab
-class LeoTreeTab:
-    """A class representing a tabbed outline pane."""
-
-    # @+others
-    # @+node:ekr.20070317073627.1: *3* LeoTreeTab.ctor (LeoTreeTab)
-    def __init__(self, c: Cmdr, chapterController: ChapterController, parentFrame: Widget) -> None:
-        self.c = c
-        self.cc: ChapterController
-        self.nb: NbController = None  # Created in createControl.
-        self.parentFrame: Widget = parentFrame
-
-    # @+node:ekr.20070317073755: *3* LeoTreeTab: Must be defined in subclasses
-    def createControl(self) -> TextAPI:
-        raise NotImplementedError
-
-    def createTab(
-        self,
-        tabName: str,
-        createText: bool = True,
-        widget: Widget = None,
-        select: bool = True,
-    ) -> None:
-        raise NotImplementedError
-
-    def destroyTab(self, tabName: str) -> None:
-        raise NotImplementedError
-
-    def selectTab(self, tabName: str, wrap: str = 'none') -> None:
-        raise NotImplementedError
-
-    def setTabLabel(self, tabName: str) -> None:
-        raise NotImplementedError
 
     # @-others
 
