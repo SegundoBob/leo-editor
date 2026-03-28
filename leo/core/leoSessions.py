@@ -69,17 +69,20 @@ class SessionManager:
         """
         if not unls:
             return
+        trace = 'startup' in g.app.debug
         unls = [z.strip() for z in unls or [] if z.strip()]
         for unl in unls:
             if not g.isValidUnl(unl):
-                g.trace(f"Ignoring invalid session {'unl'}: {unl!r}")
+                if trace:
+                    g.trace(f"Ignoring invalid session {'unl'}: {unl!r}")
                 continue
             fn = g.getUNLFilePart(unl)
             exists = fn and g.os_path_exists(fn)
             if not exists:
-                g.trace(f"Ignoring invalid session {'unl'}: {unl!r}")
+                if trace:
+                    g.trace(f"Ignoring invalid session {'unl'}: {unl!r}")
                 continue
-            if 'startup' in g.app.debug:
+            if trace:
                 g.trace('loading session file:', fn)
             # This selects the proper position.
             g.openWithFileName(fn, gui=g.app.gui, old_c=c)
