@@ -42,7 +42,14 @@ class SessionManager:
             outlines = [i.c for i in g.app.windowList]
         for c in outlines:
             if c.fileName():
-                result.append(c.p.get_full_gnx_UNL())
+                unl = c.p.get_full_gnx_UNL()
+                if not g.isValidUnl(unl):
+                    continue
+                fn = g.getUNLFilePart(unl)
+                exists = fn and g.os_path_exists(fn)
+                if not exists:
+                    continue
+                result.append(unl)
         return result
 
     # @+node:ekr.20120420054855.14416: *3* SessionManager.get_session_path
