@@ -1662,28 +1662,19 @@ class NullLog(LeoLog):
     # @+node:ekr.20041012083237: *4* NullLog.__init__
     def __init__(self, *, frame: NullFrame = None, parentFrame: NullFrame = None) -> None:
         super().__init__(frame, parentFrame)
+        c = self.c
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
-        self.logNumber = 0
-        self.widget: Widget = self.createControl(parentFrame)
+        self.logNumber = 1
+        self.widget = StringTextWrapper(c=c, name=f"log-{self.logNumber}")
         self.wrapper: TextAPI = None  # For cursesGui2.py.
 
     # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
     def finishCreate(self) -> None:
         pass
 
-    # @+node:ekr.20041012083237.1: *4* NullLog.createControl
-    def createControl(self, parentFrame: Widget) -> StringTextWrapper:
-        return self.createTextWidget(parentFrame)
-
-    # @+node:ekr.20070302095121: *4* NullLog.createTextWidget
-    def createTextWidget(self, parentFrame: Widget) -> StringTextWrapper:
-        self.logNumber += 1
-        c = self.c
-        return StringTextWrapper(c=c, name=f"log-{self.logNumber}")
-
     # @+node:ekr.20181119135041.1: *3* NullLog.hasSelection
-    def hasSelection(self) -> None:
+    def hasSelection(self) -> bool:
         return self.widget.hasSelection()
 
     # @+node:ekr.20111119145033.10186: *3* NullLog.isLogWidget
