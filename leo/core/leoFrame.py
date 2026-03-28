@@ -742,10 +742,10 @@ class LeoLog:
     # @+others
     # @+node:ekr.20150509054436.1: *3* LeoLog.Birth
     # @+node:ekr.20031218072017.3695: *4* LeoLog.ctor
-    def __init__(self, frame: Union[LeoLog, LeoQtFrame], parentFrame: LeoFrame) -> None:
+    def __init__(self, frame: Union[LeoLog, LeoQtFrame, NullFrame], parentFrame: LeoFrame) -> None:
         """Ctor for LeoLog class."""
-        ### assert frame is None or issubclass(frame.__class__, LeoFrame), frame
-        ### assert parentFrame is None or issubclass(parentFrame.__class__, LeoLog), parentFrame
+        assert frame is None or issubclass(frame.__class__, LeoFrame), frame
+        assert parentFrame is None or issubclass(parentFrame.__class__, LeoLog), parentFrame
         self.frame = frame
         self.c: Cmdr = frame.c if frame else None
         self.enabled = True
@@ -1660,7 +1660,7 @@ class NullLog(LeoLog):
     # @+others
     # @+node:ekr.20070302095500: *3* NullLog.Birth
     # @+node:ekr.20041012083237: *4* NullLog.__init__
-    def __init__(self, frame: Widget = None, parentFrame: Widget = None) -> None:
+    def __init__(self, *, frame: NullFrame = None, parentFrame: NullFrame = None) -> None:
         super().__init__(frame, parentFrame)
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
