@@ -375,6 +375,15 @@ class ServerExternalFilesController(ExternalFilesController):
                     return False
         # let original function resolve
 
+        hasServerConfig = g.leoServer.leoServerConfig is not None
+        hasDefaultReloadIgnore = hasServerConfig and "defaultReloadIgnore" in g.leoServer.leoServerConfig
+
+        # #4570: Don't raise dialogs unless the user setting is True. 
+        # (only if no server config or no defaultReloadIgnore setting, otherwise use that setting)
+        if not hasServerConfig or not hasDefaultReloadIgnore:
+            if not c.config.getBool('raise-file-update-dialogs', default=False):
+                return True
+
         if self.yesno_all_time + 3 >= time.time() and self.yesno_all_answer:
             self.yesno_all_time = time.time()  # Still reloading?  Extend time
             # if yesAll/noAll forced, then just show info message
@@ -384,8 +393,6 @@ class ServerExternalFilesController(ExternalFilesController):
             where = 'the outline node'
         else:
             where = p.h
-
-        _is_leo = path.endswith(('.leo', '.db', '.leojs'))
 
         if _is_leo:
             s = '\n'.join([f'{g.splitLongFileName(path)} has changed outside Leo.', 'Reload it?'])
