@@ -1765,13 +1765,12 @@ class NullTree(LeoTree):
 
     # @+others
     # @+node:ekr.20031218072017.2234: *3*  NullTree.__init__
-    def __init__(self, frame: Widget) -> None:
+    def __init__(self, frame: NullFrame) -> None:
         """Ctor for NullTree class."""
         super().__init__(frame)
         assert self.frame
         self.c = frame.c
-        # Keys are vnodes, values are StringTextWidgets.
-        self.editWidgetsDict: dict[VNode, Widget] = {}
+        self.editWidgetsDict: dict[VNode, StringTextWrapper] = {}
         self.font = None
         self.fontName = None
         self.canvas = None
