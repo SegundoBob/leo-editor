@@ -1547,7 +1547,7 @@ class NullIconBarClass:
     """A class representing the singleton Icon bar"""
 
     # @+others
-    # @+node:ekr.20070301164543.1: *3*  NullIconBarClass.ctor
+    # @+node:ekr.20070301164543.1: *3*  NullIconBarClass.__init__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for NullIconBarClass."""
         self.c = c
