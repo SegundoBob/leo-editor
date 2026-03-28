@@ -42,6 +42,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
     from leo.plugins.qt_text import QScintillaWrapper, QTextEditWrapper
     from leo.plugins.notebook import NbController
+    from leo.plugins.qt_text import QMinibufferWrapper
+    from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
 
     Args = Any
     KWargs = Any
@@ -250,7 +252,7 @@ class LeoFrame:
         self.iconBar: Union[NullIconBarClass, QtIconBarClass] = None
         self.log: Union[LeoLog, NullLog, LeoQtLog] = None
         self.menu: Union[LeoMenu, LeoQtMenu, NullMenu] = None
-        self.miniBufferWidget: Widget = None
+        self.miniBufferWidget: Union[QMinibufferWrapper, CursesMiniBufferWrapper] = None
         self.statusLine: Union[NullStatusLineClass, QtStatusLineClass] = None
         self.top: DynamicWindow = None
         self.tree: Union[LeoTree, NullTree, LeoQtTree] = None
