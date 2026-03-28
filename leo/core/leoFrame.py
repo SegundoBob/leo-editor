@@ -133,20 +133,6 @@ class LeoBody:
         self.c.recolor()
 
     recolor_now = recolor
-    # @+node:ekr.20140903103455.18574: *3* LeoBody.Defined in subclasses
-    # LeoBody methods that must be defined in subclasses.
-
-    def createEditorFrame(self, w: TextAPI) -> TextAPI:
-        raise NotImplementedError
-
-    def createTextWidget(self, parentFrame: Widget, p: Position, name: str) -> TextAPI:
-        raise NotImplementedError
-
-    def packEditorLabelWidget(self, w: TextAPI) -> None:
-        raise NotImplementedError
-
-    def onFocusOut(self, obj: Widget) -> None:
-        raise NotImplementedError
 
     # @+node:ekr.20060528100747: *3* LeoBody.Editors
     # @+node:ekr.20070424053629.1: *4* LeoBody.utils
