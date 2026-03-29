@@ -19,7 +19,6 @@ if TYPE_CHECKING:  # pragma: no cover
     Self = Cmdr  # For arguments to @g.commander_command.
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
-    Wrapper = Union[QTextEditWrapper, StringTextWrapper]
 # @-<< commanderEditCommands imports & annotations >>
 
 
@@ -362,7 +361,9 @@ def deleteComments(self: Self, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20171123135625.54: ** c_ec.editHeadline (edit-headline)
 @g.commander_command('edit-headline')
-def editHeadline(self: Self, event: LeoKeyEvent = None) -> tuple[Widget, Wrapper]:
+def editHeadline(
+    self: Self, event: LeoKeyEvent = None
+) -> tuple[Widget, Union[QTextEditWrapper, StringTextWrapper]]:
     """
     Begin editing the headline of the selected node.
 
