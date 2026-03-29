@@ -112,7 +112,7 @@ class Commands:
         self,
         fileName: str,
         gui: LeoGui = None,
-        parentFrame: Union[QTextEditWrapper, StringTextWrapper] = None,
+        parentFrame: QTextEditWrapper = None,
         previousSettings: "PreviousSettings" = None,
         relativeFileName: str = None,
     ) -> None:
@@ -594,7 +594,7 @@ class Commands:
             g.trace(f"{count} inactive focus: {w_class}")
 
     # @+node:ekr.20160427062131.1: *5* c.is_unusual_focus
-    def is_unusual_focus(self, w: Union[QTextEditWrapper, StringTextWrapper]) -> bool:
+    def is_unusual_focus(self, w: QTextEditWrapper) -> bool:
         """Return True if w is not in an expected place."""
         #
         # #270: Leo's keyboard events doesn't work after "Insert"
@@ -606,7 +606,7 @@ class Commands:
         return isinstance(w, qt_frame.QtTabBarWrapper)
 
     # @+node:ekr.20150403063658.1: *5* c.trace_idle_focus
-    def trace_idle_focus(self, w: Union[QTextEditWrapper, StringTextWrapper]) -> None:
+    def trace_idle_focus(self, w: QTextEditWrapper) -> None:
         """Trace the focus for w, minimizing chatter."""
         from leo.core.leoQt import QtWidgets
         from leo.plugins import qt_frame
@@ -4748,7 +4748,7 @@ class Commands:
         pass
 
     # @+node:ekr.20080514131122.16: *5* c.traceFocus (not used)
-    def traceFocus(self, w: Union[QTextEditWrapper, StringTextWrapper]) -> None:
+    def traceFocus(self, w: QTextEditWrapper) -> None:
         c = self
         if 'focus' in g.app.debug:
             c.trace_focus_count += 1

@@ -6,14 +6,13 @@
 # @+node:ekr.20220826084013.1: ** << commanderEditCommands imports & annotations >>
 from __future__ import annotations
 import re
-from typing import Any, Optional, Union, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.core.API import StringTextWrapper
     from leo.plugins.qt_text import QTextEditWrapper
 
     Self = Cmdr  # For arguments to @g.commander_command.
@@ -361,9 +360,7 @@ def deleteComments(self: Self, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20171123135625.54: ** c_ec.editHeadline (edit-headline)
 @g.commander_command('edit-headline')
-def editHeadline(
-    self: Self, event: LeoKeyEvent = None
-) -> tuple[Widget, Union[QTextEditWrapper, StringTextWrapper]]:
+def editHeadline(self: Self, event: LeoKeyEvent = None) -> tuple[Widget, QTextEditWrapper]:
     """
     Begin editing the headline of the selected node.
 
