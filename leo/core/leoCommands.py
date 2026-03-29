@@ -29,6 +29,7 @@ from leo.core import leoNodes
 # @+node:ekr.20220820051212.1: ** << leoCommands annotations >>
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoApp import PreviousSettings
+    from leo.core.qt_frame import QtMenuWrapper
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoConfig import LocalConfigManager
     from leo.core.leoNodes import Position, VNode
@@ -4824,7 +4825,7 @@ class Commands:
     # @+node:ekr.20080610085158.2: *5* c.add_command
     def add_command(
         self,
-        menu: Widget,
+        menu: QtMenuWrapper,
         accelerator: str = '',  # Not used.
         command: Callable = None,
         commandName: str = None,  # Not used.
