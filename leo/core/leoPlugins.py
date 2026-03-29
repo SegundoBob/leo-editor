@@ -13,7 +13,7 @@ from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.plugins.qt_text import QTextEditWrapper as Wrapper
+    from leo.plugins.qt_text import QTextEditWrapper
 
     Args = Any
     KWargs = Any
@@ -163,7 +163,7 @@ class BaseLeoPlugin:
 
     - setMenuItem::
 
-            def setMenuItem(self, menu: Wrapper, commandName: str=None, handler: Callable=None) -> None:
+            def setMenuItem(self, menu: QTextEditWrapper, commandName: str=None, handler: Callable=None) -> None:
 
     - setButton::
 
@@ -254,7 +254,9 @@ class BaseLeoPlugin:
         self.c.k.registerCommand(commandName, handler, pane=pane, verbose=verbose)
 
     # @+node:ekr.20100908125007.6014: *3* BaseLeoPlugin.setMenuItem
-    def setMenuItem(self, menu: Wrapper, commandName: str = None, handler: Callable = None) -> None:
+    def setMenuItem(
+        self, menu: QTextEditWrapper, commandName: str = None, handler: Callable = None
+    ) -> None:
         """Create a menu item in 'menu' using text 'commandName' calling handler 'handler'
         if commandName and handler are none, use the most recently defined values
         """
