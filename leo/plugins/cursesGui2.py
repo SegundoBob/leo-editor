@@ -66,6 +66,7 @@ except ImportError:
 # Leo imports
 from leo.core import leoGlobals as g
 from leo.core import leoFrame, leoGui, leoMenu
+from leo.core.leoFrame import NullFrame
 from leo.core.leoGui import (
     LeoKeyEvent,
     StringCheckBox,
@@ -2584,7 +2585,7 @@ class CoreLog(leoFrame.LeoLog):
 # @+node:ekr.20170419111515.1: *3* class CoreMenu (leoMenu.LeoMenu)
 class CoreMenu(leoMenu.LeoMenu):
     def __init__(self, c: Cmdr) -> None:
-        dummy_frame = g.Bunch(c=c)
+        dummy_frame = NullFrame(c=c, title='dummy-frame', gui=None)
         super().__init__(dummy_frame)
         self.c = c
 

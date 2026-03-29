@@ -227,7 +227,7 @@ class Commands:
     # @+node:ekr.20120217070122.10473: *5* c.initCommandIvars
     def initCommandIvars(self) -> None:
         """Init ivars used while executing a command."""
-        self.commandsDict: dict[str, Callable] = {}  # Keys are command names, values are functions.
+        self.commandsDict: dict[str, Any] = {}  # Keys: command names, values: various.
         self.disableCommandsMessage = ''  # The presence of this message disables all commands.
         # One of three places that g.doHook looks for hook functions.
         self.hookFunction: Optional[Callable] = None
@@ -4108,7 +4108,7 @@ class Commands:
             g.doHook("recentfiles2", c=c2, p=c2.p, v=c2.p, fileName=fn)
 
     # @+node:ekr.20031218072017.2823: *4* c.openWith
-    def openWith(self, event: LeoKeyEvent = None, d: dict[str, Position] = None) -> None:
+    def openWith(self, event: LeoKeyEvent = None, d: dict[str, Any] = None) -> None:
         """
         This is *not* a command.
 

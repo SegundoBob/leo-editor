@@ -2246,7 +2246,7 @@ class KeyHandlerClass:
         k.masterBindingsDict[pane] = d
 
     # @+node:ekr.20061031131434.94: *5* k.bindOpenWith
-    def bindOpenWith(self, d: dict[str, str]) -> None:
+    def bindOpenWith(self, d: dict[str, Any]) -> None:
         """Register an open-with command."""
         c, k = self.c, self
         shortcut = d.get('shortcut') or ''

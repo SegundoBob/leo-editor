@@ -122,7 +122,7 @@ class BaseTextAPI:
 class IconBarAPI:
     """The required API for c.frame.iconBar."""
 
-    def __init__(self, c: Cmdr, parentFrame: Widget) -> None:
+    def __init__(self, c: Cmdr, parentFrame: Any) -> None:
         pass
 
     def add(self, *args: str, **keys: str) -> None:

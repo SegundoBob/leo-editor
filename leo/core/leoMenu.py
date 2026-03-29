@@ -10,6 +10,7 @@ from typing import Any, Union, TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
+    from leo.core.leoFrame import LeoQtFrame, NullFrame
     from leo.core.leoGui import LeoKeyEvent
 
     Menu = Any
@@ -25,7 +26,7 @@ class LeoMenu:
 
     # @+others
     # @+node:ekr.20120124042346.12938: *3* LeoMenu.Birth
-    def __init__(self, frame: Widget) -> None:
+    def __init__(self, frame: Union[LeoQtFrame, NullFrame]) -> None:
         self.c = frame.c
         self.enable_dict: dict[str, Callable] = {}
         self.frame = frame
@@ -571,13 +572,13 @@ class LeoMenu:
                 )
 
     # @+node:ekr.20031218072017.4118: *6* LeoMenu.defineOpenWithMenuCallback
-    def defineOpenWithMenuCallback(self, d: dict[str, str] = None) -> Callable:
+    def defineOpenWithMenuCallback(self, d: dict[str, Any] = None) -> Callable:
         # The first parameter must be a LeoKeyEvent, and it must default to None.
 
         def openWithMenuCallback(
             event: LeoKeyEvent = None,
             self: LeoMenu = self,
-            d: dict[str, str] = d,
+            d: dict[str, Any] = d,
         ) -> Value:
             d1 = d.copy() if d else {}
             return self.c.openWith(d=d1)
@@ -735,7 +736,7 @@ class LeoMenu:
 class NullMenu(LeoMenu):
     """A null menu class for testing and batch execution."""
 
-    def __init__(self, frame: Widget) -> None:
+    def __init__(self, frame: NullFrame) -> None:
         super().__init__(frame)
         self.isNull = True
 
