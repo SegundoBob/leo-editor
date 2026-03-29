@@ -66,7 +66,7 @@ except ImportError:
 # Leo imports
 from leo.core import leoGlobals as g
 from leo.core import leoFrame, leoGui, leoMenu
-from leoGui import (
+from leo.core.leoGui import (
     LeoKeyEvent,
     StringCheckBox,
     StringLineEdit,
