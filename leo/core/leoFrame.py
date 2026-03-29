@@ -52,8 +52,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
     from leo.plugins.cursesGui2 import BodyWrapper as CursesBodyWrapper
 
-    Args = Any
-    KWargs = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
     TextAPI = Union[QScintillaWrapper, QTextEditWrapper, StringTextWrapper]
 
@@ -406,7 +404,7 @@ class LeoFrame:
         c.frame.setTabWidth(tab_width)
 
     # @+node:ekr.20061119120006: *4* LeoFrame.Icon area convenience methods
-    def addIconButton(self, *args: Args, **keys: KWargs) -> Any:
+    def addIconButton(self, *args: Any, **keys: Any) -> Any:
         if self.iconBar:
             return self.iconBar.add(*args, **keys)
         return None
@@ -1539,7 +1537,7 @@ class NullIconBarClass:
         pass
 
     # @+node:ekr.20070301164543.2: *3* NullIconBarClass.add
-    def add(self, *args: Args, **keys: KWargs) -> Any:
+    def add(self, *args: Any, **keys: Any) -> Any:
         """Add a (virtual) button to the (virtual) icon bar."""
         command: Callable = keys.get('command')
         text = keys.get('text')
