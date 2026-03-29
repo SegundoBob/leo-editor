@@ -2738,7 +2738,7 @@ class CoreTree(leoFrame.LeoTree):
 
     # @+node:ekr.20170511105355.1: *4* CTree.Selecting & editing
     # @+node:ekr.20170511105355.4: *5* CTree.edit_widget
-    def edit_widget(self, p: Position) -> Any:
+    def edit_widget(self, p: Position) -> HeadWrapper:
         """Returns the edit widget for position p."""
         return HeadWrapper(c=self.c, name='head', p=p)
 
@@ -2809,7 +2809,7 @@ class CoreStatusLine:
         # g.trace('(CoreStatusLine)', c)
         self.c = c
         self.enabled = False
-        self.parentFrame: Any = parentFrame
+        self.parentFrame = parentFrame
         self.textWidget: Any = None
 
     # @+others
@@ -3218,7 +3218,7 @@ class LeoLog(npyscreen.MultiLineEditable):
 # @+node:ekr.20170507194035.1: *3* class LeoForm (npyscreen.Form)
 class LeoForm(npyscreen.Form):
     OK_BUTTON_TEXT = 'Quit Leo'
-    OKBUTTON_TYPE: Any = QuitButton
+    OKBUTTON_TYPE = QuitButton
     how_exited = None
 
     def display(self, *args: Args, **kwargs: KWargs) -> None:
@@ -3414,7 +3414,7 @@ class LeoStatusLine(npyscreen.Textfield):
 # @+node:ekr.20170506035146.1: *3* class LeoMLTree (npyscreen.MLTree, object)
 class LeoMLTree(npyscreen.MLTree):
     # pylint: disable=used-before-assignment
-    _contained_widgets: Any = LeoTreeLine
+    _contained_widgets = LeoTreeLine
     continuation_line = "- more -"  # value of contination line.
     _cached_tree: LeoTreeData
     _cached_tree_as_list: list[LeoTreeData]
@@ -4336,7 +4336,7 @@ class BodyWrapper(StringTextWrapper):
     def __init__(self, c: Cmdr, name: str, w: Any) -> None:
         """Ctor for BodyWrapper class"""
         super().__init__(c, name)
-        self.widget: Any = w
+        self.widget = w
         self.injectIvars(c)  # These are used by Leo's core.
 
     # @+others
@@ -4392,7 +4392,7 @@ class LogWrapper(StringTextWrapper):
         """Ctor for LogWrapper class"""
         super().__init__(c, name)
         self.trace = False  # For tracing in base class.
-        self.widget: Any = w
+        self.widget = w
 
     # @+others
     # @-others
@@ -4407,7 +4407,7 @@ class MiniBufferWrapper(StringTextWrapper):
         super().__init__(c, name)
         self.trace = False  # For tracing in base class.
         self.box: Any = None  # Injected
-        self.widget: Any = w
+        self.widget = w
 
 
 # @+node:ekr.20171129194610.1: *3* class StatusLineWrapper (StringTextWrapper)
@@ -4418,7 +4418,7 @@ class StatusLineWrapper(StringTextWrapper):
         """Ctor for StatusLineWrapper class"""
         super().__init__(c, name)
         self.trace = False  # For tracing in base class.
-        self.widget: Any = w
+        self.widget = w
 
     def isEnabled(self) -> bool:
         return True
