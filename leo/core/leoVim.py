@@ -31,7 +31,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from typing import TypeAlias  # Requires Python 3.12+
     from leo.core.leoGui import QtCore
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.plugins.qt_text import QTextEditWrapper as Wrapper
+    from leo.plugins.qt_text import QTextEditWrapper
 
     KWargs = Any
     QEvent: TypeAlias = QtCore.QEvent
@@ -627,7 +627,7 @@ class VimCommands:
 
     # @+node:ekr.20140802225657.18034: *4* indirect acceptance methods
     # @+node:ekr.20140222064735.16709: *5* vc.begin_insert_mode
-    def begin_insert_mode(self, i: int = None, w: Wrapper = None) -> None:
+    def begin_insert_mode(self, i: int = None, w: QTextEditWrapper = None) -> None:
         """Common code for beginning insert mode."""
         self.do_trace()
         # c = self.c
@@ -2331,7 +2331,7 @@ class VimCommands:
             self.quit()
 
     # @+node:ekr.20140807112800.18122: *5* vc.test_for_insert_escape
-    def test_for_insert_escape(self, w: Wrapper) -> bool:
+    def test_for_insert_escape(self, w: QTextEditWrapper) -> bool:
         """Return True if the j,j escape sequence has ended insert mode."""
         c = self.c
         s = w.getAllText()
@@ -2430,21 +2430,21 @@ class VimCommands:
             g.es_print(f"{g.caller():20}: {self.stroke!r}")
 
     # @+node:ekr.20140802183521.17999: *4* vc.in_headline & vc.in_tree
-    def in_headline(self, w: Wrapper) -> bool:
+    def in_headline(self, w: QTextEditWrapper) -> bool:
         """Return True if we are in a headline edit widget."""
         return self.widget_name(w).startswith('head')
 
-    def in_tree(self, w: Wrapper) -> bool:
+    def in_tree(self, w: QTextEditWrapper) -> bool:
         """Return True if we are in the outline pane, but not in a headline."""
         return self.widget_name(w).startswith('canvas')
 
     # @+node:ekr.20140806081828.18157: *4* vc.is_body & is_head
-    def is_body(self, w: Wrapper) -> bool:
+    def is_body(self, w: QTextEditWrapper) -> bool:
         """Return True if w is the QTextBrowser of the body pane."""
         w2 = self.c.frame.body.wrapper
         return w == w2
 
-    def is_head(self, w: Wrapper) -> bool:
+    def is_head(self, w: QTextEditWrapper) -> bool:
         """Return True if w is an headline edit widget."""
         return self.widget_name(w).startswith('head')
 
@@ -2453,7 +2453,7 @@ class VimCommands:
         """Return True if stroke is a plain key."""
         return self.k.isPlainKey(stroke)
 
-    def is_text_wrapper(self, w: Wrapper = None) -> bool:
+    def is_text_wrapper(self, w: QTextEditWrapper = None) -> bool:
         """Return True if w is a text widget."""
         return self.is_body(w) or self.is_head(w) or g.isTextWrapper(w)
 
@@ -2515,7 +2515,9 @@ class VimCommands:
                 u.afterChangeBody(p, 'vc-save-body', bunch)
 
     # @+node:ekr.20140804123147.18929: *4* vc.set_border & helper
-    def set_border(self, kind: str = None, w: Wrapper = None, activeFlag: bool = None) -> None:
+    def set_border(
+        self, kind: str = None, w: QTextEditWrapper = None, activeFlag: bool = None
+    ) -> None:
         """
         Set the border color of self.w, depending on state.
         Called from qtBody.onFocusColorHelper and self.show_status.
@@ -2538,7 +2540,7 @@ class VimCommands:
                 pass
 
     # @+node:ekr.20140807070500.18161: *5* vc.set_property
-    def set_property(self, w: Wrapper, focus_flag: bool) -> None:
+    def set_property(self, w: QTextEditWrapper, focus_flag: bool) -> None:
         """Set the property of w, depending on focus and state."""
         c, state = self.c, self.state
         #
@@ -2650,7 +2652,7 @@ class VimCommands:
             w.setSelectionRange(i, j, insert=i)
 
     # @+node:ekr.20140805064952.18152: *4* vc.widget_name
-    def widget_name(self, w: Wrapper) -> str:
+    def widget_name(self, w: QTextEditWrapper) -> str:
         return self.c.widget_name(w)
 
     # @-others
