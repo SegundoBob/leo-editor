@@ -79,10 +79,8 @@ from leo.core.leoNodes import Position
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
 
-    Args = Any
     Event = Any  # Not usually a LeoKeyEvent.
-    KWargs = Any
-    Value = Any
+
 
 # @-<< cursesGui2 annotations >>
 # pylint: disable=arguments-differ,logging-not-lazy
@@ -105,7 +103,7 @@ class LeoBodyTextfield(npyscreen.Textfield):
     MultiLines are *not* Textfields, the *contain* Textfields.
     """
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.leo_parent: Any = None  # Injected later.
         super().__init__(*args, **kwargs)
         self.value: str
@@ -256,7 +254,7 @@ class LeoLogTextfield(npyscreen.Textfield):
     MultiLines are *not* Textfields, the *contain* Textfields.
     """
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.leo_parent: Any = None  # Injected later.
         super().__init__(*args, **kwargs)
         self.set_handlers()
@@ -449,7 +447,7 @@ class LeoTreeData(npyscreen.TreeData):
         return aList
 
     # @+node:ekr.20170516085427.4: *5* LeoTreeData.new_child
-    def new_child(self, *args: Args, **keywords: KWargs) -> Position:
+    def new_child(self, *args: Any, **keywords: Any) -> Position:
         if self.CHILDCLASS:
             cld = self.CHILDCLASS
         else:
@@ -459,7 +457,7 @@ class LeoTreeData(npyscreen.TreeData):
         return child
 
     # @+node:ekr.20170516085742.1: *5* LeoTreeData.new_child_at
-    def new_child_at(self, index: int, *args: Args, **keywords: KWargs) -> Position:
+    def new_child_at(self, index: int, *args: Any, **keywords: Any) -> Position:
         """Same as new_child, with insert(index, c) instead of append(c)"""
         # g.trace('LeoTreeData')
         if self.CHILDCLASS:
@@ -541,7 +539,7 @@ class LeoTreeData(npyscreen.TreeData):
 class LeoTreeLine(npyscreen.TreeLine):
     """A editable TreeLine class."""
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         self.leo_c = None  # Injected later.
         super().__init__(*args, **kwargs)
         # Done in TreeLine.init:
@@ -666,7 +664,7 @@ class LeoTreeLine(npyscreen.TreeLine):
         self.cursor_position = max(0, len(s) - 1)
 
     # @+node:ekr.20170508130328.1: *5* LeoTreeLine.h_cursor_left
-    def h_cursor_left(self, input: Value) -> None:  # input not used.
+    def h_cursor_left(self, input: Any) -> None:  # input not used.
         # self.value is a LeoTreeData.
         # native: content is a position.
         content = self.value.content
@@ -675,7 +673,7 @@ class LeoTreeLine(npyscreen.TreeLine):
         self.cursor_position = max(0, i - 1)
 
     # @+node:ekr.20170508130339.1: *5* LeoTreeLine.h_cursor_right
-    def h_cursor_right(self, input: Value) -> None:  # input not used.
+    def h_cursor_right(self, input: Any) -> None:  # input not used.
         # self.value is a LeoTreeData.
         # native: content is a position.
         content = self.value.content
@@ -685,7 +683,7 @@ class LeoTreeLine(npyscreen.TreeLine):
         self.cursor_position = max(0, i)
 
     # @+node:ekr.20170508130349.1: *5* LeoTreeLine.h_delete_left
-    def h_delete_left(self, input: Value) -> None:  # input not used.
+    def h_delete_left(self, input: Any) -> None:  # input not used.
         # self.value is a LeoTreeData.
         n = self.cursor_position
         if native:
@@ -819,7 +817,7 @@ def init() -> bool:
 # @+node:ekr.20170501032705.1: *3* curses2: leoGlobals replacements
 # CGui.init_logger monkey-patches leoGlobals with these functions.
 # @+node:ekr.20170430112645.1: *4* curses2: es
-def es(*args: Args, **keys: KWargs) -> None:
+def es(*args: Any, **keys: Any) -> None:
     """Monkey-patch for g.es."""
     d = {
         'color': None,
@@ -846,7 +844,7 @@ def has_logger() -> bool:
 
 
 # @+node:ekr.20170501043411.1: *4* curses2: pr
-def pr(*args: Args, **keys: KWargs) -> None:
+def pr(*args: Any, **keys: Any) -> None:
     """Monkey-patch for g.pr."""
     d = {'commas': False, 'newline': True, 'spaces': True}
     d = g.doKeywordArgs(keys, d)
@@ -858,9 +856,9 @@ def pr(*args: Args, **keys: KWargs) -> None:
 
 
 # @+node:ekr.20170429165242.1: *4* curses2: trace
-def trace(*args: Args, **keys: KWargs) -> None:
+def trace(*args: Any, **keys: Any) -> None:
     """Monkey-patch for g.trace."""
-    d: dict[str, Value] = {
+    d: dict[str, Any] = {
         'align': 0,
         'before': '',
         'newline': True,
@@ -1173,11 +1171,11 @@ class KeyEvent:
         )
 
     # @+node:edward.20170428174322.4: *4* KeyEvent.get & __getitem__
-    def get(self, attr: str) -> Value:
+    def get(self, attr: str) -> Any:
         """Compatibility with g.bunch: return an attr."""
         return getattr(self, attr, None)
 
-    def __getitem__(self, attr: str) -> Value:
+    def __getitem__(self, attr: str) -> Any:
         """Compatibility with g.bunch: return an attr."""
         return getattr(self, attr, None)
 
@@ -1376,7 +1374,7 @@ class LeoCursesGui(leoGui.LeoGui):
         self.log: LogWrapper = None  # The present log. Used by g.es
         self.log_inited: bool = False  # True: don't use the wait_list.
         self.minibuffer_label: str = ''  # The label set by k.setLabel.
-        self.wait_list: list[tuple[str, Value]] = []  # Queued log messages.
+        self.wait_list: list[tuple[str, Any]] = []  # Queued log messages.
         # Do this as early as possible. It monkey-patches g.pr and g.trace.
         self.init_logger()
         self.top_form: Any = None  # The top-level form. Set in createCursesTop.
@@ -1870,7 +1868,7 @@ class LeoCursesGui(leoGui.LeoGui):
     def runPropertiesDialog(
         self,
         title: str = 'Properties',
-        data: Value = None,
+        data: Any = None,
         callback: Callable = None,
         buttons: list[str] = None,
     ) -> None:
@@ -2426,7 +2424,7 @@ class CoreFrame(leoFrame.LeoFrame):
     def lift(self) -> None:
         pass
 
-    def getShortCut(self, *args: Args, **kwargs: KWargs) -> None:
+    def getShortCut(self, *args: Any, **kwargs: Any) -> None:
         return None
 
     def getTitle(self) -> str:
@@ -2453,7 +2451,7 @@ class CoreFrame(leoFrame.LeoFrame):
     def setWrap(self, p: Position) -> None:
         pass
 
-    def update(self, *args: Args, **keys: KWargs) -> None:
+    def update(self, *args: Any, **keys: Any) -> None:
         pass
 
     # @+node:ekr.20170524144717.1: *4* CFrame.get_focus
@@ -2824,14 +2822,14 @@ class TopFrame:
         self.c = c
         self.leo_master = g.NullObject()  # #4577.
 
-    def select(self, *args: Args, **kwargs: KWargs) -> None:
+    def select(self, *args: Any, **kwargs: Any) -> None:
         pass
 
-    def findChild(self, *args: Args, **kwargs: KWargs) -> Value:
+    def findChild(self, *args: Any, **kwargs: Any) -> Any:
         # Called by nested_splitter.py.
         return g.NullObject()
 
-    def finishCreateLogPane(self, *args: Args, **kwargs: KWargs) -> None:
+    def finishCreateLogPane(self, *args: Any, **kwargs: Any) -> None:
         pass
 
 
@@ -2862,9 +2860,9 @@ class LeoBody(npyscreen.MultiLineEditable):
     continuation_line = "- more -"  # value of contination line.
     _contained_widgets = LeoBodyTextfield
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.values: list[Value]
+        self.values: list[Any]
         self.cursor_line: int
         self.start_display_at: int
         self.leo_box: Any = None
@@ -3058,7 +3056,7 @@ class LeoLog(npyscreen.MultiLineEditable):
     continuation_line = "- more -"  # value of contination line.
     _contained_widgets = LeoLogTextfield
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.cursor_line: int
         self.start_display_at: int
@@ -3221,7 +3219,7 @@ class LeoForm(npyscreen.Form):
     OKBUTTON_TYPE = QuitButton
     how_exited = None
 
-    def display(self, *args: Args, **kwargs: KWargs) -> None:
+    def display(self, *args: Any, **kwargs: Any) -> None:
         changed = any(z.c.isChanged() for z in g.app.windowList)
         c = g.app.log.c
         self.name = 'Welcome to Leo: %s%s' % (
@@ -3235,7 +3233,7 @@ class LeoForm(npyscreen.Form):
 class LeoMiniBuffer(npyscreen.Textfield):
     """An npyscreen class representing Leo's minibuffer, with binding."""
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.value: str
         self.leo_c: Cmdr = None  # Set later
@@ -3399,7 +3397,7 @@ class LeoMiniBuffer(npyscreen.Textfield):
 class LeoStatusLine(npyscreen.Textfield):
     """An npyscreen class representing Leo's status line"""
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         # These are injected later.
         self.leo_c: Cmdr = None
@@ -4428,10 +4426,10 @@ class StatusLineWrapper(StringTextWrapper):
     def computeStatusUnl(self, p: Position) -> str:
         return ''
 
-    def disable(self, *args: Args, **kwargs: KWargs) -> None:
+    def disable(self, *args: Any, **kwargs: Any) -> None:
         pass
 
-    def enable(self, *args: Args, **kwargs: KWargs) -> None:
+    def enable(self, *args: Any, **kwargs: Any) -> None:
         pass
 
     def setFocus(self) -> None:
@@ -4443,17 +4441,17 @@ class StatusLineWrapper(StringTextWrapper):
         self.widget.display()
 
     # The signature is different.
-    def get(self) -> Value:  # type:ignore
+    def get(self) -> Any:  # type:ignore
         return self.widget.value
 
-    def put(self, s: str, *args: Args, **kwargs: KWargs) -> None:
+    def put(self, s: str, *args: Any, **kwargs: Any) -> None:
         i = s.find('#')
         if i > -1:
             s = s[i + 1 :]
         self.widget.value = s
         self.widget.display()
 
-    def update(self, *args: Args, **kwargs: KWargs) -> None:
+    def update(self, *args: Any, **kwargs: Any) -> None:
         self.widget.update()
 
     # @-others
