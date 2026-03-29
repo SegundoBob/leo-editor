@@ -1689,7 +1689,7 @@ class LeoQtGui(leoGui.LeoGui):
     def get_top_splitter(self, c: Cmdr) -> QWidget:
         return self.find_widget_by_name(c, 'main_splitter')
 
-    # @+node:ekr.20110605121601.18522: *4* LeoQtGui.isTextWidget/Wrapper
+    # @+node:ekr.20110605121601.18522: *4* LeoQtGui.isTextWidget/isTextWrapper
     def isTextWidget(self, w: QTextEditWrapper) -> bool:
         """Return True if w is some kind of Qt text widget."""
         if Qsci:
