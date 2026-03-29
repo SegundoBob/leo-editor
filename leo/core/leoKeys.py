@@ -33,7 +33,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
     from leo.plugins.qt_frame import LeoQtLog
-    from leo.plugins.qt_text import QTextEditWrapper as Wrapper
+    from leo.plugins.qt_text import QTextEditWrapper
 
     Args = Any
     KWargs = Any
@@ -1831,7 +1831,7 @@ class KeyHandlerClass:
         # Values are dicts: keys are strokes, values are BindingInfo objects.
         self.masterBindingsDict: dict = {}
         # Keys are strokes; value is list of Widgets in which the strokes are bound.
-        self.masterGuiBindingsDict: dict[Stroke, list[Wrapper]] = {}
+        self.masterGuiBindingsDict: dict[Stroke, list[QTextEditWrapper]] = {}
         # Special bindings for k.fullCommand...
         self.mb_copyKey = None
         self.mb_pasteKey = None
@@ -2285,7 +2285,7 @@ class KeyHandlerClass:
                     g.trace(f"No shortcut for {name} = {key}")
 
     # @+node:ekr.20061031131434.97: *4* k.completeAllBindings
-    def completeAllBindings(self, w: Wrapper = None) -> None:
+    def completeAllBindings(self, w: QTextEditWrapper = None) -> None:
         """
         Make an actual binding in *all* the standard places.
 
@@ -2298,7 +2298,7 @@ class KeyHandlerClass:
             k.makeMasterGuiBinding(stroke, w=w)
 
     # @+node:ekr.20061031131434.96: *4* k.completeAllBindingsForWidget
-    def completeAllBindingsForWidget(self, w: Wrapper) -> None:
+    def completeAllBindingsForWidget(self, w: QTextEditWrapper) -> None:
         """Make all a master gui binding for widget w."""
         k = self
         for stroke in k.bindingsDict:
@@ -2407,7 +2407,7 @@ class KeyHandlerClass:
                     k.bindKey(pane, stroke, command, commandName, tag=tag)  # type:ignore
 
     # @+node:ekr.20061031131434.103: *4* k.makeMasterGuiBinding
-    def makeMasterGuiBinding(self, stroke: Stroke, w: Wrapper = None) -> None:
+    def makeMasterGuiBinding(self, stroke: Stroke, w: QTextEditWrapper = None) -> None:
         """Make a master gui binding for stroke in pane w, or in all the standard widgets."""
         c, k = self.c, self
         f = c.frame
@@ -3228,7 +3228,7 @@ class KeyHandlerClass:
         k.resetCommandHistory()
 
     # @+node:ekr.20061031131434.126: *4* k.manufactureKeyPressForCommandName (only for unit tests!)
-    def manufactureKeyPressForCommandName(self, w: Wrapper, commandName: str) -> None:
+    def manufactureKeyPressForCommandName(self, w: QTextEditWrapper, commandName: str) -> None:
         """
         Implement a command by passing a keypress to the gui.
 
@@ -3890,7 +3890,9 @@ class KeyHandlerClass:
         return None
 
     # @+node:ekr.20180418105228.1: *7* getPaneBindingHelper
-    def getBindingHelper(self, key: str, name: str, stroke: Stroke, w: Wrapper) -> g.BindingInfo:
+    def getBindingHelper(
+        self, key: str, name: str, stroke: Stroke, w: QTextEditWrapper
+    ) -> g.BindingInfo:
         """Find a binding for the widget with the given name."""
         c, k = self.c, self
         #
@@ -4150,7 +4152,7 @@ class KeyHandlerClass:
         k.setLabelGrey(f"@mode {modeName} is not defined (or is empty)")
 
     # @+node:ekr.20061031131434.158: *4* k.createModeBindings
-    def createModeBindings(self, modeName: str, d: dict[str, list], w: Wrapper) -> None:
+    def createModeBindings(self, modeName: str, d: dict[str, list], w: QTextEditWrapper) -> None:
         """Create mode bindings for the named mode using dictionary d for w, a text widget."""
         c, k = self.c, self
         assert d.name().endswith('-mode')
@@ -4506,7 +4508,7 @@ class KeyHandlerClass:
 
     # @+node:ekr.20061031131434.192: *4* k.showStateAndMode
     def showStateAndMode(
-        self, w: Wrapper = None, prompt: str = None, setFocus: bool = True
+        self, w: QTextEditWrapper = None, prompt: str = None, setFocus: bool = True
     ) -> None:
         """Show the state and mode at the start of the minibuffer."""
         c, k = self.c, self
@@ -4562,7 +4564,7 @@ class KeyHandlerClass:
             c.frame.tree.set_status_line(c.p)
 
     # @+node:ekr.20110202111105.15439: *4* k.showStateCursor
-    def showStateCursor(self, state: str, w: Wrapper) -> None:
+    def showStateCursor(self, state: str, w: QTextEditWrapper) -> None:
         pass
 
     # @-others
@@ -4618,7 +4620,7 @@ class ModeInfo:
         return prompt
 
     # @+node:ekr.20120208064440.10160: *3* mode_i.createModeBindings
-    def createModeBindings(self, w: Wrapper) -> None:
+    def createModeBindings(self, w: QTextEditWrapper) -> None:
         """Create mode bindings for w, a text widget."""
         c, d, k, modeName = self.c, self.d, self.k, self.name
         for commandName in d:
