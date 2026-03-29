@@ -373,12 +373,14 @@ class ServerExternalFilesController(ExternalFilesController):
                 else:
                     self.infoMessage = "ignored"
                     return False
-                
+
         # let original function resolve
         hasServerConfig = g.leoServer.leoServerConfig is not None
-        hasDefaultReloadIgnore = hasServerConfig and "defaultReloadIgnore" in g.leoServer.leoServerConfig
+        hasDefaultReloadIgnore = (
+            hasServerConfig and "defaultReloadIgnore" in g.leoServer.leoServerConfig
+        )
 
-        # #4570: Don't raise dialogs unless the user setting is True. 
+        # #4570: Don't raise dialogs unless the user setting is True.
         # (only if no server config or no defaultReloadIgnore setting, otherwise use that setting)
         if not hasServerConfig or not hasDefaultReloadIgnore:
             if not c.config.getBool('raise-file-update-dialogs', default=False):
@@ -420,7 +422,10 @@ class ServerExternalFilesController(ExternalFilesController):
     def is_enabled(self, c: Cmdr) -> bool:
         """Return the cached @bool check_for_changed_external_file setting."""
         # check with the leoServer config first
-        if g.leoServer.leoServerConfig and "checkForChangeExternalFiles" in g.leoServer.leoServerConfig:
+        if (
+            g.leoServer.leoServerConfig
+            and "checkForChangeExternalFiles" in g.leoServer.leoServerConfig
+        ):
             check_config = g.leoServer.leoServerConfig["checkForChangeExternalFiles"].lower()
             if bool('check' in check_config):
                 return True
