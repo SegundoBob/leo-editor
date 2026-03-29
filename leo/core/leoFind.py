@@ -20,7 +20,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoKeys import KeyHandlerClass as KeyHandler
     from leo.core.leoGlobals import KeyStroke as Stroke
     from leo.core.leoNodes import Position, VNode
-    from leo.plugins.qt_text import QTextEditWrapper as Wrapper
+    from leo.plugins.qt_text import QTextEditWrapper
 
     KWargs = Any
     MatchGroups = tuple  # Best we can do so far.
@@ -2960,7 +2960,9 @@ class LeoFind:
         return data
 
     # @+node:ekr.20031218072017.3091: *4* LeoFind.find.show_success
-    def show_success(self, p: Position, pos: int, newpos: int, showState: bool = True) -> Wrapper:
+    def show_success(
+        self, p: Position, pos: int, newpos: int, showState: bool = True
+    ) -> QTextEditWrapper:
         """Display the result of a successful find operation."""
         c = self.c
         # Set state vars.
@@ -3236,7 +3238,7 @@ class LeoFind:
         return p, i, j, in_headline
 
     # @+node:ekr.20131117164142.16954: *5* find.set_widget
-    def set_widget(self) -> Wrapper:  # pragma: no cover (cmd)
+    def set_widget(self) -> QTextEditWrapper:  # pragma: no cover (cmd)
         c, p = self.c, self.c.p
         wrapper = c.frame.body.wrapper
         if self.in_headline:
@@ -3344,7 +3346,7 @@ class LeoFind:
             )  # A flag.
 
     # @+node:ekr.20150629072547.1: *4* find.preload_find_pattern
-    def preload_find_pattern(self, w: Wrapper) -> None:  # pragma: no cover (cmd)
+    def preload_find_pattern(self, w: QTextEditWrapper) -> None:  # pragma: no cover (cmd)
         """Preload the find pattern from the selected text of widget w."""
         c, ftm = self.c, self.ftm
         if not c.config.getBool('preload-find-pattern', default=False):
