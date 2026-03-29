@@ -420,7 +420,7 @@ class ServerExternalFilesController(ExternalFilesController):
     def is_enabled(self, c: Cmdr) -> bool:
         """Return the cached @bool check_for_changed_external_file setting."""
         # check with the leoServer config first
-        if g.leoServer.leoServerConfig:
+        if g.leoServer.leoServerConfig and "checkForChangeExternalFiles" in g.leoServer.leoServerConfig:
             check_config = g.leoServer.leoServerConfig["checkForChangeExternalFiles"].lower()
             if bool('check' in check_config):
                 return True
