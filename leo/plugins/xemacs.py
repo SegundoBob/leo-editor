@@ -20,8 +20,8 @@ appear in Leo.
 # @+node:ekr.20050218024153: ** << imports >> (xemacs.py)
 import os
 import sys
-from leo.core import leoGlobals as g
 from typing import Any
+from leo.core import leoGlobals as g
 # @-<< imports >>
 
 # Full path of emacsclient executable. We need the full path as spawnlp
