@@ -25,6 +25,8 @@ https://leo-editor.github.io/leo-editor/console-gui.html#developing-the-cursesgu
 """
 
 # @-<< cursesGui2 docstring >>
+# pylint: disable=ungrouped-imports,wrong-import-order
+# pylint: disable=arguments-differ
 # @+<< cursesGui2 imports >>
 # @+node:ekr.20170419172102.1: ** << cursesGui2 imports >>
 from __future__ import annotations
@@ -83,8 +85,6 @@ if TYPE_CHECKING:  # pragma: no cover
 
 
 # @-<< cursesGui2 annotations >>
-# pylint: disable=arguments-differ,logging-not-lazy
-# pylint: disable=not-an-iterable,unsubscriptable-object,unsupported-delete-operation
 
 # True: use native Leo data structures, replacing the
 # the values property by a singleton LeoValues object.
