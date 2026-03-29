@@ -14,12 +14,9 @@ from collections.abc import Callable
 import os
 import re
 import string
-from typing import Any, Union
-from typing import TYPE_CHECKING
+from typing import Any, Union, TYPE_CHECKING
 from leo.core import leoGlobals as g
-from leo.core import leoColorizer
-from leo.core import leoMenu
-from leo.core import leoNodes
+from leo.core import leoColorizer, leoMenu, leoNodes
 from leo.core.leoAPI import StringTextWrapper
 
 # @-<< leoFrame imports >>
