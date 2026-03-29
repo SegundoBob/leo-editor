@@ -558,7 +558,7 @@ class ExternalFilesController:
         if not c.config.getBool('raise-file-update-dialogs', default=False):
             return 'yes'
 
-        is_leo = path.endswith(('.leo', '.db'))
+        is_leo = path.endswith(('.leo', '.db', '.leojs'))
         is_external_file = not is_leo
 
         # Create the message. Concatenate strings to make finding this message easier.
