@@ -373,8 +373,8 @@ class ServerExternalFilesController(ExternalFilesController):
                 else:
                     self.infoMessage = "ignored"
                     return False
+                
         # let original function resolve
-
         hasServerConfig = g.leoServer.leoServerConfig is not None
         hasDefaultReloadIgnore = hasServerConfig and "defaultReloadIgnore" in g.leoServer.leoServerConfig
 
