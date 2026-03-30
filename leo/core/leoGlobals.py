@@ -2719,24 +2719,15 @@ def stat(*, name: str = None, obj: Any = None) -> None:
             name = repr(name)
     else:
         name = g._callerName(n=2)  # Get caller name 2 levels back.
-    try:
-        if obj is None:
-            key = f"stat_count: {name}"
-            d[key] = 1 + d.get(key, 0)
-        else:
-            key = name
-            aSet = d.get(key, set())
-            aSet.add(obj)
-            d[key] = aSet
-    except TypeError:
-        breakpoint()  ###
 
-    # if obj is None:
-    #     d[name] = 1 + d.get(name, 0)
-    # else:
-    #     aSet = d.get(name, set())
-    #     aSet.add(obj)
-    #     d[name] = aSet
+    if obj is None:
+        key = f"stat_count: {name}"
+        d[key] = 1 + d.get(key, 0)
+    else:
+        key = name
+        aSet = d.get(key, set())
+        aSet.add(obj)
+        d[key] = aSet
 
 
 # @+node:ekr.20031218072017.3137: *3* g.Timing
