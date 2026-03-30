@@ -2665,46 +2665,65 @@ def clearStats() -> None:
 
 # @+node:ekr.20031218072017.3135: *4* g.printStats
 @command('show-stats')
-def printStats(event: LeoKeyEvent = None, name: str = None) -> None:
+def printStats(event: LeoKeyEvent = None) -> None:
     """
-    Print all gathered statistics.
-
-    Here is the recommended code to gather stats for one method/function:
-
-        if not g.app.statsLockout:
-            g.app.statsLockout = True
-            try:
-                d = g.app.statsDict
-                key = 'g.isUnicode:' + g.callers()
-                d [key] = d.get(key, 0) + 1
-            finally:
-                g.app.statsLockout = False
+    Print all stats created by g.stat(), counts first.
     """
-    if name:
-        if not isinstance(name, str):
-            name = repr(name)
-    else:
-        # Get caller name 2 levels back.
-        name = g._callerName(n=2)
-    # Print the stats, organized by number of calls.
+
+    # Print the signon.
     d = g.app.statsDict
     print('g.app.statsDict...')
-    for key in reversed(sorted(d)):
-        print(f"{key:7} {d.get(key)}")
+
+    # Print the int stats: calls to g.stat()
+    for key in sorted(d.keys()):
+        if key.startswith(_int_stat_prefix):
+            key_s = key[len(_int_stat_prefix) :].strip()
+            print(f"  {d.get(key):4}: {key_s}")
+
+    # Print the other stats: calls to g.stat(whatever)
+    for key in sorted(d.keys()):
+        if not key.startswith(_int_stat_prefix):
+            inner_keys = (z if isinstance(z, str) else repr(z) for z in d.get(key))
+            print(f"{key}:")
+            for z in sorted(inner_keys):
+                print(f"    {z.strip()}")
 
 
-# @+node:ekr.20031218072017.3136: *4* g.stat
-def stat(name: str = None) -> None:
-    """Increments the statistic for name in g.app.statsDict
-    The caller's name is used by default.
+# @+node:ekr.20031218072017.3136: *4* g.stat & g.statObj
+_int_stat_prefix = 'stat_count: '
+
+
+def stat(obj: Any = None) -> None:
+    """
+    Add another count stat to g.app.statsDict.
+    g.printStats() prints all such stats.
+
+    When `obj` is given, add obj to a set associated with name.
+    Example: `g.stat(obj=w.__class__.__name__)`.
     """
     d = g.app.statsDict
-    if name:
-        if not isinstance(name, str):
-            name = repr(name)
-    else:
-        name = g._callerName(n=2)  # Get caller name 2 levels back.
-    d[name] = 1 + d.get(name, 0)
+    name = g._callerName(n=2)  # Get caller name 2 levels back.
+
+    # Always add the count stat.
+    key = f"{_int_stat_prefix}{name}"
+    d[key] = 1 + d.get(key, 0)
+
+    # Add the other stat if obj is given.
+    if obj is not None:
+        aSet = d.get(name, set())
+        aSet.add(obj)
+        d[name] = aSet
+
+
+def statObj(obj: Any) -> None:
+    """
+    Add obj to a set associated with name *without* updating count stats.
+    """
+    d = g.app.statsDict
+    name = g._callerName(n=2)  # Get caller name 2 levels back.
+    aSet = d.get(name, set())
+    aSet.add(obj)
+    d[name] = aSet
 
 
 # @+node:ekr.20031218072017.3137: *3* g.Timing
