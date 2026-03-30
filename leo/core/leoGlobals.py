@@ -2707,8 +2707,11 @@ def stat(*, name: str = None, obj: Any = None) -> None:
     Othewise, add obj to a set associated with name.
 
     Example:
-        g.stat(obj=w.__class__.__name__)
-        g.printStats() will show the *distinct* classes that `w` may have.
+
+    To see all the *distinct* values that a kwarg `w` might have,
+    add `g.stat(obj=w.__class__.__name__)` to the method.
+
+    Later, execute `g.printStats()`.
     """
     d = g.app.statsDict
     if name:
