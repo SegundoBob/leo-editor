@@ -2680,21 +2680,35 @@ def printStats(event: LeoKeyEvent = None, name: str = None) -> None:
             finally:
                 g.app.statsLockout = False
     """
+    print('g.app.statsDict...')
+    d = g.app.statsDict
+    if not d:
+        return
     if name:
         if not isinstance(name, str):
             name = repr(name)
     else:
         # Get caller name 2 levels back.
         name = g._callerName(n=2)
-    # Print the stats, organized by number of calls.
-    d = g.app.statsDict
-    print('g.app.statsDict...')
-    for key in reversed(sorted(d)):
-        print(f"{key:7} {d.get(key)}")
+
+    # Sort the stats into int stats and non-int stats.
+    tag = 'stat_count:'
+    keys = sorted(list(d.keys()))
+    counts = [z for z in keys if z.startswith(tag)]
+    non_counts = [z for z in keys if not z.startswith(tag)]
+    # Print the int stats: calls to g.stat()
+    for key in counts:
+        key_s = key[len(tag) :].strip()
+        print(f"  {d.get(key):4}: {key_s}")
+    # Print the other stats: calls to g.stat(obj=whatever)
+    for key in non_counts:
+        print(f"{key}:")
+        for z in sorted(list(d.get(key))):
+            print(f"    {z}")
 
 
 # @+node:ekr.20031218072017.3136: *4* g.stat
-def stat(name: str = None, *, obj: Any = None) -> None:
+def stat(*, name: str = None, obj: Any = None) -> None:
     """Increments the statistic for name in g.app.statsDict
     The caller's name is used by default.
     """
@@ -2704,12 +2718,24 @@ def stat(name: str = None, *, obj: Any = None) -> None:
             name = repr(name)
     else:
         name = g._callerName(n=2)  # Get caller name 2 levels back.
-    if obj is None:
-        d[name] = 1 + d.get(name, 0)
-    else:
-        aSet = d.get(name, set())
-        aSet.add(obj)
-        d[name] = aSet
+    try:
+        if obj is None:
+            key = f"stat_count: {name}"
+            d[key] = 1 + d.get(key, 0)
+        else:
+            key = name
+            aSet = d.get(key, set())
+            aSet.add(obj)
+            d[key] = aSet
+    except TypeError:
+        breakpoint()  ###
+
+    # if obj is None:
+    #     d[name] = 1 + d.get(name, 0)
+    # else:
+    #     aSet = d.get(name, set())
+    #     aSet.add(obj)
+    #     d[name] = aSet
 
 
 # @+node:ekr.20031218072017.3137: *3* g.Timing
