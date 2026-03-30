@@ -2667,18 +2667,7 @@ def clearStats() -> None:
 @command('show-stats')
 def printStats(event: LeoKeyEvent = None, name: str = None) -> None:
     """
-    Print all gathered statistics.
-
-    Here is the recommended code to gather stats for one method/function:
-
-        if not g.app.statsLockout:
-            g.app.statsLockout = True
-            try:
-                d = g.app.statsDict
-                key = 'g.isUnicode:' + g.callers()
-                d [key] = d.get(key, 0) + 1
-            finally:
-                g.app.statsLockout = False
+    Print all gathered statistics counts first, followed by other stats.
     """
     print('g.app.statsDict...')
     d = g.app.statsDict
@@ -2709,8 +2698,17 @@ def printStats(event: LeoKeyEvent = None, name: str = None) -> None:
 
 # @+node:ekr.20031218072017.3136: *4* g.stat
 def stat(*, name: str = None, obj: Any = None) -> None:
-    """Increments the statistic for name in g.app.statsDict
-    The caller's name is used by default.
+    """
+    Add another stat to g.app.statsDict.
+    g.printStats() prints all such stats.
+
+    When `name` is None, use the caller's name.
+    When `obj` is None, increment the count associated with name.
+    Othewise, add obj to a set associated with name.
+
+    Example:
+        g.stat(obj=w.__class__.__name__)
+        g.printStats() will show the *distinct* classes that `w` may have.
     """
     d = g.app.statsDict
     if name:
