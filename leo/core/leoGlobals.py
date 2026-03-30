@@ -2692,8 +2692,8 @@ def printStats(event: LeoKeyEvent = None, name: str = None) -> None:
     # Print the other stats: calls to g.stat(obj=whatever)
     for key in non_counts:
         print(f"{key}:")
-        for z in sorted(list(d.get(key))):
-            print(f"    {z}")
+        for z in sorted([repr(z) if not isinstance(z, str) else z for z in list(d.get(key))]):
+            print(f"    {z.strip()}")
 
 
 # @+node:ekr.20031218072017.3136: *4* g.stat
@@ -2703,15 +2703,11 @@ def stat(*, name: str = None, obj: Any = None) -> None:
     g.printStats() prints all such stats.
 
     When `name` is None, use the caller's name.
-    When `obj` is None, increment the count associated with name.
-    Othewise, add obj to a set associated with name.
 
-    Example:
+    Always add a count statistic for `name`.
 
-    To see all the *distinct* values that a kwarg `w` might have,
-    add `g.stat(obj=w.__class__.__name__)` to the method.
-
-    Later, execute `g.printStats()`.
+    When `obj` is given, add obj to a set associated with name.
+    Example: `g.stat(obj=w.__class__.__name__)`.
     """
     d = g.app.statsDict
     if name:
@@ -2720,14 +2716,15 @@ def stat(*, name: str = None, obj: Any = None) -> None:
     else:
         name = g._callerName(n=2)  # Get caller name 2 levels back.
 
-    if obj is None:
-        key = f"stat_count: {name}"
-        d[key] = 1 + d.get(key, 0)
-    else:
-        key = name
-        aSet = d.get(key, set())
+    # Always add the count stat.
+    key = f"stat_count: {name}"
+    d[key] = 1 + d.get(key, 0)
+
+    # Add the other stat if obj is given.
+    if obj is not None:
+        aSet = d.get(name, set())
         aSet.add(obj)
-        d[key] = aSet
+        d[name] = aSet
 
 
 # @+node:ekr.20031218072017.3137: *3* g.Timing
