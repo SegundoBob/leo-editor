@@ -2665,56 +2665,42 @@ def clearStats() -> None:
 
 # @+node:ekr.20031218072017.3135: *4* g.printStats
 @command('show-stats')
-def printStats(event: LeoKeyEvent = None, name: str = None) -> None:
+def printStats(event: LeoKeyEvent = None) -> None:
     """
-    Print all gathered statistics counts first, followed by other stats.
+    Print all stats created by g.stat(), counts first.
     """
-    print('g.app.statsDict...')
     d = g.app.statsDict
-    if not d:
-        return
-    if name:
-        if not isinstance(name, str):
-            name = repr(name)
-    else:
-        # Get caller name 2 levels back.
-        name = g._callerName(n=2)
+    int_key = 'stat_count:'  # Must match the key in g.stat.
 
-    # Sort the stats into int stats and non-int stats.
-    tag = 'stat_count:'
-    keys = sorted(list(d.keys()))
-    counts = [z for z in keys if z.startswith(tag)]
-    non_counts = [z for z in keys if not z.startswith(tag)]
+    # Print the signon.
+    print('g.app.statsDict...')
+
     # Print the int stats: calls to g.stat()
-    for key in counts:
-        key_s = key[len(tag) :].strip()
-        print(f"  {d.get(key):4}: {key_s}")
-    # Print the other stats: calls to g.stat(obj=whatever)
-    for key in non_counts:
-        print(f"{key}:")
-        for z in sorted([repr(z) if not isinstance(z, str) else z for z in list(d.get(key))]):
-            print(f"    {z.strip()}")
+    for key in sorted(d.keys()):
+        if key.startswith(int_key):
+            key_s = key[len(int_key) :].strip()
+            print(f"  {d.get(key):4}: {key_s}")
+
+    # Print the other stats: calls to g.stat(whatever)
+    for key in sorted(d.keys()):
+        if not key.startswith(int_key):
+            inner_keys = [z if isinstance(z, str) else repr(z) for z in d.get(key)]
+            print(f"{key}:")
+            for z in sorted(inner_keys):
+                print(f"    {z.strip()}")
 
 
 # @+node:ekr.20031218072017.3136: *4* g.stat
-def stat(*, name: str = None, obj: Any = None) -> None:
+def stat(obj: Any = None) -> None:
     """
-    Add another stat to g.app.statsDict.
+    Add another count stat to g.app.statsDict.
     g.printStats() prints all such stats.
-
-    When `name` is None, use the caller's name.
-
-    Always add a count statistic for `name`.
 
     When `obj` is given, add obj to a set associated with name.
     Example: `g.stat(obj=w.__class__.__name__)`.
     """
     d = g.app.statsDict
-    if name:
-        if not isinstance(name, str):
-            name = repr(name)
-    else:
-        name = g._callerName(n=2)  # Get caller name 2 levels back.
+    name = g._callerName(n=2)  # Get caller name 2 levels back.
 
     # Always add the count stat.
     key = f"stat_count: {name}"
