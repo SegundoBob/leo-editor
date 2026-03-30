@@ -2689,7 +2689,7 @@ def printStats(event: LeoKeyEvent = None) -> None:
                 print(f"    {z.strip()}")
 
 
-# @+node:ekr.20031218072017.3136: *4* g.stat
+# @+node:ekr.20031218072017.3136: *4* g.stat & g.statObj
 _int_stat_prefix = 'stat_count: '
 
 
@@ -2713,6 +2713,17 @@ def stat(obj: Any = None) -> None:
         aSet = d.get(name, set())
         aSet.add(obj)
         d[name] = aSet
+
+
+def statObj(obj: Any) -> None:
+    """
+    Add obj to a set associated with name *without* updating count stats.
+    """
+    d = g.app.statsDict
+    name = g._callerName(n=2)  # Get caller name 2 levels back.
+    aSet = d.get(name, set())
+    aSet.add(obj)
+    d[name] = aSet
 
 
 # @+node:ekr.20031218072017.3137: *3* g.Timing
