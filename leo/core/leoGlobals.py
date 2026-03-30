@@ -2669,28 +2669,30 @@ def printStats(event: LeoKeyEvent = None) -> None:
     """
     Print all stats created by g.stat(), counts first.
     """
-    d = g.app.statsDict
-    int_key = 'stat_count:'  # Must match the key in g.stat.
 
     # Print the signon.
+    d = g.app.statsDict
     print('g.app.statsDict...')
 
     # Print the int stats: calls to g.stat()
     for key in sorted(d.keys()):
-        if key.startswith(int_key):
-            key_s = key[len(int_key) :].strip()
+        if key.startswith(_int_stat_prefix):
+            key_s = key[len(_int_stat_prefix) :].strip()
             print(f"  {d.get(key):4}: {key_s}")
 
     # Print the other stats: calls to g.stat(whatever)
     for key in sorted(d.keys()):
-        if not key.startswith(int_key):
-            inner_keys = [z if isinstance(z, str) else repr(z) for z in d.get(key)]
+        if not key.startswith(_int_stat_prefix):
+            inner_keys = (z if isinstance(z, str) else repr(z) for z in d.get(key))
             print(f"{key}:")
             for z in sorted(inner_keys):
                 print(f"    {z.strip()}")
 
 
 # @+node:ekr.20031218072017.3136: *4* g.stat
+_int_stat_prefix = 'stat_count: '
+
+
 def stat(obj: Any = None) -> None:
     """
     Add another count stat to g.app.statsDict.
@@ -2703,7 +2705,7 @@ def stat(obj: Any = None) -> None:
     name = g._callerName(n=2)  # Get caller name 2 levels back.
 
     # Always add the count stat.
-    key = f"stat_count: {name}"
+    key = f"{_int_stat_prefix}{name}"
     d[key] = 1 + d.get(key, 0)
 
     # Add the other stat if obj is given.
