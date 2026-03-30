@@ -2694,7 +2694,7 @@ def printStats(event: LeoKeyEvent = None, name: str = None) -> None:
 
 
 # @+node:ekr.20031218072017.3136: *4* g.stat
-def stat(name: str = None) -> None:
+def stat(name: str = None, *, obj: Any = None) -> None:
     """Increments the statistic for name in g.app.statsDict
     The caller's name is used by default.
     """
@@ -2704,7 +2704,12 @@ def stat(name: str = None) -> None:
             name = repr(name)
     else:
         name = g._callerName(n=2)  # Get caller name 2 levels back.
-    d[name] = 1 + d.get(name, 0)
+    if obj is None:
+        d[name] = 1 + d.get(name, 0)
+    else:
+        aSet = d.get(name, set())
+        aSet.add(obj)
+        d[name] = aSet
 
 
 # @+node:ekr.20031218072017.3137: *3* g.Timing
