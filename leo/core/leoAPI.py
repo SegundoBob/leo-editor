@@ -404,13 +404,9 @@ class TreeAPI:
 
     # Must be defined in subclasses.
 
-    def editLabel(
-        self,
-        v: VNode,
-        selectAll: bool = False,
-        selection: tuple = None,
-    ) -> tuple[Widget, BaseTextAPI]:
-        return None, None
+    # Leo 6.8.9: return None.
+    def editLabel(self, v: VNode, selectAll: bool = False, selection: tuple = None) -> None:
+        pass
 
     def edit_widget(self, p: Position) -> None:
         return None
