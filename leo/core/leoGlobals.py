@@ -2315,6 +2315,8 @@ widget_classes = [
     'LeoQTextBrowser',
     'LeoQTreeWidget',
     'LeoQtTree',
+    'QLineEdit',
+    'QMinibufferWrapper',
     'QTextEditWrapper',
     'StringTextWrapper',
 ]
@@ -2331,7 +2333,10 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     if class_name in class_names:
         return
     d = g.check_class_dict
-    class_names_s = '\n  ' + '\n  '.join(class_names)
+    if len(class_names) <= 3:
+        class_names_s = ', '.join(class_names)
+    else:
+        class_names_s = '\n  ' + '\n  '.join(class_names)
     message = f"{key}: {class_name} not in:{class_names_s}"
     message_set = d.get(key, set())
     if message not in message_set:
