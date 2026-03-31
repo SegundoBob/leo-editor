@@ -2317,11 +2317,13 @@ widget_classes = [
     'LeoQTreeWidget',
     'LeoQtLog',
     'LeoQtTree',
+    'QHeadlineWrapper',
     'QLineEdit',
     'QMinibufferWrapper',
     'QTextEditWrapper',
     'StringTextWrapper',
     'todoQtUI',
+    'VisLineEdit',
 ]
 
 
@@ -2348,7 +2350,7 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
         return
     class_name = obj.__class__.__name__
     if g.unitTesting:
-        # A hack: A is StringTextWrapper when unit testing.
+        # A hack: Everything is a StringTextWrapper when unit testing.
         class_names = ['StringTextWrapper']
     elif class_names is None:
         class_names = g.widget_classes

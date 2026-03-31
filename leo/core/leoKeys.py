@@ -17,6 +17,7 @@ import time
 from typing import Any, Optional, Union, TYPE_CHECKING
 from types import ModuleType
 from leo.core import leoGlobals as g
+from leo.core.leoAPI import StringTextWrapper
 from leo.external import codewise
 from leo.core.leoFrame import NullLog
 
@@ -4569,8 +4570,8 @@ class KeyHandlerClass:
             c.frame.tree.set_status_line(c.p)
 
     # @+node:ekr.20110202111105.15439: *4* k.showStateCursor
-    def showStateCursor(self, state: str, w: QTextEditWrapper) -> None:
-        g.checkClass(w, ['QTextEditWrapper'])
+    def showStateCursor(self, state: str, w: Union[QTextEditWrapper, StringTextWrapper]) -> None:
+        g.checkClass(w, ['QTextEditWrapper', 'StringTextWrapper'])
 
     # @-others
 
