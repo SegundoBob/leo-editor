@@ -14,7 +14,8 @@ from collections.abc import Callable
 import os
 import re
 import string
-from typing import Any, Union, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
+from typing import Union  ###
 from leo.core import leoGlobals as g
 from leo.core import leoColorizer, leoMenu, leoNodes
 from leo.core.leoAPI import StringTextWrapper
@@ -44,16 +45,19 @@ if TYPE_CHECKING:  # pragma: no cover
         QtStatusLineClass,
     )
     from leo.plugins.qt_text import (
-        LeoQTextBrowser,
+        ### LeoQTextBrowser,
         QMinibufferWrapper,
         QScintillaWrapper,
         QTextEditWrapper,
     )
-    from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
-    from leo.plugins.cursesGui2 import BodyWrapper as CursesBodyWrapper
+    from leo.plugins.cursesGui2 import (
+        BodyWrapper as CursesBodyWrapper,
+        ### CoreFrame as CursesFrame,
+        MiniBufferWrapper as CursesMiniBufferWrapper,
+    )
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
-    TextAPI = Union[QScintillaWrapper, QTextEditWrapper, StringTextWrapper]
+    TextAPI = QScintillaWrapper | QTextEditWrapper | StringTextWrapper
 
 
 # @-<< leoFrame annotations >>
@@ -110,7 +114,7 @@ class LeoBody:
 
     # @+others
     # @+node:ekr.20031218072017.3657: *3* LeoBody.__init__
-    def __init__(self, frame: Union[LeoQtFrame, NullFrame]) -> None:
+    def __init__(self, frame: LeoQtFrame | NullFrame) -> None:
         """Ctor for LeoBody class."""
         c = frame.c
         frame.body = self
@@ -118,9 +122,9 @@ class LeoBody:
         self.frame = frame
         # Define these here to keep mypy happy.
         self.widget: Any = None  # cursesGui2.py: will be an npyscreen widget.
-        self.wrapper: Union[
-            StringTextWrapper, QScintillaWrapper, QTextEditWrapper, CursesBodyWrapper
-        ] = None
+        self.wrapper: (
+            StringTextWrapper | QScintillaWrapper | QTextEditWrapper | CursesBodyWrapper
+        ) = None
         # Must be overridden in subclasses...
         self.colorizer: BaseColorizer = None
         # Init user settings.
@@ -749,8 +753,8 @@ class LeoLog:
         # Depending on the log *tab*, logCtrl may be either a wrapper or a widget.
         self.logCtrl: Widget = None
         self.tabName: str = None  # The name of the active tab.
-        self.tabFrame: Union[LeoQTextBrowser, str] = None
-        self.frameDict: dict[str, str] = {}
+        self.tabFrame: LeoFrame | NullFrame = None
+        self.frameDict: dict[str, LeoFrame | NullFrame] = {}
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
         self.textDict: dict[str, Widget] = {}  # Keys: page names. Values: text widgets.
@@ -773,7 +777,7 @@ class LeoLog:
     ) -> Widget:
         # Do not change the signature above.
         self.textDict[tabName] = None
-        self.frameDict[tabName] = tabName
+        self.frameDict[tabName] = None
 
     # @+node:ekr.20070302094848.5: *3* LeoLog.deleteTab
     def deleteTab(self, tabName: str) -> None:
