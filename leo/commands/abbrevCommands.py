@@ -353,6 +353,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         This happens *before* any substitutions are made.
         """
         c = self.c
+        g.checkClass(w, ['QTextEditWrapper'])
         if not c.canPasteOutline(tree_s):
             g.trace(f"bad copied outline: {tree_s}")
             return
@@ -567,6 +568,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextEditWrapper, i: int, j: int, s: str) -> None:
         """Replace w[i:j] by s."""
+        g.checkClass(w, ['QTextEditWrapper'])
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
         bunch = u.beforeChangeBody(p)
@@ -594,6 +596,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20161121111502.1: *4* abbrev_get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextEditWrapper) -> str:
         """Get the ch from the stroke."""
+        g.checkClass(w, ['QTextEditWrapper'])
         ch = g.checkUnicode(event and event.char or '')
         if self.expanding:
             return None
@@ -623,6 +626,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """Return the prefixes at the current insertion point of w."""
         # New code allows *any* sequence longer than 1 to be an abbreviation.
         # Any whitespace stops the search.
+        g.checkClass(w, ['QTextEditWrapper'])
         s = w.getAllText()
         j = w.getInsertPoint()
         i, prefixes = j - 1, []
@@ -747,6 +751,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.23: *4* abbrev.getDynamicList (helper)
     def getDynamicList(self, w: QTextEditWrapper, s: str) -> list[str]:
         """Return a list of dynamic abbreviations."""
+        g.checkClass(w, ['QTextEditWrapper'])
         if self.globalDynamicAbbrevs:
             # Look in all nodes.h
             items = []

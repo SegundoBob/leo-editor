@@ -629,6 +629,7 @@ class VimCommands:
     # @+node:ekr.20140222064735.16709: *5* vc.begin_insert_mode
     def begin_insert_mode(self, i: int = None, w: QTextEditWrapper = None) -> None:
         """Common code for beginning insert mode."""
+        g.checkClass(w, ['QTextEditWrapper'])
         self.do_trace()
         # c = self.c
         if not w:
@@ -2333,6 +2334,7 @@ class VimCommands:
     # @+node:ekr.20140807112800.18122: *5* vc.test_for_insert_escape
     def test_for_insert_escape(self, w: QTextEditWrapper) -> bool:
         """Return True if the j,j escape sequence has ended insert mode."""
+        g.checkClass(w, ['QTextEditWrapper'])
         c = self.c
         s = w.getAllText()
         i = w.getInsertPoint()
@@ -2432,20 +2434,24 @@ class VimCommands:
     # @+node:ekr.20140802183521.17999: *4* vc.in_headline & vc.in_tree
     def in_headline(self, w: QTextEditWrapper) -> bool:
         """Return True if we are in a headline edit widget."""
+        g.checkClass(w, ['QTextEditWrapper'])
         return self.widget_name(w).startswith('head')
 
     def in_tree(self, w: QTextEditWrapper) -> bool:
         """Return True if we are in the outline pane, but not in a headline."""
+        g.checkClass(w, ['QTextEditWrapper'])
         return self.widget_name(w).startswith('canvas')
 
     # @+node:ekr.20140806081828.18157: *4* vc.is_body & is_head
     def is_body(self, w: QTextEditWrapper) -> bool:
         """Return True if w is the QTextBrowser of the body pane."""
+        g.checkClass(w, ['QTextEditWrapper'])
         w2 = self.c.frame.body.wrapper
         return w == w2
 
     def is_head(self, w: QTextEditWrapper) -> bool:
         """Return True if w is an headline edit widget."""
+        g.checkClass(w, ['QTextEditWrapper'])
         return self.widget_name(w).startswith('head')
 
     # @+node:ekr.20140801121720.18083: *4* vc.is_plain_key & is_text_wrapper
@@ -2455,6 +2461,7 @@ class VimCommands:
 
     def is_text_wrapper(self, w: QTextEditWrapper = None) -> bool:
         """Return True if w is a text widget."""
+        g.checkClass(w, ['QTextEditWrapper'])
         return self.is_body(w) or self.is_head(w) or g.isTextWrapper(w)
 
     # @+node:ekr.20140805064952.18153: *4* vc.on_idle (no longer used)
@@ -2542,6 +2549,7 @@ class VimCommands:
     # @+node:ekr.20140807070500.18161: *5* vc.set_property
     def set_property(self, w: QTextEditWrapper, focus_flag: bool) -> None:
         """Set the property of w, depending on focus and state."""
+        g.checkClass(w, ['QTextEditWrapper'])
         c, state = self.c, self.state
         #
         # #1221: Use a style sheet based on new settings.
@@ -2653,6 +2661,7 @@ class VimCommands:
 
     # @+node:ekr.20140805064952.18152: *4* vc.widget_name
     def widget_name(self, w: QTextEditWrapper) -> str:
+        g.checkClass(w, ['QTextEditWrapper'])
         return self.c.widget_name(w)
 
     # @-others

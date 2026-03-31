@@ -333,6 +333,7 @@ class LeoGui:
 
     # @+node:ekr.20110605121601.18845: *4* LeoGui.event_generate
     def event_generate(self, c: Cmdr, char: str, shortcut: str, w: QTextEditWrapper) -> None:
+        g.checkClass(w, ['QTextEditWrapper'])
         event = self.create_key_event(c, binding=shortcut, char=char, w=w)
         c.k.masterKeyHandler(event)
         c.outerUpdate()

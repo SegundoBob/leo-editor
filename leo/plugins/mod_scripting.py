@@ -1031,6 +1031,13 @@ class ScriptingController:
     def createBalloon(self, w: QTextEditWrapper, label: str) -> None:
         'Create a balloon for a widget.'
         if g.app.gui.guiName().startswith('qt'):
+            g.checkClass(
+                w,
+                [
+                    'leoIconBarButton',  ###
+                    'QTextEditWrapper',
+                ],
+            )
             # w is a leoIconBarButton.
             if hasattr(w, 'button'):
                 w.button.setToolTip(label)

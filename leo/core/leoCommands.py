@@ -595,7 +595,7 @@ class Commands:
             g.trace(f"{count} inactive focus: {w_class}")
 
     # @+node:ekr.20160427062131.1: *5* c.is_unusual_focus
-    def is_unusual_focus(self, w: QTextEditWrapper) -> bool:
+    def is_unusual_focus(self, w: Widget) -> bool:
         """Return True if w is not in an expected place."""
         #
         # #270: Leo's keyboard events doesn't work after "Insert"
@@ -604,14 +604,16 @@ class Commands:
         # #276: Focus lost...in Nav text input
         from leo.plugins import qt_frame
 
+        g.checkWidget(w)
         return isinstance(w, qt_frame.QtTabBarWrapper)
 
     # @+node:ekr.20150403063658.1: *5* c.trace_idle_focus
-    def trace_idle_focus(self, w: QTextEditWrapper) -> None:
+    def trace_idle_focus(self, w: Widget) -> None:
         """Trace the focus for w, minimizing chatter."""
         from leo.core.leoQt import QtWidgets
         from leo.plugins import qt_frame
 
+        g.checkWidget(w)
         trace = 'focus' in g.app.debug
         trace_known = False
         c = self
@@ -4721,6 +4723,7 @@ class Commands:
         return c.requestedFocusWidget
 
     def request_focus(self, w: Widget) -> None:
+        g.checkWidget(w)
         c = self
         trace = 'focus' in g.app.debug
         if w and g.app.gui:

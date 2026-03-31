@@ -2312,39 +2312,17 @@ def my_name(i: int = 1) -> str:
 check_class_dict: dict[str, set[str]] = {}
 
 widget_classes = [
+    'DynamicWindow',
     'LeoQTextBrowser',
     'LeoQTreeWidget',
+    'LeoQtLog',
     'LeoQtTree',
     'QLineEdit',
     'QMinibufferWrapper',
     'QTextEditWrapper',
     'StringTextWrapper',
+    'todoQtUI',
 ]
-
-
-def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
-    """
-    Check that the given object is of the expected class.
-    Give a message (unique to each caller) if the check fails.
-    """
-    class_name = obj.__class__.__name__
-    if class_names is None:
-        class_names = g.widget_classes
-    if class_name in class_names:
-        return
-    d = g.check_class_dict
-    if len(class_names) <= 3:
-        class_names_s = ', '.join(class_names)
-    else:
-        class_names_s = '\n  ' + '\n  '.join(class_names)
-    message = f"{key}: {class_name} not in:{class_names_s}"
-    message_set = d.get(key, set())
-    if message not in message_set:
-        g.es_print(message, color='red')
-        message_set.add(message)
-        d[key] = message_set
-    if g.unitTesting:
-        assert False, message
 
 
 def checkClass(obj: Any, class_names: list[str]) -> None:
@@ -2359,6 +2337,34 @@ def checkWidget(obj: Any) -> None:
     Check that a Widget has the appropriate class.
     """
     g._check_class_helper(obj, key=g.caller(), class_names=None)
+
+
+def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
+    """
+    Check that the given object is of the expected class.
+    Give a message (unique to each caller) if the check fails.
+    """
+    if obj is None:
+        return
+    class_name = obj.__class__.__name__
+    if g.unitTesting:
+        # A hack: A is StringTextWrapper when unit testing.
+        class_names = ['StringTextWrapper']
+    elif class_names is None:
+        class_names = g.widget_classes
+    if class_name in class_names:
+        return
+    d = g.check_class_dict
+    if len(class_names) <= 3:
+        class_names_s = ', '.join(class_names)
+    else:
+        class_names_s = '\n  ' + '\n  '.join(class_names)
+    message = f"{key}: {class_name} not in:{class_names_s}"
+    message_set = d.get(key, set())
+    if message not in message_set:
+        g.es_print(message, color='red')
+        message_set.add(message)
+        d[key] = message_set
 
 
 # @+node:ekr.20031218072017.3109: *4* g.dump

@@ -1069,13 +1069,12 @@ class LeoQtGui(leoGui.LeoGui):
         g.doHook('activate', c=c, p=c.p, v=c.p, event=event)
 
     # @+node:ekr.20130921043420.21175: *4* LeoQtGui.setFilter
-    def setFilter(self, c: Cmdr, obj: object, w: QTextEditWrapper, tag: str) -> None:
+    def setFilter(self, c: Cmdr, obj: object, w: QWidget, tag: str) -> None:
         """
         Create an event filter in obj.
         w is a wrapper object, not necessarily a QWidget.
         """
-        # w's type is in (DynamicWindow,QMinibufferWrapper,LeoQtLog,LeoQtTree,
-        # QTextEditWrapper,LeoQTextBrowser,LeoQuickSearchWidget,cleoQtUI)
+        g.checkWidget(w)
         assert isinstance(obj, QtWidgets.QWidget), obj
         theFilter = qt_events.LeoQtEventFilter(c, w=w, tag=tag)
         obj.installEventFilter(theFilter)
@@ -1108,8 +1107,9 @@ class LeoQtGui(leoGui.LeoGui):
         return w
 
     # @+node:ekr.20190601054959.1: *4* LeoQtGui.set_focus
-    def set_focus(self, c: Cmdr, w: QTextEditWrapper) -> None:
+    def set_focus(self, c: Cmdr, w: QWidget) -> None:
         """Put the focus on the widget."""
+        g.checkWidget(w)
         if not w:
             return
         if getattr(w, 'widget', None):
@@ -1405,6 +1405,7 @@ class LeoQtGui(leoGui.LeoGui):
     def onContextMenu(self, c: Cmdr, w: QTextEditWrapper, point: QPoint) -> None:
         """LeoQtGui: Common context menu handling."""
         # #1286.
+        g.checkClass(w, ['QTextEditWrapper'])
         handlers = g.tree_popup_handlers
         if not handlers:
             return  # #4164: The "No popup handlers" message is annoying.
@@ -1690,13 +1691,13 @@ class LeoQtGui(leoGui.LeoGui):
         return self.find_widget_by_name(c, 'main_splitter')
 
     # @+node:ekr.20110605121601.18522: *4* LeoQtGui.isTextWidget/isTextWrapper
-    def isTextWidget(self, w: QTextEditWrapper) -> bool:
+    def isTextWidget(self, w: Any) -> bool:
         """Return True if w is some kind of Qt text widget."""
         if Qsci:
             return isinstance(w, (Qsci.QsciScintilla, QtWidgets.QTextEdit))
         return isinstance(w, QtWidgets.QTextEdit)
 
-    def isTextWrapper(self, w: QTextEditWrapper) -> bool:
+    def isTextWrapper(self, w: Any) -> bool:
         """Return True if w is a Text widget suitable for text-oriented commands."""
         if w is None:
             return False
@@ -1705,8 +1706,9 @@ class LeoQtGui(leoGui.LeoGui):
         return bool(getattr(w, 'supportsHighLevelInterface', None))
 
     # @+node:ekr.20110605121601.18527: *4* LeoQtGui.widget_name
-    def widget_name(self, w: QTextEditWrapper) -> str:
+    def widget_name(self, w: QWidget) -> str:
         # First try the widget's getName method.
+        g.checkWidget(w)
         if not w:
             name = '<no widget>'
         elif hasattr(w, 'getName'):
@@ -1827,12 +1829,13 @@ class StyleClassManager:
 
         :param QWidgit w: widget to style
         """
-
+        g.checkClass(w, ['QTextEditWrapper'])
         w.setStyleSheet("/* */")  # forces visual update
 
     # @+node:tbrown.20150724090431.3: *3* add_sclass
     def add_sclass(self, w: QTextEditWrapper, prop: str) -> None:
         """Add style class to QWidget w"""
+        g.checkClass(w, ['QTextEditWrapper'])
         if not prop:
             return
         props = self.sclasses(w)
@@ -1843,11 +1846,13 @@ class StyleClassManager:
     # @+node:tbrown.20150724090431.4: *3* clear_sclasses
     def clear_sclasses(self, w: QTextEditWrapper) -> None:
         """Remove all style classes from QWidget w"""
+        g.checkClass(w, ['QTextEditWrapper'])
         w.setProperty(self.style_sclass_property, '')
 
     # @+node:tbrown.20150724090431.5: *3* has_sclass
     def has_sclass(self, w: QTextEditWrapper, prop: str) -> bool:
         """Check for style class or list of classes prop on QWidget w"""
+        g.checkClass(w, ['QTextEditWrapper'])
         if not prop:
             return None
         props = self.sclasses(w)
@@ -1860,6 +1865,7 @@ class StyleClassManager:
     # @+node:tbrown.20150724090431.6: *3* remove_sclass
     def remove_sclass(self, w: QTextEditWrapper, prop: str) -> None:
         """Remove style class or list of classes prop from QWidget w"""
+        g.checkClass(w, ['QTextEditWrapper'])
         if not prop:
             return
         props = self.sclasses(w)
@@ -1873,11 +1879,13 @@ class StyleClassManager:
     # @+node:tbrown.20150724090431.8: *3* sclasses
     def sclasses(self, w: QTextEditWrapper) -> list[str]:
         """return list of style classes for QWidget w"""
+        g.checkClass(w, ['QTextEditWrapper'])
         return str(w.property(self.style_sclass_property) or '').split()
 
     # @+node:tbrown.20150724090431.9: *3* set_sclasses
     def set_sclasses(self, w: QTextEditWrapper, classes: list[str]) -> None:
         """Set style classes for QWidget w to list in classes"""
+        g.checkClass(w, ['QTextEditWrapper'])
         w.setProperty(self.style_sclass_property, f" {' '.join(set(classes))} ")
 
     # @-others

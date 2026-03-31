@@ -204,6 +204,7 @@ class FreeLayoutController:
 
         We tacitly assume that this splitter contains the body pane.
         """
+        g.checkClass(w, ['QTextEditWrapper'])
         top = self.get_top_splitter()
         return top if top.objectName() == 'main_splitter' else None
 
