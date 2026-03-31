@@ -35,7 +35,6 @@
 # rules.
 # @-<< about internal bindings >>
 import sys
-from typing import Union
 from leo.core import leoGlobals as g
 from leo.core import leoGui
 from leo.core.leoQt import QtCore, QtGui, QtWidgets

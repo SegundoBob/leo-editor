@@ -36,7 +36,7 @@ import logging
 import logging.handlers
 import re
 import sys
-from typing import Any, Generator, Optional, Union, TYPE_CHECKING
+from typing import Any, Generator, Optional, TYPE_CHECKING
 
 # Third-party.
 try:

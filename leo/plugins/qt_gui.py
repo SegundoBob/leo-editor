@@ -12,7 +12,7 @@ import re
 import sys
 import textwrap
 from time import sleep
-from typing import Any, Generator, Optional, Tuple, Union, TYPE_CHECKING
+from typing import Any, Generator, Optional, Tuple, TYPE_CHECKING
 from leo.core import leoColor
 from leo.core import leoGlobals as g
 from leo.core import leoGui

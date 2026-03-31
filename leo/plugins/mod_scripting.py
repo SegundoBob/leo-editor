@@ -155,7 +155,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent as Event
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper
     from leo.leoQt import QtWidgets
 
     Args = Any

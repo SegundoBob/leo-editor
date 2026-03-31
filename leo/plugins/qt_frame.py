@@ -13,7 +13,7 @@ import string
 import sys
 import time
 import urllib
-from typing import Any, Optional, Union, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.core import (
     leoColor,
