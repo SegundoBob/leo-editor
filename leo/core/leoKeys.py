@@ -14,7 +14,7 @@ import string
 import sys
 import textwrap
 import time
-from typing import Any, Optional, Union, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 from types import ModuleType
 from leo.core import leoGlobals as g
 from leo.external import codewise
@@ -1119,7 +1119,7 @@ class FileNameChooser:
         self.c = c
         self.k = c.k
         assert c and c.k
-        self.log: Union[NullLog, LeoQtLog] = c.frame.log or NullLog(frame=c.frame)
+        self.log: NullLog | LeoQtLog = c.frame.log or NullLog(frame=c.frame)
         self.callback: Callable = None
         self.filterExt: list[str] = None
         self.prompt: str = None
