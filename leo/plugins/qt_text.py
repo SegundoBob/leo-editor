@@ -1770,7 +1770,7 @@ class QTextEditWrapper(QTextMixin):
         flashes: int = 3,
         delay: int = 75,
     ) -> None:
-        """QTextEditWrapper."""
+        """QTextEditWrapper: flash a character."""
         # numbered color names don't work in Ubuntu 8.10, so...
         if bg[-1].isdigit() and bg[0] != '#':
             bg = bg[:-1]
@@ -1781,6 +1781,7 @@ class QTextEditWrapper(QTextMixin):
         if g.unitTesting:
             return
         w = self.widget  # A QTextEdit.
+        g.checkTextWidget(w)
         # Remember highlighted line:
         last_selections = w.extraSelections()
 
@@ -1788,6 +1789,7 @@ class QTextEditWrapper(QTextMixin):
             QtCore.QTimer.singleShot(delay, func)
 
         def addFlashCallback(self: QTextEditWrapper = self, w: QWidget = w) -> None:
+            g.checkTextWidget(w)
             i = self.flashIndex
             cursor = w.textCursor()  # Must be the widget's cursor.
             cursor.setPosition(i)
@@ -1805,6 +1807,7 @@ class QTextEditWrapper(QTextMixin):
             after(removeFlashCallback)
 
         def removeFlashCallback(self: QTextEditWrapper = self, w: QWidget = w) -> None:
+            g.checkWidget(w)
             w.setExtraSelections(last_selections)
             if self.flashCount > 0:
                 after(addFlashCallback)

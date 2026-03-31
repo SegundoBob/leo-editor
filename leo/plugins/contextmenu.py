@@ -152,6 +152,7 @@ def getEditor(c: Cmdr) -> tuple[str, str]:
 # @+node:ville.20091008192104.7691: *3* configuredcommands_rclick
 def configuredcommands_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Add all items given by @data contextmenu-commands"""
+    g.checkTextWidget(menu)
     config = c.config.getData('contextmenu_commands')
     if not config:
         return
@@ -184,7 +185,7 @@ def configuredcommands_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> N
 # @+node:tbrown.20091203121808.15818: *3* deletenodes_rclick
 def deletenodes_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Delete selected nodes"""
-
+    g.checkTextWidget(menu)
     u = c.undoer
     pl = c.getSelectedPositions()
     undoType = 'Delete Node'
@@ -242,8 +243,9 @@ def deletenodes_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 def editnode_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Provide "edit in EDITOR" context menu item.
 
-    Opens file or node in external editor."""
-
+    Opens file or node in external editor.
+    """
+    g.checkTextWidget(menu)
     editor, basename = getEditor(c)
 
     def editnode_rclick_cb() -> None:
@@ -257,6 +259,7 @@ def editnode_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 # @+node:ville.20090719202132.5248: *3* marknodes_rclick
 def marknodes_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Mark selected nodes"""
+    g.checkTextWidget(menu)
     pl = c.getSelectedPositions()
     if any(not p.isMarked() for p in pl):
 
@@ -281,7 +284,7 @@ def marknodes_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 # @+node:ville.20090702171015.5480: *3* nextclone_rclick
 def nextclone_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Go to next clone"""
-
+    g.checkTextWidget(menu)
     if p.isCloned():
 
         def nextclone_rclick_cb() -> None:
@@ -294,6 +297,7 @@ def nextclone_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 # @+node:ekr.20120311191905.9900: *3* openurl_rclick
 def openurl_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """open an url"""
+    g.checkTextWidget(menu)
     url = g.getUrlFromNode(p)
     if url:
 
@@ -312,8 +316,8 @@ def openwith_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     Show "Edit with" in context menu for external file root nodes (@thin, @auto...)
 
     This looks like "Edit contextmenu.py in scite"
-
     """
+    g.checkTextWidget(menu)
 
     # define callbacks
     # @+others
@@ -381,6 +385,8 @@ def openwith_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 
 # @+node:ville.20090630221949.5462: *3* refresh_rclick
 def refresh_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
+    g.checkTextWidget(menu)
+
     def refresh_rclick_cb() -> None:
         c.refreshFromDisk(p.copy())
 
@@ -392,6 +398,8 @@ def refresh_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 
 # @+node:felix.20250830151921.1: *3* openatleo_rclick
 def openatleo_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
+    g.checkTextWidget(menu)
+
     def openatleo_rclick_cb() -> None:
         path = c.fullPath(p)
         if g.os_path_exists(path):
@@ -408,6 +416,7 @@ def openatleo_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 # @+node:ekr.20140724211116.19258: *3* pylint_rclick
 def pylint_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Run pylint on the selected node."""
+    g.checkTextWidget(menu)
     action = menu.addAction("Run Pylint")
 
     def pylint_rclick_cb(aBool: bool) -> None:

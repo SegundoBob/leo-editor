@@ -117,6 +117,7 @@ class Commands:
         previousSettings: "PreviousSettings" = None,
         relativeFileName: str = None,
     ) -> None:
+        g.checkWidget(parentFrame)
         t1 = time.process_time()
         c = self
         # Official ivars.
@@ -4754,6 +4755,7 @@ class Commands:
 
     # @+node:ekr.20080514131122.16: *5* c.traceFocus (not used)
     def traceFocus(self, w: QTextEditWrapper) -> None:
+        g.checkWidget(w)
         c = self
         if 'focus' in g.app.debug:
             c.trace_focus_count += 1

@@ -2308,8 +2308,27 @@ def my_name(i: int = 1) -> str:
     return g.callers(-1).split(',')[0]
 
 
-# @+node:ekr.20260330144349.1: *4* g.checkClass & g.checkWidget
+# @+node:ekr.20260330144349.1: *4* g.checkClass, checkTextWidget, checkWidget
 check_class_dict: dict[str, set[str]] = {}
+
+text_classes = [
+    # 'BodyWrapper',  # --gui=console
+    # 'DynamicWindow',
+    'LeoQTextBrowser',
+    'LeoQTreeWidget',
+    'LeoQtLog',
+    # 'LeoQtTree',
+    'QHeadlineWrapper',
+    'QLineEdit',
+    'QMenuWrapper',
+    'QMinibufferWrapper',
+    # 'QPushButton',
+    'QTextBrowser',
+    'QTextEditWrapper',
+    'StringTextWrapper',
+    # 'todoQtUI',
+    'VisLineEdit',
+]
 
 widget_classes = [
     'BodyWrapper',  # --gui=console
@@ -2336,6 +2355,13 @@ def checkClass(obj: Any, class_names: list[str]) -> None:
     Check that an object has the appropriate class.
     """
     g._check_class_helper(obj, key=g.caller(), class_names=class_names)
+
+
+def checkTextWidget(obj: Any) -> None:
+    """
+    Check that an object has the appropriate class.
+    """
+    g._check_class_helper(obj, key=g.caller(), class_names=text_classes)
 
 
 def checkWidget(obj: Any) -> None:

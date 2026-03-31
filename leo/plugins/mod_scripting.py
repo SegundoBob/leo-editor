@@ -1028,17 +1028,11 @@ class ScriptingController:
         return s.replace(' ', '-').strip('-')
 
     # @+node:ekr.20060522104419.1: *4* sc.createBalloon (gui-dependent)
-    def createBalloon(self, w: QTextEditWrapper, label: str) -> None:
+    def createBalloon(self, w: QtWidgets.QWidgetAction, label: str) -> None:
         'Create a balloon for a widget.'
         if g.app.gui.guiName().startswith('qt'):
-            g.checkClass(
-                w,
-                [
-                    'leoIconBarButton',  ###
-                    'QTextEditWrapper',
-                ],
-            )
-            # w is a leoIconBarButton.
+            # QWidgetAction is the base class of leoIconBarButton.
+            g.checkClass(w, ['leoIconBarButton'])
             if hasattr(w, 'button'):
                 w.button.setToolTip(label)
 
@@ -1225,8 +1219,10 @@ class ScriptingController:
         return s.strip()
 
     # @+node:ekr.20150402021505.1: *4* sc.setButtonColor
-    def setButtonColor(self, b: QTextEditWrapper, bg: str) -> None:
+    def setButtonColor(self, b: QtWidgets.QWidgetAction, bg: str) -> None:
         """Set the background color of Qt button b to bg."""
+        # QWidgetAction is the base class of leoIconBarButton.
+        g.checkClass(b, ['leoIconBarButton'])
         if not bg:
             return
         if not bg.startswith('#'):

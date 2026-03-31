@@ -37,7 +37,7 @@ class BaseEditCommandsClass:
     # @+node:ekr.20150514043714.4: *4* BaseEdit.beginCommand
     def beginCommand(self, w: QTextEditWrapper, undoType: str = 'Typing') -> QTextEditWrapper:
         """Do the common processing at the start of each command."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         c, p, u = self.c, self.c.p, self.c.undoer
         name = c.widget_name(w)
         if name.startswith('body'):
@@ -118,7 +118,7 @@ class BaseEditCommandsClass:
     # @+node:ekr.20150514043714.13: *4* BaseEdit.getRectanglePoints
     def getRectanglePoints(self, w: QTextEditWrapper) -> tuple[int, int, int, int]:
         """Return the rectangle corresponding to the selection range."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         c = self.c
         c.widgetWantsFocusNow(w)
         s = w.getAllText()

@@ -317,6 +317,7 @@ class LeoGui:
         # Do not call strokeFromSetting here!
         # For example, this would wrongly convert Ctrl-C to Ctrl-c,
         # in effect, converting a user binding from Ctrl-Shift-C to Ctrl-C.
+        g.checkTextWidget(w)
         return LeoKeyEvent(c, char, event, binding, w, x, y, x_root, y_root)
 
     # @+node:ekr.20031218072017.3740: *4* LeoGui.guiName
@@ -333,7 +334,7 @@ class LeoGui:
 
     # @+node:ekr.20110605121601.18845: *4* LeoGui.event_generate
     def event_generate(self, c: Cmdr, char: str, shortcut: str, w: QTextEditWrapper) -> None:
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         event = self.create_key_event(c, binding=shortcut, char=char, w=w)
         c.k.masterKeyHandler(event)
         c.outerUpdate()

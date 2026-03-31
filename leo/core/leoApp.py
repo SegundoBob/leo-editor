@@ -1600,6 +1600,7 @@ class LeoApp:
         # Timeit reports 0.0175 sec when using a nullGui.
         from leo.core import leoCommands
 
+        g.checkWidget(parentFrame)
         c = leoCommands.Commands(
             fileName,
             gui=gui,

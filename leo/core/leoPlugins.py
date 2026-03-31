@@ -260,6 +260,7 @@ class BaseLeoPlugin:
         """Create a menu item in 'menu' using text 'commandName' calling handler 'handler'
         if commandName and handler are none, use the most recently defined values
         """
+        g.checkWidget(menu)
         # setMenuItem can create a command, or use a previously defined one.
         if commandName is None:
             commandName = self.commandName

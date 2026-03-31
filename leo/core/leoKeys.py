@@ -32,11 +32,13 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGlobals import BindingInfo
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
+    from leo.core.leoQt import QtWidgets
     from leo.plugins.qt_frame import LeoQtLog
     from leo.plugins.qt_text import QTextEditWrapper
 
     Args = Any
     KWargs = Any
+    QWidget = QtWidgets.QWidget
     Stroke = Any
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
@@ -2292,7 +2294,7 @@ class KeyHandlerClass:
         The event will go to k.masterKeyHandler as always, so nothing really changes.
         except that k.masterKeyHandler will know the proper stroke.
         """
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         k = self
         for stroke in k.bindingsDict:
             assert g.isStroke(stroke), repr(stroke)
@@ -2301,7 +2303,7 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.96: *4* k.completeAllBindingsForWidget
     def completeAllBindingsForWidget(self, w: QTextEditWrapper) -> None:
         """Make all a master gui binding for widget w."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         k = self
         for stroke in k.bindingsDict:
             assert g.isStroke(stroke), repr(stroke)
@@ -2411,7 +2413,7 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.103: *4* k.makeMasterGuiBinding
     def makeMasterGuiBinding(self, stroke: Stroke, w: QTextEditWrapper = None) -> None:
         """Make a master gui binding for stroke in pane w, or in all the standard widgets."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         c, k = self.c, self
         f = c.frame
         if w:
@@ -3237,7 +3239,7 @@ class KeyHandlerClass:
 
         **Only unit tests use this method.**
         """
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         c, k = self.c, self
         # Unit tests do not ordinarily read settings files.
         stroke = k.getStrokeForCommandName(commandName)
@@ -3895,11 +3897,15 @@ class KeyHandlerClass:
 
     # @+node:ekr.20180418105228.1: *7* getPaneBindingHelper
     def getBindingHelper(
-        self, key: str, name: str, stroke: Stroke, w: QTextEditWrapper
+        self,
+        key: str,
+        name: str,
+        stroke: Stroke,
+        w: QWidget,
     ) -> g.BindingInfo:
         """Find a binding for the widget with the given name."""
+        g.checkWidget(w)
         c, k = self.c, self
-        #
         # Return if the pane's name doesn't match the event's widget.
         state = k.unboundKeyAction
         w_name = c.widget_name(w)
@@ -3911,7 +3917,6 @@ class KeyHandlerClass:
         )  # fmt: skip
         if not pane_matches:
             return None
-        #
         # Return if there is no binding at all.
         d = k.masterBindingsDict.get(key, {})
         if not d:
@@ -3919,11 +3924,9 @@ class KeyHandlerClass:
         bi = d.get(stroke)
         if not bi:
             return None
-        #
         # Ignore previous/next-line commands while editing headlines.
         if key == 'text' and name == 'head' and bi.commandName in ('previous-line', 'next-line'):
             return None
-        #
         # The binding has been found.
         return bi
 
@@ -4158,7 +4161,7 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.158: *4* k.createModeBindings
     def createModeBindings(self, modeName: str, d: dict[str, list], w: QTextEditWrapper) -> None:
         """Create mode bindings for the named mode using dictionary d for w, a text widget."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         c, k = self.c, self
         assert d.name().endswith('-mode')
         for commandName in d.keys():
@@ -4516,6 +4519,7 @@ class KeyHandlerClass:
         self, w: QTextEditWrapper = None, prompt: str = None, setFocus: bool = True
     ) -> None:
         """Show the state and mode at the start of the minibuffer."""
+        g.checkTextWidget(w)
         c, k = self.c, self
         state = k.unboundKeyAction
         mode = k.getStateKind()
@@ -4627,7 +4631,7 @@ class ModeInfo:
     # @+node:ekr.20120208064440.10160: *3* mode_i.createModeBindings
     def createModeBindings(self, w: QTextEditWrapper) -> None:
         """Create mode bindings for w, a text widget."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkTextWidget(w)
         c, d, k, modeName = self.c, self.d, self.k, self.name
         for commandName in d:
             func = c.commandsDict.get(commandName)
