@@ -8,7 +8,7 @@ from __future__ import annotations
 from collections.abc import Callable
 import os
 import re
-from typing import Any, TYPE_CHECKING
+from typing import Any, Union, TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.commands.baseCommands import BaseEditCommandsClass
 
@@ -16,7 +16,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position, VNode
-    from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QMinibufferWrapper, QTextEditWrapper
 
     KWargs = Any
     Value = Any
@@ -2736,9 +2736,9 @@ class EditCommandsClass(BaseEditCommandsClass):
         self.moveToHelper(event, i, extend)
 
     # @+node:ekr.20150514063305.289: *5* ec.setMoveCol
-    def setMoveCol(self, w: QTextEditWrapper, spot: int) -> None:
+    def setMoveCol(self, w: Union[QMinibufferWrapper, QTextEditWrapper], spot: int) -> None:
         """Set the column to which an up or down arrow will attempt to move."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkClass(w, ['QMinibufferWrapper', 'QTextEditWrapper'])
         p = self.c.p
         row, col = w.toPythonIndexRowCol(spot)
         self.moveSpot = spot
