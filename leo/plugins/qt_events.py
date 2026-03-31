@@ -558,7 +558,7 @@ class LeoQtEventFilter(QtCore.QObject):
         """Show unexpected events in unusual widgets."""
         verbose = False  # Not good for --trace-events
         e = QtCore.QEvent
-        t: Union[str, QtCore.QEvent.Type]
+        t: str | QtCore.QEvent.Type
         assert isinstance(event, QtCore.QEvent)
         et = event.type()
         # http://qt-project.org/doc/qt-4.8/qevent.html#properties

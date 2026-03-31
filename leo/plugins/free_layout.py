@@ -30,7 +30,7 @@ free-layout-zoom
 # @+node:tbrown.20110203111907.5520: ** << free_layout imports >>
 from __future__ import annotations
 import json
-from typing import Any, Optional, Union, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 #
@@ -370,7 +370,7 @@ class FreeLayoutController:
         return False
 
     # @+node:tbrown.20110628083641.11724: *3* flc.ns_provide
-    def ns_provide(self, id_: str) -> Union[str, QTextEditWrapper, None]:
+    def ns_provide(self, id_: str) -> Optional[str | QTextEditWrapper]:
         if id_.startswith('_leo_tab:'):
             id_ = id_.split(':', 1)[1]
             top = self.get_top_splitter()

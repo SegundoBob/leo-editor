@@ -38,7 +38,7 @@ import time
 import traceback
 import types
 from types import ModuleType
-from typing import Any, IO, Iterable, Optional, Sequence, Union, TYPE_CHECKING
+from typing import Any, IO, Iterable, Optional, Sequence, TYPE_CHECKING
 import unittest
 import urllib
 import urllib.parse as urlparse
@@ -69,7 +69,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
     Args = Any
     KWargs = Any
-    Tags = Union[str, Sequence[str]]
+    Tags = str | Sequence[str]
     Request = Any  # A requests.Request object.
     Value = Any
 # @-<< leoGlobals: annotations >>
@@ -1185,7 +1185,7 @@ class MatchBrackets:
         offset = 1 if self.forward else -1
         i1 = i
         i += offset
-        found: Union[int, bool] = False
+        found: int | bool = False
         while 0 <= i < len(s) and s[i] != '\n':
             ch = s[i]
             i2 = i - 1  # in case we have to look behind.
@@ -1259,7 +1259,7 @@ class MatchBrackets:
         Note that only one of new_left and new_right will necessarily be a
         bracket, but index_of_bracket_char will definitely be a bracket.
         """
-        expanded: Union[bool, str] = False
+        expanded: bool | str = False
         left = max(0, min(left, len(s)))  # #2240
         right = max(0, min(right, len(s)))  # #2240
         orig_left = left
@@ -2921,7 +2921,7 @@ def findLanguageDirectives(c: Cmdr, p: Position) -> Optional[str]:
 
     v0 = p.v
 
-    def find_language(p_or_v: Union[Position, VNode]) -> Optional[str]:
+    def find_language(p_or_v: Position | VNode) -> Optional[str]:
         for s in p_or_v.h, p_or_v.b:
             for m in g_language_pat.finditer(s):
                 language = m.group(1)
@@ -3903,7 +3903,7 @@ def splitLongFileName(fn: str, limit: int = 40) -> str:
 
 
 # @+node:ekr.20190114061452.26: *3* g.writeFile
-def writeFile(contents: Union[bytes, str], encoding: str, fileName: str) -> bool:
+def writeFile(contents: bytes | str, encoding: str, fileName: str) -> bool:
     """Create a file with the given contents."""
     try:
         if isinstance(contents, str):
@@ -7414,7 +7414,7 @@ def exec_file(path: str, d: dict[str, Value], script: str = None) -> None:
 
 
 # @+node:ekr.20131016032805.16721: *3* g.execute_shell_commands
-def execute_shell_commands(commands: Union[str, list[str]], trace: bool = False) -> None:
+def execute_shell_commands(commands: str | list[str], trace: bool = False) -> None:
     """
     Execute each shell command in a separate process.
     Wait for each command to complete, except those starting with '&'

@@ -160,7 +160,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
     Args = Any
     KWargs = Any
-    RClick = tuple  # Union[tuple, namedtuple('RClick', 'position,children')]
+    RClick = tuple
     RClicks = list[RClick]
     Value = Any
 

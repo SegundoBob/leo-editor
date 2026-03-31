@@ -12,7 +12,7 @@ import string
 import sys
 import textwrap
 import time
-from typing import Any, Optional, TYPE_CHECKING, Union
+from typing import Any, Optional, TYPE_CHECKING
 import zipfile
 import platform
 from leo.core import leoGlobals as g
@@ -208,9 +208,9 @@ class LeoApp:
         self.backgroundProcessManager: BackgroundProcessManager = None
         self.config: GlobalConfigManager = None  # g.app.config.
         # A global db, managed by g.app.global_cacher.
-        self.db: Union[dict, SqlitePickleShare] = None
+        self.db: dict | SqlitePickleShare = None
         self.externalFilesController: ExternalFilesController = None
-        self.global_cacher: Union[dict, GlobalCacher] = None
+        self.global_cacher: dict | GlobalCacher = None
         self.idleTimeManager: IdleTimeManager = None
         self.jupytextManager: JupytextManager = None
         self.loadManager: LoadManager = None

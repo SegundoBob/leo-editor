@@ -9,8 +9,7 @@ from collections.abc import Callable
 import keyword
 import re
 import time
-from typing import Any, Generator, Optional, Union
-from typing import TYPE_CHECKING
+from typing import Any, Generator, Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -297,7 +296,7 @@ class LeoFind:
         # Init...
         self.find_text = find_text
         self.change_text = self.replace_back_slashes(change_text)
-        positions: Union[list, Generator]
+        positions: list | Generator
         if self.node_only:
             positions = [p1]
         elif self.suboutline_only:
@@ -3348,7 +3347,7 @@ class LeoFind:
 
     # @+node:ekr.20150629072547.1: *4* find.preload_find_pattern
     def preload_find_pattern(
-        self, w: Union[BodyWrapper, QTextEditWrapper]
+        self, w: BodyWrapper | QTextEditWrapper
     ) -> None:  # pragma: no cover (cmd)
         """Preload the find pattern from the selected text of widget w."""
         g.checkTextWidget(w)

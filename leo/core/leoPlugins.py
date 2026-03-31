@@ -7,7 +7,7 @@
 from __future__ import annotations
 from collections.abc import Callable
 import sys
-from typing import Any, Iterator, Sequence, Union, TYPE_CHECKING
+from typing import Any, Iterator, Sequence, TYPE_CHECKING
 from types import ModuleType
 from leo.core import leoGlobals as g
 
@@ -18,7 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover
     Args = Any
     KWargs = Any
     Keywords = dict[str, list[g.Bunch]]
-    Tags = Union[str, Sequence[str]]
+    Tags = str | Sequence[str]
     Value = Any
 # @-<< leoPlugins imports & annotations >>
 

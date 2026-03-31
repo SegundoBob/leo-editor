@@ -15,7 +15,7 @@ import tabnanny
 import tempfile
 import time
 import tokenize
-from typing import Any, Generator, Iterable, Optional, Sequence, Union, TYPE_CHECKING
+from typing import Any, Generator, Iterable, Optional, Sequence, TYPE_CHECKING
 import xml.etree.ElementTree as ElementTree
 
 from leo.core import leoGlobals as g
@@ -72,7 +72,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
     Args = Any
     KWargs = Any
-    RegexFlag = Union[int, re.RegexFlag]  # re.RegexFlag does not define 0
+    RegexFlag = int | re.RegexFlag  # re.RegexFlag does not define 0
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 
@@ -1043,7 +1043,7 @@ class Commands:
             return ''
 
         # @+node:tom.20241014154415.15: *5* getCommonTerminal
-        def getCommonTerminal(names: Union[str, Iterable[str]]) -> str:
+        def getCommonTerminal(names: str | Iterable[str]) -> str:
             """Return a terminal name given candidate names.
 
             ARGUMENT
@@ -2111,7 +2111,7 @@ class Commands:
         return False
 
     # @+node:ekr.20070609122713: *5* c.visLimit
-    def visLimit(self) -> Union[tuple[None, None], tuple[Position, bool]]:
+    def visLimit(self) -> tuple[None, None] | tuple[Position, bool]:
         """
         Return the topmost visible node.
         This is affected by chapters and hoists.
@@ -4796,7 +4796,7 @@ class Commands:
         tree = c.frame.tree
         c.request_focus(tree and tree.canvas)
 
-    def widgetWantsFocus(self, w: Union[QTextEditWrapper, StringTextWrapper]) -> None:
+    def widgetWantsFocus(self, w: QTextEditWrapper | StringTextWrapper) -> None:
         c = self
         c.request_focus(w)
 

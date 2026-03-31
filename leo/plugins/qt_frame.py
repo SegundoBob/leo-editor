@@ -95,7 +95,7 @@ if TYPE_CHECKING:  # pragma: no cover
     QTextBlock = QtGui.QTextBlock
     QTextCursor = QtGui.QTextCursor
     QWidget = QtWidgets.QWidget
-    RClick = tuple  # Union[tuple, namedtuple('RClick', 'position,children')]
+    RClick = tuple
     RClicks = list[RClick]
 
 
@@ -1691,7 +1691,7 @@ class LeoQtBody(leoFrame.LeoBody):
         c = self.c
         assert c.frame == frame and frame.c == c
         self.colorizer: BaseColorizer = None
-        self.wrapper: Union[QScintillaWrapper, QTextEditWrapper] = None
+        self.wrapper: QScintillaWrapper | QTextEditWrapper = None
         self.widget: QWidget = None
         self.reloadSettings()
         self.set_widget()  # Sets self.widget and self.wrapper.
@@ -4131,7 +4131,11 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     # @+others
     # @+node:ekr.20110605121601.18459: *3* ctor and __repr__(QtMenuWrapper)
     def __init__(
-        self, c: Cmdr, frame: Union[LeoQtFrame, NullFrame], parent: QWidget, label: str
+        self,
+        c: Cmdr,
+        frame: LeoQtFrame | NullFrame,
+        parent: QWidget,
+        label: str,
     ) -> None:
         """ctor for QtMenuWrapper class."""
         assert c

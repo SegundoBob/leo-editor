@@ -122,7 +122,7 @@ if TYPE_CHECKING:  # pragma: no cover
     QWidget = QtWidgets.QWidget
     QListWidget = QtWidgets.QListWidget
     QListWidgetItem = Any  # Mysterious
-    RegexFlag = Union[int, re.RegexFlag]  # re.RegexFlag does not define 0
+    RegexFlag = int | re.RegexFlag  # re.RegexFlag does not define 0
 
 
 # @-<< quicksearch annotations >>
