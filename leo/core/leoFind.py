@@ -15,11 +15,12 @@ from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoGui import LeoKeyEvent
-    from leo.plugins.qt_frame import FindTabManager
-    from leo.core.leoKeys import KeyHandlerClass as KeyHandler
     from leo.core.leoGlobals import KeyStroke as Stroke
+    from leo.core.leoGui import LeoKeyEvent
+    from leo.core.leoKeys import KeyHandlerClass as KeyHandler
     from leo.core.leoNodes import Position, VNode
+    from leo.plugins.cursesGui2 import BodyWrapper
+    from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextEditWrapper
 
     KWargs = Any
@@ -3346,9 +3347,11 @@ class LeoFind:
             )  # A flag.
 
     # @+node:ekr.20150629072547.1: *4* find.preload_find_pattern
-    def preload_find_pattern(self, w: QTextEditWrapper) -> None:  # pragma: no cover (cmd)
+    def preload_find_pattern(
+        self, w: Union[BodyWrapper, QTextEditWrapper]
+    ) -> None:  # pragma: no cover (cmd)
         """Preload the find pattern from the selected text of widget w."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkClass(w, ['BodyWrapper', 'QTextEditWrapper'])
         c, ftm = self.c, self.ftm
         if not c.config.getBool('preload-find-pattern', default=False):
             # Make *sure* we don't preload the find pattern if it is not wanted.

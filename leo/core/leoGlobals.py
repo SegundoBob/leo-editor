@@ -2312,6 +2312,7 @@ def my_name(i: int = 1) -> str:
 check_class_dict: dict[str, set[str]] = {}
 
 widget_classes = [
+    'BodyWrapper',  # --gui=console
     'DynamicWindow',
     'LeoQTextBrowser',
     'LeoQTreeWidget',
