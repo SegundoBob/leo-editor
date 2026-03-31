@@ -9,7 +9,7 @@ from collections.abc import Callable
 import functools
 import re
 import string
-from typing import TYPE_CHECKING
+from typing import Union, TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.core import leoNodes
 from leo.commands.baseCommands import BaseEditCommandsClass
@@ -18,7 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QHeadlineWrapper, QTextEditWrapper
 # @-<< abbrevCommands imports & abbreviations >>
 
 
@@ -594,9 +594,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.save_ins = ins + delta
 
     # @+node:ekr.20161121111502.1: *4* abbrev_get_ch
-    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextEditWrapper) -> str:
+    def get_ch(
+        self,
+        event: LeoKeyEvent,
+        stroke: g.KeyStroke,
+        w: Union[QHeadlineWrapper, QTextEditWrapper],
+    ) -> str:
         """Get the ch from the stroke."""
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkClass(w, ['QHeadlineWrapper', 'QTextEditWrapper'])
         ch = g.checkUnicode(event and event.char or '')
         if self.expanding:
             return None
@@ -622,11 +627,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return ch
 
     # @+node:ekr.20161121112346.1: *4* abbrev_get_prefixes
-    def get_prefixes(self, w: QTextEditWrapper) -> tuple[str, int, int, list[str]]:
+    def get_prefixes(
+        self,
+        w: Union[QHeadlineWrapper, QTextEditWrapper],
+    ) -> tuple[str, int, int, list[str]]:
         """Return the prefixes at the current insertion point of w."""
         # New code allows *any* sequence longer than 1 to be an abbreviation.
         # Any whitespace stops the search.
-        g.checkClass(w, ['QTextEditWrapper'])
+        g.checkClass(w, ['QHeadlineWrapper', 'QTextEditWrapper'])
         s = w.getAllText()
         j = w.getInsertPoint()
         i, prefixes = j - 1, []

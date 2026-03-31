@@ -1007,6 +1007,25 @@ class StringFindTabManager:
         w = self.check_box_ignore_case
         w.setChecked(aBool)
 
+    # @+node:ekr.20260331051712.1: *4* sftm.set_body_and_headline_checkbox
+    def set_body_and_headline_checkbox(self) -> None:
+        """Return the search-body and search-headline checkboxes to their defaults."""
+        # #1840: headline-only one-shot
+        c = self.c
+        find = c.findCommands
+        if not find:
+            return
+        table = (
+            ('search_body',     self.check_box_search_body),
+            ('search_headline', self.check_box_search_headline),
+        )  # fmt: skip
+        for setting_name, w in table:
+            val = c.config.getBool(setting_name, default=False)
+            if val != w.isChecked():
+                w.toggle()
+        if find.minibuffer_mode:
+            find.show_find_options_in_status_area()
+
     # @+node:ekr.20171128051435.6: *4* sftm.init_widgets
     def init_widgets(self) -> None:
         """
