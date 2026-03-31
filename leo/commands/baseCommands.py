@@ -96,6 +96,7 @@ class BaseEditCommandsClass:
         if w and forceFocus:
             c.widgetWantsFocusNow(w)
         self.w = w
+        g.checkTextWidget(w)
         return w
 
     # @+node:ekr.20150514043714.8: *3* BaseEdit.getWSString
