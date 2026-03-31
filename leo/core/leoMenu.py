@@ -6,7 +6,7 @@
 # @+node:ekr.20220414095908.1: ** << leoMenu imports & annotations >>
 from __future__ import annotations
 from collections.abc import Callable
-from typing import Any, Union, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -26,7 +26,7 @@ class LeoMenu:
 
     # @+others
     # @+node:ekr.20120124042346.12938: *3* LeoMenu.Birth
-    def __init__(self, frame: Union[LeoQtFrame, NullFrame]) -> None:
+    def __init__(self, frame: LeoQtFrame | NullFrame) -> None:
         self.c = frame.c
         self.enable_dict: dict[str, Callable] = {}
         self.frame = frame
@@ -203,7 +203,7 @@ class LeoMenu:
         if not parentMenu:
             g.trace('NO PARENT', parentName, g.callers())
             return  # #2030
-        table: list[Union[tuple, str]] = []
+        table: list[tuple | str] = []
         z: tuple[str, list, str]
         for z in aList:
             kind, val, val2 = z
