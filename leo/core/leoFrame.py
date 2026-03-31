@@ -15,7 +15,6 @@ import os
 import re
 import string
 from typing import Any, TYPE_CHECKING
-from typing import Union  ###
 from leo.core import leoGlobals as g
 from leo.core import leoColorizer, leoMenu, leoNodes
 from leo.core.leoAPI import StringTextWrapper
@@ -259,14 +258,14 @@ class LeoFrame:
         self.gui = gui
         # Types...
         # Objects attached to this frame...
-        self.body: Union[LeoBody, NullBody, LeoQtBody] = None
-        self.iconBar: Union[NullIconBarClass, QtIconBarClass] = None
-        self.log: Union[LeoLog, NullLog, LeoQtLog] = None
-        self.menu: Union[LeoMenu, LeoQtMenu, NullMenu] = None
-        self.miniBufferWidget: Union[QMinibufferWrapper, CursesMiniBufferWrapper] = None
-        self.statusLine: Union[NullStatusLineClass, QtStatusLineClass] = None
+        self.body: LeoBody | NullBody | LeoQtBody = None
+        self.iconBar: NullIconBarClass | QtIconBarClass = None
+        self.log: LeoLog | NullLog | LeoQtLog = None
+        self.menu: LeoMenu | LeoQtMenu | NullMenu = None
+        self.miniBufferWidget: QMinibufferWrapper | CursesMiniBufferWrapper = None
+        self.statusLine: NullStatusLineClass | QtStatusLineClass = None
         self.top: DynamicWindow = None
-        self.tree: Union[LeoTree, NullTree, LeoQtTree] = None
+        self.tree: LeoTree | NullTree | LeoQtTree = None
         self.useMiniBufferWidget = False
         # Other ivars...
         self.cursorStay = True  # May be overridden in subclass.reloadSettings.
@@ -454,7 +453,7 @@ class LeoFrame:
         if self.statusLine:
             self.statusLine.enable(background)
 
-    def getStatusLine(self) -> Union[NullStatusLineClass, QtStatusLineClass]:
+    def getStatusLine(self) -> NullStatusLineClass | QtStatusLineClass:
         return self.statusLine
 
     getStatusObject = getStatusLine
@@ -740,7 +739,7 @@ class LeoLog:
     # @+others
     # @+node:ekr.20150509054436.1: *3* LeoLog.Birth
     # @+node:ekr.20031218072017.3695: *4* LeoLog.__init__
-    def __init__(self, frame: Union[LeoLog, LeoQtFrame, NullFrame]) -> None:
+    def __init__(self, frame: LeoLog | LeoQtFrame | NullFrame) -> None:
         """Ctor for LeoLog class."""
         g._assert(frame is None or issubclass(frame.__class__, LeoFrame))
         self.frame = frame
@@ -1441,7 +1440,7 @@ class NullFrame(LeoFrame):
     def fullyExpandPane(self, event: LeoKeyEvent = None) -> None:
         pass
 
-    def getIconBar(self) -> Union[NullIconBarClass, QtIconBarClass]:
+    def getIconBar(self) -> NullIconBarClass | QtIconBarClass:
         return self.iconBar
 
     getIconBarObject = getIconBar
