@@ -698,7 +698,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         elif which == 'up':
             word2 = word.upper()
         else:
-            g.trace(f"can not happen: which = {s(which)}")
+            g.trace(f"can not happen: which = {which}")
         changed = word != word2
         if changed:
             w.delete(i, j)

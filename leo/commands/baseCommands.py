@@ -5,15 +5,13 @@
 # @+<< baseCommands imports & abbreviations >>
 # @+node:ekr.20220828071357.1: ** << baseCommands imports & abbreviations >>
 from __future__ import annotations
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.plugins.qt_text import QTextEditWrapper
-
-    Widget = Any  # 'Any' is the correct annotation for base class widgets.
 # @-<< baseCommands imports & abbreviations >>
 
 
@@ -86,7 +84,7 @@ class BaseEditCommandsClass:
                 k.resetLabel()
 
     # @+node:ekr.20150514043714.7: *3* BaseEdit.editWidget
-    def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> Widget:
+    def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> QTextEditWrapper:
         """Return the edit widget for the event. Also sets self.w"""
         c = self.c
         w = event and event.widget
