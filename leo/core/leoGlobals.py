@@ -2339,6 +2339,7 @@ widget_classes = [
     'LeoQtTree',
     'QHeadlineWrapper',
     'QLineEdit',
+    'QMenuBar',
     'QMenuWrapper',
     'QMinibufferWrapper',
     'QPushButton',

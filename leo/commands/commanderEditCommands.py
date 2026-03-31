@@ -13,11 +13,9 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper
 
     Self = Cmdr  # For arguments to @g.commander_command.
     Value = Any
-    Widget = Any  # 'Any' is the correct annotation for base class widgets.
 # @-<< commanderEditCommands imports & annotations >>
 
 
@@ -360,7 +358,7 @@ def deleteComments(self: Self, event: LeoKeyEvent = None) -> None:
 
 # @+node:ekr.20171123135625.54: ** c_ec.editHeadline (edit-headline)
 @g.commander_command('edit-headline')
-def editHeadline(self: Self, event: LeoKeyEvent = None) -> tuple[Widget, QTextEditWrapper]:
+def editHeadline(self: Self, event: LeoKeyEvent = None) -> None:
     """
     Begin editing the headline of the selected node.
 
@@ -370,13 +368,13 @@ def editHeadline(self: Self, event: LeoKeyEvent = None) -> tuple[Widget, QTextEd
     k, tree = c.k, c.frame.tree
     if g.app.batchMode:
         c.notValidInBatchMode("Edit Headline")
-        return None, None
+        return
     e, wrapper = tree.editLabel(c.p)
     if k:
         # k.setDefaultInputState()
         k.setEditingState()
         k.showStateAndMode(w=wrapper)
-    return e, wrapper  # Neither of these is used by any caller.
+    g.checkTextWidget(wrapper)
 
 
 # @+node:ekr.20171123135625.23: ** c_ec.extract
