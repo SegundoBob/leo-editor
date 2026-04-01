@@ -204,7 +204,7 @@ class FreeLayoutController:
 
         We tacitly assume that this splitter contains the body pane.
         """
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         top = self.get_top_splitter()
         return top if top.objectName() == 'main_splitter' else None
 

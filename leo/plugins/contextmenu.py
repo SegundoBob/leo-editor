@@ -285,7 +285,7 @@ def marknodes_rclick(c: Cmdr, p: Position, menu: StringTextWrapper) -> None:
 # @+node:ville.20090702171015.5480: *3* nextclone_rclick
 def nextclone_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Go to next clone"""
-    g.checkTextWidget(menu)
+    g.checkQtTextWidget(menu)
     if p.isCloned():
 
         def nextclone_rclick_cb() -> None:
@@ -298,7 +298,7 @@ def nextclone_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 # @+node:ekr.20120311191905.9900: *3* openurl_rclick
 def openurl_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """open an url"""
-    g.checkTextWidget(menu)
+    g.checkQtTextWidget(menu)
     url = g.getUrlFromNode(p)
     if url:
 
@@ -318,7 +318,7 @@ def openwith_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 
     This looks like "Edit contextmenu.py in scite"
     """
-    g.checkTextWidget(menu)
+    g.checkQtTextWidget(menu)
 
     # define callbacks
     # @+others
@@ -386,7 +386,7 @@ def openwith_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 
 # @+node:ville.20090630221949.5462: *3* refresh_rclick
 def refresh_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
-    g.checkTextWidget(menu)
+    g.checkQtTextWidget(menu)
 
     def refresh_rclick_cb() -> None:
         c.refreshFromDisk(p.copy())
@@ -399,7 +399,7 @@ def refresh_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 
 # @+node:felix.20250830151921.1: *3* openatleo_rclick
 def openatleo_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
-    g.checkTextWidget(menu)
+    g.checkQtTextWidget(menu)
 
     def openatleo_rclick_cb() -> None:
         path = c.fullPath(p)
@@ -417,7 +417,7 @@ def openatleo_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 # @+node:ekr.20140724211116.19258: *3* pylint_rclick
 def pylint_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
     """Run pylint on the selected node."""
-    g.checkTextWidget(menu)
+    g.checkQtTextWidget(menu)
     action = menu.addAction("Run Pylint")
 
     def pylint_rclick_cb(aBool: bool) -> None:

@@ -3350,7 +3350,7 @@ class LeoFind:
         self, w: BodyWrapper | QTextEditWrapper
     ) -> None:  # pragma: no cover (cmd)
         """Preload the find pattern from the selected text of widget w."""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w, other_classes=['BodyWrapper'])
         c, ftm = self.c, self.ftm
         if not c.config.getBool('preload-find-pattern', default=False):
             # Make *sure* we don't preload the find pattern if it is not wanted.

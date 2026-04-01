@@ -214,6 +214,12 @@ class LeoQtGui(leoGui.LeoGui):
 
     # @+node:ekr.20110605121601.18484: *3*  LeoQtGui.destroySelf (calls qtApp.quit)
     def destroySelf(self) -> None:
+        """Stop executing the qt gui after printing any stats."""
+        if g.app.statsDict:
+            g.printStats()
+        if g.check_class_dict:
+            g.printClassDict()
+
         QtCore.pyqtRemoveInputHook()
         if 'shutdown' in g.app.debug:
             g.pr('LeoQtGui.destroySelf: calling qtApp.Quit')
@@ -1406,7 +1412,7 @@ class LeoQtGui(leoGui.LeoGui):
     def onContextMenu(self, c: Cmdr, w: QTextEditWrapper, point: QPoint) -> None:
         """LeoQtGui: Common context menu handling."""
         # #1286.
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         handlers = g.tree_popup_handlers
         if not handlers:
             return  # #4164: The "No popup handlers" message is annoying.
@@ -1836,7 +1842,7 @@ class StyleClassManager:
     # @+node:tbrown.20150724090431.3: *3* add_sclass
     def add_sclass(self, w: QTextEditWrapper, prop: str) -> None:
         """Add style class to QWidget w"""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         if not prop:
             return
         props = self.sclasses(w)
@@ -1847,13 +1853,13 @@ class StyleClassManager:
     # @+node:tbrown.20150724090431.4: *3* clear_sclasses
     def clear_sclasses(self, w: QTextEditWrapper) -> None:
         """Remove all style classes from QWidget w"""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         w.setProperty(self.style_sclass_property, '')
 
     # @+node:tbrown.20150724090431.5: *3* has_sclass
     def has_sclass(self, w: QTextEditWrapper, prop: str) -> bool:
         """Check for style class or list of classes prop on QWidget w"""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         if not prop:
             return None
         props = self.sclasses(w)
@@ -1866,7 +1872,7 @@ class StyleClassManager:
     # @+node:tbrown.20150724090431.6: *3* remove_sclass
     def remove_sclass(self, w: QTextEditWrapper, prop: str) -> None:
         """Remove style class or list of classes prop from QWidget w"""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         if not prop:
             return
         props = self.sclasses(w)
@@ -1880,13 +1886,13 @@ class StyleClassManager:
     # @+node:tbrown.20150724090431.8: *3* sclasses
     def sclasses(self, w: QTextEditWrapper) -> list[str]:
         """return list of style classes for QWidget w"""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         return str(w.property(self.style_sclass_property) or '').split()
 
     # @+node:tbrown.20150724090431.9: *3* set_sclasses
     def set_sclasses(self, w: QTextEditWrapper, classes: list[str]) -> None:
         """Set style classes for QWidget w to list in classes"""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         w.setProperty(self.style_sclass_property, f" {' '.join(set(classes))} ")
 
     # @-others

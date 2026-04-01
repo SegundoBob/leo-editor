@@ -38,7 +38,7 @@ class BaseEditCommandsClass:
         self, w: StringTextWrapper | QTextEditWrapper, undoType: str = 'Typing'
     ) -> StringTextWrapper | QTextEditWrapper:
         """Do the common processing at the start of each command."""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w, other_classes=['StringTextWrapper'])
         c, p, u = self.c, self.c.p, self.c.undoer
         name = c.widget_name(w)
         if name.startswith('body'):

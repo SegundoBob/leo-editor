@@ -2308,28 +2308,111 @@ def my_name(i: int = 1) -> str:
     return g.callers(-1).split(',')[0]
 
 
-# @+node:ekr.20260330144349.1: *4* g.checkClass, checkTextWidget, checkWidget
+# @+node:ekr.20260330144349.1: *4* g.checkClass/QtTextWidget/TextWidget/Widget
 check_class_dict: dict[str, set[str]] = {}
 
-text_classes = [
-    # 'BodyWrapper',  # --gui=console
-    # 'DynamicWindow',
+
+# @+others
+# @+node:ekr.20260401135657.1: *5* g._check_class_helper
+def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
+    """
+    Check that the given object is of the expected class.
+    Give a message (unique to each caller) if the check fails.
+    """
+    print_only_errors = True
+    if obj is None:
+        return
+
+    d = g.check_class_dict
+    class_name = obj.__class__.__name__
+    valid_class_names = (
+        ['StringTextWrapper'] if g.unitTesting
+        else g.widget_classes if class_names is None
+        else class_names
+    )  # fmt: skip
+
+    if print_only_errors:
+        if class_name in valid_class_names:
+            return
+        if len(class_names) <= 3:
+            class_names_s = ', '.join(valid_class_names)
+        else:
+            class_names_s = '\n  ' + '\n  '.join(valid_class_names)
+        message = f"{key:>20}: {class_name} not in:{class_names_s}"
+    else:
+        message = class_name
+
+    # Update mesage_set and print.
+    message_set = d.get(key, set())
+    if print_only_errors and message not in message_set:
+        g.es_print(message, color='red')
+    message_set.add(message)
+    d[key] = message_set
+
+
+# @+node:ekr.20260401135932.1: *5* g.check_class
+def checkClass(obj: Any, class_names: list[str]) -> None:
+    """
+    Check that an object has the appropriate class.
+    """
+    g._check_class_helper(obj, key=g.caller(), class_names=class_names)
+
+
+# @+node:ekr.20260401140320.1: *5* g.checkQtTextWidget
+qt_text_classes = [
     'LeoQTextBrowser',
     'LeoQTreeWidget',
     'LeoQtLog',
-    # 'LeoQtTree',
     'QHeadlineWrapper',
     'QLineEdit',
     'QMenuWrapper',
     'QMinibufferWrapper',
-    # 'QPushButton',
     'QTextBrowser',
     'QTextEditWrapper',
-    'StringTextWrapper',
-    # 'todoQtUI',
+    # 'StringTextWrapper',
     'VisLineEdit',  # In the DynamicWindow class.
 ]
 
+
+def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
+    """
+    Check that an object has the appropriate class.
+    """
+    all_classes = g.qt_text_classes
+    if other_classes is not None:
+        all_classes.extend(other_classes)
+    g._check_class_helper(obj, key=g.caller(), class_names=all_classes)
+
+
+# @+node:ekr.20260401140017.1: *5* g.checkTextWidget
+# text_classes = [
+#     # 'BodyWrapper',  # --gui=console
+#     # 'DynamicWindow',
+#     'LeoQTextBrowser',
+#     'LeoQTreeWidget',
+#     'LeoQtLog',
+#     # 'LeoQtTree',
+#     'QHeadlineWrapper',
+#     'QLineEdit',
+#     'QMenuWrapper',
+#     'QMinibufferWrapper',
+#     # 'QPushButton',
+#     'QTextBrowser',
+#     'QTextEditWrapper',
+#     'StringTextWrapper',
+#     # 'todoQtUI',
+#     'VisLineEdit',  # In the DynamicWindow class.
+# ]
+
+
+def checkTextWidget(obj: Any) -> None:
+    """
+    Check that an object has the appropriate class.
+    """
+    g._check_class_helper(obj, key=g.caller(), class_names=['StringTextWrapper'])
+
+
+# @+node:ekr.20260401140103.1: *5* g.checkWidget
 widget_classes = [
     'BodyWrapper',  # --gui=console
     'DynamicWindow',
@@ -2351,20 +2434,6 @@ widget_classes = [
 ]
 
 
-def checkClass(obj: Any, class_names: list[str]) -> None:
-    """
-    Check that an object has the appropriate class.
-    """
-    g._check_class_helper(obj, key=g.caller(), class_names=class_names)
-
-
-def checkTextWidget(obj: Any) -> None:
-    """
-    Check that an object has the appropriate class.
-    """
-    g._check_class_helper(obj, key=g.caller(), class_names=text_classes)
-
-
 def checkWidget(obj: Any) -> None:
     """
     Check that a Widget has the appropriate class.
@@ -2372,32 +2441,16 @@ def checkWidget(obj: Any) -> None:
     g._check_class_helper(obj, key=g.caller(), class_names=None)
 
 
-def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
-    """
-    Check that the given object is of the expected class.
-    Give a message (unique to each caller) if the check fails.
-    """
-    if obj is None:
-        return
-    class_name = obj.__class__.__name__
-    if g.unitTesting:
-        # A hack: Everything is a StringTextWrapper when unit testing.
-        class_names = ['StringTextWrapper']
-    elif class_names is None:
-        class_names = g.widget_classes
-    if class_name in class_names:
-        return
-    d = g.check_class_dict
-    if len(class_names) <= 3:
-        class_names_s = ', '.join(class_names)
-    else:
-        class_names_s = '\n  ' + '\n  '.join(class_names)
-    message = f"{key}: {class_name} not in:{class_names_s}"
-    message_set = d.get(key, set())
-    if message not in message_set:
-        g.es_print(message, color='red')
-        message_set.add(message)
-        d[key] = message_set
+# @+node:ekr.20260401143657.1: *5* g.printClassDict
+def printClassDict() -> None:
+    d = check_class_dict
+    for key in sorted(d.keys()):
+        print(f"{key}:")
+        classes = [z.strip() for z in sorted(d.get(key))]
+        print(f"    {', '.join(classes)}")
+
+
+# @-others
 
 
 # @+node:ekr.20031218072017.3109: *4* g.dump

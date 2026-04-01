@@ -1783,7 +1783,7 @@ class QTextEditWrapper(QTextMixin):
         if g.unitTesting:
             return
         w = self.widget  # A QTextEdit.
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         # Remember highlighted line:
         last_selections = w.extraSelections()
 
@@ -1791,7 +1791,7 @@ class QTextEditWrapper(QTextMixin):
             QtCore.QTimer.singleShot(delay, func)
 
         def addFlashCallback(self: QTextEditWrapper = self, w: QWidget = w) -> None:
-            g.checkTextWidget(w)
+            g.checkQtTextWidget(w)
             i = self.flashIndex
             cursor = w.textCursor()  # Must be the widget's cursor.
             cursor.setPosition(i)
