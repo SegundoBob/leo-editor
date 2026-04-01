@@ -20,6 +20,7 @@ from leo.core import leoFrame
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
+    from leo.core.leoFrame import NullFrame
     from leo.core.leoNodes import Position
     from leo.plugins.qt_frame import FindTabManager
 
@@ -592,10 +593,10 @@ class NullGui(LeoGui):
     def createComparePanel(self, c: Cmdr) -> None:
         """Create Compare panel."""
 
-    def createFindTab(self, c: Cmdr, parentFrame: Widget) -> None:
+    def createFindTab(self, c: Cmdr, parentFrame: NullFrame) -> None:
         """Create a find tab in the indicated frame."""
 
-    def createLeoFrame(self, c: Cmdr, title: str) -> Widget:
+    def createLeoFrame(self, c: Cmdr, title: str) -> NullFrame:
         """Create a null Leo Frame."""
         gui = self
         self.lastFrame = leoFrame.NullFrame(c, title, gui)

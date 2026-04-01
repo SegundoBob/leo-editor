@@ -1317,7 +1317,7 @@ class NullBody(LeoBody):
 
     # @+node:ekr.20031218072017.2197: *3* NullBody: LeoBody interface
     # Birth, death...
-    def createControl(self, parentFrame: Widget, p: Position) -> StringTextWrapper:
+    def createControl(self, parentFrame: NullFrame, p: Position) -> StringTextWrapper:
         pass
 
     # Events...
