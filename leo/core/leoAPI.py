@@ -195,7 +195,11 @@ class StatusLineAPI:
 
 # @+node:ekr.20070228074228.1: ** class StringTextWrapper
 class StringTextWrapper:
-    """A class that represents Leo's body pane as a Python string."""
+    """
+    A class that represents Leo's body pane as a Python string.
+
+    This is *also* the annotation for Leo's high-level interface used throughout Leo's core.
+    """
 
     # @+others
     # @+node:ekr.20070228074228.2: *3* stw.ctor

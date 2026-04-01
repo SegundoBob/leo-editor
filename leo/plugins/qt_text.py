@@ -1658,7 +1658,9 @@ class QScintillaWrapper(QTextMixin):
 
 # @+node:ekr.20110605121601.18071: ** class QTextEditWrapper(QTextMixin)
 class QTextEditWrapper(QTextMixin):
-    """A wrapper for a QTextEdit/QTextBrowser supporting the high-level interface."""
+    """
+    A wrapper for a QTextEdit/QTextBrowser supporting the high-level interface.
+    """
 
     # @+others
     # @+node:ekr.20110605121601.18073: *3* QTextEditWrapper.ctor & helpers
