@@ -1668,7 +1668,7 @@ class Commands:
     # @+node:ekr.20040306220230.1: *5* c.edit_widget
     def edit_widget(self, p: Position) -> Widget:
         c = self
-        return p and c.frame.tree.edit_widget(p)
+        return c.frame.tree.edit_widget(p) if p else None
 
     # @+node:ekr.20031218072017.2986: *5* c.fileName & relativeFileName & shortFileName
     # Compatibility with scripts
