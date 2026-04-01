@@ -2443,6 +2443,7 @@ def checkWidget(obj: Any) -> None:
 
 # @+node:ekr.20260401143657.1: *5* g.printClassDict
 def printClassDict() -> None:
+    """Print g.check_class_dict"""
     d = check_class_dict
     for key in sorted(d.keys()):
         print(f"{key}:")
