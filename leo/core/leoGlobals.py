@@ -2319,7 +2319,7 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     Check that the given object is of the expected class.
     Give a message (unique to each caller) if the check fails.
     """
-    print_only_errors = True
+    print_only_errors = True or g.unitTesting
     if obj is None:
         return
 
@@ -2328,13 +2328,13 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     valid_class_names = (
         ['StringTextWrapper'] if g.unitTesting
         else g.widget_classes if class_names is None
-        else class_names
+        else class_names or []
     )  # fmt: skip
 
     if print_only_errors:
         if class_name in valid_class_names:
             return
-        if len(class_names) <= 3:
+        if len(valid_class_names) <= 3:
             class_names_s = ', '.join(valid_class_names)
         else:
             class_names_s = '\n  ' + '\n  '.join(valid_class_names)
@@ -2385,26 +2385,6 @@ def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
 
 
 # @+node:ekr.20260401140017.1: *5* g.checkTextWidget
-# text_classes = [
-#     # 'BodyWrapper',  # --gui=console
-#     # 'DynamicWindow',
-#     'LeoQTextBrowser',
-#     'LeoQTreeWidget',
-#     'LeoQtLog',
-#     # 'LeoQtTree',
-#     'QHeadlineWrapper',
-#     'QLineEdit',
-#     'QMenuWrapper',
-#     'QMinibufferWrapper',
-#     # 'QPushButton',
-#     'QTextBrowser',
-#     'QTextEditWrapper',
-#     'StringTextWrapper',
-#     # 'todoQtUI',
-#     'VisLineEdit',  # In the DynamicWindow class.
-# ]
-
-
 def checkTextWidget(obj: Any) -> None:
     """
     Check that an object has the appropriate class.
@@ -2445,9 +2425,9 @@ def checkWidget(obj: Any) -> None:
 def printClassDict() -> None:
     """Print g.check_class_dict"""
     d = check_class_dict
-    for key in sorted(d.keys()):
+    for key, value in sorted(d.items()):
         print(f"{key}:")
-        classes = [z.strip() for z in sorted(d.get(key))]
+        classes = [z.strip() for z in sorted(value)]
         print(f"    {', '.join(classes)}")
 
 
