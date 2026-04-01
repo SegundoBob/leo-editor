@@ -44,19 +44,13 @@ if TYPE_CHECKING:  # pragma: no cover
         QtStatusLineClass,
     )
     from leo.plugins.qt_text import (
-        ### LeoQTextBrowser,
         QMinibufferWrapper,
         QScintillaWrapper,
         QTextEditWrapper,
     )
-    from leo.plugins.cursesGui2 import (
-        BodyWrapper as CursesBodyWrapper,
-        ### CoreFrame as CursesFrame,
-        MiniBufferWrapper as CursesMiniBufferWrapper,
-    )
+    from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
-    TextAPI = QScintillaWrapper | QTextEditWrapper | StringTextWrapper
 
 
 # @-<< leoFrame annotations >>
@@ -119,11 +113,9 @@ class LeoBody:
         frame.body = self
         self.c = c
         self.frame = frame
-        # Define these here to keep mypy happy.
         self.widget: Any = None  # cursesGui2.py: will be an npyscreen widget.
-        self.wrapper: (
-            StringTextWrapper | QScintillaWrapper | QTextEditWrapper | CursesBodyWrapper
-        ) = None
+        self.wrapper: StringTextWrapper | QScintillaWrapper | QTextEditWrapper = None
+
         # Must be overridden in subclasses...
         self.colorizer: BaseColorizer = None
         # Init user settings.
@@ -149,7 +141,7 @@ class LeoBody:
     # @+node:ekr.20060528100747: *3* LeoBody.Editors
     # @+node:ekr.20070424053629.1: *4* LeoBody.utils
     # @+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
-    def recolorWidget(self, p: Position, w: TextAPI) -> None:
+    def recolorWidget(self, p: Position, w: StringTextWrapper) -> None:
         # Support QScintillaColorizer.colorize.
         c = self.c
         colorizer = c.frame.body.colorizer
@@ -757,7 +749,7 @@ class LeoLog:
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
         self.textDict: dict[str, Widget] = {}  # Keys: page names. Values: text widgets.
-        self.wrapper: TextAPI = None  # To keep mypy happy.
+        self.wrapper: StringTextWrapper = None  # To keep mypy happy.
 
     # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
@@ -1085,7 +1077,7 @@ class LeoTree:
         pass
 
     # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
-    def updateHead(self, event: LeoKeyEvent, w: TextAPI) -> None:
+    def updateHead(self, event: LeoKeyEvent, w: StringTextWrapper) -> None:
         """
         Update a headline from an event.
 
@@ -1325,7 +1317,7 @@ class NullBody(LeoBody):
 
     # @+node:ekr.20031218072017.2197: *3* NullBody: LeoBody interface
     # Birth, death...
-    def createControl(self, parentFrame: Widget, p: Position) -> TextAPI:
+    def createControl(self, parentFrame: Widget, p: Position) -> StringTextWrapper:
         pass
 
     # Events...
@@ -1362,7 +1354,7 @@ class NullFrame(LeoFrame):
         """Ctor for the NullFrame class."""
         super().__init__(c, gui)
         assert self.c
-        self.wrapper: TextAPI = None
+        self.wrapper: StringTextWrapper = None
         self.iconBar = NullIconBarClass(self.c)
         self.initComplete = True
         self.isNullFrame = True
@@ -1521,13 +1513,13 @@ class NullIconBarClass:
     def addRowIfNeeded(self) -> None:
         pass
 
-    def addWidget(self, w: TextAPI) -> None:
+    def addWidget(self, w: StringTextWrapper) -> None:
         pass
 
     def createChaptersIcon(self) -> None:
         pass
 
-    def deleteButton(self, w: TextAPI) -> None:
+    def deleteButton(self, w: StringTextWrapper) -> None:
         pass
 
     def getNewFrame(self) -> None:
@@ -1605,7 +1597,7 @@ class NullLog(LeoLog):
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
         self.widget = StringTextWrapper(c=c, name='null-log')
-        self.wrapper: TextAPI = None  # To keep mypy happy.
+        self.wrapper: StringTextWrapper = None  # To keep mypy happy.
 
     # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
     def finishCreate(self) -> None:
@@ -1616,7 +1608,7 @@ class NullLog(LeoLog):
         return self.widget.hasSelection()
 
     # @+node:ekr.20111119145033.10186: *3* NullLog.isLogWidget
-    def isLogWidget(self, w: TextAPI) -> bool:
+    def isLogWidget(self, w: StringTextWrapper) -> bool:
         return False
 
     # @+node:ekr.20041012083237.3: *3* NullLog.put and putnl
@@ -1734,7 +1726,7 @@ class NullTree(LeoTree):
         self.editWidgetsDict: dict[VNode, StringTextWrapper] = {}
 
     # @+node:ekr.20070228163350.2: *3* NullTree.edit_widget
-    def edit_widget(self, p: Position) -> TextAPI:
+    def edit_widget(self, p: Position) -> StringTextWrapper:
         d = self.editWidgetsDict
         if not p or not p.v:
             return None
