@@ -2311,6 +2311,8 @@ def my_name(i: int = 1) -> str:
 # @+node:ekr.20260330144349.1: *4* g.checkClass/QtTextWidget/TextWidget/Widget
 check_class_dict: dict[str, set[str]] = {}
 
+print_only_errors = True or unitTesting
+
 
 # @+others
 # @+node:ekr.20260401135657.1: *5* g._check_class_helper
@@ -2319,11 +2321,9 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     Check that the given object is of the expected class.
     Give a message (unique to each caller) if the check fails.
     """
-    print_only_errors = True or g.unitTesting
     if obj is None:
         return
 
-    d = g.check_class_dict
     class_name = obj.__class__.__name__
     valid_class_names = (
         ['StringTextWrapper'] if g.unitTesting
@@ -2342,7 +2342,13 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     else:
         message = class_name
 
-    # Update mesage_set and print.
+    g._add_check_message(key, message)
+
+
+# @+node:ekr.20260401153616.1: *5* g._print_check_message
+def _add_check_message(key: str, message: str) -> None:
+    """Add a check message to g.check_class_dict and maybe print it."""
+    d = g.check_class_dict
     message_set = d.get(key, set())
     if print_only_errors and message not in message_set:
         g.es_print(message, color='red')
@@ -2378,10 +2384,23 @@ def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
     """
     Check that an object has the appropriate class.
     """
+    from leo.plugins.qt_text import QTextEditWrapper
+
+    if obj is None:
+        return
+    key = g.caller()
+    if (
+        not isinstance(obj, QTextEditWrapper) and
+        not issubclass(obj.__class__, QTextEditWrapper)
+    ):  # fmt: skip
+        message = f"{key:>20}: {obj.__class__.__name__} is not a QTextEditWrapper"
+        g._add_check_message(key, message)
+
     all_classes = g.qt_text_classes
     if other_classes is not None:
         all_classes.extend(other_classes)
-    g._check_class_helper(obj, key=g.caller(), class_names=all_classes)
+
+    g._check_class_helper(obj, key=key, class_names=all_classes)
 
 
 # @+node:ekr.20260401140017.1: *5* g.checkTextWidget
@@ -2389,6 +2408,17 @@ def checkTextWidget(obj: Any) -> None:
     """
     Check that an object has the appropriate class.
     """
+    from leo.core.leoFrame import StringTextWrapper
+
+    if obj is None:
+        return
+    key = g.caller()
+    if (
+        not isinstance(obj, StringTextWrapper) and
+        not issubclass(obj.__class__, StringTextWrapper)
+    ):  # fmt: skip
+        message = f"{key:>20}: {obj.__class__.__name__} is not a StringTextWrapper"
+        g._add_check_message(key, message)
     g._check_class_helper(obj, key=g.caller(), class_names=['StringTextWrapper'])
 
 
