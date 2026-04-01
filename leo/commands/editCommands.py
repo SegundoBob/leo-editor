@@ -13,10 +13,10 @@ from leo.core import leoGlobals as g
 from leo.commands.baseCommands import BaseEditCommandsClass
 
 if TYPE_CHECKING:  # pragma: no cover
+    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position, VNode
-    from leo.plugins.qt_text import QMinibufferWrapper, QTextEditWrapper
 
     KWargs = Any
     Value = Any
@@ -500,7 +500,7 @@ class EditCommandsClass(BaseEditCommandsClass):
             return
         g.checkTextWidget(w)
 
-        def callback(arg: str, w: QTextEditWrapper = w) -> None:
+        def callback(arg: str, w: StringTextWrapper = w) -> None:
             i = w.getSelectionRange()[0]
             p = c.p
             w.deleteTextSelection()
@@ -2204,7 +2204,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         inBrackets: bool,
         oldSel: tuple[int, int],
         stroke: g.KeyStroke,
-        w: QTextEditWrapper,
+        w: StringTextWrapper,
     ) -> None:
         g.checkTextWidget(w)
         c, p = self.c, self.c.p
@@ -2248,7 +2248,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20180806045802.1: *5* ec.doSmartQuote
     def doSmartQuote(
-        self, action: str, ch: str, oldSel: tuple[int, int], w: QTextEditWrapper
+        self, action: str, ch: str, oldSel: tuple[int, int], w: StringTextWrapper
     ) -> None:
         """Convert a straight quote to a curly quote, depending on context."""
         g.checkTextWidget(w)
@@ -2273,7 +2273,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         w.setInsertPoint(ins + 1)
 
     # @+node:ekr.20150514063305.271: *5* ec.flashCharacter
-    def flashCharacter(self, w: QTextEditWrapper, i: int) -> None:
+    def flashCharacter(self, w: StringTextWrapper, i: int) -> None:
         """Flash the character at position i of widget w."""
         g.checkTextWidget(w)
         bg = self.bracketsFlashBg or 'DodgerBlue1'
@@ -2284,7 +2284,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.272: *5* ec.flashMatchingBracketsHelper
     def flashMatchingBracketsHelper(
-        self, c: Cmdr, ch: str, i: int, p: Position, w: QTextEditWrapper
+        self, c: Cmdr, ch: str, i: int, p: Position, w: StringTextWrapper
     ) -> None:
         """Flash matching brackets at char ch at position i at widget w."""
         g.checkTextWidget(w)
@@ -2317,7 +2317,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.274: *5* ec.insertNewlineHelper
     def insertNewlineHelper(
-        self, w: QTextEditWrapper, oldSel: tuple[int, int], undoType: str
+        self, w: StringTextWrapper, oldSel: tuple[int, int], undoType: str
     ) -> None:
         g.checkTextWidget(w)
         c, p = self.c, self.c.p
@@ -2342,7 +2342,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.275: *5* ec.updateAutoIndent
     trailing_colon_pat = re.compile(r'^.*:\s*?#.*$')  # #2230
 
-    def updateAutoIndent(self, p: Position, w: QTextEditWrapper) -> None:
+    def updateAutoIndent(self, p: Position, w: StringTextWrapper) -> None:
         """Handle auto indentation."""
         g.checkTextWidget(w)
         c = self.c
@@ -2380,7 +2380,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.276: *5* ec.updateAutomatchBracket
     def updateAutomatchBracket(
-        self, p: Position, w: QTextEditWrapper, ch: str, oldSel: tuple[int, int]
+        self, p: Position, w: StringTextWrapper, ch: str, oldSel: tuple[int, int]
     ) -> None:
         g.checkTextWidget(w)
         c = self.c
@@ -2411,7 +2411,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.277: *5* ec.updateTab & helper
     def updateTab(
-        self, event: LeoKeyEvent, p: Position, w: QTextEditWrapper, smartTab: bool = True
+        self, event: LeoKeyEvent, p: Position, w: StringTextWrapper, smartTab: bool = True
     ) -> None:
         """
         A helper for selfInsertCommand.
@@ -2442,7 +2442,7 @@ class EditCommandsClass(BaseEditCommandsClass):
             self.doPlainTab(s, i, tab_width, w)
 
     # @+node:ekr.20150514063305.270: *6* ec.doPlainTab
-    def doPlainTab(self, s: str, i: int, tab_width: int, w: QTextEditWrapper) -> None:
+    def doPlainTab(self, s: str, i: int, tab_width: int, w: StringTextWrapper) -> None:
         """
         A helper for selfInsertCommand, called from updateTab.
 
@@ -2510,7 +2510,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.286: *4* ec. helpers
     # @+node:ekr.20150514063305.287: *5* ec.extendHelper
     def extendHelper(
-        self, w: QTextEditWrapper, extend: bool, spot: int, upOrDown: bool = False
+        self, w: StringTextWrapper, extend: bool, spot: int, upOrDown: bool = False
     ) -> None:
         """
         Handle the details of extending the selection.
@@ -2743,7 +2743,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         self.moveToHelper(event, i, extend)
 
     # @+node:ekr.20150514063305.289: *5* ec.setMoveCol
-    def setMoveCol(self, w: QMinibufferWrapper | QTextEditWrapper, spot: int) -> None:
+    def setMoveCol(self, w: StringTextWrapper, spot: int) -> None:
         """Set the column to which an up or down arrow will attempt to move."""
         g.checkTextWidget(w)
         p = self.c.p
@@ -3049,7 +3049,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.302: *4* ec.extend-to-word
     @cmd('extend-to-word')
     def extendToWord(
-        self, event: LeoKeyEvent, select: bool = True, w: QTextEditWrapper = None
+        self, event: LeoKeyEvent, select: bool = True, w: StringTextWrapper = None
     ) -> tuple[int, int]:
         """Compute the word at the cursor. Select it if select arg is True."""
         g.checkTextWidget(w)
@@ -3624,7 +3624,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         self.selectParagraphHelper(w, i)
 
     # @+node:ekr.20150514063305.326: *5* ec.selectParagraphHelper
-    def selectParagraphHelper(self, w: QTextEditWrapper, start: int) -> None:
+    def selectParagraphHelper(self, w: StringTextWrapper, start: int) -> None:
         """Select from start to the end of the paragraph."""
         g.checkTextWidget(w)
         s = w.getAllText()

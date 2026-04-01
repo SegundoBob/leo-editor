@@ -54,9 +54,10 @@ from leo.core.leoFileCommands import FastRead
 from leo.core.leoNodes import Position, VNode
 
 if TYPE_CHECKING:  # pragma: no cover
+    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-    from leo.plugins.qt_text import QTextEditWrapper
+
 # @-<< leoUndo imports & annotations >>
 
 
@@ -1301,7 +1302,7 @@ class Undoer:
             u.setIvarsFromBunch(v.undo_info)
 
     # @+node:ekr.20201127035748.1: *4* u.updateAfterTyping
-    def updateAfterTyping(self, p: Position, w: QTextEditWrapper) -> None:
+    def updateAfterTyping(self, p: Position, w: StringTextWrapper) -> None:
         """
         Perform all update tasks after changing body text.
 

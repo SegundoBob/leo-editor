@@ -39,6 +39,7 @@ assert qt_commands
 # @+node:ekr.20220415183421.1: ** << qt_gui annotations >>
 if TYPE_CHECKING:  # pragma: no cover
     from typing import TypeAlias  # Requires Python 3.12+
+    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
@@ -1824,7 +1825,7 @@ class StyleClassManager:
 
     # @+others
     # @+node:tbrown.20150724090431.2: *3* update_view
-    def update_view(self, w: QTextEditWrapper) -> None:
+    def update_view(self, w: StringTextWrapper) -> None:
         """update_view - Make Qt apply w's style
 
         :param QWidgit w: widget to style

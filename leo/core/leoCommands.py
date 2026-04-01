@@ -113,7 +113,7 @@ class Commands:
         self,
         fileName: str,
         gui: LeoGui = None,
-        parentFrame: QTextEditWrapper = None,
+        parentFrame: StringTextWrapper | QTextEditWrapper = None,
         previousSettings: "PreviousSettings" = None,
         relativeFileName: str = None,
     ) -> None:
@@ -4754,7 +4754,7 @@ class Commands:
         pass
 
     # @+node:ekr.20080514131122.16: *5* c.traceFocus (not used)
-    def traceFocus(self, w: QTextEditWrapper) -> None:
+    def traceFocus(self, w: StringTextWrapper) -> None:
         g.checkWidget(w)
         c = self
         if 'focus' in g.app.debug:
@@ -4796,7 +4796,7 @@ class Commands:
         tree = c.frame.tree
         c.request_focus(tree and tree.canvas)
 
-    def widgetWantsFocus(self, w: QTextEditWrapper | StringTextWrapper) -> None:
+    def widgetWantsFocus(self, w: StringTextWrapper) -> None:
         c = self
         c.request_focus(w)
 

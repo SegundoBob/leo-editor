@@ -17,7 +17,7 @@ tree context menu from the keyboard.
 Here's an example on how to implement your own context menu items
 in your plugins::
 
-    def nextclone_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
+    def nextclone_rclick(c: Cmdr, p: Position, menu: StringTextWrapper) -> None:
         \""" Go to next clone\"""
 
         # only show the item if you are on a clone
@@ -53,6 +53,7 @@ from leo.core.leoQt import QtCore
 from leo.core.leoGui import LeoKeyEvent
 
 if TYPE_CHECKING:  # pragma: no cover
+    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
     from leo.plugins.qt_text import QTextEditWrapper
@@ -113,7 +114,7 @@ def init() -> bool:
 # @+node:ville.20090630210947.10189: *3* install_handlers (contextmenu.py)
 def install_handlers() -> None:
     """Install all the wanted handlers (menu creators)"""
-    handlers = [
+    handlers: list[Callable] = [
         # Add user-specified items first.
         configuredcommands_rclick,
         # Add the rest...
@@ -150,7 +151,7 @@ def getEditor(c: Cmdr) -> tuple[str, str]:
 
 # @+node:ekr.20140724211116.19255: ** Handlers
 # @+node:ville.20091008192104.7691: *3* configuredcommands_rclick
-def configuredcommands_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
+def configuredcommands_rclick(c: Cmdr, p: Position, menu: StringTextWrapper) -> None:
     """Add all items given by @data contextmenu-commands"""
     g.checkTextWidget(menu)
     config = c.config.getData('contextmenu_commands')
@@ -183,7 +184,7 @@ def configuredcommands_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> N
 
 
 # @+node:tbrown.20091203121808.15818: *3* deletenodes_rclick
-def deletenodes_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
+def deletenodes_rclick(c: Cmdr, p: Position, menu: StringTextWrapper) -> None:
     """Delete selected nodes"""
     g.checkTextWidget(menu)
     u = c.undoer
@@ -240,7 +241,7 @@ def deletenodes_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 
 
 # @+node:ville.20090701110830.10215: *3* editnode_rclick
-def editnode_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
+def editnode_rclick(c: Cmdr, p: Position, menu: StringTextWrapper) -> None:
     """Provide "edit in EDITOR" context menu item.
 
     Opens file or node in external editor.
@@ -257,7 +258,7 @@ def editnode_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
 
 
 # @+node:ville.20090719202132.5248: *3* marknodes_rclick
-def marknodes_rclick(c: Cmdr, p: Position, menu: QTextEditWrapper) -> None:
+def marknodes_rclick(c: Cmdr, p: Position, menu: StringTextWrapper) -> None:
     """Mark selected nodes"""
     g.checkTextWidget(menu)
     pl = c.getSelectedPositions()

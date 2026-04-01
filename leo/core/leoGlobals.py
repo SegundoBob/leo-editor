@@ -2327,7 +2327,7 @@ text_classes = [
     'QTextEditWrapper',
     'StringTextWrapper',
     # 'todoQtUI',
-    'VisLineEdit',
+    'VisLineEdit',  # In the DynamicWindow class.
 ]
 
 widget_classes = [

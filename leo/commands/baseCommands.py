@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
+    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.plugins.qt_text import QTextEditWrapper
@@ -33,7 +34,9 @@ class BaseEditCommandsClass:
 
     # @+node:ekr.20150514043714.3: *3* BaseEdit.begin/endCommand (handles undo)
     # @+node:ekr.20150514043714.4: *4* BaseEdit.beginCommand
-    def beginCommand(self, w: QTextEditWrapper, undoType: str = 'Typing') -> QTextEditWrapper:
+    def beginCommand(
+        self, w: StringTextWrapper | QTextEditWrapper, undoType: str = 'Typing'
+    ) -> StringTextWrapper | QTextEditWrapper:
         """Do the common processing at the start of each command."""
         g.checkTextWidget(w)
         c, p, u = self.c, self.c.p, self.c.undoer
@@ -84,7 +87,7 @@ class BaseEditCommandsClass:
                 k.resetLabel()
 
     # @+node:ekr.20150514043714.7: *3* BaseEdit.editWidget
-    def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> QTextEditWrapper:
+    def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> StringTextWrapper:
         """Return the edit widget for the event. Also sets self.w"""
         c = self.c
         w = event and event.widget
@@ -115,7 +118,7 @@ class BaseEditCommandsClass:
         return val
 
     # @+node:ekr.20150514043714.13: *4* BaseEdit.getRectanglePoints
-    def getRectanglePoints(self, w: QTextEditWrapper) -> tuple[int, int, int, int]:
+    def getRectanglePoints(self, w: StringTextWrapper) -> tuple[int, int, int, int]:
         """Return the rectangle corresponding to the selection range."""
         g.checkTextWidget(w)
         c = self.c
