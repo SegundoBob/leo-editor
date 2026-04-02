@@ -1,10 +1,11 @@
 # @+leo-ver=5-thin
 # @+node:ekr.20031218072017.3655: * @file leoFrame.py
 """
-The base classes for all Leo Windows, their body, log and tree panes,
-key bindings and menus.
+This file contains:
 
-These classes should be overridden to create frames for a particular gui.
+- Base classes for all Leo Windows, their body, log and tree panes,
+  key bindings and menus.
+- Common annotations for these classes.
 """
 
 # @+<< leoFrame imports >>
@@ -49,6 +50,17 @@ if TYPE_CHECKING:  # pragma: no cover
         QTextEditWrapper,
     )
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
+
+    # Complex annotations...
+    ### FrameAnn = xxx
+    ### LogAnn = xxx
+    ### TextAnn = LeoBody | LeoNullBody | StringTextWrapper
+    ### TreeAnn = xxx
+
+    ### QtFrameAnn
+    ### QtLogAnn = xxx
+    ### QtTextAnn = xxx
+    ### QtTreeAnn = xxx
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 

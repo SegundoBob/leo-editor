@@ -2403,7 +2403,12 @@ def checkTextWidget(obj: Any) -> None:
     g._check_class_helper(
         obj,
         key=g.caller(),
-        class_names=['StringTextWrapper', 'QMinibufferWrapper', 'QTextEditWrapper'],
+        class_names=[
+            'QHeadlineWrapper',
+            'QMinibufferWrapper',
+            'QTextEditWrapper',
+            'StringTextWrapper',
+        ],
     )
 
 
