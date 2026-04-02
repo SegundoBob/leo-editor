@@ -2305,7 +2305,7 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.96: *4* k.completeAllBindingsForWidget
     def completeAllBindingsForWidget(self, w: StringTextWrapper | QTextEditWrapper) -> None:
         """Make all a master gui binding for widget w."""
-        g.checkQtTextWidget(w, other_classes=['StringTextWrapper'])
+        g.checkTextWidget(w)
         k = self
         for stroke in k.bindingsDict:
             assert g.isStroke(stroke), repr(stroke)
@@ -2417,7 +2417,7 @@ class KeyHandlerClass:
         self, stroke: Stroke, w: StringTextWrapper | QTextEditWrapper = None
     ) -> None:
         """Make a master gui binding for stroke in pane w, or in all the standard widgets."""
-        g.checkQtTextWidget(w, other_classes=['StringTextWrapper'])
+        g.checkTextWidget(w)
         c, k = self.c, self
         f = c.frame
         if w:

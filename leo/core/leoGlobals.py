@@ -2400,9 +2400,10 @@ def checkTextWidget(obj: Any) -> None:
     """
     if obj is None:
         return
-    # A hack: allow QTextEditWrapper.
     g._check_class_helper(
-        obj, key=g.caller(), class_names=['StringTextWrapper', 'QTextEditWrapper']
+        obj,
+        key=g.caller(),
+        class_names=['StringTextWrapper', 'QMinibufferWrapper', 'QTextEditWrapper'],
     )
 
 
