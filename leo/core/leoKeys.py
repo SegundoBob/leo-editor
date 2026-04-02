@@ -36,6 +36,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoQt import QtWidgets
     from leo.plugins.qt_frame import LeoQtLog
     from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_tree import QHeadlineWrapper
 
     Args = Any
     KWargs = Any
@@ -4519,10 +4520,13 @@ class KeyHandlerClass:
 
     # @+node:ekr.20061031131434.192: *4* k.showStateAndMode
     def showStateAndMode(
-        self, w: StringTextWrapper = None, prompt: str = None, setFocus: bool = True
+        self,
+        w: StringTextWrapper | QHeadlineWrapper = None,
+        prompt: str = None,
+        setFocus: bool = True,
     ) -> None:
         """Show the state and mode at the start of the minibuffer."""
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         c, k = self.c, self
         state = k.unboundKeyAction
         mode = k.getStateKind()

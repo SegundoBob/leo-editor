@@ -11,8 +11,10 @@ from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
+    from leo.core.leoFrame import StringTextWrapper
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
+    from leo.plugins.qt_tree import QHeadlineWrapper
 
     Self = Cmdr  # For arguments to @g.commander_command.
     Value = Any
@@ -361,20 +363,19 @@ def deleteComments(self: Self, event: LeoKeyEvent = None) -> None:
 def editHeadline(self: Self, event: LeoKeyEvent = None) -> None:
     """
     Begin editing the headline of the selected node.
-
-    This is just a wrapper around tree.editLabel.
     """
     c = self
     k, tree = c.k, c.frame.tree
     if g.app.batchMode:
         c.notValidInBatchMode("Edit Headline")
         return
+    wrapper: StringTextWrapper | QHeadlineWrapper
     e, wrapper = tree.editLabel(c.p)
     if k:
         # k.setDefaultInputState()
         k.setEditingState()
         k.showStateAndMode(w=wrapper)
-    g.checkTextWidget(wrapper)
+    g.checkQtTextWidget(wrapper)
 
 
 # @+node:ekr.20171123135625.23: ** c_ec.extract

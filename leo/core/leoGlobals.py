@@ -2338,7 +2338,8 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
             class_names_s = ', '.join(valid_class_names)
         else:
             class_names_s = '\n  ' + '\n  '.join(valid_class_names)
-        message = f"{key:>20}: {class_name} not in:{class_names_s}"
+        key_s = f"{g.caller()}.{key}"
+        message = f"{key_s:>50}: {class_name} not in:{class_names_s}"
     else:
         message = class_name
 
@@ -2375,7 +2376,7 @@ qt_text_classes = [
     'QMinibufferWrapper',
     'QTextBrowser',
     'QTextEditWrapper',
-    # 'StringTextWrapper',
+    'StringTextWrapper',
     'VisLineEdit',  # In the DynamicWindow class.
 ]
 
@@ -2384,23 +2385,12 @@ def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
     """
     Check that an object has the appropriate class.
     """
-    from leo.plugins.qt_text import QTextEditWrapper
-
     if obj is None:
         return
-    key = g.caller()
-    if (
-        not isinstance(obj, QTextEditWrapper) and
-        not issubclass(obj.__class__, QTextEditWrapper)
-    ):  # fmt: skip
-        message = f"{key:>20}: {obj.__class__.__name__} is not a QTextEditWrapper"
-        g._add_check_message(key, message)
-
     all_classes = g.qt_text_classes
     if other_classes is not None:
         all_classes.extend(other_classes)
-
-    g._check_class_helper(obj, key=key, class_names=all_classes)
+    g._check_class_helper(obj, key=g.caller(), class_names=all_classes)
 
 
 # @+node:ekr.20260401140017.1: *5* g.checkTextWidget
@@ -2408,17 +2398,8 @@ def checkTextWidget(obj: Any) -> None:
     """
     Check that an object has the appropriate class.
     """
-    from leo.core.leoFrame import StringTextWrapper
-
     if obj is None:
         return
-    key = g.caller()
-    if (
-        not isinstance(obj, StringTextWrapper) and
-        not issubclass(obj.__class__, StringTextWrapper)
-    ):  # fmt: skip
-        message = f"{key:>20}: {obj.__class__.__name__} is not a StringTextWrapper"
-        g._add_check_message(key, message)
     g._check_class_helper(obj, key=g.caller(), class_names=['StringTextWrapper'])
 
 
