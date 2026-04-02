@@ -556,8 +556,8 @@ class textTree(leoFrame.LeoTree):
         # and something to do with undo?
 
     # @+node:ekr.20150107090324.66: *3* editLabel & edit_widget (cursesGui)
-    def editLabel(self, v, selectAll: bool = False, selection: tuple = None):
-        pass  # N/A?
+    def editLabel(self, v, selectAll: bool = False, selection: tuple = None) -> tuple[None, None]:
+        return None, None
 
     def edit_widget(self, p):
         return None
