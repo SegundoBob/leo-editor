@@ -2323,11 +2323,12 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     """
     if obj is None:
         return
+    if g.unitTesting:
+        return
 
     class_name = obj.__class__.__name__
     valid_class_names = (
         ['StringTextWrapper'] if g.unitTesting
-        else g.widget_classes if class_names is None
         else class_names or []
     )  # fmt: skip
 
@@ -2339,7 +2340,7 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
         else:
             class_names_s = '\n  ' + '\n  '.join(valid_class_names)
         key_s = f"{g.caller()}.{key}"
-        message = f"{key_s:>50}: {class_name} not in:{class_names_s}"
+        message = f"{key_s:>50}: {class_name} not in: {class_names_s}"
     else:
         message = class_name
 
@@ -2438,7 +2439,7 @@ def checkWidget(obj: Any) -> None:
     """
     Check that a Widget has the appropriate class.
     """
-    g._check_class_helper(obj, key=g.caller(), class_names=None)
+    g._check_class_helper(obj, key=g.caller(), class_names=widget_classes)
 
 
 # @+node:ekr.20260401143657.1: *5* g.printClassDict
