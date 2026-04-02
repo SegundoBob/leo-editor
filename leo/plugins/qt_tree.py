@@ -989,6 +989,8 @@ class LeoQtTree(leoFrame.LeoTree):
             g.visit_tree_item(self.c, p, item)
         except leoPlugins.TryNext:
             pass
+        except AttributeError:
+            pass  # g.unitTesting.
         return item
 
     # @+node:ekr.20110605121601.18423: *4* qtree.getCurrentItem
