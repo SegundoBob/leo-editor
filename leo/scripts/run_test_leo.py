@@ -28,6 +28,6 @@ args = ' '.join(sys.argv[1:])
 isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
-command = rf'{python} -m unittest'
+command = rf'{python} -m unittest {args}'
 subprocess.Popen(command, shell=True).communicate()
 # @-leo
