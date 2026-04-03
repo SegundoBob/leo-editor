@@ -137,6 +137,7 @@ class TestApp(LeoUnitTest):
             '--trace-setting=whatever',
             '--trace=coloring',
             '-v',
+            '--verbose',
             '--version',
             '--window-size=100x200',
             '--window-spot=50x60',
