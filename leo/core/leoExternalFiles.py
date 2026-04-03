@@ -529,6 +529,11 @@ class ExternalFilesController:
                 self.files = [z for z in self.files if z != ef]
                 return
 
+    # @+node:felix.20260401212949.1: *4* efc.reloadSettings
+    def reloadSettings(self) -> None:
+        """Clear the enabled_d dict"""
+        self.enabled_d = {}
+
     # @+node:ekr.20150404092538.1: *4* efc.shut_down
     def shut_down(self) -> None:
         """
