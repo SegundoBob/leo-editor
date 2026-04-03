@@ -669,7 +669,7 @@ class TestGlobals(LeoUnitTest):
         x = g.OptionsUtils(usage, obsolete_options)
 
         # Test x.compute_valid_options.
-        expected_valid_options = [
+        expected_valid_options = list(sorted(set([
             '--black-sentinels',
             '--diff',
             '--fail-fast',
@@ -677,7 +677,10 @@ class TestGlobals(LeoUnitTest):
             '-?',
             '-b',
             '-h',
-        ]
+            # For `python -m unittest`.
+            '-v',
+            '--verbose',
+        ])))  # fmt: skip
         self.assertEqual(x.compute_valid_options(), expected_valid_options)
 
         # Test x.option_error and x.check_options.
