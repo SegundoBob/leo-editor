@@ -528,7 +528,7 @@ class ExternalFilesController:
                 self.destroy_temp_file(ef)
                 self.files = [z for z in self.files if z != ef]
                 return
-            
+
     # @+node:felix.20260401212949.1: *4* efc.reloadSettings
     def reloadSettings(self) -> None:
         """Clear the enabled_d dict"""
