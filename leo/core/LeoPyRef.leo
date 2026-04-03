@@ -121,6 +121,7 @@
 <v t="ekr.20241022090855.1"><vh>@file leoJupytext.py</vh></v>
 <v t="ekr.20190515070742.1"><vh>@file leoMarkup.py</vh></v>
 <v t="ekr.20031218072017.3320"><vh>@file leoNodes.py</vh></v>
+<v t="ekr.20040301205720"><vh>p.__str__ and p.__repr__</vh></v>
 <v t="ekr.20140821055201.18331"><vh>@file leoPersistence.py</vh></v>
 <v t="ekr.20031218072017.3439"><vh>@file leoPlugins.py</vh></v>
 <v t="ekr.20150419124739.1"><vh>@file leoPrinting.py</vh></v>
@@ -685,6 +686,17 @@ These plugins create new kinds of nodes, some of which affect the file system.</
 https://github.com/leo-editor/leo-editor/issues/1585
 @language python
 </t>
+<t tx="ekr.20040301205720">def __str__(self) -&gt; str:  # pragma: no cover
+    p = self
+    if p.v:
+        return (
+            f"&lt;pos {id(p)} childIndex: {p._childIndex} lvl: {p.level()} key: {p.key()} {p.h}&gt;"
+        )
+    return f"&lt;pos {id(p)} [{len(p.stack)}] None&gt;"
+
+__repr__ = __str__
+
+</t>
 <t tx="ekr.20040331071919"></t>
 <t tx="ekr.20040722141148">@nocolor-node
 @
@@ -1049,7 +1061,7 @@ c.backup_helper(sub_dir='leoPy')
 <t tx="ekr.20150514035207.1"></t>
 <t tx="ekr.20160122104332.1">@language python
 </t>
-<t tx="ekr.20160123142722.1" _mod_time="4741da464e3704747d2e"># An example configuration file for make_stub_files.py.
+<t tx="ekr.20160123142722.1" _mod_time="4741da24cf0b43cf212e"># An example configuration file for make_stub_files.py.
 # By default, this is ~/stubs/make_stub_files.cfg.
 # Can be changed using the --config=path command-line option.
 
@@ -1134,9 +1146,9 @@ print('done! wrote %s' % fn)
 <t tx="ekr.20180225010913.1"></t>
 <t tx="ekr.20180504191650.36"></t>
 <t tx="ekr.20180504191650.42"></t>
-<t tx="ekr.20180504191650.68" _mod_time="4741da346ccadd6c1f2e"></t>
+<t tx="ekr.20180504191650.68" _mod_time="4741da24cf053b9aa12e"></t>
 <t tx="ekr.20180504192522.1"></t>
-<t tx="ekr.20180708145905.1" _mod_time="4741da346ccacfeb032e">@language rest
+<t tx="ekr.20180708145905.1" _mod_time="4741da24cf0b43cf212e">@language rest
 @wrap
 
 This is the theory of operation document for py2cs.py. The most interesting aspect of this script is the TokenSync class. This class provides a reliable way of associating tokenizer tokens with ast nodes.
@@ -2101,7 +2113,7 @@ writers = 'leo.unittests.plugins.test_writers'
 # f"{plugins}.test_plugins",
 # f"{plugins}.test_writers",
 </t>
-<t tx="ekr.20230624114517.1" _mod_time="4741da346ccadbd2742e"></t>
+<t tx="ekr.20230624114517.1" _mod_time="4741da24cf053b9aa12e"></t>
 <t tx="ekr.20230720115916.1">g.cls()
 import leo.commands.editFileCommands as efc
 
