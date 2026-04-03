@@ -2491,7 +2491,7 @@ def printClassDict() -> None:
     # Print all known classes that *haven't* been found.
     print('')
     print('Unseen classes...')
-    for z in all_seen_classes:
+    for z in all_known_classes:
         if z not in all_seen_classes:
             print(f"    {z}")
 
