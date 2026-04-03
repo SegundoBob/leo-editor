@@ -1608,7 +1608,12 @@ class OptionsUtils:
         """
         # Abbreviations (-whatever) must appear before full options (--whatever).
         option_pattern = re.compile(r'\s*(-\w)?,?\s*(--[\w-]+=?)')
-        valid = ['-?']
+        valid = [
+            '-?',
+            # For `python -m unittest`
+            '-v',
+            '--verbose',
+        ]
         for line in g.splitLines(self.usage):
             if m := option_pattern.match(line):
                 if m.group(1):
