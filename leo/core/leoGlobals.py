@@ -2316,7 +2316,9 @@ def my_name(i: int = 1) -> str:
 # @+node:ekr.20260330144349.1: *4* g.checkClass/QtTextWidget/TextWidget/Widget
 check_class_dict: dict[str, set[str]] = {}
 
-print_only_errors = True or unitTesting
+all_class_dict: dict[str, set[str]] = {}
+
+print_only_errors = False or unitTesting
 
 
 # @+others
@@ -2337,6 +2339,11 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
         else class_names or []
     )  # fmt: skip
 
+    # Update all_class_dict.
+    d = g.all_class_dict
+    if key not in d:
+        d[key] = valid_class_names
+
     if print_only_errors:
         if class_name in valid_class_names:
             return
@@ -2352,7 +2359,7 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     g._add_check_message(key, message)
 
 
-# @+node:ekr.20260401153616.1: *5* g._print_check_message
+# @+node:ekr.20260401153616.1: *5* g._add_check_message
 def _add_check_message(key: str, message: str) -> None:
     """Add a check message to g.check_class_dict and maybe print it."""
     d = g.check_class_dict
@@ -2368,6 +2375,7 @@ def checkClass(obj: Any, class_names: list[str]) -> None:
     """
     Check that an object has the appropriate class.
     """
+    g.stat()
     g._check_class_helper(obj, key=g.caller(), class_names=class_names)
 
 
@@ -2391,6 +2399,7 @@ def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
     """
     Check that an object has the appropriate class.
     """
+    g.stat()
     if obj is None:
         return
     all_classes = g.qt_text_classes
@@ -2404,6 +2413,7 @@ def checkTextWidget(obj: Any) -> None:
     """
     Check that an object has the appropriate class.
     """
+    g.stat()
     if obj is None:
         return
     g._check_class_helper(
@@ -2444,17 +2454,46 @@ def checkWidget(obj: Any) -> None:
     """
     Check that a Widget has the appropriate class.
     """
+    g.stat()
     g._check_class_helper(obj, key=g.caller(), class_names=widget_classes)
 
 
 # @+node:ekr.20260401143657.1: *5* g.printClassDict
 def printClassDict() -> None:
     """Print g.check_class_dict"""
-    d = check_class_dict
+
+    # Print the values that *have* been found.
+    d = g.check_class_dict
+    all_seen_classes = set()
+    print('')
+    print('Seen objects...')
     for key, value in sorted(d.items()):
         print(f"{key}:")
         classes = [z.strip() for z in sorted(value)]
         print(f"    {', '.join(classes)}")
+        for z in classes:
+            all_seen_classes.add(z)
+
+    # Compute all known classes.
+    d2 = g.all_class_dict
+    all_known_classes = set()
+    for key, value in sorted(d2.items()):
+        for z in value:
+            all_known_classes.add(z)
+
+    # Print all known classes.
+    if 0:
+        print('')
+        print('All known classes...')
+        for z in sorted(all_seen_classes):
+            print(f"    {z}")
+
+    # Print all known classes that *haven't* been found.
+    print('')
+    print('Unseen classes...')
+    for z in all_seen_classes:
+        if z not in all_seen_classes:
+            print(f"    {z}")
 
 
 # @-others
