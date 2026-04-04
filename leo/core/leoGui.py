@@ -306,6 +306,7 @@ class LeoGui:
     def create_key_event(
         self,
         c: Cmdr,
+        *,
         binding: str = None,
         char: str = None,
         event: LeoKeyEvent = None,
