@@ -2399,9 +2399,9 @@ def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
     """
     Check that an object has the appropriate class.
     """
-    g.stat()
     if obj is None:
         return
+    g.stat()
     all_classes = g.qt_text_classes
     if other_classes is not None:
         all_classes.extend(other_classes)
@@ -2413,9 +2413,11 @@ def checkTextWidget(obj: Any) -> None:
     """
     Check that an object has the appropriate class.
     """
-    g.stat()
     if obj is None:
         return
+    if g.unitTesting:
+        g.trace(obj.__class__.__name__, g.callers(2))  ###
+    g.stat()
     g._check_class_helper(
         obj,
         key=g.caller(),
@@ -2454,6 +2456,11 @@ def checkWidget(obj: Any) -> None:
     """
     Check that a Widget has the appropriate class.
     """
+    if obj is None:
+        return
+    if g.unitTesting:
+        # g.trace(obj.__class__.__name__, g.callers(2))  ###
+        g.traceUniqueClass(obj, n=2)
     g.stat()
     g._check_class_helper(obj, key=g.caller(), class_names=widget_classes)
 
@@ -2863,6 +2870,7 @@ def printStats(event: LeoKeyEvent = None) -> None:
 
     # Print the signon.
     d = g.app.statsDict
+    print('')
     print('g.app.statsDict...')
 
     # Print the int stats: calls to g.stat()
@@ -6714,7 +6722,7 @@ def traceUniqueClass(obj: object, *, n: int = 2, pad: int = 30) -> None:
     if value_s not in values:
         pad_s = ' ' * max(0, pad - len(key))
         key_s = pad_s + key  # Right justify.
-        print(f"{key_s} {value_s}")
+        print(f"{value_s:>20} callers: {key_s} ")
         values.append(value_s)
         trace_unique_class_dict[key] = values
 
