@@ -4360,6 +4360,8 @@ class QtStatusLineClass:
 
 # @+node:peckj.20140505102552.10377: ** class QtTabBarWrapper (QTabBar)
 class QtTabBarWrapper(QtWidgets.QTabBar):
+    """An internal class that overrides one method."""
+
     # @+others
     # @+node:peckj.20140516114832.10108: *3* __init__
     def __init__(self, parent: QWidget = None) -> None:
