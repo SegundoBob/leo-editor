@@ -198,7 +198,7 @@ class FreeLayoutController:
         c.redraw()
 
     # @+node:ekr.20160424035257.1: *3* flc.get_main_splitter
-    def get_main_splitter(self, w: QTextEditWrapper = None) -> Optional[QTextEditWrapper]:
+    def get_main_splitter(self, w: QTextEditWrapper = None) -> Optional[NestedSplitter]:
         """
         Return the main splitter.
 
@@ -222,7 +222,7 @@ class FreeLayoutController:
         return None
 
     # @+node:tbrown.20110621120042.22914: *3* flc.get_top_splitter
-    def get_top_splitter(self) -> Optional[QTextEditWrapper]:
+    def get_top_splitter(self) -> Optional[NestedSplitter]:
         """Return the top splitter of c.frame.top."""
         f = self.c.frame
         if hasattr(f, 'top') and f.top:
@@ -414,8 +414,8 @@ class FreeLayoutController:
     # @+node:tbnorth.20160510122413.1: *3* flc.splitter_clicked
     def splitter_clicked(
         self,
-        splitter: QTextEditWrapper,
-        handle: QTextEditWrapper,
+        splitter: QSplitter,
+        handle: QSplitter,
         event: LeoKeyEvent,
         release: str,
         double: bool,
