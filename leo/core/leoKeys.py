@@ -3910,7 +3910,6 @@ class KeyHandlerClass:
         w: QWidget,
     ) -> g.BindingInfo:
         """Find a binding for the widget with the given name."""
-        g.checkWidget(w)
         c, k = self.c, self
         # Return if the pane's name doesn't match the event's widget.
         state = k.unboundKeyAction
@@ -4543,11 +4542,12 @@ class KeyHandlerClass:
                 w = g.app.gui.get_focus(c)
                 if not w:
                     return
-        isText = g.isTextWrapper(w)
+
         # This fixes a problem with the tk gui plugin.
         if mode and mode.lower().startswith('isearch'):
             return
         wname = g.app.gui.widget_name(w).lower()
+
         # Get the wrapper for the headline widget.
         if wname.startswith('head'):
             if hasattr(c.frame.tree, 'getWrapper'):
@@ -4556,7 +4556,6 @@ class KeyHandlerClass:
                 else:
                     w2 = w
                 w = c.frame.tree.getWrapper(w2, item=None)
-                isText = bool(w)  # A benign hack.
         if mode:
             if mode in ('getArg', 'getFileName', 'full-command'):
                 s = None
@@ -4570,22 +4569,17 @@ class KeyHandlerClass:
         elif c.vim_mode and c.vimCommands:
             c.vimCommands.show_status()
             return
-        else:  # pylint: disable=no-else-return
-            s = f"{state.capitalize()} State"
-            if c.editCommands.extendMode:
-                s = s + ' (Extend Mode)'
+
+        # Set the status line
+        s = f"{state.capitalize()} State"
+        if c.editCommands.extendMode:
+            s = s + ' (Extend Mode)'
         if s:
             k.setLabelBlue(s)
-        if w and isText:
-            # k.showStateColors(inOutline,w)
-            k.showStateCursor(state, w)
-        # 2015/07/11: reset the status line.
+
+        # reset the status line.
         if hasattr(c.frame.tree, 'set_status_line'):
             c.frame.tree.set_status_line(c.p)
-
-    # @+node:ekr.20110202111105.15439: *4* k.showStateCursor
-    def showStateCursor(self, state: str, w: Widget) -> None:
-        g.checkWidget(w)
 
     # @-others
 
