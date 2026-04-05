@@ -26,7 +26,6 @@ from leo.core.leoQt import Shadow, Shape, StandardButton, Weight, WindowType
 from leo.plugins import qt_events
 from leo.plugins import qt_frame
 from leo.plugins import qt_idle_time
-from leo.plugins import qt_text
 
 # This defines the commands defined by @g.command.
 from leo.plugins import qt_commands
@@ -100,7 +99,6 @@ class LeoQtGui(leoGui.LeoGui):
         self.idleTimeClass = qt_idle_time.IdleTime
         self.insert_char_flag = False  # A flag for eventFilter.
         self.mGuiName = 'qt'
-        self.plainTextWidget = qt_text.PlainTextWrapper
         self.show_tips_flag = False  # #2390: Can't be inited in reload_settings.
         self.styleSheetManagerClass = StyleSheetManager
         # Be aware of the systems native colors, fonts, etc.

@@ -23,7 +23,6 @@ from leo.core import (
     leoMenu,
 )
 from leo.commands import gotoCommands
-from leo.core.leoAPI import StringTextWrapper
 from leo.core.leoQt import (
     AlignLeft,
     ContextMenuPolicy,
@@ -3554,8 +3553,6 @@ class LeoQtSpellTab:
         self.c = c
         top = c.frame.top
         self.handler = handler
-        # hack:
-        handler.workCtrl = StringTextWrapper(c, 'spell-workctrl')
         self.tabName = tabName
         if hasattr(top, 'leo_spell_label'):
             self.wordLabel = top.leo_spell_label
