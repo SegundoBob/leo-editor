@@ -180,6 +180,10 @@ def install_qt_quicksearch_tab(c: Cmdr) -> None:
         c.frame.log.selectTab('Nav')
         wdg.scon.doTimeline()
 
+    def showmarks(event: QEvent) -> None:
+        c.frame.log.selectTab('Nav')
+        wdg.scon.doShowMarked()
+
     # #3976: Hard-code the binding to find-quick-selected.
     # #4087: k.registerCommand no longer supports the 'shortcut' kwarg.
     c.k.registerCommand('find-quick-selected', find_selected)
@@ -189,11 +193,7 @@ def install_qt_quicksearch_tab(c: Cmdr) -> None:
     c.k.registerCommand('find-quick-timeline', timeline)
     c.k.registerCommand('find-quick-changed', show_dirty)
     c.k.registerCommand('history', nodehistory)
-
-    @g.command('marked-list')
-    def showmarks(event: LeoKeyEvent) -> None:
-        """List marked nodes in nav tab"""
-        wdg.scon.doShowMarked()
+    c.k.registerCommand('marked-list', showmarks)
 
     c.frame.nav = wdg
 
@@ -729,7 +729,8 @@ class QuickSearchController:
     def doShowMarked(self) -> None:
         self.clear()
         c = self.c
-        self.addHeadlineMatches([(p.copy(), None) for p in c.all_positions() if p.isMarked()])
+        marked: Match_List = [(p.copy(), None) for p in c.all_positions() if p.isMarked()]
+        self.addHeadlineMatches(marked)
 
     # @+node:ekr.20111015194452.15700: *3* Event handlers
     # @+node:ekr.20111015194452.15686: *4* onSelectItem (quicksearch.py)
