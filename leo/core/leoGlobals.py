@@ -2330,9 +2330,6 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     """
     if obj is None:
         return
-    if g.unitTesting:
-        return
-
     class_name = obj.__class__.__name__
     valid_class_names = (
         ['StringTextWrapper'] if g.unitTesting
@@ -2375,6 +2372,10 @@ def checkClass(obj: Any, class_names: list[str]) -> None:
     """
     Check that an object has the appropriate class.
     """
+    if obj is None:
+        return
+    if g.unitTesting:
+        g.traceUniqueClass(obj, n=2)
     g.stat()
     g._check_class_helper(obj, key=g.caller(), class_names=class_names)
 
@@ -2401,6 +2402,8 @@ def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
     """
     if obj is None:
         return
+    if g.unitTesting:
+        g.traceUniqueClass(obj, n=2)
     g.stat()
     all_classes = g.qt_text_classes
     if other_classes is not None:
@@ -2416,11 +2419,12 @@ def checkTextWidget(obj: Any) -> None:
     if obj is None:
         return
     if g.unitTesting:
-        g.trace(obj.__class__.__name__, g.callers(2))  ###
+        g.traceUniqueClass(obj, n=2)
     g.stat()
+    key = f"{g.my_name()}:{g.caller()}"
     g._check_class_helper(
         obj,
-        key=g.caller(),
+        key=key,
         class_names=[
             'QHeadlineWrapper',
             'QMinibufferWrapper',
@@ -2459,10 +2463,10 @@ def checkWidget(obj: Any) -> None:
     if obj is None:
         return
     if g.unitTesting:
-        # g.trace(obj.__class__.__name__, g.callers(2))  ###
         g.traceUniqueClass(obj, n=2)
     g.stat()
-    g._check_class_helper(obj, key=g.caller(), class_names=widget_classes)
+    key = f"{g.my_name()}:{g.caller()}"
+    g._check_class_helper(obj, key=key, class_names=widget_classes)
 
 
 # @+node:ekr.20260401143657.1: *5* g.printClassDict
