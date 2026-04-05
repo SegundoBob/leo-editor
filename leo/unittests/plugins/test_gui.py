@@ -243,20 +243,6 @@ class TestQtGui(LeoUnitTest):
         for obj, class_name in table:
             assert obj.__class__.__name__ == class_name, (repr(obj), class_name)
 
-        ### To be removed.
-
-        # print('')
-        # print('After init')
-        # print('')
-        # print(f"{'Wrapper':>20}  Widget")
-        # print(f"{' ' * 13}{'_' * 7}  {'_' * 6}")
-
-        #     w = getattr(wrapper, 'widget', None)
-        #     w_s = w.__class__.__name__ or '<no widget>'
-        #     print(f"{wrapper.__class__.__name__:>20}  {w_s}")
-        # g.printStats()
-        # g.printClassDict()
-
     # @-others
 
 
