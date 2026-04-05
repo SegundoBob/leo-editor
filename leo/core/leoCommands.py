@@ -129,8 +129,6 @@ class Commands:
         self.gui: LeoGui = gui or g.app.gui
         # New ivars
         self.config: LocalConfigManager = None
-        self.idle_focus_count = 0
-        self.last_unusual_focus = 0
         # Declare subcommanders (and one alias) (created later).
         self.atFileCommands: AtFile = None
         self.chapterController: ChapterController = None
@@ -557,29 +555,23 @@ class Commands:
             return g.finalize(c.mFileName).lower()
         return f"{id(self)!s}"
 
-    # @+node:ekr.20110509064011.14563: *4* c.idle_focus_helper & helpers
+    # @+node:ekr.20110509064011.14563: *4* c.idle_focus_helper
     def idle_focus_helper(self, tag: str, keys: dict) -> None:
         """An idle-time handler that ensures that focus is *somewhere*."""
         trace = 'focus' in g.app.debug
-        trace_inactive_focus = False  # Too disruptive for --trace-focus
-        trace_in_dialog = False  # Not useful enough for --trace-focus
         c = self
         assert tag == 'idle'
         if g.unitTesting:
             return
         if keys.get('c') != c:
-            # g.trace('no c')
             return
-        self.idle_focus_count += 1
         if c.in_qt_dialog:
-            if trace and trace_in_dialog:
-                g.trace('in_qt_dialog')
             return
         w = g.app.gui.get_focus(at_idle=True)
         if g.app.gui.active:
-            # Always call trace_idle_focus.
-            self.trace_idle_focus(w)
-            if w and self.is_unusual_focus(w):
+            from leo.plugins.qt_frame import QtTabBarWrapper
+
+            if w and isinstance(w, QtTabBarWrapper):
                 if trace:
                     w_class = w and w.__class__.__name__
                     g.trace('***** unusual focus', w_class)
@@ -590,54 +582,6 @@ class Commands:
                 c.treeWantsFocusNow()
             # elif not w and active:
             # c.bodyWantsFocusNow()
-        elif trace and trace_inactive_focus:
-            w_class = w and w.__class__.__name__
-            count = c.idle_focus_count
-            g.trace(f"{count} inactive focus: {w_class}")
-
-    # @+node:ekr.20160427062131.1: *5* c.is_unusual_focus
-    def is_unusual_focus(self, w: Widget) -> bool:
-        """Return True if w is not in an expected place."""
-        #
-        # #270: Leo's keyboard events doesn't work after "Insert"
-        #       on headline and Alt+Tab, Alt+Tab
-        #
-        # #276: Focus lost...in Nav text input
-        from leo.plugins import qt_frame
-
-        g.checkWidget(w)
-        return isinstance(w, qt_frame.QtTabBarWrapper)
-
-    # @+node:ekr.20150403063658.1: *5* c.trace_idle_focus
-    def trace_idle_focus(self, w: Widget) -> None:
-        """Trace the focus for w, minimizing chatter."""
-        from leo.core.leoQt import QtWidgets
-        from leo.plugins import qt_frame
-
-        g.checkWidget(w)
-        trace = 'focus' in g.app.debug
-        trace_known = False
-        c = self
-        table = (
-            QtWidgets.QWidget,
-            qt_frame.LeoQTreeWidget,
-        )
-        count = c.idle_focus_count
-        if w:
-            w_class = w and w.__class__.__name__
-            if self.is_unusual_focus(w):
-                if trace:
-                    g.trace(f"{count} unusual focus: {w_class}")
-            else:
-                c.last_unusual_focus = None
-                if isinstance(w, table):
-                    if trace and trace_known:
-                        g.trace(f"{count} known focus: {w_class}")
-                elif trace:
-                    g.trace(f"{count} unknown focus: {w_class}")
-        else:
-            if trace:
-                g.trace(f"{count:3} no focus")
 
     # @+node:ekr.20081005065934.1: *4* c.initAfterLoad
     def initAfterLoad(self) -> None:
