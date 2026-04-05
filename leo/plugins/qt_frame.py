@@ -2998,7 +2998,10 @@ class LeoQtMenu(leoMenu.LeoMenu):
 
     # @+node:ekr.20120922041923.10607: *4* LeoQtMenu.activateAllParentMenus
     def activateAllParentMenus(self, menu: QObject) -> None:
-        """menu is a QtMenuWrapper.  Activate it and all parent menus."""
+        """
+        menu is a QtMenuWrapper or a QObject.
+        Activate it and all parent menus.
+        """
         parent = menu.parent()
         action = menu.menuAction()
         if action:
