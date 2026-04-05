@@ -1822,8 +1822,6 @@ class LeoQtFrame(leoFrame.LeoFrame):
         leoFrame.LeoFrame.instances += 1  # Increment the class var.
 
         # Official ivars for objects.
-        self.bar1: LeoQtFrame = None
-        self.bar2: LeoQtFrame = None
         self.body: LeoQtBody = None
         self.iconBar: QtIconBarClass = None
         self.iconFrame: QtIconBarClass = None
@@ -1973,69 +1971,6 @@ class LeoQtFrame(leoFrame.LeoFrame):
             n1, n2 = aList
             return float(n1) / float(n1 + n2) if n2 > 0 else 0.5
         return 0.5
-
-    # @+node:ekr.20110605121601.18275: *4* LeoQtFrame.configureBar
-    def configureBar(self, bar: QMenuBar, verticalFlag: bool) -> None:  # pylint: disable=disallowed-name
-        c = self.c
-        # Get configuration settings.
-        w = c.config.getInt("split-bar-width")
-        if not w or w < 1:
-            w = 7
-        relief = c.config.get("split_bar_relief", "relief")
-        if not relief:
-            relief = "flat"
-        color = c.config.getColor("split-bar-color")
-        if not color:
-            color = "LightSteelBlue2"
-        try:
-            if verticalFlag:
-                # Panes arranged vertically; horizontal splitter bar
-                bar.configure(relief=relief, height=w, bg=color, cursor="sb_v_double_arrow")
-            else:
-                # Panes arranged horizontally; vertical splitter bar
-                bar.configure(relief=relief, width=w, bg=color, cursor="sb_h_double_arrow")
-        except Exception:
-            # Could be a user error. Use all defaults
-            g.es("exception in user configuration for splitbar")
-            g.es_exception()
-            if verticalFlag:
-                # Panes arranged vertically; horizontal splitter bar
-                bar.configure(height=7, cursor="sb_v_double_arrow")
-            else:
-                # Panes arranged horizontally; vertical splitter bar
-                bar.configure(width=7, cursor="sb_h_double_arrow")
-
-    # @+node:ekr.20110605121601.18276: *4* LeoQtFrame.configureBarsFromConfig
-    def configureBarsFromConfig(self) -> None:
-        c = self.c
-        w = c.config.getInt("split-bar-width")
-        if not w or w < 1:
-            w = 7
-        relief = c.config.get("split_bar_relief", "relief")
-        if not relief or relief == "":
-            relief = "flat"
-        color = c.config.getColor("split-bar-color")
-        if not color or color == "":
-            color = "LightSteelBlue2"
-        if self.splitVerticalFlag:
-            bar1, bar2 = self.bar1, self.bar2
-        else:
-            bar1, bar2 = self.bar2, self.bar1
-        try:
-            bar1.configure(relief=relief, height=w, bg=color)
-            bar2.configure(relief=relief, width=w, bg=color)
-        except Exception:
-            # Could be a user error.
-            g.es("exception in user configuration for splitbar")
-            g.es_exception()
-
-    # @+node:ekr.20110605121601.18277: *4* LeoQtFrame.reconfigureFromConfig
-    def reconfigureFromConfig(self) -> None:
-        """Init the configuration of the Qt frame from settings."""
-        c, frame = self.c, self
-        frame.configureBarsFromConfig()
-        frame.setTabWidth(c.tab_width)
-        c.redraw()
 
     # @+node:ekr.20110605121601.18278: *4* LeoQtFrame.setInitialWindowGeometry
     def setInitialWindowGeometry(self) -> None:
