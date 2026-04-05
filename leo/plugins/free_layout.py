@@ -204,7 +204,6 @@ class FreeLayoutController:
 
         We tacitly assume that this splitter contains the body pane.
         """
-        g.checkQtTextWidget(w)
         top = self.get_top_splitter()
         return top if top.objectName() == 'main_splitter' else None
 
@@ -430,7 +429,6 @@ class FreeLayoutController:
         :param bool release: was it a Press or Release event
         :param bool double: was it a double click event
         """
-        g.checkWidget(splitter)
         if not release or event.button() != MouseButton.MiddleButton:
             return
         if splitter.root.zoomed:  # unzoom if *any* handle clicked

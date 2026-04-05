@@ -403,7 +403,7 @@ class textLeoMenu(leoMenu.LeoMenu):
         menu.entries = []
         return menu
 
-    # @+node:ekr.20150107090324.49: *3* add_cascade
+    # @+node:ekr.20150107090324.49: *3* add_cascade (cursesGui.py)
     def add_cascade(self, parent: Any, label: str, menu: Any, underline: int):
         if parent is None:
             parent = self._top_menu
