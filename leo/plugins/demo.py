@@ -15,6 +15,10 @@ import random
 from leo.core import leoGlobals as g
 from leo.plugins import qt_events
 from leo.core.leoQt import QtCore, QtGui, QtWidgets
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from leo.plugins.qt_frame import QtMenuWrapper
 
 #
 # Fail fast, right after all imports.
@@ -517,8 +521,7 @@ class Demo:
     def open_menu(self, menu_name):
         """Activate the indicated *top-level* menu."""
         c = self.c
-        # Menu is a qtMenuWrapper, a subclass of both QMenu and leoQtMenu.
-        menu = c.frame.menu.getMenu(menu_name)
+        menu: QtMenuWrapper = c.frame.menu.getMenu(menu_name)
         if menu:
             c.frame.menu.activateMenu(menu_name)
         return menu
