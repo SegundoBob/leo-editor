@@ -19,6 +19,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
+    from leo.plugins.qt_text import QTextEditWrapper
 
 # @-<< abbrevCommands imports & abbreviations >>
 
@@ -322,7 +323,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
     def expand_text(
         self,
-        w: StringTextWrapper,
+        w: StringTextWrapper | QTextEditWrapper,
         i: int,
         j: int,
         val: str,
@@ -349,7 +350,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.find_place_holder(p, do_placeholder)
 
     # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree (entry) & helpers
-    def expand_tree(self, w: StringTextWrapper, i: int, j: int, tree_s: str, word: str) -> None:
+    def expand_tree(
+        self, w: StringTextWrapper | QTextEditWrapper, i: int, j: int, tree_s: str, word: str
+    ) -> None:
         """
         Paste tree_s as children of c.p.
         This happens *before* any substitutions are made.
@@ -568,7 +571,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return s2, start, end
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
-    def replace_selection(self, w: StringTextWrapper, i: int, j: int, s: str) -> None:
+    def replace_selection(
+        self, w: StringTextWrapper | QTextEditWrapper, i: int, j: int, s: str
+    ) -> None:
         """Replace w[i:j] by s."""
         g.checkTextWidget(w)
         p, u = self.c.p, self.c.undoer
@@ -596,7 +601,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.save_ins = ins + delta
 
     # @+node:ekr.20161121111502.1: *4* abbrev_get_ch
-    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: StringTextWrapper) -> str:
+    def get_ch(
+        self, event: LeoKeyEvent, stroke: g.KeyStroke, w: StringTextWrapper | QTextEditWrapper
+    ) -> str:
         """Get the ch from the stroke."""
         g.checkTextWidget(w)
         ch = g.checkUnicode(event and event.char or '')
@@ -624,7 +631,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return ch
 
     # @+node:ekr.20161121112346.1: *4* abbrev_get_prefixes
-    def get_prefixes(self, w: StringTextWrapper) -> tuple[str, int, int, list[str]]:
+    def get_prefixes(
+        self, w: StringTextWrapper | QTextEditWrapper
+    ) -> tuple[str, int, int, list[str]]:
         """Return the prefixes at the current insertion point of w."""
         # New code allows *any* sequence longer than 1 to be an abbreviation.
         # Any whitespace stops the search.
@@ -711,7 +720,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         event: LeoKeyEvent,
         prefix: str = None,
         aList: list[str] = None,
-        w: StringTextWrapper = None,
+        w: StringTextWrapper | QTextEditWrapper = None,
     ) -> None:
         """State handler for dabbrev-expands command."""
         g.checkTextWidget(w)
@@ -752,7 +761,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             c.recolor()
 
     # @+node:ekr.20150514043850.23: *4* abbrev.getDynamicList (helper)
-    def getDynamicList(self, w: StringTextWrapper, s: str) -> list[str]:
+    def getDynamicList(self, w: StringTextWrapper | QTextEditWrapper, s: str) -> list[str]:
         """Return a list of dynamic abbreviations."""
         g.checkTextWidget(w)
         if self.globalDynamicAbbrevs:
