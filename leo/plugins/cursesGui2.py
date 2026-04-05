@@ -4344,7 +4344,7 @@ class TextMixin:
     # @-others
 
 
-# @+node:ekr.20170504034655.1: *3* class BodyWrapper (StringTextWrapper)
+# @+node:ekr.20170504034655.1: *3* class BodyWrapper (StringTextWrapper) cursesGui2.py
 class BodyWrapper(StringTextWrapper):
     """
     A Wrapper class for Leo's body.
@@ -4375,7 +4375,7 @@ class BodyWrapper(StringTextWrapper):
     # @-others
 
 
-# @+node:ekr.20170522002403.1: *3* class HeadWrapper (StringTextWrapper)
+# @+node:ekr.20170522002403.1: *3* class HeadWrapper (StringTextWrapper) cursesGui2.py
 class HeadWrapper(StringTextWrapper):
     """
     A Wrapper class for headline widgets, returned by c.edit_widget(p)
@@ -4402,7 +4402,7 @@ class HeadWrapper(StringTextWrapper):
     # @-others
 
 
-# @+node:ekr.20170525062512.1: *3* class LogWrapper (StringTextWrapper)
+# @+node:ekr.20170525062512.1: *3* class LogWrapper (StringTextWrapper) cursesGui2.py
 class LogWrapper(StringTextWrapper):
     """A Wrapper class for the log pane."""
 
@@ -4416,7 +4416,7 @@ class LogWrapper(StringTextWrapper):
     # @-others
 
 
-# @+node:ekr.20170525105707.1: *3* class MiniBufferWrapper (StringTextWrapper)
+# @+node:ekr.20170525105707.1: *3* class MiniBufferWrapper (StringTextWrapper) cursesGui2.py
 class MiniBufferWrapper(StringTextWrapper):
     """A Wrapper class for the minibuffer."""
 
@@ -4428,7 +4428,7 @@ class MiniBufferWrapper(StringTextWrapper):
         self.widget = w
 
 
-# @+node:ekr.20171129194610.1: *3* class StatusLineWrapper (StringTextWrapper)
+# @+node:ekr.20171129194610.1: *3* class StatusLineWrapper (StringTextWrapper) cursesGui2.py
 class StatusLineWrapper(StringTextWrapper):
     """A Wrapper class for the status line."""
 

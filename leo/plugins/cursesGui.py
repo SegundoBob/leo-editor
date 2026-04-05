@@ -72,7 +72,7 @@ def underline(s, idx):
     return s[:idx] + '&' + s[idx:]
 
 
-# @+node:ekr.20150107090324.6: ** class textGui
+# @+node:ekr.20150107090324.6: ** class textGui: cursesGui.py
 class textGui(leoGui.LeoGui):
     # @+others
     # @+node:ekr.20150107090324.7: *3* __init__
@@ -186,7 +186,7 @@ class textGui(leoGui.LeoGui):
     # @-others
 
 
-# @+node:ekr.20150107090324.21: ** class TextFrame
+# @+node:ekr.20150107090324.21: ** class TextFrame: cursesGui.py
 class TextFrame(leoFrame.LeoFrame):
     # @+others
     # @+node:ekr.20150107090324.22: *3* __init__
@@ -291,7 +291,7 @@ class TextFrame(leoFrame.LeoFrame):
     # @-others
 
 
-# @+node:ekr.20150107090324.31: ** class textBody
+# @+node:ekr.20150107090324.31: ** class textBody: cursesGui.py
 class textBody(leoFrame.LeoBody):
     # @+others
     # @+node:ekr.20150107090324.32: *3* textBody.__init__
@@ -326,12 +326,12 @@ class textBody(leoFrame.LeoBody):
     # @-others
 
 
-# @+node:ekr.20150107090324.36: ** class textBodyCtrl (StringTextWrapper)
+# @+node:ekr.20150107090324.36: ** class textBodyCtrl (StringTextWrapper) cursesGui.py
 class textBodyCtrl(StringTextWrapper):
     pass
 
 
-# @+node:ekr.20150107090324.37: ** class textMenuCascade
+# @+node:ekr.20150107090324.37: ** class textMenuCascade: cursesGui.py
 class textMenuCascade:
     # @+others
     # @+node:ekr.20150107090324.38: *3* __init__
@@ -350,7 +350,7 @@ class textMenuCascade:
     # @-others
 
 
-# @+node:ekr.20150107090324.40: ** class textMenuEntry
+# @+node:ekr.20150107090324.40: ** class textMenuEntry: cursesGui.py
 class textMenuEntry:
     # @+others
     # @+node:ekr.20150107090324.41: *3* __init__
@@ -370,7 +370,7 @@ class textMenuEntry:
     # @-others
 
 
-# @+node:ekr.20150107090324.43: ** class textMenuSep
+# @+node:ekr.20150107090324.43: ** class textMenuSep: cursesGui.py
 class textMenuSep:
     # @+others
     # @+node:ekr.20150107090324.44: *3* display
@@ -380,7 +380,7 @@ class textMenuSep:
     # @-others
 
 
-# @+node:ekr.20150107090324.45: ** class textLeoMenu (LeoMenu)
+# @+node:ekr.20150107090324.45: ** class textLeoMenu (LeoMenu) cursesGui.py
 class textLeoMenu(leoMenu.LeoMenu):
     # @+others
     # @+node:ekr.20150107090324.46: *3* ctor (textLeoMenu)
@@ -489,7 +489,7 @@ class textLeoMenu(leoMenu.LeoMenu):
     # @-others
 
 
-# @+node:ekr.20150107090324.54: ** class textLog
+# @+node:ekr.20150107090324.54: ** class textLog: cursesGui.py
 class textLog(leoFrame.LeoLog):
     # @+others
     # @+node:ekr.20150107090324.58: *3* createControl
@@ -524,7 +524,7 @@ class textLog(leoFrame.LeoLog):
     # @-others
 
 
-# @+node:ekr.20150107090324.60: ** class textTree
+# @+node:ekr.20150107090324.60: ** class textTree: cursesGui.py
 class textTree(leoFrame.LeoTree):
     # @+others
     # @+node:ekr.20150107090324.61: *3* setBindings

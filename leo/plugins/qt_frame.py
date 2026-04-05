@@ -510,7 +510,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
 
         # Define class EventWrapper.
         # @+others
-        # @+node:ekr.20131118172620.16892: *6* class EventWrapper
+        # @+node:ekr.20131118172620.16892: *6* class EventWrapper (in DynamicWindow class)
         class EventWrapper:
             def __init__(self, c: Cmdr, w: QWidget, next_w: QWidget, func: Callable) -> None:
                 self.c = c
