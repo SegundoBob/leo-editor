@@ -4754,8 +4754,7 @@ class Commands:
         pass
 
     # @+node:ekr.20080514131122.16: *5* c.traceFocus (not used)
-    def traceFocus(self, w: StringTextWrapper) -> None:
-        g.checkWidget(w)
+    def traceFocus(self, w: Any) -> None:
         c = self
         if 'focus' in g.app.debug:
             c.trace_focus_count += 1
