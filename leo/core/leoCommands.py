@@ -4668,7 +4668,6 @@ class Commands:
         return c.requestedFocusWidget
 
     def request_focus(self, w: Widget) -> None:
-        g.checkWidget(w)
         c = self
         trace = 'focus' in g.app.debug
         if w and g.app.gui:
@@ -4680,7 +4679,6 @@ class Commands:
     def set_focus(self, w: Widget) -> None:
         trace = 'focus' in g.app.debug
         c = self
-        g.checkWidget(w)
         if w and g.app.gui:
             if trace:
                 name = w.objectName() if hasattr(w, 'objectName') else w.__class__.__name__

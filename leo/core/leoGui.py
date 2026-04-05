@@ -340,7 +340,6 @@ class LeoGui:
     def event_generate(
         self, c: Cmdr, char: str, shortcut: str, w: StringTextWrapper | QTextEditWrapper
     ) -> None:
-        # g.checkTextWidget(w)
         event = self.create_key_event(c, binding=shortcut, char=char, w=w)
         c.k.masterKeyHandler(event)
         c.outerUpdate()
