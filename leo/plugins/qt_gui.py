@@ -1830,16 +1830,16 @@ class StyleClassManager:
     style_sclass_property = 'style_class'  # name of QObject property for styling
 
     # @+others
-    # @+node:tbrown.20150724090431.2: *3* update_view
-    def update_view(self, w: StringTextWrapper) -> None:
+    # @+node:tbrown.20150724090431.2: *3* StyleClassManager.update_view
+    def update_view(self, w: QTextEditWrapper) -> None:
         """update_view - Make Qt apply w's style
 
         :param QWidgit w: widget to style
         """
-        g.checkTextWidget(w)
+        g.checkQtTextWidget(w)
         w.setStyleSheet("/* */")  # forces visual update
 
-    # @+node:tbrown.20150724090431.3: *3* add_sclass
+    # @+node:tbrown.20150724090431.3: *3* StyleClassManager.add_sclass
     def add_sclass(self, w: QTextEditWrapper, prop: str) -> None:
         """Add style class to QWidget w"""
         g.checkQtTextWidget(w)
@@ -1850,13 +1850,13 @@ class StyleClassManager:
             props.append(prop)
             self.set_sclasses(w, props)
 
-    # @+node:tbrown.20150724090431.4: *3* clear_sclasses
+    # @+node:tbrown.20150724090431.4: *3* StyleClassManager.clear_sclasses
     def clear_sclasses(self, w: QTextEditWrapper) -> None:
         """Remove all style classes from QWidget w"""
         g.checkQtTextWidget(w)
         w.setProperty(self.style_sclass_property, '')
 
-    # @+node:tbrown.20150724090431.5: *3* has_sclass
+    # @+node:tbrown.20150724090431.5: *3* StyleClassManager.has_sclass
     def has_sclass(self, w: QTextEditWrapper, prop: str) -> bool:
         """Check for style class or list of classes prop on QWidget w"""
         g.checkQtTextWidget(w)
@@ -1869,7 +1869,7 @@ class StyleClassManager:
             ans = [i in props for i in prop]
         return all(ans)
 
-    # @+node:tbrown.20150724090431.6: *3* remove_sclass
+    # @+node:tbrown.20150724090431.6: *3* StyleClassManager.remove_sclass
     def remove_sclass(self, w: QTextEditWrapper, prop: str) -> None:
         """Remove style class or list of classes prop from QWidget w"""
         g.checkQtTextWidget(w)
@@ -1883,13 +1883,13 @@ class StyleClassManager:
 
         self.set_sclasses(w, props)
 
-    # @+node:tbrown.20150724090431.8: *3* sclasses
+    # @+node:tbrown.20150724090431.8: *3* StyleClassManager.sclasses
     def sclasses(self, w: QTextEditWrapper) -> list[str]:
         """return list of style classes for QWidget w"""
         g.checkQtTextWidget(w)
         return str(w.property(self.style_sclass_property) or '').split()
 
-    # @+node:tbrown.20150724090431.9: *3* set_sclasses
+    # @+node:tbrown.20150724090431.9: *3* StyleClassManager.set_sclasses
     def set_sclasses(self, w: QTextEditWrapper, classes: list[str]) -> None:
         """Set style classes for QWidget w to list in classes"""
         g.checkQtTextWidget(w)
