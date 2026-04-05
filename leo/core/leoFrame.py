@@ -1366,16 +1366,17 @@ class NullFrame(LeoFrame):
         """Ctor for the NullFrame class."""
         super().__init__(c, gui)
         assert self.c
-        self.wrapper: StringTextWrapper = None
-        self.iconBar = NullIconBarClass(self.c)
+        ### self.wrapper: StringTextWrapper = None
         self.initComplete = True
         self.isNullFrame = True
-        self.statusLine = NullStatusLineClass(self.c)
         self.title = title
         # Create the component objects.
         self.body = NullBody(frame=self)
+        self.iconBar = NullIconBarClass(c)
         self.log = NullLog(frame=self)
         self.menu = leoMenu.NullMenu(frame=self)
+        self.miniBufferWidget: Any = g.NullObject()
+        self.statusLine = NullStatusLineClass(c)
         self.tree = NullTree(frame=self)
         # Default window position.
         self.w = 600

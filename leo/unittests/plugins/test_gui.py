@@ -56,6 +56,7 @@ class TestNullGui(LeoUnitTest):
             (c.frame.body, 'NullBody'),
             (c.frame.iconBar, 'NullIconBarClass'),
             (c.frame.log, 'NullLog'),
+            (c.frame.miniBufferWidget, 'NullObject'),
             (c.frame.statusLine, 'NullStatusLineClass'),
             (c.frame.tree, 'NullTree'),
             # NullBody ivars...
@@ -253,6 +254,7 @@ class TestQtGui(LeoUnitTest):
             (c.frame.iconBar, 'QtIconBarClass'),
             (c.frame.log, 'LeoQtLog'),
             (c.frame.menu, 'LeoQtMenu'),
+            (c.frame.miniBufferWidget, 'QMinibufferWrapper'),
             (c.frame.statusLine, 'QtStatusLineClass'),
             (c.frame.tree, 'LeoQtTree'),
             (c.frame.top, 'DynamicWindow'),
