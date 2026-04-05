@@ -252,6 +252,7 @@ class TestQtGui(LeoUnitTest):
             (c.frame.body, 'LeoQtBody'),
             (c.frame.iconBar, 'QtIconBarClass'),
             (c.frame.log, 'LeoQtLog'),
+            (c.frame.menu, 'LeoQtMenu'),
             (c.frame.statusLine, 'QtStatusLineClass'),
             (c.frame.tree, 'LeoQtTree'),
             (c.frame.top, 'DynamicWindow'),

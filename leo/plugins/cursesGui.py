@@ -333,13 +333,12 @@ class textBodyCtrl(StringTextWrapper):
 
 # @+node:ekr.20150107090324.37: ** class textMenuCascade: cursesGui.py
 class textMenuCascade:
-    # @+others
-    # @+node:ekr.20150107090324.38: *3* __init__
     def __init__(self, menu, label, underline):
         self.menu = menu
         self.label = label
         self.underline = underline
 
+    # @+others
     # @+node:ekr.20150107090324.39: *3* display
     def display(self):
         ret = underline(self.label, self.underline)
