@@ -1031,7 +1031,6 @@ class ScriptingController:
         'Create a balloon for a widget.'
         if g.app.gui.guiName().startswith('qt'):
             # QWidgetAction is the base class of leoIconBarButton.
-            g.checkClass(w, ['leoIconBarButton'])
             if hasattr(w, 'button'):
                 w.button.setToolTip(label)
 
@@ -1221,7 +1220,6 @@ class ScriptingController:
     def setButtonColor(self, b: QtWidgets.QWidgetAction, bg: str) -> None:
         """Set the background color of Qt button b to bg."""
         # QWidgetAction is the base class of leoIconBarButton.
-        g.checkClass(b, ['leoIconBarButton'])
         if not bg:
             return
         if not bg.startswith('#'):

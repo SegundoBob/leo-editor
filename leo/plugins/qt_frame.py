@@ -2423,7 +2423,6 @@ class LeoQtLog(leoFrame.LeoLog):
 
     # @+node:ekr.20111120124732.10184: *3* LeoQtLog.isLogWidget
     def isLogWidget(self, w: LeoQtFrame) -> bool:
-        g.checkClass(w, ['LeoQtFrame'])
         val = w == self or w in list(self.contentsDict.values())
         return val
 
