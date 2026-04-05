@@ -1076,7 +1076,6 @@ class LeoQtGui(leoGui.LeoGui):
         Create an event filter in obj.
         w is a wrapper object, not necessarily a QWidget.
         """
-        g.checkWidget(w)
         assert isinstance(obj, QtWidgets.QWidget), obj
         theFilter = qt_events.LeoQtEventFilter(c, w=w, tag=tag)
         obj.installEventFilter(theFilter)
@@ -1111,7 +1110,6 @@ class LeoQtGui(leoGui.LeoGui):
     # @+node:ekr.20190601054959.1: *4* LeoQtGui.set_focus
     def set_focus(self, c: Cmdr, w: QWidget) -> None:
         """Put the focus on the widget."""
-        g.checkWidget(w)
         if not w:
             return
         if getattr(w, 'widget', None):
@@ -1710,7 +1708,6 @@ class LeoQtGui(leoGui.LeoGui):
     # @+node:ekr.20110605121601.18527: *4* LeoQtGui.widget_name
     def widget_name(self, w: QWidget) -> str:
         # First try the widget's getName method.
-        g.checkWidget(w)
         if not w:
             name = '<no widget>'
         elif hasattr(w, 'getName'):

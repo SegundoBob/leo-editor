@@ -1799,7 +1799,6 @@ class QTextEditWrapper(QTextMixin):
             after(removeFlashCallback)
 
         def removeFlashCallback(self: QTextEditWrapper = self, w: QWidget = w) -> None:
-            g.checkWidget(w)
             w.setExtraSelections(last_selections)
             if self.flashCount > 0:
                 after(addFlashCallback)
