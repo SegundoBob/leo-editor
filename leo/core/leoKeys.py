@@ -4640,7 +4640,7 @@ class ModeInfo:
         return prompt
 
     # @+node:ekr.20120208064440.10160: *3* mode_i.createModeBindings
-    def createModeBindings(self, w: StringTextWrapper) -> None:
+    def createModeBindings(self, w: StringTextWrapper | QTextEditWrapper) -> None:
         """Create mode bindings for w, a text widget."""
         g.checkTextWidget(w)
         c, d, k, modeName = self.c, self.d, self.k, self.name
