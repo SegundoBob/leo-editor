@@ -47,6 +47,29 @@ class TestNullGui(LeoUnitTest):
         gui.runAskYesNoDialog(c, 'title', 'message')
         gui.runAskYesNoCancelDialog(c, 'title', 'message')
 
+    # @+node:ekr.20260405083949.1: *3* TestNullGui.test_annotations
+    def test_annotations(self):
+        c = self.c
+        table = (
+            # NullFrame and ivars...
+            (c.frame, 'NullFrame'),
+            (c.frame.body, 'NullBody'),
+            (c.frame.iconBar, 'NullIconBarClass'),
+            (c.frame.log, 'NullLog'),
+            (c.frame.statusLine, 'NullStatusLineClass'),
+            (c.frame.tree, 'NullTree'),
+            # NullBody ivars...
+            (c.frame.body.wrapper, 'StringTextWrapper'),
+            # NullLog ivars...
+            (c.frame.log.widget, 'StringTextWrapper'),
+            # no NullTree ivars!
+        )
+        for obj, class_name in table:
+            if class_name.startswith('?'):
+                print(class_name, obj.__class__.__name__)
+            else:
+                assert obj.__class__.__name__ == class_name, (repr(obj), class_name)
+
     # @-others
 
 

@@ -1600,18 +1600,14 @@ class NullIconBarClass:
 class NullLog(LeoLog):
     """A do-nothing log class."""
 
-    # @+others
-    # @+node:ekr.20070302095500: *3* NullLog.Birth
-    # @+node:ekr.20041012083237: *4* NullLog.__init__
     def __init__(self, *, frame: NullFrame = None) -> None:
         super().__init__(frame)
         c = self.c
         self.isNull = True
-        # self.logCtrl is now a property of the base LeoLog class.
         self.widget = StringTextWrapper(c=c, name='null-log')
-        self.wrapper: StringTextWrapper = None  # To keep mypy happy.
 
-    # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
+    # @+others
+    # @+node:ekr.20120216123546.10951: *3* NullLog.finishCreate
     def finishCreate(self) -> None:
         pass
 
