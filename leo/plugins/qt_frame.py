@@ -2288,7 +2288,6 @@ class LeoQtLog(leoFrame.LeoLog):
         self.qtLogCtrl: QTextEditWrapper = None
         self.logDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
         self.logWidget: LeoLog = None
-        self.menu: qt_text.LeoQTextBrowser = None
         self.qtTabWidget: QWidget = c.frame.top.tabWidget
         tw = self.qtTabWidget
 

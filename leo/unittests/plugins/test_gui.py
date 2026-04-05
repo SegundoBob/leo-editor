@@ -240,7 +240,6 @@ class TestQtGui(LeoUnitTest):
             # LeoQtLog ivars...
             (c.frame.log.qtLogCtrl, 'QTextEditWrapper'),
             (c.frame.log.logWidget, 'LeoQTextBrowser'),
-            (c.frame.log.menu, 'NoneType'),  ### !!!
             (c.frame.log.qtTabWidget, 'QTabWidget'),  # Not QWidget!
             # LeoQtTree ivars...
             (c.frame.tree.treeWidget, 'LeoQTreeWidget'),
