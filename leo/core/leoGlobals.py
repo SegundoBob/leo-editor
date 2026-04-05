@@ -2314,14 +2314,8 @@ def my_name(i: int = 1) -> str:
 
 
 # @+node:ekr.20260330144349.1: *4* g.checkClass/QtTextWidget/TextWidget/Widget
-check_class_dict: dict[str, set[str]] = {}
-
-all_class_dict: dict[str, set[str]] = {}
-
-print_only_errors = False or unitTesting
 
 
-# @+others
 # @+node:ekr.20260401135657.1: *5* g._check_class_helper
 def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     """
@@ -2331,40 +2325,15 @@ def _check_class_helper(obj: Any, *, key: str, class_names: list[str]) -> None:
     if obj is None:
         return
     class_name = obj.__class__.__name__
-    valid_class_names = (
-        ['StringTextWrapper'] if g.unitTesting
-        else class_names or []
+    if class_name in class_names:
+        return
+    class_names_s = (
+        ', '.join(class_names) if len(class_names) <= 3
+        else '\n  ' + '\n  '.join(class_names)
     )  # fmt: skip
-
-    # Update all_class_dict.
-    d = g.all_class_dict
-    if key not in d:
-        d[key] = valid_class_names
-
-    if print_only_errors:
-        if class_name in valid_class_names:
-            return
-        if len(valid_class_names) <= 3:
-            class_names_s = ', '.join(valid_class_names)
-        else:
-            class_names_s = '\n  ' + '\n  '.join(valid_class_names)
-        key_s = f"{g.caller()}.{key}"
-        message = f"{key_s:>50}: {class_name} not in: {class_names_s}"
-    else:
-        message = class_name
-
-    g._add_check_message(key, message)
-
-
-# @+node:ekr.20260401153616.1: *5* g._add_check_message
-def _add_check_message(key: str, message: str) -> None:
-    """Add a check message to g.check_class_dict and maybe print it."""
-    d = g.check_class_dict
-    message_set = d.get(key, set())
-    if print_only_errors and message not in message_set:
-        g.es_print(message, color='red')
-    message_set.add(message)
-    d[key] = message_set
+    key_s = f"{g.caller()}.{key}"
+    message = f"{key_s:>50}: {class_name} not in: {class_names_s}"
+    g.traceUnique(message)
 
 
 # @+node:ekr.20260401135932.1: *5* g.check_class
@@ -2467,47 +2436,6 @@ def checkWidget(obj: Any) -> None:
     g.stat()
     key = f"{g.my_name()}:{g.caller()}"
     g._check_class_helper(obj, key=key, class_names=widget_classes)
-
-
-# @+node:ekr.20260401143657.1: *5* g.printClassDict
-def printClassDict() -> None:
-    """Print g.check_class_dict"""
-
-    # Print the values that *have* been found.
-    d = g.check_class_dict
-    all_seen_classes = set()
-    print('')
-    print('Seen objects...')
-    for key, value in sorted(d.items()):
-        print(f"{key}:")
-        classes = [z.strip() for z in sorted(value)]
-        print(f"    {', '.join(classes)}")
-        for z in classes:
-            all_seen_classes.add(z)
-
-    # Compute all known classes.
-    d2 = g.all_class_dict
-    all_known_classes = set()
-    for key, value in sorted(d2.items()):
-        for z in value:
-            all_known_classes.add(z)
-
-    # Print all known classes.
-    if 0:
-        print('')
-        print('All known classes...')
-        for z in sorted(all_seen_classes):
-            print(f"    {z}")
-
-    # Print all known classes that *haven't* been found.
-    print('')
-    print('Unseen classes...')
-    for z in all_known_classes:
-        if z not in all_seen_classes:
-            print(f"    {z}")
-
-
-# @-others
 
 
 # @+node:ekr.20031218072017.3109: *4* g.dump

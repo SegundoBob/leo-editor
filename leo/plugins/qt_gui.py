@@ -217,8 +217,6 @@ class LeoQtGui(leoGui.LeoGui):
         """Stop executing the qt gui after printing any stats."""
         if g.app.statsDict:
             g.printStats()
-        if g.check_class_dict:
-            g.printClassDict()
 
         QtCore.pyqtRemoveInputHook()
         if 'shutdown' in g.app.debug:
