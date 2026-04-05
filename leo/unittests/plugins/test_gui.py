@@ -222,9 +222,7 @@ class TestQtGui(LeoUnitTest):
 
     # @+node:ekr.20260404143610.1: *3* TestQtGui.test_annotations
     def test_annotations(self):
-        # Test Leo's g.check* functions using a virtual user.
         c = self.c
-
         table = (
             # LeoQtFrame ivars...
             (c.frame, 'LeoQtFrame'),
