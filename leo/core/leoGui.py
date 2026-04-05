@@ -20,7 +20,7 @@ from leo.core import leoFrame
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoFrame import NullFrame
+    from leo.core.leoFrame import NullFrame, NullIconBarClass
     from leo.core.leoNodes import Position
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextEditWrapper
@@ -627,7 +627,7 @@ class NullScriptingControllerClass:
 
     This keeps pylint happy."""
 
-    def __init__(self, c: Cmdr, iconBar: Widget = None) -> None:
+    def __init__(self, c: Cmdr, iconBar: NullIconBarClass = None) -> None:
         self.c = c
         self.iconBar = iconBar
 
