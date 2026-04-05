@@ -226,22 +226,30 @@ class TestQtGui(LeoUnitTest):
         c = self.c
 
         table = (
-            # LeoQtFrame.__init__
+            # LeoQtFrame ivars...
             (c.frame, 'LeoQtFrame'),
-            # (c.frame.bar1, 'LeoQtFrame'),  # Removed!
-            # (c.frame.bar2, 'LeoQtFrame'),  # Removed!
             (c.frame.body, 'LeoQtBody'),
             (c.frame.iconBar, 'QtIconBarClass'),
             (c.frame.log, 'LeoQtLog'),
             (c.frame.statusLine, 'QtStatusLineClass'),
             (c.frame.tree, 'LeoQtTree'),
             (c.frame.top, 'DynamicWindow'),
-            # # c.frame.body,
-            # # c.frame.log,
-            # # c.frame.tree,
+            # LeoQtBody ivars...
+            (c.frame.body.wrapper, 'QTextEditWrapper'),  # QScintillaWrapper | QTextEditWrapper
+            (c.frame.body.widget, 'LeoQTextBrowser'),  # not QWidget!
+            # LeoQtLog ivars...
+            (c.frame.log.qtLogCtrl, 'QTextEditWrapper'),
+            (c.frame.log.logWidget, 'LeoQTextBrowser'),
+            (c.frame.log.menu, 'NoneType'),  ### !!!
+            (c.frame.log.qtTabWidget, 'QTabWidget'),  # Not QWidget!
+            # LeoQtTree ivars...
+            (c.frame.tree.treeWidget, 'LeoQTreeWidget'),
         )
         for obj, class_name in table:
-            assert obj.__class__.__name__ == class_name, (repr(obj), class_name)
+            if class_name.startswith('?'):
+                print(class_name, obj.__class__.__name__)
+            else:
+                assert obj.__class__.__name__ == class_name, (repr(obj), class_name)
 
     # @-others
 
