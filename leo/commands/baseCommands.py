@@ -118,7 +118,9 @@ class BaseEditCommandsClass:
         return val
 
     # @+node:ekr.20150514043714.13: *4* BaseEdit.getRectanglePoints
-    def getRectanglePoints(self, w: StringTextWrapper) -> tuple[int, int, int, int]:
+    def getRectanglePoints(
+        self, w: StringTextWrapper | QTextEditWrapper
+    ) -> tuple[int, int, int, int]:
         """Return the rectangle corresponding to the selection range."""
         g.checkTextWidget(w)
         c = self.c

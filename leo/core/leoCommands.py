@@ -4795,7 +4795,7 @@ class Commands:
         tree = c.frame.tree
         c.request_focus(tree and tree.canvas)
 
-    def widgetWantsFocus(self, w: StringTextWrapper) -> None:
+    def widgetWantsFocus(self, w: StringTextWrapper | QTextEditWrapper) -> None:
         c = self
         c.request_focus(w)
 
