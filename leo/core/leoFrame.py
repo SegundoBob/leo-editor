@@ -153,7 +153,7 @@ class LeoBody:
     # @+node:ekr.20060528100747: *3* LeoBody.Editors
     # @+node:ekr.20070424053629.1: *4* LeoBody.utils
     # @+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
-    def recolorWidget(self, p: Position, w: StringTextWrapper) -> None:
+    def recolorWidget(self, p: Position, w: StringTextWrapper | QTextEditWrapper) -> None:
         # Support QScintillaColorizer.colorize.
         c = self.c
         colorizer = c.frame.body.colorizer
@@ -1089,7 +1089,7 @@ class LeoTree:
         pass
 
     # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
-    def updateHead(self, event: LeoKeyEvent, w: StringTextWrapper) -> None:
+    def updateHead(self, event: LeoKeyEvent, w: StringTextWrapper | QTextEditWrapper) -> None:
         """
         Update a headline from an event.
 

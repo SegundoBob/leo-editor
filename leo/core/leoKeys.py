@@ -2289,7 +2289,7 @@ class KeyHandlerClass:
                     g.trace(f"No shortcut for {name} = {key}")
 
     # @+node:ekr.20061031131434.97: *4* k.completeAllBindings
-    def completeAllBindings(self, w: StringTextWrapper = None) -> None:
+    def completeAllBindings(self, w: StringTextWrapper | QTextEditWrapper = None) -> None:
         """
         Make an actual binding in *all* the standard places.
 
@@ -3237,7 +3237,9 @@ class KeyHandlerClass:
         k.resetCommandHistory()
 
     # @+node:ekr.20061031131434.126: *4* k.manufactureKeyPressForCommandName (only for unit tests!)
-    def manufactureKeyPressForCommandName(self, w: StringTextWrapper, commandName: str) -> None:
+    def manufactureKeyPressForCommandName(
+        self, w: StringTextWrapper | QTextEditWrapper, commandName: str
+    ) -> None:
         """
         Implement a command by passing a keypress to the gui.
 
@@ -4163,7 +4165,9 @@ class KeyHandlerClass:
         k.setLabelGrey(f"@mode {modeName} is not defined (or is empty)")
 
     # @+node:ekr.20061031131434.158: *4* k.createModeBindings
-    def createModeBindings(self, modeName: str, d: dict[str, list], w: StringTextWrapper) -> None:
+    def createModeBindings(
+        self, modeName: str, d: dict[str, list], w: StringTextWrapper | QTextEditWrapper
+    ) -> None:
         """Create mode bindings for the named mode using dictionary d for w, a text widget."""
         g.checkTextWidget(w)
         c, k = self.c, self
