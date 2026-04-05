@@ -326,7 +326,7 @@ class textBody(leoFrame.LeoBody):
     # @-others
 
 
-# @+node:ekr.20150107090324.36: ** class textBodyCtrl (stringTextWrapper)
+# @+node:ekr.20150107090324.36: ** class textBodyCtrl (StringTextWrapper)
 class textBodyCtrl(StringTextWrapper):
     pass
 
