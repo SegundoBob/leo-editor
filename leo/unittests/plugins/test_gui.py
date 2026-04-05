@@ -223,26 +223,39 @@ class TestQtGui(LeoUnitTest):
     # @+node:ekr.20260404143610.1: *3* TestQtGui.test_annotations
     def test_annotations(self):
         # Test Leo's g.check* functions using a virtual user.
-        import pdb
-
         c = self.c
-        print('')
-        print('After init')
-        print('')
-        print(f"{'Wrapper':>20}  Widget")
-        print(f"{' ' * 13}{'_' * 7}  {'_' * 6}")
 
-        for wrapper in [
-            c.frame,
-            c.frame.body,
-            c.frame.log,
-            c.frame.tree,
-        ]:
-            w = getattr(wrapper, 'widget', None)
-            w_s = w.__class__.__name__ or '<no widget>'
-            print(f"{wrapper.__class__.__name__:>20}  {w_s}")
-        g.printStats()
-        g.printClassDict()
+        table = (
+            # LeoQtFrame.__init__
+            (c.frame, 'LeoQtFrame'),
+            # (c.frame.bar1, 'LeoQtFrame'),  # Removed!
+            # (c.frame.bar2, 'LeoQtFrame'),  # Removed!
+            (c.frame.body, 'LeoQtBody'),
+            (c.frame.iconBar, 'QtIconBarClass'),
+            (c.frame.log, 'LeoQtLog'),
+            (c.frame.statusLine, 'QtStatusLineClass'),
+            (c.frame.tree, 'LeoQtTree'),
+            (c.frame.top, 'DynamicWindow'),
+            # # c.frame.body,
+            # # c.frame.log,
+            # # c.frame.tree,
+        )
+        for obj, class_name in table:
+            assert obj.__class__.__name__ == class_name, (repr(obj), class_name)
+
+        ### To be removed.
+
+        # print('')
+        # print('After init')
+        # print('')
+        # print(f"{'Wrapper':>20}  Widget")
+        # print(f"{' ' * 13}{'_' * 7}  {'_' * 6}")
+
+        #     w = getattr(wrapper, 'widget', None)
+        #     w_s = w.__class__.__name__ or '<no widget>'
+        #     print(f"{wrapper.__class__.__name__:>20}  {w_s}")
+        # g.printStats()
+        # g.printClassDict()
 
     # @-others
 
