@@ -224,32 +224,6 @@ class StringTextWrapper(QTextMixin):
         return self.name  # Essential.
 
     # @+node:ekr.20140903172510.18591: *3* StringTextWrapper.Text
-    # @+node:ekr.20140903172510.18592: *4* StringTextWrapper.appendText
-    def appendText(self, s: str) -> None:
-        """StringTextWrapper."""
-        self.s = self.s + g.toUnicode(s)  # defensive
-        self.ins = len(self.s)
-        self.sel = self.ins, self.ins
-
-    # @+node:ekr.20140903172510.18593: *4* StringTextWrapper.delete
-    def delete(self, i: int, j: int = None) -> None:
-        """StringTextWrapper."""
-        if j is None:
-            j = i + 1
-        # This allows subclasses to use this base class method.
-        if i > j:
-            i, j = j, i
-        s = self.getAllText()
-        self.setAllText(s[:i] + s[j:])
-        # Bug fix: 2011/11/13: Significant in external tests.
-        self.setSelectionRange(i, i, insert=i)
-
-    # @+node:ekr.20140903172510.18594: *4* StringTextWrapper.deleteTextSelection
-    def deleteTextSelection(self) -> None:
-        """StringTextWrapper."""
-        i, j = self.getSelectionRange()
-        self.delete(i, j)
-
     # @+node:ekr.20140903172510.18595: *4* StringTextWrapper.get
     def get(self, i: int, j: Optional[int] = None) -> str:
         """StringTextWrapper."""
@@ -257,54 +231,6 @@ class StringTextWrapper(QTextMixin):
             j = i + 1
         s = self.s[i:j]
         return g.toUnicode(s)
-
-    # @+node:ekr.20140903172510.18596: *4* StringTextWrapper.getAllText
-    def getAllText(self) -> str:
-        """StringTextWrapper."""
-        s = self.s
-        return g.checkUnicode(s)
-
-    # @+node:ekr.20140903172510.18584: *4* StringTextWrapper.getInsertPoint
-    def getInsertPoint(self) -> int:
-        """StringTextWrapper."""
-        i = self.ins
-        if i is None:
-            if self.virtualInsertPoint is None:
-                i = 0
-            else:
-                i = self.virtualInsertPoint
-        self.virtualInsertPoint = i
-        return i
-
-    # @+node:ekr.20220909182855.1: *4* StringTextWrapper.getLastIndex
-    def getLastIndex(self) -> int:
-        """Return the length of the self.s"""
-        return len(self.s)
-
-    # @+node:ekr.20140903172510.18597: *4* StringTextWrapper.getSelectedText
-    def getSelectedText(self) -> str:
-        """StringTextWrapper."""
-        i, j = self.sel
-        s = self.s[i:j]
-        return g.checkUnicode(s)
-
-    # @+node:ekr.20140903172510.18585: *4* StringTextWrapper.getSelectionRange
-    def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
-        """Return the selected range of the widget."""
-        sel = self.sel
-        if len(sel) == 2 and sel[0] >= 0 and sel[1] >= 0:
-            i, j = sel
-            if sort and i > j:
-                sel = j, i  # Bug fix: 10/5/07
-            return sel
-        i = self.ins
-        return i, i
-
-    # @+node:ekr.20140903172510.18586: *4* StringTextWrapper.hasSelection
-    def hasSelection(self) -> bool:
-        """StringTextWrapper."""
-        i, j = self.getSelectionRange()
-        return i != j
 
     # @+node:ekr.20140903172510.18598: *4* StringTextWrapper.insert
     def insert(self, i: int, s: str) -> None:
@@ -324,13 +250,6 @@ class StringTextWrapper(QTextMixin):
         """StringTextWrapper."""
         self.s = s
         i = len(self.s)
-        self.ins = i
-        self.sel = i, i
-
-    # @+node:ekr.20140903172510.18587: *4* StringTextWrapper.setInsertPoint
-    def setInsertPoint(self, i: int, s: str = None) -> None:
-        """StringTextWrapper."""
-        self.virtualInsertPoint = i
         self.ins = i
         self.sel = i, i
 
