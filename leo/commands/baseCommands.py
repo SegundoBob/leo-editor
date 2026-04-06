@@ -12,7 +12,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-    from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin  ###
+    ### from leo.plugins.qt_text import QTextEditWrapper
 # @-<< baseCommands imports & abbreviations >>
 
 
@@ -35,8 +36,8 @@ class BaseEditCommandsClass:
     # @+node:ekr.20150514043714.3: *3* BaseEdit.begin/endCommand (handles undo)
     # @+node:ekr.20150514043714.4: *4* BaseEdit.beginCommand
     def beginCommand(
-        self, w: StringTextWrapper | QTextEditWrapper, undoType: str = 'Typing'
-    ) -> StringTextWrapper | QTextEditWrapper:
+        self, w: StringTextWrapper | QTextMixin, undoType: str = 'Typing'
+    ) -> StringTextWrapper | QTextMixin:
         """Do the common processing at the start of each command."""
         g.checkTextWidget(w)
         c, p, u = self.c, self.c.p, self.c.undoer
@@ -118,9 +119,7 @@ class BaseEditCommandsClass:
         return val
 
     # @+node:ekr.20150514043714.13: *4* BaseEdit.getRectanglePoints
-    def getRectanglePoints(
-        self, w: StringTextWrapper | QTextEditWrapper
-    ) -> tuple[int, int, int, int]:
+    def getRectanglePoints(self, w: StringTextWrapper | QTextMixin) -> tuple[int, int, int, int]:
         """Return the rectangle corresponding to the selection range."""
         g.checkTextWidget(w)
         c = self.c

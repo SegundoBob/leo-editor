@@ -47,8 +47,9 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_text import (
         QMinibufferWrapper,
         QScintillaWrapper,
-        QTextEditWrapper,
+        ### QTextEditWrapper,
     )
+    from leo.plugins.qt_text import QTextMixin  ###
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
@@ -115,7 +116,7 @@ class LeoBody:
         self.c = c
         self.frame = frame
         self.widget: Any = None  # cursesGui2.py: will be an npyscreen widget.
-        self.wrapper: StringTextWrapper | QScintillaWrapper | QTextEditWrapper = None
+        self.wrapper: StringTextWrapper | QScintillaWrapper | QTextMixin = None
 
         # Must be overridden in subclasses...
         self.colorizer: BaseColorizer = None
@@ -142,7 +143,7 @@ class LeoBody:
     # @+node:ekr.20060528100747: *3* LeoBody.Editors
     # @+node:ekr.20070424053629.1: *4* LeoBody.utils
     # @+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
-    def recolorWidget(self, p: Position, w: StringTextWrapper | QTextEditWrapper) -> None:
+    def recolorWidget(self, p: Position, w: StringTextWrapper | QTextMixin) -> None:
         # Support QScintillaColorizer.colorize.
         c = self.c
         colorizer = c.frame.body.colorizer
@@ -1078,7 +1079,7 @@ class LeoTree:
         pass
 
     # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
-    def updateHead(self, event: LeoKeyEvent, w: StringTextWrapper | QTextEditWrapper) -> None:
+    def updateHead(self, event: LeoKeyEvent, w: StringTextWrapper | QTextMixin) -> None:
         """
         Update a headline from an event.
 

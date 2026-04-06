@@ -21,7 +21,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin
+    ### from leo.plugins.qt_text import QTextEditWrapper
 
 # @-<< killBufferCommands imports & annotations >>
 
@@ -178,7 +179,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         event: LeoKeyEvent,
         frm: int,
         to: int,
-        w: StringTextWrapper | QTextEditWrapper,
+        w: StringTextWrapper | QTextMixin,
         undoType: str = None,
     ) -> None:
         """

@@ -71,6 +71,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.leoFrame import LeoLog, NullFrame
     from leo.plugins.mod_scripting import ScriptingController
     from leo.plugins.qt_text import LeoQTextBrowser, QMinibufferWrapper, QScintillaWrapper
+    from leo.plugins.qt_text import QTextMixin  ###
 
     Args = Any
     KWargs = Any
@@ -1690,7 +1691,7 @@ class LeoQtBody(leoFrame.LeoBody):
         c = self.c
         assert c.frame == frame and frame.c == c
         self.colorizer: BaseColorizer = None
-        self.wrapper: QScintillaWrapper | QTextEditWrapper = None
+        self.wrapper: QScintillaWrapper | QTextMixin = None
         self.widget: QWidget = None
         self.reloadSettings()
         self.set_widget()  # Sets self.widget and self.wrapper.

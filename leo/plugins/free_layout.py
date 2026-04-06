@@ -53,6 +53,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
     from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin  ###
 
     QSplitter = QtWidgets.QSplitter
     QWidget = QtWidgets.QWidget
@@ -369,7 +370,7 @@ class FreeLayoutController:
         return False
 
     # @+node:tbrown.20110628083641.11724: *3* flc.ns_provide
-    def ns_provide(self, id_: str) -> Optional[str | QTextEditWrapper]:
+    def ns_provide(self, id_: str) -> Optional[str | QTextMixin]:
         if id_.startswith('_leo_tab:'):
             id_ = id_.split(':', 1)[1]
             top = self.get_top_splitter()

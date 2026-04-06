@@ -31,7 +31,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from subprocess import Popen
     from types import ModuleType
     from leo.commands.spellCommands import SqlitePickleShare
-    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoBackground import BackgroundProcessManager
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoConfig import GlobalConfigManager
@@ -42,7 +41,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoSessions import SessionManager
     from leo.plugins.qt_events import LossageData
     from leo.plugins.qt_idle_time import IdleTime
-    from leo.plugins.qt_text import QTextEditWrapper
+    ### from leo.plugins.qt_text import QTextEditWrapper
+    ###from leo.core.leoAPI import StringTextWrapper
 
     Value = Any
 
@@ -1591,7 +1591,7 @@ class LeoApp:
         self,
         fileName: str,
         gui: LeoGui = None,
-        parentFrame: StringTextWrapper | QTextEditWrapper = None,
+        parentFrame: Any = None,
         previousSettings: "PreviousSettings" = None,
         relativeFileName: str = None,
     ) -> Cmdr:

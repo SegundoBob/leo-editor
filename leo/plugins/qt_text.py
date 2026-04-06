@@ -164,7 +164,7 @@ class QTextMixin:
         self.tags: dict[str, str] = {}
         self.permanent = True  # False if selecting the minibuffer will make the widget go away.
         self.useScintilla = False  # This is used!
-        self.virtualInsertPoint = None
+        self.virtualInsertPoint: int = None
         self.widget: Any = None  # 'Any' is correct for the QTextMixin class.
         if c:
             self.injectIvars(c)
@@ -308,6 +308,24 @@ class QTextMixin:
         s = self.getAllText()
         return s[i:j]
 
+    # @+node:ekr.20260406043110.1: *5* QTextMixin.getAllText  (NEW)
+    def getAllText(self) -> str:
+        """StringTextWrapper."""
+        s = self.s
+        return g.checkUnicode(s)
+
+    # @+node:ekr.20260406043211.1: *5* QTextMixin.getInsertPoint (NEW)
+    def getInsertPoint(self) -> int:
+        """StringTextWrapper."""
+        i = self.ins
+        if i is None:
+            if self.virtualInsertPoint is None:
+                i = 0
+            else:
+                i = self.virtualInsertPoint
+        self.virtualInsertPoint = i
+        return i
+
     # @+node:ekr.20140901062324.18704: *5* QTextMixin.getLastIndex & getLength
     def getLastIndex(self, s: str = None) -> int:
         """QTextMixin"""
@@ -325,6 +343,24 @@ class QTextMixin:
             return ''
         s = self.getAllText()
         return s[i:j]
+
+    # @+node:ekr.20260406043557.1: *5* QTextMixin.getSelectionRange (NEW)
+    def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
+        """Return the selected range of the widget."""
+        sel = self.sel
+        if len(sel) == 2 and sel[0] >= 0 and sel[1] >= 0:
+            i, j = sel
+            if sort and i > j:
+                sel = j, i  # Bug fix: 10/5/07
+            return sel
+        i = self.ins
+        return i, i
+
+    # @+node:ekr.20260406044235.1: *5* QTextMixin.hasSelection (NEW)
+    def hasSelection(self) -> bool:
+        """StringTextWrapper."""
+        i, j = self.getSelectionRange()
+        return i != j
 
     # @+node:ekr.20140901141402.18702: *5* QTextMixin.insert
     def insert(self, i: int, s: str) -> int:
@@ -345,6 +381,19 @@ class QTextMixin:
         """QTextMixin."""
         self.setSelectionRange(0, self.getLength(s))
 
+    # @+node:ekr.20260406043726.1: *5* QTextMixin.setInsertPoint (NEW)
+    def setInsertPoint(self, i: int, s: str = None) -> None:
+        """StringTextWrapper."""
+        self.virtualInsertPoint = i
+        self.ins = i
+        self.sel = i, i
+
+    # @+node:ekr.20260406043803.1: *5* QTextMixin.setSelectionRange (NEW)
+    def setSelectionRange(self, i: int, j: int, insert: int = None) -> None:
+        """StringTextWrapper."""
+        self.sel = i, j
+        self.ins = j if insert is None else insert
+
     # @+node:ekr.20140901141402.18704: *5* QTextMixin.toPythonIndexRowCol
     def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:
         """QTextMixin"""
@@ -364,6 +413,12 @@ class QTextMixin:
         v.selectionStart = i
         v.selectionLength = j - i
         v.scrollBarSpot = w.getYScrollPosition()
+
+    # @+node:ekr.20260406044142.1: *3* QTextMixin: Do-nothings
+    def flashCharacter(
+        self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75
+    ) -> None:
+        pass
 
     # @-others
 

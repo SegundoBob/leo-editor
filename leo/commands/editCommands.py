@@ -17,7 +17,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position, VNode
-    from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin  ###
+    ### from leo.plugins.qt_text import QTextEditWrapper
 
     KWargs = Any
     Value = Any
@@ -501,7 +502,7 @@ class EditCommandsClass(BaseEditCommandsClass):
             return
         g.checkTextWidget(w)
 
-        def callback(arg: str, w: StringTextWrapper | QTextEditWrapper = w) -> None:
+        def callback(arg: str, w: StringTextWrapper | QTextMixin = w) -> None:
             i = w.getSelectionRange()[0]
             p = c.p
             w.deleteTextSelection()
@@ -2205,7 +2206,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         inBrackets: bool,
         oldSel: tuple[int, int],
         stroke: g.KeyStroke,
-        w: StringTextWrapper | QTextEditWrapper,
+        w: StringTextWrapper | QTextMixin,
     ) -> None:
         g.checkTextWidget(w)
         c, p = self.c, self.c.p
@@ -2249,7 +2250,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20180806045802.1: *5* ec.doSmartQuote
     def doSmartQuote(
-        self, action: str, ch: str, oldSel: tuple[int, int], w: StringTextWrapper | QTextEditWrapper
+        self, action: str, ch: str, oldSel: tuple[int, int], w: StringTextWrapper | QTextMixin
     ) -> None:
         """Convert a straight quote to a curly quote, depending on context."""
         g.checkTextWidget(w)
@@ -2274,7 +2275,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         w.setInsertPoint(ins + 1)
 
     # @+node:ekr.20150514063305.271: *5* ec.flashCharacter
-    def flashCharacter(self, w: StringTextWrapper | QTextEditWrapper, i: int) -> None:
+    def flashCharacter(self, w: StringTextWrapper | QTextMixin, i: int) -> None:
         """Flash the character at position i of widget w."""
         g.checkTextWidget(w)
         bg = self.bracketsFlashBg or 'DodgerBlue1'
@@ -2285,7 +2286,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.272: *5* ec.flashMatchingBracketsHelper
     def flashMatchingBracketsHelper(
-        self, c: Cmdr, ch: str, i: int, p: Position, w: StringTextWrapper | QTextEditWrapper
+        self, c: Cmdr, ch: str, i: int, p: Position, w: StringTextWrapper | QTextMixin
     ) -> None:
         """Flash matching brackets at char ch at position i at widget w."""
         g.checkTextWidget(w)
@@ -2318,7 +2319,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.274: *5* ec.insertNewlineHelper
     def insertNewlineHelper(
-        self, w: StringTextWrapper | QTextEditWrapper, oldSel: tuple[int, int], undoType: str
+        self, w: StringTextWrapper | QTextMixin, oldSel: tuple[int, int], undoType: str
     ) -> None:
         g.checkTextWidget(w)
         c, p = self.c, self.c.p
@@ -2343,7 +2344,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.275: *5* ec.updateAutoIndent
     trailing_colon_pat = re.compile(r'^.*:\s*?#.*$')  # #2230
 
-    def updateAutoIndent(self, p: Position, w: StringTextWrapper | QTextEditWrapper) -> None:
+    def updateAutoIndent(self, p: Position, w: StringTextWrapper | QTextMixin) -> None:
         """Handle auto indentation."""
         g.checkTextWidget(w)
         c = self.c
@@ -2381,7 +2382,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.276: *5* ec.updateAutomatchBracket
     def updateAutomatchBracket(
-        self, p: Position, w: StringTextWrapper | QTextEditWrapper, ch: str, oldSel: tuple[int, int]
+        self, p: Position, w: StringTextWrapper | QTextMixin, ch: str, oldSel: tuple[int, int]
     ) -> None:
         g.checkTextWidget(w)
         c = self.c
@@ -2415,7 +2416,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         self,
         event: LeoKeyEvent,
         p: Position,
-        w: StringTextWrapper | QTextEditWrapper,
+        w: StringTextWrapper | QTextMixin,
         smartTab: bool = True,
     ) -> None:
         """
@@ -2452,7 +2453,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         s: str,
         i: int,
         tab_width: int,
-        w: StringTextWrapper | QTextEditWrapper | QTextEditWrapper,
+        w: StringTextWrapper | QTextMixin | QTextMixin,
     ) -> None:
         """
         A helper for selfInsertCommand, called from updateTab.
@@ -2522,7 +2523,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.287: *5* ec.extendHelper
     def extendHelper(
         self,
-        w: StringTextWrapper | QTextEditWrapper,
+        w: StringTextWrapper | QTextMixin,
         extend: bool,
         spot: int,
         upOrDown: bool = False,
@@ -2758,7 +2759,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         self.moveToHelper(event, i, extend)
 
     # @+node:ekr.20150514063305.289: *5* ec.setMoveCol
-    def setMoveCol(self, w: StringTextWrapper | QTextEditWrapper, spot: int) -> None:
+    def setMoveCol(self, w: StringTextWrapper | QTextMixin, spot: int) -> None:
         """Set the column to which an up or down arrow will attempt to move."""
         g.checkTextWidget(w)
         p = self.c.p
@@ -3067,7 +3068,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         self,
         event: LeoKeyEvent,
         select: bool = True,
-        w: StringTextWrapper | QTextEditWrapper = None,
+        w: StringTextWrapper | QTextMixin = None,
     ) -> tuple[int, int]:
         """Compute the word at the cursor. Select it if select arg is True."""
         g.checkTextWidget(w)
@@ -3642,7 +3643,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         self.selectParagraphHelper(w, i)
 
     # @+node:ekr.20150514063305.326: *5* ec.selectParagraphHelper
-    def selectParagraphHelper(self, w: StringTextWrapper | QTextEditWrapper, start: int) -> None:
+    def selectParagraphHelper(self, w: StringTextWrapper | QTextMixin, start: int) -> None:
         """Select from start to the end of the paragraph."""
         g.checkTextWidget(w)
         s = w.getAllText()

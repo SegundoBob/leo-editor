@@ -68,7 +68,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoGui
     from leo.core.qt_frame import LeoQtMenu
     from leo.plugins.qt_gui import StyleSheetManager
-    from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin  ###
+    ### from leo.plugins.qt_text import QTextEditWrapper
 
     Args = Any
     KWargs = Any
@@ -113,7 +114,7 @@ class Commands:
         self,
         fileName: str,
         gui: LeoGui = None,
-        parentFrame: StringTextWrapper | QTextEditWrapper = None,
+        parentFrame: Any = None,
         previousSettings: "PreviousSettings" = None,
         relativeFileName: str = None,
     ) -> None:
@@ -4737,7 +4738,7 @@ class Commands:
         tree = c.frame.tree
         c.request_focus(tree and tree.canvas)
 
-    def widgetWantsFocus(self, w: StringTextWrapper | QTextEditWrapper) -> None:
+    def widgetWantsFocus(self, w: StringTextWrapper | QTextMixin) -> None:
         c = self
         c.request_focus(w)
 
