@@ -198,35 +198,25 @@ class StatusLineAPI:
 class StringTextWrapper(QTextMixin):
     """
     A class that represents Leo's body pane as a Python string.
-
-    This is *also* the annotation for Leo's high-level interface used throughout Leo's core.
     """
 
-    # @+others
-    # @+node:ekr.20070228074228.2: *3* StringTextWrapper.ctor
     def __init__(self, c: Cmdr, name: str) -> None:
-        """Ctor for the StringTextWrapper class."""
         super().__init__(c)
         self.c = c
         self.name = name
+        # Ivars unique to StringTextWrapper.
         self.ins = 0
         self.sel = 0, 0
         self.s = ''
-        self.supportsHighLevelInterface = True
-        self.virtualInsertPoint = 0
-        self.widget = None  # This ivar must exist, and be None.
 
-    def __repr__(self) -> str:
-        return f"<StringTextWrapper: {id(self)} {self.name}>"
+    # @+others
+    # @+node:ekr.20140903172510.18579: *3* StringTextWrapper.setFocus
+    def setFocus(self) -> None:
+        pass
 
-    def getName(self) -> str:
-        """StringTextWrapper."""
-        return self.name  # Essential.
-
-    # @+node:ekr.20140903172510.18591: *3* StringTextWrapper.Text
+    # @+node:ekr.20140903172510.18591: *3* StringTextWrapper: Text overrides
     # @+node:ekr.20140903172510.18595: *4* StringTextWrapper.get
     def get(self, i: int, j: Optional[int] = None) -> str:
-        """StringTextWrapper."""
         if j is None:
             j = i + 1
         s = self.s[i:j]
@@ -234,41 +224,17 @@ class StringTextWrapper(QTextMixin):
 
     # @+node:ekr.20140903172510.18598: *4* StringTextWrapper.insert
     def insert(self, i: int, s: str) -> None:
-        """StringTextWrapper."""
         self.s = self.s[:i] + s + self.s[i:]
         i += len(s)
         self.ins = i
         self.sel = i, i
 
-    # @+node:ekr.20140903172510.18589: *4* StringTextWrapper.selectAllText
-    def selectAllText(self) -> None:
-        """StringTextWrapper."""
-        self.setSelectionRange(0, len(self.s))
-
     # @+node:ekr.20140903172510.18600: *4* StringTextWrapper.setAllText
     def setAllText(self, s: str) -> None:
-        """StringTextWrapper."""
         self.s = s
         i = len(self.s)
         self.ins = i
         self.sel = i, i
-
-    # @+node:ekr.20070228111853: *4* StringTextWrapper.setSelectionRange
-    def setSelectionRange(self, i: int, j: int, insert: int = None) -> None:
-        """StringTextWrapper."""
-        self.sel = i, j
-        self.ins = j if insert is None else insert
-
-    # @+node:ekr.20140903172510.18582: *4* StringTextWrapper.toPythonIndexRowCol
-    def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:
-        """StringTextWrapper."""
-        s = self.getAllText()
-        row, col = g.convertPythonIndexToRowCol(s, index)
-        return row, col
-
-    # @+node:ekr.20140903172510.18579: *3* StringTextWrapper.setFocus
-    def setFocus(self) -> None:
-        pass
 
     # @-others
 
