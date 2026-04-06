@@ -327,13 +327,13 @@ class QTextMixin:
         return i
 
     # @+node:ekr.20140901062324.18704: *5* QTextMixin.getLastIndex & getLength
-    def getLastIndex(self, s: str = None) -> int:
+    def getLastIndex(self) -> int:
         """QTextMixin"""
-        return len(self.getAllText()) if s is None else len(s)
+        return len(self.getAllText())
 
-    def getLength(self, s: str = None) -> int:
+    def getLength(self) -> int:
         """QTextMixin"""
-        return len(self.getAllText()) if s is None else len(s)
+        return len(self.getAllText())
 
     # @+node:ekr.20140901062324.18705: *5* QTextMixin.getSelectedText
     def getSelectedText(self) -> str:
@@ -377,9 +377,9 @@ class QTextMixin:
         self.see(self.getInsertPoint())
 
     # @+node:ekr.20140902135648.18668: *5* QTextMixin.selectAllText
-    def selectAllText(self, s: str = None) -> None:
+    def selectAllText(self) -> None:
         """QTextMixin."""
-        self.setSelectionRange(0, self.getLength(s))
+        self.setSelectionRange(0, self.getLength())
 
     # @+node:ekr.20260406043726.1: *5* QTextMixin.setInsertPoint (NEW)
     def setInsertPoint(self, i: int, s: str = None) -> None:

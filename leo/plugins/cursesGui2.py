@@ -4281,13 +4281,13 @@ class TextMixin:
         return all_s[i:j]
 
     # @+node:ekr.20170511053143.17: *5* tm.getLastIndex & getLength
-    def getLastIndex(self, s: str = None) -> int:
+    def getLastIndex(self) -> int:
         """TextMixin"""
-        return len(self.getAllText()) if s is None else len(s)
+        return len(self.getAllText())
 
-    def getLength(self, s: str = None) -> int:
+    def getLength(self) -> int:
         """TextMixin"""
-        return len(self.getAllText()) if s is None else len(s)
+        return len(self.getAllText())
 
     # @+node:ekr.20170511053143.18: *5* tm.getSelectedText
     def getSelectedText(self) -> str:
@@ -4325,9 +4325,9 @@ class TextMixin:
         self.see(self.getInsertPoint())
 
     # @+node:ekr.20170511053143.21: *5* tm.selectAllText
-    def selectAllText(self, s: str = None) -> None:
+    def selectAllText(self) -> None:
         """TextMixin."""
-        self.setSelectionRange(0, self.getLength(s))
+        self.setSelectionRange(0, self.getLength())
 
     # @+node:ekr.20170511053143.11: *5* tm.setFocus
     def setFocus(self) -> None:

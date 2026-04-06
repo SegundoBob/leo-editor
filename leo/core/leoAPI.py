@@ -97,7 +97,7 @@ class BaseTextAPI:
     def seeInsertPoint(self) -> None:
         pass
 
-    def selectAllText(self, insert: str = None) -> None:
+    def selectAllText(self) -> None:
         pass
 
     def setAllText(self, s: str) -> None:
@@ -328,7 +328,7 @@ class StringTextWrapper(QTextMixin):
         return i
 
     # @+node:ekr.20220909182855.1: *4* stw.getLastIndex
-    def getLastIndex(self, s: str = None) -> int:
+    def getLastIndex(self) -> int:
         """Return the length of the self.s"""
         return len(self.s)
 
@@ -366,9 +366,9 @@ class StringTextWrapper(QTextMixin):
         self.sel = i, i
 
     # @+node:ekr.20140903172510.18589: *4* stw.selectAllText
-    def selectAllText(self, insert: int = None) -> None:  # type:ignore
+    def selectAllText(self) -> None:
         """StringTextWrapper."""
-        self.setSelectionRange(0, len(self.s), insert=insert)
+        self.setSelectionRange(0, len(self.s))
 
     # @+node:ekr.20140903172510.18600: *4* stw.setAllText
     def setAllText(self, s: str) -> None:
