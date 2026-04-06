@@ -12,7 +12,7 @@ from leo.core.leoTest2 import LeoUnitTest, create_app
 try:
     from leo.core.leoQt import Qt, QtCore
     from leo.core.leoAPI import IconBarAPI, StatusLineAPI, TreeAPI
-    from leo.core.leoAPI import BaseTextAPI, StringTextWrapper
+    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoFrame import LeoTree
     from leo.core.leoFrame import NullIconBarClass, NullStatusLineClass, NullTree
     from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
@@ -20,6 +20,7 @@ try:
         QLineEditWrapper,
         QScintillaWrapper,
         QTextEditWrapper,
+        QTextMixin,
     )
     from leo.plugins.qt_text import LeoQTextBrowser
     from leo.plugins.qt_tree import LeoQtTree
@@ -380,7 +381,7 @@ class TestAPIClasses(LeoUnitTest):
             return [z for z in dir(cls) if not z.startswith('__')]
 
         def get_missing(cls):
-            return [z for z in get_methods(BaseTextAPI) if z not in get_methods(cls)]
+            return [z for z in get_methods(QTextMixin) if z not in get_methods(cls)]
 
         classes = [StringTextWrapper]
         if Qt:

@@ -135,7 +135,7 @@ class IconBarAPI:
     def addRowIfNeeded(self) -> None:
         pass
 
-    def addWidget(self, w: BaseTextAPI) -> None:
+    def addWidget(self, w: QTextMixin) -> None:
         pass
 
     def clear(self) -> None:
@@ -144,7 +144,7 @@ class IconBarAPI:
     def createChaptersIcon(self) -> None:
         pass
 
-    def deleteButton(self, w: BaseTextAPI) -> None:
+    def deleteButton(self, w: QTextMixin) -> None:
         pass
 
     def getNewFrame(self) -> None:
@@ -152,7 +152,7 @@ class IconBarAPI:
 
     def setCommandForButton(
         self,
-        button: BaseTextAPI,
+        button: QTextMixin,
         command: str,
         command_p: Position,
         controller: ScriptingController,
@@ -297,7 +297,7 @@ class TreeAPI:
     def select(self, p: Position) -> None:
         pass
 
-    def updateHead(self, event: LeoKeyEvent, w: BaseTextAPI) -> None:
+    def updateHead(self, event: LeoKeyEvent, w: QTextMixin) -> None:
         pass
 
 

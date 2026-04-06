@@ -16,7 +16,7 @@ from leo.core.leoQt import Shadow, Shape, SliderAction, SolidLine, WindowType, W
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-    from leo.plugins.leoAPI import BaseTextAPI
+    from leo.plugins.qt_text import LeoQtLog
 
     Args = Any
     KWargs = Any
@@ -631,7 +631,7 @@ if QtWidgets:
 
         # @+others
         # @+node:ekr.20110605121601.18006: *3*  lqtb.ctor
-        def __init__(self, parent: QWidget, c: Cmdr, wrapper: BaseTextAPI) -> None:
+        def __init__(self, parent: QWidget, c: Cmdr, wrapper: LeoQtLog) -> None:
             """
             ctor for LeoQTextBrowser class, a subclass of QtWidgets.QTextBrowser.
 
