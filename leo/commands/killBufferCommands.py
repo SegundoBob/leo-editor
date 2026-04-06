@@ -178,7 +178,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         event: LeoKeyEvent,
         frm: int,
         to: int,
-        w: StringTextWrapper | QTextMixin,
+        w: QTextMixin,
         undoType: str = None,
     ) -> None:
         """

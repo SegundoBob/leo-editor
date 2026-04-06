@@ -142,7 +142,7 @@ class LeoBody:
     # @+node:ekr.20060528100747: *3* LeoBody.Editors
     # @+node:ekr.20070424053629.1: *4* LeoBody.utils
     # @+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
-    def recolorWidget(self, p: Position, w: StringTextWrapper | QTextMixin) -> None:
+    def recolorWidget(self, p: Position, w: QTextMixin) -> None:
         # Support QScintillaColorizer.colorize.
         c = self.c
         colorizer = c.frame.body.colorizer
@@ -1078,7 +1078,7 @@ class LeoTree:
         pass
 
     # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
-    def updateHead(self, event: LeoKeyEvent, w: StringTextWrapper | QTextMixin) -> None:
+    def updateHead(self, event: LeoKeyEvent, w: QTextMixin) -> None:
         """
         Update a headline from an event.
 
@@ -1355,7 +1355,6 @@ class NullFrame(LeoFrame):
         """Ctor for the NullFrame class."""
         super().__init__(c, gui)
         assert self.c
-        ### self.wrapper: StringTextWrapper = None
         self.initComplete = True
         self.isNullFrame = True
         self.title = title

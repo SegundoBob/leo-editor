@@ -4737,7 +4737,7 @@ class Commands:
         tree = c.frame.tree
         c.request_focus(tree and tree.canvas)
 
-    def widgetWantsFocus(self, w: StringTextWrapper | QTextMixin) -> None:
+    def widgetWantsFocus(self, w: QTextMixin) -> None:
         c = self
         c.request_focus(w)
 

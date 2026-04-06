@@ -314,8 +314,7 @@ class TestQtGui(LeoUnitTest):
         # Test the class hierarchy of text-related classes.
         assert issubclass(LeoQTextBrowser, QtWidgets.QTextBrowser)
 
-        # QTextWrapper is a stand-in for all the other wrappers below, so
-        # Leo can annotate general text widgets as `StringTextWrapper | QTextMixin`
+        # Leo 6.8.9: Leo can annotate general text widgets as `QTextMixin`
         for class_ in (
             QHeadlineWrapper,
             QLineEditWrapper,

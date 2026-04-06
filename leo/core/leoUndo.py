@@ -1304,7 +1304,7 @@ class Undoer:
             u.setIvarsFromBunch(v.undo_info)
 
     # @+node:ekr.20201127035748.1: *4* u.updateAfterTyping
-    def updateAfterTyping(self, p: Position, w: StringTextWrapper | QTextMixin) -> None:
+    def updateAfterTyping(self, p: Position, w: QTextMixin) -> None:
         """
         Perform all update tasks after changing body text.
 

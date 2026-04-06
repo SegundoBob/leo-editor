@@ -311,7 +311,7 @@ class LeoGui:
         binding: str = None,
         char: str = None,
         event: LeoKeyEvent = None,
-        w: StringTextWrapper | QTextMixin = None,
+        w: QTextMixin = None,
         x: int = None,
         x_root: int = None,
         y: int = None,
@@ -337,9 +337,7 @@ class LeoGui:
         self.scriptFileName = scriptFileName
 
     # @+node:ekr.20110605121601.18845: *4* LeoGui.event_generate
-    def event_generate(
-        self, c: Cmdr, char: str, shortcut: str, w: StringTextWrapper | QTextMixin
-    ) -> None:
+    def event_generate(self, c: Cmdr, char: str, shortcut: str, w: QTextMixin) -> None:
         event = self.create_key_event(c, binding=shortcut, char=char, w=w)
         c.k.masterKeyHandler(event)
         c.outerUpdate()
