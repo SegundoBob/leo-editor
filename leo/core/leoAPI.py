@@ -203,7 +203,7 @@ class StringTextWrapper(QTextMixin):
     """
 
     # @+others
-    # @+node:ekr.20070228074228.2: *3* stw.ctor
+    # @+node:ekr.20070228074228.2: *3* StringTextWrapper.ctor
     def __init__(self, c: Cmdr, name: str) -> None:
         """Ctor for the StringTextWrapper class."""
         super().__init__(c)
@@ -223,66 +223,15 @@ class StringTextWrapper(QTextMixin):
         """StringTextWrapper."""
         return self.name  # Essential.
 
-    # @+node:ekr.20140903172510.18578: *3* stw.Clipboard
-    def clipboard_clear(self) -> None:
-        g.app.gui.replaceClipboardWith('')
-
-    def clipboard_append(self, s: str) -> None:
-        s1 = g.app.gui.getTextFromClipboard()
-        g.app.gui.replaceClipboardWith(s1 + s)
-
-    # @+node:ekr.20140903172510.18579: *3* stw.Do-nothings
-    # For StringTextWrapper.
-
-    def disable(self) -> None:
-        pass
-
-    def enable(self, enabled: bool = True) -> None:
-        pass
-
-    def flashCharacter(
-        self,
-        i: int,
-        bg: str = 'white',
-        fg: str = 'red',
-        flashes: int = 3,
-        delay: int = 75,
-    ) -> None:
-        pass
-
-    def getXScrollPosition(self) -> int:
-        return 0
-
-    def getYScrollPosition(self) -> int:
-        return 0
-
-    def see(self, i: int) -> None:
-        pass
-
-    def seeInsertPoint(self) -> None:
-        pass
-
-    def setFocus(self) -> None:
-        pass
-
-    def setStyleClass(self, name: str) -> None:
-        pass
-
-    def setXScrollPosition(self, i: int) -> None:
-        pass
-
-    def setYScrollPosition(self, i: int) -> None:
-        pass
-
-    # @+node:ekr.20140903172510.18591: *3* stw.Text
-    # @+node:ekr.20140903172510.18592: *4* stw.appendText
+    # @+node:ekr.20140903172510.18591: *3* StringTextWrapper.Text
+    # @+node:ekr.20140903172510.18592: *4* StringTextWrapper.appendText
     def appendText(self, s: str) -> None:
         """StringTextWrapper."""
         self.s = self.s + g.toUnicode(s)  # defensive
         self.ins = len(self.s)
         self.sel = self.ins, self.ins
 
-    # @+node:ekr.20140903172510.18593: *4* stw.delete
+    # @+node:ekr.20140903172510.18593: *4* StringTextWrapper.delete
     def delete(self, i: int, j: int = None) -> None:
         """StringTextWrapper."""
         if j is None:
@@ -295,13 +244,13 @@ class StringTextWrapper(QTextMixin):
         # Bug fix: 2011/11/13: Significant in external tests.
         self.setSelectionRange(i, i, insert=i)
 
-    # @+node:ekr.20140903172510.18594: *4* stw.deleteTextSelection
+    # @+node:ekr.20140903172510.18594: *4* StringTextWrapper.deleteTextSelection
     def deleteTextSelection(self) -> None:
         """StringTextWrapper."""
         i, j = self.getSelectionRange()
         self.delete(i, j)
 
-    # @+node:ekr.20140903172510.18595: *4* stw.get
+    # @+node:ekr.20140903172510.18595: *4* StringTextWrapper.get
     def get(self, i: int, j: Optional[int] = None) -> str:
         """StringTextWrapper."""
         if j is None:
@@ -309,13 +258,13 @@ class StringTextWrapper(QTextMixin):
         s = self.s[i:j]
         return g.toUnicode(s)
 
-    # @+node:ekr.20140903172510.18596: *4* stw.getAllText
+    # @+node:ekr.20140903172510.18596: *4* StringTextWrapper.getAllText
     def getAllText(self) -> str:
         """StringTextWrapper."""
         s = self.s
         return g.checkUnicode(s)
 
-    # @+node:ekr.20140903172510.18584: *4* stw.getInsertPoint
+    # @+node:ekr.20140903172510.18584: *4* StringTextWrapper.getInsertPoint
     def getInsertPoint(self) -> int:
         """StringTextWrapper."""
         i = self.ins
@@ -327,19 +276,19 @@ class StringTextWrapper(QTextMixin):
         self.virtualInsertPoint = i
         return i
 
-    # @+node:ekr.20220909182855.1: *4* stw.getLastIndex
+    # @+node:ekr.20220909182855.1: *4* StringTextWrapper.getLastIndex
     def getLastIndex(self) -> int:
         """Return the length of the self.s"""
         return len(self.s)
 
-    # @+node:ekr.20140903172510.18597: *4* stw.getSelectedText
+    # @+node:ekr.20140903172510.18597: *4* StringTextWrapper.getSelectedText
     def getSelectedText(self) -> str:
         """StringTextWrapper."""
         i, j = self.sel
         s = self.s[i:j]
         return g.checkUnicode(s)
 
-    # @+node:ekr.20140903172510.18585: *4* stw.getSelectionRange
+    # @+node:ekr.20140903172510.18585: *4* StringTextWrapper.getSelectionRange
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
         """Return the selected range of the widget."""
         sel = self.sel
@@ -351,13 +300,13 @@ class StringTextWrapper(QTextMixin):
         i = self.ins
         return i, i
 
-    # @+node:ekr.20140903172510.18586: *4* stw.hasSelection
+    # @+node:ekr.20140903172510.18586: *4* StringTextWrapper.hasSelection
     def hasSelection(self) -> bool:
         """StringTextWrapper."""
         i, j = self.getSelectionRange()
         return i != j
 
-    # @+node:ekr.20140903172510.18598: *4* stw.insert
+    # @+node:ekr.20140903172510.18598: *4* StringTextWrapper.insert
     def insert(self, i: int, s: str) -> None:
         """StringTextWrapper."""
         self.s = self.s[:i] + s + self.s[i:]
@@ -365,12 +314,12 @@ class StringTextWrapper(QTextMixin):
         self.ins = i
         self.sel = i, i
 
-    # @+node:ekr.20140903172510.18589: *4* stw.selectAllText
+    # @+node:ekr.20140903172510.18589: *4* StringTextWrapper.selectAllText
     def selectAllText(self) -> None:
         """StringTextWrapper."""
         self.setSelectionRange(0, len(self.s))
 
-    # @+node:ekr.20140903172510.18600: *4* stw.setAllText
+    # @+node:ekr.20140903172510.18600: *4* StringTextWrapper.setAllText
     def setAllText(self, s: str) -> None:
         """StringTextWrapper."""
         self.s = s
@@ -378,25 +327,29 @@ class StringTextWrapper(QTextMixin):
         self.ins = i
         self.sel = i, i
 
-    # @+node:ekr.20140903172510.18587: *4* stw.setInsertPoint
+    # @+node:ekr.20140903172510.18587: *4* StringTextWrapper.setInsertPoint
     def setInsertPoint(self, i: int, s: str = None) -> None:
         """StringTextWrapper."""
         self.virtualInsertPoint = i
         self.ins = i
         self.sel = i, i
 
-    # @+node:ekr.20070228111853: *4* stw.setSelectionRange
+    # @+node:ekr.20070228111853: *4* StringTextWrapper.setSelectionRange
     def setSelectionRange(self, i: int, j: int, insert: int = None) -> None:
         """StringTextWrapper."""
         self.sel = i, j
         self.ins = j if insert is None else insert
 
-    # @+node:ekr.20140903172510.18582: *4* stw.toPythonIndexRowCol
+    # @+node:ekr.20140903172510.18582: *4* StringTextWrapper.toPythonIndexRowCol
     def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:
         """StringTextWrapper."""
         s = self.getAllText()
         row, col = g.convertPythonIndexToRowCol(s, index)
         return row, col
+
+    # @+node:ekr.20140903172510.18579: *3* StringTextWrapper.setFocus
+    def setFocus(self) -> None:
+        pass
 
     # @-others
 

@@ -420,6 +420,24 @@ class QTextMixin:
     ) -> None:
         pass
 
+    def getXScrollPosition(self) -> int:
+        return 0
+
+    def getYScrollPosition(self) -> int:
+        return 0
+
+    def see(self, i: int) -> None:
+        pass
+
+    def setStyleClass(self, name: str) -> None:
+        pass
+
+    def setXScrollPosition(self, i: int) -> None:
+        pass
+
+    def setYScrollPosition(self, i: int) -> None:
+        pass
+
     # @-others
 
 
