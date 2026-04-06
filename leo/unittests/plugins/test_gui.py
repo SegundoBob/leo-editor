@@ -49,7 +49,9 @@ class TestNullGui(LeoUnitTest):
 
     # @+node:ekr.20260405083949.1: *3* TestNullGui.test_annotations
     def test_annotations(self):
-        # This test establishes some of Leo's annotations.
+        # This test establishes Leo's null-gui annotations.
+        # @+<< TestNullGui.test_annotations: imports >>
+        # @+node:ekr.20260406021136.1: *4* << TestNullGui.test_annotations: imports >>
         from leo.core.leoFrame import (
             NullBody,
             NullFrame,
@@ -61,6 +63,7 @@ class TestNullGui(LeoUnitTest):
         )
         from leo.core.leoGlobals import NullObject
 
+        # @-<< TestNullGui.test_annotations: imports >>
         c = self.c
         table = (
             # NullFrame and ivars...
@@ -255,33 +258,54 @@ class TestQtGui(LeoUnitTest):
 
     # @+node:ekr.20260404143610.1: *3* TestQtGui.test_annotations
     def test_annotations(self):
+        # This test establishes the basis of Leo's Qt-related annotations.
+        # @+<< TestQtGui.test_annotations: imports >>
+        # @+node:ekr.20260406021200.1: *4* << TestQtGui.test_annotations: imports >>
+        from leo.core.leoQt import QtWidgets
+        from leo.plugins.qt_frame import (
+            DynamicWindow,
+            LeoQtBody,
+            LeoQtFrame,
+            LeoQtLog,
+            LeoQtMenu,
+            LeoQtTree,
+            LeoQTreeWidget,
+            QtIconBarClass,
+            QtStatusLineClass,
+            # QTabWidget,
+        )
+        from leo.plugins.qt_text import (
+            LeoQTextBrowser,
+            QMinibufferWrapper,
+            QTextEditWrapper,
+        )
+
+        QTabWidget = QtWidgets.QTabWidget
+        # @-<< TestQtGui.test_annotations: imports >>
         c = self.c
         table = (
             # LeoQtFrame ivars...
-            (c.frame, 'LeoQtFrame'),
-            (c.frame.body, 'LeoQtBody'),
-            (c.frame.iconBar, 'QtIconBarClass'),
-            (c.frame.log, 'LeoQtLog'),
-            (c.frame.menu, 'LeoQtMenu'),
-            (c.frame.miniBufferWidget, 'QMinibufferWrapper'),
-            (c.frame.statusLine, 'QtStatusLineClass'),
-            (c.frame.tree, 'LeoQtTree'),
-            (c.frame.top, 'DynamicWindow'),
+            (c.frame, LeoQtFrame),
+            (c.frame.body, LeoQtBody),
+            (c.frame.iconBar, QtIconBarClass),
+            (c.frame.log, LeoQtLog),
+            (c.frame.menu, LeoQtMenu),
+            (c.frame.miniBufferWidget, QMinibufferWrapper),
+            (c.frame.statusLine, QtStatusLineClass),
+            (c.frame.tree, LeoQtTree),
+            (c.frame.top, DynamicWindow),
             # LeoQtBody ivars...
-            (c.frame.body.wrapper, 'QTextEditWrapper'),  # QScintillaWrapper | QTextEditWrapper
-            (c.frame.body.widget, 'LeoQTextBrowser'),  # not QWidget!
+            (c.frame.body.wrapper, QTextEditWrapper),
+            (c.frame.body.widget, LeoQTextBrowser),
             # LeoQtLog ivars...
-            (c.frame.log.qtLogCtrl, 'QTextEditWrapper'),
-            (c.frame.log.logWidget, 'LeoQTextBrowser'),
-            (c.frame.log.qtTabWidget, 'QTabWidget'),  # Not QWidget!
+            (c.frame.log.qtLogCtrl, QTextEditWrapper),
+            (c.frame.log.logWidget, LeoQTextBrowser),
+            (c.frame.log.qtTabWidget, QTabWidget),
             # LeoQtTree ivars...
-            (c.frame.tree.treeWidget, 'LeoQTreeWidget'),
+            (c.frame.tree.treeWidget, LeoQTreeWidget),
         )
-        for obj, class_name in table:
-            if class_name.startswith('?'):
-                print(class_name, obj.__class__.__name__)
-            else:
-                assert obj.__class__.__name__ == class_name, (repr(obj), class_name)
+        for obj, class_ in table:
+            assert isinstance(obj, class_), (repr(obj), class_.__class__.__name__)
 
     # @-others
 
