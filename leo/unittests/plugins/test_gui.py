@@ -276,8 +276,12 @@ class TestQtGui(LeoUnitTest):
         )
         from leo.plugins.qt_text import (
             LeoQTextBrowser,
+            QHeadlineWrapper,
+            QLineEditWrapper,
             QMinibufferWrapper,
+            QScintillaWrapper,
             QTextEditWrapper,
+            QTextMixin,
         )
 
         QTabWidget = QtWidgets.QTabWidget
@@ -306,6 +310,20 @@ class TestQtGui(LeoUnitTest):
         )
         for obj, class_ in table:
             assert isinstance(obj, class_), (repr(obj), class_.__class__.__name__)
+
+        # Test the class hierarchy of text-related classes.
+        assert issubclass(LeoQTextBrowser, QtWidgets.QTextBrowser)
+
+        # QTextWrapper is a stand-in for all the other wrappers below, so
+        # Leo can annotate general text widgets as `StringTextWrapper | QTextEditWrapper`
+        for class_ in (
+            QHeadlineWrapper,
+            QLineEditWrapper,
+            QMinibufferWrapper,
+            QTextEditWrapper,
+            QScintillaWrapper,
+        ):
+            assert issubclass(class_, QTextMixin), repr(class_)
 
     # @-others
 
