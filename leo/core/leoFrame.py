@@ -44,11 +44,7 @@ if TYPE_CHECKING:  # pragma: no cover
         QtIconBarClass,
         QtStatusLineClass,
     )
-    from leo.plugins.qt_text import (
-        QMinibufferWrapper,
-        QScintillaWrapper,
-    )
-    from leo.plugins.qt_text import QTextMixin
+    from leo.plugins.qt_text import QMinibufferWrapper, QTextMixin
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
@@ -115,7 +111,7 @@ class LeoBody:
         self.c = c
         self.frame = frame
         self.widget: Any = None  # cursesGui2.py: will be an npyscreen widget.
-        self.wrapper: StringTextWrapper | QScintillaWrapper | QTextMixin = None
+        self.wrapper: QTextMixin = None
 
         # Must be overridden in subclasses...
         self.colorizer: BaseColorizer = None
@@ -1605,7 +1601,7 @@ class NullLog(LeoLog):
         return self.widget.hasSelection()
 
     # @+node:ekr.20111119145033.10186: *3* NullLog.isLogWidget
-    def isLogWidget(self, w: StringTextWrapper) -> bool:
+    def isLogWidget(self, w: Any) -> bool:
         return False
 
     # @+node:ekr.20041012083237.3: *3* NullLog.put and putnl

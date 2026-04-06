@@ -81,7 +81,7 @@ class TestNullGui(LeoUnitTest):
             # no NullTree ivars!
         )
         for obj, class_ in table:
-            assert isinstance(obj, class_), (repr(obj), class_.__class__.__name__)
+            assert isinstance(obj, class_), (repr(obj), repr(class_))
 
     # @-others
 
@@ -309,7 +309,7 @@ class TestQtGui(LeoUnitTest):
             (c.frame.tree.treeWidget, LeoQTreeWidget),
         )
         for obj, class_ in table:
-            assert isinstance(obj, class_), (repr(obj), class_.__class__.__name__)
+            assert isinstance(obj, class_), (repr(obj), repr(class_))
 
         # Test the class hierarchy of text-related classes.
         assert issubclass(LeoQTextBrowser, QtWidgets.QTextBrowser)

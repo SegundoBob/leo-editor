@@ -28,7 +28,6 @@ except ImportError:
 # @+<< leoKeys annotations >>
 # @+node:ekr.20220414165644.1: ** << leoKeys annotations >>
 if TYPE_CHECKING:  # pragma: no cover
-    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGlobals import BindingInfo
     from leo.core.leoGui import LeoKeyEvent
@@ -36,7 +35,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoQt import QtWidgets
     from leo.plugins.qt_frame import LeoQtLog
     from leo.plugins.qt_text import QTextMixin
-    from leo.plugins.qt_tree import QHeadlineWrapper
 
     Args = Any
     KWargs = Any
@@ -4518,7 +4516,7 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.192: *4* k.showStateAndMode
     def showStateAndMode(
         self,
-        w: StringTextWrapper | QHeadlineWrapper = None,
+        w: QTextMixin = None,
         prompt: str = None,
         setFocus: bool = True,
     ) -> None:

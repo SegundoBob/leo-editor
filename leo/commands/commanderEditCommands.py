@@ -11,10 +11,9 @@ from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoFrame import StringTextWrapper
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_tree import QHeadlineWrapper
+    from leo.plugins.qt_text import QTextMixin
 
     Self = Cmdr  # For arguments to @g.commander_command.
     Value = Any
@@ -369,7 +368,7 @@ def editHeadline(self: Self, event: LeoKeyEvent = None) -> None:
     if g.app.batchMode:
         c.notValidInBatchMode("Edit Headline")
         return
-    wrapper: StringTextWrapper | QHeadlineWrapper
+    wrapper: QTextMixin
     e, wrapper = tree.editLabel(c.p)
     if k:
         # k.setDefaultInputState()
