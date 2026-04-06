@@ -2345,7 +2345,7 @@ def checkClass(obj: Any, class_names: list[str]) -> None:
         return
     if False and g.unitTesting:
         g.traceUniqueClass(obj, n=2)
-    g.stat()
+    # g.stat()
     g._check_class_helper(obj, key=g.caller(), class_names=class_names)
 
 
@@ -2373,7 +2373,7 @@ def checkQtTextWidget(obj: Any, *, other_classes: list[str] = None) -> None:
         return
     if False and g.unitTesting:
         g.traceUniqueClass(obj, n=2)
-    g.stat()
+    # g.stat()
     all_classes = g.qt_text_classes
     if other_classes is not None:
         all_classes.extend(other_classes)
@@ -2389,7 +2389,7 @@ def checkTextWidget(obj: Any) -> None:
         return
     if False and g.unitTesting:
         g.traceUniqueClass(obj, n=2)
-    g.stat()
+    # g.stat()
     key = f"{g.my_name()}:{g.caller()}"
     g._check_class_helper(
         obj,
@@ -2433,7 +2433,7 @@ def checkWidget(obj: Any) -> None:
         return
     if False and g.unitTesting:
         g.traceUniqueClass(obj, n=2)
-    g.stat()
+    # g.stat()
     key = f"{g.my_name()}:{g.caller()}"
     g._check_class_helper(obj, key=key, class_names=widget_classes)
 
