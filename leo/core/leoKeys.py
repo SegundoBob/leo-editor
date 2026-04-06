@@ -35,9 +35,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position
     from leo.core.leoQt import QtWidgets
     from leo.plugins.qt_frame import LeoQtLog
-    from leo.plugins.qt_text import QTextMixin  ###
+    from leo.plugins.qt_text import QTextMixin
     from leo.plugins.qt_tree import QHeadlineWrapper
-    ### from leo.plugins.qt_text import QTextEditWrapper
 
     Args = Any
     KWargs = Any

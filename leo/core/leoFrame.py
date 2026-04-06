@@ -47,9 +47,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_text import (
         QMinibufferWrapper,
         QScintillaWrapper,
-        ### QTextEditWrapper,
     )
-    from leo.plugins.qt_text import QTextMixin  ###
+    from leo.plugins.qt_text import QTextMixin
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.

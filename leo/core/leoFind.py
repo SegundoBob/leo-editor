@@ -20,8 +20,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position, VNode
     from leo.plugins.cursesGui2 import BodyWrapper
     from leo.plugins.qt_frame import FindTabManager
-    from leo.plugins.qt_text import QTextEditWrapper
-    from leo.plugins.qt_text import QTextMixin  ###
+    from leo.plugins.qt_text import QTextEditWrapper, QTextMixin
 
     KWargs = Any
     MatchGroups = tuple  # Best we can do so far.

@@ -70,8 +70,12 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position
     from leo.plugins.leoFrame import LeoLog, NullFrame
     from leo.plugins.mod_scripting import ScriptingController
-    from leo.plugins.qt_text import LeoQTextBrowser, QMinibufferWrapper, QScintillaWrapper
-    from leo.plugins.qt_text import QTextMixin  ###
+    from leo.plugins.qt_text import (
+        LeoQTextBrowser,
+        QMinibufferWrapper,
+        QScintillaWrapper,
+        QTextMixin,
+    )
 
     Args = Any
     KWargs = Any

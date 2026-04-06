@@ -12,8 +12,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-    from leo.plugins.qt_text import QTextMixin  ###
-    ### from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin
+
 # @-<< baseCommands imports & abbreviations >>
 
 

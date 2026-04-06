@@ -32,8 +32,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import QEvent
     from leo.core.leoQt import QtWidgets
-    from leo.plugins.qt_text import QTextEditWrapper
-    from leo.plugins.qt_text import QTextMixin  ###
+    from leo.plugins.qt_text import QTextEditWrapper, QTextMixin
 
     QWidget = QtWidgets.QWidget
     KWargs = Any

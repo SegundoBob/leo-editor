@@ -23,8 +23,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoFrame import NullFrame, NullIconBarClass
     from leo.core.leoNodes import Position
     from leo.plugins.qt_frame import FindTabManager
-    from leo.plugins.qt_text import QTextMixin  ###
-    ### from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin
 
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.

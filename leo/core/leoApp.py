@@ -41,8 +41,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoSessions import SessionManager
     from leo.plugins.qt_events import LossageData
     from leo.plugins.qt_idle_time import IdleTime
-    ### from leo.plugins.qt_text import QTextEditWrapper
-    ###from leo.core.leoAPI import StringTextWrapper
 
     Value = Any
 
