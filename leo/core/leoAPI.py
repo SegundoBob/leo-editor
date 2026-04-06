@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Any, Optional
 from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
+from leo.plugins.qt_text import QTextMixin
 
 if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
@@ -193,8 +194,8 @@ class StatusLineAPI:
         pass
 
 
-# @+node:ekr.20070228074228.1: ** class StringTextWrapper
-class StringTextWrapper:
+# @+node:ekr.20070228074228.1: ** class StringTextWrapper (QTextMixin)
+class StringTextWrapper(QTextMixin):
     """
     A class that represents Leo's body pane as a Python string.
 
@@ -205,6 +206,7 @@ class StringTextWrapper:
     # @+node:ekr.20070228074228.2: *3* stw.ctor
     def __init__(self, c: Cmdr, name: str) -> None:
         """Ctor for the StringTextWrapper class."""
+        super().__init__(c)
         self.c = c
         self.name = name
         self.ins = 0
@@ -326,7 +328,7 @@ class StringTextWrapper:
         return i
 
     # @+node:ekr.20220909182855.1: *4* stw.getLastIndex
-    def getLastIndex(self) -> int:
+    def getLastIndex(self, s: str = None) -> int:
         """Return the length of the self.s"""
         return len(self.s)
 
@@ -364,7 +366,7 @@ class StringTextWrapper:
         self.sel = i, i
 
     # @+node:ekr.20140903172510.18589: *4* stw.selectAllText
-    def selectAllText(self, insert: int = None) -> None:
+    def selectAllText(self, insert: int = None) -> None:  # type:ignore
         """StringTextWrapper."""
         self.setSelectionRange(0, len(self.s), insert=insert)
 
