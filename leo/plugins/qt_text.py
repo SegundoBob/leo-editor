@@ -16,7 +16,7 @@ from leo.core.leoQt import Shadow, Shape, SliderAction, SolidLine, WindowType, W
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-    from leo.plugins.qt_text import LeoQtLog
+    from leo.plugins.qt_text import LeoQtLog  # pylint: disable=import-self
 
     Args = Any
     KWargs = Any
