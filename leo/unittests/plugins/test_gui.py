@@ -49,27 +49,36 @@ class TestNullGui(LeoUnitTest):
 
     # @+node:ekr.20260405083949.1: *3* TestNullGui.test_annotations
     def test_annotations(self):
+        # This test establishes some of Leo's annotations.
+        from leo.core.leoFrame import (
+            NullBody,
+            NullFrame,
+            NullIconBarClass,
+            NullLog,
+            NullStatusLineClass,
+            NullTree,
+            StringTextWrapper,
+        )
+        from leo.core.leoGlobals import NullObject
+
         c = self.c
         table = (
             # NullFrame and ivars...
-            (c.frame, 'NullFrame'),
-            (c.frame.body, 'NullBody'),
-            (c.frame.iconBar, 'NullIconBarClass'),
-            (c.frame.log, 'NullLog'),
-            (c.frame.miniBufferWidget, 'NullObject'),
-            (c.frame.statusLine, 'NullStatusLineClass'),
-            (c.frame.tree, 'NullTree'),
+            (c.frame, NullFrame),
+            (c.frame.body, NullBody),
+            (c.frame.iconBar, NullIconBarClass),
+            (c.frame.log, NullLog),
+            (c.frame.miniBufferWidget, NullObject),
+            (c.frame.statusLine, NullStatusLineClass),
+            (c.frame.tree, NullTree),
             # NullBody ivars...
-            (c.frame.body.wrapper, 'StringTextWrapper'),
+            (c.frame.body.wrapper, StringTextWrapper),
             # NullLog ivars...
-            (c.frame.log.widget, 'StringTextWrapper'),
+            (c.frame.log.widget, StringTextWrapper),
             # no NullTree ivars!
         )
-        for obj, class_name in table:
-            if class_name.startswith('?'):
-                print(class_name, obj.__class__.__name__)
-            else:
-                assert obj.__class__.__name__ == class_name, (repr(obj), class_name)
+        for obj, class_ in table:
+            assert isinstance(obj, class_), (repr(obj), class_.__class__.__name__)
 
     # @-others
 
