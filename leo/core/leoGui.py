@@ -18,7 +18,6 @@ from leo.core import leoGlobals as g
 from leo.core import leoFrame
 
 if TYPE_CHECKING:  # pragma: no cover
-    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoFrame import NullFrame, NullIconBarClass
     from leo.core.leoNodes import Position

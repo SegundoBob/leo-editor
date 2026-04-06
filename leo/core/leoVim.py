@@ -28,7 +28,6 @@ from leo.core import leoGlobals as g
 from leo.core.leoGui import LeoKeyEvent
 
 if TYPE_CHECKING:  # pragma: no cover
-    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import QEvent
     from leo.core.leoQt import QtWidgets

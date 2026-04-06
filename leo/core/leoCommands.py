@@ -64,7 +64,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.commands.spellCommands import SpellCommandsClass
 
     # Other objects...
-    from leo.core.API import StringTextWrapper
     from leo.core.leoGui import LeoGui
     from leo.core.qt_frame import LeoQtMenu
     from leo.plugins.qt_gui import StyleSheetManager

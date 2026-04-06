@@ -54,7 +54,6 @@ from leo.core.leoFileCommands import FastRead
 from leo.core.leoNodes import Position, VNode
 
 if TYPE_CHECKING:  # pragma: no cover
-    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.plugins.qt_text import QTextMixin
