@@ -51,17 +51,6 @@ if TYPE_CHECKING:  # pragma: no cover
     )
     from leo.plugins.cursesGui2 import MiniBufferWrapper as CursesMiniBufferWrapper
 
-    # Complex annotations...
-    ### FrameAnn = xxx
-    ### LogAnn = xxx
-    ### TextAnn = LeoBody | LeoNullBody | StringTextWrapper
-    ### TreeAnn = xxx
-
-    ### QtFrameAnn
-    ### QtLogAnn = xxx
-    ### QtTextAnn = xxx
-    ### QtTreeAnn = xxx
-
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 
 
