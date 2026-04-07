@@ -2591,7 +2591,7 @@ class LeoQtLog(leoFrame.LeoLog):
         createText: bool = True,
         widget: QWidget = None,
         wrap: str = 'none',
-    ) -> QTextEditWrapper:
+    ) -> QTextMixin:
         """
         Create a new tab in tab widget
         if widget is None, Create a QTextBrowser,

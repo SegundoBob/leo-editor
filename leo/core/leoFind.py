@@ -20,7 +20,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position, VNode
     from leo.plugins.cursesGui2 import BodyWrapper
     from leo.plugins.qt_frame import FindTabManager
-    from leo.plugins.qt_text import QTextEditWrapper, QTextMixin
+    from leo.plugins.qt_text import QTextMixin
 
     KWargs = Any
     MatchGroups = tuple  # Best we can do so far.
@@ -2962,7 +2962,7 @@ class LeoFind:
     # @+node:ekr.20031218072017.3091: *4* LeoFind.find.show_success
     def show_success(
         self, p: Position, pos: int, newpos: int, showState: bool = True
-    ) -> QTextEditWrapper:
+    ) -> QTextMixin:
         """Display the result of a successful find operation."""
         c = self.c
         # Set state vars.
@@ -3238,7 +3238,7 @@ class LeoFind:
         return p, i, j, in_headline
 
     # @+node:ekr.20131117164142.16954: *5* find.set_widget
-    def set_widget(self) -> QTextEditWrapper:  # pragma: no cover (cmd)
+    def set_widget(self) -> QTextMixin:  # pragma: no cover (cmd)
         c, p = self.c, self.c.p
         wrapper = c.frame.body.wrapper
         if self.in_headline:
