@@ -148,9 +148,9 @@
 <t tx="EKR.20040519090846">@language rest
 @wrap
 </t>
-<t tx="EKR.20040519090846.1" _mod_time="4741da1010ee7a4fdf2e">MIT License
+<t tx="EKR.20040519090846.1" _mod_time="4741da755c34ad50352e">MIT License
 
-Copyright (c) 1997-2025 by Edward K. Ream.
+Copyright (c) 1997-2026 by Edward K. Ream.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -180,21 +180,10 @@ These parts are are clearly marked in Leo's code as follows:
 
     Copyright (c) Jupyter Development Team.
     Distributed under the terms of the Modified BSD License.
-    
-Portions of Leo's pyzo interface uses code from pyzo:
-
-    Copyright (C) 2013-2020, the Pyzo development team
-    
-    Pyzo is distributed under the terms of the (new) BSD License.
-    The full license can be found in 'license.txt'.
-    
-    Yoton is distributed under the terms of the (new) BSD License.
-    The full license can be found in 'license.txt'.
-
 </t>
-<t tx="EKR.20040519090846.8" _mod_time="4741da3a9cd3a23efd2e">Metadata-Version: 1.0
+<t tx="EKR.20040519090846.8" _mod_time="4741da755c6130e8992e">Metadata-Version: 1.0
 Name: leo
-Version: 6.8.7
+Version: 6.8.8
 Summary: An IDE, PIM and Outliner. See http://leo-editor.github.io/leo-editor/preface.html.
 Description: See users own descriptions of Leo at leo-editor.github.io/leo-editor/testimonials.html.
 Home-page: http://leo-editor.github.io/leo-editor/
@@ -212,23 +201,27 @@ Classifier: Topic :: Software Development
 Classifier: Topic :: Text Processing
 Download-URL: https://github.com/leo-editor/leo-editor/releases
 </t>
-<t tx="EKR.20040519090846.9" _mod_time="4741da3a9cb15b9d572e">Leo https://leo-editor.github.io/leo-editor/ 6.8.7 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
+<t tx="EKR.20040519090846.9" _mod_time="4741da755c103314b92e">Leo https://leo-editor.github.io/leo-editor/ 6.8.8 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
 
-Leo is an [IDE, outliner and PIM](https://leo-editor.github.io/leo-editor/preface.html).
+Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor/preface.html).
 
-**The highlights of Leo 6.8.7**
+**The highlights of Leo 6.8.8**
 
-- PR #4403: Add support for Python 3.14. Require Python 3.10 or above.
-- PR #4423: All of Leo's importers now import `@clean` files perfectly.
-- PR #4412: Greatly improve Leo's `parse-body` command.
-- PR #4418: Fix bugs involving the `_mod_time` attribute in `.leo` files.
-- Fix several other minor bugs. See the `What's new` section for details.
+- Replace Leo's legacy beautifier commands by full support for
+  [ruff format](https://docs.astral.sh/ruff/formatter/).
+- Make the ``add-comments`` command compatible with ruff format.
+- Add the ``@bool raise-file-update-dialogs`` setting.
+- Add the ``dump-last-colorizer-trace`` command.
+- Remove support for leoflexx and --gui=browser.
+- Add check_leo.py script.
+- Add gdc.summary_diff_two_revs script helper.
+- Fix several minor bugs.
 
 **Links**
 
 - [Install Leo](https://leo-editor.github.io/leo-editor/installing.html)
-- [6.8.7 Issues](https://github.com/leo-editor/leo-editor/issues?q=is%3Aissue+milestone%3A6.8.7+)
-- [6.8.7 Pull Requests](https://github.com/leo-editor/leo-editor/pulls?q=is%3Apr+milestone%3A6.8.7)
+- [6.8.8 Issues](https://github.com/leo-editor/leo-editor/issues?q=is%3Aissue+milestone%3A6.8.8+)
+- [6.8.8 Pull Requests](https://github.com/leo-editor/leo-editor/pulls?q=is%3Apr+milestone%3A6.8.8)
 - [Documentation](https://leo-editor.github.io/leo-editor/leo_toc.html)
 - [Tutorials](https://leo-editor.github.io/leo-editor/tutorial.html)
 - [Video tutorials](https://leo-editor.github.io/leo-editor/screencasts.html)
@@ -1477,7 +1470,7 @@ Public announcements, after creating a package.
 <t tx="ekr.20190802115604.1" __bookmarks="7d7100580700000069735f6475706571014930300a732e">- git checkout master
 - full-test-leo
 </t>
-<t tx="ekr.20210814054641.1" _mod_time="4741da264b746fde092e">@language unknown_language
+<t tx="ekr.20210814054641.1" _mod_time="4741da5a5ae8fea4c22e">@language unknown_language
 
 # Order matters!
 
