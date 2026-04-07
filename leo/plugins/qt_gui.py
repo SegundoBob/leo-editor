@@ -41,7 +41,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper
+    from leo.plugins.qt_text import QTextMixin
 
     Args = Any
     KWargs = Any
@@ -1402,7 +1402,7 @@ class LeoQtGui(leoGui.LeoGui):
         # @-<< create press-buttonText-button command >>
 
     # @+node:ekr.20200304125716.1: *3* LeoQtGui.onContextMenu
-    def onContextMenu(self, c: Cmdr, w: QTextEditWrapper, point: QPoint) -> None:
+    def onContextMenu(self, c: Cmdr, w: QTextMixin, point: QPoint) -> None:
         """LeoQtGui: Common context menu handling."""
         # #1286.
         handlers = g.tree_popup_handlers
@@ -1822,7 +1822,7 @@ class StyleClassManager:
 
     # @+others
     # @+node:tbrown.20150724090431.2: *3* StyleClassManager.update_view
-    def update_view(self, w: QTextEditWrapper) -> None:
+    def update_view(self, w: QTextMixin) -> None:
         """update_view - Make Qt apply w's style
 
         :param QWidgit w: widget to style
@@ -1830,7 +1830,7 @@ class StyleClassManager:
         w.setStyleSheet("/* */")  # forces visual update
 
     # @+node:tbrown.20150724090431.3: *3* StyleClassManager.add_sclass
-    def add_sclass(self, w: QTextEditWrapper, prop: str) -> None:
+    def add_sclass(self, w: QTextMixin, prop: str) -> None:
         """Add style class to QWidget w"""
         if not prop:
             return
@@ -1840,12 +1840,12 @@ class StyleClassManager:
             self.set_sclasses(w, props)
 
     # @+node:tbrown.20150724090431.4: *3* StyleClassManager.clear_sclasses
-    def clear_sclasses(self, w: QTextEditWrapper) -> None:
+    def clear_sclasses(self, w: QTextMixin) -> None:
         """Remove all style classes from QWidget w"""
         w.setProperty(self.style_sclass_property, '')
 
     # @+node:tbrown.20150724090431.5: *3* StyleClassManager.has_sclass
-    def has_sclass(self, w: QTextEditWrapper, prop: str) -> bool:
+    def has_sclass(self, w: QTextMixin, prop: str) -> bool:
         """Check for style class or list of classes prop on QWidget w"""
         if not prop:
             return None
@@ -1857,7 +1857,7 @@ class StyleClassManager:
         return all(ans)
 
     # @+node:tbrown.20150724090431.6: *3* StyleClassManager.remove_sclass
-    def remove_sclass(self, w: QTextEditWrapper, prop: str) -> None:
+    def remove_sclass(self, w: QTextMixin, prop: str) -> None:
         """Remove style class or list of classes prop from QWidget w"""
         if not prop:
             return
@@ -1870,12 +1870,12 @@ class StyleClassManager:
         self.set_sclasses(w, props)
 
     # @+node:tbrown.20150724090431.8: *3* StyleClassManager.sclasses
-    def sclasses(self, w: QTextEditWrapper) -> list[str]:
+    def sclasses(self, w: QTextMixin) -> list[str]:
         """return list of style classes for QWidget w"""
         return str(w.property(self.style_sclass_property) or '').split()
 
     # @+node:tbrown.20150724090431.9: *3* StyleClassManager.set_sclasses
-    def set_sclasses(self, w: QTextEditWrapper, classes: list[str]) -> None:
+    def set_sclasses(self, w: QTextMixin, classes: list[str]) -> None:
         """Set style classes for QWidget w to list in classes"""
         w.setProperty(self.style_sclass_property, f" {' '.join(set(classes))} ")
 
