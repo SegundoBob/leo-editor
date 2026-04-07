@@ -18,7 +18,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoKeys import KeyHandlerClass as KeyHandler
     from leo.core.leoNodes import Position, VNode
-    from leo.plugins.cursesGui2 import BodyWrapper
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
 
@@ -3346,7 +3345,7 @@ class LeoFind:
             )  # A flag.
 
     # @+node:ekr.20150629072547.1: *4* find.preload_find_pattern
-    def preload_find_pattern(self, w: BodyWrapper | QTextMixin) -> None:  # pragma: no cover (cmd)
+    def preload_find_pattern(self, w: QTextMixin) -> None:  # pragma: no cover (cmd)
         """Preload the find pattern from the selected text of widget w."""
         c, ftm = self.c, self.ftm
         if not c.config.getBool('preload-find-pattern', default=False):
