@@ -1314,7 +1314,7 @@ class NullBody(LeoBody):
 
     # @+node:ekr.20031218072017.2197: *3* NullBody: LeoBody interface
     # Birth, death...
-    def createControl(self, parentFrame: NullFrame, p: Position) -> StringTextWrapper:
+    def createControl(self, parentFrame: NullFrame, p: Position) -> QTextMixin:
         pass
 
     # Events...
@@ -1719,7 +1719,7 @@ class NullTree(LeoTree):
         self.editWidgetsDict: dict[VNode, StringTextWrapper] = {}
 
     # @+node:ekr.20070228163350.2: *3* NullTree.edit_widget
-    def edit_widget(self, p: Position) -> StringTextWrapper:
+    def edit_widget(self, p: Position) -> QTextMixin:
         d = self.editWidgetsDict
         if not p or not p.v:
             return None

@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
 
 if TYPE_CHECKING:  # pragma: no cover
-    from leo.core.leoAPI import StringTextWrapper
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.plugins.qt_text import QTextMixin
@@ -85,7 +84,7 @@ class BaseEditCommandsClass:
                 k.resetLabel()
 
     # @+node:ekr.20150514043714.7: *3* BaseEdit.editWidget
-    def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> StringTextWrapper:
+    def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> QTextMixin:
         """Return the edit widget for the event. Also sets self.w"""
         c = self.c
         w = event and event.widget

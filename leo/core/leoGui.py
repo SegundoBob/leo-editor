@@ -319,8 +319,6 @@ class LeoGui:
         # Do not call strokeFromSetting here!
         # For example, this would wrongly convert Ctrl-C to Ctrl-c,
         # in effect, converting a user binding from Ctrl-Shift-C to Ctrl-C.
-
-        # g.checkTextWidget(w)
         return LeoKeyEvent(c, char, event, binding, w, x, y, x_root, y_root)
 
     # @+node:ekr.20031218072017.3740: *4* LeoGui.guiName
