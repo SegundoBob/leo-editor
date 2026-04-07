@@ -37,7 +37,6 @@ class BaseEditCommandsClass:
     # @+node:ekr.20150514043714.4: *4* BaseEdit.beginCommand
     def beginCommand(self, w: QTextMixin, undoType: str = 'Typing') -> QTextMixin:
         """Do the common processing at the start of each command."""
-        g.checkTextWidget(w)
         c, p, u = self.c, self.c.p, self.c.undoer
         name = c.widget_name(w)
         if name.startswith('body'):
@@ -98,7 +97,6 @@ class BaseEditCommandsClass:
         if w and forceFocus:
             c.widgetWantsFocusNow(w)
         self.w = w
-        g.checkTextWidget(w)
         return w
 
     # @+node:ekr.20150514043714.8: *3* BaseEdit.getWSString
@@ -119,7 +117,6 @@ class BaseEditCommandsClass:
     # @+node:ekr.20150514043714.13: *4* BaseEdit.getRectanglePoints
     def getRectanglePoints(self, w: QTextMixin) -> tuple[int, int, int, int]:
         """Return the rectangle corresponding to the selection range."""
-        g.checkTextWidget(w)
         c = self.c
         c.widgetWantsFocusNow(w)
         s = w.getAllText()

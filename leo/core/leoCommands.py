@@ -116,7 +116,6 @@ class Commands:
         previousSettings: "PreviousSettings" = None,
         relativeFileName: str = None,
     ) -> None:
-        g.checkTextWidget(parentFrame)
         t1 = time.process_time()
         c = self
         # Official ivars.

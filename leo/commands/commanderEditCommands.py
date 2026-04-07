@@ -374,7 +374,6 @@ def editHeadline(self: Self, event: LeoKeyEvent = None) -> None:
         # k.setDefaultInputState()
         k.setEditingState()
         k.showStateAndMode(w=wrapper)
-    g.checkQtTextWidget(wrapper)
 
 
 # @+node:ekr.20171123135625.23: ** c_ec.extract

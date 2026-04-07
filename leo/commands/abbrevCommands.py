@@ -330,7 +330,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         expand_search: bool = False,
     ) -> None:
         """Make a text expansion at location i,j of widget w."""
-        g.checkTextWidget(w)
         c = self.c
         if word == c.config.getString("abbreviations-next-placeholder"):
             val = ''
@@ -355,7 +354,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         This happens *before* any substitutions are made.
         """
         c = self.c
-        g.checkTextWidget(w)
         if not c.canPasteOutline(tree_s):
             g.trace(f"bad copied outline: {tree_s}")
             return
@@ -570,7 +568,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
         """Replace w[i:j] by s."""
-        g.checkTextWidget(w)
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
         bunch = u.beforeChangeBody(p)
@@ -598,7 +595,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20161121111502.1: *4* abbrev_get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
         """Get the ch from the stroke."""
-        g.checkTextWidget(w)
         ch = g.checkUnicode(event and event.char or '')
         if self.expanding:
             return None
@@ -628,7 +624,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """Return the prefixes at the current insertion point of w."""
         # New code allows *any* sequence longer than 1 to be an abbreviation.
         # Any whitespace stops the search.
-        g.checkTextWidget(w)
         s = w.getAllText()
         j = w.getInsertPoint()
         i, prefixes = j - 1, []
@@ -714,7 +709,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         w: QTextMixin = None,
     ) -> None:
         """State handler for dabbrev-expands command."""
-        g.checkTextWidget(w)
         c, k = self.c, self.c.k
         self.w = w
         if prefix is None:
@@ -754,7 +748,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.23: *4* abbrev.getDynamicList (helper)
     def getDynamicList(self, w: QTextMixin, s: str) -> list[str]:
         """Return a list of dynamic abbreviations."""
-        g.checkTextWidget(w)
         if self.globalDynamicAbbrevs:
             # Look in all nodes.h
             items = []

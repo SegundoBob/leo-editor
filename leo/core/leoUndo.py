@@ -1309,7 +1309,6 @@ class Undoer:
 
         This is ugly, ad-hoc code, but should be done uniformly.
         """
-        g.checkTextWidget(w)
         c = self.c
         if g.isTextWrapper(w):
             # An important, ever-present unit test.

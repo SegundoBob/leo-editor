@@ -2294,7 +2294,6 @@ class KeyHandlerClass:
         The event will go to k.masterKeyHandler as always, so nothing really changes.
         except that k.masterKeyHandler will know the proper stroke.
         """
-        g.checkTextWidget(w)
         k = self
         for stroke in k.bindingsDict:
             assert g.isStroke(stroke), repr(stroke)
@@ -2303,7 +2302,6 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.96: *4* k.completeAllBindingsForWidget
     def completeAllBindingsForWidget(self, w: QTextMixin) -> None:
         """Make all a master gui binding for widget w."""
-        g.checkTextWidget(w)
         k = self
         for stroke in k.bindingsDict:
             assert g.isStroke(stroke), repr(stroke)
@@ -2413,7 +2411,6 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.103: *4* k.makeMasterGuiBinding
     def makeMasterGuiBinding(self, stroke: Stroke, w: QTextMixin = None) -> None:
         """Make a master gui binding for stroke in pane w, or in all the standard widgets."""
-        g.checkTextWidget(w)
         c, k = self.c, self
         f = c.frame
         if w:
@@ -3239,7 +3236,6 @@ class KeyHandlerClass:
 
         **Only unit tests use this method.**
         """
-        g.checkTextWidget(w)
         c, k = self.c, self
         # Unit tests do not ordinarily read settings files.
         stroke = k.getStrokeForCommandName(commandName)
@@ -4160,7 +4156,6 @@ class KeyHandlerClass:
     # @+node:ekr.20061031131434.158: *4* k.createModeBindings
     def createModeBindings(self, modeName: str, d: dict[str, list], w: QTextMixin) -> None:
         """Create mode bindings for the named mode using dictionary d for w, a text widget."""
-        g.checkTextWidget(w)
         c, k = self.c, self
         assert d.name().endswith('-mode')
         for commandName in d.keys():
@@ -4521,7 +4516,6 @@ class KeyHandlerClass:
         setFocus: bool = True,
     ) -> None:
         """Show the state and mode at the start of the minibuffer."""
-        g.checkQtTextWidget(w)
         c, k = self.c, self
         state = k.unboundKeyAction
         mode = k.getStateKind()
@@ -4628,7 +4622,6 @@ class ModeInfo:
     # @+node:ekr.20120208064440.10160: *3* mode_i.createModeBindings
     def createModeBindings(self, w: QTextMixin) -> None:
         """Create mode bindings for w, a text widget."""
-        g.checkTextWidget(w)
         c, d, k, modeName = self.c, self.d, self.k, self.name
         for commandName in d:
             func = c.commandsDict.get(commandName)

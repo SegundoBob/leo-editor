@@ -186,7 +186,6 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         w = self.editWidget(event)
-        g.checkTextWidget(w)
         if not w:
             return
         # Extend (frm, to) if it spans a line.

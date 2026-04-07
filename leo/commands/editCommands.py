@@ -498,7 +498,6 @@ class EditCommandsClass(BaseEditCommandsClass):
         c, u, w = self.c, self.c.undoer, self.editWidget(event)
         if not w:
             return
-        g.checkTextWidget(w)
 
         def callback(arg: str, w: QTextMixin = w) -> None:
             i = w.getSelectionRange()[0]
@@ -2206,7 +2205,6 @@ class EditCommandsClass(BaseEditCommandsClass):
         stroke: g.KeyStroke,
         w: QTextMixin,
     ) -> None:
-        g.checkTextWidget(w)
         c, p = self.c, self.c.p
         isPlain = stroke.find('Alt') == -1 and stroke.find('Ctrl') == -1
         i, j = oldSel
@@ -2249,7 +2247,6 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20180806045802.1: *5* ec.doSmartQuote
     def doSmartQuote(self, action: str, ch: str, oldSel: tuple[int, int], w: QTextMixin) -> None:
         """Convert a straight quote to a curly quote, depending on context."""
-        g.checkTextWidget(w)
         i, j = oldSel
         if i > j:
             i, j = j, i
@@ -2273,7 +2270,6 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.271: *5* ec.flashCharacter
     def flashCharacter(self, w: QTextMixin, i: int) -> None:
         """Flash the character at position i of widget w."""
-        g.checkTextWidget(w)
         bg = self.bracketsFlashBg or 'DodgerBlue1'
         fg = self.bracketsFlashFg or 'white'
         flashes = self.bracketsFlashCount or 3
@@ -2285,7 +2281,6 @@ class EditCommandsClass(BaseEditCommandsClass):
         self, c: Cmdr, ch: str, i: int, p: Position, w: QTextMixin
     ) -> None:
         """Flash matching brackets at char ch at position i at widget w."""
-        g.checkTextWidget(w)
         d = {}
         # pylint: disable=consider-using-enumerate
         if ch in self.openBracketsList:
@@ -2315,7 +2310,6 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514063305.274: *5* ec.insertNewlineHelper
     def insertNewlineHelper(self, w: QTextMixin, oldSel: tuple[int, int], undoType: str) -> None:
-        g.checkTextWidget(w)
         c, p = self.c, self.c.p
         i, j = oldSel
         ch = '\n'
@@ -2340,7 +2334,6 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     def updateAutoIndent(self, p: Position, w: QTextMixin) -> None:
         """Handle auto indentation."""
-        g.checkTextWidget(w)
         c = self.c
         tab_width = c.getTabWidth(p)
         # Get the previous line.
@@ -2378,7 +2371,6 @@ class EditCommandsClass(BaseEditCommandsClass):
     def updateAutomatchBracket(
         self, p: Position, w: QTextMixin, ch: str, oldSel: tuple[int, int]
     ) -> None:
-        g.checkTextWidget(w)
         c = self.c
         language = c.getLanguage(p)
         i, j = oldSel
@@ -2418,7 +2410,6 @@ class EditCommandsClass(BaseEditCommandsClass):
 
         Add spaces equivalent to a tab.
         """
-        g.checkTextWidget(w)
         c = self.c
         i, j = w.getSelectionRange()  # Returns insert point if no selection, with i <= j.
         if i != j:
@@ -2454,7 +2445,6 @@ class EditCommandsClass(BaseEditCommandsClass):
 
         Insert spaces equivalent to one tab.
         """
-        g.checkTextWidget(w)
         trace = 'keys' in g.app.debug
         start, end = g.getLine(s, i)
         s2 = s[start:i]
@@ -2529,7 +2519,6 @@ class EditCommandsClass(BaseEditCommandsClass):
         extend: Clear the selection unless this is True.
         spot:   The *new* insert point.
         """
-        g.checkTextWidget(w)
         c, p = self.c, self.c.p
         extend = extend or self.extendMode
         ins = w.getInsertPoint()
@@ -2755,7 +2744,6 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.289: *5* ec.setMoveCol
     def setMoveCol(self, w: QTextMixin, spot: int) -> None:
         """Set the column to which an up or down arrow will attempt to move."""
-        g.checkTextWidget(w)
         p = self.c.p
         row, col = w.toPythonIndexRowCol(spot)
         self.moveSpot = spot
@@ -3065,7 +3053,6 @@ class EditCommandsClass(BaseEditCommandsClass):
         w: QTextMixin = None,
     ) -> tuple[int, int]:
         """Compute the word at the cursor. Select it if select arg is True."""
-        g.checkTextWidget(w)
         if not w:
             w = self.editWidget(event)
         if not w:
@@ -3639,7 +3626,6 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.326: *5* ec.selectParagraphHelper
     def selectParagraphHelper(self, w: QTextMixin, start: int) -> None:
         """Select from start to the end of the paragraph."""
-        g.checkTextWidget(w)
         s = w.getAllText()
         i1, j = g.getLine(s, start)
         while j < len(s):
