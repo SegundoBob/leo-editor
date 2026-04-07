@@ -843,7 +843,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
 
     # @+node:ekr.20110605121601.18142: *3* dw: top-level methods
     # @+node:ekr.20190118150859.10: *4* dw.addNewEditor
-    def addNewEditor(self, name: str) -> tuple[QWidget, QTextEditWrapper]:
+    def addNewEditor(self, name: str) -> tuple[QWidget, QTextMixin]:
         """Create a new body editor."""
         c, p = self.leo_c, self.leo_c.p
         body = c.frame.body

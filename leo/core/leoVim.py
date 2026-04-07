@@ -31,7 +31,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import QEvent
     from leo.core.leoQt import QtWidgets
-    from leo.plugins.qt_text import QTextEditWrapper, QTextMixin
+    from leo.plugins.qt_text import QTextMixin
 
     QWidget = QtWidgets.QWidget
     KWargs = Any
@@ -2518,7 +2518,7 @@ class VimCommands:
     def set_border(
         self,
         kind: str = None,
-        w: QTextEditWrapper = None,
+        w: QTextMixin = None,
         activeFlag: bool = None,
     ) -> None:
         """
@@ -2543,7 +2543,7 @@ class VimCommands:
                 pass
 
     # @+node:ekr.20140807070500.18161: *5* vc.set_property
-    def set_property(self, w: QTextEditWrapper, focus_flag: bool) -> None:
+    def set_property(self, w: QTextMixin, focus_flag: bool) -> None:
         """Set the property of w, depending on focus and state."""
         c, state = self.c, self.state
         #

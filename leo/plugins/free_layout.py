@@ -52,7 +52,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper, QTextMixin
+    from leo.plugins.qt_text import QTextMixin
 
     QSplitter = QtWidgets.QSplitter
     QWidget = QtWidgets.QWidget
@@ -198,7 +198,7 @@ class FreeLayoutController:
         c.redraw()
 
     # @+node:ekr.20160424035257.1: *3* flc.get_main_splitter
-    def get_main_splitter(self, w: QTextEditWrapper = None) -> Optional[NestedSplitter]:
+    def get_main_splitter(self, w: QTextMixin = None) -> Optional[NestedSplitter]:
         """
         Return the main splitter.
 
