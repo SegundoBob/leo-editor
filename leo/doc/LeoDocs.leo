@@ -15644,7 +15644,6 @@ More resources:
 - Satish Goda's `Leo tutorial &lt;https://github.com/satishgoda/leo-editor-tutorial&gt;`_.
 - `Icons`_ telling the world that you used Leo.
 - `Leo in a nutshell`_: A summary Leo's more than one million lines of source code.
-- Rickard Lindberg's `blog post`_ about how Leo improves computer code.
 </t>
 <t tx="ekr.20131031101712.16486">Supported by Leo's core::
 
