@@ -1614,16 +1614,34 @@ class TestJava(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language java\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language java\n'
+                '@tabwidth -4\n',
             ),
             (
-                1,
-                'interface Bicycle',
-                'interface Bicycle {\n    void changeCadence(int newValue);\n    void changeGear(int newValue);\n}\n',
+                1, 'class EightQueens',
+                'public class EightQueens {\n'
+                '    @others\n'
+                '}\n'
+                
             ),
-        )
+            (
+                2, 'public solveAllNQuees',
+                'public static void solveAllNQueens(char[][] board, int col, ArrayList<char[][]> solutions){\n'
+                '    if( col == board.length){\n'
+                '        solutions.add( makeCopy(board));\n'
+                '    } else {\n'
+                '        for(int row = 0; row < board.length; row++){\n'
+                "                board[row][col] = 'q';\n"
+                '            if( queensAreSafe(board) )\n'
+                '                solveAllNQueens(board, col + 1, solutions);\n'
+                "                board[row][col] = '.';\n"
+                '        }\n'
+                '    }\n'
+                '}\n'
+            ),
+        )  # fmt:skip
         self.new_run_test(s, expected_results)
 
     # @-others
