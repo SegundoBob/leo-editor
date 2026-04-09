@@ -20,10 +20,11 @@ class Java_Importer(Importer):
     language = 'java'
 
     block_patterns: tuple = (
-        ('class', re.compile(r'.*?\bclass\s+(\w+)')),
-        ('func', re.compile(r'.*?\b(\w+)\s*\(.*?\)\s*{')),
-        ('interface', re.compile(r'.*?\binterface\s+(\w*)\s*{')),
-    )
+        ('class',     re.compile(r'^.*?\bclass\s+(\w+)')),
+        ('public',    re.compile(r'^\s*public\s+(\w+)\(.*?\)\s*{')),
+        ('private',   re.compile(r'^\s*private\s+(\w+)\(.*?\)\s*{')),
+        ('interface', re.compile(r'^\s*interface\s+(\w*)\s*{')),
+    )  # fmt: skip
 
 
 # @-others
