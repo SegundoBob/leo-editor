@@ -1413,13 +1413,13 @@ class TestJava(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language java\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language java\n'
+                '@tabwidth -4\n',
             ),
             (
-                1,
-                'class AdminPermission',
+                1, 'class AdminPermission',
                 '/**\n'
                 " * Indicates the caller's authority to perform lifecycle operations on\n"
                 ' */\n'
@@ -1429,8 +1429,7 @@ class TestJava(BaseTestImporter):
                 '}\n',
             ),
             (
-                2,
-                'func AdminPermission',
+                2, 'public AdminPermission',
                 '/**\n'
                 ' * Creates a new <tt>AdminPermission</tt> object.\n'
                 ' */\n'
@@ -1438,7 +1437,7 @@ class TestJava(BaseTestImporter):
                 '    super("AdminPermission");\n'
                 '}\n',
             ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.31: *3* TestJava.test_from_BundleException_java
@@ -1490,7 +1489,7 @@ class TestJava(BaseTestImporter):
             ),
             (
                 2,
-                'func BundleException',
+                'public BundleException',
                 'static final long serialVersionUID = 3571095144220455665L;\n'
                 '/**\n'
                 ' * Nested exception.\n'
@@ -1592,6 +1591,40 @@ class TestJava(BaseTestImporter):
             g.printObj(expected, tag='expected')
 
         self.assertEqual(results, expected)
+
+    # @+node:ekr.20260409102018.1: *3* TestJava.test_compound_statements
+    def test_compound_statements(self):
+        # From https://www.cs.utexas.edu/~scottm/cs307/javacode/codeSamples/EightQueens.java
+        s = """
+            public class EightQueens {
+
+                public static void solveAllNQueens(char[][] board, int col, ArrayList<char[][]> solutions){
+                    if( col == board.length){
+                        solutions.add( makeCopy(board));
+                    } else {
+                        for(int row = 0; row < board.length; row++){
+                            board[row][col] = 'q';
+                            if( queensAreSafe(board) )
+                                solveAllNQueens(board, col + 1, solutions);
+                            board[row][col] = '.';
+                        }
+                    }
+                }
+            }
+        """
+        expected_results = (
+            (
+                0,
+                '',  # Ignore the first headline.
+                '@others\n@language java\n@tabwidth -4\n',
+            ),
+            (
+                1,
+                'interface Bicycle',
+                'interface Bicycle {\n    void changeCadence(int newValue);\n    void changeGear(int newValue);\n}\n',
+            ),
+        )
+        self.new_run_test(s, expected_results)
 
     # @-others
 
