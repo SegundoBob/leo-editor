@@ -1624,19 +1624,19 @@ class TestJava(BaseTestImporter):
                 'public class EightQueens {\n'
                 '    @others\n'
                 '}\n'
-                
             ),
             (
-                2, 'public solveAllNQuees',
+                2, 'public static void solveAllNQueens',
+                '\n'
                 'public static void solveAllNQueens(char[][] board, int col, ArrayList<char[][]> solutions){\n'
                 '    if( col == board.length){\n'
                 '        solutions.add( makeCopy(board));\n'
                 '    } else {\n'
                 '        for(int row = 0; row < board.length; row++){\n'
-                "                board[row][col] = 'q';\n"
+                "            board[row][col] = 'q';\n"
                 '            if( queensAreSafe(board) )\n'
                 '                solveAllNQueens(board, col + 1, solutions);\n'
-                "                board[row][col] = '.';\n"
+                "            board[row][col] = '.';\n"
                 '        }\n'
                 '    }\n'
                 '}\n'

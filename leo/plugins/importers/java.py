@@ -21,8 +21,8 @@ class Java_Importer(Importer):
 
     block_patterns: tuple = (
         ('class',     re.compile(r'^.*?\bclass\s+(\w+)')),
-        ('public',    re.compile(r'^\s*public\s+(\w+)\(.*?\)\s*{')),
-        ('private',   re.compile(r'^\s*private\s+(\w+)\(.*?\)\s*{')),
+        ('public',    re.compile(r'^\s*public\s+(\w+.*?)\(.*?\)\s*{')),
+        ('private',   re.compile(r'^\s*private\s+(\w+.*?)\(.*?\)\s*{')),
         ('interface', re.compile(r'^\s*interface\s+(\w*)\s*{')),
     )  # fmt: skip
 
