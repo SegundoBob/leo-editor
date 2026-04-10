@@ -192,16 +192,14 @@ class TestLeoImport(BaseTestImporter):
 
         body_1 = self.prep(
             '''
-            import os
+            #!/usr/bin/python3
+            # -*- coding: utf-8 -*-
 
-            def spam():
-            \t"""A docstring"""
-            \tprint('a string')
-
-
-            class NewClass:
-            \tdef f1(self):
-            \t\tpass
+            def someFunction ():
+            \tif (someLongCondition) or \\
+            \t\t\t(anotherLongCondition):
+            \t\treturn
+            \tpass
         '''
         )
         target.b = body_1
@@ -209,16 +207,17 @@ class TestLeoImport(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                'def spam',
-                'import os\n\ndef spam():\n\t"""A docstring"""\n\tprint(\'a string\')\n\n',
+                0,  'def someFunction',  # Ignored
+                '#!/usr/bin/python3\n'
+                '# -*- coding: utf-8 -*-\n'
+                '\n'
+                'def someFunction ():\n'
+                '\tif (someLongCondition) or \\\n'
+                '\t\t\t(anotherLongCondition):\n'
+                '\t\treturn\n'
+                '\tpass\n'
             ),
-            (
-                0,
-                'class NewClass',
-                'class NewClass\n\tdef f1(self):\n\t\tpass\n',
-            ),
-        )
+        )  # fmt: skip
         # Don't call run_test.
         self.check_outline(target, expected_results)
 
