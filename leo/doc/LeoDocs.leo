@@ -32632,6 +32632,8 @@ Leo 6.8.6: (August 1, 2025):
 
 - @leo and related commands makes it easy to use Leo on huge repositories.
 - LeoInteg (and leoserver.py) supports websockets.
+
+Mar 22, 2026: Félix releases `LeoWeb &lt;https://boltex.github.io/leo-web/&gt;`_, a browser-based version of the Leo Editor. This project is a TypeScript implementation, scriptable in either Javascript or Typescript, that uses the browser's File System API for local file access.
 </t>
 <t tx="ekr.20250728123954.1">Leo https://leo-editor.github.io/leo-editor/ 6.8.6.1 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
 
