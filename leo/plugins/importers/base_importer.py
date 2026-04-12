@@ -451,7 +451,7 @@ class Importer:
         Subclasses may override this method as necessary.
         """
         name_s = block.name or f"unnamed {block.kind}"
-        return f"{block.kind} {name_s}"
+        return f"{block.kind} {name_s}" if block.kind else name_s
 
     # @+node:ekr.20230920165923.1: *5* 2D: i.generate_all_bodies & helpers
     def generate_all_bodies(
