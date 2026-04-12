@@ -29,7 +29,7 @@ class Java_Importer(Importer):
         ('protected', re.compile(r'^\s*protected\s+(\w+.*?)\s*\(.*?\)\s*((implements|throws).*?)?{')),
         ('public',    re.compile(r'^\s*public\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
         ('static',    re.compile(r'^\s*static\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
-        ('', re.compile(r'^\s*(.*?\bclass\s+\w+)')),
+        ('',          re.compile(r'^\s*(.*?\bclass\s+\w+)')),
 
     )  # fmt: skip
 
