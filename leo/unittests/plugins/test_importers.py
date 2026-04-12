@@ -1419,7 +1419,7 @@ class TestJava(BaseTestImporter):
                 '@tabwidth -4\n',
             ),
             (
-                1, 'class AdminPermission',
+                1, 'public final class AdminPermission',
                 '/**\n'
                 " * Indicates the caller's authority to perform lifecycle operations on\n"
                 ' */\n'
@@ -1475,7 +1475,7 @@ class TestJava(BaseTestImporter):
             ),
             (
                 1,
-                'class BundleException',
+                'public class BundleException',
                 '/*\n'
                 ' * $Header: /cvs/leo/test/unitTest.leo,v 1.247 2008/02/14 14:59:04 edream Exp $\n'
                 ' *\n'
@@ -1620,7 +1620,7 @@ class TestJava(BaseTestImporter):
                 '@tabwidth -4\n',
             ),
             (
-                1, 'class EightQueens',
+                1, 'public class EightQueens',
                 'public class EightQueens {\n'
                 '    @others\n'
                 '}\n'
