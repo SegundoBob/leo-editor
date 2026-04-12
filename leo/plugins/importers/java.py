@@ -31,7 +31,6 @@ class Java_Importer(Importer):
         ('static',    re.compile(r'^\s*static\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
         ('', re.compile(r'^(.*?\bclass\s+\w+)')),
 
-
     )  # fmt: skip
 
     # @-<< Java_Importer: block_patterns >>
