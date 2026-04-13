@@ -31542,9 +31542,9 @@ June 21, 2021: The dawn of ``LeoInteg``: The first commit by Félix Malboeuf for
 
 6.4 (September 20, 2021): The first release supporting ``LeoInteg``: integration of Leo with VS code. ``LeoInteg`` and ``LeoJS`` are the future of Leo. All later releases contain support for ``LeoInteg`` and ``LeoJS``. This was the first release containing leoserver.py.
 
-.. _`announcement`: https://groups.google.com/g/leo-editor/c/8SPF7GFo5f4/m/GcaWR7ohBQAJ
+.. _`leo-integ-announcement`: https://groups.google.com/g/leo-editor/c/8SPF7GFo5f4/m/GcaWR7ohBQAJ
 
-Sep 24, 2021: Félix releases LeoInteg 1.0, with this `announcement`_.
+Sep 24, 2021: Félix releases LeoInteg 1.0, with this `leo-integ-announcement`_.
 
 This is one of the most important dates in Leo's history:
 
@@ -32607,8 +32607,11 @@ This release consists entirely of code cleanups and minor bug fixes:
 A new framework for layouts replaces the free_layout and nested_splitter plugins.
 The gui "Easter Egg" is no more.
 
-Jul 27, 2024: Félix releases LeoJS 1.0, with this
-`announcement &lt;https://groups.google.com/g/leo-editor/c/nNSaJTMAB3s/m/Df1roWA5AgAJ&gt;`_ along with a `scripting samples repository &lt;https://github.com/boltex/scripting-samples-leojs?tab=readme-ov-file#how-to-use-on-the-web-in-your-browser&gt;`_ and a `dedicated website &lt;https://boltex.github.io/leojs/&gt;`_.
+Jul 27, 2024: Félix releases LeoJS 1.0, with this `leo-js-announcement
+&lt;https://groups.google.com/g/leo-editor/c/nNSaJTMAB3s/m/Df1roWA5AgAJ&gt;`_
+along with a `scripting samples repository
+&lt;https://github.com/boltex/scripting-samples-leojs?tab=readme-ov-file#how-to-use-on-the-web-in-your-browser&gt;`_
+and a `dedicated website &lt;https://boltex.github.io/leojs/&gt;`_.
 
 LeoJS is a JavaScript implementation of Leo's original Python source packaged as a VSCode extension. It is also usable with VSCode for the web.
 
