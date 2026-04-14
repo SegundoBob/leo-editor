@@ -1600,6 +1600,7 @@ Step 3: Upload to testpypi and test:
 - Run the `upload_leo_to_testpypi` script.
   Fix the name of the `.whl` file (see below) if the upload fails.
 - Run the `install_leo_from_testpypi` script.
+- Open testpypi: https://test.pypi.org/project/leo/
 - Test and uninstall as in step 2 above.
 
 Step 4: Upload to pypi and test:
@@ -1609,6 +1610,7 @@ Make *sure* all is well before uploading to pypi.
 - Run the `upload_leo_to_pypi` script.
   Fix the name of the `.whl` file (see below) if the upload fails.
 - Run the `install_leo_from_pypi` script.
+- Open pypi: https://pypi.org/project/leo/
 - Test and uninstall as in step 2 above.
 
 *How to handle errors in steps 3 and 4*
