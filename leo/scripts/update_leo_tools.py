@@ -25,6 +25,7 @@ isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
 for command in [
+    f"{python} -m pip install --upgrade flake8",
     f"{python} -m pip install --upgrade mypy",
     f"{python} -m pip install --upgrade pylint",
     f"{python} -m pip install --upgrade ruff",
