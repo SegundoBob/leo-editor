@@ -278,7 +278,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
                 # #4462: Make only one substitution in headlines.
-                if w_name.startswith('head'):
+                # #4590: Don't do this if the user explicitly called for the next placeholder.
+                if val != '__NEXT_PLACEHOLDER' and self.enabled and w_name.startswith('head'):
                     self.make_first_headline_substitution(i, j, p, val)
                     return True
                 if val == '__NEXT_PLACEHOLDER':
