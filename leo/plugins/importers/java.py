@@ -31,8 +31,8 @@ class Java_Importer(Importer):
         # ('public',    re.compile(r'^\s*public\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
         # ('static',    re.compile(r'^\s*static\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
         
-        ('',          re.compile(r'^\s*(.*?\bclass\s+\w+)')),
-        ('',          re.compile(r'^\s*(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
+        ('', re.compile(r'^\s*(.*?\bclass\s+\w+)')),
+        ('', re.compile(r'^\s*(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
 
     )  # fmt: skip
     # @-<< Java_Importer: block_patterns >>
