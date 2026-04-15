@@ -2169,7 +2169,7 @@ class LeoCursesGui(leoGui.LeoGui):
     # @+node:ekr.20170504052119.1: *4* CGui.isTextWrapper
     def isTextWrapper(self, w: Any) -> bool:
         """Return True if w is a Text widget suitable for text-oriented commands."""
-        return bool(w and getattr(w, 'supportsHighLevelInterface', None))
+        return isinstance(w, StringTextWrapper)
 
     # @+node:ekr.20170612063102.1: *4* CGui.put_help
     def put_help(self, c: Cmdr, s: str, short_title: str) -> None:
