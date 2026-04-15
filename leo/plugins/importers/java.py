@@ -96,6 +96,7 @@ class Java_Importer(Importer):
                 if m := pattern.match(s):
                     # cython may include trailing whitespace.
                     name = m.group(1).strip()
+                    # #4471: ignore Java's compound statements.
                     if name in ('else', 'for', 'if', 'switch', 'while'):
                         continue
                     end = self.find_end_of_block(i, i2)
