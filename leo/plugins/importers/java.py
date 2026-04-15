@@ -26,13 +26,6 @@ class Java_Importer(Importer):
     # @+node:ekr.20260412045240.1: *3* << Java_Importer: block_patterns >>
     block_patterns: tuple = (
 
-        # #4471: Patterns must include a known prefix to avoid matching compound statements.
-        # ('interface', re.compile(r'^\s*interface\s+(\w+.*?)\s*((implements|throws).*?)?{')),
-        # ('private',   re.compile(r'^\s*private\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
-        # ('protected', re.compile(r'^\s*protected\s+(\w+.*?)\s*\(.*?\)\s*((implements|throws).*?)?{')),
-        # ('public',    re.compile(r'^\s*public\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
-        # ('static',    re.compile(r'^\s*static\s+(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
-        
         ('', re.compile(r'^\s*(.*?\bclass\s+\w+)')),
         ('', re.compile(r'^\s*(\w+.*?)\(.*?\)\s*((implements|throws).*?)?{')),
 
