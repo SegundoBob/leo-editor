@@ -361,6 +361,8 @@ class LeoKeyEvent:
         y_root: int = None,
     ) -> None:
         """Ctor for LeoKeyEvent class."""
+        if False and not g.unitTesting:  ###
+            g.trace('(LeoKeyEvent): w:', w.__class__.__name__, g.callers(2))
         stroke: Any
         if g.isStroke(binding):
             g.trace('***** (LeoKeyEvent) oops: already a stroke', binding, g.callers())
