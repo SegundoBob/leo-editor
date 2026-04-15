@@ -129,11 +129,14 @@ def restartLeo(self: Self, event: LeoKeyEvent = None) -> None:
     sys.stdout.flush()
     sys.stderr.flush()
     # Restart Leo with subprocess.run.
-    g.cls()
-    print('')
+    if verbose:
+        print('')
+    else:
+        g.cls()
     print('Restarting Leo...')
     if verbose:
         print(f"os.chdir({g.app.initial_cwd})")
+
     os.chdir(g.app.initial_cwd)
     if 1:  # #3916.
         if g.isWindows:
