@@ -485,8 +485,6 @@ class LeoFrame:
         # f = self
         w = event and event.widget
         # wname = c.widget_name(w)
-        ### g.trace(event)  ###
-        ### g.trace(repr(w))  ###
         if not w or not g.isTextWrapper(w):
             return
         # Set the clipboard text.
