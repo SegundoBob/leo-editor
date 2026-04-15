@@ -116,8 +116,8 @@ class StringTextWrapper(QTextMixin):
         self.s = ''
 
     # @+node:ekr.20260415161250.1: *3* StringTextWrapper.__repr__
-    def __repr__(self):
-        return f"<StringTextWrapper: @ {id(self)}"
+    def __repr__(self) -> str:
+        return f"<StringTextWrapper: @ {id(self)}>"
 
     # @+node:ekr.20140903172510.18579: *3* StringTextWrapper.setFocus
     def setFocus(self) -> None:
