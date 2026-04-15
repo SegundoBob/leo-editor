@@ -4201,13 +4201,7 @@ class TextMixin:
     def __init__(self, c: Cmdr = None) -> None:
         """Ctor for TextMixin class"""
         self.c = c
-        # self.changingText = False  # A lockout for onTextChanged.
         self.enabled = True
-        self.supportsHighLevelInterface = True  # Flag for k.masterKeyHandler and isTextWrapper.
-        # self.tags = {}
-        # self.configDict = {}  # Keys are tags, values are colors (names or values).
-        # self.configUnderlineDict = {}  # Keys are tags, values are True
-        # self.virtualInsertPoint = None
         if c:
             self.injectIvars(c)
 
