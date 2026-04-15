@@ -6,7 +6,7 @@ from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
 import leo.core.leoGlobals as g
-from leo.plugins.importers.base_importer import Block, Importer
+from leo.plugins.importers.base_importer import Importer
 
 if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
@@ -19,6 +19,8 @@ class Java_Importer(Importer):
     """The importer for the java language."""
 
     language = 'java'
+
+    compound_statements = ['else', 'for', 'if', 'switch', 'while']
 
     # @+<< Java_Importer: block_patterns >>
     # @+node:ekr.20260412045240.1: *3* << Java_Importer: block_patterns >>
@@ -71,49 +73,6 @@ class Java_Importer(Importer):
                 parent.b = preamble_s + parent.b
                 child1.b = child1.b.replace(preamble_s, '')
                 return
-
-    # @+node:ekr.20260415023102.1: *3* java_i.find_blocks
-    def find_blocks(self, i1: int, i2: int) -> list[Block]:
-        """
-        Java_Importer.find_blocks.
-
-        Same as Importer.find_blocks, but disallows matches of compound statements.
-
-        Using self.block_patterns and self.guide_lines, return a list of all
-        blocks in the given range of *guide* lines.
-
-        **Important**: An @others directive will refer to the returned blocks,
-                       so there must be *no gaps* between blocks!
-        """
-        min_size = self.minimum_block_size
-        i, prev_i, results = i1, i1, []
-        while i < i2:
-            progress = i
-            s = self.guide_lines[i]
-            i += 1
-            # Assume that no pattern matches a compound statement.
-            for kind, pattern in self.block_patterns:
-                if m := pattern.match(s):
-                    # cython may include trailing whitespace.
-                    name = m.group(1).strip()
-                    # #4471: ignore Java's compound statements.
-                    if name in ('else', 'for', 'if', 'switch', 'while'):
-                        continue
-                    end = self.find_end_of_block(i, i2)
-                    assert i1 + 1 <= end <= i2, (i1, end, i2)
-                    # Don't generate small blocks.
-                    if min_size == 0 or end - prev_i > min_size:
-                        block = Block(
-                            kind, name, start=prev_i, start_body=i, end=end, lines=self.lines
-                        )
-                        results.append(block)
-                        i = prev_i = end
-                    else:
-                        i = end
-                    break
-            assert i > progress, g.callers()
-        # g.printObj(results, tag=f"{g.my_name()} {i1} {i2}")
-        return results
 
     # @-others
 
