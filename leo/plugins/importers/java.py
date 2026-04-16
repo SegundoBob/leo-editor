@@ -35,7 +35,7 @@ class Java_Importer(Importer):
     # @+others
     # @+node:ekr.20260415021624.1: *3* java_i.postprocess
     def postprocess(self, parent: Position) -> None:
-        """Python_Importer.postprocess."""
+        """Java_Importer.postprocess."""
 
         # Base-class method.
         self.move_blank_lines(parent)
