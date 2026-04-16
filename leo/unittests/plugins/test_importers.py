@@ -216,25 +216,32 @@ class TestC(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language c\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language c\n'
+                '@tabwidth -4\n',
             ),
             (
-                1,
-                'class cTestClass1',
+                1, 'class cTestClass1',
                 'class cTestClass1 {\n'
                 '\n'  # Leo 6.8.7
                 '    @others\n'
-                '}\n',
+                '}\n'
             ),
             (
-                2,
-                'func foo',
-                'int foo (int a) {\n    a = 2 ;\n}\n\n',  # Leo 6.8.7
+                2, 'func foo',
+                'int foo (int a) {\n'
+                '    a = 2 ;\n'
+                '}\n'
+                '\n' # Leo 6.8.7
             ),
-            (2, 'func bar', 'char bar (float c) {\n    ;\n}\n'),
-        )
+            (
+                2, 'func bar',
+                'char bar (float c) {\n'
+                '    ;\n'
+                '}\n'
+            ),
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.4: *3* TestC.test_class_underindented_line
@@ -256,29 +263,34 @@ class TestC(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 '@others\n@language c\n@tabwidth -4\n',
             ),
             (
-                1,
-                'class cTestClass1',
+                1, 'class cTestClass1',
                 'class cTestClass1 {\n'
                 '\n'  # Leo 6.8.7
                 '@others\n'
-                '}\n',
+                '}\n'
             ),
             (
-                2,
-                'func foo',
-                '    int foo (int a) {\n// an underindented line.\n        a = 2 ;\n    }\n\n',  # Leo 6.8.7
+                2, 'func foo',
+                '    int foo (int a) {\n'
+                '// an underindented line.\n'
+                '        a = 2 ;\n'
+                '    }\n'
+                '\n'  # Leo 6.8.7
             ),
             (
                 2,
                 'func bar',
-                '    // This should go with the next function.\n\n    char bar (float c) {\n        ;\n    }\n',
+                '    // This should go with the next function.\n'
+                '\n'
+                '    char bar (float c) {\n'
+                '        ;\n'
+                '    }\n'
             ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.5: *3* TestC.test_open_curly_bracket_on_next_line
@@ -298,21 +310,28 @@ class TestC(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language c\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language c\n'
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                'func doit',
-                'void\naaa::bbb::doit(awk* b)\n{\n    assert(false);\n}\n\n',  # Leo 6.8.7
+                1, 'func doit',
+                'void\n'
+                'aaa::bbb::doit(awk* b)\n{\n'
+                '    assert(false);\n'
+                '}\n'
+                '\n' # Leo 6.8.7
             ),
             (
-                1,
-                'func dothat',
-                'bool\naaa::bbb::dothat(xyz *b) // trailing comment.\n{\n    return true;\n} // comment\n',
+                1, 'func dothat',
+                'bool\n'
+                'aaa::bbb::dothat(xyz *b) // trailing comment.\n'
+                '{\n'
+                '    return true;\n'
+                '} // comment\n'
             ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.10: *3* TestC.test_extern
@@ -327,8 +346,7 @@ class TestC(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 'extern "C"\n'
                 '{\n'
                 '#include "stuff.h"\n'
@@ -338,7 +356,7 @@ class TestC(BaseTestImporter):
                 '@language c\n'
                 '@tabwidth -4\n',
             ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.8: *3* TestC.test_old_style_decl_1
@@ -356,8 +374,7 @@ class TestC(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 'static void\n'
                 'ReleaseCharSet(cset)\n'
                 '    CharSet *cset;\n'
@@ -370,35 +387,7 @@ class TestC(BaseTestImporter):
                 '@language c\n'
                 '@tabwidth -4\n',
             ),
-        )
-        self.new_run_test(s, expected_results)
-
-    # @+node:ekr.20210904065459.9: *3* TestC.test_old_style_decl_2
-    def test_old_style_decl_2(self):
-        s = """
-            Tcl_Obj *
-            Tcl_NewLongObj(longValue)
-                register long longValue; /* Long integer used to initialize the
-                     * new object. */
-            {
-                return Tcl_DbNewLongObj(longValue, "unknown", 0);
-            }
-        """
-        expected_results = (
-            (
-                0,
-                '',  # Ignore the first headline.
-                'Tcl_Obj *\n'
-                'Tcl_NewLongObj(longValue)\n'
-                '    register long longValue; /* Long integer used to initialize the\n'
-                '         * new object. */\n'
-                '{\n'
-                '    return Tcl_DbNewLongObj(longValue, "unknown", 0);\n'
-                '}\n'
-                '@language c\n'
-                '@tabwidth -4\n',
-            ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20220812232648.1: *3* TestC.test_template
@@ -415,11 +404,12 @@ class TestC(BaseTestImporter):
             (
                 0,
                 '',  # Ignore the first headline.
-                '@others\n@language c\n@tabwidth -4\n',
+                '@others\n'
+                '@language c\n'
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                'func GetMax',
+                1, 'func GetMax',
                 'template <class T>\n'
                 'T GetMax (T a, T b) {\n'
                 '  T result;\n'
@@ -427,7 +417,34 @@ class TestC(BaseTestImporter):
                 '  return (result);\n'
                 '}\n',
             ),
-        )
+        )  # fmt: skip
+        self.new_run_test(s, expected_results)
+
+    # @+node:ekr.20210904065459.9: *3* TestC.test_old_style_decl_2
+    def test_old_style_decl_2(self):
+        s = """
+            Tcl_Obj *
+            Tcl_NewLongObj(longValue)
+                register long longValue; /* Long integer used to initialize the
+                     * new object. */
+            {
+                return Tcl_DbNewLongObj(longValue, "unknown", 0);
+            }
+        """
+        expected_results = (
+            (
+                0, '',  # Ignore the first headline.
+                'Tcl_Obj *\n'
+                'Tcl_NewLongObj(longValue)\n'
+                '    register long longValue; /* Long integer used to initialize the\n'
+                '         * new object. */\n'
+                '{\n'
+                '    return Tcl_DbNewLongObj(longValue, "unknown", 0);\n'
+                '}\n'
+                '@language c\n'
+                '@tabwidth -4\n'
+            ),
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20230510161130.1: *3* TestC.test_delete_comments_and_strings
