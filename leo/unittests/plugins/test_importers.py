@@ -661,9 +661,8 @@ class TestCoffeescript(BaseTestImporter):
           """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language coffeescript\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n@language coffeescript\n@tabwidth -4\n'
             ),
             (1, 'class Builder', 'class Builder\n  @others\n'),
             (
@@ -693,7 +692,7 @@ class TestCoffeescript(BaseTestImporter):
                 '\n'
                 'transform: (args...) ->\n'
                 '  @transformer.transform.apply(@transformer, args)\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
             (
                 2, 'Builder.body',
@@ -813,9 +812,12 @@ class TestCython(BaseTestImporter):
         '''
         expected_results = (
             (
-                0,
-                '',  # check_outlines ignores the first headline.
-                'from libc.math cimport pow\n\n@others\n@language cython\n@tabwidth -4\n',
+                0, '',  # check_outlines ignores the first headline.
+                'from libc.math cimport pow\n'
+                '\n'
+                '@others\n'
+                '@language cython\n'
+                '@tabwidth -4\n'
             ),
             (
                 1,
@@ -930,9 +932,9 @@ class TestElisp(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language lisp\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language lisp\n@tabwidth -4\n'
             ),
             (
                 1, 'defun abc',
@@ -1051,7 +1053,7 @@ class TestHtml(BaseTestImporter):
             (
                 0,
                 '',  # Ignore the first headline.
-                '@others\n@language html\n@tabwidth -4\n',
+                '@others\n@language html\n@tabwidth -4\n'
             ),
             (
                 1, '<body>',
@@ -1354,7 +1356,7 @@ class TestHtml(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n<p>Paragraph</p>\n@language html\n@tabwidth -4\n',
+                '@others\n<p>Paragraph</p>\n@language html\n@tabwidth -4\n'
             ),
             (
                 1, '<table cellspacing="0" cellpadding="0" width="600" border="0">',
@@ -1573,7 +1575,7 @@ class TestJava(BaseTestImporter):
                 '@others\n'
                 '\n'  # Leo 6.8.7
                 '@language java\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1,
@@ -1775,7 +1777,7 @@ class TestJavascript(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 '@others\n'
                 '@language javascript\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'function c3',
@@ -1915,13 +1917,15 @@ class TestJupytext(BaseTestImporter):
                 '#     display_name: Python 3 (ipykernel)\n'
                 '#     language: python\n'
                 '#     name: python3\n'
-                '# ---\n',
+                '# ---\n'
             ),
-            (1, '2 + 666 + 4', '# %%\n2 + 666 + 4\n'),
             (
-                1,
-                "print('hi changed externally')",
-                '# %%\nprint(\'hi changed externally\')\n',
+                1, '2 + 666 + 4',
+                '# %%\n2 + 666 + 4\n'
+            ),
+            (
+                1, "print('hi changed externally')",
+                '# %%\nprint(\'hi changed externally\')\n'
             ),
             (
                 1, '# This is a markdown cell',
@@ -2704,7 +2708,7 @@ class TestPascal(BaseTestImporter):
             (
                 0,
                 '',  # Ignore the first headline.
-                '@others\n@language pascal\n@tabwidth -4\n',
+                '@others\n@language pascal\n@tabwidth -4\n'
             ),
             (
                 1, 'unit Unit1',
@@ -2718,7 +2722,7 @@ class TestPascal(BaseTestImporter):
                 'Dialogs;\n'
                 '\n'
                 'type\n'
-                'TForm1 = class(TForm)\n',
+                'TForm1 = class(TForm)\n'
             ),
             (
                 1,
@@ -2836,7 +2840,7 @@ class TestPascal(BaseTestImporter):
             (
                 0,
                 '',  # Ignore the first headline.
-                '@others\n@language pascal\n@tabwidth -4\n',
+                '@others\n@language pascal\n@tabwidth -4\n'
             ),
             (
                 1,
@@ -2850,7 +2854,7 @@ class TestPascal(BaseTestImporter):
                 'uses gf2obj1;\n'
                 '\n'
                 'implementation\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
             (
                 1,
@@ -2861,7 +2865,7 @@ class TestPascal(BaseTestImporter):
                 '   for i := 1 to num do\n'
                 '      with data^[i] do y := factor * y;\n'
                 'end;\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
             (
                 1,
@@ -2874,7 +2878,7 @@ class TestPascal(BaseTestImporter):
                 'for i := 1 to max do\n'
                 '    data^[i].y := data^[i].y * pstatObj(source)^.data^[i].y;\n'
                 'end;\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
             (
                 1, 'function statObj.divideGraph',
@@ -2978,7 +2982,7 @@ class TestPerl(BaseTestImporter):
                 '            # Function call\n'
                 '            Hello();\n'
                 '@language perl\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1,
@@ -2990,7 +2994,7 @@ class TestPerl(BaseTestImporter):
                 '               print "Hello, World!\n'
                 '";\n'
                 '            }\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
             (
                 1, 'sub Test',
@@ -3031,7 +3035,7 @@ class TestPerl(BaseTestImporter):
                 '            world\n'
                 '";\n'
                 '@language perl\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -3119,7 +3123,7 @@ class TestPerl(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 '@others\n'
                 '@language perl\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'sub test1',
@@ -3292,7 +3296,7 @@ class TestPython(BaseTestImporter):
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'class TracerCore',
@@ -3367,9 +3371,8 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language python\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n@language python\n@tabwidth -4\n'
             ),
             (
                 1, 'class RefactoringChecker',
@@ -3542,7 +3545,7 @@ class TestPython(BaseTestImporter):
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'function: f1',
@@ -3685,7 +3688,7 @@ class TestPython(BaseTestImporter):
                 '                    (session integer, line integer, output text,\n'
                 '                    PRIMARY KEY (session, line))""")\n'
                 '    new_db.commit()\n'
-                '    new_hist_file.rename(hist_file)\n',
+                '    new_hist_file.rename(hist_file)\n'
             ),
             (
                 1,
@@ -3709,7 +3712,7 @@ class TestPython(BaseTestImporter):
                 1, 'class HistoryApp',
                 'class HistoryApp(Application):\n'
                 '\n'  # Leo 6.8.7
-                '    @others\n',
+                '    @others\n'
             ),
             (
                 2, 'HistoryApp.start',
@@ -4021,15 +4024,14 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 'import sys\n'
                 '@others\n'
                 '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'function: f1',
@@ -4084,7 +4086,7 @@ class TestPython(BaseTestImporter):
                 '\n'
                 '@others\n'
                 '@language python\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'class C1',
@@ -4149,11 +4151,14 @@ class TestPython(BaseTestImporter):
                 '\n'
                 '\n'
                 '@language python\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'class MyClass',
-                'class MyClass:\n    """MyClass: docstring"""\n\n    @others\n\n\n',
+                'class MyClass:\n'
+                '    """MyClass: docstring"""\n'
+                '\n'
+                '    @others\n\n\n'
             ),
             (
                 2, 'MyClass.f1',
@@ -4261,14 +4266,13 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',
+                0, '',
                 '@others\n'
                 '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1,
@@ -4398,11 +4402,11 @@ class TestRst(BaseTestImporter):
             (
                 0, '',  # Ignore the first headline.
                 '@language rest\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, "!Dummy chapter",
-                '.. toc\n\n.. The section name contains trailing whitespace.\n\n',
+                '.. toc\n\n.. The section name contains trailing whitespace.\n\n'
             ),
             (
                 1, "Chapter",
@@ -4465,7 +4469,7 @@ class TestRst(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language rest\n@tabwidth -4\n',
+                '@language rest\n@tabwidth -4\n'
             ),
             (1, '!Dummy chapter',      '.. toc\n\n'),
             (1, 'top',                 '\nThe top section\n\n'),
@@ -4624,7 +4628,7 @@ class TestRst(BaseTestImporter):
             (
                 0, '',  # Ignore the first headline.
                 '@language rest\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'Chapter 1',
@@ -4734,7 +4738,7 @@ class TestRust(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 '@others\n'
                 '@language rust\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'trait AsFormat',
@@ -5063,7 +5067,7 @@ class TestTreepad(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '<Treepad version 2.7>\n@others\n@language plain\n@tabwidth -4\n',
+                '<Treepad version 2.7>\n@others\n@language plain\n@tabwidth -4\n'
             ),
             (
                 1, 'headline 1',
