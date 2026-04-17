@@ -1413,24 +1413,23 @@ class TestJava(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language java\n@tabwidth -4\n',
-            ),
-            (
-                1,
-                'class AdminPermission',
+                0, '',  # Ignore the first headline.
                 '/**\n'
                 " * Indicates the caller's authority to perform lifecycle operations on\n"
                 ' */\n'
                 '\n'
+                '@others\n'
+                '@language java\n'
+                '@tabwidth -4\n',
+            ),
+            (
+                1, 'public final class AdminPermission',
                 'public final class AdminPermission extends BasicPermission {\n'
                 '    @others\n'
                 '}\n',
             ),
             (
-                2,
-                'func AdminPermission',
+                2, 'public AdminPermission',
                 '/**\n'
                 ' * Creates a new <tt>AdminPermission</tt> object.\n'
                 ' */\n'
@@ -1438,7 +1437,7 @@ class TestJava(BaseTestImporter):
                 '    super("AdminPermission");\n'
                 '}\n',
             ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.31: *3* TestJava.test_from_BundleException_java
@@ -1467,16 +1466,7 @@ class TestJava(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n'
-                '\n'  # Leo 6.8.7
-                '@language java\n'
-                '@tabwidth -4\n',
-            ),
-            (
-                1,
-                'class BundleException',
+                0, '',  # Ignore the first headline.
                 '/*\n'
                 ' * $Header: /cvs/leo/test/unitTest.leo,v 1.247 2008/02/14 14:59:04 edream Exp $\n'
                 ' *\n'
@@ -1484,13 +1474,17 @@ class TestJava(BaseTestImporter):
                 '\n'
                 'package org.osgi.framework;\n'
                 '\n'
-                'public class BundleException extends Exception {\n'
-                '    @others\n'
-                '}\n',
+                '@others\n'
+                '\n'  # Leo 6.8.7
+                '@language java\n'
+                '@tabwidth -4\n',
             ),
             (
-                2,
-                'func BundleException',
+                1, 'public class BundleException',
+                'public class BundleException extends Exception {\n    @others\n}\n',
+            ),
+            (
+                2, 'public BundleException',
                 'static final long serialVersionUID = 3571095144220455665L;\n'
                 '/**\n'
                 ' * Nested exception.\n'
@@ -1502,7 +1496,7 @@ class TestJava(BaseTestImporter):
                 '    this.cause = cause;\n'
                 '}\n',
             ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.32: *3* TestJava.test_interface_test1
@@ -1515,16 +1509,15 @@ class TestJava(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language java\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                'interface Bicycle {\n'
+                '    void changeCadence(int newValue);\n'
+                '    void changeGear(int newValue);\n'
+                '}\n'
+                '@language java\n'
+                '@tabwidth -4\n'
             ),
-            (
-                1,
-                'interface Bicycle',
-                'interface Bicycle {\n    void changeCadence(int newValue);\n    void changeGear(int newValue);\n}\n',
-            ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20210904065459.33: *3* TestJava.test_interface_test2
@@ -1537,16 +1530,15 @@ class TestJava(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language java\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                'interface Bicycle {\n'
+                'void changeCadence(int newValue);\n'
+                'void changeGear(int newValue);\n'
+                '}\n'
+                '@language java\n'
+                '@tabwidth -4\n'
             ),
-            (
-                1,
-                'interface Bicycle',
-                'interface Bicycle {\nvoid changeCadence(int newValue);\nvoid changeGear(int newValue);\n}\n',
-            ),
-        )
+        )  # fmt: skip
         self.new_run_test(s, expected_results)
 
     # @+node:ekr.20231225065750.1: *3* TestJava.test_round_trip
@@ -1592,6 +1584,58 @@ class TestJava(BaseTestImporter):
             g.printObj(expected, tag='expected')
 
         self.assertEqual(results, expected)
+
+    # @+node:ekr.20260409102018.1: *3* TestJava.test_compound_statements
+    def test_compound_statements(self):
+        # From https://www.cs.utexas.edu/~scottm/cs307/javacode/codeSamples/EightQueens.java
+        s = """
+            public class EightQueens {
+
+                public static void solveAllNQueens(char[][] board, int col, ArrayList<char[][]> solutions){
+                    if( col == board.length){
+                        solutions.add( makeCopy(board));
+                    } else {
+                        for(int row = 0; row < board.length; row++){
+                            board[row][col] = 'q';
+                            if( queensAreSafe(board) )
+                                solveAllNQueens(board, col + 1, solutions);
+                            board[row][col] = '.';
+                        }
+                    }
+                }
+            }
+        """
+        expected_results = (
+            (
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language java\n'
+                '@tabwidth -4\n',
+            ),
+            (
+                1, 'public class EightQueens',
+                'public class EightQueens {\n'
+                '    @others\n'
+                '}\n'
+            ),
+            (
+                2, 'public static void solveAllNQueens',
+                '\n'
+                'public static void solveAllNQueens(char[][] board, int col, ArrayList<char[][]> solutions){\n'
+                '    if( col == board.length){\n'
+                '        solutions.add( makeCopy(board));\n'
+                '    } else {\n'
+                '        for(int row = 0; row < board.length; row++){\n'
+                "            board[row][col] = 'q';\n"
+                '            if( queensAreSafe(board) )\n'
+                '                solveAllNQueens(board, col + 1, solutions);\n'
+                "            board[row][col] = '.';\n"
+                '        }\n'
+                '    }\n'
+                '}\n'
+            ),
+        )  # fmt:skip
+        self.new_run_test(s, expected_results)
 
     # @-others
 
