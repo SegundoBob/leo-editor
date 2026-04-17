@@ -1288,13 +1288,38 @@ class TestHtml(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language html\n@tabwidth -4\n',
+                '@others\n'
+                '@language html\n'
+                '@tabwidth -4\n'
             ),
-            (1, '<html>', '<html>\n@others\n</html>\n'),
-            (2, '<head>', '<head>\n    <meta charset="utf-8" />\n</head>\n'),
-            (2, '<body>', '<body>\n    @others\n</body>\n'),
-            (3, '<div class="a">', '<div class="a">\n    @others\n</div>\n'),
-            (4, '<div class="a-1">', '<div class="a-1">\n    some text\n</div>\n'),
+            (
+                1, '<html>',
+                '<html>\n'
+                '@others\n'
+                '</html>\n'
+            ),
+            (
+                2, '<head>',
+                '<head>\n'
+                '    <meta charset="utf-8" />\n'
+                '</head>\n'
+            ),
+            (
+                2, '<body>',
+                '<body>\n'
+                '    @others\n'
+                '</body>\n'
+            ),
+            (
+                3, '<div class="a">',
+                '<div class="a">\n'
+                '    @others\n</div>\n'
+            ),
+            (
+                4, '<div class="a-1">',
+                '<div class="a-1">\n'
+                '    some text\n</div>\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -1355,14 +1380,27 @@ class TestHtml(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language html\n@tabwidth -4\n',
+                '@others\n'
+                '@language html\n'
+                '@tabwidth -4\n'
             ),
-            (1, '<HTML>', '<HTML>\n@others\n</HTML>\n'),
-            (2, '<HEAD>', '<HEAD>\n    <title>Bodystring</title>\n</HEAD>\n'),
             (
-                2,
-                "<BODY class='bodystring'>",
-                "<BODY class='bodystring'>\n<DIV id='bodydisplay'></DIV>\n</BODY>\n",
+                1, '<HTML>',
+                '<HTML>\n'
+                '@others\n'
+                '</HTML>\n'
+            ),
+            (
+                2, '<HEAD>',
+                '<HEAD>\n'
+                '    <title>Bodystring</title>\n'
+                '</HEAD>\n'
+            ),
+            (
+                2, "<BODY class='bodystring'>",
+                "<BODY class='bodystring'>\n"
+                "<DIV id='bodydisplay'></DIV>\n"
+                "</BODY>\n"
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -1989,7 +2027,8 @@ class TestMarkdown(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language md\n@tabwidth -4\n',
+                '@language md\n'
+                '@tabwidth -4\n'
             ),
             (1, 'Top', 'The top section\n\n'),
             (2, 'Section 1', 'section 1, line 1\nsection 1, line 2\n\n'),
@@ -2045,7 +2084,8 @@ class TestMarkdown(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language md\n@tabwidth -4\n',
+                '@language md\n'
+                '@tabwidth -4\n'
             ),
             (1, 'Top', '\nThe top section\n\n'),
             (2, 'Section 1', '\nsection 1, line 1\n-- Not an underline\nsection 1, line 2\n\n'),
@@ -2080,7 +2120,8 @@ class TestMarkdown(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language md\n@tabwidth -4\n',
+                '@language md\n'
+                '@tabwidth -4\n'
             ),
             (1, '!Declarations', 'Decl line.\n'),
             (1, 'Header', '\nAfter header text\n\n'),
@@ -2114,7 +2155,8 @@ class TestMarkdown(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language md\n@tabwidth -4\n',
+                '@language md\n'
+                '@tabwidth -4\n'
             ),
             (1, '!Declarations', 'Decl line.\n'),
             (1, 'Header', '\nAfter header text\n\n'),
@@ -2143,15 +2185,24 @@ class TestMarkdown(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language md\n@tabwidth -4\n',
+                '@language md\n'
+                '@tabwidth -4\n'
             ),
-            (1, '!Declarations', 'Decl line.\n'),
             (
-                1,
-                'Header',
-                '\n```python\nloads.init = {\n    Chloride: 11.5,\n    TotalP: 0.002,\n}\n```\n',
+                1, '!Declarations',
+                'Decl line.\n'
             ),
-            (1, 'Last header', ''),
+            (
+                1, 'Header',
+                '\n'
+                '```python\nloads.init = {\n'
+                '    Chloride: 11.5,\n'
+                '    TotalP: 0.002,\n}\n```\n'
+            ),
+            (
+                1, 'Last header',
+                ''
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2227,7 +2278,8 @@ class TestOrg(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language org\n@tabwidth -4\n',
+                '@language org\n'
+                '@tabwidth -4\n'
             ),
             (1, 'Section 1', 'Sec 1.\n'),
             (1, 'Section 2', 'Sec 2.\n'),
@@ -2272,7 +2324,8 @@ class TestOrg(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language org\n@tabwidth -4\n',
+                '@language org\n'
+                '@tabwidth -4\n'
             ),
             (1, 'Events', '  :PROPERTIES:\n  :CATEGORY: events\n  :END:\n'),
             (2, '整理个人生活', ''),
@@ -2293,7 +2346,9 @@ class TestOrg(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                'Intro line.\n@language org\n@tabwidth -4\n',
+                'Intro line.\n'
+                '@language org\n'
+                '@tabwidth -4\n'
             ),
             (1, 'Section 1', 'Sec 1.\n'),
             (1, 'Section 2', 'Sec 2.\n'),
@@ -2322,18 +2377,22 @@ class TestOrg(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language org\n@tabwidth -4\n',
+                '@language org\n'
+                '@tabwidth -4\n'
             ),
-            (1, 'Section 1', 'Sec 1.\n'),
-            (1, 'Section 2', 'Sec 2.\n'),
-            (2, 'Section 2-1', 'Sec 2.1\n'),
+            (1, 'Section 1',     'Sec 1.\n'),
+            (1, 'Section 2',     'Sec 2.\n'),
+            (2, 'Section 2-1',   'Sec 2.1\n'),
             (3, 'Section 2-1-1', 'Sec 2.1.1\n'),
             (1, 'Section 3', ''),
             (2, 'placeholder level 2', ''),
             (3, 'placeholder level 3', ''),
             (4, 'placeholder level 4', ''),
             (5, 'placeholder level 5', ''),
-            (6, 'Section 3-1-1-1-1-1', ': Sec 3-1-1-1-1-1\n'),
+            (
+                6, 'Section 3-1-1-1-1-1',
+                ': Sec 3-1-1-1-1-1\n'
+            ),
             (2, 'Section 3.1', 'Sec 3.1\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -2355,10 +2414,11 @@ class TestOrg(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language org\n@tabwidth -4\n',
+                '@language org\n'
+                '@tabwidth -4\n'
             ),
-            (1, 'Section 1 :tag1:', ''),
-            (1, 'Section 2 :tag2:', ''),
+            (1, 'Section 1 :tag1:',      ''),
+            (1, 'Section 2 :tag2:',      ''),
             (1, 'Section 3 :tag3:tag4:', ''),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -2397,13 +2457,13 @@ class TestOtl(BaseTestImporter):
                 '@language otl\n'
                 '@tabwidth -4\n'
             ),
-            (1, 'preamble.', ''),
-            (1, 'Section 1', 'Sec 1.\n'),
-            (1, 'Section 2', 'Sec 2.\n'),
-            (2, 'Section 2-1', 'Sec 2-1\n'),
+            (1, 'preamble.',     ''),
+            (1, 'Section 1',     'Sec 1.\n'),
+            (1, 'Section 2',     'Sec 2.\n'),
+            (2, 'Section 2-1',   'Sec 2-1\n'),
             (3, 'Section 2-1-1', 'Sec 2-1-1\n'),
-            (1, 'Section 3', 'Sec 3\n'),
-            (2, 'Section 3.1', 'Sec 3.1\n'),
+            (1, 'Section 3',     'Sec 3\n'),
+            (2, 'Section 3.1',   'Sec 3.1\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2424,10 +2484,10 @@ class TestOtl(BaseTestImporter):
                 '@language otl\n'
                 '@tabwidth -4\n'
             ),
-            (1, 'Section 1', 'Sec 1.\n'),
-            (1, 'Section 2', 'Sec 2.\n'),
+            (1, 'Section 1',           'Sec 1.\n'),
+            (1, 'Section 2',           'Sec 2.\n'),
             (2, 'placeholder level 2', ''),
-            (3, 'Section 3', 'Sec 3.\n'),
+            (3, 'Section 3',           'Sec 3.\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2795,7 +2855,9 @@ class TestPerl(BaseTestImporter):
             (
                 1,
                 'sub Test',
-                '            sub Test{\n               print "Test!\n";\n            }\n',
+                '            sub Test{\n'
+                '               print "Test!\n";\n'
+                '            }\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -2915,18 +2977,17 @@ class TestPerl(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language perl\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language perl\n'
+                '@tabwidth -4\n',
             ),
             (
-                1,
-                'sub test1',
+                1, 'sub test1',
                 '#!/usr/bin/perl\n\nsub test1 {\n    s = /}/g;\n}\n\n',  # Leo 6.8.7
             ),
             (
-                1,
-                'sub test2',
+                1, 'sub test2',
                 'sub test2 {\n    s = m//}/;\n}\n\n',  # Leo 6.8.7
             ),
             (
@@ -3083,16 +3144,14 @@ class TestPython(BaseTestImporter):
                 '@tabwidth -4\n',
             ),
             (
-                1,
-                'class TracerCore',
+                1, 'class TracerCore',
                 'class TracerCore:\n'
                 '\n'  # Leo 6.8.7
                 '    @others\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
             (
-                2,
-                'TracerCore.start',
+                2, 'TracerCore.start',
                 'def start(self):\n    """Start this tracer."""\n\n',  # Leo 6.8.7
             ),
             (2, 'TracerCore.stop', 'def stop(self):\n    """Stop this tracer."""\n'),
@@ -3315,8 +3374,7 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 'import sys\n'
                 '@others\n'
                 '\n'  # Leo 6.8.7
@@ -3326,13 +3384,11 @@ class TestPython(BaseTestImporter):
                 '@tabwidth -4\n',
             ),
             (
-                1,
-                'function: f1',
+                1, 'function: f1',
                 'def f1():\n    pass\n\n',  # Leo 6.8.7
             ),
             (
-                1,
-                'class Class1',
+                1, 'class Class1',
                 'class Class1:\n    @others\n\n',  # Leo 6.8.7
             ),
             (2, 'Class1.method11', 'def method11():\n    pass\n'),
@@ -3501,11 +3557,12 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language python\n@tabwidth -4\n',
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                'function: get_target_type',
+                1, 'function: get_target_type',
                 'def get_target_type(\n'
                 '    tvar: TypeVarLikeType,\n'
                 '    type: Type,\n'
@@ -3549,11 +3606,12 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language python\n@tabwidth -4\n',
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                'function: iter_spurious_suppression_messages',
+                1, 'function: iter_spurious_suppression_messages',
                 'def iter_spurious_suppression_messages(\n'
                 '    self,\n'
                 '    msgs_store: MessageDefinitionStore,\n'
@@ -3618,19 +3676,23 @@ class TestPython(BaseTestImporter):
                 '@tabwidth -4\n',
             ),
             (
-                1,
-                'class C1',
+                1, 'class C1',
                 'class C1:\n'
                 '    """Class docstring"""\n'
                 '\n'  # Leo 6.8.7
                 '    @others\n'
-                '\n',
+                '\n'
             ),
-            (2, 'C1.__init__', 'def __init__(self):\n    pass\n'),
             (
-                1,
-                'function: f1',
-                'def f1():\n    pass\n\n',  # Leo 6.8.7
+                2, 'C1.__init__',
+                'def __init__(self):\n'
+                '    pass\n'
+            ),
+            (
+                1, 'function: f1',
+                'def f1():\n'
+                '    pass\n'
+                '\n'  # Leo 6.8.7
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -3649,24 +3711,24 @@ class TestPython(BaseTestImporter):
         # mypy/test-data/stdlib-samples/3.2/test/shutil.py
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language python\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                'class TestCopyFile',
-                'class TestCopyFile(unittest.TestCase):\n    ATothers\n'.replace('AT', '@'),
+                1, 'class TestCopyFile',
+                'class TestCopyFile(unittest.TestCase):\n'
+                '    @others\n'
             ),
             (
-                2,
-                'class Faux',
+                2, 'class Faux',
                 '_delete = False\n'
                 'a00 = 1\n'
                 'class Faux(object):\n'
                 '    _entered = False\n'
                 '    _exited_with = None # type: tuple\n'
-                '    _raised = False\n',
+                '    _raised = False\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -3693,13 +3755,13 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language python\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                'function: load_plugins_from_config',
+                1, 'function: load_plugins_from_config',
                 'def load_plugins_from_config(\n'
                 '    options: Options, errors: Errors, stdout: TextIO\n'
                 ') -> tuple[list[Plugin], dict[str, str]]:\n'
@@ -3711,7 +3773,7 @@ class TestPython(BaseTestImporter):
                 '        errors.report(line, 0, message)\n'
                 '        errors.raise_error(use_stdout=False)\n'
                 '\n'
-                '    custom_plugins: list[Plugin] = []\n',
+                '    custom_plugins: list[Plugin] = []\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -3727,11 +3789,18 @@ class TestPython(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language python\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
-            (1, 'class A', 'class A:\n    a=1\n    b=2\n    c=3\n'),
+            (
+                1, 'class A',
+                'class A:\n'
+                '    a=1\n'
+                '    b=2\n'
+                '    c=3\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -3767,17 +3836,25 @@ class TestPython(BaseTestImporter):
                 '@tabwidth -4\n',
             ),
             (
-                1,
-                'function: f1',
+                1, 'function: f1',
                 'def f1():\n    pass\n\n',  # Leo 6.8.7
             ),
-            (1, 'class Class1', 'class Class1:pass\n'),
             (
-                1,
-                'function: f2',
-                'a = 2\n@dec_for_f2\ndef f2(): pass\n\n',  # Leo 6.8.7
+                1, 'class Class1',
+                'class Class1:pass\n'
             ),
-            (1, 'function: main', 'def main():\n    pass\n'),
+            (
+                1, 'function: f2',
+                'a = 2\n'
+                '@dec_for_f2\n'
+                'def f2(): pass\n'
+                '\n'  # Leo 6.8.7
+            ),
+            (
+                1, 'function: main',
+                'def main():\n'
+                '    pass\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -3802,8 +3879,7 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 '"""Module-level docstring"""\n'
                 '\n'
                 'from __future__ import annotations\n'
@@ -3812,11 +3888,15 @@ class TestPython(BaseTestImporter):
                 '@language python\n'
                 '@tabwidth -4\n',
             ),
-            (1, 'class C1', 'class C1:\n    """Class docstring"""\n\n    @others\n\n'),
-            (2, 'C1.__init__', 'def __init__(self):\n    pass\n'),
             (
-                1,
-                'function: f1',
+                1, 'class C1', 'class C1:\n    """Class docstring"""\n\n    @others\n\n'
+            ),
+            (
+                2, 'C1.__init__',
+                'def __init__(self):\n    pass\n'
+            ),
+            (
+                1, 'function: f1',
                 'def f1():\n    pass\n\n',  # Leo 6.8.7
             ),
         )  # fmt: skip
