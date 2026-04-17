@@ -222,7 +222,7 @@ class TestC(BaseTestImporter):
             (
                 1, 'class cTestClass1',
                 'class cTestClass1 {\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '    @others\n'
                 '}\n'
             ),
@@ -231,7 +231,7 @@ class TestC(BaseTestImporter):
                 'int foo (int a) {\n'
                 '    a = 2 ;\n'
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2, 'func bar',
@@ -271,7 +271,7 @@ class TestC(BaseTestImporter):
                 1,
                 'class cTestClass1',
                 'class cTestClass1 {\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '@others\n'
                 '}\n'
             ),
@@ -282,7 +282,7 @@ class TestC(BaseTestImporter):
                 '// an underindented line.\n'
                 '        a = 2 ;\n'
                 '    }\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2, 'func bar',
@@ -323,7 +323,7 @@ class TestC(BaseTestImporter):
                 'aaa::bbb::doit(awk* b)\n{\n'
                 '    assert(false);\n'
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'func dothat',
@@ -694,7 +694,7 @@ class TestCoffeescript(BaseTestImporter):
                 '\n'
                 'transform: (args...) ->\n'
                 '  @transformer.transform.apply(@transformer, args)\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2, 'Builder.body',
@@ -705,7 +705,7 @@ class TestCoffeescript(BaseTestImporter):
                 '  str = blockTrim(str)\n'
                 '  str = unshift(str)\n'
                 '  if str.length > 0 then str else ""\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -831,7 +831,7 @@ class TestCython(BaseTestImporter):
                 '    a Cython program, but not from Python.\n'
                 '    """\n'
                 '    return pow(x, 2.0) + x\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1,
@@ -884,7 +884,7 @@ class TestDart(BaseTestImporter):
                 "var name = 'Bob';\n\nhello() {\n"
                 "  print('Hello, World!');\n"
                 "}\n"
-                "\n"  # Leo 6.8.7
+                "\n"
             ),
             (
                 1,
@@ -893,7 +893,7 @@ class TestDart(BaseTestImporter):
                 'printNumber(num aNumber) {\n'
                 "  print('The number is $aNumber.'); // Print to console.\n"
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'function void main',
@@ -949,7 +949,7 @@ class TestElisp(BaseTestImporter):
                 '   (assn a "abc")\n'
                 '   (assn b \\x)\n'
                 '   (+ 1 2 3))\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'defun cde',
@@ -1075,7 +1075,7 @@ class TestHtml(BaseTestImporter):
             ),
             (
                 2, '<div id="D666">Paragraph</p> <!-- P1 -->',
-                '\n'  # Leo 6.8.7
+                '\n'
                 '<!-- OOPS: the div and p elements not properly nested.-->\n'
                 '<!-- OOPS: this table got generated twice. -->\n'
                 '\n'
@@ -1593,7 +1593,7 @@ class TestJava(BaseTestImporter):
                 0,
                 '',  # Ignore the first headline.
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '@language java\n'
                 '@tabwidth -4\n'
             ),
@@ -1804,7 +1804,7 @@ class TestJavascript(BaseTestImporter):
                 1, 'function c3',
                 'var c3 = (function () {\n'
                 '    @others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '    return c3;\n'
                 '}());\n'
             ),
@@ -2000,7 +2000,7 @@ class TestLua(BaseTestImporter):
             (
                 0, '',  # Ignore the first headline.
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 'print("main", coroutine.resume(co, 1, 10))\n'
                 'print("main", coroutine.resume(co, "r"))\n'
                 'print("main", coroutine.resume(co, "x", "y"))\n'
@@ -2014,7 +2014,7 @@ class TestLua(BaseTestImporter):
                 '  print("foo", a)\n'
                 '  return coroutine.yield(2*a)\n'
                 'end\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'function coroutine.create',
@@ -2762,7 +2762,7 @@ class TestPascal(BaseTestImporter):
                 'implementation\n'
                 '\n'
                 '{$R *.dfm}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'procedure TForm1.FormCreate',
@@ -2878,7 +2878,7 @@ class TestPascal(BaseTestImporter):
                 'uses gf2obj1;\n'
                 '\n'
                 'implementation\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1,
@@ -2889,7 +2889,7 @@ class TestPascal(BaseTestImporter):
                 '   for i := 1 to num do\n'
                 '      with data^[i] do y := factor * y;\n'
                 'end;\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'procedure statObj.multiplyGraph',
@@ -2901,7 +2901,7 @@ class TestPascal(BaseTestImporter):
                 'for i := 1 to max do\n'
                 '    data^[i].y := data^[i].y * pstatObj(source)^.data^[i].y;\n'
                 'end;\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'function statObj.divideGraph',
@@ -2937,7 +2937,7 @@ class TestPascal(BaseTestImporter):
                 'dispose(pg, byebye);\n'
                 'divideGraph := not zeroData;\n'
                 'end;\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'procedure statObj.addGraph',
@@ -3017,7 +3017,7 @@ class TestPerl(BaseTestImporter):
                 '               print "Hello, World!\n'
                 '";\n'
                 '            }\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'sub Test',
@@ -3099,7 +3099,7 @@ class TestPerl(BaseTestImporter):
                 '               print "Test!\n'
                 '";\n'
                 '            }\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'sub World',
@@ -3155,21 +3155,21 @@ class TestPerl(BaseTestImporter):
                 '#!/usr/bin/perl\n\nsub test1 {\n'
                 '    s = /}/g;\n'
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'sub test2',
                 'sub test2 {\n'
                 '    s = m//}/;\n'
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'sub test3',
                 'sub test3 {\n'
                 '    s = s///}/;\n'
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'sub test4',
@@ -3317,7 +3317,7 @@ class TestPython(BaseTestImporter):
             (
                 0, '',  # Ignore the first headline.
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
@@ -3326,15 +3326,15 @@ class TestPython(BaseTestImporter):
             (
                 1, 'class TracerCore',
                 'class TracerCore:\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '    @others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2, 'TracerCore.start',
                 'def start(self):\n'
                 '    """Start this tracer."""\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2, 'TracerCore.stop',
@@ -3410,7 +3410,7 @@ class TestPython(BaseTestImporter):
                 '    in order to create knowledge about whether an "else if" node\n'
                 '    is a true "else if" node, or an "elif" node.\n'
                 '    """\n'
-                '\n'  # Leo 6.8.7.
+                '\n'
                 '    @others\n'
             ),
             (
@@ -3568,7 +3568,7 @@ class TestPython(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 'import sys\n'
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
@@ -3578,13 +3578,13 @@ class TestPython(BaseTestImporter):
                 1, 'function: f1',
                 'def f1():\n'
                 '    pass\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'class Class1',
                 'class Class1:\n'
                 '    @others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2, 'Class1.method11',
@@ -3603,7 +3603,7 @@ class TestPython(BaseTestImporter):
                 '\n'
                 'def f2():\n'
                 '    pass\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'class Class2',
@@ -3611,7 +3611,7 @@ class TestPython(BaseTestImporter):
                 '@myClassDecorator\n'
                 'class Class2:\n'
                 '    @others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2, 'Class2.method21',
@@ -3700,10 +3700,10 @@ class TestPython(BaseTestImporter):
             (
                 1, 'class HistoryTrim',
                 'class HistoryTrim(BaseIPythonApplication):\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '    @others\n'
-                '\n'  # Leo 6.8.7
-                '\n'  # Leo 6.8.7
+                '\n'
+                '\n'
             ),
             (
                 2, 'HistoryTrim.start',
@@ -3724,10 +3724,10 @@ class TestPython(BaseTestImporter):
                 1,
                 'class HistoryClear',
                 'class HistoryClear(HistoryTrim):\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '    @others\n'
-                '\n'  # Leo 6.8.7
-                '\n'  # Leo 6.8.7
+                '\n'
+                '\n'
             ),
             (
                 2,
@@ -3741,7 +3741,7 @@ class TestPython(BaseTestImporter):
             (
                 1, 'class HistoryApp',
                 'class HistoryApp(Application):\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '    @others\n'
             ),
             (
@@ -3908,7 +3908,7 @@ class TestPython(BaseTestImporter):
                 1, 'class C1',
                 'class C1:\n'
                 '    """Class docstring"""\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 '    @others\n'
                 '\n'
             ),
@@ -3921,7 +3921,7 @@ class TestPython(BaseTestImporter):
                 1, 'function: f1',
                 'def f1():\n'
                 '    pass\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -4057,7 +4057,7 @@ class TestPython(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 'import sys\n'
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
@@ -4067,7 +4067,7 @@ class TestPython(BaseTestImporter):
                 1, 'function: f1',
                 'def f1():\n'
                 '    pass\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'class Class1',
@@ -4078,7 +4078,7 @@ class TestPython(BaseTestImporter):
                 'a = 2\n'
                 '@dec_for_f2\n'
                 'def f2(): pass\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'function: main',
@@ -4135,7 +4135,7 @@ class TestPython(BaseTestImporter):
                 1, 'function: f1',
                 'def f1():\n'
                 '    pass\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -4172,8 +4172,7 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 '@others\n'
                 '\n'
                 "if __name__ == '__main__':\n"
@@ -4298,7 +4297,7 @@ class TestPython(BaseTestImporter):
             (
                 0, '',
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 "if __name__ == '__main__':\n"
                 '    main()\n'
                 '@language python\n'
@@ -4310,7 +4309,7 @@ class TestPython(BaseTestImporter):
                 'class Class3:\n'
                 '    """Docstring"""\n'
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 2,
@@ -4725,7 +4724,7 @@ class TestRust(BaseTestImporter):
                 '        area(width1, height1)\n'
                 '    );\n'
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'fn area',
@@ -4782,7 +4781,7 @@ class TestRust(BaseTestImporter):
                 '    /// Returns an object that is able to format this object.\n'
                 "    fn format(&self) -> Self::Format<'_>;\n"
                 '}\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'impl AsFormat for &T',
@@ -4965,7 +4964,7 @@ class TestScheme(BaseTestImporter):
                 '   (assn a "abc")\n'
                 '   (assn b \\x)\n'
                 '   (+ 1 2 3))\n'
-                '\n'  # Leo 6.8.7
+                '\n'
             ),
             (
                 1, 'define cde',
@@ -5014,7 +5013,7 @@ class TestTcl(BaseTestImporter):
             (
                 0, '',  # Ignore the first headline.
                 '@others\n'
-                '\n'  # Leo 6.8.7
+                '\n'
                 ' # Main program\n'
                 '\n'
                 ' if { [info exists argv0] && [string equal $argv0 [info script]] } {\n'
