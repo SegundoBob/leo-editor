@@ -2030,10 +2030,26 @@ class TestMarkdown(BaseTestImporter):
                 '@language md\n'
                 '@tabwidth -4\n'
             ),
-            (1, 'Top', 'The top section\n\n'),
-            (2, 'Section 1', 'section 1, line 1\nsection 1, line 2\n\n'),
-            (2, 'Section 2', 'section 2, line 1\n\n'),
-            (3, 'Section 2.1', 'section 2.1, line 1\n\n'),
+            (   1, 'Top',
+                'The top section\n'
+                '\n'
+            ),
+            (
+                2, 'Section 1',
+                'section 1, line 1\n'
+                'section 1, line 2\n'
+                '\n'
+            ),
+            (
+                2, 'Section 2',
+                'section 2, line 1\n'
+                '\n'
+            ),
+            (
+                3, 'Section 2.1',
+                'section 2.1, line 1\n'
+                '\n'
+            ),
             (
                 4, 'Section 2.1.1',
                 'section 2.2.1 line 1\n'
@@ -2094,13 +2110,24 @@ class TestMarkdown(BaseTestImporter):
                 '@language md\n'
                 '@tabwidth -4\n'
             ),
-            (1, 'Top', '\nThe top section\n\n'),
-            (2, 'Section 1', '\nsection 1, line 1\n-- Not an underline\nsection 1, line 2\n\n'),
-            (2, 'Section 2', '\nsection 2, line 1\n\n'),
-            (3, 'Section 2.1', '\nsection 2.1, line 1\n\n'),
+            (
+                1, 'Top',
+                '\n'
+                'The top section\n'
+                '\n'
+            ),
+            (
+                2, 'Section 1',
+                '\n'
+                'section 1, line 1\n'
+                '-- Not an underline\nsection 1, line 2\n'
+                '\n'
+            ),
+            (2, 'Section 2',     '\nsection 2, line 1\n\n'),
+            (3, 'Section 2.1',   '\nsection 2.1, line 1\n\n'),
             (4, 'Section 2.1.1', '\nsection 2.2.1 line 1\n\n'),
-            (3, 'Section 2.2', 'section 2.2, line 1.\n\n'),
-            (2, 'Section 3', '\nsection 3, line 1\n'),
+            (3, 'Section 2.2',   'section 2.2, line 1.\n\n'),
+            (2, 'Section 3',     '\nsection 3, line 1\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2131,9 +2158,23 @@ class TestMarkdown(BaseTestImporter):
                 '@tabwidth -4\n'
             ),
             (1, '!Declarations', 'Decl line.\n'),
-            (1, 'Header', '\nAfter header text\n\n'),
-            (2, 'Subheader', '\nNot an underline\n\n----------------\n\nAfter subheader text\n\n'),
-            (1, 'Last header: no text', ''),
+            (
+                1, 'Header',
+                '\n'
+                'After header text\n\n'
+            ),
+            (
+                2, 'Subheader',
+                '\n'
+                'Not an underline\n\n----------------\n'
+                '\n'
+                'After subheader text\n'
+                '\n'
+            ),
+            (
+                1, 'Last header: no text',
+                ''
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2166,10 +2207,29 @@ class TestMarkdown(BaseTestImporter):
                 '@tabwidth -4\n'
             ),
             (1, '!Declarations', 'Decl line.\n'),
-            (1, 'Header', '\nAfter header text\n\n'),
-            (2, 'Subheader', '\nNot an underline\n\n----------------\n\n'),
-            (1, 'This *should* be a section', '\nAfter subheader text\n\n'),
-            (1, 'Last header: no text', ''),
+            (
+                1, 'Header',
+                '\n'
+                'After header text\n'
+                '\n'
+            ),
+            (2, 'Subheader',
+                '\n'
+                'Not an underline\n'
+                '\n'
+                '----------------\n'
+                '\n'
+            ),
+            (
+                1, 'This *should* be a section',
+                '\n'
+                'After subheader text\n'
+                '\n'
+            ),
+            (
+                1, 'Last header: no text',
+                ''
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -3163,8 +3223,7 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 '@others\n'
                 '\n'  # Leo 6.8.7
                 "if __name__ == '__main__':\n"
@@ -3424,32 +3483,68 @@ class TestPython(BaseTestImporter):
             ),
             (
                 1, 'function: f1',
-                'def f1():\n    pass\n\n',  # Leo 6.8.7
+                'def f1():\n'
+                '    pass\n'
+                '\n'  # Leo 6.8.7
             ),
             (
                 1, 'class Class1',
-                'class Class1:\n    @others\n\n',  # Leo 6.8.7
-            ),
-            (2, 'Class1.method11', 'def method11():\n    pass\n'),
-            (2, 'Class1.method12', 'def method12():\n    pass\n'),
-            (
-                1,
-                'function: f2',
-                '#\n# Define a = 2\na = 2\n\ndef f2():\n    pass\n\n',  # Leo 6.8.7
+                'class Class1:\n'
+                '    @others\n'
+                '\n'  # Leo 6.8.7
             ),
             (
-                1,
-                'class Class2',
+                2, 'Class1.method11',
+                'def method11():\n'
+                '    pass\n'
+            ),
+            (
+                2, 'Class1.method12',
+                'def method12():\n'
+                '    pass\n'
+            ),
+            (
+                1, 'function: f2',
+                '#\n# Define a = 2\n'
+                'a = 2\n'
+                '\n'
+                'def f2():\n'
+                '    pass\n'
+                '\n'  # Leo 6.8.7
+            ),
+            (
+                1, 'class Class2',
                 '# An outer comment\n'
                 '@myClassDecorator\n'
                 'class Class2:\n'
                 '    @others\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
-            (2, 'Class2.method21', 'def method21():\n    print(1)\n    print(2)\n    print(3)\n'),
-            (2, 'Class2.method22', '@myDecorator\ndef method22():\n    pass\n'),
-            (2, 'Class2.method23', 'def method23():\n    pass\n'),
-            (1, 'function: main', '# About main.\n\ndef main():\n    pass\n'),
+            (
+                2, 'Class2.method21',
+                'def method21():\n'
+                '    print(1)\n'
+                '    print(2)\n'
+                '    print(3)\n'
+            ),
+            (
+                2, 'Class2.method22',
+                '@myDecorator\n'
+                'def method22():\n'
+                '    pass\n'
+            ),
+            (
+                2, 'Class2.method23',
+                'def method23():\n'
+                '    pass\n'
+            ),
+            (
+                1, 'function: main',
+                '# About main.\n'
+                '\n'
+                'def main():\n'
+                '    pass\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
