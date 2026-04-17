@@ -217,7 +217,7 @@ class TestC(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 '@others\n'
                 '@language c\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'class cTestClass1',
@@ -263,7 +263,9 @@ class TestC(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language c\n@tabwidth -4\n',
+                '@others\n'
+                '@language c\n'
+                '@tabwidth -4\n'
             ),
             (
                 1,
@@ -271,7 +273,7 @@ class TestC(BaseTestImporter):
                 'class cTestClass1 {\n'
                 '\n'  # Leo 6.8.7
                 '@others\n'
-                '}\n',
+                '}\n'
             ),
             (
                 2,
@@ -280,7 +282,7 @@ class TestC(BaseTestImporter):
                 '// an underindented line.\n'
                 '        a = 2 ;\n'
                 '    }\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
             (
                 2, 'func bar',
@@ -288,7 +290,7 @@ class TestC(BaseTestImporter):
                 '\n'
                 '    char bar (float c) {\n'
                 '        ;\n'
-                '    }\n',
+                '    }\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -354,7 +356,7 @@ class TestC(BaseTestImporter):
                 '#include "that.h"\n'
                 '}\n'
                 '@language c\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -385,7 +387,7 @@ class TestC(BaseTestImporter):
                 '    }\n'
                 '}\n'
                 '@language c\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -442,7 +444,7 @@ class TestC(BaseTestImporter):
                 '  T result;\n'
                 '  result = (a>b)? a : b;\n'
                 '  return (result);\n'
-                '}\n',
+                '}\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -548,9 +550,10 @@ class TestC(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language c\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language c\n'
+                '@tabwidth -4\n'
             ),
             (
                 1,
@@ -564,7 +567,7 @@ class TestC(BaseTestImporter):
                 '\n'
                 'private:\n'
                 '  std::ostream &doFormat(std::ostream &os) const override { return os << info; }\n'
-                '};\n',
+                '};\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -598,8 +601,7 @@ class TestCoffeescript(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 "# Js2coffee relies on Narcissus's parser.\n"
                 '\n'
                 "{parser} = @Narcissus or require('./narcissus_packed')\n"
@@ -608,17 +610,16 @@ class TestCoffeescript(BaseTestImporter):
                 '\n'
                 '@others\n'
                 '@language coffeescript\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                'function: buildCoffee',
+                1, 'function: buildCoffee',
                 'buildCoffee = (str) ->\n'
                 "  str  = str.replace /\\r/g, ''\n"
                 '  str += "\\n"\n'
                 '\n'
                 '  builder    = new Builder\n'
-                '  scriptNode = parser.parse str\n',
+                '  scriptNode = parser.parse str\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -666,13 +667,11 @@ class TestCoffeescript(BaseTestImporter):
             ),
             (1, 'class Builder', 'class Builder\n  @others\n'),
             (
-                2,
-                'Builder.constructor',
-                'constructor: ->\n  @transformer = new Transformer\n',
+                2, 'Builder.constructor',
+                'constructor: ->\n  @transformer = new Transformer\n'
             ),
             (
-                2,
-                'Builder.build',
+                2, 'Builder.build',
                 '# `build()`\n'
                 '\n'
                 'build: (args...) ->\n'
@@ -685,7 +684,7 @@ class TestCoffeescript(BaseTestImporter):
                 '  fn  = (@[name] or @other)\n'
                 '  out = fn.apply(this, args)\n'
                 '\n'
-                '  if node.parenthesized then paren(out) else out\n',
+                '  if node.parenthesized then paren(out) else out\n'
             ),
             (
                 2,
@@ -697,8 +696,7 @@ class TestCoffeescript(BaseTestImporter):
                 '\n',  # Leo 6.8.7
             ),
             (
-                2,
-                'Builder.body',
+                2, 'Builder.body',
                 '# `body()`\n'
                 '\n'
                 'body: (node, opts={}) ->\n'
@@ -706,7 +704,7 @@ class TestCoffeescript(BaseTestImporter):
                 '  str = blockTrim(str)\n'
                 '  str = unshift(str)\n'
                 '  if str.length > 0 then str else ""\n'
-                '\n',  # Leo 6.8.7
+                '\n'  # Leo 6.8.7
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -873,13 +871,16 @@ class TestDart(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language dart\n@tabwidth -4\n',
+                '@others\n'
+                '@language dart\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'function hello',
                 "var name = 'Bob';\n\nhello() {\n"
                 "  print('Hello, World!');\n"
-                "}\n\n"  # Leo 6.8.7
+                "}\n"
+                "\n"  # Leo 6.8.7
             ),
             (
                 1,
@@ -891,8 +892,7 @@ class TestDart(BaseTestImporter):
                 '\n'  # Leo 6.8.7
             ),
             (
-                1,
-                'function void main',
+                1, 'function void main',
                 '// This is where the app starts executing.\n'
                 'void main() {\n'
                 '  var number = 42; // Declare and initialize a variable.\n'
@@ -1017,11 +1017,13 @@ class TestHtml(BaseTestImporter):
                 'from browser import document as doc\n'
                 'from browser import html\n'
                 'import header\n'
-                '</script>\n',
+                '</script>\n'
             ),
             (
                 2, """<body onload="brython({debug:1, cache:'none'})">""",
-                '<body onload="brython({debug:1, cache:\'none\'})">\n<!-- comment -->\n</body>\n',
+                '<body onload="brython({debug:1, cache:\'none\'})">\n'
+                '<!-- comment -->\n'
+                '</body>\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -1069,7 +1071,9 @@ class TestHtml(BaseTestImporter):
             ),
             (
                 3, '<TABLE id="T666"></TABLE></p> <!-- P2 -->',
-                '<p id="P2">\n\n<TABLE id="T666"></TABLE></p> <!-- P2 -->\n',
+                '<p id="P2">\n'
+                '\n'
+                '<TABLE id="T666"></TABLE></p> <!-- P2 -->\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -1137,12 +1141,15 @@ class TestHtml(BaseTestImporter):
             (1, '<html>', '<html>\n@others\n</HTML>\n'),
             (
                 2, '<HEAD>',  # We don't want to lowercase *all* headlines.
-                '<HEAD>\n    <title>Bodystring</title>\n</head>\n',
+                '<HEAD>\n'
+                '    <title>Bodystring</title>\n'
+                '</head>\n'
             ),
             (
-                2,
-                '<body class="bodystring">',
-                '<body class="bodystring">\n<div id=\'bodydisplay\'></div>\n</body>\n',
+                2, '<body class="bodystring">',
+                '<body class="bodystring">\n'
+                '<div id=\'bodydisplay\'></div>\n'
+                '</body>\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -1232,7 +1239,12 @@ class TestHtml(BaseTestImporter):
         # xml.preprocess_lines inserts a newline between </head> and <body>.
 
         expected_results = (
-            (0, '', '@others\n@language html\n@tabwidth -4\n'),
+            (
+                0, '',
+                '@others\n'
+                '@language html\n'
+                '@tabwidth -4\n'
+            ),
             (
                 1, '<html>',
                 '<!-- tags that start nodes: html,body,head,div,table,nodeA,nodeB -->\n'
@@ -1256,7 +1268,9 @@ class TestHtml(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language html\n@tabwidth -4\n',
+                '@others\n'
+                '@language html\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, '<html>',
@@ -1758,13 +1772,13 @@ class TestJavascript(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language javascript\n@tabwidth -4\n',
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language javascript\n'
+                '@tabwidth -4\n',
             ),
             (
-                1,
-                'function c3',
+                1, 'function c3',
                 'var c3 = (function () {\n'
                 '    @others\n'
                 '\n'  # Leo 6.8.7
@@ -1772,8 +1786,7 @@ class TestJavascript(BaseTestImporter):
                 '}());\n'
             ),
             (
-                2,
-                'function c3.someFunction',
+                2, 'function c3.someFunction',
                 '"use strict";\n'
                 '\n'
                 '// Globals\n'
@@ -1886,11 +1899,13 @@ class TestJupytext(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # check_outlines ignores the first headline.
-                '<< prefix >>\n@others\n@language jupytext\n@tabwidth -4\n',
+                '<< prefix >>\n'
+                '@others\n'
+                '@language jupytext\n'
+                '@tabwidth -4\n'
             ),
             (
-                1,
-                '<< prefix >>',
+                1, '<< prefix >>',
                 '# %%\n'
                 '# A leading (misleading?) comment.\n'
                 '# %%\n'
@@ -1914,7 +1929,9 @@ class TestJupytext(BaseTestImporter):
             ),
             (
                 1, '## Another markdown cell',
-                '# %% [markdown]\n# ## Another markdown cell\n\n'
+                '# %% [markdown]\n'
+                '# ## Another markdown cell\n'
+                '\n'
             ),
             (
                 1, 'Cell 5',
@@ -4341,17 +4358,18 @@ class TestRst(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language rest\n@tabwidth -4\n',
+                '@language rest\n'
+                '@tabwidth -4\n'
             ),
-            (1, '!Dummy chapter', '.. toc\n\n'),
-            (1, 'top', '\nThe top section\n\n'),
-            (1, 'section 1', '\nsection 1, line 1\n--\nsection 1, line 2\n\n'),
-            (1, 'section 2', '\nsection 2, line 1\n\n'),
-            (2, 'section 2.1', '\nsection 2.1, line 1\n\n'),
-            (3, 'section 2.1.1', '\nsection 2.2.1 line 1\n\n'),
-            (1, 'section 3', '\nsection 3, line 1\n\n'),
+            (1, '!Dummy chapter',      '.. toc\n\n'),
+            (1, 'top',                 '\nThe top section\n\n'),
+            (1, 'section 1',           '\nsection 1, line 1\n--\nsection 1, line 2\n\n'),
+            (1, 'section 2',           '\nsection 2, line 1\n\n'),
+            (2, 'section 2.1',         '\nsection 2.1, line 1\n\n'),
+            (3, 'section 2.1.1',       '\nsection 2.2.1 line 1\n\n'),
+            (1, 'section 3',           '\nsection 3, line 1\n\n'),
             (2, 'placeholder level 2', ''),
-            (3, 'section 3.1.1', '\nsection 3.1.1, line 1\n'),
+            (3, 'section 3.1.1',       '\nsection 3.1.1, line 1\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -4386,7 +4404,11 @@ class TestRst(BaseTestImporter):
                 1, "!Dummy chapter",
                 '.. toc\n\n.. The section name contains trailing whitespace.\n\n',
             ),
-            (1, "Chapter", '\nThe top chapter.\n'),
+            (
+                1, "Chapter",
+                '\n'
+                'The top chapter.\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -4445,15 +4467,15 @@ class TestRst(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 '@language rest\n@tabwidth -4\n',
             ),
-            (1, '!Dummy chapter', '.. toc\n\n'),
-            (1, 'top', '\nThe top section\n\n'),
-            (1, 'section 1', '\nsection 1, line 1\n--\nsection 1, line 2\n\n'),
-            (1, 'section 2', '\nsection 2, line 1\n\n'),
-            (2, 'section 2.1', '\nsection 2.1, line 1\n\n'),
-            (3, 'section 2.1.1', '\nsection 2.2.1 line 1\n\n'),
-            (1, 'section 3', '\nsection 3, line 1\n\n'),
+            (1, '!Dummy chapter',      '.. toc\n\n'),
+            (1, 'top',                 '\nThe top section\n\n'),
+            (1, 'section 1',           '\nsection 1, line 1\n--\nsection 1, line 2\n\n'),
+            (1, 'section 2',           '\nsection 2, line 1\n\n'),
+            (2, 'section 2.1',         '\nsection 2.1, line 1\n\n'),
+            (3, 'section 2.1.1',       '\nsection 2.2.1 line 1\n\n'),
+            (1, 'section 3',           '\nsection 3, line 1\n\n'),
             (2, 'placeholder level 2', ''),
-            (3, 'section 3.1.1', '\nsection 3.1.1, line 1\n'),
+            (3, 'section 3.1.1',       '\nsection 3.1.1, line 1\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -4604,9 +4626,23 @@ class TestRst(BaseTestImporter):
                 '@language rest\n'
                 '@tabwidth -4\n',
             ),
-            (1, 'Chapter 1', '\nIt was a dark and stormy night.\n\n'),
-            (2, 'section 1', '\nSec 1.\n\n'),
-            (2, 'section 2', '\nSec 2.\n'),
+            (
+                1, 'Chapter 1',
+                '\n'
+                'It was a dark and stormy night.\n'
+                '\n'
+            ),
+            (
+                2, 'section 1',
+                '\n'
+                'Sec 1.\n'
+                '\n'
+            ),
+            (
+                2, 'section 2',
+                '\n'
+                'Sec 2.\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -4811,7 +4847,9 @@ class TestRust(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language rust\n@tabwidth -4\n'
+                '@others\n'
+                '@language rust\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'fn comment_contains_code_basic',
@@ -5163,8 +5201,7 @@ class TestXML(BaseTestImporter):
                 '@tabwidth -4\n'
             ),
             (
-                1,
-                '<html>',
+                1, '<html>',
                 '<?xml version="1.0" encoding="UTF-8"?>\n'
                 '<!DOCTYPE note SYSTEM "Note.dtd">\n'
                 '<html>\n@others\n'
@@ -5224,7 +5261,9 @@ class TestXML(BaseTestImporter):
             ),
             (
                 3, "<div id='bodydisplay'>",
-                "<div id='bodydisplay'>\ncontents!\n</div>\n",
+                "<div id='bodydisplay'>\n"
+                'contents!\n'
+                '</div>\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -5239,7 +5278,9 @@ class TestXML(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore level 0 headlines.
-                '<:À.Ç>\n<Ì>\n<_.ÌÑ>\n@language xml\n@tabwidth -4\n',
+                '<:À.Ç>\n<Ì>\n<_.ÌÑ>\n'
+                '@language xml\n'
+                '@tabwidth -4\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
