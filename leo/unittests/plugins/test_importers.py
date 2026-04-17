@@ -2035,12 +2035,19 @@ class TestMarkdown(BaseTestImporter):
             (2, 'Section 2', 'section 2, line 1\n\n'),
             (3, 'Section 2.1', 'section 2.1, line 1\n\n'),
             (
-                4,
-                'Section 2.1.1',
-                'section 2.2.1 line 1\nThe next section is empty. It must not be deleted.\n\n',
+                4, 'Section 2.1.1',
+                'section 2.2.1 line 1\n'
+                'The next section is empty. It must not be deleted.\n'
+                '\n'
             ),
-            (3, 'Section 2.2', '\n'),
-            (2, 'Section 3', 'Section 3, line 1\n'),
+            (
+                3, 'Section 2.2',
+                '\n'
+            ),
+            (
+                2, 'Section 3',
+                'Section 3, line 1\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2281,12 +2288,12 @@ class TestOrg(BaseTestImporter):
                 '@language org\n'
                 '@tabwidth -4\n'
             ),
-            (1, 'Section 1', 'Sec 1.\n'),
-            (1, 'Section 2', 'Sec 2.\n'),
-            (2, 'Section 2-1', 'Sec 2.1\n'),
+            (1, 'Section 1',     'Sec 1.\n'),
+            (1, 'Section 2',     'Sec 2.\n'),
+            (2, 'Section 2-1',   'Sec 2.1\n'),
             (3, 'Section 2-1-1', 'Sec 2.1.1\n'),
-            (1, 'Section 3', ''),
-            (2, 'Section 3.1', 'Sec 3.1\n'),
+            (1, 'Section 3',     ''),
+            (2, 'Section 3.1',   'Sec 3.1\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2327,9 +2334,19 @@ class TestOrg(BaseTestImporter):
                 '@language org\n'
                 '@tabwidth -4\n'
             ),
-            (1, 'Events', '  :PROPERTIES:\n  :CATEGORY: events\n  :END:\n'),
-            (2, '整理个人生活', ''),
-            (3, '每周惯例', ''),
+            (
+                1, 'Events',
+                '  :PROPERTIES:\n  :CATEGORY: events\n'
+                '  :END:\n'
+            ),
+            (
+                2, '整理个人生活',
+                ''
+            ),
+            (
+                3, '每周惯例',
+                ''
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -2384,7 +2401,7 @@ class TestOrg(BaseTestImporter):
             (1, 'Section 2',     'Sec 2.\n'),
             (2, 'Section 2-1',   'Sec 2.1\n'),
             (3, 'Section 2-1-1', 'Sec 2.1.1\n'),
-            (1, 'Section 3', ''),
+            (1, 'Section 3',           ''),
             (2, 'placeholder level 2', ''),
             (3, 'placeholder level 3', ''),
             (4, 'placeholder level 4', ''),
@@ -2853,8 +2870,7 @@ class TestPerl(BaseTestImporter):
                 '\n',  # Leo 6.8.7
             ),
             (
-                1,
-                'sub Test',
+                1, 'sub Test',
                 '            sub Test{\n'
                 '               print "Test!\n";\n'
                 '            }\n'
@@ -2984,18 +3000,31 @@ class TestPerl(BaseTestImporter):
             ),
             (
                 1, 'sub test1',
-                '#!/usr/bin/perl\n\nsub test1 {\n    s = /}/g;\n}\n\n',  # Leo 6.8.7
+                '#!/usr/bin/perl\n\nsub test1 {\n'
+                '    s = /}/g;\n'
+                '}\n'
+                '\n'  # Leo 6.8.7
             ),
             (
                 1, 'sub test2',
-                'sub test2 {\n    s = m//}/;\n}\n\n',  # Leo 6.8.7
+                'sub test2 {\n'
+                '    s = m//}/;\n'
+                '}\n'
+                '\n'  # Leo 6.8.7
             ),
             (
-                1,
-                'sub test3',
-                'sub test3 {\n    s = s///}/;\n}\n\n',  # Leo 6.8.7
+                1, 'sub test3',
+                'sub test3 {\n'
+                '    s = s///}/;\n'
+                '}\n'
+                '\n'  # Leo 6.8.7
             ),
-            (1, 'sub test4', 'sub test4 {\n    s = tr///}/;\n}\n'),
+            (
+                1, 'sub test4',
+                'sub test4 {\n'
+                '    s = tr///}/;\n'
+                '}\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -3152,10 +3181,20 @@ class TestPython(BaseTestImporter):
             ),
             (
                 2, 'TracerCore.start',
-                'def start(self):\n    """Start this tracer."""\n\n',  # Leo 6.8.7
+                'def start(self):\n'
+                '    """Start this tracer."""\n'
+                '\n'  # Leo 6.8.7
             ),
-            (2, 'TracerCore.stop', 'def stop(self):\n    """Stop this tracer."""\n'),
-            (1, 'function: main', '# About main\ndef main():\n    pass\n'),
+            (
+                2, 'TracerCore.stop',
+                'def stop(self):\n'
+                '    """Stop this tracer."""\n'
+            ),
+            (
+                1, 'function: main',
+                '# About main\ndef main():\n'
+                '    pass\n'
+            ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
 
@@ -3661,8 +3700,7 @@ class TestPython(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
+                0, '',  # Ignore the first headline.
                 '"""\n'
                 'Multi-line module-level docstring\n'
                 '\n'
@@ -3673,7 +3711,7 @@ class TestPython(BaseTestImporter):
                 '\n'
                 '@others\n'
                 '@language python\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'class C1',
@@ -3837,7 +3875,9 @@ class TestPython(BaseTestImporter):
             ),
             (
                 1, 'function: f1',
-                'def f1():\n    pass\n\n',  # Leo 6.8.7
+                'def f1():\n'
+                '    pass\n'
+                '\n'  # Leo 6.8.7
             ),
             (
                 1, 'class Class1',
@@ -3889,15 +3929,23 @@ class TestPython(BaseTestImporter):
                 '@tabwidth -4\n',
             ),
             (
-                1, 'class C1', 'class C1:\n    """Class docstring"""\n\n    @others\n\n'
+                1, 'class C1',
+                'class C1:\n'
+                '    """Class docstring"""\n'
+                '\n'
+                '    @others\n'
+                '\n'
             ),
             (
                 2, 'C1.__init__',
-                'def __init__(self):\n    pass\n'
+                'def __init__(self):\n'
+                '    pass\n'
             ),
             (
                 1, 'function: f1',
-                'def f1():\n    pass\n\n',  # Leo 6.8.7
+                'def f1():\n'
+                '    pass\n'
+                '\n'  # Leo 6.8.7
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
