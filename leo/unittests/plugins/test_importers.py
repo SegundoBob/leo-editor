@@ -662,7 +662,9 @@ class TestCoffeescript(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language coffeescript\n@tabwidth -4\n'
+                '@others\n'
+                '@language coffeescript\n'
+                '@tabwidth -4\n'
             ),
             (1, 'class Builder', 'class Builder\n  @others\n'),
             (
@@ -934,7 +936,8 @@ class TestElisp(BaseTestImporter):
             (
                 0, '',  # Ignore the first headline.
                 '@others\n'
-                '@language lisp\n@tabwidth -4\n'
+                '@language lisp\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'defun abc',
@@ -1003,7 +1006,13 @@ class TestHtml(BaseTestImporter):
                 '@language html\n'
                 '@tabwidth -4\n'
             ),
-            (1, '<html>', '<!DOCTYPE html>\n<html>\n@others\n</html>\n'),
+            (
+                1, '<html>',
+                '<!DOCTYPE html>\n'
+                '<html>\n'
+                '@others\n'
+                '</html>\n'
+            ),
             (
                 2, '<head>',
                 '<head>\n'
@@ -1051,14 +1060,18 @@ class TestHtml(BaseTestImporter):
         """
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language html\n@tabwidth -4\n'
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language html\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, '<body>',
-                '<body>\n@others\n'
-                '</p> <!-- orphan -->\n\n</body>\n'
+                '<body>\n'
+                '@others\n'
+                '</p> <!-- orphan -->\n'
+                '\n'
+                '</body>\n'
             ),
             (
                 2, '<div id="D666">Paragraph</p> <!-- P1 -->',
@@ -1140,7 +1153,11 @@ class TestHtml(BaseTestImporter):
                 '@language html\n'
                 '@tabwidth -4\n'
             ),
-            (1, '<html>', '<html>\n@others\n</HTML>\n'),
+            (
+                1, '<html>',
+                '<html>\n'
+                '@others\n'
+                '</HTML>\n'),
             (
                 2, '<HEAD>',  # We don't want to lowercase *all* headlines.
                 '<HEAD>\n'
@@ -1356,7 +1373,10 @@ class TestHtml(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n<p>Paragraph</p>\n@language html\n@tabwidth -4\n'
+                '@others\n'
+                '<p>Paragraph</p>\n'
+                '@language html\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, '<table cellspacing="0" cellpadding="0" width="600" border="0">',
@@ -1733,9 +1753,10 @@ class TestJavascript(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language javascript\n@tabwidth -4\n'
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language javascript\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'function restart',
@@ -2706,9 +2727,10 @@ class TestPascal(BaseTestImporter):
 
         expected_results = (
             (
-                0,
-                '',  # Ignore the first headline.
-                '@others\n@language pascal\n@tabwidth -4\n'
+                0, '',  # Ignore the first headline.
+                '@others\n'
+                '@language pascal\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'unit Unit1',
@@ -2840,7 +2862,9 @@ class TestPascal(BaseTestImporter):
             (
                 0,
                 '',  # Ignore the first headline.
-                '@others\n@language pascal\n@tabwidth -4\n'
+                '@others\n'
+                '@language pascal\n'
+                '@tabwidth -4\n'
             ),
             (
                 1,
@@ -2868,8 +2892,7 @@ class TestPascal(BaseTestImporter):
                 '\n'  # Leo 6.8.7
             ),
             (
-                1,
-                'procedure statObj.multiplyGraph',
+                1, 'procedure statObj.multiplyGraph',
                 'procedure statObj.multiplyGraph(var source: pGraphObj);\n'
                 'var i, max: integer;\n'
                 'begin\n'
@@ -3064,7 +3087,9 @@ class TestPerl(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language perl\n@tabwidth -4\n'
+                '@others\n'
+                '@language perl\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'sub Test',
@@ -3372,7 +3397,9 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n@language python\n@tabwidth -4\n'
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'class RefactoringChecker',
@@ -3665,7 +3692,10 @@ class TestPython(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '# test_ipython_idiom\n@others\n@language python\n@tabwidth -4\n'
+                '# test_ipython_idiom\n'
+                '@others\n'
+                '@language python\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'class HistoryTrim',
@@ -4469,7 +4499,8 @@ class TestRst(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@language rest\n@tabwidth -4\n'
+                '@language rest\n'
+                '@tabwidth -4\n'
             ),
             (1, '!Dummy chapter',      '.. toc\n\n'),
             (1, 'top',                 '\nThe top section\n\n'),
@@ -5067,7 +5098,10 @@ class TestTreepad(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '<Treepad version 2.7>\n@others\n@language plain\n@tabwidth -4\n'
+                '<Treepad version 2.7>\n'
+                '@others\n'
+                '@language plain\n'
+                '@tabwidth -4\n'
             ),
             (
                 1, 'headline 1',
@@ -5208,7 +5242,8 @@ class TestXML(BaseTestImporter):
                 1, '<html>',
                 '<?xml version="1.0" encoding="UTF-8"?>\n'
                 '<!DOCTYPE note SYSTEM "Note.dtd">\n'
-                '<html>\n@others\n'
+                '<html>\n'
+                '@others\n'
                 '</html>\n'
             ),
             (
@@ -5261,7 +5296,8 @@ class TestXML(BaseTestImporter):
             ),
             (
                 2, "<body class='bodystring'>",
-                "<body class='bodystring'>\n@others\n</body>\n",
+                "<body class='bodystring'>\n"
+                '@others\n</body>\n',
             ),
             (
                 3, "<div id='bodydisplay'>",
