@@ -1997,6 +1997,237 @@ class TestMarkdown(BaseTestImporter):
     treeType = '@auto-md'
 
     # @+others
+    # @+node:ekr.20210904065459.128: *3* TestMarkdown.test_is_hash
+    def test_is_hash(self):
+        c = self.c
+        x = markdown.Markdown_Importer(c)
+        assert x.md_pattern_table
+        table = (
+            (1, 'name', '# name\n'),
+            (2, 'a test', '## a test\n'),
+            (3, 'a test', '### a test\n'),
+        )
+        for data in table:
+            level, name, line = data
+            level2, name2 = x.is_hash(line)
+            self.assertEqual(level, level2)
+            self.assertEqual(name, name2)
+        level3, name = x.is_hash('Not a hash')
+        assert level3 is None
+        assert name is None
+
+    # @+node:ekr.20210904065459.129: *3* TestMarkdown.test_is_underline
+    def test_is_underline(self):
+        c = self.c
+        x = markdown.Markdown_Importer(c)
+        for line in (
+            '----\n',
+            '-----\n',
+            '====\n',
+            '====\n'
+        ):  # fmt: skip
+            got = x.is_underline(line)
+            assert got, repr(line)
+        for line in (
+            '-\n',
+            '--\n',
+            '---\n',
+            '==\n',
+            '===\n',
+            '===\n',
+            '==-==\n',
+            'abc\n',
+        ):  # fmt: skip
+            got = x.is_underline(line)
+            assert not got, repr(line)
+
+    # @+node:ekr.20210904065459.114: *3* TestMarkdown.test_markdown_github_syntax
+    def test_markdown_github_syntax(self):
+
+        # Must be in standard form, with a space after '#'.
+        s = """
+            Decl line.
+            # Header
+
+            ```python
+            loads.init = {
+                Chloride: 11.5,
+                TotalP: 0.002,
+            }
+            ```
+            # Last header
+        """
+        expected_results = (
+            (
+                0, '',  # Ignore the first headline.
+                '@language md\n'
+                '@tabwidth -4\n'
+            ),
+            (
+                1, '!Declarations',
+                'Decl line.\n'
+            ),
+            (
+                1, 'Header',
+                '\n'
+                '```python\nloads.init = {\n'
+                '    Chloride: 11.5,\n'
+                '    TotalP: 0.002,\n}\n```\n'
+            ),
+            (
+                1, 'Last header',
+                ''
+            ),
+        )  # fmt: skip
+        self.new_run_test(s, expected_results)
+
+    # @+node:ekr.20210904065459.111: *3* TestMarkdown.test_markdown_importer_basic
+    def test_markdown_importer_basic(self):
+
+        # Must be in standard form, with a space after '#'.
+        s = """
+            Decl line.
+            # Header
+
+            After header text
+
+            ## Subheader
+
+            Not an underline
+
+            ----------------
+
+            After subheader text
+
+            # Last header: no text
+        """
+        expected_results = (
+            (
+                0, '',  # Ignore the first headline.
+                '@language md\n'
+                '@tabwidth -4\n'
+            ),
+            (1, '!Declarations', 'Decl line.\n'),
+            (
+                1, 'Header',
+                '\n'
+                'After header text\n\n'
+            ),
+            (
+                2, 'Subheader',
+                '\n'
+                'Not an underline\n\n----------------\n'
+                '\n'
+                'After subheader text\n'
+                '\n'
+            ),
+            (
+                1, 'Last header: no text',
+                ''
+            ),
+        )  # fmt: skip
+        self.new_run_test(s, expected_results)
+
+    # @+node:ekr.20260417141040.7: *3* TestMarkdown.test_markdown_importer_blank_lines
+    def test_markdown_importer_blank_lines(self):
+        # Must be in standard form, with a space after '#'.
+        s = """
+            # Chapter 1: one
+
+            This is the first chapter
+
+            ## 1.1 Something
+
+            This is something
+
+            # Chapter 2: two
+
+            Welcome to chapter 2
+        """
+        expected_results = (
+            (
+                0, '',  # Ignore the first headline.
+                '@language md\n'
+                '@tabwidth -4\n'
+            ),
+            (
+                1, 'Chapter 1: one',
+                '\n'
+                'This is the first chapter\n'
+                '\n'
+            ),
+            (
+                2, '1.1 Something',
+                '\n'
+                'This is something\n'
+                '\n'
+            ),
+            (
+                1, 'Chapter 2: two',
+                '\n'
+                'Welcome to chapter 2\n'
+            ),
+        )  # fmt: skip
+        self.new_run_test(s, expected_results)  # check=False)
+
+    # @+node:ekr.20210904065459.112: *3* TestMarkdown.test_markdown_importer_implicit_section
+    def test_markdown_importer_implicit_section(self):
+
+        s = """
+            Decl line.
+            #Header
+
+            After header text
+
+            ##Subheader
+
+            Not an underline
+
+            ----------------
+
+            This *should* be a section
+            ==========================
+
+            After subheader text
+
+            #Last header: no text
+        """
+        expected_results = (
+            (
+                0, '',  # Ignore the first headline.
+                '@language md\n'
+                '@tabwidth -4\n'
+            ),
+            (
+                1, '!Declarations',
+                'Decl line.\n'
+            ),
+            (
+                1, 'Header',
+                '\n'
+                'After header text\n'
+                '\n'
+            ),
+            (2, 'Subheader',
+                '\n'
+                'Not an underline\n'
+                '\n'
+                '----------------\n'
+                '\n'
+            ),
+            (
+                1, 'This *should* be a section',
+                '\n'
+                'After subheader text\n'
+                '\n'
+            ),
+            (
+                1, 'Last header: no text',
+                ''
+            ),
+        )  # fmt: skip
+        self.new_run_test(s, expected_results)
+
     # @+node:ekr.20210904065459.109: *3* TestMarkdown.test_md_import
     def test_md_import(self):
 
@@ -2030,7 +2261,8 @@ class TestMarkdown(BaseTestImporter):
                 '@language md\n'
                 '@tabwidth -4\n'
             ),
-            (   1, 'Top',
+            (
+                1, 'Top',
                 'The top section\n'
                 '\n'
             ),
@@ -2130,192 +2362,6 @@ class TestMarkdown(BaseTestImporter):
             (2, 'Section 3',     '\nsection 3, line 1\n'),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
-
-    # @+node:ekr.20210904065459.111: *3* TestMarkdown.test_markdown_importer_basic
-    def test_markdown_importer_basic(self):
-
-        # Must be in standard form, with a space after '#'.
-        s = """
-            Decl line.
-            # Header
-
-            After header text
-
-            ## Subheader
-
-            Not an underline
-
-            ----------------
-
-            After subheader text
-
-            # Last header: no text
-        """
-        expected_results = (
-            (
-                0, '',  # Ignore the first headline.
-                '@language md\n'
-                '@tabwidth -4\n'
-            ),
-            (1, '!Declarations', 'Decl line.\n'),
-            (
-                1, 'Header',
-                '\n'
-                'After header text\n\n'
-            ),
-            (
-                2, 'Subheader',
-                '\n'
-                'Not an underline\n\n----------------\n'
-                '\n'
-                'After subheader text\n'
-                '\n'
-            ),
-            (
-                1, 'Last header: no text',
-                ''
-            ),
-        )  # fmt: skip
-        self.new_run_test(s, expected_results)
-
-    # @+node:ekr.20210904065459.112: *3* TestMarkdown.test_markdown_importer_implicit_section
-    def test_markdown_importer_implicit_section(self):
-
-        s = """
-            Decl line.
-            #Header
-
-            After header text
-
-            ##Subheader
-
-            Not an underline
-
-            ----------------
-
-            This *should* be a section
-            ==========================
-
-            After subheader text
-
-            #Last header: no text
-        """
-        expected_results = (
-            (
-                0, '',  # Ignore the first headline.
-                '@language md\n'
-                '@tabwidth -4\n'
-            ),
-            (1, '!Declarations', 'Decl line.\n'),
-            (
-                1, 'Header',
-                '\n'
-                'After header text\n'
-                '\n'
-            ),
-            (2, 'Subheader',
-                '\n'
-                'Not an underline\n'
-                '\n'
-                '----------------\n'
-                '\n'
-            ),
-            (
-                1, 'This *should* be a section',
-                '\n'
-                'After subheader text\n'
-                '\n'
-            ),
-            (
-                1, 'Last header: no text',
-                ''
-            ),
-        )  # fmt: skip
-        self.new_run_test(s, expected_results)
-
-    # @+node:ekr.20210904065459.114: *3* TestMarkdown.test_markdown_github_syntax
-    def test_markdown_github_syntax(self):
-
-        # Must be in standard form, with a space after '#'.
-        s = """
-            Decl line.
-            # Header
-
-            ```python
-            loads.init = {
-                Chloride: 11.5,
-                TotalP: 0.002,
-            }
-            ```
-            # Last header
-        """
-        expected_results = (
-            (
-                0, '',  # Ignore the first headline.
-                '@language md\n'
-                '@tabwidth -4\n'
-            ),
-            (
-                1, '!Declarations',
-                'Decl line.\n'
-            ),
-            (
-                1, 'Header',
-                '\n'
-                '```python\nloads.init = {\n'
-                '    Chloride: 11.5,\n'
-                '    TotalP: 0.002,\n}\n```\n'
-            ),
-            (
-                1, 'Last header',
-                ''
-            ),
-        )  # fmt: skip
-        self.new_run_test(s, expected_results)
-
-    # @+node:ekr.20210904065459.128: *3* TestMarkdown.test_is_hash
-    def test_is_hash(self):
-        c = self.c
-        x = markdown.Markdown_Importer(c)
-        assert x.md_pattern_table
-        table = (
-            (1, 'name', '# name\n'),
-            (2, 'a test', '## a test\n'),
-            (3, 'a test', '### a test\n'),
-        )
-        for data in table:
-            level, name, line = data
-            level2, name2 = x.is_hash(line)
-            self.assertEqual(level, level2)
-            self.assertEqual(name, name2)
-        level3, name = x.is_hash('Not a hash')
-        assert level3 is None
-        assert name is None
-
-    # @+node:ekr.20210904065459.129: *3* TestMarkdown.test_is_underline
-    def test_is_underline(self):
-        c = self.c
-        x = markdown.Markdown_Importer(c)
-        for line in (
-            '----\n',
-            '-----\n',
-            '====\n',
-            '====\n'
-        ):  # fmt: skip
-            got = x.is_underline(line)
-            assert got, repr(line)
-        for line in (
-            '-\n',
-            '--\n',
-            '---\n',
-            '==\n',
-            '===\n',
-            '===\n',
-            '==-==\n',
-            'abc\n',
-        ):  # fmt: skip
-            got = x.is_underline(line)
-            assert not got, repr(line)
 
     # @-others
 
