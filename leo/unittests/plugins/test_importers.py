@@ -1541,7 +1541,7 @@ class TestJava(BaseTestImporter):
                 0, '',  # Ignore the first headline.
                 '@others\n'
                 '@language java\n'
-                '@tabwidth -4\n',
+                '@tabwidth -4\n'
             ),
             (
                 1, 'public class EightQueens',
