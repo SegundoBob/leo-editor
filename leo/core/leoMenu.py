@@ -8,6 +8,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any, TYPE_CHECKING
 from leo.core import leoGlobals as g
+from leo.plugins.qt_text import QTextEditWrapper
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoFrame import LeoQtFrame, NullFrame
@@ -340,8 +341,8 @@ class LeoMenu:
                 if wname.startswith('head'):
                     w = c.frame.tree.edit_widget(c.p)
             # Return a wrapper if possible.
-            if not g.isTextWrapper(w):
-                w = getattr(w, 'wrapper', w)
+            if not g.isTextWrapper(w):  # #4608
+                w = QTextEditWrapper(widget=w, name='menu', c=c)
             return w
 
         if isinstance(command, str):
