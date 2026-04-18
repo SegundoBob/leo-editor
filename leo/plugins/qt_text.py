@@ -1891,10 +1891,10 @@ class QTextEditWrapper(QTextMixin):
     def getAllText(self) -> str:
         """QTextEditWrapper."""
         w = self.widget
-        if isinstance(w, QtWidgets.QLineEdit):  # #4608:
-            return w.text()
-        else:
-            return w.toPlainText()
+        return (
+            w.text() if isinstance(w, QtWidgets.QLineEdit) # #4608
+            else w.toPlainText()
+        )  # fmt: skip
 
     # @+node:ekr.20110605121601.18082: *4* qtew.getInsertPoint
     def getInsertPoint(self) -> int:
