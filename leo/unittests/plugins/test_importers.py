@@ -1589,22 +1589,22 @@ class TestJava(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
+                '/**\n'
+                " * Indicates the caller's authority to perform lifecycle operations on\n"
+                ' */\n'
+                '\n'
                 '@others\n'
                 '@language java\n'
                 '@tabwidth -4\n'
             ),
             (
-                1, 'class AdminPermission',
-                '/**\n'
-                " * Indicates the caller's authority to perform lifecycle operations on\n"
-                ' */\n'
-                '\n'
+                1, 'public final class AdminPermission',
                 'public final class AdminPermission extends BasicPermission {\n'
                 '    @others\n'
                 '}\n'
             ),
             (
-                2, 'func AdminPermission',
+                2, 'public AdminPermission',
                 '/**\n'
                 ' * Creates a new <tt>AdminPermission</tt> object.\n'
                 ' */\n'
