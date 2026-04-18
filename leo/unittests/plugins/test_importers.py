@@ -1644,14 +1644,6 @@ class TestJava(BaseTestImporter):
             (
                 0,
                 '',  # Ignore the first headline.
-                '@others\n'
-                '\n'
-                '@language java\n'
-                '@tabwidth -4\n'
-            ),
-            (
-                1,
-                'class BundleException',
                 '/*\n'
                 ' * $Header: /cvs/leo/test/unitTest.leo,v 1.247 2008/02/14 14:59:04 edream Exp $\n'
                 ' *\n'
@@ -1659,12 +1651,19 @@ class TestJava(BaseTestImporter):
                 '\n'
                 'package org.osgi.framework;\n'
                 '\n'
+                '@others\n'
+                '\n'
+                '@language java\n'
+                '@tabwidth -4\n'
+            ),
+            (
+                1, 'public class BundleException',
                 'public class BundleException extends Exception {\n'
                 '    @others\n'
                 '}\n'
             ),
             (
-                2, 'func BundleException',
+                2, 'public BundleException',
                 'static final long serialVersionUID = 3571095144220455665L;\n'
                 '/**\n'
                 ' * Nested exception.\n'
@@ -1691,17 +1690,12 @@ class TestJava(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language java\n'
-                '@tabwidth -4\n'
-            ),
-            (
-                1,
-                'interface Bicycle',
                 'interface Bicycle {\n'
                 '    void changeCadence(int newValue);\n'
                 '    void changeGear(int newValue);\n'
                 '}\n'
+                '@language java\n'
+                '@tabwidth -4\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
@@ -1718,17 +1712,12 @@ class TestJava(BaseTestImporter):
         expected_results = (
             (
                 0, '',  # Ignore the first headline.
-                '@others\n'
-                '@language java\n'
-                '@tabwidth -4\n'
-            ),
-            (
-                1,
-                'interface Bicycle',
                 'interface Bicycle {\n'
                 'void changeCadence(int newValue);\n'
                 'void changeGear(int newValue);\n'
                 '}\n'
+                '@language java\n'
+                '@tabwidth -4\n'
             ),
         )  # fmt: skip
         self.new_run_test(s, expected_results)
