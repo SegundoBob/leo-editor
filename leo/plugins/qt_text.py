@@ -8,10 +8,24 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any, Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
-from leo.core.leoQt import QtCore, QtGui, Qsci, QtWidgets
-from leo.core.leoQt import ContextMenuPolicy, Key, KeyboardModifier
-from leo.core.leoQt import MouseButton, MoveMode, MoveOperation
-from leo.core.leoQt import Shadow, Shape, SliderAction, SolidLine, WindowType, WrapMode
+from leo.core.leoQt import (
+    ContextMenuPolicy,
+    Key,
+    KeyboardModifier,
+    MouseButton,
+    MoveMode,
+    MoveOperation,
+    Qsci,
+    QtCore,
+    QtGui,
+    QtWidgets,
+    Shadow,
+    Shape,
+    SliderAction,
+    SolidLine,
+    WindowType,
+    WrapMode,
+)
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
@@ -1716,7 +1730,10 @@ class QTextEditWrapper(QTextMixin):
     # @+others
     # @+node:ekr.20110605121601.18073: *3* QTextEditWrapper.ctor & helpers
     def __init__(self, widget: QWidget, name: str = 'TestWrapper', c: Cmdr = None) -> None:
-        """Ctor for QTextEditWrapper class. widget is a QTextEdit/QTextBrowser."""
+        """
+        Ctor for QTextEditWrapper class.
+        widget is a QTextEdit/QTextBrowser or a QLineEdit.
+        """
         super().__init__(c)
         # Make sure all ivars are set.
         self.baseClassName = 'QTextEditWrapper'
@@ -1725,7 +1742,7 @@ class QTextEditWrapper(QTextMixin):
         self.widget = widget
         self.useScintilla = False
         # Complete the init.
-        if c and widget:
+        if c and widget and not isinstance(widget, QtWidgets.QLineEdit):  # #4601
             self.widget.setUndoRedoEnabled(False)
             self.set_config()
             self.set_signals()
@@ -1885,8 +1902,11 @@ class QTextEditWrapper(QTextMixin):
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
         """QTextEditWrapper."""
         w = self.widget
-        tc = w.textCursor()
-        i, j = tc.selectionStart(), tc.selectionEnd()
+        if isinstance(w, QtWidgets.QLineEdit):  # #4608:
+            i, j = w.selectionStart(), w.selectionEnd()
+        else:
+            tc = w.textCursor()
+            i, j = tc.selectionStart(), tc.selectionEnd()
         return i, j
 
     # @+node:ekr.20110605121601.18084: *4* qtew.getX/YScrollPosition
