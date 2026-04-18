@@ -453,7 +453,7 @@ class QLineEditWrapper(QTextMixin):
     """
 
     # @+others
-    # @+node:ekr.20110605121601.18060: *3* qlew.Birth
+    # @+node:ekr.20110605121601.18060: *3* qlew.__init__ and __repr__
     def __init__(self, widget: QLineEdit, name: str, c: Cmdr = None) -> None:
         """Ctor for QLineEditWrapper class."""
         super().__init__(c)
@@ -1416,6 +1416,8 @@ class QHeadlineWrapper(QLineEditWrapper):
 
 # @+node:ekr.20110605121601.18131: ** class QMinibufferWrapper (QLineEditWrapper)
 class QMinibufferWrapper(QLineEditWrapper):
+    # @+others
+    # @+node:ekr.20260418085528.1: *3* QMinibufferWrapper.__init__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for QMinibufferWrapper class."""
         self.c = c
@@ -1426,7 +1428,7 @@ class QMinibufferWrapper(QLineEditWrapper):
 
         # Monkey-patch the event handlers
         # @+<< define mouseReleaseEvent >>
-        # @+node:ekr.20110605121601.18132: *3* << define mouseReleaseEvent >> (QMinibufferWrapper)
+        # @+node:ekr.20110605121601.18132: *4* << define mouseReleaseEvent >> (QMinibufferWrapper)
         def mouseReleaseEvent(event: QEvent, self: QMinibufferWrapper = self) -> None:
             """Override QLineEdit.mouseReleaseEvent.
 
@@ -1445,6 +1447,7 @@ class QMinibufferWrapper(QLineEditWrapper):
 
         w.mouseReleaseEvent = mouseReleaseEvent
 
+    # @+node:ekr.20260418085529.1: *3* QMinibufferWrapper.setStyleClass
     def setStyleClass(self, style_class: Value) -> None:
         self.widget.setProperty('style_class', style_class)
         #
@@ -1456,11 +1459,16 @@ class QMinibufferWrapper(QLineEditWrapper):
         # level sheet will get pushed down quite frequently.
         self.widget.setStyleSheet(self.c.frame.top.styleSheet())
 
+    # @+node:ekr.20260418085530.1: *3* QMinibufferWrapper.setSelectionRange
     def setSelectionRange(self, i: int, j: int, insert: int = None, s: str = None) -> None:
-        QLineEditWrapper.setSelectionRange(self, i, j, insert, s)
-        insert = j if insert is None else insert
-        if self.widget:
-            self.widget._sel_and_insert = (i, j, insert)
+        super().setSelectionRange(i, j, insert, s)
+        if not self.widget:
+            return
+        if insert is None:
+            insert = j
+        self.widget._sel_and_insert = (i, j, insert)
+
+    # @-others
 
 
 # @+node:ekr.20110605121601.18103: ** class QScintillaWrapper(QTextMixin)
@@ -1742,7 +1750,7 @@ class QTextEditWrapper(QTextMixin):
         self.widget = widget
         self.useScintilla = False
         # Complete the init.
-        if c and widget and not isinstance(widget, QtWidgets.QLineEdit):  # #4601
+        if c and widget:
             self.widget.setUndoRedoEnabled(False)
             self.set_config()
             self.set_signals()
@@ -1891,10 +1899,7 @@ class QTextEditWrapper(QTextMixin):
     def getAllText(self) -> str:
         """QTextEditWrapper."""
         w = self.widget
-        return (
-            w.text() if isinstance(w, QtWidgets.QLineEdit) # #4608
-            else w.toPlainText()
-        )  # fmt: skip
+        return w.toPlainText()
 
     # @+node:ekr.20110605121601.18082: *4* qtew.getInsertPoint
     def getInsertPoint(self) -> int:
@@ -1905,11 +1910,8 @@ class QTextEditWrapper(QTextMixin):
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
         """QTextEditWrapper."""
         w = self.widget
-        if isinstance(w, QtWidgets.QLineEdit):  # #4608:
-            i, j = w.selectionStart(), w.selectionEnd()
-        else:
-            tc = w.textCursor()
-            i, j = tc.selectionStart(), tc.selectionEnd()
+        tc = w.textCursor()
+        i, j = tc.selectionStart(), tc.selectionEnd()
         return i, j
 
     # @+node:ekr.20110605121601.18084: *4* qtew.getX/YScrollPosition
