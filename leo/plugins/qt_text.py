@@ -455,7 +455,6 @@ class QLineEditWrapper(QTextMixin):
     # @+others
     # @+node:ekr.20110605121601.18060: *3* QLineEditWrapper.__init__ and __repr__
     def __init__(self, widget: QLineEdit, name: str = None, c: Cmdr = None) -> None:
-        """Ctor for QLineEditWrapper class."""
         super().__init__(c)
         self.widget = widget
         self.name = name
@@ -466,93 +465,54 @@ class QLineEditWrapper(QTextMixin):
 
     __str__ = __repr__
 
-    # @+node:ekr.20140901191541.18599: *3* QLineEditWrapper.check
-    def check(self) -> bool:
-        """
-        QLineEditWrapper.
-        """
-        return True
-
     # @+node:ekr.20110605121601.18118: *3* QLineEditWrapper.Widget-specific overrides
-    # @+node:ekr.20220911105050.1: *4* QLineEditWrapper: do-nothings
-    def flashCharacter(
-        self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75
-    ) -> None:
-        pass
-
-    def getXScrollPosition(self) -> int:
-        return 0
-
-    def getYScrollPosition(self) -> int:
-        return 0
-
-    def setXScrollPosition(self, i: int) -> None:
-        pass
-
-    def setYScrollPosition(self, i: int) -> None:
-        pass
-
     # @+node:ekr.20110605121601.18120: *4* QLineEditWrapper.getAllText
     def getAllText(self) -> str:
-        """QHeadlineWrapper."""
-        if self.check():
-            w = self.widget
-            return w.text()
-        return ''
+        w = self.widget
+        return w.text()
 
     # @+node:ekr.20110605121601.18121: *4* QLineEditWrapper.getInsertPoint
     def getInsertPoint(self) -> int:
-        """QHeadlineWrapper."""
-        if self.check():
-            return self.widget.cursorPosition()
-        return 0
+        return self.widget.cursorPosition()
 
     # @+node:ekr.20110605121601.18122: *4* QLineEditWrapper.getSelectionRange
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
-        """QHeadlineWrapper."""
         w = self.widget
-        if self.check():
-            if w.hasSelectedText():
-                i = w.selectionStart()
-                s = w.selectedText()
-                j = i + len(s)
-            else:
-                i = j = w.cursorPosition()
-            return i, j
-        return 0, 0
+        if w.hasSelectedText():
+            i = w.selectionStart()
+            s = w.selectedText()
+            j = i + len(s)
+        else:
+            i = j = w.cursorPosition()
+        return i, j
 
     # @+node:ekr.20110605121601.18123: *4* QLineEditWrapper.hasSelection
     def hasSelection(self) -> bool:
-        """QHeadlineWrapper."""
-        if self.check():
-            return self.widget.hasSelectedText()
-        return False
+        return self.widget.hasSelectedText()
 
-    # @+node:ekr.20110605121601.18124: *4* QLineEditWrapper.see & seeInsertPoint
-    def see(self, i: int) -> None:
-        """QHeadlineWrapper."""
-
-    def seeInsertPoint(self) -> None:
-        """QHeadlineWrapper."""
+    # @+node:ekr.20260419060623.1: *4* QLineEditWrapper.insert
+    def insert(self, i: int, s: str) -> int:
+        # New in Leo 6.8.7.
+        s.replace('\n', '').replace('\r', '')
+        s2 = self.getAllText()
+        self.setAllText(s2[:i] + s + s2[i:])
+        self.setInsertPoint(i + len(s))
+        return i
 
     # @+node:ekr.20110605121601.18125: *4* QLineEditWrapper.setAllText
     def setAllText(self, s: str) -> None:
         """Set all text of a Qt headline widget."""
-        if self.check():
-            w = self.widget
-            w.setText(s)
+        w = self.widget
+        # New in Leo 6.8.7.
+        s = s.replace('\n', '').replace('\r', '')
+        w.setText(s)
 
     # @+node:ekr.20110605121601.18128: *4* QLineEditWrapper.setFocus
     def setFocus(self) -> None:
-        """QHeadlineWrapper."""
-        if self.check():
-            g.app.gui.set_focus(self.c, self.widget)
+        g.app.gui.set_focus(self.c, self.widget)
 
     # @+node:ekr.20110605121601.18129: *4* QLineEditWrapper.setInsertPoint
     def setInsertPoint(self, i: int, s: str = None) -> None:
-        """QHeadlineWrapper."""
-        if not self.check():
-            return
         w = self.widget
         if s is None:
             s = w.text()
@@ -563,9 +523,6 @@ class QLineEditWrapper(QTextMixin):
     def setSelectionRange(
         self, i: int, j: int, insert: Optional[int] = None, s: str = None
     ) -> None:
-        """QHeadlineWrapper."""
-        if not self.check():
-            return
         w = self.widget
         if i > j:
             i, j = j, i
@@ -587,6 +544,30 @@ class QLineEditWrapper(QTextMixin):
                 w.setSelection(j, -length)
             else:
                 w.setSelection(i, length)
+
+    # @+node:ekr.20220911105050.1: *4* QLineEditWrapper: do-nothings
+    def flashCharacter(
+        self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75
+    ) -> None:
+        pass
+
+    def getXScrollPosition(self) -> int:
+        return 0
+
+    def getYScrollPosition(self) -> int:
+        return 0
+
+    def see(self, i: int) -> None:
+        pass
+
+    def seeInsertPoint(self) -> None:
+        pass
+
+    def setXScrollPosition(self, i: int) -> None:
+        pass
+
+    def setYScrollPosition(self, i: int) -> None:
+        pass
 
     # @-others
 
