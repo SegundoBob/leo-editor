@@ -336,13 +336,19 @@ def python_comment(colorer, s, i):
     n = colorer.match_eol_span(s, i, kind="comment1", seq="#")
 
     # Leo 6.8.3. Add special case for @language jupytext.
+    # Fast path: virtually every '#' comment fails the cheap checks, so
+    # gate the ancestor/body scan behind them. Without this gate, the
+    # scan fired on every '#' in every Python node, turning colorization
+    # of any large @file node into an O(n_comments * n_ancestor_lines)
+    # operation.
+    if not (i == 0 and s.startswith('# %%')):
+        return n
     in_jupytext_tree = any(
         z.startswith('@language jupytext')
         for z_p in c.p.self_and_parents()
         for z in g.splitLines(z_p.b)
     )
-    is_any_jupytext_comment = i == 0 and s.startswith('# %%') and in_jupytext_tree
-    if is_any_jupytext_comment:
+    if in_jupytext_tree:
         # Simulate @language md or @language python.
         language = 'md' if s.startswith('# %% [markdown]') else 'python'
         if trace:
