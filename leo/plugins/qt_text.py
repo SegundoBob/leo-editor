@@ -465,17 +465,16 @@ class QLineEditWrapper(QTextMixin):
 
     __str__ = __repr__
 
-    # @+node:ekr.20110605121601.18118: *3* QLineEditWrapper.Widget-specific overrides
-    # @+node:ekr.20110605121601.18120: *4* QLineEditWrapper.getAllText
+    # @+node:ekr.20110605121601.18120: *3* QLineEditWrapper.getAllText
     def getAllText(self) -> str:
         w = self.widget
         return w.text()
 
-    # @+node:ekr.20110605121601.18121: *4* QLineEditWrapper.getInsertPoint
+    # @+node:ekr.20110605121601.18121: *3* QLineEditWrapper.getInsertPoint
     def getInsertPoint(self) -> int:
         return self.widget.cursorPosition()
 
-    # @+node:ekr.20110605121601.18122: *4* QLineEditWrapper.getSelectionRange
+    # @+node:ekr.20110605121601.18122: *3* QLineEditWrapper.getSelectionRange
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
         w = self.widget
         if w.hasSelectedText():
@@ -486,11 +485,11 @@ class QLineEditWrapper(QTextMixin):
             i = j = w.cursorPosition()
         return i, j
 
-    # @+node:ekr.20110605121601.18123: *4* QLineEditWrapper.hasSelection
+    # @+node:ekr.20110605121601.18123: *3* QLineEditWrapper.hasSelection
     def hasSelection(self) -> bool:
         return self.widget.hasSelectedText()
 
-    # @+node:ekr.20260419060623.1: *4* QLineEditWrapper.insert
+    # @+node:ekr.20260419060623.1: *3* QLineEditWrapper.insert
     def insert(self, i: int, s: str) -> int:
         # New in Leo 6.8.7.
         s.replace('\n', '').replace('\r', '')
@@ -499,7 +498,7 @@ class QLineEditWrapper(QTextMixin):
         self.setInsertPoint(i + len(s))
         return i
 
-    # @+node:ekr.20110605121601.18125: *4* QLineEditWrapper.setAllText
+    # @+node:ekr.20110605121601.18125: *3* QLineEditWrapper.setAllText
     def setAllText(self, s: str) -> None:
         """Set all text of a Qt headline widget."""
         w = self.widget
@@ -507,11 +506,11 @@ class QLineEditWrapper(QTextMixin):
         s = s.replace('\n', '').replace('\r', '')
         w.setText(s)
 
-    # @+node:ekr.20110605121601.18128: *4* QLineEditWrapper.setFocus
+    # @+node:ekr.20110605121601.18128: *3* QLineEditWrapper.setFocus
     def setFocus(self) -> None:
         g.app.gui.set_focus(self.c, self.widget)
 
-    # @+node:ekr.20110605121601.18129: *4* QLineEditWrapper.setInsertPoint
+    # @+node:ekr.20110605121601.18129: *3* QLineEditWrapper.setInsertPoint
     def setInsertPoint(self, i: int, s: str = None) -> None:
         w = self.widget
         if s is None:
@@ -519,7 +518,7 @@ class QLineEditWrapper(QTextMixin):
         i = max(0, min(i, len(s)))
         w.setCursorPosition(i)
 
-    # @+node:ekr.20110605121601.18130: *4* QLineEditWrapper.setSelectionRange
+    # @+node:ekr.20110605121601.18130: *3* QLineEditWrapper.setSelectionRange
     def setSelectionRange(
         self, i: int, j: int, insert: Optional[int] = None, s: str = None
     ) -> None:
@@ -545,7 +544,7 @@ class QLineEditWrapper(QTextMixin):
             else:
                 w.setSelection(i, length)
 
-    # @+node:ekr.20220911105050.1: *4* QLineEditWrapper: do-nothings
+    # @+node:ekr.20220911105050.1: *3* QLineEditWrapper: do-nothings
     def flashCharacter(
         self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75
     ) -> None:
