@@ -81,6 +81,16 @@ def dump_colorizer_last_colorizer_traces(event: LeoKeyEvent) -> None:
 # str.lower() on every tagged character.
 _url_leadins_set = frozenset(g.url_leadins + g.url_leadins.upper())
 
+# Tags whose colored ranges may legitimately contain free-form text
+# (hence URLs, UNLs, or GNX references). On a typical Python file ~75%
+# of colorRangeWithTag calls are for keyword / operator tags that
+# cannot contain such text; those ranges are skipped in the URL scan.
+_url_bearing_tags = frozenset({
+    'comment1', 'comment2', 'comment3', 'comment4',
+    'doc',
+    'literal1', 'literal2', 'literal3', 'literal4',
+})
+
 
 # @+node:ekr.20170127141855.1: ** class BaseColorizer
 class BaseColorizer:
@@ -1625,8 +1635,10 @@ class JEditColorizer(BaseColorizer):
         elif not exclude_match:
             self.setTag(tag, s, i, j)
 
-        # Colorize UNL's, URL's, and GNX's *everywhere*.
-        if tag != 'url':
+        # Colorize UNL's, URL's, and GNX's in comment/literal/doc ranges.
+        # Skip the per-char scan for tags that cannot legitimately contain
+        # such text (keywords, operators, punctuation, etc.).
+        if tag in _url_bearing_tags:
             j = min(j, len(s))
             # Avoid str.lower() per character: check both cases via a set
             # built once from g.url_leadins (lowercase).
