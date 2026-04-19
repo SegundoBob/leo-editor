@@ -1550,7 +1550,12 @@ class JEditColorizer(BaseColorizer):
             format.setForeground(color)
             format.setUnderlineStyle(UnderlineStyle.NoUnderline)
         self.tagCount += 1
-        report(color)  # A superb trace, cached for the dump-last-colorizer-trace command.
+        # Building the trace costs ~40% of colorize time (g.caller stack walks
+        # and f-string formatting, repeated per tag). Gate it behind the same
+        # debug flag that toggles the live trace print; users who want to run
+        # `dump-last-colorizer-trace` must set `g.app.debug = ['coloring']`.
+        if trace:
+            report(color)
         self.highlighter.setFormat(i, j - i, format)
 
     # @+node:ekr.20110605121601.18589: *3* jedit:Pattern matchers
