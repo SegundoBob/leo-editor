@@ -1812,7 +1812,6 @@ class QTextEditWrapper(QTextMixin):
     # These are all widget-dependent
     # @+node:ekr.20110605121601.18079: *4* QTextEditWrapper.delete (avoid call to setAllText)
     def delete(self, i: int, j: int = None) -> None:
-        """QTextEditWrapper."""
         w = self.widget
         if j is None:
             j = i + 1
@@ -1897,18 +1896,15 @@ class QTextEditWrapper(QTextMixin):
 
     # @+node:ekr.20110605121601.18081: *4* QTextEditWrapper.getAllText
     def getAllText(self) -> str:
-        """QTextEditWrapper."""
         w = self.widget
         return w.toPlainText()
 
     # @+node:ekr.20110605121601.18082: *4* QTextEditWrapper.getInsertPoint
     def getInsertPoint(self) -> int:
-        """QTextEditWrapper."""
         return self.widget.textCursor().position()
 
     # @+node:ekr.20110605121601.18083: *4* QTextEditWrapper.getSelectionRange
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
-        """QTextEditWrapper."""
         w = self.widget
         tc = w.textCursor()
         i, j = tc.selectionStart(), tc.selectionEnd()
@@ -1935,12 +1931,10 @@ class QTextEditWrapper(QTextMixin):
 
     # @+node:ekr.20110605121601.18085: *4* QTextEditWrapper.hasSelection
     def hasSelection(self) -> bool:
-        """QTextEditWrapper."""
         return self.widget.textCursor().hasSelection()
 
     # @+node:ekr.20110605121601.18089: *4* QTextEditWrapper.insert (avoid call to setAllText)
     def insert(self, i: int, s: str) -> None:
-        """QTextEditWrapper."""
         w = self.widget
         cursor = w.textCursor()
         try:
@@ -1953,7 +1947,6 @@ class QTextEditWrapper(QTextMixin):
 
     # @+node:ekr.20110605121601.18077: *4* QTextEditWrapper.leoMoveCursorHelper & helper
     def leoMoveCursorHelper(self, kind: str, extend: bool = False, linesPerPage: int = 15) -> None:
-        """QTextEditWrapper."""
         w = self.widget
         d = {
             'begin-line': MoveOperation.StartOfLine,  # Was start-line
@@ -2043,7 +2036,6 @@ class QTextEditWrapper(QTextMixin):
 
     # @+node:ekr.20110605121601.18087: *4* QTextEditWrapper.linesPerPage
     def linesPerPage(self) -> float:
-        """QTextEditWrapper."""
         # Not used in Leo's core.
         w = self.widget
         h = w.size().height()
