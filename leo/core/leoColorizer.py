@@ -344,11 +344,20 @@ class BaseColorizer:
             self.leoKeywordsDict[key] = 'leokeyword'
 
     # @+node:ekr.20230313051116.1: *3* BaseColorizer.normalize
+    # Cache normalized values: called per-setTag with a small set of
+    # recurring colorName strings ('red', 'blue', ...). Every hit saves
+    # five fresh string allocations (replace ×3, lower, strip).
+    _normalize_cache: dict[str, str] = {}
+
     def normalize(self, s: str) -> str:
         """Return the normalized value of s."""
-        if s.startswith('@'):
-            s = s[1:]
-        return s.replace(' ', '').replace('-', '').replace('_', '').lower().strip()
+        cached = self._normalize_cache.get(s)
+        if cached is not None:
+            return cached
+        t = s[1:] if s.startswith('@') else s
+        t = t.replace(' ', '').replace('-', '').replace('_', '').lower().strip()
+        self._normalize_cache[s] = t
+        return t
 
     # @+node:ekr.20170127142001.1: *3* BaseColorizer.updateSyntaxColorer & helpers
     # Note: these are used by unit tests.
