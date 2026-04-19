@@ -453,7 +453,7 @@ class QLineEditWrapper(QTextMixin):
     """
 
     # @+others
-    # @+node:ekr.20110605121601.18060: *3* qlew.__init__ and __repr__
+    # @+node:ekr.20110605121601.18060: *3* QLineEditWrapper.__init__ and __repr__
     def __init__(self, widget: QLineEdit, name: str = None, c: Cmdr = None) -> None:
         """Ctor for QLineEditWrapper class."""
         super().__init__(c)
@@ -466,15 +466,15 @@ class QLineEditWrapper(QTextMixin):
 
     __str__ = __repr__
 
-    # @+node:ekr.20140901191541.18599: *3* qlew.check
+    # @+node:ekr.20140901191541.18599: *3* QLineEditWrapper.check
     def check(self) -> bool:
         """
         QLineEditWrapper.
         """
         return True
 
-    # @+node:ekr.20110605121601.18118: *3* qlew.Widget-specific overrides
-    # @+node:ekr.20220911105050.1: *4* qlew: do-nothings
+    # @+node:ekr.20110605121601.18118: *3* QLineEditWrapper.Widget-specific overrides
+    # @+node:ekr.20220911105050.1: *4* QLineEditWrapper: do-nothings
     def flashCharacter(
         self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75
     ) -> None:
@@ -492,7 +492,7 @@ class QLineEditWrapper(QTextMixin):
     def setYScrollPosition(self, i: int) -> None:
         pass
 
-    # @+node:ekr.20110605121601.18120: *4* qlew.getAllText
+    # @+node:ekr.20110605121601.18120: *4* QLineEditWrapper.getAllText
     def getAllText(self) -> str:
         """QHeadlineWrapper."""
         if self.check():
@@ -500,14 +500,14 @@ class QLineEditWrapper(QTextMixin):
             return w.text()
         return ''
 
-    # @+node:ekr.20110605121601.18121: *4* qlew.getInsertPoint
+    # @+node:ekr.20110605121601.18121: *4* QLineEditWrapper.getInsertPoint
     def getInsertPoint(self) -> int:
         """QHeadlineWrapper."""
         if self.check():
             return self.widget.cursorPosition()
         return 0
 
-    # @+node:ekr.20110605121601.18122: *4* qlew.getSelectionRange
+    # @+node:ekr.20110605121601.18122: *4* QLineEditWrapper.getSelectionRange
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
         """QHeadlineWrapper."""
         w = self.widget
@@ -521,34 +521,34 @@ class QLineEditWrapper(QTextMixin):
             return i, j
         return 0, 0
 
-    # @+node:ekr.20110605121601.18123: *4* qlew.hasSelection
+    # @+node:ekr.20110605121601.18123: *4* QLineEditWrapper.hasSelection
     def hasSelection(self) -> bool:
         """QHeadlineWrapper."""
         if self.check():
             return self.widget.hasSelectedText()
         return False
 
-    # @+node:ekr.20110605121601.18124: *4* qlew.see & seeInsertPoint
+    # @+node:ekr.20110605121601.18124: *4* QLineEditWrapper.see & seeInsertPoint
     def see(self, i: int) -> None:
         """QHeadlineWrapper."""
 
     def seeInsertPoint(self) -> None:
         """QHeadlineWrapper."""
 
-    # @+node:ekr.20110605121601.18125: *4* qlew.setAllText
+    # @+node:ekr.20110605121601.18125: *4* QLineEditWrapper.setAllText
     def setAllText(self, s: str) -> None:
         """Set all text of a Qt headline widget."""
         if self.check():
             w = self.widget
             w.setText(s)
 
-    # @+node:ekr.20110605121601.18128: *4* qlew.setFocus
+    # @+node:ekr.20110605121601.18128: *4* QLineEditWrapper.setFocus
     def setFocus(self) -> None:
         """QHeadlineWrapper."""
         if self.check():
             g.app.gui.set_focus(self.c, self.widget)
 
-    # @+node:ekr.20110605121601.18129: *4* qlew.setInsertPoint
+    # @+node:ekr.20110605121601.18129: *4* QLineEditWrapper.setInsertPoint
     def setInsertPoint(self, i: int, s: str = None) -> None:
         """QHeadlineWrapper."""
         if not self.check():
@@ -559,7 +559,7 @@ class QLineEditWrapper(QTextMixin):
         i = max(0, min(i, len(s)))
         w.setCursorPosition(i)
 
-    # @+node:ekr.20110605121601.18130: *4* qlew.setSelectionRange
+    # @+node:ekr.20110605121601.18130: *4* QLineEditWrapper.setSelectionRange
     def setSelectionRange(
         self, i: int, j: int, insert: Optional[int] = None, s: str = None
     ) -> None:
