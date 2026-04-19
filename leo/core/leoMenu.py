@@ -339,10 +339,7 @@ class LeoMenu:
                 wname = c.widget_name(w)
                 if wname.startswith('head'):
                     w = c.frame.tree.edit_widget(c.p)
-            if not g.isTextWidget(w):
-                g.trace('not a text widget', repr(w))  ###
-                return None
-            return w
+            return w if g.isTextWidget(w) else None
 
         if isinstance(command, str):
 
