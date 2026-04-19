@@ -539,54 +539,27 @@ class LeoFrame:
         if not g.isTextWrapper(w):
             return
         wname = c.widget_name(w) or ''
-        ### g.trace(w.__class__.__name__, wname)
         bunch = u.beforeChangeBody(p)
-        # # # if self.cursorStay and wname.startswith('body'):
-        # # #     ### if self.cursorStay and isinstance(w, QTextEditWrapper):
-        # # #     tCurPosition = w.getInsertPoint()
-        i, j = w.getSelectionRange()  # Returns insert point if no selection.
-        s = g.app.gui.getTextFromClipboard()
-        ### g.trace(i, j, wname, s)  ###
-        s = g.checkUnicode(s)
-        s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
-        singleLine = wname.startswith(('head', 'minibuffer'))
-        ### singleLine = isinstance(w, (QLineEditWrapper, QMinibufferWrapper))
-        if singleLine:
-            # Strip trailing newlines so the truncation doesn't cause confusion.
-            while s and s[-1] in ('\n', '\r'):
-                s = s[:-1]
         # Save the horizontal scroll position.
         if hasattr(w, 'getXScrollPosition'):
             x_pos = w.getXScrollPosition()
+        s = (
+            g.checkUnicode(g.app.gui.getTextFromClipboard())
+            .replace('\r\n', '\n')
+            .replace('\r', '\n')  # 3759.
+        )
+        if wname.startswith('log'):
+            # #2593: Replace link patterns with html links.
+            c.frame.log.put_html_links(s)
         # Update the widget.
+        i, j = w.getSelectionRange()  # Returns insert point if no selection.
         if i != j:
             w.delete(i, j)
-        # #2593: Replace link patterns with html links.
-        if wname.startswith('log'):
-            if c.frame.log.put_html_links(s):
-                return  # create_html_links has done all the work.
         w.insert(i, s)
         w.see(i + len(s) + 2)
         if wname.startswith('body'):
-            # # # if self.cursorStay:
-            # # #     if tCurPosition == j:
-            # # #         offset = len(s) - (j - i)
-            # # #     else:
-            # # #         offset = 0
-            # # #     newCurPosition = tCurPosition + offset
-            # # #     w.setSelectionRange(i=newCurPosition, j=newCurPosition)
             p.v.b = w.getAllText()
             u.afterChangeBody(p, 'Paste', bunch)
-        elif singleLine:
-            s = w.getAllText()
-            while s and s[-1] in ('\n', '\r'):
-                s = s[:-1]
-        else:
-            pass
-        ### g.trace(w.getAllText())  ###
-        if wname.startswith('head'):  ###
-            p.v.h = w.getAllText()
-        # Never scroll horizontally.
         if hasattr(w, 'getXScrollPosition'):
             w.setXScrollPosition(x_pos)
         c.recolor()  # 4398.
