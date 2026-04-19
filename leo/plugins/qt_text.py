@@ -454,7 +454,7 @@ class QLineEditWrapper(QTextMixin):
 
     # @+others
     # @+node:ekr.20110605121601.18060: *3* qlew.__init__ and __repr__
-    def __init__(self, widget: QLineEdit, name: str, c: Cmdr = None) -> None:
+    def __init__(self, widget: QLineEdit, name: str = None, c: Cmdr = None) -> None:
         """Ctor for QLineEditWrapper class."""
         super().__init__(c)
         self.widget = widget
