@@ -76,6 +76,12 @@ def dump_colorizer_last_colorizer_traces(event: LeoKeyEvent) -> None:
     print('\n'.join(colorizer.last_trace))
 
 
+# Module-level: URL lead-in characters as a set covering both cases, so
+# jedit.colorRangeWithTag's per-character scan does not have to call
+# str.lower() on every tagged character.
+_url_leadins_set = frozenset(g.url_leadins + g.url_leadins.upper())
+
+
 # @+node:ekr.20170127141855.1: ** class BaseColorizer
 class BaseColorizer:
     """
@@ -1622,19 +1628,22 @@ class JEditColorizer(BaseColorizer):
         # Colorize UNL's, URL's, and GNX's *everywhere*.
         if tag != 'url':
             j = min(j, len(s))
+            # Avoid str.lower() per character: check both cases via a set
+            # built once from g.url_leadins (lowercase).
+            url_leadins_set = _url_leadins_set
             while i < j:
-                ch = s[i].lower()
-                if ch == 'g':
+                ch = s[i]
+                if ch == 'g' or ch == 'G':
                     n = self.match_gnx(s, i)
                     if n > 0:
                         i += n
                         continue
-                if ch == 'u':
+                if ch == 'u' or ch == 'U':
                     n = self.match_unl(s, i)
                     if n > 0:
                         i += n
                         continue
-                if ch in g.url_leadins:
+                if ch in url_leadins_set:
                     n = self.match_any_url(s, i)
                     if n > 0:
                         i += n
