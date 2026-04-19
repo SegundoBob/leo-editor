@@ -272,6 +272,8 @@ class Importer:
         lines.
         """
         string_delims = self.string_list
+        # Tuple form so str.startswith can test all delimiters in one C call.
+        string_delims_tuple = tuple(string_delims)
         line_comment, start_comment, end_comment = g.set_delims_from_language(self.language)
         target = ''  # The string ending a multi-line comment or string.
         escape = '\\'
@@ -292,21 +294,21 @@ class Importer:
                 elif target:
                     result_line.append(' ')
                     # Clear the target, but skip any remaining characters of the target.
-                    if g.match(line, i, target):
+                    if line.startswith(target, i):
                         skip_count = max(0, (len(target) - 1))
                         target = ''
                 elif line_comment and line.startswith(line_comment, i):
                     # Skip the rest of the line. It can't contain significant characters.
                     break
-                elif any(g.match(line, i, z) for z in string_delims):
+                elif line.startswith(string_delims_tuple, i):
                     # Allow multi-character string delimiters.
                     result_line.append(' ')
                     for z in string_delims:
-                        if g.match(line, i, z):
+                        if line.startswith(z, i):
                             target = z
                             skip_count = max(0, (len(z) - 1))
                             break
-                elif start_comment and g.match(line, i, start_comment):
+                elif start_comment and line.startswith(start_comment, i):
                     result_line.append(' ')
                     target = end_comment
                     skip_count = max(0, len(start_comment) - 1)
