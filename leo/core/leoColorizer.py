@@ -1550,11 +1550,9 @@ class JEditColorizer(BaseColorizer):
             format.setForeground(color)
             format.setUnderlineStyle(UnderlineStyle.NoUnderline)
         self.tagCount += 1
-        # Building the trace costs ~40% of colorize time (g.caller stack walks
-        # and f-string formatting, repeated per tag). Gate it behind the same
-        # debug flag that toggles the live trace print; users who want to run
-        # `dump-last-colorizer-trace` must set `g.app.debug = ['coloring']`.
         if trace:
+            # PR #4618: (Ville Vainio) https://github.com/leo-editor/leo-editor/pull/4618
+            # Don't call report by default: It's setup is expensive!
             report(color)
         self.highlighter.setFormat(i, j - i, format)
 
