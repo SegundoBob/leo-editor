@@ -258,7 +258,6 @@ class LeoFrame:
         self.tree: LeoTree | NullTree | LeoQtTree = None
         self.useMiniBufferWidget = False
         # Other ivars...
-        ### self.cursorStay = True  # May be overridden in subclass.reloadSettings.
         self.es_newlines = 0  # newline count for this log stream.
         self.isNullFrame = False
         self.saved = False  # True if ever saved
@@ -491,10 +490,9 @@ class LeoFrame:
         if i == j:
             ins = w.getInsertPoint()
             i, j = g.getLine(w.getAllText(), ins)
-        # 2016/03/27: Fix a recent buglet.
-        # Don't clear the clipboard if we hit ctrl-c by mistake.
         s = w.get(i, j)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
+        # Don't clear the clipboard if we hit ctrl-c by mistake.
         if s:
             g.app.gui.replaceClipboardWith(s)
 
