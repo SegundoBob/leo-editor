@@ -1550,7 +1550,10 @@ class JEditColorizer(BaseColorizer):
             format.setForeground(color)
             format.setUnderlineStyle(UnderlineStyle.NoUnderline)
         self.tagCount += 1
-        report(color)  # A superb trace, cached for the dump-last-colorizer-trace command.
+        if trace:
+            # PR #4618: (Ville Vainio) https://github.com/leo-editor/leo-editor/pull/4618
+            # Don't call report by default: It's setup is expensive!
+            report(color)
         self.highlighter.setFormat(i, j - i, format)
 
     # @+node:ekr.20110605121601.18589: *3* jedit:Pattern matchers
