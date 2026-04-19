@@ -15,6 +15,7 @@ import io
 import json
 import os
 import pickle
+import re
 import shutil
 import sqlite3
 import tempfile
@@ -171,6 +172,9 @@ class FastRead:
     # @+node:ekr.20180602062323.7: *3* fast.readWithElementTree & helpers
     # #1510: https://en.wikipedia.org/wiki/Valid_characters_in_XML.
     translate_dict = {z: None for z in range(20) if chr(z) not in '\t\r\n'}
+    # Match any control char that must be stripped per #1510. Used as a cheap
+    # pre-check so we skip `str.translate` (~100 ms/MB) on clean files.
+    bad_xml_chars_re = re.compile('[' + ''.join(chr(z) for z in translate_dict) + ']')
 
     bad_path_dict: dict[str, bool] = {}
 
@@ -180,8 +184,9 @@ class FastRead:
         s_or_b: str | bytes,
     ) -> tuple[VNode, Value]:
         contents = g.toUnicode(s_or_b)
-        table = contents.maketrans(self.translate_dict)  # type:ignore #1510.
-        contents = contents.translate(table)  # #1036, #1046.
+        if self.bad_xml_chars_re.search(contents):  # #1036, #1046, #1510.
+            table = contents.maketrans(self.translate_dict)  # type:ignore
+            contents = contents.translate(table)
         try:
             xroot = ElementTree.fromstring(contents)
         except Exception:
