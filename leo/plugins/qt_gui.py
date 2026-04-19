@@ -1717,9 +1717,6 @@ class LeoQtGui(leoGui.LeoGui):
         widget_list = [QtWidgets.QTextEdit, QtWidgets.QLineEdit]
         if Qsci:
             widget_list.append(Qsci.QsciScintilla)
-        # if Qsci:
-        #     return isinstance(w, (Qsci.QsciScintilla, QtWidgets.QTextEdit))
-        # return isinstance(w, QtWidgets.QTextEdit, QtWidgets.QLineEdit)
         return isinstance(w, tuple(widget_list))
 
     def isTextWrapper(self, w: Any) -> bool:
