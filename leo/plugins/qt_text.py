@@ -643,7 +643,7 @@ if QtWidgets:
         """A subclass of QTextBrowser that overrides the mouse event handlers."""
 
         # @+others
-        # @+node:ekr.20110605121601.18006: *3*  lqtb.ctor
+        # @+node:ekr.20110605121601.18006: *3*  LeoQTextBrowser.__init__
         def __init__(self, parent: QWidget, c: Cmdr, wrapper: LeoQtLog) -> None:
             """
             ctor for LeoQTextBrowser class, a subclass of QtWidgets.QTextBrowser.
@@ -684,13 +684,13 @@ if QtWidgets:
                 'last_hl_color': hl_color,
             }
 
-        # @+node:ekr.20110605121601.18007: *3* lqtb. __repr__ & __str__
+        # @+node:ekr.20110605121601.18007: *3* LeoQTextBrowser. __repr__ & __str__
         def __repr__(self) -> str:
             return f"(LeoQTextBrowser) {id(self)}"
 
         __str__ = __repr__
 
-        # @+node:ekr.20110605121601.18008: *3* lqtb.Auto completion
+        # @+node:ekr.20110605121601.18008: *3* LeoQTextBrowser.Auto completion
         # @+node:ekr.20110605121601.18009: *4* class LeoQListWidget(QListWidget)
         class LeoQListWidget(QtWidgets.QListWidget):
             # @+others
@@ -844,7 +844,7 @@ if QtWidgets:
 
             # @-others
 
-        # @+node:ekr.20110605121601.18017: *4* lqtb.lqtb.init_completer
+        # @+node:ekr.20110605121601.18017: *4* LeoQTextBrowser.init_completer
         def init_completer(self, options: list[str]) -> LeoQListWidget:
             """Connect a QCompleter."""
             c = self.leo_c
@@ -859,7 +859,7 @@ if QtWidgets:
             qc.show_completions(options)
             return qc
 
-        # @+node:ekr.20110605121601.18018: *4* lqtb.redirections to LeoQListWidget
+        # @+node:ekr.20110605121601.18018: *4* LeoQTextBrowser.redirections to LeoQListWidget
         def end_completer(self) -> None:
             if hasattr(self, 'leo_qc'):
                 self.leo_qc.end_completer()
@@ -869,8 +869,8 @@ if QtWidgets:
             if hasattr(self, 'leo_qc'):
                 self.leo_qc.show_completions(aList)
 
-        # @+node:tom.20210827230127.1: *3* lqtb Highlight Current Line
-        # @+node:tom.20210827225119.3: *4* lqtb.parse_css
+        # @+node:tom.20210827230127.1: *3* LeoQTextBrowser Highlight Current Line
+        # @+node:tom.20210827225119.3: *4* LeoQTextBrowser.parse_css
         # @@language python
         @staticmethod
         def parse_css(css_string: str, clas: str = '') -> tuple[str, str]:
@@ -906,7 +906,7 @@ if QtWidgets:
                     break
             return color, bg
 
-        # @+node:tom.20210827225119.4: *4* lqtb.assign_bg
+        # @+node:tom.20210827225119.4: *4* LeoQTextBrowser.assign_bg
         # @@language python
         @staticmethod
         def assign_bg(fg: str) -> QColor:
@@ -933,7 +933,7 @@ if QtWidgets:
                     bg = 'black'
             return QColor(bg)
 
-        # @+node:tom.20210827225119.5: *4* lqtb.calc_hl
+        # @+node:tom.20210827225119.5: *4* LeoQTextBrowser.calc_hl
         # @@language python
         @staticmethod
         def calc_hl(palette: QtGui.QPalette) -> QColor:
@@ -962,7 +962,7 @@ if QtWidgets:
                     hl = bg.lighter(140)
             return hl
 
-        # @+node:tom.20210827225119.2: *4* lqtb.highlightCurrentLine
+        # @+node:tom.20210827225119.2: *4* LeoQTextBrowser.highlightCurrentLine
         # @@language python
         def highlightCurrentLine(self) -> None:
             """Highlight cursor line."""
@@ -1040,7 +1040,7 @@ if QtWidgets:
             editor.setExtraSelections([selection])
             # @-<< Apply Highlight >>
 
-        # @+node:ekr.20141103061944.31: *3* lqtb.get/setXScrollPosition
+        # @+node:ekr.20141103061944.31: *3* LeoQTextBrowser.get/setXScrollPosition
         def getXScrollPosition(self) -> int:
             """Get the horizontal scrollbar position."""
             w = self
@@ -1055,7 +1055,7 @@ if QtWidgets:
                 sb = w.horizontalScrollBar()
                 sb.setSliderPosition(pos)
 
-        # @+node:ekr.20111002125540.7021: *3* lqtb.get/setYScrollPosition
+        # @+node:ekr.20111002125540.7021: *3* LeoQTextBrowser.get/setYScrollPosition
         def getYScrollPosition(self) -> int:
             """Get the vertical scrollbar position."""
             w = self
@@ -1071,7 +1071,7 @@ if QtWidgets:
             sb = w.verticalScrollBar()
             sb.setSliderPosition(pos)
 
-        # @+node:ekr.20110605121601.18019: *3* lqtb.leo_dumpButton
+        # @+node:ekr.20110605121601.18019: *3* LeoQTextBrowser.leo_dumpButton
         def leo_dumpButton(self, event: LeoKeyEvent, tag: str) -> str:
             button = event.button()
             table = (
@@ -1088,14 +1088,14 @@ if QtWidgets:
                 kind = f"unknown: {repr(button)}"
             return kind
 
-        # @+node:ekr.20200304130514.1: *3* lqtb.onContextMenu
+        # @+node:ekr.20200304130514.1: *3* LeoQTextBrowser.onContextMenu
         def onContextMenu(self, point: QPoint) -> None:
             """LeoQTextBrowser: Callback for customContextMenuRequested events."""
             # #1286.
             c, w = self.leo_c, self
             g.app.gui.onContextMenu(c, w, point)
 
-        # @+node:ekr.20120925061642.13506: *3* lqtb.onSliderChanged
+        # @+node:ekr.20120925061642.13506: *3* LeoQTextBrowser.onSliderChanged
         def onSliderChanged(self, arg: int) -> None:
             """Handle a Qt onSliderChanged event."""
             c = self.leo_c
@@ -1110,7 +1110,7 @@ if QtWidgets:
             if p:
                 p.v.scrollBarSpot = arg
 
-        # @+node:ekr.20201204172235.1: *3* lqtb.paintEvent
+        # @+node:ekr.20201204172235.1: *3* LeoQTextBrowser.paintEvent
         leo_cursor_width = 0
 
         leo_vim_mode: bool = None
@@ -1198,7 +1198,7 @@ if QtWidgets:
             qp.drawRect(w.cursorRect())
             qp.end()
 
-        # @+node:tbrown.20130411145310.18855: *3* lqtb.wheelEvent
+        # @+node:tbrown.20130411145310.18855: *3* LeoQTextBrowser.wheelEvent
         def wheelEvent(self, event: QWheelEvent) -> None:
             """Handle a wheel event."""
             if KeyboardModifier.ControlModifier & event.modifiers():
