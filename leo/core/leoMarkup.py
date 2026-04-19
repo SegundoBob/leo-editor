@@ -5,6 +5,7 @@
 # @+<< leoMarkup imports & annotations >>
 # @+node:ekr.20190515070742.3: ** << leoMarkup imports & annotations >>
 from __future__ import annotations
+import functools
 import io
 from shutil import which
 import os
@@ -24,22 +25,27 @@ if TYPE_CHECKING:  # pragma: no cover
     File_List = Optional[list[str]]
 # @-<< leoMarkup imports & annotations >>
 
-# Try RVM Ruby asciidoctor first, then fallback to system asciidoctor
-try:
-    import subprocess
+# External tool discovery is deferred: `shutil.which` walks every entry on
+# PATH, and these lookups previously fired on every Leo file open via
+# `Commands.__init__`. Resolve lazily, cache the result.
+@functools.cache
+def _asciidoctor_exec() -> Optional[str]:
+    return which('asciidoctor')
 
-    rvm_gemdir = subprocess.check_output(['rvm', 'gemdir'], text=True).strip()
-    rvm_asciidoctor = os.path.join(rvm_gemdir, 'bin', 'asciidoctor')
-    if os.path.exists(rvm_asciidoctor):
-        asciidoctor_exec = rvm_asciidoctor
-    else:
-        asciidoctor_exec = which('asciidoctor')
-except Exception:
-    asciidoctor_exec = which('asciidoctor')
 
-asciidoc3_exec = which('asciidoc3')
-pandoc_exec = which('pandoc')
-sphinx_build = which('sphinx-build')
+@functools.cache
+def _asciidoc3_exec() -> Optional[str]:
+    return which('asciidoc3')
+
+
+@functools.cache
+def _pandoc_exec() -> Optional[str]:
+    return which('pandoc')
+
+
+@functools.cache
+def _sphinx_build() -> Optional[str]:
+    return which('sphinx-build')
 
 
 # @+others
@@ -368,7 +374,8 @@ class MarkupCommands:
         """
         Process the input file given by i_path with asciidoctor or asciidoc3.
         """
-        # global asciidoctor_exec, asciidoc3_exec
+        asciidoctor_exec = _asciidoctor_exec()
+        asciidoc3_exec = _asciidoc3_exec()
         assert asciidoctor_exec or asciidoc3_exec, g.callers()
         # Call the external program to write the output file.
         # The -e option deletes css.
@@ -381,8 +388,7 @@ class MarkupCommands:
         """
         Process the input file given by i_path with pandoc.
         """
-        # global pandoc_exec
-        assert pandoc_exec, g.callers()
+        assert _pandoc_exec(), g.callers()
         # Call pandoc to write the output file.
         # --quiet does no harm.
         command = f"pandoc {i_path} -t html5 -o {o_path}"
@@ -546,8 +552,7 @@ class MarkupCommands:
         preview: bool = False,
         verbose: bool = True,
     ) -> File_List:
-        # global asciidoctor_exec, asciidoc3_exec
-        if asciidoctor_exec or asciidoc3_exec:
+        if _asciidoctor_exec() or _asciidoc3_exec():
             return self.command_helper(event, kind='adoc', preview=preview, verbose=verbose)
         name = 'adoc-with-preview' if preview else 'adoc'
         g.es_print(f"{name} requires either asciidoctor or asciidoc3")
@@ -559,8 +564,7 @@ class MarkupCommands:
         preview: bool = False,
         verbose: bool = True,
     ) -> File_List:
-        # global pandoc_exec
-        if pandoc_exec:
+        if _pandoc_exec():
             return self.command_helper(event, kind='pandoc', preview=preview, verbose=verbose)
         name = 'pandoc-with-preview' if preview else 'pandoc'
         g.es_print(f"{name} requires pandoc")
@@ -572,8 +576,7 @@ class MarkupCommands:
         preview: bool = False,
         verbose: bool = True,
     ) -> File_List:
-        # global sphinx_build
-        if sphinx_build:
+        if _sphinx_build():
             return self.command_helper(event, kind='sphinx', preview=preview, verbose=verbose)
         name = 'sphinx-with-preview' if preview else 'sphinx'
         g.es_print(f"{name} requires sphinx")
