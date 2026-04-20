@@ -336,13 +336,13 @@ def python_comment(colorer, s, i):
     n = colorer.match_eol_span(s, i, kind="comment1", seq="#")
 
     # Leo 6.8.3. Add special case for @language jupytext.
-    # Fast path: virtually every '#' comment fails the cheap checks, so
-    # gate the ancestor/body scan behind them. Without this gate, the
-    # scan fired on every '#' in every Python node, turning colorization
-    # of any large @file node into an O(n_comments * n_ancestor_lines)
-    # operation.
+
+    # PR #4617 (Ville): https://github.com/leo-editor/leo-editor/pull/4617
+    # Make this fast test first.
     if not (i == 0 and s.startswith('# %%')):
         return n
+
+    # This test is expensive!
     in_jupytext_tree = any(
         z.startswith('@language jupytext')
         for z_p in c.p.self_and_parents()
