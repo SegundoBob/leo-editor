@@ -38,6 +38,7 @@ from leo.core.leoQt import Shadow, Shape, StandardButton, Weight, WindowType
 from leo.plugins import qt_events
 from leo.plugins import qt_frame
 from leo.plugins import qt_idle_time
+from leo.plugins.qt_frame import LeoQtLog
 from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper, QTextMixin
 
 # This defines the commands defined by @g.command.
@@ -236,9 +237,11 @@ class LeoQtGui(leoGui.LeoGui):
     # @+node:ekr.20260418104208.1: *3*  LeoQtGui.create_wrapper_for_widget
     def create_wrapper_for_widget(self, c: Cmdr, w: Any) -> QTextMixin:
         return (
+            # Order matters.
             w if isinstance(w, QTextMixin)
             else QLineEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QLineEdit)
             else QTextEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QTextEdit)
+            else w.wrapper if getattr(w, 'wrapper', None)
             else None
         )  # fmt: skip
 

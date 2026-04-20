@@ -714,7 +714,7 @@ class LeoLog:
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
         self.textDict: dict[str, Widget] = {}  # Keys: page names. Values: text widgets.
-        self.wrapper: StringTextWrapper = None  # To keep mypy happy.
+        self.wrapper: QTextMixin = None
 
     # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:

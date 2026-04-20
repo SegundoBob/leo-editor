@@ -2293,6 +2293,7 @@ class LeoQtLog(leoFrame.LeoLog):
         self.logDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
         self.logWidget: LeoLog = None
         self.qtTabWidget: QWidget = c.frame.top.tabWidget
+        self.wrapper: QTextEditWrapper = None  # #4623.
         tw = self.qtTabWidget
 
         # Bug 917814: Switching Log Pane tabs is done incompletely.
@@ -2316,6 +2317,9 @@ class LeoQtLog(leoFrame.LeoLog):
         # Create the log tab as the leftmost tab.
         log.createTab('Log')
         self.logWidget = self.contentsDict.get('Log')
+        self.wrapper = QTextEditWrapper(c=c, widget=self.logWidget)  # #4623.
+
+        # Configure.
         logWidget = self.logWidget
         logWidget.setWordWrapMode(WrapMode.WordWrap if self.wrap else WrapMode.NoWrap)
         w.insertTab(0, logWidget, 'Log')  # Required.
