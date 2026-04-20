@@ -1640,7 +1640,7 @@ class JEditColorizer(BaseColorizer):
             self.setTag(tag, s, i, j)
 
         # PR #4619: Scan only tags that could contain UNL's, URL's, and GNX's.
-        if tag in _url_bearing_tags:
+        if tag in _url_bearing_tags or self.language == 'md' and tag != 'url':
             j = min(j, len(s))
             # PR #4619: Avoid str.lower.
             url_leadins_set = _url_leadins_set
@@ -1657,6 +1657,11 @@ class JEditColorizer(BaseColorizer):
                         i += n
                         continue
                 if ch in url_leadins_set:
+                    n = self.match_any_url(s, i)
+                    if n > 0:
+                        i += n
+                        continue
+                if self.language == 'md' and tag != 'url' and ch in g.url_leadins:
                     n = self.match_any_url(s, i)
                     if n > 0:
                         i += n
