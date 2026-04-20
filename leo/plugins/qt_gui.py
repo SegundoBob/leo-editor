@@ -248,20 +248,13 @@ class LeoQtGui(leoGui.LeoGui):
         if isinstance(w, LeoQtTree):
             # A strange special case: the class allocates its own wrappers.
             return None
-
-        def oops(w: Any, wrapper_name: str) -> None:
-            g.trace(f"Allocate {wrapper_name} for: {w.__class__.__name__}")
-
         # Defensive code.
-        if isinstance(w, QtWidgets.QLineEdit):
-            oops(w, 'QLineEditWrapper')
-            w.leo_wrapper = QLineEditWrapper(c=c, widget=w)
-        elif isinstance(w, QtWidgets.QTextEdit):
-            oops(w, 'QTextEditWrapper')
-            w.leo_wrapper = QTextEditWrapper(c=c, widget=w)
-        else:
-            oops(w, 'StringTextWrapper')
-            w.leo_wrapper = StringTextWrapper(c=c)
+        w.leo_wrapper = (
+                 QLineEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QLineEdit)
+            else QTextEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QTextEdit)
+            else StringTextWrapper(c=c)
+        )  # fmt: skip
+        g.trace(f"Allocate {w.leo_wrapper.__class__.__name__} for {w.__class__.__name__}")
         return w.leo_wrapper
 
     # @+node:ekr.20110605121601.18485: *3* LeoQtGui.Clipboard
