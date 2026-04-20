@@ -1656,12 +1656,9 @@ class JEditColorizer(BaseColorizer):
                     if n > 0:
                         i += n
                         continue
-                if ch in url_leadins_set:
-                    n = self.match_any_url(s, i)
-                    if n > 0:
-                        i += n
-                        continue
-                if self.language == 'md' and tag != 'url' and ch in g.url_leadins:
+                if ch in url_leadins_set or (
+                    self.language == 'md' and tag != 'url' and ch in g.url_leadins
+                ):
                     n = self.match_any_url(s, i)
                     if n > 0:
                         i += n
