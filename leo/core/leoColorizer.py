@@ -1646,12 +1646,12 @@ class JEditColorizer(BaseColorizer):
             url_leadins_set = _url_leadins_set
             while i < j:
                 ch = s[i]
-                if ch == 'g' or ch == 'G':
+                if ch in 'gG':
                     n = self.match_gnx(s, i)
                     if n > 0:
                         i += n
                         continue
-                if ch == 'u' or ch == 'U':
+                if ch in 'uU':
                     n = self.match_unl(s, i)
                     if n > 0:
                         i += n
