@@ -34,12 +34,13 @@ from leo.core.leoQt import (
 
 # This import causes pylint to fail on this file and on leoBridge.py.
 # The failure is in astroid: raw_building.py.
+from leo.core.leoAPI import StringTextWrapper
 from leo.core.leoQt import Shadow, Shape, StandardButton, Weight, WindowType
 from leo.plugins import qt_events
 from leo.plugins import qt_frame
 from leo.plugins import qt_idle_time
-from leo.plugins.qt_frame import LeoQtLog
-from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper, QTextMixin
+from leo.plugins.qt_text import QTextMixin, QLineEditWrapper, QTextEditWrapper
+from leo.plugins.qt_tree import LeoQtTree
 
 # This defines the commands defined by @g.command.
 from leo.plugins import qt_commands
@@ -242,15 +243,26 @@ class LeoQtGui(leoGui.LeoGui):
             return w
         if getattr(w, 'wrapper', None):
             return w.wrapper
-        # To do: inject leo_wrapper into subclasses of QLineEdit and QTextEdit.
+        if getattr(w, 'leo_wrapper', None):
+            return w.leo_wrapper
+        if isinstance(w, LeoQtTree):
+            # A strange special case: the class allocates its own wrappers.
+            return None
+
+        def oops(w: Any, wrapper_name: str) -> None:
+            g.trace(f"Allocate {wrapper_name} for: {w.__class__.__name__}")
+
+        # Defensive code.
         if isinstance(w, QtWidgets.QLineEdit):
-            g.trace('QLineEdit: allocate wrapper')
-            return QLineEditWrapper(c=c, widget=w)
-        if isinstance(w, QtWidgets.QTextEdit):
-            g.trace('QTextEdit: allocate wrapper')
-            return QTextEditWrapper(c=c, widget=w)
-        g.trace('Oops', w.__class__.__name__)  ###
-        return None
+            oops(w, 'QLineEditWrapper')
+            w.leo_wrapper = QLineEditWrapper(c=c, widget=w)
+        elif isinstance(w, QtWidgets.QTextEdit):
+            oops(w, 'QTextEditWrapper')
+            w.leo_wrapper = QTextEditWrapper(c=c, widget=w)
+        else:
+            oops(w, 'StringTextWrapper')
+            w.leo_wrapper = StringTextWrapper(c=c)
+        return w.leo_wrapper
 
     # @+node:ekr.20110605121601.18485: *3* LeoQtGui.Clipboard
     # @+node:ekr.20160917125946.1: *4* LeoQtGui.replaceClipboardWith

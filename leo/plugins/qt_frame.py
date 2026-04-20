@@ -53,7 +53,7 @@ from leo.core.leoQt import (
     WrapMode,
 )
 from leo.plugins import qt_events, qt_text
-from leo.plugins.qt_text import QTextEditWrapper
+from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper
 from leo.plugins.qt_tree import LeoQtTree
 from leo.plugins.mod_scripting import build_rclick_tree
 from leo.plugins.qt_layout import LayoutCacheWidget
@@ -1067,6 +1067,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
         lineEdit = VisLineEdit(frame)
         lineEdit._sel_and_insert = (0, 0, 0)
         lineEdit.setObjectName('lineEdit')  # name important.
+        lineEdit.leo_wrapper = QLineEditWrapper(widget=lineEdit)  # #4623.
         # Pack.
         hLayout = self.createHLayout(frame, 'minibufferHLayout', spacing=4)
         hLayout.setContentsMargins(3, 2, 2, 0)
