@@ -842,33 +842,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
         self.leo_master.select(c)
 
     # @+node:ekr.20110605121601.18142: *3* dw: top-level methods
-    # @+node:ekr.20190118150859.10: *4* dw.addNewEditor
-    def addNewEditor(self, name: str) -> tuple[QWidget, QTextMixin]:
-        """Create a new body editor."""
-        c, p = self.leo_c, self.leo_c.p
-        body = c.frame.body
-        assert isinstance(body, LeoQtBody), repr(body)
-        # Step 1: create the editor.
-        parent_frame = c.frame.top.leo_body_inner_frame
-        widget = qt_text.LeoQTextBrowser(parent_frame, c, self)
-        widget.setObjectName('richTextEdit')  # Will be changed later.
-        wrapper = qt_text.QTextEditWrapper(widget, name='body', c=c)
-        self.packLabel(widget)
-        # Step 2: inject ivars, set bindings, etc.
-        inner_frame = c.frame.top.leo_body_inner_frame  # Inject ivars *here*.
-        body.injectIvars(inner_frame, name, p, wrapper)
-        body.updateInjectedIvars(widget, p)
-        wrapper.setAllText(p.b)
-        wrapper.see(0)
-        c.k.completeAllBindingsForWidget(wrapper)
-        if isinstance(widget, QtWidgets.QTextEdit):
-            colorizer = leoColorizer.make_colorizer(c, widget)
-            colorizer.highlighter.setDocument(widget.document())
-        else:
-            # Scintilla only.
-            body.recolorWidget(p, wrapper)
-        return parent_frame, wrapper
-
     # @+node:ekr.20110605121601.18143: *4* dw.createBodyPane
     def createBodyPane(self, parent: QWidget) -> QWidget:
         """
@@ -4197,6 +4170,8 @@ class QtStatusLineClass:
         # Create the text widgets.
         self.textWidget1 = w1 = QtWidgets.QLineEdit(self.statusBar)
         self.textWidget2 = w2 = QtWidgets.QLineEdit(self.statusBar)
+        w1.leo_wrapper = QLineEditWrapper(c=c, widget=w1)  # #4623
+        w2.leo_wrapper = QLineEditWrapper(c=c, widget=w2)  # #4623
         w1.setObjectName('status1')
         w2.setObjectName('status2')
         w1.setReadOnly(True)
