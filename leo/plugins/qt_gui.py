@@ -236,14 +236,21 @@ class LeoQtGui(leoGui.LeoGui):
 
     # @+node:ekr.20260418104208.1: *3*  LeoQtGui.create_wrapper_for_widget
     def create_wrapper_for_widget(self, c: Cmdr, w: Any) -> QTextMixin:
-        return (
-            # Order matters.
-            w if isinstance(w, QTextMixin)
-            else QLineEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QLineEdit)
-            else QTextEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QTextEdit)
-            else w.wrapper if getattr(w, 'wrapper', None)
-            else None
-        )  # fmt: skip
+        if w is None:
+            return None
+        if isinstance(w, QTextMixin):
+            return w
+        if getattr(w, 'wrapper', None):
+            return w.wrapper
+        # To do: inject leo_wrapper into subclasses of QLineEdit and QTextEdit.
+        if isinstance(w, QtWidgets.QLineEdit):
+            g.trace('QLineEdit: allocate wrapper')
+            return QLineEditWrapper(c=c, widget=w)
+        if isinstance(w, QtWidgets.QTextEdit):
+            g.trace('QTextEdit: allocate wrapper')
+            return QTextEditWrapper(c=c, widget=w)
+        g.trace('Oops', w.__class__.__name__)  ###
+        return None
 
     # @+node:ekr.20110605121601.18485: *3* LeoQtGui.Clipboard
     # @+node:ekr.20160917125946.1: *4* LeoQtGui.replaceClipboardWith
