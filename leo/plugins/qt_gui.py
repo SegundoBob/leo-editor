@@ -16,17 +16,31 @@ from typing import Any, Generator, Optional, Tuple, TYPE_CHECKING
 from leo.core import leoColor
 from leo.core import leoGlobals as g
 from leo.core import leoGui
-from leo.core.leoQt import Qt, Qsci, QtCore
-from leo.core.leoQt import QtGui, QtWidgets, QtSvg
-from leo.core.leoQt import ButtonRole, Checked, DialogCode, Icon, Information, Policy, Unchecked
+from leo.core.leoQt import (
+    ButtonRole,
+    Checked,
+    DialogCode,
+    Icon,
+    Information,
+    Policy,
+    Qsci,
+    Qt,
+    QtCore,
+    QtGui,
+    QtSvg,
+    QtWidgets,
+    Unchecked,
+)
 
 # This import causes pylint to fail on this file and on leoBridge.py.
 # The failure is in astroid: raw_building.py.
+from leo.core.leoAPI import StringTextWrapper
 from leo.core.leoQt import Shadow, Shape, StandardButton, Weight, WindowType
 from leo.plugins import qt_events
 from leo.plugins import qt_frame
 from leo.plugins import qt_idle_time
-from leo.plugins.qt_text import QTextMixin
+from leo.plugins.qt_text import QTextMixin, QLineEditWrapper, QTextEditWrapper
+from leo.plugins.qt_tree import LeoQtTree
 
 # This defines the commands defined by @g.command.
 from leo.plugins import qt_commands
@@ -64,6 +78,7 @@ if TYPE_CHECKING:  # pragma: no cover
     QVBoxLayout = QtWidgets.QVBoxLayout
     QWidget = QtWidgets.QWidget
     Value = Any
+    Widget = Any
 
 
 # @-<< qt_gui annotations >>
@@ -219,6 +234,28 @@ class LeoQtGui(leoGui.LeoGui):
         if 'shutdown' in g.app.debug:
             g.pr('LeoQtGui.destroySelf: calling qtApp.Quit')
         self.qtApp.quit()
+
+    # @+node:ekr.20260418104208.1: *3*  LeoQtGui.create_wrapper_for_widget
+    def create_wrapper_for_widget(self, c: Cmdr, w: Any) -> QTextMixin:
+        if w is None:
+            return None
+        if isinstance(w, QTextMixin):
+            return w
+        if getattr(w, 'wrapper', None):
+            return w.wrapper
+        if getattr(w, 'leo_wrapper', None):
+            return w.leo_wrapper
+        if isinstance(w, LeoQtTree):
+            # A strange special case: the class allocates its own wrappers.
+            return None
+        # Defensive code.
+        w.leo_wrapper = (
+                 QLineEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QLineEdit)
+            else QTextEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QTextEdit)
+            else StringTextWrapper(c=c)
+        )  # fmt: skip
+        g.trace(f"Allocate {w.leo_wrapper.__class__.__name__} for {w.__class__.__name__}")
+        return w.leo_wrapper
 
     # @+node:ekr.20110605121601.18485: *3* LeoQtGui.Clipboard
     # @+node:ekr.20160917125946.1: *4* LeoQtGui.replaceClipboardWith
@@ -1692,9 +1729,10 @@ class LeoQtGui(leoGui.LeoGui):
     # @+node:ekr.20110605121601.18522: *4* LeoQtGui.isTextWidget/isTextWrapper
     def isTextWidget(self, w: Any) -> bool:
         """Return True if w is some kind of Qt text widget."""
+        widget_list = [QtWidgets.QTextEdit, QtWidgets.QLineEdit]
         if Qsci:
-            return isinstance(w, (Qsci.QsciScintilla, QtWidgets.QTextEdit))
-        return isinstance(w, QtWidgets.QTextEdit)
+            widget_list.append(Qsci.QsciScintilla)
+        return isinstance(w, tuple(widget_list))
 
     def isTextWrapper(self, w: Any) -> bool:
         """Return True if w is a Text widget suitable for text-oriented commands."""
