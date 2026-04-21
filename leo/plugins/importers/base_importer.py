@@ -272,8 +272,7 @@ class Importer:
         lines.
         """
         string_delims = self.string_list
-        # Tuple form so str.startswith can test all delimiters in one C call.
-        string_delims_tuple = tuple(string_delims)
+        string_delims_tuple = tuple(string_delims)  # PR #4615: create tuple for s.startswith.
         line_comment, start_comment, end_comment = g.set_delims_from_language(self.language)
         target = ''  # The string ending a multi-line comment or string.
         escape = '\\'
