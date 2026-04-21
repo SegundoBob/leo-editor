@@ -26,9 +26,7 @@ if TYPE_CHECKING:  # pragma: no cover
 # @-<< leoMarkup imports & annotations >>
 
 
-# External tool discovery is deferred: `shutil.which` walks every entry on
-# PATH, and these lookups previously fired on every Leo file open via
-# `Commands.__init__`. Resolve lazily, cache the result.
+# PR #4615: Defer calls to `which` until needed.
 @functools.cache
 def _asciidoctor_exec() -> Optional[str]:
     return which('asciidoctor')
