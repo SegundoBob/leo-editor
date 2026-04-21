@@ -1556,7 +1556,7 @@ class NullLog(LeoLog):
         super().__init__(frame)
         c = self.c
         self.isNull = True
-        self.widget = StringTextWrapper(c=c, name='null-log')
+        self.widget = self.wrapper = StringTextWrapper(c=c, name='null-log')
 
     # @+others
     # @+node:ekr.20120216123546.10951: *3* NullLog.finishCreate
@@ -1636,7 +1636,7 @@ class NullStatusLineClass:
         """Ctor for NullStatusLine class."""
         self.c = c
         self.enabled = False
-        self.textWidget = StringTextWrapper(c, name='status-line')
+        self.textWidget = self.wrapper = StringTextWrapper(c, name='status-line')
 
     # @+others
     # @+node:ekr.20070302171917: *3* NullStatusLineClass.methods
