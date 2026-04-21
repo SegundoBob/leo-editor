@@ -2,8 +2,8 @@
 # @+node:ekr.20190515070742.1: * @file leoMarkup.py
 """Supports @adoc, @pandoc and @sphinx nodes and related commands."""
 
-# @+<< leoMarkup imports & annotations >>
-# @+node:ekr.20190515070742.3: ** << leoMarkup imports & annotations >>
+# @+<< leoMarkup: imports & annotations >>
+# @+node:ekr.20190515070742.3: ** << leoMarkup: imports & annotations >>
 from __future__ import annotations
 import functools
 import io
@@ -23,7 +23,9 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position
 
     File_List = Optional[list[str]]
-# @-<< leoMarkup imports & annotations >>
+# @-<< leoMarkup: imports & annotations >>
+# @+<< leoMarkup: cached functions >>
+# @+node:ekr.20260421071144.1: ** << leoMarkup: cached functions >>
 
 
 # PR #4615: Defer calls to `which` until needed.
@@ -45,6 +47,9 @@ def _pandoc_exec() -> Optional[str]:
 @functools.cache
 def _sphinx_build() -> Optional[str]:
     return which('sphinx-build')
+
+
+# @-<< leoMarkup: cached functions >>
 
 
 # @+others
