@@ -25,6 +25,7 @@ if TYPE_CHECKING:  # pragma: no cover
     File_List = Optional[list[str]]
 # @-<< leoMarkup imports & annotations >>
 
+
 # External tool discovery is deferred: `shutil.which` walks every entry on
 # PATH, and these lookups previously fired on every Leo file open via
 # `Commands.__init__`. Resolve lazily, cache the result.
