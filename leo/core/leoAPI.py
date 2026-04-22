@@ -10,7 +10,6 @@ from __future__ import annotations
 from typing import Any, Optional
 from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
-from leo.plugins.qt_text import QTextMixin
 
 if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
@@ -23,6 +22,102 @@ if TYPE_CHECKING:
 
 
 # @+others
+# @+node:ekr.20250329033642.5: ** class BaseTextAPI
+class BaseTextAPI:
+    """
+    A class specifying the interface to various text widgets,
+    including Leo's headline, body pane and other widgets.
+    """
+
+    def __init__(self, c: Cmdr) -> None:
+        pass
+
+    def appendText(self, s: str) -> None:
+        pass
+
+    def clipboard_append(self, s: str) -> None:
+        pass
+
+    def clipboard_clear(self) -> None:
+        pass
+
+    def delete(self, i: int, j: int = None) -> None:
+        pass
+
+    def deleteTextSelection(self) -> None:
+        pass
+
+    def disable(self) -> None:
+        pass
+
+    def enable(self, enabled: bool = True) -> None:
+        pass
+
+    def flashCharacter(
+        self,
+        i: int,
+        bg: str = 'white',
+        fg: str = 'red',
+        flashes: int = 3,
+        delay: int = 75,
+    ) -> None:
+        pass
+
+    def get(self, i: int, j: int) -> str:
+        return ''
+
+    def getAllText(self) -> str:
+        return ''
+
+    def getInsertPoint(self) -> int:
+        return 0
+
+    def getSelectedText(self) -> str:
+        return ''
+
+    def getSelectionRange(self) -> tuple[int, int]:
+        return (0, 0)
+
+    def getXScrollPosition(self) -> int:
+        return 0
+
+    def getYScrollPosition(self) -> int:
+        return 0
+
+    def hasSelection(self) -> bool:
+        return False
+
+    def insert(self, i: int, s: str) -> None:
+        pass
+
+    def see(self, i: int) -> None:
+        pass
+
+    def seeInsertPoint(self) -> None:
+        pass
+
+    def selectAllText(self, insert: str = None) -> None:
+        pass
+
+    def setAllText(self, s: str) -> None:
+        pass
+
+    def setFocus(self) -> None:
+        pass  # Required: sets the focus to wrapper.widget.
+
+    def setInsertPoint(self, pos: str, s: str = None) -> None:
+        pass
+
+    def setSelectionRange(self, i: int, j: int, insert: int = None) -> None:
+        pass
+
+    def setXScrollPosition(self, i: int) -> None:
+        pass
+
+    def setYScrollPosition(self, i: int) -> None:
+        pass
+
+
 # @+node:ekr.20250329033642.2: ** class IconBarAPI
 class IconBarAPI:
     """The required API for c.frame.iconBar."""
@@ -39,7 +134,7 @@ class IconBarAPI:
     def addRowIfNeeded(self) -> None:
         pass
 
-    def addWidget(self, w: QTextMixin) -> None:
+    def addWidget(self, w: BaseTextAPI) -> None:
         pass
 
     def clear(self) -> None:
@@ -48,7 +143,7 @@ class IconBarAPI:
     def createChaptersIcon(self) -> None:
         pass
 
-    def deleteButton(self, w: QTextMixin) -> None:
+    def deleteButton(self, w: BaseTextAPI) -> None:
         pass
 
     def getNewFrame(self) -> None:
@@ -56,7 +151,7 @@ class IconBarAPI:
 
     def setCommandForButton(
         self,
-        button: QTextMixin,
+        button: BaseTextAPI,
         command: str,
         command_p: Position,
         controller: ScriptingController,
@@ -98,52 +193,204 @@ class StatusLineAPI:
         pass
 
 
-# @+node:ekr.20070228074228.1: ** class StringTextWrapper (QTextMixin)
-class StringTextWrapper(QTextMixin):
-    """
-    A class that represents Leo's body pane as a Python string.
-    """
+# @+node:ekr.20070228074228.1: ** class StringTextWrapper
+class StringTextWrapper:
+    """A class that represents Leo's body pane as a Python string."""
 
     # @+others
-    # @+node:ekr.20260415161218.1: *3* StringTextWrapper.__init__
-    def __init__(self, c: Cmdr, name: str = None) -> None:
-        super().__init__(c)
+    # @+node:ekr.20070228074228.2: *3* stw.ctor
+    def __init__(self, c: Cmdr, name: str) -> None:
+        """Ctor for the StringTextWrapper class."""
         self.c = c
-        self.name = name or '<no name>'
-        # Ivars unique to StringTextWrapper.
+        self.name = name
         self.ins = 0
         self.sel = 0, 0
         self.s = ''
+        self.supportsHighLevelInterface = True
+        self.virtualInsertPoint = 0
+        self.widget = None  # This ivar must exist, and be None.
 
-    # @+node:ekr.20260415161250.1: *3* StringTextWrapper.__repr__
     def __repr__(self) -> str:
-        return f"<StringTextWrapper: @ {id(self)}>"
+        return f"<StringTextWrapper: {id(self)} {self.name}>"
 
-    # @+node:ekr.20140903172510.18579: *3* StringTextWrapper.setFocus
+    def getName(self) -> str:
+        """StringTextWrapper."""
+        return self.name  # Essential.
+
+    # @+node:ekr.20140903172510.18578: *3* stw.Clipboard
+    def clipboard_clear(self) -> None:
+        g.app.gui.replaceClipboardWith('')
+
+    def clipboard_append(self, s: str) -> None:
+        s1 = g.app.gui.getTextFromClipboard()
+        g.app.gui.replaceClipboardWith(s1 + s)
+
+    # @+node:ekr.20140903172510.18579: *3* stw.Do-nothings
+    # For StringTextWrapper.
+
+    def disable(self) -> None:
+        pass
+
+    def enable(self, enabled: bool = True) -> None:
+        pass
+
+    def flashCharacter(
+        self,
+        i: int,
+        bg: str = 'white',
+        fg: str = 'red',
+        flashes: int = 3,
+        delay: int = 75,
+    ) -> None:
+        pass
+
+    def getXScrollPosition(self) -> int:
+        return 0
+
+    def getYScrollPosition(self) -> int:
+        return 0
+
+    def see(self, i: int) -> None:
+        pass
+
+    def seeInsertPoint(self) -> None:
+        pass
+
     def setFocus(self) -> None:
         pass
 
-    # @+node:ekr.20140903172510.18591: *3* StringTextWrapper: Text overrides
-    # @+node:ekr.20140903172510.18595: *4* StringTextWrapper.get
+    def setStyleClass(self, name: str) -> None:
+        pass
+
+    def setXScrollPosition(self, i: int) -> None:
+        pass
+
+    def setYScrollPosition(self, i: int) -> None:
+        pass
+
+    # @+node:ekr.20140903172510.18591: *3* stw.Text
+    # @+node:ekr.20140903172510.18592: *4* stw.appendText
+    def appendText(self, s: str) -> None:
+        """StringTextWrapper."""
+        self.s = self.s + g.toUnicode(s)  # defensive
+        self.ins = len(self.s)
+        self.sel = self.ins, self.ins
+
+    # @+node:ekr.20140903172510.18593: *4* stw.delete
+    def delete(self, i: int, j: int = None) -> None:
+        """StringTextWrapper."""
+        if j is None:
+            j = i + 1
+        # This allows subclasses to use this base class method.
+        if i > j:
+            i, j = j, i
+        s = self.getAllText()
+        self.setAllText(s[:i] + s[j:])
+        # Bug fix: 2011/11/13: Significant in external tests.
+        self.setSelectionRange(i, i, insert=i)
+
+    # @+node:ekr.20140903172510.18594: *4* stw.deleteTextSelection
+    def deleteTextSelection(self) -> None:
+        """StringTextWrapper."""
+        i, j = self.getSelectionRange()
+        self.delete(i, j)
+
+    # @+node:ekr.20140903172510.18595: *4* stw.get
     def get(self, i: int, j: Optional[int] = None) -> str:
+        """StringTextWrapper."""
         if j is None:
             j = i + 1
         s = self.s[i:j]
         return g.toUnicode(s)
 
-    # @+node:ekr.20140903172510.18598: *4* StringTextWrapper.insert
+    # @+node:ekr.20140903172510.18596: *4* stw.getAllText
+    def getAllText(self) -> str:
+        """StringTextWrapper."""
+        s = self.s
+        return g.checkUnicode(s)
+
+    # @+node:ekr.20140903172510.18584: *4* stw.getInsertPoint
+    def getInsertPoint(self) -> int:
+        """StringTextWrapper."""
+        i = self.ins
+        if i is None:
+            if self.virtualInsertPoint is None:
+                i = 0
+            else:
+                i = self.virtualInsertPoint
+        self.virtualInsertPoint = i
+        return i
+
+    # @+node:ekr.20220909182855.1: *4* stw.getLastIndex
+    def getLastIndex(self) -> int:
+        """Return the length of the self.s"""
+        return len(self.s)
+
+    # @+node:ekr.20140903172510.18597: *4* stw.getSelectedText
+    def getSelectedText(self) -> str:
+        """StringTextWrapper."""
+        i, j = self.sel
+        s = self.s[i:j]
+        return g.checkUnicode(s)
+
+    # @+node:ekr.20140903172510.18585: *4* stw.getSelectionRange
+    def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
+        """Return the selected range of the widget."""
+        sel = self.sel
+        if len(sel) == 2 and sel[0] >= 0 and sel[1] >= 0:
+            i, j = sel
+            if sort and i > j:
+                sel = j, i  # Bug fix: 10/5/07
+            return sel
+        i = self.ins
+        return i, i
+
+    # @+node:ekr.20140903172510.18586: *4* stw.hasSelection
+    def hasSelection(self) -> bool:
+        """StringTextWrapper."""
+        i, j = self.getSelectionRange()
+        return i != j
+
+    # @+node:ekr.20140903172510.18598: *4* stw.insert
     def insert(self, i: int, s: str) -> None:
+        """StringTextWrapper."""
         self.s = self.s[:i] + s + self.s[i:]
         i += len(s)
         self.ins = i
         self.sel = i, i
 
-    # @+node:ekr.20140903172510.18600: *4* StringTextWrapper.setAllText
+    # @+node:ekr.20140903172510.18589: *4* stw.selectAllText
+    def selectAllText(self, insert: int = None) -> None:
+        """StringTextWrapper."""
+        self.setSelectionRange(0, len(self.s), insert=insert)
+
+    # @+node:ekr.20140903172510.18600: *4* stw.setAllText
     def setAllText(self, s: str) -> None:
+        """StringTextWrapper."""
         self.s = s
         i = len(self.s)
         self.ins = i
         self.sel = i, i
+
+    # @+node:ekr.20140903172510.18587: *4* stw.setInsertPoint
+    def setInsertPoint(self, i: int, s: str = None) -> None:
+        """StringTextWrapper."""
+        self.virtualInsertPoint = i
+        self.ins = i
+        self.sel = i, i
+
+    # @+node:ekr.20070228111853: *4* stw.setSelectionRange
+    def setSelectionRange(self, i: int, j: int, insert: int = None) -> None:
+        """StringTextWrapper."""
+        self.sel = i, j
+        self.ins = j if insert is None else insert
+
+    # @+node:ekr.20140903172510.18582: *4* stw.toPythonIndexRowCol
+    def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:
+        """StringTextWrapper."""
+        s = self.getAllText()
+        row, col = g.convertPythonIndexToRowCol(s, index)
+        return row, col
 
     # @-others
 
@@ -157,9 +404,13 @@ class TreeAPI:
 
     # Must be defined in subclasses.
 
-    # Leo 6.8.9: return None.
-    def editLabel(self, v: VNode, selectAll: bool = False, selection: tuple = None) -> None:
-        pass
+    def editLabel(
+        self,
+        v: VNode,
+        selectAll: bool = False,
+        selection: tuple = None,
+    ) -> tuple[Widget, BaseTextAPI]:
+        return None, None
 
     def edit_widget(self, p: Position) -> None:
         return None
@@ -206,7 +457,7 @@ class TreeAPI:
     def select(self, p: Position) -> None:
         pass
 
-    def updateHead(self, event: LeoKeyEvent, w: QTextMixin) -> None:
+    def updateHead(self, event: LeoKeyEvent, w: BaseTextAPI) -> None:
         pass
 
 
