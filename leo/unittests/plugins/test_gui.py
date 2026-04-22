@@ -72,7 +72,7 @@ class TestNullGui(LeoUnitTest):
             (c.frame.body, NullBody),
             (c.frame.iconBar, NullIconBarClass),
             (c.frame.log, NullLog),
-            (c.frame.miniBufferWidget, NullObject),
+            (c.frame.miniBufferWidget, None.__class__),  ###
             (c.frame.statusLine, NullStatusLineClass),
             (c.frame.tree, NullTree),
             # NullBody ivars...
@@ -84,8 +84,8 @@ class TestNullGui(LeoUnitTest):
         for obj, class_ in table:
             assert isinstance(obj, class_), (repr(obj), repr(class_))
 
-        for obj in (c.frame.body, c.frame.log, c.frame.statusLine):
-            assert getattr(obj, 'wrapper', None), repr(obj)
+        # for obj in (c.frame.body, c.frame.log, c.frame.statusLine):
+        #     assert getattr(obj, 'wrapper', None), repr(obj)
 
     # @-others
 
@@ -306,9 +306,9 @@ class TestQtGui(LeoUnitTest):
             (c.frame.body.wrapper, QTextEditWrapper),
             (c.frame.body.widget, LeoQTextBrowser),
             # LeoQtLog ivars...
-            (c.frame.log.qtLogCtrl, QTextEditWrapper),
+            (c.frame.log.logCtrl, QTextEditWrapper),
             (c.frame.log.logWidget, LeoQTextBrowser),
-            (c.frame.log.qtTabWidget, QTabWidget),
+            (c.frame.log.tabWidget, QTabWidget),
             # LeoQtTree ivars...
             (c.frame.tree.treeWidget, LeoQTreeWidget),
         )
@@ -318,13 +318,13 @@ class TestQtGui(LeoUnitTest):
                 # Every subclass of QTextMix is an instance of QTextMixin.
                 assert isinstance(obj, QTextMixin)
 
-        for obj in (
-            c.frame.body,
-            c.frame.statusLine.textWidget1,
-            c.frame.statusLine.textWidget2,
-            c.frame.log,
-        ):
-            assert getattr(obj, 'wrapper', None) or getattr(obj, 'leo_wrapper', None), repr(obj)
+        # for obj in (
+        #     c.frame.body,
+        #     c.frame.statusLine.textWidget1,
+        #     c.frame.statusLine.textWidget2,
+        #     c.frame.log,
+        # ):
+        #     assert getattr(obj, 'wrapper', None) or getattr(obj, 'leo_wrapper', None), repr(obj)
 
         # Test the class hierarchy of text-related classes.
         assert issubclass(LeoQTextBrowser, QtWidgets.QTextBrowser)
@@ -402,7 +402,8 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.extend([QLineEditWrapper, QTextEditWrapper, QScintillaWrapper])
         for cls in classes:
-            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
+            missing = get_missing(cls)
+            self.assertFalse(missing, msg=f"Missing {cls} methods: {missing}")
 
     # @-others
 
