@@ -634,8 +634,7 @@ class LeoFrame:
         else:
             c.bodyWantsFocus()
             k.setDefaultInputState()
-            # Recolor the *body* text, **not** the headline.
-            k.showStateAndMode(w=c.frame.body.wrapper)
+            k.showStateAndMode()
 
     # @+node:ekr.20031218072017.3680: *3* LeoFrame.Must be defined in subclasses
     def bringToFront(self) -> None:
