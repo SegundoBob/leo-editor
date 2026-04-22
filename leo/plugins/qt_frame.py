@@ -2342,13 +2342,13 @@ class LeoQtLog(leoFrame.LeoLog):
         self.logDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
         self.logWidget: LeoLog = None
         self.menu: qt_text.LeoQTextBrowser = None
-        self.qtTabWidget: QWidget = c.frame.top.tabWidget
-        tw = self.qtTabWidget
+        self.tabWidget: QWidget = c.frame.top.tabWidget
+        tw = self.tabWidget
 
         # Bug 917814: Switching Log Pane tabs is done incompletely.
         tw.currentChanged.connect(self.onCurrentChanged)
         if 0:  # Not needed to make onActivateEvent work.
-            # Works only for .qtTabWidget, *not* the individual tabs!
+            # Works only for .tabWidget, *not* the individual tabs!
             theFilter = qt_events.LeoQtEventFilter(c, w=tw, tag='tabWidget')
             tw.installEventFilter(theFilter)
         tw.setMovable(True)
@@ -2361,7 +2361,7 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20110605121601.18315: *4* LeoQtLog.finishCreate
     def finishCreate(self) -> None:
         """Finish creating the LeoQtLog class."""
-        c, log, w = self.c, self, self.qtTabWidget
+        c, log, w = self.c, self, self.tabWidget
 
         # Create the log tab as the leftmost tab.
         log.createTab('Log')
@@ -2494,7 +2494,7 @@ class LeoQtLog(leoFrame.LeoLog):
 
     # @+node:ekr.20120304214900.9940: *3* LeoQtLog.onCurrentChanged
     def onCurrentChanged(self, idx: int) -> None:
-        tabw = self.qtTabWidget
+        tabw = self.tabWidget
         w = tabw.widget(idx)
 
         # #917814: Switching Log Pane tabs is done incompletely
@@ -2666,7 +2666,7 @@ class LeoQtLog(leoFrame.LeoLog):
             # Set binding on all log pane widgets.
             g.app.gui.setFilter(c, widget, self, tag='log')
             self.contentsDict[tabName] = widget
-            self.qtTabWidget.addTab(widget, tabName)
+            self.tabWidget.addTab(widget, tabName)
         else:
             # #1161: Don't set the wrapper unless it has the correct type.
             contents = widget  # Unlike text widgets, contents is the actual widget.
@@ -2676,7 +2676,7 @@ class LeoQtLog(leoFrame.LeoLog):
                 widget.leo_log_wrapper = None  # Tell the truth.
             g.app.gui.setFilter(c, widget, contents, 'tabWidget')
             self.contentsDict[tabName] = contents
-            self.qtTabWidget.addTab(contents, tabName)
+            self.tabWidget.addTab(contents, tabName)
         return contents
 
     # @+node:ekr.20110605121601.18328: *4* LeoQtLog.deleteTab
@@ -2685,7 +2685,7 @@ class LeoQtLog(leoFrame.LeoLog):
         Delete the tab if it exists.  Otherwise do *nothing*.
         """
         c = self.c
-        w = self.qtTabWidget
+        w = self.tabWidget
         i = self.findTabIndex(tabName)
         if i is None:
             return
@@ -2697,7 +2697,7 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20190603062456.1: *4* LeoQtLog.findTabIndex
     def findTabIndex(self, tabName: str) -> Optional[int]:
         """Return the tab index for tabName, or None."""
-        w = self.qtTabWidget
+        w = self.tabWidget
         for i in range(w.count()):
             if tabName == w.tabText(i):
                 return i
@@ -2710,13 +2710,13 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20111122080923.10185: *4* LeoQtLog.orderedTabNames
     def orderedTabNames(self, LeoLog: str = None) -> list[str]:  # Unused: LeoLog
         """Return a list of tab names in the order in which they appear in the QTabbedWidget."""
-        w = self.qtTabWidget
+        w = self.tabWidget
         return [w.tabText(i) for i in range(w.count())]
 
     # @+node:ekr.20221022062949.1: *4* LeoQtLog.renameTab
     def renameTab(self, oldTabName: str, tabName: str) -> None:
         """Rename the text tab"""
-        w = self.qtTabWidget
+        w = self.tabWidget
         i = self.findTabIndex(oldTabName)
         if i is None:
             self.createTab(tabName)
@@ -2773,12 +2773,12 @@ class LeoQtLog(leoFrame.LeoLog):
                     findbox.setFocus()
         if tabName == 'Spell':
             # Set a flag for the spell system.
-            self.qtFrameDict['Spell'] = self.qtTabWidget.widget(i)
+            self.qtFrameDict['Spell'] = self.tabWidget.widget(i)
 
     # @+node:ekr.20190603064816.1: *5* LeoQtLog.finishSelectTab
     def finishSelectTab(self, tabName: str) -> None:
         """Select the proper tab."""
-        w = self.qtTabWidget
+        w = self.tabWidget
         # Special case for Spell tab.
         if tabName == 'Spell':
             return

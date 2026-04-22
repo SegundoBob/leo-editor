@@ -1606,7 +1606,7 @@ class NullLog(LeoLog):
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
         self.widget = StringTextWrapper(c=c, name='null-log')
-        self.wrapper: TextAPI = None  # To keep mypy happy.
+        ### self.wrapper: TextAPI = None  # To keep mypy happy.
 
     # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
     def finishCreate(self) -> None:
