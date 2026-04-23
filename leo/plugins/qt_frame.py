@@ -1741,10 +1741,11 @@ class LeoQtBody(leoFrame.LeoBody):
         """Handle a focus-in event in the body pane."""
         if obj.objectName() == 'richTextEdit':
             self.onFocusColorHelper('focus-in', obj)
-            if hasattr(obj, 'leo_copy_button') and obj.leo_copy_button:
-                obj.setReadOnly(True)
-            else:
-                obj.setReadOnly(False)
+            # if hasattr(obj, 'leo_copy_button') and obj.leo_copy_button:
+            #     obj.setReadOnly(True)
+            # else:
+            #     obj.setReadOnly(False)
+            obj.setReadOnly(False)
             obj.setFocus()  # Weird, but apparently necessary.
 
     # @+node:ekr.20110930174206.15473: *4* LeoQtBody.onFocusOut

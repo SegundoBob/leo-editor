@@ -209,9 +209,6 @@ class TestQtGui(LeoUnitTest):
         k = c.k
         log = c.frame.log
         qtApp = g.app.gui.qtApp
-        g.app.debug = ['events']
-
-        # from PyQt6.QtTest import QTest
 
         # Part 1: Create the 'Completion' tab, and copy it's contets to the clipboard.
         event = LeoKeyEvent(c, 'a', event=None, binding=None, w=None)
@@ -240,30 +237,29 @@ class TestQtGui(LeoUnitTest):
         # Part 3: Test Ctrl-C in all text widgets.
         table = (
             ('c.frame.body.widget', c.frame.body.widget),
-            # ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
-            ### ('c.frame.log.logWidget', c.frame.log.logWidget),
-            # ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
+            ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
+            ('c.frame.log.logWidget', c.frame.log.logWidget),
+            ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
         )
         text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
         for kind, w in table:
             class_name = w.__class__.__name__
-            # print(kind, class_name)
             assert issubclass(w.__class__, text_widgets), w.__class__
             qtApp.processEvents()
             w.setFocus()
             w.clear()
             w.setText('before')
-            w.selectAll()
             # Create ctrl c keyboard event.
             g.app.gui.replaceClipboardWith(class_name)
-            # QTest.keyClick(w, Qt.Key.Key_Paste)
             qtApp.processEvents()
+            w.setReadOnly(False)
+            # print('clipboard', g.app.gui.getTextFromClipboard())
+            w.selectAll()
+            # This is a cheat. We want to test that Ctrl-c actually does the paste!
             w.paste()
             qtApp.processEvents()
-            s = w.toPlainText()
+            s = w.toPlainText() if issubclass(w.__class__, QtWidgets.QTextEdit) else w.text()
             assert s == class_name, f"Expected: {class_name}, got: {s}"
-        # Cleanup.
-        g.app.debug = []
 
     # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.
