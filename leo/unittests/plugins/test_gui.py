@@ -11,7 +11,12 @@ from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest, create_app
 
 try:
-    from leo.core.leoQt import Qt, QtCore
+    from leo.core.leoQt import (
+        Qt,
+        QtCore,
+        QtGui,
+        QtWidgets,
+    )
     from leo.core.leoAPI import (
         IconBarAPI,
         StatusLineAPI,
@@ -23,19 +28,36 @@ try:
         NullIconBarClass,
         NullStatusLineClass,
         NullTree,
+        # QTabWidget,
     )
     from leo.core.leoGui import LeoKeyEvent
-    from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
+    from leo.plugins.qt_frame import (
+        DynamicWindow,
+        LeoQtBody,
+        LeoQtFrame,
+        LeoQtLog,
+        LeoQtMenu,
+        LeoQtTree,
+        LeoQTreeWidget,
+        QtIconBarClass,
+        QtStatusLineClass,
+    )
     from leo.plugins.qt_text import (
         LeoQTextBrowser,
+        QHeadlineWrapper,
         QLineEditWrapper,
+        QMinibufferWrapper,
         QScintillaWrapper,
         QTextEditWrapper,
         QTextMixin,
     )
-    from leo.plugins.qt_tree import LeoQtTree
+
+    QTabWidget = QtWidgets.QTabWidget
 except Exception:
+    g.es_exception()  ###
     Qt = QtCore = None
+    QTabWidget = None
+
 # @-<< test_gui imports >>
 
 
@@ -113,43 +135,12 @@ class TestQtGui(LeoUnitTest):
     def setUp(self):
         super().setUp()
         # Don't run *any* tests if Qt has not been installed.
-        try:
-            from leo.core.leoQt import Qt
-
-            assert Qt
-        except Exception:
-            self.skipTest('Requires Qt')
+        if not Qt:
+            self.skipTest('import Qt failed')
 
     # @+node:ekr.20260404143610.1: *3* TestQtGui.test_annotations
     def test_annotations(self):
         # This test establishes the basis of Leo's Qt-related annotations.
-        # @+<< TestQtGui.test_annotations: imports >>
-        # @+node:ekr.20260406021200.1: *4* << TestQtGui.test_annotations: imports >>
-        from leo.core.leoQt import QtWidgets
-        from leo.plugins.qt_frame import (
-            DynamicWindow,
-            LeoQtBody,
-            LeoQtFrame,
-            LeoQtLog,
-            LeoQtMenu,
-            LeoQtTree,
-            LeoQTreeWidget,
-            QtIconBarClass,
-            QtStatusLineClass,
-            # QTabWidget,
-        )
-        from leo.plugins.qt_text import (
-            LeoQTextBrowser,
-            QHeadlineWrapper,
-            QLineEditWrapper,
-            QMinibufferWrapper,
-            QScintillaWrapper,
-            QTextEditWrapper,
-            QTextMixin,
-        )
-
-        QTabWidget = QtWidgets.QTabWidget
-        # @-<< TestQtGui.test_annotations: imports >>
         c = self.c
         table = (
             # LeoQtFrame ivars...
@@ -203,9 +194,6 @@ class TestQtGui(LeoUnitTest):
     # @+node:ekr.20210913120449.1: *3* TestQtGui.test_bug_2164
     def test_bug_2164(self):
         # show-invisibles crashes with PyQt6.
-        from leo.core.leoQt import QtGui
-
-        # Test the commands.
         c = self.c
         for command in ('toggle-invisibles', 'hide-invisibles', 'show-invisibles'):
             c.doCommandByName(command)
