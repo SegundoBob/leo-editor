@@ -14,32 +14,48 @@ import sys
 import time
 import urllib
 from typing import Any, Optional, TYPE_CHECKING
-from leo.core import leoGlobals as g
-from leo.core import leoColor
-from leo.core import leoColorizer
-from leo.core import leoFrame
-from leo.core import leoGui
-from leo.core import leoMenu
 from leo.commands import gotoCommands
 from leo.core.leoAPI import StringTextWrapper
-from leo.core.leoQt import QtCore, QtGui, QtWidgets
-from leo.core.leoQt import QAction, Qsci
-from leo.core.leoQt import AlignLeft
-from leo.core.leoQt import ContextMenuPolicy, DropAction, FocusReason, KeyboardModifier
-from leo.core.leoQt import MoveOperation, Orientation, MouseButton
+from leo.core import (
+    leoColor,
+    leoColorizer,
+    leoFrame,
+    leoGlobals as g,
+    leoGui,
+    leoMenu,
+)
 from leo.core.leoQt import (
+    AlignLeft,
+    ContextMenuPolicy,
+    DropAction,
+    FocusReason,
+    KeyboardModifier,
+    MouseButton,
+    MoveOperation,
+    Orientation,
     Policy,
+    QAction,
+    Qsci,
+    QtCore,
+    QtGui,
+    QtWidgets,
     ScrollBarPolicy,
     SelectionBehavior,
     SelectionMode,
+    Shadow,
+    Shape,
     SizeAdjustPolicy,
+    Style,
+    TextInteractionFlag,
+    ToolBarArea,
+    Type,
+    Weight,
+    WindowState,
+    WrapMode,
 )
-from leo.core.leoQt import Shadow, Shape, Style
-from leo.core.leoQt import TextInteractionFlag, ToolBarArea, Type, Weight, WindowState, WrapMode
-from leo.plugins import qt_events
-from leo.plugins import qt_text
-from leo.plugins.qt_tree import LeoQtTree
+from leo.plugins import qt_events, qt_text
 from leo.plugins.mod_scripting import build_rclick_tree
+from leo.plugins.qt_tree import LeoQtTree
 from leo.plugins.qt_layout import LayoutCacheWidget
 
 # @-<< qt_frame imports >>
