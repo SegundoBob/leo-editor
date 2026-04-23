@@ -164,7 +164,7 @@ class QTextMixin:
         self.tags: dict[str, str] = {}
         self.permanent = True  # False if selecting the minibuffer will make the widget go away.
         self.useScintilla = False  # This is used!
-        self.virtualInsertPoint = None
+        self.virtualInsertPoint: int = None
         self.widget: Any = None  # 'Any' is correct for the QTextMixin class.
         if c:
             self.injectIvars(c)
@@ -309,13 +309,11 @@ class QTextMixin:
         return s[i:j]
 
     # @+node:ekr.20140901062324.18704: *5* QTextMixin.getLastIndex & getLength
-    def getLastIndex(self, s: str = None) -> int:
-        """QTextMixin"""
-        return len(self.getAllText()) if s is None else len(s)
+    def getLastIndex(self) -> int:
+        return len(self.getAllText())
 
-    def getLength(self, s: str = None) -> int:
-        """QTextMixin"""
-        return len(self.getAllText()) if s is None else len(s)
+    def getLength(self) -> int:
+        return len(self.getAllText())
 
     # @+node:ekr.20140901062324.18705: *5* QTextMixin.getSelectedText
     def getSelectedText(self) -> str:
@@ -341,9 +339,8 @@ class QTextMixin:
         self.see(self.getInsertPoint())
 
     # @+node:ekr.20140902135648.18668: *5* QTextMixin.selectAllText
-    def selectAllText(self, s: str = None) -> None:
-        """QTextMixin."""
-        self.setSelectionRange(0, self.getLength(s))
+    def selectAllText(self) -> None:
+        self.setSelectionRange(0, self.getLength())
 
     # @+node:ekr.20140901141402.18704: *5* QTextMixin.toPythonIndexRowCol
     def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:

@@ -495,9 +495,8 @@ class LeoFrame:
     @frame_cmd('copy-text')
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
-        # f = self
-        w = event and event.widget
-        # wname = c.widget_name(w)
+        w = event.widget if event else None
+        g.trace(g.isTextWrapper(w), w.__class__.__name__, repr(w.name))  ###
         if not w or not g.isTextWrapper(w):
             return
         # Set the clipboard text.
@@ -769,11 +768,7 @@ class LeoLog:
 
     # @+node:ekr.20070302094848.2: *3* LeoLog.createTab
     def createTab(
-        self,
-        tabName: str,
-        createText: bool = True,
-        widget: Widget = None,
-        wrap: str = 'none',
+        self, tabName: str, createText: bool = True, widget: Widget = None, wrap: str = 'none'
     ) -> Widget:
         # Do not change the signature above.
         self.textDict[tabName] = None

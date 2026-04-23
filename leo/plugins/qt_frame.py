@@ -52,7 +52,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoGui
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.leoFrame import LeoLog
+    from leo.plugins.leoFrame import LeoLog, NullFrame
     from leo.plugins.mod_scripting import ScriptingController
     from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
 
@@ -4119,7 +4119,7 @@ class QtIconBarClass:
 class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     # @+others
     # @+node:ekr.20110605121601.18459: *3* ctor and __repr__(QtMenuWrapper)
-    def __init__(self, c: Cmdr, frame: LeoQtFrame, parent: QWidget, label: str) -> None:
+    def __init__(self, c: Cmdr, frame: Any, parent: QWidget, label: str) -> None:
         """ctor for QtMenuWrapper class."""
         assert c
         assert frame

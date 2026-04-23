@@ -62,7 +62,6 @@ class TestNullGui(LeoUnitTest):
             NullTree,
             StringTextWrapper,
         )
-        from leo.core.leoGlobals import NullObject
 
         # @-<< TestNullGui.test_annotations: imports >>
         c = self.c

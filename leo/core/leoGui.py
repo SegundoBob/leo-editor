@@ -21,7 +21,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
     from leo.plugins.qt_frame import FindTabManager
-    from leo.plugins.qt_text import QTextEditWrapper as Wrapper
+    from leo.plugins.qt_text import QTextMixin
 
     Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
@@ -308,7 +308,7 @@ class LeoGui:
         binding: str = None,
         char: str = None,
         event: LeoKeyEvent = None,
-        w: Wrapper = None,
+        w: QTextMixin = None,
         x: int = None,
         x_root: int = None,
         y: int = None,
@@ -332,7 +332,7 @@ class LeoGui:
         self.scriptFileName = scriptFileName
 
     # @+node:ekr.20110605121601.18845: *4* LeoGui.event_generate
-    def event_generate(self, c: Cmdr, char: str, shortcut: str, w: Wrapper) -> None:
+    def event_generate(self, c: Cmdr, char: str, shortcut: str, w: QTextMixin) -> None:
         event = self.create_key_event(c, binding=shortcut, char=char, w=w)
         c.k.masterKeyHandler(event)
         c.outerUpdate()
