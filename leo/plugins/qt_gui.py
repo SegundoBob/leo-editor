@@ -13,24 +13,44 @@ import sys
 import textwrap
 from time import sleep
 from typing import Any, Generator, Optional, Tuple, TYPE_CHECKING
-from leo.core import leoColor
-from leo.core import leoGlobals as g
-from leo.core import leoGui
-from leo.core.leoQt import Qt, Qsci, QtCore
-from leo.core.leoQt import QtGui, QtWidgets, QtSvg
-from leo.core.leoQt import ButtonRole, Checked, DialogCode, Icon, Information, Policy, Unchecked
+from leo.core import (
+    leoColor,
+    leoGlobals as g,
+    leoGui,
+)
+from leo.core.leoQt import (
+    ButtonRole,
+    Checked,
+    DialogCode,
+    Icon,
+    Information,
+    Policy,
+    Qsci,
+    Qt,
+    QtCore,
+    QtGui,
+    QtSvg,
+    QtWidgets,
+    Unchecked,
+)
 
 # This import causes pylint to fail on this file and on leoBridge.py.
 # The failure is in astroid: raw_building.py.
-from leo.core.leoQt import Shadow, Shape, StandardButton, Weight, WindowType
-from leo.plugins import qt_events
-from leo.plugins import qt_frame
-from leo.plugins import qt_idle_time
-from leo.plugins import qt_text
-
-# This defines the commands defined by @g.command.
-from leo.plugins import qt_commands
+from leo.core.leoQt import (
+    Shadow,
+    Shape,
+    StandardButton,
+    Weight,
+    WindowType,
+)
 from leo.core.leoTips import UserTip
+from leo.plugins import (
+    qt_commands,
+    qt_events,
+    qt_frame,
+    qt_idle_time,
+    qt_text,
+)
 
 assert Qt
 assert qt_commands
