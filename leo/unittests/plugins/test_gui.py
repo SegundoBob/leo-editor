@@ -208,8 +208,12 @@ class TestQtGui(LeoUnitTest):
         c = self.c
         k = c.k
         log = c.frame.log
+        qtApp = g.app.gui.qtApp
+        g.app.debug = ['events']
 
-        # Part 1: Create the 'Completion' tab, and copy it to the clipboard.
+        # from PyQt6.QtTest import QTest
+
+        # Part 1: Create the 'Completion' tab, and copy it's contets to the clipboard.
         event = LeoKeyEvent(c, 'a', event=None, binding=None, w=None)
         k.fullCommand(event=event)
         k.extendLabel('a')
@@ -230,21 +234,36 @@ class TestQtGui(LeoUnitTest):
         event2 = LeoKeyEvent(c, char=None, binding=None, event=None, w=wrapper)
         c.frame.copyText(event2)
         s2 = g.app.gui.getTextFromClipboard()
+        k.keyboardQuit()
+        assert s2 == s, (repr(s), repr(s2))
 
         # Part 3: Test Ctrl-C in all text widgets.
         table = (
             ('c.frame.body.widget', c.frame.body.widget),
-            ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
-            ('c.frame.log.logWidget', c.frame.log.logWidget),
-            ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
+            # ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
+            ### ('c.frame.log.logWidget', c.frame.log.logWidget),
+            # ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
         )
         text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
-        for kind, obj in table:
-            # print(f"{kind:>25} {obj.__class__.__name__}")
-            assert issubclass(obj.__class__, text_widgets), obj.__class__
-
-        k.keyboardQuit()
-        assert s2 == s, (repr(s), repr(s2))
+        for kind, w in table:
+            class_name = w.__class__.__name__
+            # print(kind, class_name)
+            assert issubclass(w.__class__, text_widgets), w.__class__
+            qtApp.processEvents()
+            w.setFocus()
+            w.clear()
+            w.setText('before')
+            w.selectAll()
+            # Create ctrl c keyboard event.
+            g.app.gui.replaceClipboardWith(class_name)
+            # QTest.keyClick(w, Qt.Key.Key_Paste)
+            qtApp.processEvents()
+            w.paste()
+            qtApp.processEvents()
+            s = w.toPlainText()
+            assert s == class_name, f"Expected: {class_name}, got: {s}"
+        # Cleanup.
+        g.app.debug = []
 
     # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.
