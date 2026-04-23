@@ -249,7 +249,6 @@ class TestQtGui(LeoUnitTest):
             w.setFocus()
             w.clear()
             w.setText('before')
-            # Create ctrl c keyboard event.
             g.app.gui.replaceClipboardWith(class_name)
             qtApp.processEvents()
             w.setReadOnly(False)
