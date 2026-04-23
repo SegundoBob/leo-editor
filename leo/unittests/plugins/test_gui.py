@@ -5,24 +5,34 @@
 # @+<< test_gui imports >>
 # @+node:ekr.20220911102700.1: ** << test_gui imports >>
 import os
+import textwrap
 import time
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest, create_app
 
 try:
     from leo.core.leoQt import Qt, QtCore
-    from leo.core.leoAPI import IconBarAPI, StatusLineAPI, TreeAPI
-    from leo.core.leoAPI import StringTextWrapper
-    from leo.core.leoFrame import LeoTree
-    from leo.core.leoFrame import NullIconBarClass, NullStatusLineClass, NullTree
+    from leo.core.leoAPI import (
+        IconBarAPI,
+        StatusLineAPI,
+        StringTextWrapper,
+        TreeAPI,
+    )
+    from leo.core.leoFrame import (
+        LeoTree,
+        NullIconBarClass,
+        NullStatusLineClass,
+        NullTree,
+    )
+    from leo.core.leoGui import LeoKeyEvent
     from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
     from leo.plugins.qt_text import (
+        LeoQTextBrowser,
         QLineEditWrapper,
         QScintillaWrapper,
         QTextEditWrapper,
         QTextMixin,
     )
-    from leo.plugins.qt_text import LeoQTextBrowser
     from leo.plugins.qt_tree import LeoQtTree
 except Exception:
     Qt = QtCore = None
@@ -204,30 +214,36 @@ class TestQtGui(LeoUnitTest):
         option = QtGui.QTextOption()
         assert hasattr(option.Flag, 'ShowTabsAndSpaces')
 
-    # @+node:ekr.20260423040149.1: *3* TestQtGui.test_copy_in_completions_tab
-    def test_copy_in_completions_tab(self):
-        # A minimal test.
-        import textwrap
-        from leo.core.leoGui import LeoKeyEvent
-
+    # @+node:ekr.20260423040149.1: *3* TestQtGui.test_bug_4626
+    def test_bug_4626(self):
+        # https://github.com/leo-editor/leo-editor/issues/4626
         c = self.c
         k = c.k
         log = c.frame.log
+
+        # Part 1: Create the 'Completion' tab, and copy it to the clipboard.
         event = LeoKeyEvent(c, 'a', event=None, binding=None, w=None)
         k.fullCommand(event=event)
         k.extendLabel('a')
         # Force g.es to print to the log.
+        old_log = g.app.log
         try:
-            g.unitTesting = False
-            g.app.logInited = True
             g.app.log = log
             k.doTabCompletion(['a', 'ab', 'abc'])
         finally:
-            g.unitTesting = True
-        s = log.logCtrl.getAllText()
-        s = textwrap.dedent(s)
+            g.app.log = old_log
+        wrapper = log.logCtrl
+        s = wrapper.getAllText()
+        dedent_s = textwrap.dedent(s)
+        assert dedent_s == 'a\nab\nabc\n', repr(s)
+        wrapper.selectAllText()
+
+        # Part 2: Test copyText.
+        event2 = LeoKeyEvent(c, char=None, binding=None, event=None, w=wrapper)
+        c.frame.copyText(event2)
+        s2 = g.app.gui.getTextFromClipboard()
         k.keyboardQuit()
-        assert s == 'a\nab\nabc\n', repr(s)
+        assert s2 == s, (repr(s), repr(s2))
 
     # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.

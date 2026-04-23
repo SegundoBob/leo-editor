@@ -496,7 +496,8 @@ class LeoFrame:
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
         w = event.widget if event else None
-        g.trace(g.isTextWrapper(w), w.__class__.__name__, repr(w.name))  ###
+        if w and not g.unitTesting:  ###
+            g.trace(g.isTextWrapper(w), w.__class__.__name__, repr(w.name))
         if not w or not g.isTextWrapper(w):
             return
         # Set the clipboard text.
