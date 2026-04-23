@@ -1217,7 +1217,7 @@ class FindTabManager:
     """A helper class for the LeoFind class."""
 
     # @+others
-    # @+node:ekr.20131117120458.16794: *3*  ftm.ctor
+    # @+node:ekr.20131117120458.16794: *3*  FindTabManager.__ctor__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for the FindTabManager class."""
         self.c = c
@@ -1248,7 +1248,7 @@ class FindTabManager:
         self.replace_then_find_button = None
         self.replace_all_button = None
 
-    # @+node:ekr.20131119185305.16478: *3* ftm.clear_focus & init_focus & set_entry_focus
+    # @+node:ekr.20131119185305.16478: *3* FindTabManager.clear_focus & init_focus & set_entry_focus
     def clear_focus(self) -> None:
         self.entry_focus = None
         self.find_findbox.clearFocus()
@@ -1269,7 +1269,7 @@ class FindTabManager:
             w = c.frame.tree.treeWidget
         self.entry_focus = w
 
-    # @+node:ekr.20210110143917.1: *3* ftm.get_settings
+    # @+node:ekr.20210110143917.1: *3* FindTabManager.get_settings
     def get_settings(self) -> g.Bunch:
         """
         Return a g.bunch representing all widget values.
@@ -1295,7 +1295,7 @@ class FindTabManager:
             # wrapping = self.check_box_wrap_around.isChecked(),
         )
 
-    # @+node:ekr.20131117120458.16789: *3* ftm.init_widgets (creates callbacks)
+    # @+node:ekr.20131117120458.16789: *3* FindTabManager.init_widgets (creates callbacks)
     def init_widgets(self) -> None:
         """
         Init widgets and ivars from c.config settings.
@@ -1376,10 +1376,10 @@ class FindTabManager:
             w = self.radio_button_entire_outline
             w.toggle()
 
-    # @+node:ekr.20210923060904.1: *3* ftm.set_widgets_from_dict
+    # @+node:ekr.20210923060904.1: *3* FindTabManager.set_widgets_from_dict
     def set_widgets_from_dict(self, d: g.Bunch) -> None:
         """Set all settings from d."""
-        # Similar to ftm.init_widgets, which has already been called.
+        # Similar to FindTabManagerinit_widgets, which has already been called.
         c = self.c
         find = c.findCommands
         # Set find text.
@@ -1425,7 +1425,7 @@ class FindTabManager:
             w = self.radio_button_entire_outline
             w.setChecked(True)
 
-    # @+node:ekr.20210312120503.1: *3* ftm.set_body_and_headline_checkbox
+    # @+node:ekr.20210312120503.1: *3* FindTabManager.set_body_and_headline_checkbox
     def set_body_and_headline_checkbox(self) -> None:
         """Return the search-body and search-headline checkboxes to their defaults."""
         # #1840: headline-only one-shot
@@ -1444,7 +1444,7 @@ class FindTabManager:
         if find.minibuffer_mode:
             find.show_find_options_in_status_area()
 
-    # @+node:ekr.20150619082825.1: *3* ftm.set_ignore_case
+    # @+node:ekr.20150619082825.1: *3* FindTabManager.set_ignore_case
     def set_ignore_case(self, aBool: bool) -> None:
         """Set the ignore-case checkbox to the given value."""
         c = self.c
@@ -1452,7 +1452,7 @@ class FindTabManager:
         w = self.check_box_ignore_case
         w.setChecked(aBool)
 
-    # @+node:ekr.20131117120458.16792: *3* ftm.set_radio_button
+    # @+node:ekr.20131117120458.16792: *3* FindTabManager.set_radio_button
     def set_radio_button(self, name: str) -> None:
         """Set the value of the radio buttons"""
         c = self.c
@@ -1471,7 +1471,7 @@ class FindTabManager:
         if find.minibuffer_mode:
             find.show_find_options_in_status_area()
 
-    # @+node:ekr.20131117164142.16853: *3* ftm.text getters/setters
+    # @+node:ekr.20131117164142.16853: *3* FindTabManager.text getters/setters
     def get_find_text(self) -> str:
         s = self.find_findbox.text()
         if s and s[-1] in ('\r', '\n'):
@@ -1498,7 +1498,7 @@ class FindTabManager:
         w.clear()
         w.insert(s)
 
-    # @+node:ekr.20131117120458.16791: *3* ftm.toggle_checkbox
+    # @+node:ekr.20131117120458.16791: *3* FindTabManager.toggle_checkbox
     def toggle_checkbox(self, checkbox_name: str) -> None:
         """Toggle the value of the checkbox whose name is given."""
         c = self.c
@@ -3605,13 +3605,13 @@ class LeoQtSpellTab:
         else:
             self.handler.loaded = False
 
-    # @+node:ekr.20110605121601.18389: *3* Event handlers
-    # @+node:ekr.20110605121601.18390: *4* onAddButton
+    # @+node:ekr.20110605121601.18389: *3* LeoQtSpellTab:Event handlers
+    # @+node:ekr.20110605121601.18390: *4* LeoQtSpellTab.onAddButton
     def onAddButton(self) -> None:
         """Handle a click in the Add button in the Check Spelling dialog."""
         self.handler.add()
 
-    # @+node:ekr.20110605121601.18391: *4* onChangeButton & onChangeThenFindButton
+    # @+node:ekr.20110605121601.18391: *4* LeoQtSpellTab.onChangeButton & onChangeThenFindButton
     def onChangeButton(self, event: QEvent = None) -> None:
         """Handle a click in the Change button in the Spell tab."""
         state = self.updateButtons()
@@ -3628,7 +3628,7 @@ class LeoQtSpellTab:
                 self.handler.find()
             self.updateButtons()
 
-    # @+node:ekr.20110605121601.18392: *4* onFindButton
+    # @+node:ekr.20110605121601.18392: *4* LeoQtSpellTab.onFindButton
     def onFindButton(self) -> None:
         """Handle a click in the Find button in the Spell tab."""
         c = self.c
@@ -3637,34 +3637,34 @@ class LeoQtSpellTab:
         c.invalidateFocus()
         c.bodyWantsFocus()
 
-    # @+node:ekr.20110605121601.18393: *4* onHideButton
+    # @+node:ekr.20110605121601.18393: *4* LeoQtSpellTab.onHideButton
     def onHideButton(self) -> None:
         """Handle a click in the Hide button in the Spell tab."""
         self.handler.hide()
 
-    # @+node:ekr.20110605121601.18394: *4* onIgnoreButton
+    # @+node:ekr.20110605121601.18394: *4* LeoQtSpellTab.onIgnoreButton
     def onIgnoreButton(self, event: QEvent = None) -> None:
         """Handle a click in the Ignore button in the Check Spelling dialog."""
         self.handler.ignore()
 
-    # @+node:ekr.20110605121601.18395: *4* onMap
+    # @+node:ekr.20110605121601.18395: *4* LeoQtSpellTab.onMap
     def onMap(self, event: QEvent = None) -> None:
         """Respond to a Tk <Map> event."""
         self.update(show=False, fill=False)
 
-    # @+node:ekr.20110605121601.18396: *4* onSelectListBox
+    # @+node:ekr.20110605121601.18396: *4* LeoQtSpellTab.onSelectListBox
     def onSelectListBox(self, event: QEvent = None) -> None:
         """Respond to a click in the selection listBox."""
         c = self.c
         self.updateButtons()
         c.bodyWantsFocus()
 
-    # @+node:ekr.20110605121601.18397: *3* Helpers
-    # @+node:ekr.20110605121601.18398: *4* bringToFront (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18397: *3* LeoQtSpellTab:Helpers
+    # @+node:ekr.20110605121601.18398: *4* LeoQtSpellTab.bringToFront
     def bringToFront(self) -> None:
         self.c.frame.log.selectTab('Spell')
 
-    # @+node:ekr.20110605121601.18399: *4* fillbox (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18399: *4* LeoQtSpellTab.fillbox
     def fillbox(self, alts: list[str], word: str = None) -> None:
         """Update the suggestions listBox in the Check Spelling dialog."""
         self.suggestions = alts
@@ -3676,14 +3676,14 @@ class LeoQtSpellTab:
             self.listBox.addItems(self.suggestions)
             self.listBox.setCurrentRow(0)
 
-    # @+node:ekr.20110605121601.18400: *4* getSuggestion (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18400: *4* LeoQtSpellTab.getSuggestion
     def getSuggestion(self) -> str:
         """Return the selected suggestion from the listBox."""
         idx = self.listBox.currentRow()
         value = self.suggestions[idx]
         return value
 
-    # @+node:ekr.20141113094129.13: *4* setFocus (LeoQtSpellTab)
+    # @+node:ekr.20141113094129.13: *4* LeoQtSpellTab.setFocus
     def setFocus(self) -> None:
         """Actually put focus in the tab."""
         # Not a great idea: there is no indication of focus.
@@ -3692,7 +3692,7 @@ class LeoQtSpellTab:
             w = self.c.frame.top.spellFrame
             c.widgetWantsFocus(w)
 
-    # @+node:ekr.20110605121601.18401: *4* update (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18401: *4* LeoQtSpellTab.update
     def update(self, show: bool = True, fill: bool = False) -> None:
         """Update the Spell Check dialog."""
         c = self.c
@@ -3703,7 +3703,7 @@ class LeoQtSpellTab:
             self.bringToFront()
             c.bodyWantsFocus()
 
-    # @+node:ekr.20110605121601.18402: *4* updateButtons (spellTab)
+    # @+node:ekr.20110605121601.18402: *4* LeoQtSpellTab.updateButtons
     def updateButtons(self) -> bool:
         """Enable or disable buttons in the Check Spelling dialog."""
         c = self.c
@@ -3726,7 +3726,7 @@ class LeoQtTreeTab:
 
     # @+others
     # @+node:ekr.20110605121601.18439: *3*  Birth & death
-    # @+node:ekr.20110605121601.18440: *4*  ctor (LeoQtTreeTab)
+    # @+node:ekr.20110605121601.18440: *4*  LeoQtTreeTab.__init__
     def __init__(self, c: Cmdr, iconBar: LeoQtLog) -> None:
         """Ctor for LeoQtTreeTab class."""
 
@@ -3740,7 +3740,7 @@ class LeoQtTreeTab:
         # self.reloadSettings()
         self.createControl()
 
-    # @+node:ekr.20110605121601.18441: *4* tt.createControl (defines class LeoQComboBox)
+    # @+node:ekr.20110605121601.18441: *4* LeoQtTreeTab.createControl (defines class LeoQComboBox)
     def createControl(self) -> None:
         class LeoQComboBox(QtWidgets.QComboBox):
             """Create a subclass in order to handle focusInEvents."""
@@ -3787,7 +3787,7 @@ class LeoQtTreeTab:
         # A change: the argument could now be an int instead of a string.
         w.currentIndexChanged.connect(onIndexChanged)
 
-    # @+node:ekr.20110605121601.18443: *3* tt.createTab
+    # @+node:ekr.20110605121601.18443: *3* LeoQtTreeTab.createTab
     def createTab(self, tabName: str, select: bool = True) -> None:
         """LeoQtTreeTab."""
         tt = self
@@ -3796,7 +3796,7 @@ class LeoQtTreeTab:
             tt.tabNames.append(tabName)
             tt.setNames()
 
-    # @+node:ekr.20110605121601.18444: *3* tt.destroyTab
+    # @+node:ekr.20110605121601.18444: *3* LeoQtTreeTab.destroyTab
     def destroyTab(self, tabName: str) -> None:
         """LeoQtTreeTab."""
         tt = self
@@ -3804,7 +3804,7 @@ class LeoQtTreeTab:
             tt.tabNames.remove(tabName)
             tt.setNames()
 
-    # @+node:ekr.20110605121601.18445: *3* tt.selectTab
+    # @+node:ekr.20110605121601.18445: *3* LeoQtTreeTab.selectTab
     def selectTab(self, tabName: str) -> None:
         """LeoQtTreeTab."""
         tt, c, cc = self, self.c, self.cc
@@ -3818,7 +3818,7 @@ class LeoQtTreeTab:
         c.redraw()
         c.outerUpdate()
 
-    # @+node:ekr.20110605121601.18446: *3* tt.setTabLabel
+    # @+node:ekr.20110605121601.18446: *3* LeoQtTreeTab.setTabLabel
     def setTabLabel(self, tabName: str) -> None:
         """LeoQtTreeTab."""
         w = self.w
@@ -3826,7 +3826,7 @@ class LeoQtTreeTab:
         if i > -1:
             w.setCurrentIndex(i)
 
-    # @+node:ekr.20110605121601.18447: *3* tt.setNames
+    # @+node:ekr.20110605121601.18447: *3* LeoQtTreeTab.setNames
     def setNames(self) -> None:
         """LeoQtTreeTab: Recreate the list of items."""
         w = self.w
@@ -4399,12 +4399,12 @@ class QtStatusLineClass:
 # @+node:peckj.20140505102552.10377: ** class QtTabBarWrapper (QTabBar)
 class QtTabBarWrapper(QtWidgets.QTabBar):
     # @+others
-    # @+node:peckj.20140516114832.10108: *3* __init__
+    # @+node:peckj.20140516114832.10108: *3* QtTabBarWrapper.__init__
     def __init__(self, parent: QWidget = None) -> None:
         super().__init__(parent)
         self.setMovable(True)
 
-    # @+node:peckj.20140516114832.10109: *3* mouseReleaseEvent (QtTabBarWrapper)
+    # @+node:peckj.20140516114832.10109: *3* QtTabBarWrapper.mouseReleaseEvent
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         # middle click close on tabs -- JMP 20140505
         # closes Launchpad bug: https://bugs.launchpad.net/leo-editor/+bug/1183528
