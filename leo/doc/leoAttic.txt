@@ -3326,7 +3326,7 @@ def trace_idle_focus(self, w: Wrapper) -> None:
         if trace:
             g.trace(f"{count:3} no focus")
 
-# @+node:ekr.20250329033642.5: *4* class BaseTextAPI
+# @+node:ekr.20260423033738.1: *4* class BaseTextAPI
 class BaseTextAPI:
     """
     A class specifying the interface to various text widgets,
