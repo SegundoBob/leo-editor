@@ -230,6 +230,19 @@ class TestQtGui(LeoUnitTest):
         event2 = LeoKeyEvent(c, char=None, binding=None, event=None, w=wrapper)
         c.frame.copyText(event2)
         s2 = g.app.gui.getTextFromClipboard()
+
+        # Part 3: Test Ctrl-C in all text widgets.
+        table = (
+            ('c.frame.body.widget', c.frame.body.widget),
+            ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
+            ('c.frame.log.logWidget', c.frame.log.logWidget),
+            ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
+        )
+        text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
+        for kind, obj in table:
+            # print(f"{kind:>25} {obj.__class__.__name__}")
+            assert issubclass(obj.__class__, text_widgets), obj.__class__
+
         k.keyboardQuit()
         assert s2 == s, (repr(s), repr(s2))
 
