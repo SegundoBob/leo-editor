@@ -63,6 +63,7 @@ class TestNullGui(LeoUnitTest):
             StringTextWrapper,
         )
 
+
         # @-<< TestNullGui.test_annotations: imports >>
         c = self.c
         table = (
