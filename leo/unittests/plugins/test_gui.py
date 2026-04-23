@@ -110,155 +110,6 @@ class TestQtGui(LeoUnitTest):
         except Exception:
             self.skipTest('Requires Qt')
 
-    # @+node:ekr.20210913120449.1: *3* TestQtGui.test_bug_2164
-    def test_bug_2164(self):
-        # show-invisibles crashes with PyQt6.
-        from leo.core.leoQt import QtGui
-
-        # Test the commands.
-        c = self.c
-        for command in ('toggle-invisibles', 'hide-invisibles', 'show-invisibles'):
-            c.doCommandByName(command)
-
-        # Test the Qt6 flag.
-        option = QtGui.QTextOption()
-        assert hasattr(option.Flag, 'ShowTabsAndSpaces')
-
-    # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
-    # These tests exist to test the startup logic.
-    if 0:  # pragma: no cover
-
-        def test_do_nothing1(self):
-            time.sleep(0.1)
-
-        def test_do_nothing2(self):
-            time.sleep(0.1)
-
-        def test_do_nothing3(self):
-            time.sleep(0.1)
-
-    # @+node:ekr.20210912064439.2: *3* TestQtGui.test_qt_ctors_for_all_dialogs
-    def test_qt_ctors_for_all_dialogs(self):
-        # Make sure the dialogs don't crash.
-        c = self.c
-        gui = g.app.gui
-        self.assertEqual(gui.__class__.__name__, 'LeoQtGui')
-        gui.runAboutLeoDialog(c, 'version', 'copyright', 'url', 'email')
-        gui.runAskOkDialog(c, 'title', 'message')
-        gui.runAskOkCancelNumberDialog(c, 'title', 'message')
-        gui.runAskOkCancelStringDialog(c, 'title', 'message')
-        gui.runAskYesNoDialog(c, 'title', 'message')
-        gui.runAskYesNoCancelDialog(c, 'title', 'message')
-
-    # @+node:ekr.20210912133358.1: *3* TestQtGui.test_qt_enums
-    def test_qt_enums(self):
-        # https://github.com/leo-editor/leo-editor/issues/1973 list of enums
-
-        if not QtCore and QtCore.Qt:
-            self.skipTest('Requires Qt')  # pragma: no cover
-        table = (
-            'DropAction',
-            'ItemFlag',
-            'KeyboardModifier',
-            'MouseButton',
-            'Orientation',
-            'TextInteractionFlag',
-            'ToolBarArea',
-            'WindowType',
-            'WindowState',
-        )
-        for ivar in table:
-            assert hasattr(QtCore.Qt, ivar), repr(ivar)
-
-    # @+node:ekr.20220411165627.1: *3* TestQtGui.test_put_html_links
-    def test_put_html_links(self):
-        c, p = self.c, self.c.p
-        # Create a test outline.
-        assert p == self.root_p
-        assert p.h == 'root'
-        p2 = p.insertAsLastChild()
-        p2.h = '@file test_file.py'
-        # Run the tests.
-        table = (
-            # python.
-            (
-                True,
-                'File "test_file.py", line 5',
-            ),
-            # pylint.
-            (
-                True,
-                r'leo\unittest\test_file.py:1326:8: W0101: Unreachable code (unreachable)',
-            ),
-            # pyflakes.
-            (
-                True,
-                r"test_file.py:51:13 'leo.core.leoQt5.*' imported but unused",
-            ),
-            # mypy...
-            (
-                True,
-                'test_file.py:116: error: Function is missing a return type annotation  [no-untyped-def]',
-            ),
-            (
-                True,
-                r'leo\core\test_file.py:116: note: Use "-> None" if function does not return a value',
-            ),
-            (
-                False,
-                'Found 1 error in 1 file (checked 1 source file)',
-            ),
-            (
-                False,
-                'mypy: done',
-            ),
-            # Random output.
-            (
-                False,
-                'Hello world\n',
-            ),
-        )
-        for expected, s in table:
-            s = s.replace('\\', os.sep).rstrip() + '\n'
-            result = c.frame.log.put_html_links(s)
-            self.assertEqual(result, expected, msg=repr(s))
-
-    # @+node:ekr.20220912093438.1: *3* TestQtGui.test_qt_attributes
-    def test_qt_attributes(self):
-        # Various preliminary tests.
-        c = self.c
-        if 0:
-            print('')
-            for z in dir(g.app.gui):
-                if not z.startswith('__'):
-                    obj = getattr(g.app.gui, z, None)
-                    print(f"{z:>30} {g.objToString(obj)}")
-        if 0:
-            print('')
-            g.trace(g.app.gui)
-            g.trace(c.frame.body)
-        if 0:
-            g.trace(c.frame.body.wrapper)
-            for method in ('delete', 'insert', 'toPythonIndexRowCol'):
-                f = getattr(c.frame.body.wrapper, method, None)
-                print(repr(f))
-
-    # @+node:ekr.20220912140743.1: *3* TestQtGui.test_QTextEditWrapper_delete
-    def test_QTextEditWrapper_delete(self):
-        c = self.c
-        wrapper = c.frame.body.wrapper
-        widget = wrapper.widget
-        self.assertTrue(isinstance(wrapper, QTextEditWrapper))
-        self.assertTrue(isinstance(widget, LeoQTextBrowser))
-        widget.setText('line1\nline2')
-        # g.trace(wrapper.getAllText())
-        wrapper.delete(0, 6)
-        # g.trace(wrapper.getAllText())
-        widget.setText('line1\nline2')
-        # g.trace(wrapper.getAllText())
-        wrapper.delete(6, 0)
-        # g.trace(wrapper.getAllText())
-
     # @+node:ekr.20260404143610.1: *3* TestQtGui.test_annotations
     def test_annotations(self):
         # This test establishes the basis of Leo's Qt-related annotations.
@@ -338,6 +189,180 @@ class TestQtGui(LeoUnitTest):
             QTextMixin,  # Every class is a subclass of itself.
         ):
             assert issubclass(class_, QTextMixin), repr(class_)
+
+    # @+node:ekr.20210913120449.1: *3* TestQtGui.test_bug_2164
+    def test_bug_2164(self):
+        # show-invisibles crashes with PyQt6.
+        from leo.core.leoQt import QtGui
+
+        # Test the commands.
+        c = self.c
+        for command in ('toggle-invisibles', 'hide-invisibles', 'show-invisibles'):
+            c.doCommandByName(command)
+
+        # Test the Qt6 flag.
+        option = QtGui.QTextOption()
+        assert hasattr(option.Flag, 'ShowTabsAndSpaces')
+
+    # @+node:ekr.20260423040149.1: *3* TestQtGui.test_copy_in_completions_tab
+    def test_copy_in_completions_tab(self):
+        # A minimal test.
+        import textwrap
+        from leo.core.leoGui import LeoKeyEvent
+
+        c = self.c
+        k = c.k
+        log = c.frame.log
+        event = LeoKeyEvent(c, 'a', event=None, binding=None, w=None)
+        k.fullCommand(event=event)
+        k.extendLabel('a')
+        # Force g.es to print to the log.
+        try:
+            g.unitTesting = False
+            g.app.logInited = True
+            g.app.log = log
+            k.doTabCompletion(['a', 'ab', 'abc'])
+        finally:
+            g.unitTesting = True
+        s = log.logCtrl.getAllText()
+        s = textwrap.dedent(s)
+        k.keyboardQuit()
+        assert s == 'a\nab\nabc\n', repr(s)
+
+    # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
+    # These tests exist to test the startup logic.
+    if 0:  # pragma: no cover
+
+        def test_do_nothing1(self):
+            time.sleep(0.1)
+
+        def test_do_nothing2(self):
+            time.sleep(0.1)
+
+        def test_do_nothing3(self):
+            time.sleep(0.1)
+
+    # @+node:ekr.20220411165627.1: *3* TestQtGui.test_put_html_links
+    def test_put_html_links(self):
+        c, p = self.c, self.c.p
+        # Create a test outline.
+        assert p == self.root_p
+        assert p.h == 'root'
+        p2 = p.insertAsLastChild()
+        p2.h = '@file test_file.py'
+        # Run the tests.
+        table = (
+            # python.
+            (
+                True,
+                'File "test_file.py", line 5',
+            ),
+            # pylint.
+            (
+                True,
+                r'leo\unittest\test_file.py:1326:8: W0101: Unreachable code (unreachable)',
+            ),
+            # pyflakes.
+            (
+                True,
+                r"test_file.py:51:13 'leo.core.leoQt5.*' imported but unused",
+            ),
+            # mypy...
+            (
+                True,
+                'test_file.py:116: error: Function is missing a return type annotation  [no-untyped-def]',
+            ),
+            (
+                True,
+                r'leo\core\test_file.py:116: note: Use "-> None" if function does not return a value',
+            ),
+            (
+                False,
+                'Found 1 error in 1 file (checked 1 source file)',
+            ),
+            (
+                False,
+                'mypy: done',
+            ),
+            # Random output.
+            (
+                False,
+                'Hello world\n',
+            ),
+        )
+        for expected, s in table:
+            s = s.replace('\\', os.sep).rstrip() + '\n'
+            result = c.frame.log.put_html_links(s)
+            self.assertEqual(result, expected, msg=repr(s))
+
+    # @+node:ekr.20220912093438.1: *3* TestQtGui.test_qt_attributes
+    def test_qt_attributes(self):
+        # Various preliminary tests.
+        c = self.c
+        if 0:
+            print('')
+            for z in dir(g.app.gui):
+                if not z.startswith('__'):
+                    obj = getattr(g.app.gui, z, None)
+                    print(f"{z:>30} {g.objToString(obj)}")
+        if 0:
+            print('')
+            g.trace(g.app.gui)
+            g.trace(c.frame.body)
+        if 0:
+            g.trace(c.frame.body.wrapper)
+            for method in ('delete', 'insert', 'toPythonIndexRowCol'):
+                f = getattr(c.frame.body.wrapper, method, None)
+                print(repr(f))
+
+    # @+node:ekr.20210912064439.2: *3* TestQtGui.test_qt_ctors_for_all_dialogs
+    def test_qt_ctors_for_all_dialogs(self):
+        # Make sure the dialogs don't crash.
+        c = self.c
+        gui = g.app.gui
+        self.assertEqual(gui.__class__.__name__, 'LeoQtGui')
+        gui.runAboutLeoDialog(c, 'version', 'copyright', 'url', 'email')
+        gui.runAskOkDialog(c, 'title', 'message')
+        gui.runAskOkCancelNumberDialog(c, 'title', 'message')
+        gui.runAskOkCancelStringDialog(c, 'title', 'message')
+        gui.runAskYesNoDialog(c, 'title', 'message')
+        gui.runAskYesNoCancelDialog(c, 'title', 'message')
+
+    # @+node:ekr.20210912133358.1: *3* TestQtGui.test_qt_enums
+    def test_qt_enums(self):
+        # https://github.com/leo-editor/leo-editor/issues/1973 list of enums
+
+        if not QtCore and QtCore.Qt:
+            self.skipTest('Requires Qt')  # pragma: no cover
+        table = (
+            'DropAction',
+            'ItemFlag',
+            'KeyboardModifier',
+            'MouseButton',
+            'Orientation',
+            'TextInteractionFlag',
+            'ToolBarArea',
+            'WindowType',
+            'WindowState',
+        )
+        for ivar in table:
+            assert hasattr(QtCore.Qt, ivar), repr(ivar)
+
+    # @+node:ekr.20220912140743.1: *3* TestQtGui.test_QTextEditWrapper_delete
+    def test_QTextEditWrapper_delete(self):
+        c = self.c
+        wrapper = c.frame.body.wrapper
+        widget = wrapper.widget
+        self.assertTrue(isinstance(wrapper, QTextEditWrapper))
+        self.assertTrue(isinstance(widget, LeoQTextBrowser))
+        widget.setText('line1\nline2')
+        # g.trace(wrapper.getAllText())
+        wrapper.delete(0, 6)
+        # g.trace(wrapper.getAllText())
+        widget.setText('line1\nline2')
+        # g.trace(wrapper.getAllText())
+        wrapper.delete(6, 0)
+        # g.trace(wrapper.getAllText())
 
     # @-others
 
