@@ -12,7 +12,7 @@ import re
 import sys
 import textwrap
 from time import sleep
-from typing import Any, Generator, Optional, Tuple, Union, TYPE_CHECKING
+from typing import Any, Generator, Optional, Tuple, TYPE_CHECKING
 from leo.core import leoColor
 from leo.core import leoGlobals as g
 from leo.core import leoGui
@@ -1186,7 +1186,7 @@ class LeoQtGui(leoGui.LeoGui):
 
     # @+node:ekr.20110605121601.18514: *3* LeoQtGui.Icons
     # @+node:ekr.20110605121601.18515: *4* LeoQtGui.attachLeoIcon
-    def attachLeoIcon(self, window: Union[QMainWindow, QDialog]) -> None:
+    def attachLeoIcon(self, window: QMainWindow | QDialog) -> None:
         """Attach a Leo icon to the window."""
         if self.appIcon:
             window.setWindowIcon(self.appIcon)

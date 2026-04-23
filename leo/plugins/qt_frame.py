@@ -94,11 +94,9 @@ if TYPE_CHECKING:  # pragma: no cover
     QTextBlock = QtGui.QTextBlock
     QTextCursor = QtGui.QTextCursor
     QWidget = QtWidgets.QWidget
-    RClick = tuple  # Union[tuple, namedtuple('RClick', 'position,children')]
+    RClick = tuple
     RClicks = list[RClick]
 
-    # LeoFrame defines TextAPI as:
-    # TextAPI = Union[QScintillaWrapper, QTextEditWrapper, StringTextWrapper]
     QtWrapper = QScintillaWrapper | QTextEditWrapper
 
 
