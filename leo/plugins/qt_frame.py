@@ -4107,7 +4107,7 @@ class QtIconBarClass:
 
 class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     # @+others
-    # @+node:ekr.20110605121601.18459: *3* ctor and __repr__(QtMenuWrapper)
+    # @+node:ekr.20110605121601.18459: *3* QtMenuWrapper.__init__ and __repr__
     def __init__(self, c: Cmdr, frame: Any, parent: QWidget, label: str) -> None:
         """ctor for QtMenuWrapper class."""
         assert c
@@ -4129,7 +4129,7 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     def __repr__(self) -> str:
         return f"<QtMenuWrapper {self.leo_menu_label}>"
 
-    # @+node:ekr.20110605121601.18460: *3* onAboutToShow & helpers (QtMenuWrapper)
+    # @+node:ekr.20110605121601.18460: *3* QtMenuWrapper.onAboutToShow & helpers
     def onAboutToShow(self, *args: Args, **keys: KWargs) -> None:
         name = self.leo_menu_label
         if not name:
@@ -4141,14 +4141,14 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
                 self.leo_enable_menu_item(action, commandName)
                 self.leo_update_menu_label(action, commandName)
 
-    # @+node:ekr.20120120095156.10261: *4* leo_enable_menu_item
+    # @+node:ekr.20120120095156.10261: *4* QtMenuWrapper.leo_enable_menu_item
     def leo_enable_menu_item(self, action: QAction, commandName: str) -> None:
         func = self.c.frame.menu.enable_dict.get(commandName)
         if action and func:
             val = func()
             action.setEnabled(bool(val))
 
-    # @+node:ekr.20120124115444.10190: *4* leo_update_menu_label
+    # @+node:ekr.20120124115444.10190: *4* QtMenuWrapper.leo_update_menu_label
     def leo_update_menu_label(self, action: QAction, commandName: str) -> None:
         c = self.c
         if action and commandName == 'mark':
@@ -4156,7 +4156,7 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
             # Set the proper shortcut.
             self.leo_update_shortcut(action, commandName)
 
-    # @+node:ekr.20120120095156.10260: *4* leo_update_shortcut
+    # @+node:ekr.20120120095156.10260: *4* QtMenuWrapper.leo_update_shortcut
     def leo_update_shortcut(self, action: QAction, commandName: str) -> None:
         c, k = self.c, self.c.k
         if action:
