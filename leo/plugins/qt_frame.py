@@ -52,7 +52,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoGui
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.leoFrame import LeoLog, NullFrame
+    from leo.plugins.leoFrame import LeoLog
     from leo.plugins.mod_scripting import ScriptingController
     from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
 
@@ -746,7 +746,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
                 shadow = Shadow.Plain
             if shape is None:
                 shape = Shape.NoFrame
-            w = qt_text.LeoQTextBrowser(parent, c, None)
+            w = qt_text.LeoQTextBrowser(parent, c)
             w.setFrameShape(shape)
             w.setFrameShadow(shadow)
             w.setLineWidth(lineWidth)
@@ -825,33 +825,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
         self.leo_master.select(c)
 
     # @+node:ekr.20110605121601.18142: *3* dw: top-level methods
-    # @+node:ekr.20190118150859.10: *4* dw.addNewEditor
-    def addNewEditor(self, name: str) -> tuple[QWidget, QTextEditWrapper]:
-        """Create a new body editor."""
-        c, p = self.leo_c, self.leo_c.p
-        body = c.frame.body
-        assert isinstance(body, LeoQtBody), repr(body)
-        # Step 1: create the editor.
-        parent_frame = c.frame.top.leo_body_inner_frame
-        widget = qt_text.LeoQTextBrowser(parent_frame, c, self)
-        widget.setObjectName('richTextEdit')  # Will be changed later.
-        wrapper = qt_text.QTextEditWrapper(widget, name='body', c=c)
-        self.packLabel(widget)
-        # Step 2: inject ivars, set bindings, etc.
-        inner_frame = c.frame.top.leo_body_inner_frame  # Inject ivars *here*.
-        body.injectIvars(inner_frame, name, p, wrapper)
-        body.updateInjectedIvars(widget, p)
-        wrapper.setAllText(p.b)
-        wrapper.see(0)
-        c.k.completeAllBindingsForWidget(wrapper)
-        if isinstance(widget, QtWidgets.QTextEdit):
-            colorizer = leoColorizer.make_colorizer(c, widget)
-            colorizer.highlighter.setDocument(widget.document())
-        else:
-            # Scintilla only.
-            body.recolorWidget(p, wrapper)
-        return parent_frame, wrapper
-
     # @+node:ekr.20110605121601.18143: *4* dw.createBodyPane
     def createBodyPane(self, parent: QWidget) -> QWidget:
         """
@@ -2652,7 +2625,7 @@ class LeoQtLog(leoFrame.LeoLog):
         contents: Any
         if widget is None:
             # widget is subclass of QTextBrowser.
-            widget = qt_text.LeoQTextBrowser(parent=None, c=c, wrapper=self)
+            widget = qt_text.LeoQTextBrowser(parent=None, c=c)
             # contents is a wrapper.
             contents = qt_text.QTextEditWrapper(widget=widget, name='log', c=c)
             # Inject an ivar into the QTextBrowser that points to the wrapper.
