@@ -848,21 +848,6 @@ class StringFindTabManager:
     # @-others
 
 
-# @+node:ekr.20170613095422.1: ** class StringGui (LeoGui)
-class StringGui(LeoGui):
-    """
-    A class representing all on-screen objects using subclasses of the
-    leoAPI.StringTextWrapper class.
-    """
-
-    # @+others
-    # @+node:ekr.20170613114120.1: *3* StringGui.runMainLoop
-    def runMainLoop(self) -> None:
-        raise NotImplementedError
-
-    # @-others
-
-
 # @+node:ekr.20171128093503.1: ** class StringLineEdit (leoGui)
 class StringLineEdit:
     """Simulate a QLineEdit."""
