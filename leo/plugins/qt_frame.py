@@ -65,8 +65,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from typing import TypeAlias  # Requires Python 3.12+
     from leo.core.leoColorizer import BaseColorizer
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoGui import LeoGui
-    from leo.core.leoGui import LeoKeyEvent
+    from leo.core.leoGui import LeoGui, LeoKeyEvent, NullFrame
     from leo.core.leoNodes import Position
     from leo.plugins.leoFrame import LeoLog
     from leo.plugins.mod_scripting import ScriptingController
@@ -4044,7 +4043,13 @@ class QtIconBarClass:
 class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     # @+others
     # @+node:ekr.20110605121601.18459: *3* QtMenuWrapper.__init__ and __repr__
-    def __init__(self, c: Cmdr, frame: Any, parent: QWidget, label: str) -> None:
+    def __init__(
+        self,
+        c: Cmdr,
+        frame: LeoQtFrame | NullFrame,
+        parent: QWidget,
+        label: str,
+    ) -> None:
         """ctor for QtMenuWrapper class."""
         assert c
         assert frame
