@@ -235,12 +235,22 @@ class TestQtGui(LeoUnitTest):
         assert s2 == s, (repr(s), repr(s2))
 
         # Part 3: Test Ctrl-C in all text widgets.
+        # c.k.manufactureKeyPressForCommandName(c.frame.body, 'copy-text') returns 'Ctrl+c'.
         table = (
             ('c.frame.body.widget', c.frame.body.widget),
             ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
             ('c.frame.log.logWidget', c.frame.log.logWidget),
             ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
         )
+
+        # Construct a Ctrl+C event.
+        key_event = QtGui.QKeyEvent(
+            QtCore.QEvent.Type.KeyPress,
+            QtCore.Qt.Key.Key_C,
+            QtCore.Qt.KeyboardModifier.ControlModifier,
+            '',
+        )
+
         text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
         for kind, w in table:
             class_name = w.__class__.__name__
