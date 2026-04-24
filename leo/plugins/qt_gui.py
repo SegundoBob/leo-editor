@@ -233,6 +233,9 @@ class LeoQtGui(leoGui.LeoGui):
 
     # @+node:ekr.20110605121601.18484: *3*  LeoQtGui.destroySelf (calls qtApp.quit)
     def destroySelf(self) -> None:
+        """Stop executing the qt gui after printing any stats."""
+        if g.app.statsDict:
+            g.printStats()
         QtCore.pyqtRemoveInputHook()
         if 'shutdown' in g.app.debug:
             g.pr('LeoQtGui.destroySelf: calling qtApp.Quit')
