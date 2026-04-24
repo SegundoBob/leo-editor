@@ -978,9 +978,7 @@ def goToPrevMarkedHeadline(self: Cmdr, event: LeoKeyEvent = None) -> None:
             break
         else:
             wrapped = True
-            p = c.rootPosition() # Get last node with while-loop below.
-            while p and p.hasThreadNext():
-                p.moveToThreadNext()
+            p = c.lastPosition()
     if not p:
         g.blue('done')
     c.treeSelectHelper(p)  # Sets focus.
