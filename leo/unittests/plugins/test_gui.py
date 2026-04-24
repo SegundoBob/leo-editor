@@ -256,7 +256,7 @@ class TestQtGui(LeoUnitTest):
         # g.app.debug = ['events']
         try:
             for kind, w in table:
-                is_QTextEdit = issubclass(w.__class__, QtWidgets.QTextEdit)
+                # is_QTextEdit = issubclass(w.__class__, QtWidgets.QTextEdit)
                 class_name = w.__class__.__name__
                 assert issubclass(w.__class__, text_widgets), w.__class__
                 # Put the class name in the widget.
