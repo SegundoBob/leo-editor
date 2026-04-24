@@ -112,7 +112,6 @@ class StringTextWrapper(QTextMixin):
         self.ins = 0
         self.sel = 0, 0
         self.s = ''
-        self.supportsHighLevelInterface = True
         self.virtualInsertPoint = 0
         self.widget = None  # This ivar must exist, and be None.
 

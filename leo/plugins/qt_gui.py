@@ -34,8 +34,6 @@ from leo.core.leoQt import (
     Unchecked,
 )
 
-# This import causes pylint to fail on this file and on leoBridge.py.
-# The failure is in astroid: raw_building.py.
 from leo.core.leoQt import (
     Shadow,
     Shape,
@@ -51,6 +49,7 @@ from leo.plugins import (
     qt_idle_time,
     qt_text,
 )
+from leo.plugins.qt_text import QTextMixin
 
 assert Qt
 assert qt_commands
@@ -62,7 +61,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper, QTextMixin
+    from leo.plugins.qt_text import QTextEditWrapper
 
     Args = Any
     KWargs = Any
@@ -1725,7 +1724,7 @@ class LeoQtGui(leoGui.LeoGui):
             return False
         if isinstance(w, (g.NullObject, g.TracingNullObject)):
             return True
-        return bool(getattr(w, 'supportsHighLevelInterface', None))
+        return issubclass(w.__class__, QTextMixin)
 
     # @+node:ekr.20110605121601.18527: *4* LeoQtGui.widget_name
     def widget_name(self, w: QWidget) -> str:
