@@ -243,32 +243,45 @@ class TestQtGui(LeoUnitTest):
             ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
         )
 
-        # Construct a Ctrl+C event.
-        key_event = QtGui.QKeyEvent(
-            QtCore.QEvent.Type.KeyPress,
-            QtCore.Qt.Key.Key_C,
-            QtCore.Qt.KeyboardModifier.ControlModifier,
-            '',
-        )
+        # Construct two events
+        c_key = QtCore.Qt.Key.Key_C
+        ctrl_mod = QtCore.Qt.KeyboardModifier.ControlModifier
+        key_press_t = QtCore.QEvent.Type.KeyPress
+        key_release_t = QtCore.QEvent.Type.KeyRelease
+        key_press_event = QtGui.QKeyEvent(key_press_t, c_key, ctrl_mod, '')
+        key_release_event = QtGui.QKeyEvent(key_release_t, c_key, ctrl_mod, '')
 
         text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
-        for kind, w in table:
-            class_name = w.__class__.__name__
-            assert issubclass(w.__class__, text_widgets), w.__class__
-            qtApp.processEvents()
-            w.setFocus()
-            w.clear()
-            w.setText('before')
-            g.app.gui.replaceClipboardWith(class_name)
-            qtApp.processEvents()
-            w.setReadOnly(False)
-            # print('clipboard', g.app.gui.getTextFromClipboard())
-            w.selectAll()
-            # This is a cheat. We want to test that Ctrl-c actually does the paste!
-            w.paste()
-            qtApp.processEvents()
-            s = w.toPlainText() if issubclass(w.__class__, QtWidgets.QTextEdit) else w.text()
-            assert s == class_name, f"Expected: {class_name}, got: {s}"
+        g.app.debug = ['events']
+        try:
+            for kind, w in table:
+                print(kind)
+                class_name = w.__class__.__name__
+                assert issubclass(w.__class__, text_widgets), w.__class__
+                w.setFocus()
+                qtApp.processEvents()
+                ### w.clear()
+                ### w.setText('before')
+                ### g.app.gui.replaceClipboardWith(class_name)
+                ### w.setText(class_name)
+                ### qtApp.processEvents()
+                expected = (
+                    w.toPlainText() if issubclass(w.__class__, QtWidgets.QTextEdit) else w.text()
+                )
+                w.setReadOnly(False)
+                # print('clipboard', g.app.gui.getTextFromClipboard())
+                w.selectAll()
+                # This is a cheat. We want to test that Ctrl-c actually does the copy!
+                # w.paste()
+                # qtApp.processEvents()
+
+                # was_handled = QtCore.QCoreApplication.sendEvent(w, key_event)
+                qtApp.sendEvent(w, key_press_event)
+                qtApp.sendEvent(w, key_release_event)
+                s = g.app.gui.getTextFromClipboard()
+                assert s == expected, f"Expected: {expected}, got: {s}"
+        finally:
+            g.app.debug = []
 
     # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.
