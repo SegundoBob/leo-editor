@@ -264,11 +264,11 @@ class QTextMixin:
         # Call the base class
         assert isinstance(
             self.widget,
-            (  # type:ignore
+            (
                 QtWidgets.QTextBrowser,
                 QtWidgets.QLineEdit,
                 QtWidgets.QTextEdit,
-                Qsci and Qsci.QsciScintilla,  # This line causes the mypy complaint.
+                Qsci and Qsci.QsciScintilla,
             ),
         ), self.widget
         QtWidgets.QTextBrowser.setFocus(self.widget)
