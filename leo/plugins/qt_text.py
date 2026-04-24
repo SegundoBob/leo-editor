@@ -149,7 +149,11 @@ def helpForRMarginGuides(self, event=None):
 
 # @+node:ekr.20140901062324.18719: **   class QTextMixin
 class QTextMixin:
-    """A minimal mixin class for QTextEditWrapper and QScintillaWrapper classes."""
+    """
+    A mixin class for StringTextWrapper, QTextEditWrapper and QScintillaWrapper classes.
+
+    This is also the annotation for all text-related wrappers.
+    """
 
     # @+others
     # @+node:ekr.20140901062324.18732: *3* QTextMixin.ctor & helper
