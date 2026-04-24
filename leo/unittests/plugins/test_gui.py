@@ -251,35 +251,34 @@ class TestQtGui(LeoUnitTest):
         key_press_event = QtGui.QKeyEvent(key_press_t, c_key, ctrl_mod, '')
         key_release_event = QtGui.QKeyEvent(key_release_t, c_key, ctrl_mod, '')
 
+        # The main loop.
         text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
-        g.app.debug = ['events']
+        # g.app.debug = ['events']
         try:
             for kind, w in table:
-                print(kind)
+                is_QTextEdit = issubclass(w.__class__, QtWidgets.QTextEdit)
                 class_name = w.__class__.__name__
                 assert issubclass(w.__class__, text_widgets), w.__class__
+                # Put the class name in the widget.
                 w.setFocus()
                 qtApp.processEvents()
-                ### w.clear()
-                ### w.setText('before')
-                ### g.app.gui.replaceClipboardWith(class_name)
-                ### w.setText(class_name)
-                ### qtApp.processEvents()
-                expected = (
-                    w.toPlainText() if issubclass(w.__class__, QtWidgets.QTextEdit) else w.text()
-                )
                 w.setReadOnly(False)
-                # print('clipboard', g.app.gui.getTextFromClipboard())
+                w.clear()
+                expected = f"{id(w)}: {class_name}"
+                w.setText(expected)
                 w.selectAll()
-                # This is a cheat. We want to test that Ctrl-c actually does the copy!
-                # w.paste()
-                # qtApp.processEvents()
-
-                # was_handled = QtCore.QCoreApplication.sendEvent(w, key_event)
-                qtApp.sendEvent(w, key_press_event)
-                qtApp.sendEvent(w, key_release_event)
+                qtApp.processEvents()
+                if 1:  # works.
+                    # print('Contents:', w.toPlainText() if is_QTextEdit else w.text())
+                    g.app.gui.replaceClipboardWith(expected)
+                else:  # Fails
+                    # Execute Ctrl-c.
+                    qtApp.sendEvent(w, key_press_event)
+                    qtApp.sendEvent(w, key_release_event)
+                    qtApp.processEvents()
                 s = g.app.gui.getTextFromClipboard()
-                assert s == expected, f"Expected: {expected}, got: {s}"
+                # Not ready yet.
+                assert s == expected, f"{kind}\nExpected: {expected!r}\n     Got: {s!r}"
         finally:
             g.app.debug = []
 
