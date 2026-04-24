@@ -391,8 +391,6 @@ class LeoQtEventFilter(QtCore.QObject):
     # @+node:ekr.20140907103315.18767: *3* LeoQtEventFilter:Tracing
     # @+node:ekr.20190922075339.1: *4* LeoQtEventFilter.traceKeys
     def traceKeys(self, obj, event):
-        if g.unitTesting:
-            return
         e = QtCore.QEvent
         key_events = {
             e.Type.KeyPress: 'key-press',  # 6
@@ -403,7 +401,9 @@ class LeoQtEventFilter(QtCore.QObject):
         kind = key_events.get(event.type())
         if kind:
             mods = ','.join(self.qtMods(event))
-            g.trace(f"{kind:>20}: {mods:>7} {event.text()!r}")
+            key = event.key()
+            key_s = chr(key) if key else ''
+            g.trace(f"{kind:>20}: {mods:>7} {key_s} {event.text()!r}")
 
     # @+node:ekr.20110605121601.18548: *4* LeoQtEventFilter.traceEvent
     def traceEvent(self, obj, event):
