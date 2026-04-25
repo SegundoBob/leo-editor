@@ -978,7 +978,7 @@ def goToPrevMarkedHeadline(self: Cmdr, event: LeoKeyEvent = None) -> None:
             break
         else:
             wrapped = True
-            p = c.rootPosition()
+            p = c.lastPosition()
     if not p:
         g.blue('done')
     c.treeSelectHelper(p)  # Sets focus.
