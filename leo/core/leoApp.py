@@ -22,6 +22,7 @@ from leo.core.leoQt import QCloseEvent
 
 if TYPE_CHECKING:
     from leo.core.leoJupytext import JupytextManager
+
     StringIO = io.StringIO
     SpellDict = Any  # dict[str, list[str]]
 # @-<< leoApp imports >>

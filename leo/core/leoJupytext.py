@@ -20,7 +20,7 @@ from typing import Any, Tuple, TYPE_CHECKING
 jupytext = None  # Loaded lazily by _load_jupytext().
 has_jupytext: bool = False  # Set to True once jupytext loads successfully.
 
-from leo.core import leoGlobals as g
+from leo.core import leoGlobals as g  # noqa
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
@@ -39,6 +39,7 @@ def _ensure_jupytext() -> bool:
         return False  # already tried and failed
     try:
         import jupytext as _jt
+
         jupytext = _jt
         has_jupytext = True
         return True
