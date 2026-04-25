@@ -148,7 +148,6 @@ class LeoQtEventFilter(QtCore.QObject):
             # char = None doesn't work at present.
             # But really, the binding should suffice.
             char=ch,
-            event=event,
             binding=binding,
             w=w,
             x=getattr(event, 'x', None) or 0,

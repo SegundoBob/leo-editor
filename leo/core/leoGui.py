@@ -307,7 +307,6 @@ class LeoGui:
         c: Cmdr,
         binding: str = None,
         char: str = None,
-        event: LeoKeyEvent = None,
         w: QTextMixin = None,
         x: int = None,
         x_root: int = None,
@@ -317,7 +316,9 @@ class LeoGui:
         # Do not call strokeFromSetting here!
         # For example, this would wrongly convert Ctrl-C to Ctrl-c,
         # in effect, converting a user binding from Ctrl-Shift-C to Ctrl-C.
-        return LeoKeyEvent(c, char, event, binding, w, x, y, x_root, y_root)
+        return LeoKeyEvent(
+            c, char=char, binding=binding, w=w, x=x, y=y, x_root=x_root, y_root=y_root
+        )
 
     # @+node:ekr.20031218072017.3740: *4* LeoGui.guiName
     def guiName(self) -> str:
@@ -349,10 +350,9 @@ class LeoKeyEvent:
     def __init__(
         self,
         c: Cmdr,
-        char: str,
-        event: LeoKeyEvent,
-        binding: Any,
-        w: Any,
+        char: str = None,
+        binding: Any = None,
+        w: Any = None,
         x: int = None,
         y: int = None,
         x_root: int = None,
@@ -366,12 +366,8 @@ class LeoKeyEvent:
         else:
             stroke = g.KeyStroke(binding) if binding else None
         assert g.isStrokeOrNone(stroke), f"(LeoKeyEvent) {stroke!r} {g.callers()}"
-        if 0:  # Doesn't add much.
-            if 'keys' in g.app.debug:
-                print(f"LeoKeyEvent: binding: {binding}, stroke: {stroke}, char: {char!r}")
         self.c = c
         self.char = char or ''
-        self.event = event  # New in Leo 4.11.
         self.stroke = stroke
         self.w = self.widget = w
         # Optional ivars

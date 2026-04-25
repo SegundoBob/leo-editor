@@ -211,7 +211,7 @@ class TestQtGui(LeoUnitTest):
         qtApp = g.app.gui.qtApp
 
         # Part 1: Create the 'Completion' tab, and copy it's contets to the clipboard.
-        event = LeoKeyEvent(c, 'a', event=None, binding=None, w=None)
+        event = LeoKeyEvent(c, char='a')
         k.fullCommand(event=event)
         k.extendLabel('a')
         # Force g.es to print to the log.
@@ -228,7 +228,7 @@ class TestQtGui(LeoUnitTest):
         wrapper.selectAllText()
 
         # Part 2: Test copyText.
-        event2 = LeoKeyEvent(c, char=None, binding=None, event=None, w=wrapper)
+        event2 = LeoKeyEvent(c, w=wrapper)
         c.frame.copyText(event2)
         s2 = g.app.gui.getTextFromClipboard()
         k.keyboardQuit()

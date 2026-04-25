@@ -588,9 +588,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
                 # #2094: Use code similar to the end of LeoQtEventFilter.eventFilter.
                 #        The ctor converts <Alt-X> to <Alt-x> !!
                 #        That is, we must use the stroke, not the binding.
-                key_event = leoGui.LeoKeyEvent(
-                    c=self.c, char=ch, event=event, binding=binding, w=self.w
-                )
+                key_event = leoGui.LeoKeyEvent(c=self.c, char=ch, binding=binding, w=self.w)
                 if key_event.stroke:
                     cmd_name = self.d.get(key_event.stroke)
                     if cmd_name:
