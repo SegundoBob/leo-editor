@@ -6230,11 +6230,7 @@ def es(*args: Args, **kwargs: KWargs) -> None:
     if app.batchMode:
         if app.log:
             app.log.put(s)
-    elif g.unitTesting:
-        if log and not log.isNull:
-            # This makes the output of unit tests match the output of scripts.
-            g.pr(s, newline=newline)
-    elif log and app.logInited:
+    if log and (app.logInited or g.unitTesting):
         if newline:
             s += '\n'
         log.put(s, color=color, tabName=tabName, nodeLink=d['nodeLink'])

@@ -14,15 +14,16 @@ import sys
 import time
 import urllib
 from typing import Any, Optional, TYPE_CHECKING
-from leo.core import leoGlobals as g
+from leo.commands import gotoCommands
+from leo.core.leoAPI import StringTextWrapper
 from leo.core import (
     leoColor,
     leoColorizer,
     leoFrame,
+    leoGlobals as g,
     leoGui,
     leoMenu,
 )
-from leo.commands import gotoCommands
 from leo.core.leoQt import (
     AlignLeft,
     ContextMenuPolicy,
@@ -41,9 +42,9 @@ from leo.core.leoQt import (
     ScrollBarPolicy,
     SelectionBehavior,
     SelectionMode,
-    SizeAdjustPolicy,
     Shadow,
     Shape,
+    SizeAdjustPolicy,
     Style,
     TextInteractionFlag,
     ToolBarArea,
@@ -53,9 +54,8 @@ from leo.core.leoQt import (
     WrapMode,
 )
 from leo.plugins import qt_events, qt_text
-from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper
-from leo.plugins.qt_tree import LeoQtTree
 from leo.plugins.mod_scripting import build_rclick_tree
+from leo.plugins.qt_tree import LeoQtTree
 from leo.plugins.qt_layout import LayoutCacheWidget
 
 # @-<< qt_frame imports >>
@@ -65,17 +65,11 @@ if TYPE_CHECKING:  # pragma: no cover
     from typing import TypeAlias  # Requires Python 3.12+
     from leo.core.leoColorizer import BaseColorizer
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoGui import LeoGui
-    from leo.core.leoGui import LeoKeyEvent
+    from leo.core.leoGui import LeoGui, LeoKeyEvent, NullFrame
     from leo.core.leoNodes import Position
-    from leo.plugins.leoFrame import LeoLog, NullFrame
+    from leo.plugins.leoFrame import LeoLog
     from leo.plugins.mod_scripting import ScriptingController
-    from leo.plugins.qt_text import (
-        LeoQTextBrowser,
-        QMinibufferWrapper,
-        QScintillaWrapper,
-        QTextMixin,
-    )
+    from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
 
     Args = Any
     KWargs = Any
@@ -101,6 +95,8 @@ if TYPE_CHECKING:  # pragma: no cover
     QWidget = QtWidgets.QWidget
     RClick = tuple
     RClicks = list[RClick]
+
+    QtWrapper = QScintillaWrapper | QTextEditWrapper
 
 
 # @-<< qt_frame annotations >>
@@ -515,7 +511,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
 
         # Define class EventWrapper.
         # @+others
-        # @+node:ekr.20131118172620.16892: *6* class EventWrapper (in DynamicWindow class)
+        # @+node:ekr.20131118172620.16892: *6* class EventWrapper
         class EventWrapper:
             def __init__(self, c: Cmdr, w: QWidget, next_w: QWidget, func: Callable) -> None:
                 self.c = c
@@ -763,7 +759,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
                 shadow = Shadow.Plain
             if shape is None:
                 shape = Shape.NoFrame
-            w = qt_text.LeoQTextBrowser(parent, c, None)
+            w = qt_text.LeoQTextBrowser(parent, c)
             w.setFrameShape(shape)
             w.setFrameShadow(shadow)
             w.setLineWidth(lineWidth)
@@ -1040,7 +1036,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
         lineEdit = VisLineEdit(frame)
         lineEdit._sel_and_insert = (0, 0, 0)
         lineEdit.setObjectName('lineEdit')  # name important.
-        lineEdit.leo_wrapper = QLineEditWrapper(widget=lineEdit)  # #4623.
         # Pack.
         hLayout = self.createHLayout(frame, 'minibufferHLayout', spacing=4)
         hLayout.setContentsMargins(3, 2, 2, 0)
@@ -1219,7 +1214,7 @@ class FindTabManager:
     """A helper class for the LeoFind class."""
 
     # @+others
-    # @+node:ekr.20131117120458.16794: *3*  ftm.ctor
+    # @+node:ekr.20131117120458.16794: *3*  FindTabManager.__ctor__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for the FindTabManager class."""
         self.c = c
@@ -1250,7 +1245,7 @@ class FindTabManager:
         self.replace_then_find_button = None
         self.replace_all_button = None
 
-    # @+node:ekr.20131119185305.16478: *3* ftm.clear_focus & init_focus & set_entry_focus
+    # @+node:ekr.20131119185305.16478: *3* FindTabManager.clear_focus & init_focus & set_entry_focus
     def clear_focus(self) -> None:
         self.entry_focus = None
         self.find_findbox.clearFocus()
@@ -1271,7 +1266,7 @@ class FindTabManager:
             w = c.frame.tree.treeWidget
         self.entry_focus = w
 
-    # @+node:ekr.20210110143917.1: *3* ftm.get_settings
+    # @+node:ekr.20210110143917.1: *3* FindTabManager.get_settings
     def get_settings(self) -> g.Bunch:
         """
         Return a g.bunch representing all widget values.
@@ -1297,7 +1292,7 @@ class FindTabManager:
             # wrapping = self.check_box_wrap_around.isChecked(),
         )
 
-    # @+node:ekr.20131117120458.16789: *3* ftm.init_widgets (creates callbacks)
+    # @+node:ekr.20131117120458.16789: *3* FindTabManager.init_widgets (creates callbacks)
     def init_widgets(self) -> None:
         """
         Init widgets and ivars from c.config settings.
@@ -1378,10 +1373,10 @@ class FindTabManager:
             w = self.radio_button_entire_outline
             w.toggle()
 
-    # @+node:ekr.20210923060904.1: *3* ftm.set_widgets_from_dict
+    # @+node:ekr.20210923060904.1: *3* FindTabManager.set_widgets_from_dict
     def set_widgets_from_dict(self, d: g.Bunch) -> None:
         """Set all settings from d."""
-        # Similar to ftm.init_widgets, which has already been called.
+        # Similar to FindTabManagerinit_widgets, which has already been called.
         c = self.c
         find = c.findCommands
         # Set find text.
@@ -1427,7 +1422,7 @@ class FindTabManager:
             w = self.radio_button_entire_outline
             w.setChecked(True)
 
-    # @+node:ekr.20210312120503.1: *3* ftm.set_body_and_headline_checkbox
+    # @+node:ekr.20210312120503.1: *3* FindTabManager.set_body_and_headline_checkbox
     def set_body_and_headline_checkbox(self) -> None:
         """Return the search-body and search-headline checkboxes to their defaults."""
         # #1840: headline-only one-shot
@@ -1446,7 +1441,7 @@ class FindTabManager:
         if find.minibuffer_mode:
             find.show_find_options_in_status_area()
 
-    # @+node:ekr.20150619082825.1: *3* ftm.set_ignore_case
+    # @+node:ekr.20150619082825.1: *3* FindTabManager.set_ignore_case
     def set_ignore_case(self, aBool: bool) -> None:
         """Set the ignore-case checkbox to the given value."""
         c = self.c
@@ -1454,7 +1449,7 @@ class FindTabManager:
         w = self.check_box_ignore_case
         w.setChecked(aBool)
 
-    # @+node:ekr.20131117120458.16792: *3* ftm.set_radio_button
+    # @+node:ekr.20131117120458.16792: *3* FindTabManager.set_radio_button
     def set_radio_button(self, name: str) -> None:
         """Set the value of the radio buttons"""
         c = self.c
@@ -1473,7 +1468,7 @@ class FindTabManager:
         if find.minibuffer_mode:
             find.show_find_options_in_status_area()
 
-    # @+node:ekr.20131117164142.16853: *3* ftm.text getters/setters
+    # @+node:ekr.20131117164142.16853: *3* FindTabManager.text getters/setters
     def get_find_text(self) -> str:
         s = self.find_findbox.text()
         if s and s[-1] in ('\r', '\n'):
@@ -1500,7 +1495,7 @@ class FindTabManager:
         w.clear()
         w.insert(s)
 
-    # @+node:ekr.20131117120458.16791: *3* ftm.toggle_checkbox
+    # @+node:ekr.20131117120458.16791: *3* FindTabManager.toggle_checkbox
     def toggle_checkbox(self, checkbox_name: str) -> None:
         """Toggle the value of the checkbox whose name is given."""
         c = self.c
@@ -1669,7 +1664,7 @@ class LeoQtBody(leoFrame.LeoBody):
         c = self.c
         assert c.frame == frame and frame.c == c
         self.colorizer: BaseColorizer = None
-        self.wrapper: QScintillaWrapper | QTextMixin = None
+        self.wrapper: QtWrapper = None
         self.widget: QWidget = None
         self.reloadSettings()
         self.set_widget()  # Sets self.widget and self.wrapper.
@@ -1745,10 +1740,11 @@ class LeoQtBody(leoFrame.LeoBody):
         """Handle a focus-in event in the body pane."""
         if obj.objectName() == 'richTextEdit':
             self.onFocusColorHelper('focus-in', obj)
-            if hasattr(obj, 'leo_copy_button') and obj.leo_copy_button:
-                obj.setReadOnly(True)
-            else:
-                obj.setReadOnly(False)
+            # if hasattr(obj, 'leo_copy_button') and obj.leo_copy_button:
+            #     obj.setReadOnly(True)
+            # else:
+            #     obj.setReadOnly(False)
+            obj.setReadOnly(False)
             obj.setFocus()  # Weird, but apparently necessary.
 
     # @+node:ekr.20110930174206.15473: *4* LeoQtBody.onFocusOut
@@ -1800,12 +1796,13 @@ class LeoQtFrame(leoFrame.LeoFrame):
         leoFrame.LeoFrame.instances += 1  # Increment the class var.
 
         # Official ivars for objects.
+        self.bar1: LeoQtFrame = None
+        self.bar2: LeoQtFrame = None
         self.body: LeoQtBody = None
         self.iconBar: QtIconBarClass = None
         self.iconFrame: QtIconBarClass = None
         self.log: LeoQtLog = None
         self.statusLine: QtStatusLineClass = None
-        self.miniBufferWidget: QMinibufferWrapper = None
         self.tree: LeoQtTree = None
         self.top: DynamicWindow = None
 
@@ -1821,6 +1818,7 @@ class LeoQtFrame(leoFrame.LeoFrame):
 
     def reloadSettings(self) -> None:
         c = self.c
+        self.cursorStay = c.config.getBool("cursor-stay-on-paste", default=True)
         self.use_chapters = c.config.getBool('use-chapters')
         self.use_chapter_tabs = c.config.getBool('use-chapter-tabs')
 
@@ -2259,21 +2257,22 @@ class LeoQtLog(leoFrame.LeoLog):
     def __init__(self, frame: LeoQtFrame) -> None:
         """Ctor for LeoQtLog class."""
         super().__init__(frame)  # Calls createControl.
+        assert self.logCtrl is None, self.logCtrl
         self.c = c = frame.c  # Also set in the base constructor, but we need it here.
         self.contentsDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
         self.eventFilters: list = []  # To make filters work!
         self.qtFrameDict: dict[str, QTabWidget] = {}
-        self.qtLogCtrl: QTextEditWrapper = None
+        self.logCtrl: QWidget = None  # A union.
         self.logDict: dict[str, LeoQTextBrowser] = {}  # Keys: tab names.
         self.logWidget: LeoLog = None
-        self.qtTabWidget: QWidget = c.frame.top.tabWidget
-        self.wrapper: QTextEditWrapper = None  # #4623.
-        tw = self.qtTabWidget
+        self.menu: qt_text.LeoQTextBrowser = None
+        self.tabWidget: QWidget = c.frame.top.tabWidget
+        tw = self.tabWidget
 
         # Bug 917814: Switching Log Pane tabs is done incompletely.
         tw.currentChanged.connect(self.onCurrentChanged)
         if 0:  # Not needed to make onActivateEvent work.
-            # Works only for .qtTabWidget, *not* the individual tabs!
+            # Works only for .tabWidget, *not* the individual tabs!
             theFilter = qt_events.LeoQtEventFilter(c, w=tw, tag='tabWidget')
             tw.installEventFilter(theFilter)
         tw.setMovable(True)
@@ -2286,14 +2285,11 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20110605121601.18315: *4* LeoQtLog.finishCreate
     def finishCreate(self) -> None:
         """Finish creating the LeoQtLog class."""
-        c, log, w = self.c, self, self.qtTabWidget
+        c, log, w = self.c, self, self.tabWidget
 
         # Create the log tab as the leftmost tab.
         log.createTab('Log')
         self.logWidget = self.contentsDict.get('Log')
-        self.wrapper = QTextEditWrapper(c=c, widget=self.logWidget)  # #4623.
-
-        # Configure.
         logWidget = self.logWidget
         logWidget.setWordWrapMode(WrapMode.WordWrap if self.wrap else WrapMode.NoWrap)
         w.insertTab(0, logWidget, 'Log')  # Required.
@@ -2331,7 +2327,8 @@ class LeoQtLog(leoFrame.LeoLog):
     @log_cmd('log-clear')
     def clearLog(self, event: LeoKeyEvent = None) -> None:
         """Clear the log pane."""
-        w = self.qtLogCtrl.widget
+        # self.logCtrl may be either a wrapper or a widget.
+        w = self.logCtrl.widget
         if w:
             w.clear()
 
@@ -2339,7 +2336,8 @@ class LeoQtLog(leoFrame.LeoLog):
     @log_cmd('log-dump')
     def dumpLog(self, event: LeoKeyEvent = None) -> None:
         """Clear the log pane."""
-        w = self.qtLogCtrl.widget
+        # self.logCtrl may be either a wrapper or a widget.
+        w = self.logCtrl.widget
         if not w:
             return
 
@@ -2420,15 +2418,15 @@ class LeoQtLog(leoFrame.LeoLog):
 
     # @+node:ekr.20120304214900.9940: *3* LeoQtLog.onCurrentChanged
     def onCurrentChanged(self, idx: int) -> None:
-        tabw = self.qtTabWidget
+        tabw = self.tabWidget
         w = tabw.widget(idx)
 
         # #917814: Switching Log Pane tabs is done incompletely
         obj = getattr(w, 'leo_log_wrapper', None)
 
         # #1161: Don't change logs unless the wrapper is correct.
-        if obj and isinstance(obj, QTextEditWrapper):
-            self.qtLogCtrl = obj
+        if obj and isinstance(obj, qt_text.QTextEditWrapper):
+            self.logCtrl = obj
 
     # @+node:ekr.20200304132424.1: *3* LeoQtLog.onContextMenu
     def onContextMenu(self, point: QPoint) -> None:
@@ -2464,7 +2462,7 @@ class LeoQtLog(leoFrame.LeoLog):
         color = self.resolve_color(color)
         self.selectTab(tabName or 'Log')
         # Must be done after the call to selectTab.
-        wrapper = self.qtLogCtrl
+        wrapper = self.logCtrl
         if not isinstance(wrapper, qt_text.QTextEditWrapper):
             g.trace('BAD wrapper', wrapper.__class__.__name__)
             return
@@ -2506,7 +2504,7 @@ class LeoQtLog(leoFrame.LeoLog):
             return
         if tabName:
             self.selectTab(tabName)
-        wrapper = self.qtLogCtrl
+        wrapper = self.logCtrl
         if not isinstance(wrapper, qt_text.QTextEditWrapper):
             g.trace('BAD wrapper', wrapper.__class__.__name__)
             return
@@ -2545,7 +2543,7 @@ class LeoQtLog(leoFrame.LeoLog):
             return
         if tabName:
             self.selectTab(tabName)
-        w = self.qtLogCtrl.widget
+        w = self.logCtrl.widget
         if not w:
             return
         sb = w.horizontalScrollBar()
@@ -2568,7 +2566,7 @@ class LeoQtLog(leoFrame.LeoLog):
         createText: bool = True,
         widget: QWidget = None,
         wrap: str = 'none',
-    ) -> QTextMixin:
+    ) -> QWidget:  # Widget or LeoQTextBrowser.
         """
         Create a new tab in tab widget
         if widget is None, Create a QTextBrowser,
@@ -2578,7 +2576,7 @@ class LeoQtLog(leoFrame.LeoLog):
         contents: Any
         if widget is None:
             # widget is subclass of QTextBrowser.
-            widget = qt_text.LeoQTextBrowser(parent=None, c=c, wrapper=self)
+            widget = qt_text.LeoQTextBrowser(parent=None, c=c)
             # contents is a wrapper.
             contents = qt_text.QTextEditWrapper(widget=widget, name='log', c=c)
             # Inject an ivar into the QTextBrowser that points to the wrapper.
@@ -2587,13 +2585,12 @@ class LeoQtLog(leoFrame.LeoLog):
             widget.setReadOnly(False)  # Allow edits.
             self.logDict[tabName] = widget
             if tabName == 'Log':
-                self.qtLogCtrl = contents
-                self.logCtrl = contents  # PR #4601: Set the base-class ivar.
+                self.logCtrl = contents
                 widget.setObjectName('log-widget')
             # Set binding on all log pane widgets.
             g.app.gui.setFilter(c, widget, self, tag='log')
             self.contentsDict[tabName] = widget
-            self.qtTabWidget.addTab(widget, tabName)
+            self.tabWidget.addTab(widget, tabName)
         else:
             # #1161: Don't set the wrapper unless it has the correct type.
             contents = widget  # Unlike text widgets, contents is the actual widget.
@@ -2603,7 +2600,7 @@ class LeoQtLog(leoFrame.LeoLog):
                 widget.leo_log_wrapper = None  # Tell the truth.
             g.app.gui.setFilter(c, widget, contents, 'tabWidget')
             self.contentsDict[tabName] = contents
-            self.qtTabWidget.addTab(contents, tabName)
+            self.tabWidget.addTab(contents, tabName)
         return contents
 
     # @+node:ekr.20110605121601.18328: *4* LeoQtLog.deleteTab
@@ -2612,7 +2609,7 @@ class LeoQtLog(leoFrame.LeoLog):
         Delete the tab if it exists.  Otherwise do *nothing*.
         """
         c = self.c
-        w = self.qtTabWidget
+        w = self.tabWidget
         i = self.findTabIndex(tabName)
         if i is None:
             return
@@ -2624,7 +2621,7 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20190603062456.1: *4* LeoQtLog.findTabIndex
     def findTabIndex(self, tabName: str) -> Optional[int]:
         """Return the tab index for tabName, or None."""
-        w = self.qtTabWidget
+        w = self.tabWidget
         for i in range(w.count()):
             if tabName == w.tabText(i):
                 return i
@@ -2637,13 +2634,13 @@ class LeoQtLog(leoFrame.LeoLog):
     # @+node:ekr.20111122080923.10185: *4* LeoQtLog.orderedTabNames
     def orderedTabNames(self, LeoLog: str = None) -> list[str]:  # Unused: LeoLog
         """Return a list of tab names in the order in which they appear in the QTabbedWidget."""
-        w = self.qtTabWidget
+        w = self.tabWidget
         return [w.tabText(i) for i in range(w.count())]
 
     # @+node:ekr.20221022062949.1: *4* LeoQtLog.renameTab
     def renameTab(self, oldTabName: str, tabName: str) -> None:
         """Rename the text tab"""
-        w = self.qtTabWidget
+        w = self.tabWidget
         i = self.findTabIndex(oldTabName)
         if i is None:
             self.createTab(tabName)
@@ -2661,17 +2658,9 @@ class LeoQtLog(leoFrame.LeoLog):
 
     # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab & helpers
     def selectTab(self, tabName: str, wrap: str = 'none') -> None:
-        """
-        Create the tab if necessary and make it active.
-
-        Any plugin or script can call this method to create a new tab.
-        There is no need to call c.frame.log.createTab first.
-
-        As a result, this code can *not* be moved to the startup logic.
-        """
+        """Create the tab if necessary and make it active."""
         i = self.findTabIndex(tabName)
         if i is None:
-            # This does happen, but not often.
             self.createTab(tabName, wrap=wrap)
             self.finishCreateTab(tabName)
         self.finishSelectTab(tabName)
@@ -2693,8 +2682,7 @@ class LeoQtLog(leoFrame.LeoLog):
             if widget:
                 wrapper = getattr(widget, 'leo_log_wrapper', None)
                 if wrapper and isinstance(wrapper, qt_text.QTextEditWrapper):
-                    self.qtLogCtrl = wrapper
-                    self.logCtrl = wrapper  # Required!
+                    self.logCtrl = wrapper
             if not wrapper:
                 g.trace('NO LOG WRAPPER')
         if tabName == 'Find':
@@ -2709,12 +2697,12 @@ class LeoQtLog(leoFrame.LeoLog):
                     findbox.setFocus()
         if tabName == 'Spell':
             # Set a flag for the spell system.
-            self.qtFrameDict['Spell'] = self.qtTabWidget.widget(i)
+            self.qtFrameDict['Spell'] = self.tabWidget.widget(i)
 
     # @+node:ekr.20190603064816.1: *5* LeoQtLog.finishSelectTab
     def finishSelectTab(self, tabName: str) -> None:
         """Select the proper tab."""
-        w = self.qtTabWidget
+        w = self.tabWidget
         # Special case for Spell tab.
         if tabName == 'Spell':
             return
@@ -2989,10 +2977,7 @@ class LeoQtMenu(leoMenu.LeoMenu):
 
     # @+node:ekr.20120922041923.10607: *4* LeoQtMenu.activateAllParentMenus
     def activateAllParentMenus(self, menu: QObject) -> None:
-        """
-        menu is a QtMenuWrapper or a QObject.
-        Activate it and all parent menus.
-        """
+        """menu is a QtMenuWrapper.  Activate it and all parent menus."""
         parent = menu.parent()
         action = menu.menuAction()
         if action:
@@ -3545,6 +3530,8 @@ class LeoQtSpellTab:
         self.c = c
         top = c.frame.top
         self.handler = handler
+        # hack:
+        handler.workCtrl = StringTextWrapper(c, 'spell-workctrl')
         self.tabName = tabName
         if hasattr(top, 'leo_spell_label'):
             self.wordLabel = top.leo_spell_label
@@ -3553,13 +3540,13 @@ class LeoQtSpellTab:
         else:
             self.handler.loaded = False
 
-    # @+node:ekr.20110605121601.18389: *3* Event handlers
-    # @+node:ekr.20110605121601.18390: *4* onAddButton
+    # @+node:ekr.20110605121601.18389: *3* LeoQtSpellTab:Event handlers
+    # @+node:ekr.20110605121601.18390: *4* LeoQtSpellTab.onAddButton
     def onAddButton(self) -> None:
         """Handle a click in the Add button in the Check Spelling dialog."""
         self.handler.add()
 
-    # @+node:ekr.20110605121601.18391: *4* onChangeButton & onChangeThenFindButton
+    # @+node:ekr.20110605121601.18391: *4* LeoQtSpellTab.onChangeButton & onChangeThenFindButton
     def onChangeButton(self, event: QEvent = None) -> None:
         """Handle a click in the Change button in the Spell tab."""
         state = self.updateButtons()
@@ -3576,7 +3563,7 @@ class LeoQtSpellTab:
                 self.handler.find()
             self.updateButtons()
 
-    # @+node:ekr.20110605121601.18392: *4* onFindButton
+    # @+node:ekr.20110605121601.18392: *4* LeoQtSpellTab.onFindButton
     def onFindButton(self) -> None:
         """Handle a click in the Find button in the Spell tab."""
         c = self.c
@@ -3585,34 +3572,34 @@ class LeoQtSpellTab:
         c.invalidateFocus()
         c.bodyWantsFocus()
 
-    # @+node:ekr.20110605121601.18393: *4* onHideButton
+    # @+node:ekr.20110605121601.18393: *4* LeoQtSpellTab.onHideButton
     def onHideButton(self) -> None:
         """Handle a click in the Hide button in the Spell tab."""
         self.handler.hide()
 
-    # @+node:ekr.20110605121601.18394: *4* onIgnoreButton
+    # @+node:ekr.20110605121601.18394: *4* LeoQtSpellTab.onIgnoreButton
     def onIgnoreButton(self, event: QEvent = None) -> None:
         """Handle a click in the Ignore button in the Check Spelling dialog."""
         self.handler.ignore()
 
-    # @+node:ekr.20110605121601.18395: *4* onMap
+    # @+node:ekr.20110605121601.18395: *4* LeoQtSpellTab.onMap
     def onMap(self, event: QEvent = None) -> None:
         """Respond to a Tk <Map> event."""
         self.update(show=False, fill=False)
 
-    # @+node:ekr.20110605121601.18396: *4* onSelectListBox
+    # @+node:ekr.20110605121601.18396: *4* LeoQtSpellTab.onSelectListBox
     def onSelectListBox(self, event: QEvent = None) -> None:
         """Respond to a click in the selection listBox."""
         c = self.c
         self.updateButtons()
         c.bodyWantsFocus()
 
-    # @+node:ekr.20110605121601.18397: *3* Helpers
-    # @+node:ekr.20110605121601.18398: *4* bringToFront (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18397: *3* LeoQtSpellTab:Helpers
+    # @+node:ekr.20110605121601.18398: *4* LeoQtSpellTab.bringToFront
     def bringToFront(self) -> None:
         self.c.frame.log.selectTab('Spell')
 
-    # @+node:ekr.20110605121601.18399: *4* fillbox (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18399: *4* LeoQtSpellTab.fillbox
     def fillbox(self, alts: list[str], word: str = None) -> None:
         """Update the suggestions listBox in the Check Spelling dialog."""
         self.suggestions = alts
@@ -3624,14 +3611,14 @@ class LeoQtSpellTab:
             self.listBox.addItems(self.suggestions)
             self.listBox.setCurrentRow(0)
 
-    # @+node:ekr.20110605121601.18400: *4* getSuggestion (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18400: *4* LeoQtSpellTab.getSuggestion
     def getSuggestion(self) -> str:
         """Return the selected suggestion from the listBox."""
         idx = self.listBox.currentRow()
         value = self.suggestions[idx]
         return value
 
-    # @+node:ekr.20141113094129.13: *4* setFocus (LeoQtSpellTab)
+    # @+node:ekr.20141113094129.13: *4* LeoQtSpellTab.setFocus
     def setFocus(self) -> None:
         """Actually put focus in the tab."""
         # Not a great idea: there is no indication of focus.
@@ -3640,7 +3627,7 @@ class LeoQtSpellTab:
             w = self.c.frame.top.spellFrame
             c.widgetWantsFocus(w)
 
-    # @+node:ekr.20110605121601.18401: *4* update (LeoQtSpellTab)
+    # @+node:ekr.20110605121601.18401: *4* LeoQtSpellTab.update
     def update(self, show: bool = True, fill: bool = False) -> None:
         """Update the Spell Check dialog."""
         c = self.c
@@ -3651,7 +3638,7 @@ class LeoQtSpellTab:
             self.bringToFront()
             c.bodyWantsFocus()
 
-    # @+node:ekr.20110605121601.18402: *4* updateButtons (spellTab)
+    # @+node:ekr.20110605121601.18402: *4* LeoQtSpellTab.updateButtons
     def updateButtons(self) -> bool:
         """Enable or disable buttons in the Check Spelling dialog."""
         c = self.c
@@ -3674,7 +3661,7 @@ class LeoQtTreeTab:
 
     # @+others
     # @+node:ekr.20110605121601.18439: *3*  Birth & death
-    # @+node:ekr.20110605121601.18440: *4*  ctor (LeoQtTreeTab)
+    # @+node:ekr.20110605121601.18440: *4*  LeoQtTreeTab.__init__
     def __init__(self, c: Cmdr, iconBar: LeoQtLog) -> None:
         """Ctor for LeoQtTreeTab class."""
 
@@ -3688,7 +3675,7 @@ class LeoQtTreeTab:
         # self.reloadSettings()
         self.createControl()
 
-    # @+node:ekr.20110605121601.18441: *4* tt.createControl (defines class LeoQComboBox)
+    # @+node:ekr.20110605121601.18441: *4* LeoQtTreeTab.createControl (defines class LeoQComboBox)
     def createControl(self) -> None:
         class LeoQComboBox(QtWidgets.QComboBox):
             """Create a subclass in order to handle focusInEvents."""
@@ -3735,7 +3722,7 @@ class LeoQtTreeTab:
         # A change: the argument could now be an int instead of a string.
         w.currentIndexChanged.connect(onIndexChanged)
 
-    # @+node:ekr.20110605121601.18443: *3* tt.createTab
+    # @+node:ekr.20110605121601.18443: *3* LeoQtTreeTab.createTab
     def createTab(self, tabName: str, select: bool = True) -> None:
         """LeoQtTreeTab."""
         tt = self
@@ -3744,7 +3731,7 @@ class LeoQtTreeTab:
             tt.tabNames.append(tabName)
             tt.setNames()
 
-    # @+node:ekr.20110605121601.18444: *3* tt.destroyTab
+    # @+node:ekr.20110605121601.18444: *3* LeoQtTreeTab.destroyTab
     def destroyTab(self, tabName: str) -> None:
         """LeoQtTreeTab."""
         tt = self
@@ -3752,7 +3739,7 @@ class LeoQtTreeTab:
             tt.tabNames.remove(tabName)
             tt.setNames()
 
-    # @+node:ekr.20110605121601.18445: *3* tt.selectTab
+    # @+node:ekr.20110605121601.18445: *3* LeoQtTreeTab.selectTab
     def selectTab(self, tabName: str) -> None:
         """LeoQtTreeTab."""
         tt, c, cc = self, self.c, self.cc
@@ -3766,7 +3753,7 @@ class LeoQtTreeTab:
         c.redraw()
         c.outerUpdate()
 
-    # @+node:ekr.20110605121601.18446: *3* tt.setTabLabel
+    # @+node:ekr.20110605121601.18446: *3* LeoQtTreeTab.setTabLabel
     def setTabLabel(self, tabName: str) -> None:
         """LeoQtTreeTab."""
         w = self.w
@@ -3774,7 +3761,7 @@ class LeoQtTreeTab:
         if i > -1:
             w.setCurrentIndex(i)
 
-    # @+node:ekr.20110605121601.18447: *3* tt.setNames
+    # @+node:ekr.20110605121601.18447: *3* LeoQtTreeTab.setNames
     def setNames(self) -> None:
         """LeoQtTreeTab: Recreate the list of items."""
         w = self.w
@@ -4055,7 +4042,7 @@ class QtIconBarClass:
 
 class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     # @+others
-    # @+node:ekr.20110605121601.18459: *3* ctor and __repr__(QtMenuWrapper)
+    # @+node:ekr.20110605121601.18459: *3* QtMenuWrapper.__init__ and __repr__
     def __init__(
         self,
         c: Cmdr,
@@ -4083,7 +4070,7 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     def __repr__(self) -> str:
         return f"<QtMenuWrapper {self.leo_menu_label}>"
 
-    # @+node:ekr.20110605121601.18460: *3* onAboutToShow & helpers (QtMenuWrapper)
+    # @+node:ekr.20110605121601.18460: *3* QtMenuWrapper.onAboutToShow & helpers
     def onAboutToShow(self, *args: Args, **keys: KWargs) -> None:
         name = self.leo_menu_label
         if not name:
@@ -4095,14 +4082,14 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
                 self.leo_enable_menu_item(action, commandName)
                 self.leo_update_menu_label(action, commandName)
 
-    # @+node:ekr.20120120095156.10261: *4* leo_enable_menu_item
+    # @+node:ekr.20120120095156.10261: *4* QtMenuWrapper.leo_enable_menu_item
     def leo_enable_menu_item(self, action: QAction, commandName: str) -> None:
         func = self.c.frame.menu.enable_dict.get(commandName)
         if action and func:
             val = func()
             action.setEnabled(bool(val))
 
-    # @+node:ekr.20120124115444.10190: *4* leo_update_menu_label
+    # @+node:ekr.20120124115444.10190: *4* QtMenuWrapper.leo_update_menu_label
     def leo_update_menu_label(self, action: QAction, commandName: str) -> None:
         c = self.c
         if action and commandName == 'mark':
@@ -4110,7 +4097,7 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
             # Set the proper shortcut.
             self.leo_update_shortcut(action, commandName)
 
-    # @+node:ekr.20120120095156.10260: *4* leo_update_shortcut
+    # @+node:ekr.20120120095156.10260: *4* QtMenuWrapper.leo_update_shortcut
     def leo_update_shortcut(self, action: QAction, commandName: str) -> None:
         c, k = self.c, self.c.k
         if action:
@@ -4170,8 +4157,6 @@ class QtStatusLineClass:
         # Create the text widgets.
         self.textWidget1 = w1 = QtWidgets.QLineEdit(self.statusBar)
         self.textWidget2 = w2 = QtWidgets.QLineEdit(self.statusBar)
-        w1.leo_wrapper = QLineEditWrapper(c=c, widget=w1)  # #4623
-        w2.leo_wrapper = QLineEditWrapper(c=c, widget=w2)  # #4623
         w1.setObjectName('status1')
         w2.setObjectName('status2')
         w1.setReadOnly(True)
@@ -4354,15 +4339,13 @@ class QtStatusLineClass:
 
 # @+node:peckj.20140505102552.10377: ** class QtTabBarWrapper (QTabBar)
 class QtTabBarWrapper(QtWidgets.QTabBar):
-    """An internal class that overrides one method."""
-
     # @+others
-    # @+node:peckj.20140516114832.10108: *3* __init__
+    # @+node:peckj.20140516114832.10108: *3* QtTabBarWrapper.__init__
     def __init__(self, parent: QWidget = None) -> None:
         super().__init__(parent)
         self.setMovable(True)
 
-    # @+node:peckj.20140516114832.10109: *3* mouseReleaseEvent (QtTabBarWrapper)
+    # @+node:peckj.20140516114832.10109: *3* QtTabBarWrapper.mouseReleaseEvent
     def mouseReleaseEvent(self, event: QMouseEvent) -> None:
         # middle click close on tabs -- JMP 20140505
         # closes Launchpad bug: https://bugs.launchpad.net/leo-editor/+bug/1183528

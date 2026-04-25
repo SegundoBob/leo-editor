@@ -3326,7 +3326,7 @@ def trace_idle_focus(self, w: Wrapper) -> None:
         if trace:
             g.trace(f"{count:3} no focus")
 
-# @+node:ekr.20250329033642.5: *4* class BaseTextAPI
+# @+node:ekr.20260423033738.1: *4* class BaseTextAPI
 class BaseTextAPI:
     """
     A class specifying the interface to various text widgets,
@@ -3630,6 +3630,39 @@ def addNewEditor(self, name: str) -> tuple[QWidget, QTextMixin]:
         # Scintilla only.
         body.recolorWidget(p, wrapper)
     return parent_frame, wrapper
+
+# @+node:ekr.20260425153444.1: *3* Deleted by PR #4631
+# @+node:ekr.20260418104208.1: *4*  LeoQtGui.create_wrapper_for_widge
+def create_wrapper_for_widget(self, c: Cmdr, w: Any) -> QTextMixin:
+    if w is None:
+        return None
+    if isinstance(w, QTextMixin):
+        return w
+    if getattr(w, 'wrapper', None):
+        return w.wrapper
+    if getattr(w, 'leo_wrapper', None):
+        return w.leo_wrapper
+    if isinstance(w, LeoQtTree):
+        # A strange special case: the class allocates its own wrappers.
+        return None
+    # Defensive code.
+    w.leo_wrapper = (
+             QLineEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QLineEdit)
+        else QTextEditWrapper(c=c, widget=w) if isinstance(w, QtWidgets.QTextEdit)
+        else StringTextWrapper(c=c)
+    )  # fmt: skip
+    g.trace(f"Allocate {w.leo_wrapper.__class__.__name__} for {w.__class__.__name__}")
+    return w.leo_wrapper
+
+# @+node:ekr.20260425154059.8: *4* class PlainTextWrapper(QTextMixin)
+class PlainTextWrapper(QTextMixin):
+    """A Qt class for use by the find code."""
+
+    def __init__(self, widget: QWidget) -> None:
+        """Ctor for the PlainTextWrapper class."""
+        super().__init__()
+        self.widget = widget
+
 
 # @-all
 # @@nosearch

@@ -20,7 +20,6 @@ from leo.core.leoAPI import StringTextWrapper
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoFrame import NullFrame, NullIconBarClass
     from leo.core.leoNodes import Position
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
@@ -52,7 +51,6 @@ class LeoGui:
         self.leoIcon = None
         self.mGuiName = guiName
         self.mainLoop = None
-        self.plainTextWidget: Widget = None  # For SpellTabHandler class only.
         self.root: Position = None
         self.script: Optional[str] = None
         self.splashScreen: Widget = None
@@ -64,11 +62,6 @@ class LeoGui:
         self.ignoreChars: list[str] = []  # Keys that should always be ignored.
         self.FKeys: list[str] = []  # The representation of F-keys.
         self.specialChars: list[str] = []  # A list of characters/keys to be handle specially.
-
-    # @+node:ekr.20260418103905.1: *3* LeoGui.create_wrapper_for_widget
-    def create_wrapper_for_widget(self, c: Cmdr, w: Widget) -> QTextMixin:
-        """May be overridden in subclasses."""
-        return StringTextWrapper(c)
 
     # @+node:ekr.20051206103652: *3* LeoGui.widget_name
     def widget_name(self, w: Widget) -> str:
@@ -312,7 +305,6 @@ class LeoGui:
     def create_key_event(
         self,
         c: Cmdr,
-        *,
         binding: str = None,
         char: str = None,
         event: LeoKeyEvent = None,
@@ -382,10 +374,6 @@ class LeoKeyEvent:
         self.event = event  # New in Leo 4.11.
         self.stroke = stroke
         self.w = self.widget = w
-        self.wrapper = (
-            w if g.isTextWrapper(w)  # #4623.
-            else g.app.gui.create_wrapper_for_widget(c, w)
-        )  # fmt: skip
         # Optional ivars
         self.x = x
         self.y = y
@@ -395,13 +383,10 @@ class LeoKeyEvent:
 
     # @+node:ekr.20140907103315.18774: *3* LeoKeyEvent.__repr__
     def __repr__(self) -> str:
-        result = [
-            'LeoKeyEvent:',
-            f"  {'c':>6}: {self.c.shortFileName()}",
-        ]
-        for ivar in ('char', 'event', 'stroke', 'w', 'widget', 'wrapper'):
-            result.append(f"  {ivar:>6}: {getattr(self, ivar)}")
-        return '\n'.join(result)
+        d = {'c': self.c.shortFileName()}
+        for ivar in ('char', 'event', 'stroke', 'w'):
+            d[ivar] = getattr(self, ivar)
+        return f"LeoKeyEvent:\n{g.objToString(d)}"
 
     # @+node:ekr.20150511181702.1: *3* LeoKeyEvent.get & __getitem__
     def get(self, attr: str) -> Value:
@@ -598,16 +583,16 @@ class NullGui(LeoGui):
 
     def isTextWrapper(self, w: Widget) -> bool:
         """Return True if w is a Text widget suitable for text-oriented commands."""
-        return isinstance(w, StringTextWrapper)
+        return issubclass(w.__class__, StringTextWrapper)
 
     # @+node:ekr.20070301172456: *3* NullGui.panels
     def createComparePanel(self, c: Cmdr) -> None:
         """Create Compare panel."""
 
-    def createFindTab(self, c: Cmdr, parentFrame: NullFrame) -> None:
+    def createFindTab(self, c: Cmdr, parentFrame: Widget) -> None:
         """Create a find tab in the indicated frame."""
 
-    def createLeoFrame(self, c: Cmdr, title: str) -> NullFrame:
+    def createLeoFrame(self, c: Cmdr, title: str) -> Widget:
         """Create a null Leo Frame."""
         gui = self
         self.lastFrame = leoFrame.NullFrame(c, title, gui)
@@ -633,7 +618,7 @@ class NullScriptingControllerClass:
 
     This keeps pylint happy."""
 
-    def __init__(self, c: Cmdr, iconBar: NullIconBarClass = None) -> None:
+    def __init__(self, c: Cmdr, iconBar: Widget = None) -> None:
         self.c = c
         self.iconBar = iconBar
 
