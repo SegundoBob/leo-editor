@@ -272,7 +272,6 @@ class LeoFrame:
         self.tree: LeoTree | NullTree | LeoQtTree = None
         self.useMiniBufferWidget = False
         # Other ivars...
-        self.cursorStay = True  # May be overridden in subclass.reloadSettings.
         self.es_newlines = 0  # newline count for this log stream.
         self.isNullFrame = False
         self.saved = False  # True if ever saved
@@ -498,8 +497,7 @@ class LeoFrame:
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
         w = event.widget if event else None
-        # g.trace(g.isTextWrapper(w), w.__class__.__name__, repr(w.name))
-        if not w or not g.isTextWrapper(w):
+        if not g.isTextWrapper(w):
             return
         # Set the clipboard text.
         i, j = w.getSelectionRange()
@@ -520,8 +518,8 @@ class LeoFrame:
     def cutText(self, event: LeoKeyEvent = None) -> None:
         """Invoked from the mini-buffer and from shortcuts."""
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event and event.widget
-        if not w or not g.isTextWrapper(w):
+        w = event.widget if event else None
+        if not g.isTextWrapper(w):
             return
         bunch = u.beforeChangeBody(p)
         name = c.widget_name(w)
@@ -552,23 +550,12 @@ class LeoFrame:
         If middleButton is True, support x-windows middle-mouse-button easter-egg.
         """
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event and event.widget
+        w = event.widget if event else None
         wname = c.widget_name(w)
-        if not w or not g.isTextWrapper(w):
+        if not g.isTextWrapper(w):
             return
         bunch = u.beforeChangeBody(p)
-        if self.cursorStay and wname.startswith('body'):
-            tCurPosition = w.getInsertPoint()
         i, j = w.getSelectionRange()  # Returns insert point if no selection.
-
-        # 2025/12/01: c.k.previousSelection no longer exists.
-        # if middleButton and c.k.previousSelection is not None:
-        # start, end = c.k.previousSelection
-        # s = w.getAllText()
-        # s = s[start:end]
-        # c.k.previousSelection = None
-        # else:
-        # s = g.app.gui.getTextFromClipboard()
         s = g.app.gui.getTextFromClipboard()
         s = g.checkUnicode(s)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
@@ -590,13 +577,6 @@ class LeoFrame:
         w.insert(i, s)
         w.see(i + len(s) + 2)
         if wname.startswith('body'):
-            if self.cursorStay:
-                if tCurPosition == j:
-                    offset = len(s) - (j - i)
-                else:
-                    offset = 0
-                newCurPosition = tCurPosition + offset
-                w.setSelectionRange(i=newCurPosition, j=newCurPosition)
             p.v.b = w.getAllText()
             u.afterChangeBody(p, 'Paste', bunch)
         elif singleLine:
