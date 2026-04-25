@@ -348,7 +348,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         else:
             if self.find_place_holder(p, do_placeholder):
                 # Don't restore the insert point when selecting next placeholder.
-                self.save_ins = None 
+                self.save_ins = None
                 self.save_sel = None
 
     # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree (entry) & helpers
