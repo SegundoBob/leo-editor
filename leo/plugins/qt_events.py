@@ -618,19 +618,19 @@ class LeoQtEventFilter(QtCore.QObject):
             e.Type.WindowActivate: 'window-activate',  # 24
             e.Type.WindowDeactivate: 'window-deactivate',  # 25
         }
-        line_edit_ignore_d = {
-            e.Type.Enter: 'enter',  # 10 (mouse over)
-            e.Type.Leave: 'leave',  # 11 (mouse over)
-            e.Type.FocusOut: 'focus-out',  # 9
-            e.Type.WindowActivate: 'window-activate',  # 24
-            e.Type.WindowDeactivate: 'window-deactivate',  # 25
-        }
-        none_ignore_d = {
-            e.Type.Enter: 'enter',  # 10 (mouse over)
-            e.Type.Leave: 'leave',  # 11 (mouse over)
-            e.Type.FocusOut: 'focus-out',  # 9
-            e.Type.WindowActivate: 'window-activate',  # 24
-        }
+        # line_edit_ignore_d = {
+        #     e.Type.Enter: 'enter',  # 10 (mouse over)
+        #     e.Type.Leave: 'leave',  # 11 (mouse over)
+        #     e.Type.FocusOut: 'focus-out',  # 9
+        #     e.Type.WindowActivate: 'window-activate',  # 24
+        #     e.Type.WindowDeactivate: 'window-deactivate',  # 25
+        # }
+        # none_ignore_d = {
+        #     e.Type.Enter: 'enter',  # 10 (mouse over)
+        #     e.Type.Leave: 'leave',  # 11 (mouse over)
+        #     e.Type.FocusOut: 'focus-out',  # 9
+        #     e.Type.WindowActivate: 'window-activate',  # 24
+        # }
         # @-<< define dicts >>
         if et in ignore_d:
             return

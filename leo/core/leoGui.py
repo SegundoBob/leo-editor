@@ -51,7 +51,6 @@ class LeoGui:
         self.leoIcon = None
         self.mGuiName = guiName
         self.mainLoop = None
-        self.plainTextWidget: Widget = None  # For SpellTabHandler class only.
         self.root: Position = None
         self.script: Optional[str] = None
         self.splashScreen: Widget = None
@@ -419,7 +418,6 @@ class NullGui(LeoGui):
         self.isNullGui = True
         self.idleTimeClass: Any = g.NullObject
         self.lastFrame: Widget = None  # The outer frame, to set g.app.log in runMainLoop.
-        self.plainTextWidget: Widget = g.NullObject
         self.script = None
 
     # @+node:ekr.20031218072017.3744: *3* NullGui.dialogs

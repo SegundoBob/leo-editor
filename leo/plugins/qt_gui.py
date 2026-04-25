@@ -47,7 +47,6 @@ from leo.plugins import (
     qt_events,
     qt_frame,
     qt_idle_time,
-    qt_text,
 )
 from leo.plugins.qt_text import QTextMixin
 
@@ -61,7 +60,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper
+    # from leo.plugins.qt_text import QTextEditWrapper
 
     Args = Any
     KWargs = Any
@@ -118,7 +117,6 @@ class LeoQtGui(leoGui.LeoGui):
         self.idleTimeClass = qt_idle_time.IdleTime
         self.insert_char_flag = False  # A flag for eventFilter.
         self.mGuiName = 'qt'
-        self.plainTextWidget = qt_text.PlainTextWrapper
         self.show_tips_flag = False  # #2390: Can't be inited in reload_settings.
         self.styleSheetManagerClass = StyleSheetManager
         # Be aware of the systems native colors, fonts, etc.

@@ -3654,6 +3654,16 @@ def create_wrapper_for_widget(self, c: Cmdr, w: Any) -> QTextMixin:
     g.trace(f"Allocate {w.leo_wrapper.__class__.__name__} for {w.__class__.__name__}")
     return w.leo_wrapper
 
+# @+node:ekr.20260425154059.8: *4* class PlainTextWrapper(QTextMixin)
+class PlainTextWrapper(QTextMixin):
+    """A Qt class for use by the find code."""
+
+    def __init__(self, widget: QWidget) -> None:
+        """Ctor for the PlainTextWrapper class."""
+        super().__init__()
+        self.widget = widget
+
+
 # @-all
 # @@nosearch
 # @-leo

@@ -1295,16 +1295,6 @@ class NumberBar(QtWidgets.QFrame):
     # @-others
 
 
-# @+node:ekr.20140901141402.18700: ** class PlainTextWrapper(QTextMixin)
-class PlainTextWrapper(QTextMixin):
-    """A Qt class for use by the find code."""
-
-    def __init__(self, widget: QWidget) -> None:
-        """Ctor for the PlainTextWrapper class."""
-        super().__init__()
-        self.widget = widget
-
-
 # @+node:ekr.20110605121601.18116: ** class QHeadlineWrapper (QLineEditWrapper)
 class QHeadlineWrapper(QLineEditWrapper):
     """
