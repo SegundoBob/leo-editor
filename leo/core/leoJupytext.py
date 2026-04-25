@@ -14,14 +14,13 @@ import os
 import textwrap
 from typing import Any, Tuple, TYPE_CHECKING
 
-try:
-    import jupytext  # pylint: disable=unused-import
+# Defer importing jupytext until first use: jupytext imports pandoc at module
+# level (calling subprocess to check the pandoc version), which costs ~0.7s
+# on every Leo startup even when jupytext is never used.
+jupytext = None  # Loaded lazily by _load_jupytext().
+has_jupytext: bool = False  # Set to True once jupytext loads successfully.
 
-    has_jupytext = True
-except Exception:
-    has_jupytext = False
-
-from leo.core import leoGlobals as g
+from leo.core import leoGlobals as g  # noqa
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
@@ -29,6 +28,24 @@ if TYPE_CHECKING:  # pragma: no cover
 
     Notebook = Any  # nbformat.notebooknode.NotebookNode
 # @-<< leoJupytext: imports and annotations >>
+
+
+def _ensure_jupytext() -> bool:
+    """Import jupytext on first call. Return True if available."""
+    global jupytext, has_jupytext
+    if has_jupytext:
+        return True
+    if jupytext is not None:
+        return False  # already tried and failed
+    try:
+        import jupytext as _jt
+
+        jupytext = _jt
+        has_jupytext = True
+        return True
+    except Exception:
+        jupytext = False  # sentinel: tried and failed
+        return False
 
 
 # @+others
@@ -184,7 +201,7 @@ class JupytextManager:
 
         On errors, print an error message and return ''.
         """
-        if not has_jupytext:
+        if not _ensure_jupytext():
             self.warn_no_jupytext()
             return ''
         if not p.h.startswith('@jupytext'):
