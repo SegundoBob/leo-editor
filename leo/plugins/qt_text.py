@@ -258,7 +258,6 @@ class QTextMixin:
 
     # @+node:ekr.20140901062324.18698: *4* QTextMixin.setFocus
     def setFocus(self) -> None:
-        """QTextMixin"""
         if 'focus' in g.app.debug:
             print('BaseQTextWrapper.setFocus', self.widget)
         # Call the base class
@@ -276,14 +275,12 @@ class QTextMixin:
     # @+node:ekr.20140901062324.18717: *4* QTextMixin.Generic text
     # @+node:ekr.20140901062324.18703: *5* QTextMixin.appendText
     def appendText(self, s: str) -> None:
-        """QTextMixin"""
         s2 = self.getAllText()
         self.setAllText(s2 + s)
         self.setInsertPoint(len(s2))
 
     # @+node:ekr.20140901141402.18706: *5* QTextMixin.delete
     def delete(self, i: int, j: int = None) -> None:
-        """QTextMixin"""
         if j is None:
             j = i + 1
         # This allows subclasses to use this base class method.
@@ -296,13 +293,11 @@ class QTextMixin:
 
     # @+node:ekr.20140901062324.18827: *5* QTextMixin.deleteTextSelection
     def deleteTextSelection(self) -> None:
-        """QTextMixin"""
         i, j = self.getSelectionRange()
         self.delete(i, j)
 
     # @+node:ekr.20110605121601.18102: *5* QTextMixin.get
     def get(self, i: int, j: int = None) -> str:
-        """QTextMixin"""
         # 2012/04/12: fix the following two bugs by using the vanilla code:
         # https://bugs.launchpad.net/leo-editor/+bug/979142
         # https://bugs.launchpad.net/leo-editor/+bug/971166
@@ -318,7 +313,6 @@ class QTextMixin:
 
     # @+node:ekr.20140901062324.18705: *5* QTextMixin.getSelectedText
     def getSelectedText(self) -> str:
-        """QTextMixin"""
         i, j = self.getSelectionRange()  # Returns (int, int)
         if i == j:
             return ''
@@ -327,7 +321,6 @@ class QTextMixin:
 
     # @+node:ekr.20140901141402.18702: *5* QTextMixin.insert
     def insert(self, i: int, s: str) -> int:
-        """QTextMixin"""
         s2 = self.getAllText()
         self.setAllText(s2[:i] + s + s2[i:])
         self.setInsertPoint(i + len(s))
@@ -345,7 +338,6 @@ class QTextMixin:
 
     # @+node:ekr.20140901141402.18704: *5* QTextMixin.toPythonIndexRowCol
     def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:
-        """QTextMixin"""
         s = self.getAllText()
         row, col = g.convertPythonIndexToRowCol(s, index)
         return row, col
