@@ -71,7 +71,7 @@ def show_stroke(stroke: Stroke) -> str:
 class VimEvent:
     """A class to contain the components of the dot."""
 
-    def __init__(self, c: Cmdr, char: str, stroke: Stroke, w: QWidget) -> None:
+    def __init__(self, c: Cmdr, char: str, stroke: Stroke, w: QTextMixin) -> None:
         """ctor for the VimEvent class."""
         self.c: Cmdr = c
         self.char: str = char  # For Leo's core.
@@ -101,6 +101,7 @@ class VimCommands:
         """The ctor for the VimCommands class."""
         self.c = c
         self.k = c.k
+        self.w: QTextMixin = None
         # Toggled by :toggle-vim-trace.
         self.trace_flag = 'keys' in g.app.debug
         self.init_constant_ivars()
@@ -475,7 +476,7 @@ class VimCommands:
         """Init ivars that are never re-inited."""
         c = self.c
         # The widget that has focus when a ':' command begins.  May be None.
-        self.colon_w = None
+        self.colon_w: QTextMixin = None
         # True: allow f,F,h,l,t,T,x to cross line boundaries.
         self.cross_lines = c.config.getBool('vim-crosses-lines', default=True)
         self.register_d: dict[str, str] = {}  # Keys are letters; values are strings.

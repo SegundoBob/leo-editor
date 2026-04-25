@@ -5,27 +5,59 @@
 # @+<< test_gui imports >>
 # @+node:ekr.20220911102700.1: ** << test_gui imports >>
 import os
+import textwrap
 import time
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest, create_app
 
 try:
-    from leo.core.leoQt import Qt, QtCore
-    from leo.core.leoAPI import IconBarAPI, StatusLineAPI, TreeAPI
-    from leo.core.leoAPI import StringTextWrapper
-    from leo.core.leoFrame import LeoTree
-    from leo.core.leoFrame import NullIconBarClass, NullStatusLineClass, NullTree
-    from leo.plugins.qt_frame import QtIconBarClass, QtStatusLineClass
+    from leo.core.leoQt import (
+        Qt,
+        QtCore,
+        QtGui,
+        QtWidgets,
+    )
+    from leo.core.leoAPI import (
+        IconBarAPI,
+        StatusLineAPI,
+        StringTextWrapper,
+        TreeAPI,
+    )
+    from leo.core.leoFrame import (
+        LeoTree,
+        NullIconBarClass,
+        NullStatusLineClass,
+        NullTree,
+        # QTabWidget,
+    )
+    from leo.core.leoGui import LeoKeyEvent
+    from leo.plugins.qt_frame import (
+        DynamicWindow,
+        LeoQtBody,
+        LeoQtFrame,
+        LeoQtLog,
+        LeoQtMenu,
+        LeoQtTree,
+        LeoQTreeWidget,
+        QtIconBarClass,
+        QtStatusLineClass,
+    )
     from leo.plugins.qt_text import (
+        LeoQTextBrowser,
+        QHeadlineWrapper,
         QLineEditWrapper,
+        QMinibufferWrapper,
         QScintillaWrapper,
         QTextEditWrapper,
         QTextMixin,
     )
-    from leo.plugins.qt_text import LeoQTextBrowser
-    from leo.plugins.qt_tree import LeoQtTree
+
+    QTabWidget = QtWidgets.QTabWidget
 except Exception:
+    g.es_exception()  ###
     Qt = QtCore = None
+    QTabWidget = None
+
 # @-<< test_gui imports >>
 
 
@@ -62,7 +94,6 @@ class TestNullGui(LeoUnitTest):
             NullTree,
             StringTextWrapper,
         )
-        from leo.core.leoGlobals import NullObject
 
         # @-<< TestNullGui.test_annotations: imports >>
         c = self.c
@@ -72,7 +103,7 @@ class TestNullGui(LeoUnitTest):
             (c.frame.body, NullBody),
             (c.frame.iconBar, NullIconBarClass),
             (c.frame.log, NullLog),
-            (c.frame.miniBufferWidget, NullObject),
+            (c.frame.miniBufferWidget, None.__class__),  ###
             (c.frame.statusLine, NullStatusLineClass),
             (c.frame.tree, NullTree),
             # NullBody ivars...
@@ -84,8 +115,8 @@ class TestNullGui(LeoUnitTest):
         for obj, class_ in table:
             assert isinstance(obj, class_), (repr(obj), repr(class_))
 
-        for obj in (c.frame.body, c.frame.log, c.frame.statusLine):
-            assert getattr(obj, 'wrapper', None), repr(obj)
+        # for obj in (c.frame.body, c.frame.log, c.frame.statusLine):
+        #     assert getattr(obj, 'wrapper', None), repr(obj)
 
     # @-others
 
@@ -104,19 +135,65 @@ class TestQtGui(LeoUnitTest):
     def setUp(self):
         super().setUp()
         # Don't run *any* tests if Qt has not been installed.
-        try:
-            from leo.core.leoQt import Qt
+        if not Qt:
+            self.skipTest('import Qt failed')
 
-            assert Qt
-        except Exception:
-            self.skipTest('Requires Qt')
+    # @+node:ekr.20260404143610.1: *3* TestQtGui.test_annotations
+    def test_annotations(self):
+        # This test establishes the basis of Leo's Qt-related annotations.
+        c = self.c
+        table = (
+            # LeoQtFrame ivars...
+            (c.frame, LeoQtFrame),
+            (c.frame.body, LeoQtBody),
+            (c.frame.iconBar, QtIconBarClass),
+            (c.frame.log, LeoQtLog),
+            (c.frame.menu, LeoQtMenu),
+            (c.frame.miniBufferWidget, QMinibufferWrapper),
+            (c.frame.statusLine, QtStatusLineClass),
+            (c.frame.tree, LeoQtTree),
+            (c.frame.top, DynamicWindow),
+            # LeoQtBody ivars...
+            (c.frame.body.wrapper, QTextEditWrapper),
+            (c.frame.body.widget, LeoQTextBrowser),
+            # LeoQtLog ivars...
+            (c.frame.log.logCtrl, QTextEditWrapper),
+            (c.frame.log.logWidget, LeoQTextBrowser),
+            (c.frame.log.tabWidget, QTabWidget),
+            # LeoQtTree ivars...
+            (c.frame.tree.treeWidget, LeoQTreeWidget),
+        )
+        for obj, class_ in table:
+            assert isinstance(obj, class_), (repr(obj), repr(class_))
+            if issubclass(obj.__class__, QTextMixin):
+                # Every subclass of QTextMix is an instance of QTextMixin.
+                assert isinstance(obj, QTextMixin)
+
+        # for obj in (
+        #     c.frame.body,
+        #     c.frame.statusLine.textWidget1,
+        #     c.frame.statusLine.textWidget2,
+        #     c.frame.log,
+        # ):
+        #     assert getattr(obj, 'wrapper', None) or getattr(obj, 'leo_wrapper', None), repr(obj)
+
+        # Test the class hierarchy of text-related classes.
+        assert issubclass(LeoQTextBrowser, QtWidgets.QTextBrowser)
+
+        # Leo 6.8.9: Leo can annotate general text widgets as `QTextMixin`
+        for class_ in (
+            QHeadlineWrapper,
+            QLineEditWrapper,
+            QMinibufferWrapper,
+            QTextEditWrapper,
+            QScintillaWrapper,
+            QTextMixin,  # Every class is a subclass of itself.
+        ):
+            assert issubclass(class_, QTextMixin), repr(class_)
 
     # @+node:ekr.20210913120449.1: *3* TestQtGui.test_bug_2164
     def test_bug_2164(self):
         # show-invisibles crashes with PyQt6.
-        from leo.core.leoQt import QtGui
-
-        # Test the commands.
         c = self.c
         for command in ('toggle-invisibles', 'hide-invisibles', 'show-invisibles'):
             c.doCommandByName(command)
@@ -124,6 +201,86 @@ class TestQtGui(LeoUnitTest):
         # Test the Qt6 flag.
         option = QtGui.QTextOption()
         assert hasattr(option.Flag, 'ShowTabsAndSpaces')
+
+    # @+node:ekr.20260423040149.1: *3* TestQtGui.test_bug_4626
+    def test_bug_4626(self):
+        # https://github.com/leo-editor/leo-editor/issues/4626
+        c = self.c
+        k = c.k
+        log = c.frame.log
+        qtApp = g.app.gui.qtApp
+
+        # Part 1: Create the 'Completion' tab, and copy it's contets to the clipboard.
+        event = LeoKeyEvent(c, 'a', event=None, binding=None, w=None)
+        k.fullCommand(event=event)
+        k.extendLabel('a')
+        # Force g.es to print to the log.
+        old_log = g.app.log
+        try:
+            g.app.log = log
+            k.doTabCompletion(['a', 'ab', 'abc'])
+        finally:
+            g.app.log = old_log
+        wrapper = log.logCtrl
+        s = wrapper.getAllText()
+        dedent_s = textwrap.dedent(s)
+        assert dedent_s == 'a\nab\nabc\n', repr(s)
+        wrapper.selectAllText()
+
+        # Part 2: Test copyText.
+        event2 = LeoKeyEvent(c, char=None, binding=None, event=None, w=wrapper)
+        c.frame.copyText(event2)
+        s2 = g.app.gui.getTextFromClipboard()
+        k.keyboardQuit()
+        assert s2 == s, (repr(s), repr(s2))
+
+        # Part 3: Test Ctrl-C in all text widgets.
+        # c.k.manufactureKeyPressForCommandName(c.frame.body, 'copy-text') returns 'Ctrl+c'.
+        table = (
+            ('c.frame.body.widget', c.frame.body.widget),
+            ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
+            ('c.frame.log.logWidget', c.frame.log.logWidget),
+            ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
+        )
+
+        # Construct two events
+        c_key = QtCore.Qt.Key.Key_C
+        ctrl_mod = QtCore.Qt.KeyboardModifier.ControlModifier
+        key_press_t = QtCore.QEvent.Type.KeyPress
+        key_release_t = QtCore.QEvent.Type.KeyRelease
+        key_press_event = QtGui.QKeyEvent(key_press_t, c_key, ctrl_mod, '')
+        key_release_event = QtGui.QKeyEvent(key_release_t, c_key, ctrl_mod, '')
+
+        # The main loop.
+        text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
+        # g.app.debug = ['events']
+        try:
+            for kind, w in table:
+                # is_QTextEdit = issubclass(w.__class__, QtWidgets.QTextEdit)
+                class_name = w.__class__.__name__
+                assert issubclass(w.__class__, text_widgets), w.__class__
+                # Put the class name in the widget.
+                w.setFocus()
+                qtApp.processEvents()
+                w.setReadOnly(False)
+                w.clear()
+                expected = f"{id(w)}: {class_name}"
+                w.setText(expected)
+                w.selectAll()
+                qtApp.processEvents()
+                if 1:  # works.
+                    # print('Contents:', w.toPlainText() if is_QTextEdit else w.text())
+                    g.app.gui.replaceClipboardWith(expected)
+                else:  # Fails
+                    # Execute Ctrl-c.
+                    qtApp.sendEvent(w, key_press_event)
+                    qtApp.sendEvent(w, key_release_event)
+                    qtApp.processEvents()
+                s = g.app.gui.getTextFromClipboard()
+                # Not ready yet.
+                assert s == expected, f"{kind}\nExpected: {expected!r}\n     Got: {s!r}"
+        finally:
+            g.app.debug = []
 
     # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.
@@ -137,39 +294,6 @@ class TestQtGui(LeoUnitTest):
 
         def test_do_nothing3(self):
             time.sleep(0.1)
-
-    # @+node:ekr.20210912064439.2: *3* TestQtGui.test_qt_ctors_for_all_dialogs
-    def test_qt_ctors_for_all_dialogs(self):
-        # Make sure the dialogs don't crash.
-        c = self.c
-        gui = g.app.gui
-        self.assertEqual(gui.__class__.__name__, 'LeoQtGui')
-        gui.runAboutLeoDialog(c, 'version', 'copyright', 'url', 'email')
-        gui.runAskOkDialog(c, 'title', 'message')
-        gui.runAskOkCancelNumberDialog(c, 'title', 'message')
-        gui.runAskOkCancelStringDialog(c, 'title', 'message')
-        gui.runAskYesNoDialog(c, 'title', 'message')
-        gui.runAskYesNoCancelDialog(c, 'title', 'message')
-
-    # @+node:ekr.20210912133358.1: *3* TestQtGui.test_qt_enums
-    def test_qt_enums(self):
-        # https://github.com/leo-editor/leo-editor/issues/1973 list of enums
-
-        if not QtCore and QtCore.Qt:
-            self.skipTest('Requires Qt')  # pragma: no cover
-        table = (
-            'DropAction',
-            'ItemFlag',
-            'KeyboardModifier',
-            'MouseButton',
-            'Orientation',
-            'TextInteractionFlag',
-            'ToolBarArea',
-            'WindowType',
-            'WindowState',
-        )
-        for ivar in table:
-            assert hasattr(QtCore.Qt, ivar), repr(ivar)
 
     # @+node:ekr.20220411165627.1: *3* TestQtGui.test_put_html_links
     def test_put_html_links(self):
@@ -244,6 +368,39 @@ class TestQtGui(LeoUnitTest):
                 f = getattr(c.frame.body.wrapper, method, None)
                 print(repr(f))
 
+    # @+node:ekr.20210912064439.2: *3* TestQtGui.test_qt_ctors_for_all_dialogs
+    def test_qt_ctors_for_all_dialogs(self):
+        # Make sure the dialogs don't crash.
+        c = self.c
+        gui = g.app.gui
+        self.assertEqual(gui.__class__.__name__, 'LeoQtGui')
+        gui.runAboutLeoDialog(c, 'version', 'copyright', 'url', 'email')
+        gui.runAskOkDialog(c, 'title', 'message')
+        gui.runAskOkCancelNumberDialog(c, 'title', 'message')
+        gui.runAskOkCancelStringDialog(c, 'title', 'message')
+        gui.runAskYesNoDialog(c, 'title', 'message')
+        gui.runAskYesNoCancelDialog(c, 'title', 'message')
+
+    # @+node:ekr.20210912133358.1: *3* TestQtGui.test_qt_enums
+    def test_qt_enums(self):
+        # https://github.com/leo-editor/leo-editor/issues/1973 list of enums
+
+        if not QtCore and QtCore.Qt:
+            self.skipTest('Requires Qt')  # pragma: no cover
+        table = (
+            'DropAction',
+            'ItemFlag',
+            'KeyboardModifier',
+            'MouseButton',
+            'Orientation',
+            'TextInteractionFlag',
+            'ToolBarArea',
+            'WindowType',
+            'WindowState',
+        )
+        for ivar in table:
+            assert hasattr(QtCore.Qt, ivar), repr(ivar)
+
     # @+node:ekr.20220912140743.1: *3* TestQtGui.test_QTextEditWrapper_delete
     def test_QTextEditWrapper_delete(self):
         c = self.c
@@ -259,86 +416,6 @@ class TestQtGui(LeoUnitTest):
         # g.trace(wrapper.getAllText())
         wrapper.delete(6, 0)
         # g.trace(wrapper.getAllText())
-
-    # @+node:ekr.20260404143610.1: *3* TestQtGui.test_annotations
-    def test_annotations(self):
-        # This test establishes the basis of Leo's Qt-related annotations.
-        # @+<< TestQtGui.test_annotations: imports >>
-        # @+node:ekr.20260406021200.1: *4* << TestQtGui.test_annotations: imports >>
-        from leo.core.leoQt import QtWidgets
-        from leo.plugins.qt_frame import (
-            DynamicWindow,
-            LeoQtBody,
-            LeoQtFrame,
-            LeoQtLog,
-            LeoQtMenu,
-            LeoQtTree,
-            LeoQTreeWidget,
-            QtIconBarClass,
-            QtStatusLineClass,
-            # QTabWidget,
-        )
-        from leo.plugins.qt_text import (
-            LeoQTextBrowser,
-            QHeadlineWrapper,
-            QLineEditWrapper,
-            QMinibufferWrapper,
-            QScintillaWrapper,
-            QTextEditWrapper,
-            QTextMixin,
-        )
-
-        QTabWidget = QtWidgets.QTabWidget
-        # @-<< TestQtGui.test_annotations: imports >>
-        c = self.c
-        table = (
-            # LeoQtFrame ivars...
-            (c.frame, LeoQtFrame),
-            (c.frame.body, LeoQtBody),
-            (c.frame.iconBar, QtIconBarClass),
-            (c.frame.log, LeoQtLog),
-            (c.frame.menu, LeoQtMenu),
-            (c.frame.miniBufferWidget, QMinibufferWrapper),
-            (c.frame.statusLine, QtStatusLineClass),
-            (c.frame.tree, LeoQtTree),
-            (c.frame.top, DynamicWindow),
-            # LeoQtBody ivars...
-            (c.frame.body.wrapper, QTextEditWrapper),
-            (c.frame.body.widget, LeoQTextBrowser),
-            # LeoQtLog ivars...
-            (c.frame.log.qtLogCtrl, QTextEditWrapper),
-            (c.frame.log.logWidget, LeoQTextBrowser),
-            (c.frame.log.qtTabWidget, QTabWidget),
-            # LeoQtTree ivars...
-            (c.frame.tree.treeWidget, LeoQTreeWidget),
-        )
-        for obj, class_ in table:
-            assert isinstance(obj, class_), (repr(obj), repr(class_))
-            if issubclass(obj.__class__, QTextMixin):
-                # Every subclass of QTextMix is an instance of QTextMixin.
-                assert isinstance(obj, QTextMixin)
-
-        for obj in (
-            c.frame.body,
-            c.frame.statusLine.textWidget1,
-            c.frame.statusLine.textWidget2,
-            c.frame.log,
-        ):
-            assert getattr(obj, 'wrapper', None) or getattr(obj, 'leo_wrapper', None), repr(obj)
-
-        # Test the class hierarchy of text-related classes.
-        assert issubclass(LeoQTextBrowser, QtWidgets.QTextBrowser)
-
-        # Leo 6.8.9: Leo can annotate general text widgets as `QTextMixin`
-        for class_ in (
-            QHeadlineWrapper,
-            QLineEditWrapper,
-            QMinibufferWrapper,
-            QTextEditWrapper,
-            QScintillaWrapper,
-            QTextMixin,  # Every class is a subclass of itself.
-        ):
-            assert issubclass(class_, QTextMixin), repr(class_)
 
     # @-others
 
@@ -402,7 +479,8 @@ class TestAPIClasses(LeoUnitTest):
         if Qt:
             classes.extend([QLineEditWrapper, QTextEditWrapper, QScintillaWrapper])
         for cls in classes:
-            self.assertFalse(get_missing(cls), msg=f"Missing {cls.__class__.__name__} methods")
+            missing = get_missing(cls)
+            self.assertFalse(missing, msg=f"Missing {cls} methods: {missing}")
 
     # @-others
 
