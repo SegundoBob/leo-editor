@@ -13,14 +13,13 @@ import io
 import os
 import textwrap
 from typing import Any, Tuple, TYPE_CHECKING
+from leo.core import leoGlobals as g
 
 # Defer importing jupytext until first use: jupytext imports pandoc at module
 # level (calling subprocess to check the pandoc version), which costs ~0.7s
 # on every Leo startup even when jupytext is never used.
 jupytext = None  # Loaded lazily by _load_jupytext().
 has_jupytext: bool = False  # Set to True once jupytext loads successfully.
-
-from leo.core import leoGlobals as g  # noqa
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
