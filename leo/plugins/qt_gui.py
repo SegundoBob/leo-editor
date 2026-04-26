@@ -111,7 +111,6 @@ class LeoQtGui(leoGui.LeoGui):
         self.iconimages: dict[str, QIcon] = {}  # Keys are paths, values are Icons.
         self.globalFindDialog: QDialog = None
         self.idleTimeClass = qt_idle_time.IdleTime
-        self.insert_char_flag = False  # A flag for eventFilter.
         self.mGuiName = 'qt'
         self.show_tips_flag = False  # #2390: Can't be inited in reload_settings.
         self.styleSheetManagerClass = StyleSheetManager
