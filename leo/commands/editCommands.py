@@ -2207,6 +2207,9 @@ class EditCommandsClass(BaseEditCommandsClass):
     ) -> None:
         c, p = self.c, self.c.p
         isPlain = stroke.find('Alt') == -1 and stroke.find('Ctrl') == -1
+        if not isPlain:
+            g.trace(f"Not plain: {stroke!r} {g.callers()}")
+            return
         i, j = oldSel
         if i > j:
             i, j = j, i
@@ -2215,8 +2218,6 @@ class EditCommandsClass(BaseEditCommandsClass):
             w.delete(i, j)
         elif action == 'overwrite':
             w.delete(i)
-        if not isPlain:
-            return
         ins = w.getInsertPoint()
         if self.autojustify > 0 and not inBrackets:
             # Support #14: auto-justify body text.
