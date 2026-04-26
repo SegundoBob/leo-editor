@@ -3826,10 +3826,6 @@ class KeyHandlerClass:
         """
         trace = 'keys' in g.app.debug
         c, k = self.c, self
-        #
-        # Experimental special case:
-        # Inserting a '.' always invokes the auto-completer.
-        # The auto-completer just inserts a '.' if it isn't enabled.
         stroke = event.stroke
         if (
             stroke.s == '.'
@@ -3838,16 +3834,13 @@ class KeyHandlerClass:
         ):  # fmt: skip
             c.doCommandByName('auto-complete', event)
             return True
-        #
         # Use getPaneBindings for *all* keys.
         bi = k.getPaneBinding(event)
-        #
         # #327: Ignore killed bindings.
         if bi and bi.commandName in k.killedBindings:
             if trace:
                 g.trace(f"{event.stroke!s} {bi.commandName}: in killed bindings")
             return False
-        #
         # Execute the command if the binding exists.
         if bi:
             # A superb trace. !s gives shorter trace.
@@ -3855,7 +3848,6 @@ class KeyHandlerClass:
                 g.trace(f"{event.stroke!s} {bi.commandName}")
             c.doCommandByName(bi.commandName, event)
             return True
-        #
         # No binding exists.
         if trace:
             g.trace(f"{event.stroke!s}: no binding")
