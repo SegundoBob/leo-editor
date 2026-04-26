@@ -245,7 +245,9 @@ class TestQtGui(LeoUnitTest):
         # By default, create_app doesn't set key bindings.
         lm = g.app.loadManager
         d = lm.globalBindingsDict
-        d.add_to_list('copy-text', g.BindingInfo(kind=None, stroke=g.KeyStroke(binding='Ctrl+c')))
+        d.add_to_list(
+            'copy-text', g.BindingInfo(kind=None, pane='all', stroke=g.KeyStroke(binding='Ctrl+c'))
+        )
         lm.traceShortcutsDict(d)
 
         # Construct two events.
