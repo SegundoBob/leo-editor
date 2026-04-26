@@ -376,7 +376,7 @@ class LeoKeyEvent:
     # @+node:ekr.20140907103315.18774: *3* LeoKeyEvent.__repr__
     def __repr__(self) -> str:
         d = {'c': self.c.shortFileName()}
-        for ivar in ('char', 'event', 'stroke', 'w'):
+        for ivar in ('char', 'stroke', 'w'):
             d[ivar] = getattr(self, ivar)
         return f"LeoKeyEvent:\n{g.objToString(d)}"
 
