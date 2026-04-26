@@ -237,20 +237,12 @@ class TestQtGui(LeoUnitTest):
         # Part 3: Test Ctrl-C in all text widgets.
         widget_table = (
             ('c.frame.body.widget', c.frame.body.widget),
-            # ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
-            # ('c.frame.log.logWidget', c.frame.log.logWidget),
-            # ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
+            ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
+            ('c.frame.log.logWidget', c.frame.log.logWidget),
+            ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
         )
 
-        # By default, create_app doesn't set key bindings.
-        lm = g.app.loadManager
-        d = lm.globalBindingsDict
-        d.add_to_list(
-            'copy-text', g.BindingInfo(kind=None, pane='all', stroke=g.KeyStroke(binding='Ctrl+c'))
-        )
-        lm.traceShortcutsDict(d)
-
-        # Construct two events.
+        # Construct two Qt events.
         c_key = QtCore.Qt.Key.Key_C
         ctrl_mod = QtCore.Qt.KeyboardModifier.ControlModifier
         key_press_t = QtCore.QEvent.Type.KeyPress
@@ -260,40 +252,16 @@ class TestQtGui(LeoUnitTest):
 
         # The main loop.
         text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
-        g.app.debug = ['events', 'keys']
-        try:
-            for kind, w in widget_table:
-                # is_QTextEdit = issubclass(w.__class__, QtWidgets.QTextEdit)
-                class_name = w.__class__.__name__
-                expected = f"{id(w)}: {class_name}"
-                assert issubclass(w.__class__, text_widgets), w.__class__
-                # Put the class name in the widget.
-                w.setFocus()
-                qtApp.processEvents()
-                w.setReadOnly(False)
-                w.clear()
-                w.setText(expected)
-                w.selectAll()
-                # Set the clipboard to a known state.
-                g.app.gui.replaceClipboardWith('old clipboard contents')
-                qtApp.processEvents()
-                if 1:
-                    # Simulate the event.
-                    event = LeoKeyEvent(c, char=chr(3), binding='Ctrl+c', w=c.frame.tree)
-                    k.masterKeyHandler(event)
-                else:
-                    # Creating an actual Qt Gui event fails.
-                    qtApp.sendEvent(w, key_press_event)  # Fails: calls ec.doPlainChar
-                    qtApp.sendEvent(w, key_release_event)
-                    qtApp.processEvents()
-                # Check the results.
-                s = g.app.gui.getTextFromClipboard()
-                if s != expected:
-                    print('')
-                    g.trace(c.widget_name(w))
-                    g.trace(f"FAIL: {kind:>32} Got: {s!r} Expected: {expected!r}")
-        finally:
-            g.app.debug = []
+        for kind, w in widget_table:
+            assert issubclass(w.__class__, text_widgets), w.__class__
+            g.app.gui.setFilter(c, w, w, tag='test')
+
+            # Test actual Qt Key events.
+            for key_event in (key_press_event, key_release_event):
+                w.ev_filter.key_count = 0
+                qtApp.sendEvent(w, key_event)  # Fails: calls ec.doPlainChar
+                assert w.ev_filter.key_count > 0, (w.__class__.__name__, w.ev_filter.key_count)
+                # qtApp.processEvents()
 
     # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.
