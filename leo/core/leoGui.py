@@ -305,6 +305,7 @@ class LeoGui:
     def create_key_event(
         self,
         c: Cmdr,
+        *,
         binding: str = None,
         char: str = None,
         w: QTextMixin = None,
@@ -317,7 +318,7 @@ class LeoGui:
         # For example, this would wrongly convert Ctrl-C to Ctrl-c,
         # in effect, converting a user binding from Ctrl-Shift-C to Ctrl-C.
         return LeoKeyEvent(
-            c, char=char, binding=binding, w=w, x=x, y=y, x_root=x_root, y_root=y_root
+            c, binding=binding, char=char, w=w, x=x, y=y, x_root=x_root, y_root=y_root
         )
 
     # @+node:ekr.20031218072017.3740: *4* LeoGui.guiName
