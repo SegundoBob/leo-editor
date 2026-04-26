@@ -511,6 +511,8 @@ class DynamicWindow(QtWidgets.QMainWindow):
         # @+others
         # @+node:ekr.20131118172620.16892: *6* class EventWrapper
         class EventWrapper:
+            """A class to handle key presses in the Find tab."""
+
             def __init__(self, c: Cmdr, w: QWidget, next_w: QWidget, func: Callable) -> None:
                 self.c = c
                 self.d = self.create_d()  # Keys: stroke.s; values: command-names.
@@ -557,6 +559,38 @@ class DynamicWindow(QtWidgets.QMainWindow):
                         d[stroke.s] = cmd_name
                 return d
 
+            # @+node:ekr.20131118172620.16894: *7* EventWrapper.keyPress
+            def keyPress(self, event: LeoKeyEvent) -> bool:
+                s = event.text()
+                out = s and s in '\t\r\n'
+                if out:
+                    # Move focus to next widget.
+                    if s == '\t':
+                        if self.next_w:
+                            self.next_w.setFocus(FocusReason.TabFocusReason)
+                        else:
+                            # Do the normal processing.
+                            return self.oldEvent(event)
+                    elif self.func:
+                        self.func()
+                    return True
+                binding, ch, lossage = self.eventFilter.toBinding(event)
+                # #2094: Use code similar to the end of LeoQtEventFilter.eventFilter.
+                #        The ctor converts <Alt-X> to <Alt-x> !!
+                #        That is, we must use the stroke, not the binding.
+                key_event = leoGui.LeoKeyEvent(c=self.c, char=ch, binding=binding, w=self.w)
+                if key_event.stroke:
+                    cmd_name = self.d.get(key_event.stroke)
+                    if cmd_name:
+                        self.c.doCommandByName(cmd_name)
+                        return True
+                # Do the normal processing.
+                return self.oldEvent(event)
+
+            # @+node:ekr.20131118172620.16895: *7* EventWrapper.keyRelease
+            def keyRelease(self, event: QEvent) -> bool:
+                return self.oldEvent(event)
+
             # @+node:ekr.20131118172620.16893: *7* EventWrapper.wrapper
             def wrapper(self, event: LeoKeyEvent) -> bool:
                 type_ = event.type()
@@ -565,10 +599,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
                     return self.keyPress(event)
                 if type_ == Type.KeyRelease:
                     return self.keyRelease(event)  # type:ignore[arg-type]
-                return self.oldEvent(event)
-
-            # @+node:ekr.20131118172620.16895: *7* EventWrapper.keyRelease
-            def keyRelease(self, event: QEvent) -> bool:
                 return self.oldEvent(event)
 
             # @-others
