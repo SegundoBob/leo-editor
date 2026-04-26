@@ -236,13 +236,17 @@ class TestQtGui(LeoUnitTest):
 
         # Part 3: Test Ctrl-C in all text widgets.
         widget_table = (
-            ### ('c.frame.tree', c.frame.tree),
-            ### # ('c.frame.body.wrapper', c.frame.body.wrapper),
             ('c.frame.body.widget', c.frame.body.widget),
             # ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
             # ('c.frame.log.logWidget', c.frame.log.logWidget),
             # ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
         )
+
+        # By default, create_app doesn't set key bindings.
+        lm = g.app.loadManager
+        d = lm.globalBindingsDict
+        d.add_to_list('copy-text', g.BindingInfo(kind=None, stroke=g.KeyStroke(binding='Ctrl+c')))
+        lm.traceShortcutsDict(d)
 
         # Construct two events.
         c_key = QtCore.Qt.Key.Key_C
@@ -268,8 +272,6 @@ class TestQtGui(LeoUnitTest):
                 w.clear()
                 w.setText(expected)
                 w.selectAll()
-                ### w.setAllText(expected)
-                ### w.selectAllText()
                 # Set the clipboard to a known state.
                 g.app.gui.replaceClipboardWith('old clipboard contents')
                 qtApp.processEvents()
@@ -279,7 +281,6 @@ class TestQtGui(LeoUnitTest):
                     k.masterKeyHandler(event)
                 else:
                     # Creating an actual Qt Gui event fails.
-                    # There are subtle problems in k.masterKeyHander.
                     qtApp.sendEvent(w, key_press_event)  # Fails: calls ec.doPlainChar
                     qtApp.sendEvent(w, key_release_event)
                     qtApp.processEvents()
