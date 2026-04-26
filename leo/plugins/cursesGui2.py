@@ -1307,17 +1307,7 @@ class KeyHandler:
                 binding = ch
         if trace:
             g.trace('ch: %r, binding: %r' % (ch, binding))
-        return LeoKeyEvent(
-            c=c,
-            char=ch,
-            event={'c': c, 'w': w},  # type:ignore
-            binding=binding,
-            w=w,
-            x=0,
-            y=0,
-            x_root=0,
-            y_root=0,
-        )
+        return LeoKeyEvent(c, binding=binding, char=ch, w=w, x=0, y=0, x_root=0, y_root=0)
 
     # @+node:ekr.20170430115030.1: *5* CKey.is_key_event
     def is_key_event(self, ch_i: int) -> bool:
@@ -1946,13 +1936,7 @@ class LeoCursesGui(leoGui.LeoGui):
     # @+node:ekr.20170522005855.1: *4* CGui.event_generate
     def event_generate(self, c: Cmdr, char: str, shortcut: str, w: Any) -> None:
         k = c.k
-        event = KeyEvent(
-            c=c,
-            char=char,
-            event=g.NullObject(),
-            shortcut=shortcut,
-            w=w,
-        )
+        event = KeyEvent(c, char=char, event=g.NullObject(), shortcut=shortcut, w=w)
         # mypy can't know that KeyEvent is compatible with LeoKeyEvent.
         k.masterKeyHandler(event)  # type:ignore
         g.app.gui.show_label(c)

@@ -359,16 +359,12 @@ class LeoKeyEvent:
         y_root: int = None,
     ) -> None:
         """Ctor for LeoKeyEvent class."""
-        stroke: Any
-        if g.isStroke(binding):
-            g.trace('***** (LeoKeyEvent) oops: already a stroke', binding, g.callers())
-            stroke = binding
-        else:
-            stroke = g.KeyStroke(binding) if binding else None
-        assert g.isStrokeOrNone(stroke), f"(LeoKeyEvent) {stroke!r} {g.callers()}"
         self.c = c
         self.char = char or ''
-        self.stroke = stroke
+        self.stroke: Any = (
+            binding if g.isStroke(binding) else g.KeyStroke(binding) if binding else None
+        )
+        assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
         self.w = self.widget = w
         # Optional ivars
         self.x = x
