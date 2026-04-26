@@ -1091,6 +1091,7 @@ class LeoQtGui(leoGui.LeoGui):
         """
         # w's type is in (DynamicWindow,QMinibufferWrapper,LeoQtLog,LeoQtTree,
         # QTextEditWrapper,LeoQTextBrowser,LeoQuickSearchWidget,cleoQtUI)
+        # g.trace(f"{id(w)} {self.widget_name(w):>22} {w.__class__.__name__}")
         assert isinstance(obj, QtWidgets.QWidget), obj
         theFilter = qt_events.LeoQtEventFilter(c, w=w, tag=tag)
         obj.installEventFilter(theFilter)
@@ -1700,18 +1701,21 @@ class LeoQtGui(leoGui.LeoGui):
 
     # @+node:ekr.20110605121601.18527: *4* LeoQtGui.widget_name
     def widget_name(self, w: QWidget) -> str:
-        # First try the widget's getName method.
         if not w:
-            name = '<no widget>'
-        elif hasattr(w, 'getName'):
-            name = w.getName()
-        elif hasattr(w, 'objectName'):
-            name = str(w.objectName())
-        elif hasattr(w, '_name'):
-            name = w._name
-        else:
-            name = repr(w)
-        return name
+            return '<no widget>'
+        try:
+            if name := w.getName():
+                return name
+        except AttributeError:
+            pass
+        try:
+            if name := w.objectName():
+                return name
+        except AttributeError:
+            pass
+        if name := getattr(w, '_name', None):
+            return name
+        return w.__class__.__name__
 
     # @+node:ekr.20190819091957.1: *3* LeoQtGui:Widget constructors
     # @+node:ekr.20190819094016.1: *4* LeoQtGui.createButton

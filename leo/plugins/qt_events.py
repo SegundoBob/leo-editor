@@ -79,10 +79,12 @@ class LeoQtEventFilter(QtCore.QObject):
         super().__init__()
         self.c = c
         self.w = w  # A leoQtX object, *not* a Qt object.
+        # print(f"   filter {id(w)} {g.app.gui.widget_name(w):>22} {w.__class__.__name__}")
         self.tag = tag
         # Debugging.
         self.keyIsActive = False
-        self.key_count = 0  # Set by TestQtGui.test_bug_4626.
+        # Used by TestQtGui.test_bug_4626. Keys are id(w).
+        self.key_count_dict: dict[int, int] = {}
         # Pretend there is a binding for these characters.
         close_flashers = c.config.getString('close-flash-brackets') or ''
         open_flashers = c.config.getString('open-flash-brackets') or ''
@@ -104,7 +106,9 @@ class LeoQtEventFilter(QtCore.QObject):
             return False  # Startup.
         # Bump a count for a unit test.
         if isinstance(event, QtGui.QKeyEvent):
-            self.key_count += 1
+            ### g.trace(event)  ###
+            d = self.key_count_dict
+            d[id(obj)] = 1 + d.get(id(obj), 0)
         # Trace events.
         if 'events' in g.app.debug:
             if isinstance(event, QtGui.QKeyEvent):
