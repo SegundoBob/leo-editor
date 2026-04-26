@@ -205,63 +205,56 @@ class TestQtGui(LeoUnitTest):
     # @+node:ekr.20260423040149.1: *3* TestQtGui.test_bug_4626
     def test_bug_4626(self):
         # https://github.com/leo-editor/leo-editor/issues/4626
-        c = self.c
-        k = c.k
-        log = c.frame.log
-        qtApp = g.app.gui.qtApp
-
-        # Part 1: Create the 'Completion' tab, and copy it's contents to the clipboard.
-        event = LeoKeyEvent(c, char='a')
-        k.fullCommand(event=event)
-        k.extendLabel('a')
-        # Force g.es to print to the log.
+        c, gui = self.c, g.app.gui
+        k, log, qtApp = c.k, c.frame.log, gui.qtApp
         old_log = g.app.log
+        old_clipboard_contents = gui.getTextFromClipboard()
         try:
+            # Part 1: Create the 'Completion' tab, and copy it's contents to the clipboard.
+            # Force g.es to print to the log.
+            event = LeoKeyEvent(c, char='a')
+            k.fullCommand(event=event)
+            k.extendLabel('a')
             g.app.log = log
             k.doTabCompletion(['a', 'ab', 'abc'])
+            wrapper = log.logCtrl
+            s = wrapper.getAllText()
+            dedent_s = textwrap.dedent(s)
+            assert dedent_s == 'a\nab\nabc\n', repr(s)
+            wrapper.selectAllText()
+            # Part 2: Test copyText directly.
+            event2 = LeoKeyEvent(c, w=wrapper)
+            c.frame.copyText(event2)
+            s2 = gui.getTextFromClipboard()
+            k.keyboardQuit()
+            assert s2 == s, (repr(s), repr(s2))
+            # Part 3: Test Ctrl-C in all text widgets.
+            widget_table = (
+                ('c.frame.body.widget', c.frame.body.widget),
+                ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
+                ('c.frame.log.logWidget', c.frame.log.logWidget),
+                ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
+            )
+            # Construct two Qt events.
+            c_key = QtCore.Qt.Key.Key_C
+            ctrl_mod = QtCore.Qt.KeyboardModifier.ControlModifier
+            key_press_t = QtCore.QEvent.Type.KeyPress
+            key_release_t = QtCore.QEvent.Type.KeyRelease
+            key_press_event = QtGui.QKeyEvent(key_press_t, c_key, ctrl_mod, '')
+            key_release_event = QtGui.QKeyEvent(key_release_t, c_key, ctrl_mod, '')
+            # The main loop.
+            text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
+            for kind, w in widget_table:
+                assert issubclass(w.__class__, text_widgets), w.__class__
+                gui.setFilter(c, w, w, tag='test')
+                # Test actual Qt Key events.
+                for key_event in (key_press_event, key_release_event):
+                    w.ev_filter.key_count = 0
+                    qtApp.sendEvent(w, key_event)
+                    assert w.ev_filter.key_count > 0, (w.__class__.__name__, w.ev_filter.key_count)
         finally:
+            gui.replaceClipboardWith(old_clipboard_contents)
             g.app.log = old_log
-        wrapper = log.logCtrl
-        s = wrapper.getAllText()
-        dedent_s = textwrap.dedent(s)
-        assert dedent_s == 'a\nab\nabc\n', repr(s)
-        wrapper.selectAllText()
-
-        # Part 2: Test copyText directly.
-        event2 = LeoKeyEvent(c, w=wrapper)
-        c.frame.copyText(event2)
-        s2 = g.app.gui.getTextFromClipboard()
-        k.keyboardQuit()
-        assert s2 == s, (repr(s), repr(s2))
-
-        # Part 3: Test Ctrl-C in all text widgets.
-        widget_table = (
-            ('c.frame.body.widget', c.frame.body.widget),
-            ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
-            ('c.frame.log.logWidget', c.frame.log.logWidget),
-            ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
-        )
-
-        # Construct two Qt events.
-        c_key = QtCore.Qt.Key.Key_C
-        ctrl_mod = QtCore.Qt.KeyboardModifier.ControlModifier
-        key_press_t = QtCore.QEvent.Type.KeyPress
-        key_release_t = QtCore.QEvent.Type.KeyRelease
-        key_press_event = QtGui.QKeyEvent(key_press_t, c_key, ctrl_mod, '')
-        key_release_event = QtGui.QKeyEvent(key_release_t, c_key, ctrl_mod, '')
-
-        # The main loop.
-        text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
-        for kind, w in widget_table:
-            assert issubclass(w.__class__, text_widgets), w.__class__
-            g.app.gui.setFilter(c, w, w, tag='test')
-
-            # Test actual Qt Key events.
-            for key_event in (key_press_event, key_release_event):
-                w.ev_filter.key_count = 0
-                qtApp.sendEvent(w, key_event)  # Fails: calls ec.doPlainChar
-                assert w.ev_filter.key_count > 0, (w.__class__.__name__, w.ev_filter.key_count)
-                # qtApp.processEvents()
 
     # @+node:ekr.20210912140946.1: *3* TestQtGui.test_do_nothing1/2/3
     # These tests exist to test the startup logic.
