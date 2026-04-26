@@ -10277,8 +10277,8 @@ Put notes about each version here.
     )
     # g.trace('===== x:', repr(x))
     if not x: x = 'no-language!'
-    _values = c.abbrev_subst_env['name'] = x.lower()
-    _values = c.abbrev_subst_env['cap_name'] = x.capitalize()
+    _values['name'] = c.abbrev_subst_env['name'] = x.lower()
+    _values['cap_name'] = c.abbrev_subst_env['cap_name'] = x.capitalize()
     return x.lower()
 </t>
 <t tx="ekr.20170123145248.1"></t>
