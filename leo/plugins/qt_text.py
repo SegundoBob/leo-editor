@@ -779,7 +779,7 @@ if QtWidgets:
             if hasattr(self, 'leo_qc'):
                 self.leo_qc.show_completions(aList)
 
-        # @+node:tom.20210827230127.1: *3* lqtb Highlight Current Line
+        # @+node:tom.20210827230127.1: *3* LeoQTextBrowser: Highlight Current Line
         # @+node:tom.20210827225119.3: *4* LeoQTextBrowser.parse_css
         # @@language python
         @staticmethod
@@ -1705,7 +1705,7 @@ class QTextEditWrapper(QTextMixin):
 
     __str__ = __repr__
 
-    # @+node:ekr.20110605121601.18078: *3* QTextEditWrapper.High-level interface
+    # @+node:ekr.20110605121601.18078: *3* QTextEditWrapper: High-level interface
     # These are all widget-dependent
     # @+node:ekr.20110605121601.18079: *4* QTextEditWrapper.delete (avoid call to setAllText)
     def delete(self, i: int, j: int = None) -> None:
