@@ -600,11 +600,11 @@ if QtWidgets:
 
         __str__ = __repr__
 
-        # @+node:ekr.20110605121601.18008: *3* lqtb:Auto completion
+        # @+node:ekr.20110605121601.18008: *3* LeoQTextBrowser: Auto completion
         # @+node:ekr.20110605121601.18009: *4* class LeoQListWidget(QListWidget)
         class LeoQListWidget(QtWidgets.QListWidget):
             # @+others
-            # @+node:ekr.20110605121601.18010: *5* lqlw.ctor
+            # @+node:ekr.20110605121601.18010: *5* LeoQListWidget.ctor
             def __init__(self, c: Cmdr) -> None:
                 """ctor for LeoQListWidget class"""
                 super().__init__()
@@ -614,12 +614,12 @@ if QtWidgets:
                 self.leo_c = c
                 self.itemClicked.connect(self.select_callback)
 
-            # @+node:ekr.20110605121601.18011: *5* lqlw.closeEvent
+            # @+node:ekr.20110605121601.18011: *5* LeoQListWidget.closeEvent
             def closeEvent(self, event: QEvent) -> None:
                 """Kill completion and close the window."""
                 self.leo_c.k.autoCompleter.abort()
 
-            # @+node:ekr.20110605121601.18012: *5* lqlw.end_completer
+            # @+node:ekr.20110605121601.18012: *5* LeoQListWidget.end_completer
             def end_completer(self) -> None:
                 """End completion."""
                 c = self.leo_c
@@ -633,12 +633,12 @@ if QtWidgets:
                     # Avoid bug 1338773: Autocompleter error
                     pass
 
-            # @+node:ekr.20141024170936.7: *5* lqlw.get_selection
+            # @+node:ekr.20141024170936.7: *5* LeoQListWidget.get_selection
             def get_selection(self) -> str:
                 """Return the presently selected item's text."""
                 return self.currentItem().text()
 
-            # @+node:ekr.20110605121601.18013: *5* lqlw.keyPressEvent
+            # @+node:ekr.20110605121601.18013: *5* LeoQListWidget.keyPressEvent
             def keyPressEvent(self, event: QKeyEvent) -> None:
                 """Handle a key event from QListWidget."""
                 c = self.leo_c
@@ -657,7 +657,7 @@ if QtWidgets:
                     # Pass all other keys to the autocompleter via the event filter.
                     w.ev_filter.eventFilter(obj=self, event=event)
 
-            # @+node:ekr.20110605121601.18014: *5* lqlw.select_callback
+            # @+node:ekr.20110605121601.18014: *5* LeoQListWidget.select_callback
             def select_callback(self) -> None:
                 """
                 Called when user selects an item in the QListWidget.
@@ -694,7 +694,7 @@ if QtWidgets:
                     )
                 self.end_completer()
 
-            # @+node:tbrown.20111011094944.27031: *5* lqlw.tab_callback
+            # @+node:tbrown.20111011094944.27031: *5* LeoQListWidget.tab_callback
             def tab_callback(self) -> None:
                 """Called when user hits tab on an item in the QListWidget."""
                 c = self.leo_c
@@ -716,7 +716,7 @@ if QtWidgets:
                 w.setInsertPoint(i)
                 c.k.autoCompleter.compute_completion_list()
 
-            # @+node:ekr.20110605121601.18015: *5* lqlw.set_position
+            # @+node:ekr.20110605121601.18015: *5* LeoQListWidget.set_position
             def set_position(self, c: Cmdr) -> None:
                 """Set the position of the QListWidget."""
 
@@ -743,7 +743,7 @@ if QtWidgets:
                 geom2 = QtCore.QRect(geom2_topLeft, geom2_size)
                 self.setGeometry(geom2)
 
-            # @+node:ekr.20110605121601.18016: *5* lqlw.show_completions
+            # @+node:ekr.20110605121601.18016: *5* LeoQListWidget.show_completions
             def show_completions(self, aList: list[str]) -> None:
                 """Set the QListView contents to aList."""
                 self.clear()
