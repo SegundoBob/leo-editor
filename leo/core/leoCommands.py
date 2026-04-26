@@ -3475,16 +3475,15 @@ class Commands:
                 c.onCanvasKey(event)
             return
         # Ignore all events outside the log pane.
-        if not name.startswith('log'):
+        if not name.startswith('log'):  ### Huh??
             return
         # Make sure we can insert into w.
-        log_w = event.wrapper  # #4623.
-        if not g.app.gui.isTextWrapper(log_w):
+        if not g.app.gui.isTextWrapper(w):
             return
         # Send the event to the text widget, not the LeoLog instance.
-        i = log_w.getInsertPoint()
+        i = w.getInsertPoint()
         s = stroke.toGuiChar()
-        log_w.insert(i, s)
+        w.insert(i, s)
 
     # @+node:ekr.20131016084446.16724: *4* c.setComplexCommand
     def setComplexCommand(self, commandName: str) -> None:
