@@ -24,7 +24,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
 
-    Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 
 
@@ -382,11 +381,11 @@ class LeoKeyEvent:
         return f"LeoKeyEvent:\n{g.objToString(d)}"
 
     # @+node:ekr.20150511181702.1: *3* LeoKeyEvent.get & __getitem__
-    def get(self, attr: str) -> Value:
+    def get(self, attr: str) -> Any:
         """Compatibility with g.bunch: return an attr."""
         return getattr(self, attr, None)
 
-    def __getitem__(self, attr: str) -> Value:
+    def __getitem__(self, attr: str) -> Any:
         """Compatibility with g.bunch: return an attr."""
         return getattr(self, attr, None)
 

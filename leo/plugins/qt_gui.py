@@ -79,7 +79,6 @@ if TYPE_CHECKING:  # pragma: no cover
     QTabWidget = QtWidgets.QTabWidget
     QVBoxLayout = QtWidgets.QVBoxLayout
     QWidget = QtWidgets.QWidget
-    Value = Any
 
 
 # @-<< qt_gui annotations >>
@@ -871,7 +870,7 @@ class LeoQtGui(leoGui.LeoGui):
     def runPropertiesDialog(
         self,
         title: str = 'Properties',
-        data: Value = None,
+        data: Any = None,
         callback: Callable = None,
         buttons: list[str] = None,
     ) -> tuple[str, dict]:

@@ -29,7 +29,6 @@ if TYPE_CHECKING:  # pragma: no cover
     QTreeWidgetItem = QtWidgets.QTreeWidgetItem
     QWheelEvent = QtGui.QWheelEvent
     QWidget = QtWidgets.QWidget
-    Value = Any
 
 FullWidthSelection = 0x06000
 QColor = QtGui.QColor
@@ -114,7 +113,7 @@ Valid values are standard css color names like `lightgrey`, and css rgb values l
 
 
 @g.command('help-for-highlight-current-line')
-def helpForLineHighlight(self: Value, event: LeoKeyEvent = None) -> None:
+def helpForLineHighlight(self: Any, event: LeoKeyEvent = None) -> None:
     """Displays Settings used by current line highlighter."""
     self.c.putHelpFor(hilite_doc)
 
@@ -1356,7 +1355,7 @@ class QMinibufferWrapper(QLineEditWrapper):
 
         w.mouseReleaseEvent = mouseReleaseEvent
 
-    def setStyleClass(self, style_class: Value) -> None:
+    def setStyleClass(self, style_class: Any) -> None:
         self.widget.setProperty('style_class', style_class)
         #
         # to get the appearance to change because of a property

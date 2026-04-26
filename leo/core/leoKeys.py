@@ -38,7 +38,6 @@ if TYPE_CHECKING:  # pragma: no cover
 
     QWidget = QtWidgets.QWidget
     Stroke = Any
-    Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 
 
@@ -819,7 +818,7 @@ class AutoCompleterClass:
         return d
 
     # @+node:ekr.20110512170111.14472: *4* ac.get_object
-    def get_object(self) -> tuple[Value, str]:
+    def get_object(self) -> tuple[Any, str]:
         """Return the object corresponding to the current prefix."""
         common_prefix, prefix1, aList = self.compute_completion_list()
         if not aList:
@@ -1071,7 +1070,7 @@ class ContextSniffer:
     """
 
     def __init__(self) -> None:
-        self.vars: dict[str, list[Value]] = {}  # Keys are var names; values are list of classes
+        self.vars: dict[str, list[Any]] = {}  # Keys are var names; values are list of classes
 
     # @+others
     # @+node:ekr.20110312162243.14261: *3* get_classes
@@ -3380,7 +3379,7 @@ class KeyHandlerClass:
                         break
 
     # @+node:ekr.20061031131434.127: *4* k.simulateCommand
-    def simulateCommand(self, commandName: str, event: LeoKeyEvent = None) -> Value:
+    def simulateCommand(self, commandName: str, event: LeoKeyEvent = None) -> Any:
         """
         Execute a Leo command by name.
 
@@ -3624,7 +3623,7 @@ class KeyHandlerClass:
         return True
 
     # @+node:ekr.20061031131434.108: *6* k.callStateFunction
-    def callStateFunction(self, event: LeoKeyEvent) -> Value:
+    def callStateFunction(self, event: LeoKeyEvent) -> Any:
         """Call the state handler associated with this event."""
         k = self
         ch = event.char

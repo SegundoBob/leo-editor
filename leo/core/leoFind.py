@@ -24,7 +24,7 @@ if TYPE_CHECKING:  # pragma: no cover
     MatchGroups = tuple  # Best we can do so far.
     Settings = g.Bunch
     UndoData = g.Bunch
-    Value = Any
+
 # @-<< leoFind imports & annotations >>
 # @+<< Theory of operation of find/change >>
 # @+node:ekr.20031218072017.2414: ** << Theory of operation of find/change >>
@@ -1673,7 +1673,7 @@ class LeoFind:
         self.do_change_all(settings)  # Correct: convert to change-all.
 
     # @+node:ekr.20031218072017.3073: *5* find.do_find_all & helpers
-    def do_find_all(self, settings: Settings) -> dict[str, Value]:
+    def do_find_all(self, settings: Settings) -> dict[str, Any]:
         """
         Top-level helper for find-all command.
 
@@ -1703,7 +1703,7 @@ class LeoFind:
         return result_dict
 
     # @+node:ekr.20160422073500.1: *6* find._find_all_helper & helpers
-    def _find_all_helper(self, settings: Settings) -> dict[str, Value]:
+    def _find_all_helper(self, settings: Settings) -> dict[str, Any]:
         """
         Handle the find-all command from p to after.
 
