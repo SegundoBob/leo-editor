@@ -3414,7 +3414,7 @@ class KeyHandlerClass:
             handler_s = f"{k.state.handler.__name__}" if k.state.handler else 'No handler'
             print('')
             g.trace(
-                f"char: {event.char!r} stroke: {event.stroke!r} "
+                f"char: {event.w.__class__.__name__} {event.char!r} stroke: {event.stroke!r} "
                 f"state.kind: {k.state.kind!r}, state.handler: {handler_s}"
             )
         k.checkKeyEvent(event)

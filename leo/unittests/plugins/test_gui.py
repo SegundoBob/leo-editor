@@ -236,6 +236,8 @@ class TestQtGui(LeoUnitTest):
 
         # Part 3: Test Ctrl-C in all text widgets.
         widget_table = (
+            ### ('c.frame.tree', c.frame.tree),
+            ### # ('c.frame.body.wrapper', c.frame.body.wrapper),
             ('c.frame.body.widget', c.frame.body.widget),
             # ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
             # ('c.frame.log.logWidget', c.frame.log.logWidget),
@@ -257,22 +259,30 @@ class TestQtGui(LeoUnitTest):
             for kind, w in widget_table:
                 # is_QTextEdit = issubclass(w.__class__, QtWidgets.QTextEdit)
                 class_name = w.__class__.__name__
+                expected = f"{id(w)}: {class_name}"
                 assert issubclass(w.__class__, text_widgets), w.__class__
                 # Put the class name in the widget.
                 w.setFocus()
                 qtApp.processEvents()
                 w.setReadOnly(False)
                 w.clear()
-                expected = f"{id(w)}: {class_name}"
                 w.setText(expected)
                 w.selectAll()
+                ### w.setAllText(expected)
+                ### w.selectAllText()
                 # Set the clipboard to a known state.
                 g.app.gui.replaceClipboardWith('old clipboard contents')
                 qtApp.processEvents()
-                # Execute Ctrl-c.
-                qtApp.sendEvent(w, key_press_event)  # Fails: calls ec.doPlainChar
-                qtApp.sendEvent(w, key_release_event)
-                qtApp.processEvents()
+                if 1:
+                    # Simulate the event.
+                    event = LeoKeyEvent(c, char=chr(3), binding='Ctrl+c', w=c.frame.tree)
+                    k.masterKeyHandler(event)
+                else:
+                    # Creating an actual Qt Gui event fails.
+                    # There are subtle problems in k.masterKeyHander.
+                    qtApp.sendEvent(w, key_press_event)  # Fails: calls ec.doPlainChar
+                    qtApp.sendEvent(w, key_release_event)
+                    qtApp.processEvents()
                 # Check the results.
                 s = g.app.gui.getTextFromClipboard()
                 if s != expected:
