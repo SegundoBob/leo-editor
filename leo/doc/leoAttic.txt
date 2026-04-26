@@ -3664,6 +3664,35 @@ class PlainTextWrapper(QTextMixin):
         self.widget = widget
 
 
+# @+node:ekr.20131118172620.16894: *4* EventWrapper.keyPress
+def keyPress(self, event: LeoKeyEvent) -> bool:
+    g.trace(event)  ###
+    s = event.text()
+    out = s and s in '\t\r\n'
+    if out:
+        # Move focus to next widget.
+        if s == '\t':
+            if self.next_w:
+                self.next_w.setFocus(FocusReason.TabFocusReason)
+            else:
+                # Do the normal processing.
+                return self.oldEvent(event)
+        elif self.func:
+            self.func()
+        return True
+    binding, ch, lossage = self.eventFilter.toBinding(event)
+    # #2094: Use code similar to the end of LeoQtEventFilter.eventFilter.
+    #        The ctor converts <Alt-X> to <Alt-x> !!
+    #        That is, we must use the stroke, not the binding.
+    key_event = leoGui.LeoKeyEvent(c=self.c, char=ch, binding=binding, w=self.w)
+    if key_event.stroke:
+        cmd_name = self.d.get(key_event.stroke)
+        if cmd_name:
+            self.c.doCommandByName(cmd_name)
+            return True
+    # Do the normal processing.
+    return self.oldEvent(event)
+
 # @+node:ekr.20131007055150.17608: *4* LeoQtGui.insertKeyEvent
 def insertKeyEvent(self, event: QEvent, i: int) -> None:
     """Insert the key given by event in location i of widget event.w."""
