@@ -106,7 +106,6 @@ class LeoQtEventFilter(QtCore.QObject):
             return False  # Startup.
         # Bump a count for a unit test.
         if isinstance(event, QtGui.QKeyEvent):
-            ### g.trace(event)  ###
             d = self.key_count_dict
             d[id(obj)] = 1 + d.get(id(obj), 0)
         # Trace events.
