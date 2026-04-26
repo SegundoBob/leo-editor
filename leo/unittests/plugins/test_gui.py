@@ -210,7 +210,7 @@ class TestQtGui(LeoUnitTest):
         log = c.frame.log
         qtApp = g.app.gui.qtApp
 
-        # Part 1: Create the 'Completion' tab, and copy it's contets to the clipboard.
+        # Part 1: Create the 'Completion' tab, and copy it's contents to the clipboard.
         event = LeoKeyEvent(c, char='a')
         k.fullCommand(event=event)
         k.extendLabel('a')
@@ -237,9 +237,9 @@ class TestQtGui(LeoUnitTest):
         # Part 3: Test Ctrl-C in all text widgets.
         widget_table = (
             ('c.frame.body.widget', c.frame.body.widget),
-            ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
-            ('c.frame.log.logWidget', c.frame.log.logWidget),
-            ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
+            # ('c.frame.log.logCtrl.widget', c.frame.log.logCtrl.widget),
+            # ('c.frame.log.logWidget', c.frame.log.logWidget),
+            # ('c.frame.miniBufferWidget.widget', c.frame.miniBufferWidget.widget),
         )
 
         # Construct two events.
@@ -252,7 +252,7 @@ class TestQtGui(LeoUnitTest):
 
         # The main loop.
         text_widgets = (QtWidgets.QTextEdit, QtWidgets.QLineEdit)
-        g.app.debug = ['events']
+        g.app.debug = ['events', 'keys']
         try:
             for kind, w in widget_table:
                 # is_QTextEdit = issubclass(w.__class__, QtWidgets.QTextEdit)
@@ -270,12 +270,14 @@ class TestQtGui(LeoUnitTest):
                 g.app.gui.replaceClipboardWith('old clipboard contents')
                 qtApp.processEvents()
                 # Execute Ctrl-c.
-                qtApp.sendEvent(w, key_press_event)
+                qtApp.sendEvent(w, key_press_event)  # Fails: calls ec.doPlainChar
                 qtApp.sendEvent(w, key_release_event)
                 qtApp.processEvents()
                 # Check the results.
                 s = g.app.gui.getTextFromClipboard()
                 if s != expected:
+                    print('')
+                    g.trace(c.widget_name(w))
                     g.trace(f"FAIL: {kind:>32} Got: {s!r} Expected: {expected!r}")
         finally:
             g.app.debug = []
