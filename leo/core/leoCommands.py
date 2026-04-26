@@ -3408,6 +3408,8 @@ class Commands:
     # @+node:ekr.20200523135601.1: *4* c.insertCharFromEvent
     def insertCharFromEvent(self, event: LeoKeyEvent) -> None:
         """
+        This method is an ugly hack, called by k.masterKeyHandler and other places.
+
         Handle the character given by event, ignoring various special keys:
         - getArg state: k.getArg.
         - Tree: onCanvasKey or onHeadlineKey.
@@ -3442,12 +3444,10 @@ class Commands:
                 return
             if k.ignore_unbound_non_ascii_keys:
                 return
-        # #868
-        if stroke.isPlainNumPad():
+        if stroke.isPlainNumPad():  # #868
             stroke.removeNumPadModifier()
             event.stroke = stroke
-        # #868
-        if stroke.isNumPadKey():
+        if stroke.isNumPadKey():  # #868
             return
         # Ignore unbound non-ascii character.
         if k.ignore_unbound_non_ascii_keys and not stroke.isPlainKey():
@@ -3474,10 +3474,6 @@ class Commands:
             elif not stroke:
                 c.onCanvasKey(event)
             return
-        # Ignore all events outside the log pane.
-        if not name.startswith('log'):  ### Huh??
-            return
-        # Make sure we can insert into w.
         if not g.app.gui.isTextWrapper(w):
             return
         # Send the event to the text widget, not the LeoLog instance.
