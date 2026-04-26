@@ -350,8 +350,9 @@ class LeoKeyEvent:
     def __init__(
         self,
         c: Cmdr,
-        char: str = None,
+        *,
         binding: Any = None,
+        char: str = None,
         w: Any = None,
         x: int = None,
         y: int = None,
