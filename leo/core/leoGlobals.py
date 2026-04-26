@@ -511,7 +511,7 @@ class BindingInfo:
                         val = val.__name__
                     s = f"{ivar}: {val!r}"
                     result.append(s)
-        return "<{' '.join(result).strip()}>"
+        return f"<{' '.join(result).strip()}>"
 
     # @+node:ekr.20120129040823.10226: *4* BindingInfo.isModeBinding
     def isModeBinding(self) -> bool:
