@@ -71,8 +71,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.mod_scripting import ScriptingController
     from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
 
-    Args = Any
-    KWargs = Any
     QBoxLayout = QtWidgets.QBoxLayout
     QComboBox = QtWidgets.QComboBox
     QCursor = QtGui.QCursor
@@ -1525,7 +1523,7 @@ class LeoBaseTabWidget(QtWidgets.QTabWidget):
 
     # @+others
     # @+node:ekr.20131115120119.17390: *3* qt_base_tab.__init__
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         #
         # Called from frameFactory.createMaster.
         #
@@ -2236,7 +2234,7 @@ class LeoQtFrame(leoFrame.LeoFrame):
             self.top.setGeometry(QtCore.QRect(x, y, w, h))
 
     # @+node:ekr.20190611053431.10: *4* LeoQtFrame.update
-    def update(self, *args: Args, **keys: KWargs) -> None:
+    def update(self, *args: Any, **keys: Any) -> None:
         if 'size' in g.app.debug:
             g.trace(bool(self.top))
         self.top.update()
@@ -3773,7 +3771,7 @@ class LeoQtTreeTab:
 class LeoTabbedTopLevel(LeoBaseTabWidget):
     """Toplevel frame for tabbed ui"""
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         ## middle click close on tabs -- JMP 20140505
         self.setMovable(False)
@@ -3821,7 +3819,7 @@ class QtIconBarClass:
         pass
 
     # @+node:ekr.20110605121601.18265: *3* QtIconBar.add
-    def add(self, *args: Args, **keys: KWargs) -> QAction:
+    def add(self, *args: Any, **keys: Any) -> QAction:
         """Add a button to the icon bar."""
         c = self.c
         if not self.w:
@@ -4068,7 +4066,7 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
         return f"<QtMenuWrapper {self.leo_menu_label}>"
 
     # @+node:ekr.20110605121601.18460: *3* QtMenuWrapper.onAboutToShow & helpers
-    def onAboutToShow(self, *args: Args, **keys: KWargs) -> None:
+    def onAboutToShow(self, *args: Any, **keys: Any) -> None:
         name = self.leo_menu_label
         if not name:
             return

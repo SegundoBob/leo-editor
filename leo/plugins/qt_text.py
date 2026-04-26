@@ -17,8 +17,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
 
-    Args = Any
-    KWargs = Any
     QEvent = QtCore.QEvent
     QFrame = QtWidgets.QFrame
     QKeyEvent = QtGui.QKeyEvent
@@ -516,7 +514,7 @@ class LeoLineTextWidget(QtWidgets.QFrame):
 
     # @+others
     # @+node:ekr.20150403094706.9: *3* LeoLineTextWidget.__init__
-    def __init__(self, c: Cmdr, e: QWidget, *args: Args) -> None:
+    def __init__(self, c: Cmdr, e: QWidget, *args: Any) -> None:
         """Ctor for LineTextWidget."""
         super().__init__(*args)
         self.c = c
@@ -1136,7 +1134,7 @@ if QtWidgets:
 class NumberBar(QtWidgets.QFrame):
     # @+others
     # @+node:ekr.20150403094706.3: *3* NumberBar.__init__
-    def __init__(self, c: Cmdr, e: QWidget, *args: Args) -> None:
+    def __init__(self, c: Cmdr, e: QWidget, *args: Any) -> None:
         """Ctor for NumberBar class."""
         super().__init__(*args)
         self.c = c
@@ -1193,7 +1191,7 @@ class NumberBar(QtWidgets.QFrame):
             xdb.qc.put(f"b {path}:{n}")
 
     # @+node:ekr.20150403094706.5: *3* NumberBar.update
-    def update(self, *args: Args) -> None:
+    def update(self, *args: Any) -> None:
         """
         Updates the number bar to display the current set of numbers.
         Also, adjusts the width of the number bar if necessary.

@@ -21,7 +21,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
 
-    KWargs = Any
     MatchGroups = tuple  # Best we can do so far.
     Settings = g.Bunch
     UndoData = g.Bunch
@@ -2194,7 +2193,7 @@ class LeoFind:
 
         c = self.c
 
-        def summarize_callback(**kwargs: KWargs) -> None:
+        def summarize_callback(**kwargs: Any) -> None:
             # Get and check pattern.
             pattern_s = kwargs['args'][0]
             if not pattern_s.strip():

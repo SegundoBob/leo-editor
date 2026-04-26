@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import textwrap
 from collections import OrderedDict
-from typing import Any, Dict, TYPE_CHECKING, Optional
+from typing import Dict, TYPE_CHECKING, Optional
 
 from leo.core.leoQt import QtWidgets, Orientation
 from leo.core import leoGlobals as g
@@ -19,9 +19,6 @@ QWidget = QtWidgets.QWidget
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-
-    Args = Any
-    KWargs = Any
 # @-<< qt_layout: imports & annotations >>
 # @+<< qt_layout: declarations >>
 # @+node:tom.20241009141008.1: ** << qt_layout: declarations >>

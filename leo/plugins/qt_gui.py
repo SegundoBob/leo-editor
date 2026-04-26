@@ -60,10 +60,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    # from leo.plugins.qt_text import QTextEditWrapper
 
-    Args = Any
-    KWargs = Any
     QDialog = QtWidgets.QDialog
     QEvent: TypeAlias = QtCore.QEvent
     QFont = QtGui.QFont
@@ -936,7 +933,7 @@ class LeoQtGui(leoGui.LeoGui):
         label: str = '',
         msg: str = '',
         c: Cmdr = None,
-        **keys: KWargs,
+        **keys: Any,
     ) -> None:
         if g.unitTesting:
             return None
@@ -1337,7 +1334,7 @@ class LeoQtGui(leoGui.LeoGui):
     def makeScriptButton(
         self,
         c: Cmdr,
-        args: Args = None,
+        args: Any = None,
         p: Position = None,  # A node containing the script.
         script: str = None,  # The script itself.
         buttonText: str = None,
@@ -1585,7 +1582,7 @@ class LeoQtGui(leoGui.LeoGui):
             c.redraw()  # #2390: Show the change immediately.
 
     # @+node:ekr.20180127103142.1: *4* onNext (not used)
-    def onNext(self, *args: Args, **keys: KWargs) -> bool:
+    def onNext(self, *args: Any, **keys: Any) -> bool:
         g.trace(args, keys)
         return True
 

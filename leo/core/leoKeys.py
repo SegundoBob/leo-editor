@@ -36,8 +36,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import LeoQtLog
     from leo.plugins.qt_text import QTextMixin
 
-    Args = Any
-    KWargs = Any
     QWidget = QtWidgets.QWidget
     Stroke = Any
     Value = Any
@@ -982,7 +980,7 @@ class AutoCompleterClass:
         return c.shortFileName().lower() in table
 
     # @+node:ekr.20101101175644.5891: *4* ac.put
-    def put(self, *args: Args, **keys: KWargs) -> None:
+    def put(self, *args: Any, **keys: Any) -> None:
         """Put s to the given tab.
 
         May be overridden in subclasses."""
@@ -3291,7 +3289,7 @@ class KeyHandlerClass:
         fileName: str = None,
         pane: str = 'all',
         shortcut: str = None,  # Must be None unless allowBindings is True.
-        **kwargs: KWargs,  # Used only to warn about deprecated kwargs.
+        **kwargs: Any,  # Used only to warn about deprecated kwargs.
     ) -> None:
         """
         Make the function available as a minibuffer command.
