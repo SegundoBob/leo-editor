@@ -1637,7 +1637,7 @@ class QTextEditWrapper(QTextMixin):
 
     # @+others
     # @+node:ekr.20110605121601.18073: *3* QTextEditWrapper.ctor & helpers
-    def __init__(self, widget: QWidget, name: str = 'TestWrapper', c: Cmdr = None) -> None:
+    def __init__(self, widget: Any, name: str = 'TestWrapper', c: Cmdr = None) -> None:
         """Ctor for QTextEditWrapper class. widget is a QTextEdit/QTextBrowser."""
         super().__init__(c)
         # Make sure all ivars are set.
