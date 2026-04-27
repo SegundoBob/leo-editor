@@ -24,7 +24,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
 
-    Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 
 
@@ -305,9 +304,9 @@ class LeoGui:
     def create_key_event(
         self,
         c: Cmdr,
+        *,
         binding: str = None,
         char: str = None,
-        event: LeoKeyEvent = None,
         w: QTextMixin = None,
         x: int = None,
         x_root: int = None,
@@ -317,7 +316,9 @@ class LeoGui:
         # Do not call strokeFromSetting here!
         # For example, this would wrongly convert Ctrl-C to Ctrl-c,
         # in effect, converting a user binding from Ctrl-Shift-C to Ctrl-C.
-        return LeoKeyEvent(c, char, event, binding, w, x, y, x_root, y_root)
+        return LeoKeyEvent(
+            c, binding=binding, char=char, w=w, x=x, y=y, x_root=x_root, y_root=y_root
+        )
 
     # @+node:ekr.20031218072017.3740: *4* LeoGui.guiName
     def guiName(self) -> str:
@@ -349,30 +350,22 @@ class LeoKeyEvent:
     def __init__(
         self,
         c: Cmdr,
-        char: str,
-        event: LeoKeyEvent,
-        binding: Any,
-        w: Any,
+        *,
+        binding: Any = None,
+        char: str = None,
+        w: Any = None,
         x: int = None,
         y: int = None,
         x_root: int = None,
         y_root: int = None,
     ) -> None:
         """Ctor for LeoKeyEvent class."""
-        stroke: Any
-        if g.isStroke(binding):
-            g.trace('***** (LeoKeyEvent) oops: already a stroke', binding, g.callers())
-            stroke = binding
-        else:
-            stroke = g.KeyStroke(binding) if binding else None
-        assert g.isStrokeOrNone(stroke), f"(LeoKeyEvent) {stroke!r} {g.callers()}"
-        if 0:  # Doesn't add much.
-            if 'keys' in g.app.debug:
-                print(f"LeoKeyEvent: binding: {binding}, stroke: {stroke}, char: {char!r}")
         self.c = c
         self.char = char or ''
-        self.event = event  # New in Leo 4.11.
-        self.stroke = stroke
+        self.stroke: Any = (
+            binding if g.isStroke(binding) else g.KeyStroke(binding) if binding else None
+        )
+        assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
         self.w = self.widget = w
         # Optional ivars
         self.x = x
@@ -384,16 +377,16 @@ class LeoKeyEvent:
     # @+node:ekr.20140907103315.18774: *3* LeoKeyEvent.__repr__
     def __repr__(self) -> str:
         d = {'c': self.c.shortFileName()}
-        for ivar in ('char', 'event', 'stroke', 'w'):
+        for ivar in ('char', 'stroke', 'w'):
             d[ivar] = getattr(self, ivar)
         return f"LeoKeyEvent:\n{g.objToString(d)}"
 
     # @+node:ekr.20150511181702.1: *3* LeoKeyEvent.get & __getitem__
-    def get(self, attr: str) -> Value:
+    def get(self, attr: str) -> Any:
         """Compatibility with g.bunch: return an attr."""
         return getattr(self, attr, None)
 
-    def __getitem__(self, attr: str) -> Value:
+    def __getitem__(self, attr: str) -> Any:
         """Compatibility with g.bunch: return an attr."""
         return getattr(self, attr, None)
 

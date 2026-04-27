@@ -17,8 +17,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
 
-    Args = Any
-    KWargs = Any
     QEvent = QtCore.QEvent
     QFrame = QtWidgets.QFrame
     QKeyEvent = QtGui.QKeyEvent
@@ -31,7 +29,6 @@ if TYPE_CHECKING:  # pragma: no cover
     QTreeWidgetItem = QtWidgets.QTreeWidgetItem
     QWheelEvent = QtGui.QWheelEvent
     QWidget = QtWidgets.QWidget
-    Value = Any
 
 FullWidthSelection = 0x06000
 QColor = QtGui.QColor
@@ -116,7 +113,7 @@ Valid values are standard css color names like `lightgrey`, and css rgb values l
 
 
 @g.command('help-for-highlight-current-line')
-def helpForLineHighlight(self: Value, event: LeoKeyEvent = None) -> None:
+def helpForLineHighlight(self: Any, event: LeoKeyEvent = None) -> None:
     """Displays Settings used by current line highlighter."""
     self.c.putHelpFor(hilite_doc)
 
@@ -368,7 +365,7 @@ class QLineEditWrapper(QTextMixin):
     """
 
     # @+others
-    # @+node:ekr.20110605121601.18060: *3* qlew.Birth
+    # @+node:ekr.20110605121601.18060: *3* QLineEditWrapper.__init__ & __repr__
     def __init__(self, widget: QLineEdit, name: str, c: Cmdr = None) -> None:
         """Ctor for QLineEditWrapper class."""
         super().__init__(c)
@@ -381,15 +378,15 @@ class QLineEditWrapper(QTextMixin):
 
     __str__ = __repr__
 
-    # @+node:ekr.20140901191541.18599: *3* qlew.check
+    # @+node:ekr.20140901191541.18599: *3* QLineEditWrapper.check
     def check(self) -> bool:
         """
         QLineEditWrapper.
         """
         return True
 
-    # @+node:ekr.20110605121601.18118: *3* qlew.Widget-specific overrides
-    # @+node:ekr.20220911105050.1: *4* qlew: do-nothings
+    # @+node:ekr.20110605121601.18118: *3* QLineEditWrapper:Widget-specific overrides
+    # @+node:ekr.20220911105050.1: *4* QLineEditWrapper: do-nothings
     def flashCharacter(
         self, i: int, bg: str = 'white', fg: str = 'red', flashes: int = 3, delay: int = 75
     ) -> None:
@@ -407,7 +404,7 @@ class QLineEditWrapper(QTextMixin):
     def setYScrollPosition(self, i: int) -> None:
         pass
 
-    # @+node:ekr.20110605121601.18120: *4* qlew.getAllText
+    # @+node:ekr.20110605121601.18120: *4* QLineEditWrapper.getAllText
     def getAllText(self) -> str:
         """QHeadlineWrapper."""
         if self.check():
@@ -415,14 +412,14 @@ class QLineEditWrapper(QTextMixin):
             return w.text()
         return ''
 
-    # @+node:ekr.20110605121601.18121: *4* qlew.getInsertPoint
+    # @+node:ekr.20110605121601.18121: *4* QLineEditWrapper.getInsertPoint
     def getInsertPoint(self) -> int:
         """QHeadlineWrapper."""
         if self.check():
             return self.widget.cursorPosition()
         return 0
 
-    # @+node:ekr.20110605121601.18122: *4* qlew.getSelectionRange
+    # @+node:ekr.20110605121601.18122: *4* QLineEditWrapper.getSelectionRange
     def getSelectionRange(self, sort: bool = True) -> tuple[int, int]:
         """QHeadlineWrapper."""
         w = self.widget
@@ -436,34 +433,34 @@ class QLineEditWrapper(QTextMixin):
             return i, j
         return 0, 0
 
-    # @+node:ekr.20110605121601.18123: *4* qlew.hasSelection
+    # @+node:ekr.20110605121601.18123: *4* QLineEditWrapper.hasSelection
     def hasSelection(self) -> bool:
         """QHeadlineWrapper."""
         if self.check():
             return self.widget.hasSelectedText()
         return False
 
-    # @+node:ekr.20110605121601.18124: *4* qlew.see & seeInsertPoint
+    # @+node:ekr.20110605121601.18124: *4* QLineEditWrapper.see & seeInsertPoint
     def see(self, i: int) -> None:
         """QHeadlineWrapper."""
 
     def seeInsertPoint(self) -> None:
         """QHeadlineWrapper."""
 
-    # @+node:ekr.20110605121601.18125: *4* qlew.setAllText
+    # @+node:ekr.20110605121601.18125: *4* QLineEditWrapper.setAllText
     def setAllText(self, s: str) -> None:
-        """Set all text of a Qt headline widget."""
+        """Set all text of a Qt single-line widget."""
         if self.check():
             w = self.widget
-            w.setText(s)
+            w.setText(s.replace('\n', ' ').replace('\n', ' '))
 
-    # @+node:ekr.20110605121601.18128: *4* qlew.setFocus
+    # @+node:ekr.20110605121601.18128: *4* QLineEditWrapper.setFocus
     def setFocus(self) -> None:
         """QHeadlineWrapper."""
         if self.check():
             g.app.gui.set_focus(self.c, self.widget)
 
-    # @+node:ekr.20110605121601.18129: *4* qlew.setInsertPoint
+    # @+node:ekr.20110605121601.18129: *4* QLineEditWrapper.setInsertPoint
     def setInsertPoint(self, i: int, s: str = None) -> None:
         """QHeadlineWrapper."""
         if not self.check():
@@ -474,7 +471,7 @@ class QLineEditWrapper(QTextMixin):
         i = max(0, min(i, len(s)))
         w.setCursorPosition(i)
 
-    # @+node:ekr.20110605121601.18130: *4* qlew.setSelectionRange
+    # @+node:ekr.20110605121601.18130: *4* QLineEditWrapper.setSelectionRange
     def setSelectionRange(
         self, i: int, j: int, insert: Optional[int] = None, s: str = None
     ) -> None:
@@ -516,7 +513,7 @@ class LeoLineTextWidget(QtWidgets.QFrame):
 
     # @+others
     # @+node:ekr.20150403094706.9: *3* LeoLineTextWidget.__init__
-    def __init__(self, c: Cmdr, e: QWidget, *args: Args) -> None:
+    def __init__(self, c: Cmdr, e: QWidget, *args: Any) -> None:
         """Ctor for LineTextWidget."""
         super().__init__(*args)
         self.c = c
@@ -603,11 +600,11 @@ if QtWidgets:
 
         __str__ = __repr__
 
-        # @+node:ekr.20110605121601.18008: *3* lqtb:Auto completion
+        # @+node:ekr.20110605121601.18008: *3* LeoQTextBrowser: Auto completion
         # @+node:ekr.20110605121601.18009: *4* class LeoQListWidget(QListWidget)
         class LeoQListWidget(QtWidgets.QListWidget):
             # @+others
-            # @+node:ekr.20110605121601.18010: *5* lqlw.ctor
+            # @+node:ekr.20110605121601.18010: *5* LeoQListWidget.ctor
             def __init__(self, c: Cmdr) -> None:
                 """ctor for LeoQListWidget class"""
                 super().__init__()
@@ -617,12 +614,12 @@ if QtWidgets:
                 self.leo_c = c
                 self.itemClicked.connect(self.select_callback)
 
-            # @+node:ekr.20110605121601.18011: *5* lqlw.closeEvent
+            # @+node:ekr.20110605121601.18011: *5* LeoQListWidget.closeEvent
             def closeEvent(self, event: QEvent) -> None:
                 """Kill completion and close the window."""
                 self.leo_c.k.autoCompleter.abort()
 
-            # @+node:ekr.20110605121601.18012: *5* lqlw.end_completer
+            # @+node:ekr.20110605121601.18012: *5* LeoQListWidget.end_completer
             def end_completer(self) -> None:
                 """End completion."""
                 c = self.leo_c
@@ -636,12 +633,12 @@ if QtWidgets:
                     # Avoid bug 1338773: Autocompleter error
                     pass
 
-            # @+node:ekr.20141024170936.7: *5* lqlw.get_selection
+            # @+node:ekr.20141024170936.7: *5* LeoQListWidget.get_selection
             def get_selection(self) -> str:
                 """Return the presently selected item's text."""
                 return self.currentItem().text()
 
-            # @+node:ekr.20110605121601.18013: *5* lqlw.keyPressEvent
+            # @+node:ekr.20110605121601.18013: *5* LeoQListWidget.keyPressEvent
             def keyPressEvent(self, event: QKeyEvent) -> None:
                 """Handle a key event from QListWidget."""
                 c = self.leo_c
@@ -660,7 +657,7 @@ if QtWidgets:
                     # Pass all other keys to the autocompleter via the event filter.
                     w.ev_filter.eventFilter(obj=self, event=event)
 
-            # @+node:ekr.20110605121601.18014: *5* lqlw.select_callback
+            # @+node:ekr.20110605121601.18014: *5* LeoQListWidget.select_callback
             def select_callback(self) -> None:
                 """
                 Called when user selects an item in the QListWidget.
@@ -697,7 +694,7 @@ if QtWidgets:
                     )
                 self.end_completer()
 
-            # @+node:tbrown.20111011094944.27031: *5* lqlw.tab_callback
+            # @+node:tbrown.20111011094944.27031: *5* LeoQListWidget.tab_callback
             def tab_callback(self) -> None:
                 """Called when user hits tab on an item in the QListWidget."""
                 c = self.leo_c
@@ -719,7 +716,7 @@ if QtWidgets:
                 w.setInsertPoint(i)
                 c.k.autoCompleter.compute_completion_list()
 
-            # @+node:ekr.20110605121601.18015: *5* lqlw.set_position
+            # @+node:ekr.20110605121601.18015: *5* LeoQListWidget.set_position
             def set_position(self, c: Cmdr) -> None:
                 """Set the position of the QListWidget."""
 
@@ -746,7 +743,7 @@ if QtWidgets:
                 geom2 = QtCore.QRect(geom2_topLeft, geom2_size)
                 self.setGeometry(geom2)
 
-            # @+node:ekr.20110605121601.18016: *5* lqlw.show_completions
+            # @+node:ekr.20110605121601.18016: *5* LeoQListWidget.show_completions
             def show_completions(self, aList: list[str]) -> None:
                 """Set the QListView contents to aList."""
                 self.clear()
@@ -782,7 +779,7 @@ if QtWidgets:
             if hasattr(self, 'leo_qc'):
                 self.leo_qc.show_completions(aList)
 
-        # @+node:tom.20210827230127.1: *3* lqtb Highlight Current Line
+        # @+node:tom.20210827230127.1: *3* LeoQTextBrowser: Highlight Current Line
         # @+node:tom.20210827225119.3: *4* LeoQTextBrowser.parse_css
         # @@language python
         @staticmethod
@@ -1136,7 +1133,7 @@ if QtWidgets:
 class NumberBar(QtWidgets.QFrame):
     # @+others
     # @+node:ekr.20150403094706.3: *3* NumberBar.__init__
-    def __init__(self, c: Cmdr, e: QWidget, *args: Args) -> None:
+    def __init__(self, c: Cmdr, e: QWidget, *args: Any) -> None:
         """Ctor for NumberBar class."""
         super().__init__(*args)
         self.c = c
@@ -1193,7 +1190,7 @@ class NumberBar(QtWidgets.QFrame):
             xdb.qc.put(f"b {path}:{n}")
 
     # @+node:ekr.20150403094706.5: *3* NumberBar.update
-    def update(self, *args: Args) -> None:
+    def update(self, *args: Any) -> None:
         """
         Updates the number bar to display the current set of numbers.
         Also, adjusts the width of the number bar if necessary.
@@ -1358,7 +1355,7 @@ class QMinibufferWrapper(QLineEditWrapper):
 
         w.mouseReleaseEvent = mouseReleaseEvent
 
-    def setStyleClass(self, style_class: Value) -> None:
+    def setStyleClass(self, style_class: Any) -> None:
         self.widget.setProperty('style_class', style_class)
         #
         # to get the appearance to change because of a property
@@ -1708,7 +1705,7 @@ class QTextEditWrapper(QTextMixin):
 
     __str__ = __repr__
 
-    # @+node:ekr.20110605121601.18078: *3* QTextEditWrapper.High-level interface
+    # @+node:ekr.20110605121601.18078: *3* QTextEditWrapper: High-level interface
     # These are all widget-dependent
     # @+node:ekr.20110605121601.18079: *4* QTextEditWrapper.delete (avoid call to setAllText)
     def delete(self, i: int, j: int = None) -> None:

@@ -71,8 +71,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.mod_scripting import ScriptingController
     from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
 
-    Args = Any
-    KWargs = Any
     QBoxLayout = QtWidgets.QBoxLayout
     QComboBox = QtWidgets.QComboBox
     QCursor = QtGui.QCursor
@@ -513,6 +511,8 @@ class DynamicWindow(QtWidgets.QMainWindow):
         # @+others
         # @+node:ekr.20131118172620.16892: *6* class EventWrapper
         class EventWrapper:
+            """A class to handle key presses in the Find tab."""
+
             def __init__(self, c: Cmdr, w: QWidget, next_w: QWidget, func: Callable) -> None:
                 self.c = c
                 self.d = self.create_d()  # Keys: stroke.s; values: command-names.
@@ -559,16 +559,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
                         d[stroke.s] = cmd_name
                 return d
 
-            # @+node:ekr.20131118172620.16893: *7* EventWrapper.wrapper
-            def wrapper(self, event: LeoKeyEvent) -> bool:
-                type_ = event.type()
-                # Must intercept KeyPress for events that generate FocusOut!
-                if type_ == Type.KeyPress:
-                    return self.keyPress(event)
-                if type_ == Type.KeyRelease:
-                    return self.keyRelease(event)  # type:ignore[arg-type]
-                return self.oldEvent(event)
-
             # @+node:ekr.20131118172620.16894: *7* EventWrapper.keyPress
             def keyPress(self, event: LeoKeyEvent) -> bool:
                 s = event.text()
@@ -588,9 +578,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
                 # #2094: Use code similar to the end of LeoQtEventFilter.eventFilter.
                 #        The ctor converts <Alt-X> to <Alt-x> !!
                 #        That is, we must use the stroke, not the binding.
-                key_event = leoGui.LeoKeyEvent(
-                    c=self.c, char=ch, event=event, binding=binding, w=self.w
-                )
+                key_event = leoGui.LeoKeyEvent(c=self.c, char=ch, binding=binding, w=self.w)
                 if key_event.stroke:
                     cmd_name = self.d.get(key_event.stroke)
                     if cmd_name:
@@ -601,6 +589,16 @@ class DynamicWindow(QtWidgets.QMainWindow):
 
             # @+node:ekr.20131118172620.16895: *7* EventWrapper.keyRelease
             def keyRelease(self, event: QEvent) -> bool:
+                return self.oldEvent(event)
+
+            # @+node:ekr.20131118172620.16893: *7* EventWrapper.wrapper
+            def wrapper(self, event: LeoKeyEvent) -> bool:
+                type_ = event.type()
+                # Must intercept KeyPress for events that generate FocusOut!
+                if type_ == Type.KeyPress:
+                    return self.keyPress(event)
+                if type_ == Type.KeyRelease:
+                    return self.keyRelease(event)  # type:ignore[arg-type]
                 return self.oldEvent(event)
 
             # @-others
@@ -1527,7 +1525,7 @@ class LeoBaseTabWidget(QtWidgets.QTabWidget):
 
     # @+others
     # @+node:ekr.20131115120119.17390: *3* qt_base_tab.__init__
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         #
         # Called from frameFactory.createMaster.
         #
@@ -1818,7 +1816,6 @@ class LeoQtFrame(leoFrame.LeoFrame):
 
     def reloadSettings(self) -> None:
         c = self.c
-        self.cursorStay = c.config.getBool("cursor-stay-on-paste", default=True)
         self.use_chapters = c.config.getBool('use-chapters')
         self.use_chapter_tabs = c.config.getBool('use-chapter-tabs')
 
@@ -2239,7 +2236,7 @@ class LeoQtFrame(leoFrame.LeoFrame):
             self.top.setGeometry(QtCore.QRect(x, y, w, h))
 
     # @+node:ekr.20190611053431.10: *4* LeoQtFrame.update
-    def update(self, *args: Args, **keys: KWargs) -> None:
+    def update(self, *args: Any, **keys: Any) -> None:
         if 'size' in g.app.debug:
             g.trace(bool(self.top))
         self.top.update()
@@ -3776,7 +3773,7 @@ class LeoQtTreeTab:
 class LeoTabbedTopLevel(LeoBaseTabWidget):
     """Toplevel frame for tabbed ui"""
 
-    def __init__(self, *args: Args, **kwargs: KWargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         ## middle click close on tabs -- JMP 20140505
         self.setMovable(False)
@@ -3824,7 +3821,7 @@ class QtIconBarClass:
         pass
 
     # @+node:ekr.20110605121601.18265: *3* QtIconBar.add
-    def add(self, *args: Args, **keys: KWargs) -> QAction:
+    def add(self, *args: Any, **keys: Any) -> QAction:
         """Add a button to the icon bar."""
         c = self.c
         if not self.w:
@@ -4071,7 +4068,7 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
         return f"<QtMenuWrapper {self.leo_menu_label}>"
 
     # @+node:ekr.20110605121601.18460: *3* QtMenuWrapper.onAboutToShow & helpers
-    def onAboutToShow(self, *args: Args, **keys: KWargs) -> None:
+    def onAboutToShow(self, *args: Any, **keys: Any) -> None:
         name = self.leo_menu_label
         if not name:
             return

@@ -511,7 +511,7 @@ class BindingInfo:
                         val = val.__name__
                     s = f"{ivar}: {val!r}"
                     result.append(s)
-        return "<{' '.join(result).strip()}>"
+        return f"<{' '.join(result).strip()}>"
 
     # @+node:ekr.20120129040823.10226: *4* BindingInfo.isModeBinding
     def isModeBinding(self) -> bool:
@@ -1811,7 +1811,7 @@ class SettingsDict(dict):
         return copy.deepcopy(self)
 
     # @+node:ekr.20190904052828.1: *4* td.add_to_list
-    def add_to_list(self, key: str, val: Value) -> None:
+    def add_to_list(self, key: str, val: BindingInfo) -> None:
         """Update the *list*, self.d [key]"""
         if key is None:
             g.trace('TypeDict: None is not a valid key', g.callers())

@@ -57,8 +57,6 @@ if TYPE_CHECKING:  # pragma: no cover
         MiniBufferWrapper as CursesMiniBufferWrapper,
     )
 
-    Args = Any
-    KWargs = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
     TextAPI = QScintillaWrapper | QTextEditWrapper | StringTextWrapper
 
@@ -272,7 +270,6 @@ class LeoFrame:
         self.tree: LeoTree | NullTree | LeoQtTree = None
         self.useMiniBufferWidget = False
         # Other ivars...
-        self.cursorStay = True  # May be overridden in subclass.reloadSettings.
         self.es_newlines = 0  # newline count for this log stream.
         self.isNullFrame = False
         self.saved = False  # True if ever saved
@@ -411,7 +408,7 @@ class LeoFrame:
         c.frame.setTabWidth(tab_width)
 
     # @+node:ekr.20061119120006: *4* LeoFrame.Icon area convenience methods
-    def addIconButton(self, *args: Args, **keys: KWargs) -> Any:
+    def addIconButton(self, *args: Any, **keys: Any) -> Any:
         if self.iconBar:
             return self.iconBar.add(*args, **keys)
         return None
@@ -498,8 +495,7 @@ class LeoFrame:
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
         w = event.widget if event else None
-        # g.trace(g.isTextWrapper(w), w.__class__.__name__, repr(w.name))
-        if not w or not g.isTextWrapper(w):
+        if not g.isTextWrapper(w):
             return
         # Set the clipboard text.
         i, j = w.getSelectionRange()
@@ -520,8 +516,8 @@ class LeoFrame:
     def cutText(self, event: LeoKeyEvent = None) -> None:
         """Invoked from the mini-buffer and from shortcuts."""
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event and event.widget
-        if not w or not g.isTextWrapper(w):
+        w = event.widget if event else None
+        if not g.isTextWrapper(w):
             return
         bunch = u.beforeChangeBody(p)
         name = c.widget_name(w)
@@ -552,31 +548,15 @@ class LeoFrame:
         If middleButton is True, support x-windows middle-mouse-button easter-egg.
         """
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event and event.widget
+        w = event.widget if event else None
         wname = c.widget_name(w)
-        if not w or not g.isTextWrapper(w):
+        if not g.isTextWrapper(w):
             return
         bunch = u.beforeChangeBody(p)
-        if self.cursorStay and wname.startswith('body'):
-            tCurPosition = w.getInsertPoint()
         i, j = w.getSelectionRange()  # Returns insert point if no selection.
-
-        # 2025/12/01: c.k.previousSelection no longer exists.
-        # if middleButton and c.k.previousSelection is not None:
-        # start, end = c.k.previousSelection
-        # s = w.getAllText()
-        # s = s[start:end]
-        # c.k.previousSelection = None
-        # else:
-        # s = g.app.gui.getTextFromClipboard()
         s = g.app.gui.getTextFromClipboard()
         s = g.checkUnicode(s)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
-        singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-        if singleLine:
-            # Strip trailing newlines so the truncation doesn't cause confusion.
-            while s and s[-1] in ('\n', '\r'):
-                s = s[:-1]
         # Save the horizontal scroll position.
         if hasattr(w, 'getXScrollPosition'):
             x_pos = w.getXScrollPosition()
@@ -590,22 +570,8 @@ class LeoFrame:
         w.insert(i, s)
         w.see(i + len(s) + 2)
         if wname.startswith('body'):
-            if self.cursorStay:
-                if tCurPosition == j:
-                    offset = len(s) - (j - i)
-                else:
-                    offset = 0
-                newCurPosition = tCurPosition + offset
-                w.setSelectionRange(i=newCurPosition, j=newCurPosition)
             p.v.b = w.getAllText()
             u.afterChangeBody(p, 'Paste', bunch)
-        elif singleLine:
-            s = w.getAllText()
-            while s and s[-1] in ('\n', '\r'):
-                s = s[:-1]
-        else:
-            pass
-        # Never scroll horizontally.
         if hasattr(w, 'getXScrollPosition'):
             w.setXScrollPosition(x_pos)
         c.recolor()  # 4398.
@@ -1538,7 +1504,7 @@ class NullIconBarClass:
         pass
 
     # @+node:ekr.20070301164543.2: *3* NullIconBarClass.add
-    def add(self, *args: Args, **keys: KWargs) -> Widget:
+    def add(self, *args: Any, **keys: Any) -> Widget:
         """Add a (virtual) button to the (virtual) icon bar."""
         command: Callable = keys.get('command')
         text = keys.get('text')

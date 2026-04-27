@@ -79,9 +79,12 @@ class LeoQtEventFilter(QtCore.QObject):
         super().__init__()
         self.c = c
         self.w = w  # A leoQtX object, *not* a Qt object.
+        # print(f"   filter {id(w)} {g.app.gui.widget_name(w):>22} {w.__class__.__name__}")
         self.tag = tag
         # Debugging.
         self.keyIsActive = False
+        # Used by TestQtGui.test_bug_4626. Keys are id(w).
+        self.key_count_dict: dict[int, int] = {}
         # Pretend there is a binding for these characters.
         close_flashers = c.config.getString('close-flash-brackets') or ''
         open_flashers = c.config.getString('open-flash-brackets') or ''
@@ -96,13 +99,15 @@ class LeoQtEventFilter(QtCore.QObject):
     def eventFilter(self, obj, event):
         """Return False if Qt should handle the event."""
         c, k = self.c, self.c.k
-        #
         # Handle non-key events first.
         if not g.app:
             return False  # For unit tests, but g.unitTesting may be False!
         if not self.c.p:
             return False  # Startup.
-        #
+        # Bump a count for a unit test.
+        if isinstance(event, QtGui.QKeyEvent):
+            d = self.key_count_dict
+            d[id(obj)] = 1 + d.get(id(obj), 0)
         # Trace events.
         if 'events' in g.app.debug:
             if isinstance(event, QtGui.QKeyEvent):
@@ -110,7 +115,6 @@ class LeoQtEventFilter(QtCore.QObject):
             else:
                 self.traceEvent(obj, event)
                 self.traceWidget(event)
-        #
         # Let Qt handle the non-key events.
         if self.doNonKeyEvent(event, obj):
             return False
@@ -118,22 +122,18 @@ class LeoQtEventFilter(QtCore.QObject):
         # Ignore incomplete key events.
         if self.shouldIgnoreKeyEvent(event, obj):
             return False
-        #
         # Generate a g.KeyStroke for k.masterKeyHandler.
         try:
             binding, ch, lossage = self.toBinding(event)
             if not binding:
                 return False  # Let Qt handle the key.
-            #
             # Pass the KeyStroke to masterKeyHandler.
             key_event = self.createKeyEvent(event, c, self.w, ch, binding)
-            #
             # #1933: Update the g.app.lossage
             if len(g.app.lossage) > 99:
                 g.app.lossage.pop()
             lossage.stroke = key_event.stroke
             g.app.lossage.insert(0, lossage)
-            #
             # Call masterKeyHandler!
             k.masterKeyHandler(key_event)
             c.outerUpdate()
@@ -148,7 +148,6 @@ class LeoQtEventFilter(QtCore.QObject):
             # char = None doesn't work at present.
             # But really, the binding should suffice.
             char=ch,
-            event=event,
             binding=binding,
             w=w,
             x=getattr(event, 'x', None) or 0,

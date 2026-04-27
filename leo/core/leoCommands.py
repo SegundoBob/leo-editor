@@ -3152,29 +3152,13 @@ class Commands:
     # @+node:ekr.20110605040658.17005: *4* c.check_event
     def check_event(self, event: LeoKeyEvent) -> None:
         """Check an event object."""
-        # c = self
         from leo.core import leoGui
 
         if not event:
             return
-        stroke = event.stroke
-        got = event.char
-        if g.unitTesting:
-            return
-        if stroke and (stroke.find('Alt+') > -1 or stroke.find('Ctrl+') > -1):
-            # Alas, Alt and Ctrl bindings must *retain* the char field,
-            # so there is no way to know what char field to expect.
-            expected = event.char
-        else:
-            # disable the test.
-            # We will use the (weird) key value for, say, Ctrl-s,
-            # if there is no binding for Ctrl-s.
-            expected = event.char
         if not isinstance(event, leoGui.LeoKeyEvent):
             if g.app.gui.guiName() not in ('browser', 'console', 'curses'):  # #1839.
                 g.trace(f"not leo event: {event!r}, callers: {g.callers(8)}")
-        if expected != got:
-            g.trace(f"stroke: {stroke!r}, expected char: {expected!r}, got: {got!r}")
 
     # @+node:ekr.20031218072017.2817: *4* c.doCommand
     def doCommand(self, command_func: Callable, command_name: str, event: LeoKeyEvent) -> Value:
@@ -3424,6 +3408,8 @@ class Commands:
     # @+node:ekr.20200523135601.1: *4* c.insertCharFromEvent
     def insertCharFromEvent(self, event: LeoKeyEvent) -> None:
         """
+        This method is an ugly hack, called by k.masterKeyHandler and other places.
+
         Handle the character given by event, ignoring various special keys:
         - getArg state: k.getArg.
         - Tree: onCanvasKey or onHeadlineKey.
@@ -3458,12 +3444,10 @@ class Commands:
                 return
             if k.ignore_unbound_non_ascii_keys:
                 return
-        # #868
-        if stroke.isPlainNumPad():
+        if stroke.isPlainNumPad():  # #868
             stroke.removeNumPadModifier()
             event.stroke = stroke
-        # #868
-        if stroke.isNumPadKey():
+        if stroke.isNumPadKey():  # #868
             return
         # Ignore unbound non-ascii character.
         if k.ignore_unbound_non_ascii_keys and not stroke.isPlainKey():
@@ -3490,17 +3474,12 @@ class Commands:
             elif not stroke:
                 c.onCanvasKey(event)
             return
-        # Ignore all events outside the log pane.
-        if not name.startswith('log'):
-            return
-        # Make sure we can insert into w.
-        log_w = event.wrapper  # #4623.
-        if not g.app.gui.isTextWrapper(log_w):
+        if not g.app.gui.isTextWrapper(w):
             return
         # Send the event to the text widget, not the LeoLog instance.
-        i = log_w.getInsertPoint()
+        i = w.getInsertPoint()
         s = stroke.toGuiChar()
-        log_w.insert(i, s)
+        w.insert(i, s)
 
     # @+node:ekr.20131016084446.16724: *4* c.setComplexCommand
     def setComplexCommand(self, commandName: str) -> None:

@@ -2207,6 +2207,9 @@ class EditCommandsClass(BaseEditCommandsClass):
     ) -> None:
         c, p = self.c, self.c.p
         isPlain = stroke.find('Alt') == -1 and stroke.find('Ctrl') == -1
+        if not isPlain:
+            g.trace(f"Not plain: {stroke!r} {g.callers()}")
+            return
         i, j = oldSel
         if i > j:
             i, j = j, i
@@ -2215,32 +2218,29 @@ class EditCommandsClass(BaseEditCommandsClass):
             w.delete(i, j)
         elif action == 'overwrite':
             w.delete(i)
-        if isPlain:
-            ins = w.getInsertPoint()
-            if self.autojustify > 0 and not inBrackets:
-                # Support #14: auto-justify body text.
-                s = w.getAllText()
-                i = g.skip_to_start_of_line(s, ins)
-                i, j = g.getLine(s, i)
-                # Only insert a newline at the end of a line.
-                if j - i >= self.autojustify and (ins >= len(s) or s[ins] == '\n'):
-                    # Find the start of the word.
-                    n = 0
+        ins = w.getInsertPoint()
+        if self.autojustify > 0 and not inBrackets:
+            # Support #14: auto-justify body text.
+            s = w.getAllText()
+            i = g.skip_to_start_of_line(s, ins)
+            i, j = g.getLine(s, i)
+            # Only insert a newline at the end of a line.
+            if j - i >= self.autojustify and (ins >= len(s) or s[ins] == '\n'):
+                # Find the start of the word.
+                n = 0
+                ins -= 1
+                while ins - 1 > 0 and g.isWordChar(s[ins - 1]):
+                    n += 1
                     ins -= 1
-                    while ins - 1 > 0 and g.isWordChar(s[ins - 1]):
-                        n += 1
-                        ins -= 1
-                    sins = ins  # start of insert, to collect trailing whitespace
-                    while sins > 0 and s[sins - 1] in ' \t':
-                        sins -= 1
-                    oldSel = (sins, ins)
-                    self.insertNewlineHelper(w, oldSel, undoType=None)
-                    ins = w.getInsertPoint()
-                    ins += n + 1
-            w.insert(ins, ch)
-            w.setInsertPoint(ins + 1)
-        else:
-            g.app.gui.insertKeyEvent(event, i)
+                sins = ins  # start of insert, to collect trailing whitespace
+                while sins > 0 and s[sins - 1] in ' \t':
+                    sins -= 1
+                oldSel = (sins, ins)
+                self.insertNewlineHelper(w, oldSel, undoType=None)
+                ins = w.getInsertPoint()
+                ins += n + 1
+        w.insert(ins, ch)
+        w.setInsertPoint(ins + 1)
         if inBrackets and self.flashMatchingBrackets:
             self.flashMatchingBracketsHelper(c, ch, i, p, w)
 

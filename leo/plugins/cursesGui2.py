@@ -1157,10 +1157,10 @@ class KeyEvent:
     def __init__(
         self,
         c: Cmdr,
-        char: str,
-        event: Event,
-        shortcut: str,
-        w: Any,
+        *,
+        char: str = '',
+        shortcut: str = '',
+        w: Any = None,
         x: int = None,
         y: int = None,
         x_root: Position = None,
@@ -1169,10 +1169,8 @@ class KeyEvent:
         """Ctor for KeyEvent class."""
         assert not g.isStroke(shortcut), g.callers()
         stroke = g.KeyStroke(shortcut) if shortcut else None
-        # g.trace('KeyEvent: stroke', stroke)
         self.c = c
         self.char = char or ''
-        self.event = event
         self.stroke = stroke
         self.w = self.widget = w
         # Optional ivars
@@ -1307,17 +1305,7 @@ class KeyHandler:
                 binding = ch
         if trace:
             g.trace('ch: %r, binding: %r' % (ch, binding))
-        return LeoKeyEvent(
-            c=c,
-            char=ch,
-            event={'c': c, 'w': w},  # type:ignore
-            binding=binding,
-            w=w,
-            x=0,
-            y=0,
-            x_root=0,
-            y_root=0,
-        )
+        return LeoKeyEvent(c, binding=binding, char=ch, w=w, x=0, y=0, x_root=0, y_root=0)
 
     # @+node:ekr.20170430115030.1: *5* CKey.is_key_event
     def is_key_event(self, ch_i: int) -> bool:
@@ -1946,13 +1934,7 @@ class LeoCursesGui(leoGui.LeoGui):
     # @+node:ekr.20170522005855.1: *4* CGui.event_generate
     def event_generate(self, c: Cmdr, char: str, shortcut: str, w: Any) -> None:
         k = c.k
-        event = KeyEvent(
-            c=c,
-            char=char,
-            event=g.NullObject(),
-            shortcut=shortcut,
-            w=w,
-        )
+        event = KeyEvent(c, char=char, shortcut=shortcut, w=w)
         # mypy can't know that KeyEvent is compatible with LeoKeyEvent.
         k.masterKeyHandler(event)  # type:ignore
         g.app.gui.show_label(c)
@@ -2203,7 +2185,7 @@ class LeoCursesGui(leoGui.LeoGui):
                 g.printObj(k.mb_history)
             k.masterCommand(
                 commandName=commandName,
-                event=KeyEvent(c, char='', event='', shortcut='', w=None),
+                event=KeyEvent(c),
                 func=None,
                 stroke=None,
             )
@@ -3369,7 +3351,7 @@ class LeoMiniBuffer(npyscreen.Textfield):
             k.w = self.leo_wrapper
             k.arg = val
             g.app.gui.curses_gui_arg = val
-            event = KeyEvent(c, char='\n', event='', shortcut='\n', w=None)
+            event = KeyEvent(c, char='\n', shortcut='\n')
             # mypy can't know that KeyEvent is compatible with LeoKeyEvent.
             k.masterKeyHandler(event)  # type:ignore
             g.app.gui.curses_gui_arg = None
@@ -3378,7 +3360,7 @@ class LeoMiniBuffer(npyscreen.Textfield):
             g.app.gui.repeatComplexCommand(c)
         else:
             # All other alt-x command
-            event = KeyEvent(c, char='', event='', shortcut='', w=None)
+            event = KeyEvent(c)
             c.doCommandByName(commandName, event)  # type:ignore
             # Support repeat-complex-command.
             c.setComplexCommand(commandName=commandName)

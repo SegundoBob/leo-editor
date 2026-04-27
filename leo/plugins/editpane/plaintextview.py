@@ -1,6 +1,5 @@
 # @+leo-ver=5-thin
 # @+node:tbrown.20171028115144.1: * @file ../plugins/editpane/plaintextview.py
-# from leo.core import leoGlobals as g
 from leo.core.leoQt import QtWidgets
 
 

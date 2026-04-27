@@ -2315,16 +2315,14 @@ class LoadManager:
             print(f"{d.name()} {len(d.keys())}")
 
     # @+node:ekr.20120214165710.10822: *4* LM.traceShortcutsDict
-    def traceShortcutsDict(self, d: dict[str, str], verbose: bool = False) -> None:
+    def traceShortcutsDict(self, d: dict[str, str], verbose: bool = True) -> None:
+        print(d)
         if verbose:
-            print(d)
             for key in sorted(list(d.keys())):
                 val = d.get(key)
                 print(f"{key:35} {[z.stroke for z in val]}")
             if d:
                 print('')
-        else:
-            print(d)
 
     # @+node:ekr.20120219154958.10452: *3* LM.load & helpers
     def load(self, fileName: str = None, pymacs: bool = None) -> None:

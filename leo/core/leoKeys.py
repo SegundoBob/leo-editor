@@ -36,11 +36,8 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_frame import LeoQtLog
     from leo.plugins.qt_text import QTextMixin
 
-    Args = Any
-    KWargs = Any
     QWidget = QtWidgets.QWidget
     Stroke = Any
-    Value = Any
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 
 
@@ -821,7 +818,7 @@ class AutoCompleterClass:
         return d
 
     # @+node:ekr.20110512170111.14472: *4* ac.get_object
-    def get_object(self) -> tuple[Value, str]:
+    def get_object(self) -> tuple[Any, str]:
         """Return the object corresponding to the current prefix."""
         common_prefix, prefix1, aList = self.compute_completion_list()
         if not aList:
@@ -982,7 +979,7 @@ class AutoCompleterClass:
         return c.shortFileName().lower() in table
 
     # @+node:ekr.20101101175644.5891: *4* ac.put
-    def put(self, *args: Args, **keys: KWargs) -> None:
+    def put(self, *args: Any, **keys: Any) -> None:
         """Put s to the given tab.
 
         May be overridden in subclasses."""
@@ -1073,7 +1070,7 @@ class ContextSniffer:
     """
 
     def __init__(self) -> None:
-        self.vars: dict[str, list[Value]] = {}  # Keys are var names; values are list of classes
+        self.vars: dict[str, list[Any]] = {}  # Keys are var names; values are list of classes
 
     # @+others
     # @+node:ekr.20110312162243.14261: *3* get_classes
@@ -2405,7 +2402,7 @@ class KeyHandlerClass:
                 command = c.commandsDict.get(commandName)
                 tag = bi.kind
                 pane = bi.pane
-                if stroke and not pane.endswith('-mode'):
+                if stroke and pane and not pane.endswith('-mode'):
                     k.bindKey(pane, stroke, command, commandName, tag=tag)  # type:ignore
 
     # @+node:ekr.20061031131434.103: *4* k.makeMasterGuiBinding
@@ -3291,7 +3288,7 @@ class KeyHandlerClass:
         fileName: str = None,
         pane: str = 'all',
         shortcut: str = None,  # Must be None unless allowBindings is True.
-        **kwargs: KWargs,  # Used only to warn about deprecated kwargs.
+        **kwargs: Any,  # Used only to warn about deprecated kwargs.
     ) -> None:
         """
         Make the function available as a minibuffer command.
@@ -3382,7 +3379,7 @@ class KeyHandlerClass:
                         break
 
     # @+node:ekr.20061031131434.127: *4* k.simulateCommand
-    def simulateCommand(self, commandName: str, event: LeoKeyEvent = None) -> Value:
+    def simulateCommand(self, commandName: str, event: LeoKeyEvent = None) -> Any:
         """
         Execute a Leo command by name.
 
@@ -3415,10 +3412,13 @@ class KeyHandlerClass:
         # Setup...
         if trace:
             handler_s = f"{k.state.handler.__name__}" if k.state.handler else 'No handler'
+            print('')
             g.trace(
-                f"char: {event.char!r} stroke: {event.stroke!r} "
-                f"state.kind: {k.state.kind!r}, state.handler: {handler_s}"
+                '\n'
+                f"  w: {event.w.__class__.__name__} char: {event.char!r} stroke: {event.stroke!r}\n"
+                f"  state.kind: {k.state.kind!r}, state.handler: {handler_s}"
             )
+            print('')
         k.checkKeyEvent(event)
         k.setEventWidget(event)
         k.traceVars(event)
@@ -3626,7 +3626,7 @@ class KeyHandlerClass:
         return True
 
     # @+node:ekr.20061031131434.108: *6* k.callStateFunction
-    def callStateFunction(self, event: LeoKeyEvent) -> Value:
+    def callStateFunction(self, event: LeoKeyEvent) -> Any:
         """Call the state handler associated with this event."""
         k = self
         ch = event.char
@@ -3826,10 +3826,6 @@ class KeyHandlerClass:
         """
         trace = 'keys' in g.app.debug
         c, k = self.c, self
-        #
-        # Experimental special case:
-        # Inserting a '.' always invokes the auto-completer.
-        # The auto-completer just inserts a '.' if it isn't enabled.
         stroke = event.stroke
         if (
             stroke.s == '.'
@@ -3838,16 +3834,13 @@ class KeyHandlerClass:
         ):  # fmt: skip
             c.doCommandByName('auto-complete', event)
             return True
-        #
         # Use getPaneBindings for *all* keys.
         bi = k.getPaneBinding(event)
-        #
         # #327: Ignore killed bindings.
         if bi and bi.commandName in k.killedBindings:
             if trace:
                 g.trace(f"{event.stroke!s} {bi.commandName}: in killed bindings")
             return False
-        #
         # Execute the command if the binding exists.
         if bi:
             # A superb trace. !s gives shorter trace.
@@ -3855,7 +3848,6 @@ class KeyHandlerClass:
                 g.trace(f"{event.stroke!s} {bi.commandName}")
             c.doCommandByName(bi.commandName, event)
             return True
-        #
         # No binding exists.
         if trace:
             g.trace(f"{event.stroke!s}: no binding")
@@ -3901,9 +3893,11 @@ class KeyHandlerClass:
     ) -> g.BindingInfo:
         """Find a binding for the widget with the given name."""
         c, k = self.c, self
+        trace = 'keys' in g.app.debug
         # Return if the pane's name doesn't match the event's widget.
         state = k.unboundKeyAction
         w_name = c.widget_name(w)
+        tag = f"{w.__class__.__name__} w_name: {w_name} name: {name!r} key: {key} {stroke}"
         pane_matches = (
             name and w_name.startswith(name)
             or key in ('command', 'insert', 'overwrite') and state == key
@@ -3911,6 +3905,7 @@ class KeyHandlerClass:
             or key in ('button', 'all')
         )  # fmt: skip
         if not pane_matches:
+            # g.trace(tag)
             return None
         # Return if there is no binding at all.
         d = k.masterBindingsDict.get(key, {})
@@ -3923,6 +3918,8 @@ class KeyHandlerClass:
         if key == 'text' and name == 'head' and bi.commandName in ('previous-line', 'next-line'):
             return None
         # The binding has been found.
+        if trace:
+            g.trace(f"Found: {tag}")
         return bi
 
     # @+node:ekr.20160409035115.1: *6* k.searchTree
