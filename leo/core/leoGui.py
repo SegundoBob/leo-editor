@@ -17,6 +17,7 @@ from typing import Any, Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.core import leoFrame
 from leo.core.leoAPI import StringTextWrapper
+from leo.plugins.qt_text import QTextEditWrapper
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
@@ -366,7 +367,14 @@ class LeoKeyEvent:
             binding if g.isStroke(binding) else g.KeyStroke(binding) if binding else None
         )
         assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
-        self.w = self.widget = w
+
+        self.widget: Any = w
+        self.w: Any
+        if g.isTextWrapper(w):
+            self.w = w
+        else:
+            self.w = QTextEditWrapper(widget=w, name=c.widget_name(w))
+
         # Optional ivars
         self.x = x
         self.y = y
