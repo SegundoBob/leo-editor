@@ -380,6 +380,10 @@ class LeoKeyEvent:
         else:
             self.w = self.widget = w
 
+        # A final hack, formerly in k.setEventWidget.
+        if c.widget_name(w).startswith('log'):
+            self.w = c.frame.log.logCtrl
+
         # Optional ivars
         self.x = x
         self.y = y

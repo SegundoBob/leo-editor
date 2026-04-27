@@ -3422,7 +3422,6 @@ class KeyHandlerClass:
             )
             print('')
         k.checkKeyEvent(event)
-        k.setEventWidget(event)
         k.traceVars(event)
         # Order is very important here...
         if k.isSpecialKey(event):
@@ -3464,17 +3463,6 @@ class KeyHandlerClass:
 
         # A continuous unit test.
         assert event.stroke.s not in g.app.gui.ignoreChars, repr(event.stroke.s)
-
-    # @+node:ekr.20180418034305.1: *6* k.setEventWidget
-    def setEventWidget(self, event: LeoKeyEvent) -> None:
-        """
-        A hack: redirect the event to the text part of the log.
-        """
-        c = self.c
-        w = event.widget
-        w_name = c.widget_name(w)
-        if w_name.startswith('log'):
-            event.widget = c.frame.log.logCtrl
 
     # @+node:ekr.20180418031417.1: *6* k.traceVars
     def traceVars(self, event: LeoKeyEvent) -> None:

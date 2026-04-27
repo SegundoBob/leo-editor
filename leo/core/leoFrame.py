@@ -494,21 +494,13 @@ class LeoFrame:
     @frame_cmd('copy-text')
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
-        ### w = event.widget if event else None
-        w = event.w if event else None
-        if not g.isTextWrapper(w):
-            g.trace(
-                f"event.w: {event.w.__class__.__name__} "
-                f"event.widget: {event.widget.__class__.__name__}"
-            )  # fmt: skip
-            # g.trace(g.isTextWrapper(w), w.__class__.__name__, g.callers())
-            return
+        w = event.w
         # Set the clipboard text.
         i, j = w.getSelectionRange()
         if i == j:
+            # Copy the entire line.
             ins = w.getInsertPoint()
             i, j = g.getLine(w.getAllText(), ins)
-        # 2016/03/27: Fix a recent buglet.
         # Don't clear the clipboard if we hit ctrl-c by mistake.
         s = w.get(i, j)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
@@ -522,14 +514,7 @@ class LeoFrame:
     def cutText(self, event: LeoKeyEvent = None) -> None:
         """Invoked from the mini-buffer and from shortcuts."""
         c, p, u = self.c, self.c.p, self.c.undoer
-        # w = event.widget if event else None
-        w = event.w if event else None
-        if not g.isTextWrapper(w):
-            g.trace(
-                f"event.w: {event.w.__class__.__name__} "
-                f"event.widget: {event.widget.__class__.__name__}"
-            )  # fmt: skip
-            return
+        w = event.w
         bunch = u.beforeChangeBody(p)
         name = c.widget_name(w)
         oldText = w.getAllText()
@@ -559,15 +544,8 @@ class LeoFrame:
         If middleButton is True, support x-windows middle-mouse-button easter-egg.
         """
         c, p, u = self.c, self.c.p, self.c.undoer
-        ### w = event.widget if event else None
-        w = event.w if event else None
+        w = event.w
         wname = c.widget_name(w)
-        if not g.isTextWrapper(w):
-            g.trace(
-                f"event.w: {event.w.__class__.__name__} "
-                f"event.widget: {event.widget.__class__.__name__}"
-            )  # fmt: skip
-            return
         bunch = u.beforeChangeBody(p)
         i, j = w.getSelectionRange()  # Returns insert point if no selection.
         s = g.app.gui.getTextFromClipboard()
