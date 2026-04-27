@@ -2605,7 +2605,6 @@ class KeyHandlerClass:
                 c.endEditing()
                 c.bodyWantsFocusNow()
                 # Change the event widget so we don't refer to the to-be-deleted headline widget.
-                ### event.w = event.widget = c.frame.body.wrapper.widget
                 event.w = c.frame.body.wrapper
                 event.widget = c.frame.body.wrapper.widget
             else:
