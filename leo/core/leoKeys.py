@@ -2536,7 +2536,7 @@ class KeyHandlerClass:
                 k.commandHistoryBackwd()
             elif char in ('\n', 'Return'):
                 # Fix bug 157: save and restore the selection.
-                w = k.mb_event and k.mb_event.w
+                w = k.mb_event.w if k.mb_event else None
                 if w and hasattr(w, 'hasSelection') and w.hasSelection():
                     sel1, sel2 = w.getSelectionRange()
                     ins = w.getInsertPoint()
@@ -3455,10 +3455,7 @@ class KeyHandlerClass:
         c.check_event(event)
         assert hasattr(event, 'char')
         assert hasattr(event, 'stroke')
-        ###
-        # if not hasattr(event, 'widget'):
-        #     event.widget = None
-        assert g.isTextWrapper(event.w)  ###
+        assert g.isTextWrapper(event.w)
         assert g.isStrokeOrNone(event.stroke)
 
         # A continuous unit test.
@@ -3893,7 +3890,7 @@ class KeyHandlerClass:
         key: str,
         name: str,
         stroke: Stroke,
-        w: QWidget,
+        w: QTextMixin,
     ) -> g.BindingInfo:
         """Find a binding for the widget with the given name."""
         c, k = self.c, self
