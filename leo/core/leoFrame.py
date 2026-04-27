@@ -494,8 +494,14 @@ class LeoFrame:
     @frame_cmd('copy-text')
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
-        w = event.widget if event else None
+        ### w = event.widget if event else None
+        w = event.w if event else None
         if not g.isTextWrapper(w):
+            g.trace(
+                f"event.w: {event.w.__class__.__name__} "
+                f"event.widget: {event.widget.__class__.__name__}"
+            )  # fmt: skip
+            # g.trace(g.isTextWrapper(w), w.__class__.__name__, g.callers())
             return
         # Set the clipboard text.
         i, j = w.getSelectionRange()
@@ -516,8 +522,13 @@ class LeoFrame:
     def cutText(self, event: LeoKeyEvent = None) -> None:
         """Invoked from the mini-buffer and from shortcuts."""
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event.widget if event else None
+        # w = event.widget if event else None
+        w = event.w if event else None
         if not g.isTextWrapper(w):
+            g.trace(
+                f"event.w: {event.w.__class__.__name__} "
+                f"event.widget: {event.widget.__class__.__name__}"
+            )  # fmt: skip
             return
         bunch = u.beforeChangeBody(p)
         name = c.widget_name(w)
@@ -548,9 +559,14 @@ class LeoFrame:
         If middleButton is True, support x-windows middle-mouse-button easter-egg.
         """
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event.widget if event else None
+        ### w = event.widget if event else None
+        w = event.w if event else None
         wname = c.widget_name(w)
         if not g.isTextWrapper(w):
+            g.trace(
+                f"event.w: {event.w.__class__.__name__} "
+                f"event.widget: {event.widget.__class__.__name__}"
+            )  # fmt: skip
             return
         bunch = u.beforeChangeBody(p)
         i, j = w.getSelectionRange()  # Returns insert point if no selection.

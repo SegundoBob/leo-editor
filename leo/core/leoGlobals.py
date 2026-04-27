@@ -8444,15 +8444,20 @@ def openUrlOnClick(event: QMouseEvent, url: str = None) -> Optional[str]:  # pra
 # @+node:ekr.20170216091704.1: *4* g.openUrlHelper
 def openUrlHelper(event: LeoKeyEvent, url: str = None) -> Optional[str]:
     """Open the unl, url or gnx under the cursor.  Return it for unit testing."""
-    c = getattr(event, 'c', None)
+    ### c = getattr(event, 'c', None)
+    ###
+    # w = getattr(event, 'w', c.frame.body.wrapper)
+    # if not g.app.gui.isTextWrapper(w):
+    #     g.internalError('must be a text wrapper', w)
+    #     return None
+    # if event:
+    #     event.widget = w
+    c = event.c
+    w = event.w
     if not c:
         return None
-    w = getattr(event, 'w', c.frame.body.wrapper)
-    if not g.app.gui.isTextWrapper(w):
-        g.internalError('must be a text wrapper', w)
+    if not g.app.gui.isTextWrapper(w):  ###
         return None
-    if event:
-        event.widget = w
     # Part 1: get the url.
     if url is None:
         s = w.getAllText()
