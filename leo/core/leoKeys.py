@@ -2605,7 +2605,9 @@ class KeyHandlerClass:
                 c.endEditing()
                 c.bodyWantsFocusNow()
                 # Change the event widget so we don't refer to the to-be-deleted headline widget.
-                event.w = event.widget = c.frame.body.wrapper.widget
+                ### event.w = event.widget = c.frame.body.wrapper.widget
+                event.w = c.frame.body.wrapper
+                event.widget = c.frame.body.wrapper.widget
             else:
                 c.widgetWantsFocusNow(event and event.widget)  # So cut-text works, e.g.
             try:
@@ -3453,12 +3455,14 @@ class KeyHandlerClass:
         c.check_event(event)
         assert hasattr(event, 'char')
         assert hasattr(event, 'stroke')
-        if not hasattr(event, 'widget'):
-            event.widget = None
+        ###
+        # if not hasattr(event, 'widget'):
+        #     event.widget = None
+        assert g.isTextWrapper(event.w)  ###
         assert g.isStrokeOrNone(event.stroke)
-        if event:
-            # A continuous unit test.
-            assert event.stroke.s not in g.app.gui.ignoreChars, repr(event.stroke.s)
+
+        # A continuous unit test.
+        assert event.stroke.s not in g.app.gui.ignoreChars, repr(event.stroke.s)
 
     # @+node:ekr.20180418034305.1: *6* k.setEventWidget
     def setEventWidget(self, event: LeoKeyEvent) -> None:
