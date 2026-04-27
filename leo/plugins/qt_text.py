@@ -449,10 +449,10 @@ class QLineEditWrapper(QTextMixin):
 
     # @+node:ekr.20110605121601.18125: *4* QLineEditWrapper.setAllText
     def setAllText(self, s: str) -> None:
-        """Set all text of a Qt headline widget."""
+        """Set all text of a Qt single-line widget."""
         if self.check():
             w = self.widget
-            w.setText(s)
+            w.setText(s.replace('\n', ' ').replace('\n', ' '))
 
     # @+node:ekr.20110605121601.18128: *4* QLineEditWrapper.setFocus
     def setFocus(self) -> None:

@@ -557,11 +557,6 @@ class LeoFrame:
         s = g.app.gui.getTextFromClipboard()
         s = g.checkUnicode(s)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
-        singleLine = wname.startswith('head') or wname.startswith('minibuffer')
-        if singleLine:
-            # Strip trailing newlines so the truncation doesn't cause confusion.
-            while s and s[-1] in ('\n', '\r'):
-                s = s[:-1]
         # Save the horizontal scroll position.
         if hasattr(w, 'getXScrollPosition'):
             x_pos = w.getXScrollPosition()
@@ -577,13 +572,6 @@ class LeoFrame:
         if wname.startswith('body'):
             p.v.b = w.getAllText()
             u.afterChangeBody(p, 'Paste', bunch)
-        elif singleLine:
-            s = w.getAllText()
-            while s and s[-1] in ('\n', '\r'):
-                s = s[:-1]
-        else:
-            pass
-        # Never scroll horizontally.
         if hasattr(w, 'getXScrollPosition'):
             w.setXScrollPosition(x_pos)
         c.recolor()  # 4398.
