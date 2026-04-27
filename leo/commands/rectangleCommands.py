@@ -26,7 +26,7 @@ def cmd(name: str) -> Callable:
 # @+node:ekr.20160514120751.1: ** class RectangleCommandsClass
 class RectangleCommandsClass(BaseEditCommandsClass):
     # @+others
-    # @+node:ekr.20150514063305.448: *3* rectangle.ctor
+    # @+node:ekr.20150514063305.448: *3* rectangle.__init__
     def __init__(self, c: Cmdr) -> None:
         """Ctor for RectangleCommandsClass."""
         # pylint: disable=super-init-not-called
