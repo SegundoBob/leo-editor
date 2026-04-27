@@ -372,7 +372,18 @@ class LeoKeyEvent:
         self.w: QTextMixin
         self.widget: Any  # The best we can do.
         if w is None:
-            self.w = self.widget = None
+            # Special case for headlines.
+            edit_wrapper = c.edit_widget(c.p)
+            if edit_wrapper:
+                self.w = edit_wrapper
+                self.widget = self.w.widget
+            else:
+                focus_widget = g.app.gui.get_focus()
+                widget = focus_widget if g.isTextWrapper(focus_widget) else c.frame.body.widget
+                self.widget = widget
+                name = c.widget_name(widget) if widget else 'dummy-wrapper'
+                self.w = QTextEditWrapper(widget=widget, name=name)
+                # print(f"LeoKeyEvent: new {self.w.__class__.__name__} from {widget.__class__.__name__}"O
         elif isinstance(w, QtWidgets.QWidget):
             self.widget = w
             self.w = QTextEditWrapper(widget=w, name=c.widget_name(w))
