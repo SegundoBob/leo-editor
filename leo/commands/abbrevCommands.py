@@ -59,7 +59,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.save_sel = None  # Saved selection range.
         self.store = {'rlist': [], 'stext': ''}  # For dynamic expansion.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
-        self.w = None
+        self.w: QTextMixin = None
 
     # @+node:ekr.20150514043850.5: *4* abbrev.finishCreate & helpers
     def finishCreate(self) -> None:

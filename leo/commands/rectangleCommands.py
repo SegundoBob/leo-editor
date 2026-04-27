@@ -13,6 +13,7 @@ from leo.commands.baseCommands import BaseEditCommandsClass
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
+    from leo.plugins.qt_text import QTextMixin
 # @-<< rectangleCommands imports & annotations >>
 
 
@@ -41,6 +42,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
             't': ('string-rectangle', self.stringRectangle),
             'y': ('yank-rectangle', self.yankRectangle),
         }
+        self.w: QTextMixin = None
 
     # @+node:ekr.20150514063305.451: *3* check
     def check(self, event: LeoKeyEvent, warning: str = 'No rectangle selected') -> bool:
