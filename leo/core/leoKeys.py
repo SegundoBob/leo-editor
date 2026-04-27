@@ -19,6 +19,7 @@ from types import ModuleType
 from leo.core import leoGlobals as g
 from leo.external import codewise
 from leo.core.leoFrame import NullLog
+from leo.core.leoQt import QtWidgets
 
 try:
     import jedi
@@ -32,7 +33,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGlobals import BindingInfo
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.core.leoQt import QtWidgets
     from leo.plugins.qt_frame import LeoQtLog
     from leo.plugins.qt_text import QTextMixin
 
@@ -3453,10 +3453,14 @@ class KeyHandlerClass:
         c = self.c
         assert event is not None
         c.check_event(event)
-        assert hasattr(event, 'char')
-        assert hasattr(event, 'stroke')
-        assert g.isTextWrapper(event.w)
+        assert hasattr(event, 'char'), repr(event)
+        assert hasattr(event, 'stroke'), repr(event)
+        assert hasattr(event, 'w'), repr(event)
+        assert hasattr(event, 'widget'), repr(event)
         assert g.isStrokeOrNone(event.stroke)
+        # Important: event.w does *not* have to be a *text* wrapper.
+        #            event.w can be *any* non-Qt widget.
+        assert not isinstance(event.w, QtWidgets.QWidget), repr(event.w)
 
         # A continuous unit test.
         assert event.stroke.s not in g.app.gui.ignoreChars, repr(event.stroke.s)
