@@ -17,6 +17,7 @@ from typing import Any, Optional, TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.core import leoFrame
 from leo.core.leoAPI import StringTextWrapper
+from leo.core.leoQt import QtWidgets
 from leo.plugins.qt_text import QTextEditWrapper
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -368,12 +369,16 @@ class LeoKeyEvent:
         )
         assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
 
-        self.widget: Any = w
-        self.w: Any
-        if g.isTextWrapper(w):
-            self.w = w
-        else:
+        self.w: QTextMixin
+        self.widget: Any  # The best we can do.
+        if w is None:
+            self.w = self.widget = None
+        elif isinstance(w, QtWidgets.QWidget):
+            self.widget = w
             self.w = QTextEditWrapper(widget=w, name=c.widget_name(w))
+            # print(f"LeoKeyEvent: new {self.w.__class__.__name__} from {w.__class__.__name__}")
+        else:
+            self.w = self.widget = w
 
         # Optional ivars
         self.x = x
