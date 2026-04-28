@@ -3053,8 +3053,9 @@ class EditCommandsClass(BaseEditCommandsClass):
         w: QTextMixin = None,
     ) -> tuple[int, int]:
         """Compute the word at the cursor. Select it if select arg is True."""
-        if not w:
-            w = self.editWidget(event)
+        w = event.w if event else None
+        # if not w:
+        #     w = self.editWidget(event)
         if not w:
             return 0, 0  # pragma: no cover (defensive)
         s = w.getAllText()

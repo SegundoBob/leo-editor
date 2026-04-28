@@ -6,6 +6,7 @@
 import textwrap
 from leo.core import leoGlobals as g
 from leo.core.leoTest2 import LeoUnitTest
+from leo.core.leoGui import LeoKeyEvent
 
 
 # @+others
@@ -59,7 +60,8 @@ class TestEditCommands(LeoUnitTest):
         i, j = toInt(i), toInt(j)
         w.setSelectionRange(i, j, insert=j)
         # Run the command!
-        c.doCommandByName(command_name)
+        event = LeoKeyEvent(c, w=w)  # Leo 6.8.9.
+        c.doCommandByName(command_name, event)
         self.assertEqual(self.tempNode.b, self.after_p.b, msg=command_name)
 
     # @+node:ekr.20201201084621.1: *3* TestEditCommands.setUp

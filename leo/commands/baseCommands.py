@@ -87,16 +87,33 @@ class BaseEditCommandsClass:
         """Return the edit widget for the event. Also sets self.w"""
         c = self.c
         w = event.widget if event else None  # event.widget is correct.
-        if w and g.isTextWrapper(w):
-            pass
-        else:
-            w = c.frame.body and c.frame.body.wrapper
-        if w and forceFocus:
-            c.widgetWantsFocusNow(w)
+        trace = False
+        if event:  ### Temp.
+            if trace:
+                print('')
+                if event.widget != event.w:
+                    g.trace(
+                        f"event.w: {event.w.__class__.__name__} event.widget {event.widget.__class__.__name__}"
+                    )
+                else:
+                    g.trace('No EVENT', g.callers())
+        if not g.isTextWrapper(w):
+            if trace:
+                old_w = w  ###
+                w = c.frame.body and c.frame.body.wrapper
+                g.trace(f"{old_w.__class__.__name__} ==> {w.__class__.__name__}")
+            else:
+                w = c.frame.body and c.frame.body.wrapper
+        # if w and g.isTextWrapper(w):
+        #     pass
+        # else:
+        #     w = c.frame.body and c.frame.body.wrapper
+        # if w and forceFocus:
+        #     c.widgetWantsFocusNow(w)
         self.w = w
         return w
 
-    # @+node:ekr.20150514043714.11: *3* BaseEdit._check_selection
+    # @+node:ekr.20150514043714.11: *3* BaseEdit._checkSelection
     def _checkSelection(self, event: LeoKeyEvent, warning: str = 'no selection') -> bool:
         """Return True if there is a selection in the edit widget."""
         w = self.editWidget(event)
