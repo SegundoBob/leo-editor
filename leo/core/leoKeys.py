@@ -1639,8 +1639,6 @@ class GetArg:
         # Enter the next state.
         c.widgetWantsFocus(c.frame.body.wrapper)
         k.setState('getArg', 1, k.getArg)
-        # pylint: disable=consider-using-ternary
-        k.afterArgWidget = event and event.widget or c.frame.body.wrapper
         if useMinibuffer:
             c.minibufferWantsFocus()
 
