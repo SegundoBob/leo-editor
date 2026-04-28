@@ -702,7 +702,7 @@ class ZEditorWin(QtWidgets.QMainWindow):
         self.render_pane_type = BROWSER_VIEW
 
         self.editor = QTextEdit()
-        wrapper = qt_text.QTextEditWrapper(self.editor, name='zwin', c=c)
+        wrapper = qt_text.QTextEditWrapper(widget=self.editor, name='zwin', c=c)
         c.k.completeAllBindingsForWidget(wrapper)
 
         self.editor.cursorPositionChanged.connect(self.highlightCurrentLine)

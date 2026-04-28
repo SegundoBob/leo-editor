@@ -8440,7 +8440,7 @@ def openUrlOnClick(event: QMouseEvent, url: str = None) -> Optional[str]:  # pra
     try:
         c = g.app.log.c  # A hack.
         widget = c.frame.body.widget  # Another hack.
-        wrapper = QTextEditWrapper(widget=widget, name='QMouseEvent-wrapper')
+        wrapper = QTextEditWrapper(widget=widget, name='QMouseEvent-wrapper', c=c)
         leo_event = LeoKeyEvent(c, w=wrapper)
         return openUrlHelper(leo_event, url)
     except Exception:

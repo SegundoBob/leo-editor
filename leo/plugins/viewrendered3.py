@@ -3358,7 +3358,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             # self.setBackgroundColor(self.background_color, text_name, w)
             w.setReadOnly(True)
             # Create the standard Leo bindings in a wrapper widget.
-            wrapper_widget = qt_text.QTextEditWrapper(w, 'rendering-pane-wrapper', c)
+            wrapper_widget = qt_text.QTextEditWrapper(widget=w, name='rendering-pane-wrapper', c=c)
             c.k.completeAllBindingsForWidget(wrapper_widget)
             w.setWordWrapMode(WrapMode.WrapAtWordBoundaryOrAnywhere)
 
@@ -4871,7 +4871,7 @@ class ViewRenderedController3(QtWidgets.QWidget):
             w = QtWidgets.QTextBrowser()
 
             def handleClick(url, w=w):
-                wrapper = qt_text.QTextEditWrapper(w, name='vr3-body', c=c)
+                wrapper = qt_text.QTextEditWrapper(widget=w, name='vr3-body', c=c)
                 event = g.Bunch(c=c, w=wrapper)
                 g.openUrlOnClick(event, url=url)
 

@@ -1671,7 +1671,7 @@ class ViewRenderedController(QtWidgets.QWidget):  # type:ignore
         w.setObjectName(text_name)
         w.setReadOnly(True)
         # Create the standard Leo bindings in a wrapper widget.
-        wrapper = qt_text.QTextEditWrapper(w, 'rendering-pane-wrapper', c)
+        wrapper = qt_text.QTextEditWrapper(widget=w, name='rendering-pane-wrapper', c=c)
         c.k.completeAllBindingsForWidget(wrapper)
         w.setWordWrapMode(WrapMode.WrapAtWordBoundaryOrAnywhere)
 
@@ -1686,7 +1686,7 @@ class ViewRenderedController(QtWidgets.QWidget):  # type:ignore
         w.customContextMenuRequested.connect(contextMenuCallback)
 
         def handleClick(url: str, w: QWidget = w) -> None:
-            wrapper = qt_text.QTextEditWrapper(w, name='vr-body', c=c)
+            wrapper = qt_text.QTextEditWrapper(widget=w, name='vr-body', c=c)
             event = g.Bunch(c=c, w=wrapper)
             g.openUrlOnClick(event, url=url)
 
