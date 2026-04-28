@@ -19,6 +19,7 @@ from types import ModuleType
 from leo.core import leoGlobals as g
 from leo.external import codewise
 from leo.core.leoFrame import NullLog
+from leo.core.leoQt import QtWidgets
 
 try:
     import jedi
@@ -32,7 +33,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGlobals import BindingInfo
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    from leo.core.leoQt import QtWidgets
     from leo.plugins.qt_frame import LeoQtLog
     from leo.plugins.qt_text import QTextMixin
 
@@ -1639,8 +1639,6 @@ class GetArg:
         # Enter the next state.
         c.widgetWantsFocus(c.frame.body.wrapper)
         k.setState('getArg', 1, k.getArg)
-        # pylint: disable=consider-using-ternary
-        k.afterArgWidget = event and event.widget or c.frame.body.wrapper
         if useMinibuffer:
             c.minibufferWantsFocus()
 
@@ -2536,7 +2534,7 @@ class KeyHandlerClass:
                 k.commandHistoryBackwd()
             elif char in ('\n', 'Return'):
                 # Fix bug 157: save and restore the selection.
-                w = k.mb_event and k.mb_event.w
+                w = k.mb_event.w if k.mb_event else None
                 if w and hasattr(w, 'hasSelection') and w.hasSelection():
                     sel1, sel2 = w.getSelectionRange()
                     ins = w.getInsertPoint()
@@ -2605,7 +2603,8 @@ class KeyHandlerClass:
                 c.endEditing()
                 c.bodyWantsFocusNow()
                 # Change the event widget so we don't refer to the to-be-deleted headline widget.
-                event.w = event.widget = c.frame.body.wrapper.widget
+                event.w = c.frame.body.wrapper
+                event.widget = c.frame.body.wrapper.widget
             else:
                 c.widgetWantsFocusNow(event and event.widget)  # So cut-text works, e.g.
             try:
@@ -3420,7 +3419,6 @@ class KeyHandlerClass:
             )
             print('')
         k.checkKeyEvent(event)
-        k.setEventWidget(event)
         k.traceVars(event)
         # Order is very important here...
         if k.isSpecialKey(event):
@@ -3451,25 +3449,16 @@ class KeyHandlerClass:
         c = self.c
         assert event is not None
         c.check_event(event)
-        assert hasattr(event, 'char')
-        assert hasattr(event, 'stroke')
-        if not hasattr(event, 'widget'):
-            event.widget = None
+        assert hasattr(event, 'char'), repr(event)
+        assert hasattr(event, 'stroke'), repr(event)
+        assert hasattr(event, 'w'), repr(event)
+        assert hasattr(event, 'widget'), repr(event)
         assert g.isStrokeOrNone(event.stroke)
-        if event:
-            # A continuous unit test.
-            assert event.stroke.s not in g.app.gui.ignoreChars, repr(event.stroke.s)
+        # See LeoKeyEvent.__init__ for why the following test is correct.
+        assert not isinstance(event.w, QtWidgets.QWidget), repr(event.w)
 
-    # @+node:ekr.20180418034305.1: *6* k.setEventWidget
-    def setEventWidget(self, event: LeoKeyEvent) -> None:
-        """
-        A hack: redirect the event to the text part of the log.
-        """
-        c = self.c
-        w = event.widget
-        w_name = c.widget_name(w)
-        if w_name.startswith('log'):
-            event.widget = c.frame.log.logCtrl
+        # A continuous unit test.
+        assert event.stroke.s not in g.app.gui.ignoreChars, repr(event.stroke.s)
 
     # @+node:ekr.20180418031417.1: *6* k.traceVars
     def traceVars(self, event: LeoKeyEvent) -> None:
@@ -3889,7 +3878,7 @@ class KeyHandlerClass:
         key: str,
         name: str,
         stroke: Stroke,
-        w: QWidget,
+        w: QTextMixin,
     ) -> g.BindingInfo:
         """Find a binding for the widget with the given name."""
         c, k = self.c, self

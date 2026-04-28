@@ -1706,7 +1706,7 @@ class LeoQtBody(leoFrame.LeoBody):
             self.colorizer = leoColorizer.QScintillaColorizer(c, self.widget)
         else:
             self.widget = top.richTextEdit  # A LeoQTextBrowser
-            self.wrapper = qt_text.QTextEditWrapper(self.widget, name='body', c=c)
+            self.wrapper = qt_text.QTextEditWrapper(widget=self.widget, name='body', c=c)
             self.widget.setAcceptRichText(False)
             self.colorizer = leoColorizer.make_colorizer(c, self.widget)
 

@@ -51,6 +51,7 @@ if TYPE_CHECKING:  # pragma: no cover
         QMinibufferWrapper,
         QScintillaWrapper,
         QTextEditWrapper,
+        QTextMixin,
     )
     from leo.plugins.cursesGui2 import (
         BodyWrapper as CursesBodyWrapper,
@@ -58,7 +59,6 @@ if TYPE_CHECKING:  # pragma: no cover
     )
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
-    TextAPI = QScintillaWrapper | QTextEditWrapper | StringTextWrapper
 
 
 # @-<< leoFrame annotations >>
@@ -151,7 +151,7 @@ class LeoBody:
     # @+node:ekr.20060528100747: *3* LeoBody.Editors
     # @+node:ekr.20070424053629.1: *4* LeoBody.utils
     # @+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
-    def recolorWidget(self, p: Position, w: TextAPI) -> None:
+    def recolorWidget(self, p: Position, w: QTextMixin) -> None:
         # Support QScintillaColorizer.colorize.
         c = self.c
         colorizer = c.frame.body.colorizer
@@ -494,15 +494,15 @@ class LeoFrame:
     @frame_cmd('copy-text')
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
-        w = event.widget if event else None
+        w = event.w
         if not g.isTextWrapper(w):
             return
         # Set the clipboard text.
         i, j = w.getSelectionRange()
         if i == j:
+            # Copy the entire line.
             ins = w.getInsertPoint()
             i, j = g.getLine(w.getAllText(), ins)
-        # 2016/03/27: Fix a recent buglet.
         # Don't clear the clipboard if we hit ctrl-c by mistake.
         s = w.get(i, j)
         s = s.replace('\r\n', '\n').replace('\r', '\n')  # 3759.
@@ -516,7 +516,7 @@ class LeoFrame:
     def cutText(self, event: LeoKeyEvent = None) -> None:
         """Invoked from the mini-buffer and from shortcuts."""
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event.widget if event else None
+        w = event.w
         if not g.isTextWrapper(w):
             return
         bunch = u.beforeChangeBody(p)
@@ -548,10 +548,10 @@ class LeoFrame:
         If middleButton is True, support x-windows middle-mouse-button easter-egg.
         """
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event.widget if event else None
-        wname = c.widget_name(w)
+        w = event.w
         if not g.isTextWrapper(w):
             return
+        wname = c.widget_name(w)
         bunch = u.beforeChangeBody(p)
         i, j = w.getSelectionRange()  # Returns insert point if no selection.
         s = g.app.gui.getTextFromClipboard()
@@ -725,7 +725,7 @@ class LeoLog:
         self.logNumber = 0  # To create unique name fields for text widgets.
         self.newTabCount = 0  # Number of new tabs created.
         self.textDict: dict[str, Widget] = {}  # Keys: page names. Values: text widgets.
-        self.wrapper: TextAPI = None  # To keep mypy happy.
+        self.wrapper: QTextMixin = None  # To keep mypy happy.
 
     # @+node:ekr.20070302094848.1: *3* LeoLog.clearTab
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
@@ -1034,10 +1034,12 @@ class LeoTree:
     # @+node:ekr.20040803072955.88: *4* LeoTree.onHeadlineKey
     def onHeadlineKey(self, event: LeoKeyEvent) -> None:
         """Handle a key event in a headline."""
-        w = event.widget if event else None
-        ch = event.char if event else ''
+        if not event:
+            return
+        w = event.w
+        ch = event.char
         # This test prevents flashing in the headline when the control key is held down.
-        if ch:
+        if ch and w:
             self.updateHead(event, w)
 
     # @+node:ekr.20120314064059.9739: *4* LeoTree.OnIconCtrlClick (@url)
@@ -1049,7 +1051,7 @@ class LeoTree:
         pass
 
     # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
-    def updateHead(self, event: LeoKeyEvent, w: TextAPI) -> None:
+    def updateHead(self, event: LeoKeyEvent, w: QTextMixin) -> None:
         """
         Update a headline from an event.
 
@@ -1289,7 +1291,7 @@ class NullBody(LeoBody):
 
     # @+node:ekr.20031218072017.2197: *3* NullBody: LeoBody interface
     # Birth, death...
-    def createControl(self, parentFrame: Widget, p: Position) -> TextAPI:
+    def createControl(self, parentFrame: Widget, p: Position) -> QTextMixin:
         pass
 
     # Events...
@@ -1326,7 +1328,7 @@ class NullFrame(LeoFrame):
         """Ctor for the NullFrame class."""
         super().__init__(c, gui)
         assert self.c
-        self.wrapper: TextAPI = None
+        self.wrapper: QTextMixin = None
         self.iconBar = NullIconBarClass(self.c)
         self.initComplete = True
         self.isNullFrame = True
@@ -1485,13 +1487,13 @@ class NullIconBarClass:
     def addRowIfNeeded(self) -> None:
         pass
 
-    def addWidget(self, w: TextAPI) -> None:
+    def addWidget(self, w: QTextMixin) -> None:
         pass
 
     def createChaptersIcon(self) -> None:
         pass
 
-    def deleteButton(self, w: TextAPI) -> None:
+    def deleteButton(self, w: QTextMixin) -> None:
         pass
 
     def getNewFrame(self) -> None:
@@ -1569,7 +1571,6 @@ class NullLog(LeoLog):
         self.isNull = True
         # self.logCtrl is now a property of the base LeoLog class.
         self.widget = StringTextWrapper(c=c, name='null-log')
-        ### self.wrapper: TextAPI = None  # To keep mypy happy.
 
     # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
     def finishCreate(self) -> None:
@@ -1580,7 +1581,7 @@ class NullLog(LeoLog):
         return self.widget.hasSelection()
 
     # @+node:ekr.20111119145033.10186: *3* NullLog.isLogWidget
-    def isLogWidget(self, w: TextAPI) -> bool:
+    def isLogWidget(self, w: QTextMixin) -> bool:
         return False
 
     # @+node:ekr.20041012083237.3: *3* NullLog.put and putnl
@@ -1698,7 +1699,7 @@ class NullTree(LeoTree):
         self.editWidgetsDict: dict[VNode, StringTextWrapper] = {}
 
     # @+node:ekr.20070228163350.2: *3* NullTree.edit_widget
-    def edit_widget(self, p: Position) -> TextAPI:
+    def edit_widget(self, p: Position) -> QTextMixin:
         d = self.editWidgetsDict
         if not p or not p.v:
             return None
