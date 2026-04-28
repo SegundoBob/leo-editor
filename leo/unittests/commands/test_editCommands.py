@@ -4216,7 +4216,8 @@ class TestEditCommands(LeoUnitTest):
         c.bodyWantsFocus()
         w.setInsertPoint(2)
         c.outerUpdate()  # This fixed the problem.
-        c.doCommandByName('delete-char')
+        event = LeoKeyEvent(c, w=w)  # Leo 6.8.9.
+        c.doCommandByName('delete-char', event)
         self.assertEqual(p.b, s[:-1])
         c.selectPosition(p.threadBack())
         c.selectPosition(p)

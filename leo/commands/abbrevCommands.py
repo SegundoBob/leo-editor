@@ -262,7 +262,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Verbose only for *both* 'abbrev' and 'verbose'.
         verbose = all(z in g.app.debug for z in ('abbrev', 'verbose'))
         c, p = self.c, self.c.p
-        w = self.editWidget(event, forceFocus=False)
+        w = event.w if event else None
         w_name = g.app.gui.widget_name(w)
         if not w:
             if trace and verbose:

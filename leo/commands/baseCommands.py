@@ -57,8 +57,11 @@ class BaseEditCommandsClass:
         Do the common processing at the end of each command.
         Handles undo only if we are in the body pane.
         """
-        k, p, u = self.c.k, self.c.p, self.c.undoer
-        w = self.editWidget(event=None)
+        c = self.c
+        k, p, u = c.k, c.p, c.undoer
+        w = c.frame.body and c.frame.body.wrapper
+        if not w:
+            return
         bunch = self.undoData
         if bunch and bunch.name.startswith('body') and changed:
             newText = w.getAllText()

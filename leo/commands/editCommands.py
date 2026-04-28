@@ -495,7 +495,8 @@ class EditCommandsClass(BaseEditCommandsClass):
         text, if there is any, or any path like text immediately preceding the
         cursor.
         """
-        c, u, w = self.c, self.c.undoer, self.editWidget(event)
+        c, u = self.c, self.c.undoer
+        w = event.w if event else None
         if not w:
             return
 
@@ -539,7 +540,6 @@ class EditCommandsClass(BaseEditCommandsClass):
         if g.app.batchMode:
             c.notValidInBatchMode("Insert Headline Time")
             return
-        # #131: Do not get w from self.editWidget()!
         w = c.frame.tree.edit_widget(p)
         if w and not g.app.inBridge:
             # Fix bug https://bugs.launchpad.net/leo-editor/+bug/1185933
@@ -711,7 +711,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Capitalize Entire Body Or Selection."""
         frame = self
         c, p, u = frame.c, self.c.p, self.c.undoer
-        w = frame.editWidget(event)
+        w = event.w if event else None
         s = w.getAllText()
         if not s:
             return
@@ -908,7 +908,8 @@ class EditCommandsClass(BaseEditCommandsClass):
     @cmd('center-line')
     def centerLine(self, event: LeoKeyEvent) -> None:
         """Centers line within current fill column"""
-        c, w = self.c, self.editWidget(event)
+        c = self.c
+        w = event.w if event else None
         if not w:
             return  # pragma: no cover (defensive)
         if self.fillColumn > 0:
@@ -955,7 +956,8 @@ class EditCommandsClass(BaseEditCommandsClass):
     @cmd('center-region')
     def centerRegion(self, event: LeoKeyEvent) -> None:
         """Centers the selected text within the fill column"""
-        c, w = self.c, self.editWidget(event)
+        c = self.c
+        w = event.w if event else None
         if not w:
             return  # pragma: no cover (defensive)
         s = w.getAllText()
@@ -1882,7 +1884,8 @@ class EditCommandsClass(BaseEditCommandsClass):
     @cmd('delete-char')
     def deleteNextChar(self, event: LeoKeyEvent) -> None:
         """Delete the character to the right of the cursor."""
-        c, w = self.c, self.editWidget(event)
+        c = self.c
+        w = event.w if event else None
         if not w:
             return
         wname = c.widget_name(w)
@@ -2054,15 +2057,13 @@ class EditCommandsClass(BaseEditCommandsClass):
 
         Select all lines if there is no existing selection.
         """
-        c, p, u, w = self.c, self.c.p, self.c.undoer, self.editWidget(event)
-        #
+        c, p, u = self.c, self.c.p, self.c.undoer
+        w = event.w if event else None
         # "Before" snapshot.
         bunch = u.beforeChangeBody(p)
-        #
         # Initial data.
         oldYview = w.getYScrollPosition()
         lines = g.splitLines(w.getAllText())
-        #
         # Calculate the result.
         result_list = []
         changed = False
@@ -2073,7 +2074,6 @@ class EditCommandsClass(BaseEditCommandsClass):
                 changed = True
         if not changed:
             return  # pragma: no cover (defensive)
-        #
         # Set p.b and w's text first.
         result = ''.join(result_list)
         p.b = result
@@ -2081,7 +2081,6 @@ class EditCommandsClass(BaseEditCommandsClass):
         i, j = 0, max(0, len(result) - 1)
         w.setSelectionRange(i, j, insert=j)
         w.setYScrollPosition(oldYview)
-        #
         # "after" snapshot.
         c.undoer.afterChangeBody(p, 'remove-blank-lines', bunch)
 
@@ -2127,7 +2126,8 @@ class EditCommandsClass(BaseEditCommandsClass):
         It handles undo, bodykey events, tabs, back-spaces and bracket matching.
         """
         trace = 'keys' in g.app.debug
-        c, p, u, w = self.c, self.c.p, self.c.undoer, self.editWidget(event)
+        c, p, u = self.c, self.c.p, self.c.undoer
+        w = event.w if event else None
         undoType = 'Typing'
         if not w:
             return  # pragma: no cover (defensive)
