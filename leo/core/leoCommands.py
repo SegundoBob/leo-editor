@@ -3410,14 +3410,10 @@ class Commands:
         """
         This method is an ugly hack, called by k.masterKeyHandler and other places.
 
-        Handle the character given by event, ignoring various special keys:
-        - getArg state: k.getArg.
-        - Tree: onCanvasKey or onHeadlineKey.
-        - Body: ec.selfInsertCommand
-        - Log: log_w.insert
+        Handle the character given by event.stroke, ignoring various special keys.
         """
         trace = all(z in g.app.debug for z in ('keys', 'verbose'))
-        c, k, w = self, self.k, event.widget
+        c, k, w = self, self.k, event.w
         name = c.widget_name(w)
         stroke = event.stroke
         if trace:

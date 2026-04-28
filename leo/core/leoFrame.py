@@ -1030,10 +1030,10 @@ class LeoTree:
         """Handle a key event in a headline."""
         if not event:
             return
-        w = event.widget
+        w = event.w
         ch = event.char
         # This test prevents flashing in the headline when the control key is held down.
-        if ch:
+        if ch and w:
             self.updateHead(event, w)
 
     # @+node:ekr.20120314064059.9739: *4* LeoTree.OnIconCtrlClick (@url)
