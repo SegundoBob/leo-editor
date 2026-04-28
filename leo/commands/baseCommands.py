@@ -105,11 +105,6 @@ class BaseEditCommandsClass:
             g.es(warning, color='red')
         return val
 
-    # @+node:ekr.20150514043714.14: *3* BaseEdit.keyboardQuit (to be deleted)
-    def keyboardQuit(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
-        """Clear the state and the minibuffer label."""
-        self.c.k.keyboardQuit()
-
     # @-others
 
 
