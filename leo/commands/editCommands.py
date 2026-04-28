@@ -3558,7 +3558,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def fillRegionAsParagraph(self, event: LeoKeyEvent) -> None:
         """Fill the selected text."""
         w = self.editWidget(event)
-        if not w or not self._chckSel(event):
+        if not w or not self._checkSelection(event):
             return  # pragma: no cover (defensive)
         self.beginCommand(w, undoType='fill-region-as-paragraph')
         self.endCommand(changed=True, setLabel=True)
@@ -3644,7 +3644,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def tabIndentRegion(self, event: LeoKeyEvent) -> None:
         """Insert a hard tab at the start of each line of the selected text."""
         w = self.editWidget(event)
-        if not w or not self._chckSel(event):
+        if not w or not self._checkSelection(event):
             return  # pragma: no cover (defensive)
         self.beginCommand(w, undoType='indent-rigidly')
         s = w.getAllText()
@@ -3768,7 +3768,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def reverseRegion(self, event: LeoKeyEvent) -> None:
         """Reverse the order of lines in the selected text."""
         w = self.editWidget(event)
-        if not w or not self._chckSel(event):
+        if not w or not self._checkSelection(event):
             return  # pragma: no cover (defensive)
         self.beginCommand(w, undoType='reverse-region')
         s = w.getAllText()
@@ -3939,7 +3939,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         comparison.
         """
         w = self.editWidget(event)
-        if not self._chckSel(event):
+        if not self._checkSelection(event):
             return  # pragma: no cover (defensive)
         s = w.getAllText()
 
@@ -3995,7 +3995,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     ) -> None:
         """Sort the selected lines."""
         w = self.editWidget(event)
-        if not self._chckSel(event):
+        if not self._checkSelection(event):
             return
         undoType = 'reverse-sort-lines' if reverse else 'sort-lines'
         self.beginCommand(w, undoType=undoType)

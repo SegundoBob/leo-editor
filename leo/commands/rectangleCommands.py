@@ -44,14 +44,6 @@ class RectangleCommandsClass(BaseEditCommandsClass):
         }
         self.w: QTextMixin = None
 
-    # @+node:ekr.20150514063305.451: *3* RectangleCommandsClass.check
-    def check(self, event: LeoKeyEvent, warning: str = 'No rectangle selected') -> bool:
-        """
-        Return True if there is a selection.
-        Otherwise, return False and issue a warning.
-        """
-        return self._chckSel(event, warning)
-
     # @+node:ekr.20150514043714.13: *3* RectangleCommandsClass.getRectanglePoints
     def getRectanglePoints(self, w: QTextMixin) -> tuple[int, int, int, int]:
         """Return the rectangle corresponding to the selection range."""
@@ -69,7 +61,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def clearRectangle(self, event: LeoKeyEvent) -> None:
         """Clear the rectangle defined by the start and end of selected text."""
         w = self.editWidget(event)
-        if not w or not self.check(event):
+        if not w or not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -90,7 +82,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def closeRectangle(self, event: LeoKeyEvent) -> None:
         """Delete the rectangle if it contains nothing but whitespace.."""
         w = self.editWidget(event)
-        if not w or not self.check(event):
+        if not w or not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -116,7 +108,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def deleteRectangle(self, event: LeoKeyEvent) -> None:
         """Delete the rectangle defined by the start and end of selected text."""
         w = self.editWidget(event)
-        if not w or not self.check(event):
+        if not w or not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -136,7 +128,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def killRectangle(self, event: LeoKeyEvent) -> None:
         """Kill the rectangle defined by the start and end of selected text."""
         w = self.editWidget(event)
-        if not w or not self.check(event):
+        if not w or not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -163,7 +155,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
         text. This pushes the previous contents of the rectangle rightward.
         """
         w = self.editWidget(event)
-        if not w or not self.check(event):
+        if not w or not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -194,7 +186,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
             self.stringRectangle1(event)
             return
         self.w = self.editWidget(event)
-        if self.w and self.check(event):
+        if self.w and self._checkSelection(event):
             self.stringRect = self.getRectanglePoints(self.w)
             k.setLabelBlue('String rectangle: ')
             k.get1Arg(event, handler=self.stringRectangle1)

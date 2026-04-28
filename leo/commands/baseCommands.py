@@ -96,8 +96,8 @@ class BaseEditCommandsClass:
         self.w = w
         return w
 
-    # @+node:ekr.20150514043714.11: *3* BaseEdit._chckSel (to be deleted/moved)
-    def _chckSel(self, event: LeoKeyEvent, warning: str = 'no selection') -> bool:
+    # @+node:ekr.20150514043714.11: *3* BaseEdit._check_selection
+    def _checkSelection(self, event: LeoKeyEvent, warning: str = 'no selection') -> bool:
         """Return True if there is a selection in the edit widget."""
         w = self.editWidget(event)
         val = bool(w and w.hasSelection())
