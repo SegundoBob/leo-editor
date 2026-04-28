@@ -83,7 +83,7 @@ class BaseEditCommandsClass:
             else:
                 k.resetLabel()
 
-    # @+node:ekr.20150514043714.7: *3* BaseEdit.editWidget
+    # @+node:ekr.20150514043714.7: *3* BaseEdit.editWidget (to be deleted)
     def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> QTextMixin:
         """Return the edit widget for the event. Also sets self.w"""
         c = self.c
@@ -97,13 +97,12 @@ class BaseEditCommandsClass:
         self.w = w
         return w
 
-    # @+node:ekr.20150514043714.8: *3* BaseEdit.getWSString
+    # @+node:ekr.20150514043714.8: *3* BaseEdit.getWSString (to be deleted)
     def getWSString(self, s: str) -> str:  # pragma: no cover
         """Return s with all characters replaced by tab or space."""
         return ''.join([ch if ch == '\t' else ' ' for ch in s])
 
-    # @+node:ekr.20150514043714.10: *3* BaseEdit.Helpers
-    # @+node:ekr.20150514043714.11: *4* BaseEdit._chckSel
+    # @+node:ekr.20150514043714.11: *3* BaseEdit._chckSel (to be deleted/moved)
     def _chckSel(self, event: LeoKeyEvent, warning: str = 'no selection') -> bool:
         """Return True if there is a selection in the edit widget."""
         w = self.editWidget(event)
@@ -112,18 +111,7 @@ class BaseEditCommandsClass:
             g.es(warning, color='red')
         return val
 
-    # @+node:ekr.20150514043714.13: *4* BaseEdit.getRectanglePoints
-    def getRectanglePoints(self, w: QTextMixin) -> tuple[int, int, int, int]:
-        """Return the rectangle corresponding to the selection range."""
-        c = self.c
-        c.widgetWantsFocusNow(w)
-        s = w.getAllText()
-        i, j = w.getSelectionRange()
-        r1, r2 = g.convertPythonIndexToRowCol(s, i)
-        r3, r4 = g.convertPythonIndexToRowCol(s, j)
-        return r1 + 1, r2, r3 + 1, r4
-
-    # @+node:ekr.20150514043714.14: *4* BaseEdit.keyboardQuit
+    # @+node:ekr.20150514043714.14: *3* BaseEdit.keyboardQuit (to be deleted)
     def keyboardQuit(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
         """Clear the state and the minibuffer label."""
         self.c.k.keyboardQuit()
