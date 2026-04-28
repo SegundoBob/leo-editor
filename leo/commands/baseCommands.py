@@ -22,7 +22,7 @@ class BaseEditCommandsClass:
     """The base class for all edit command classes"""
 
     # @+others
-    # @+node:ekr.20150516040334.1: *3* BaseEdit.ctor
+    # @+node:ekr.20150516040334.1: *3* BaseEdit.__init__
     def __init__(self, c: Cmdr) -> None:
         """
         Ctor for the BaseEditCommandsClass class.
@@ -32,8 +32,7 @@ class BaseEditCommandsClass:
         """
         self.c = c
 
-    # @+node:ekr.20150514043714.3: *3* BaseEdit.begin/endCommand (handles undo)
-    # @+node:ekr.20150514043714.4: *4* BaseEdit.beginCommand
+    # @+node:ekr.20150514043714.4: *3* BaseEdit.beginCommand
     def beginCommand(self, w: QTextMixin, undoType: str = 'Typing') -> QTextMixin:
         """Do the common processing at the start of each command."""
         c, p, u = self.c, self.c.p, self.c.undoer
@@ -52,7 +51,7 @@ class BaseEditCommandsClass:
             self.undoData = None  # pragma: no cover
         return w
 
-    # @+node:ekr.20150514043714.6: *4* BaseEdit.endCommand
+    # @+node:ekr.20150514043714.6: *3* BaseEdit.endCommand
     def endCommand(self, label: str = None, changed: bool = True, setLabel: bool = True) -> None:
         """
         Do the common processing at the end of each command.
@@ -96,11 +95,6 @@ class BaseEditCommandsClass:
             c.widgetWantsFocusNow(w)
         self.w = w
         return w
-
-    # @+node:ekr.20150514043714.8: *3* BaseEdit.getWSString (to be deleted)
-    def getWSString(self, s: str) -> str:  # pragma: no cover
-        """Return s with all characters replaced by tab or space."""
-        return ''.join([ch if ch == '\t' else ' ' for ch in s])
 
     # @+node:ekr.20150514043714.11: *3* BaseEdit._chckSel (to be deleted/moved)
     def _chckSel(self, event: LeoKeyEvent, warning: str = 'no selection') -> bool:
