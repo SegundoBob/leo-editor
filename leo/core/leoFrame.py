@@ -495,6 +495,8 @@ class LeoFrame:
     def copyText(self, event: LeoKeyEvent = None) -> None:
         """Copy the selected text from the widget to the clipboard."""
         w = event.w
+        if not g.isTextWrapper(w):
+            return
         # Set the clipboard text.
         i, j = w.getSelectionRange()
         if i == j:
@@ -515,6 +517,8 @@ class LeoFrame:
         """Invoked from the mini-buffer and from shortcuts."""
         c, p, u = self.c, self.c.p, self.c.undoer
         w = event.w
+        if not g.isTextWrapper(w):
+            return
         bunch = u.beforeChangeBody(p)
         name = c.widget_name(w)
         oldText = w.getAllText()
@@ -545,6 +549,8 @@ class LeoFrame:
         """
         c, p, u = self.c, self.c.p, self.c.undoer
         w = event.w
+        if not g.isTextWrapper(w):
+            return
         wname = c.widget_name(w)
         bunch = u.beforeChangeBody(p)
         i, j = w.getSelectionRange()  # Returns insert point if no selection.
