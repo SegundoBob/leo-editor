@@ -2027,7 +2027,7 @@ class QTextEditWrapper(QTextMixin):
         s: Optional[str] = None,
     ) -> None:
         """Set the selection range and the insert point."""
-        #
+        c = self.c
         # Part 1
         w = self.widget
         if i is None:
@@ -2068,9 +2068,12 @@ class QTextEditWrapper(QTextMixin):
         if hasattr(g.app.gui, 'setClipboardSelection'):
             if s[i:j]:
                 g.app.gui.setClipboardSelection(s[i:j])
-        #
         # Remember the values for v.restoreCursorAndScroll.
-        v = self.c.p.v  # Always accurate.
+        if not c:
+            return
+        v = c.p.v
+        if not v:
+            return
         v.insertSpot = ins
         if i > j:
             i, j = j, i
