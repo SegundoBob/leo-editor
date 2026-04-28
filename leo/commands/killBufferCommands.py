@@ -107,11 +107,10 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
 
     def killWordHelper(self, event: LeoKeyEvent) -> None:
         c = self.c
-        e = c.editCommands
-        w = e.editWidget(event)
+        w = event.w if event else None
         if w:
             # self.killWs(event)
-            e.extendToWord(event)
+            c.editCommands.extendToWord(event)
             i, j = w.getSelectionRange()
             self.killHelper(event, i, j, w)
             self.endCommand(changed=True, setLabel=True)
