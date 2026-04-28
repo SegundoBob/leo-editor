@@ -3456,8 +3456,7 @@ class KeyHandlerClass:
         assert hasattr(event, 'w'), repr(event)
         assert hasattr(event, 'widget'), repr(event)
         assert g.isStrokeOrNone(event.stroke)
-        # Important: event.w does *not* have to be a *text* wrapper.
-        #            event.w can be *any* non-Qt widget.
+        # See LeoKeyEvent.__init__ for why the following test is correct.
         assert not isinstance(event.w, QtWidgets.QWidget), repr(event.w)
 
         # A continuous unit test.
