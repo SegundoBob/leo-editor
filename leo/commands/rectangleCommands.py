@@ -60,7 +60,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     @cmd('rectangle-clear')
     def clearRectangle(self, event: LeoKeyEvent) -> None:
         """Clear the rectangle defined by the start and end of selected text."""
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w or not self._checkSelection(event):
             return
 
@@ -81,7 +81,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     @cmd('rectangle-close')
     def closeRectangle(self, event: LeoKeyEvent) -> None:
         """Delete the rectangle if it contains nothing but whitespace.."""
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w or not self._checkSelection(event):
             return
 
@@ -107,7 +107,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     @cmd('rectangle-delete')
     def deleteRectangle(self, event: LeoKeyEvent) -> None:
         """Delete the rectangle defined by the start and end of selected text."""
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w or not self._checkSelection(event):
             return
 
@@ -127,7 +127,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     @cmd('rectangle-kill')
     def killRectangle(self, event: LeoKeyEvent) -> None:
         """Kill the rectangle defined by the start and end of selected text."""
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w or not self._checkSelection(event):
             return
 
@@ -154,7 +154,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
         Insert blanks in the rectangle defined by the start and end of selected
         text. This pushes the previous contents of the rectangle rightward.
         """
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w or not self._checkSelection(event):
             return
 
@@ -181,11 +181,11 @@ class RectangleCommandsClass(BaseEditCommandsClass):
         k = self.c.k
         if g.unitTesting:
             k.arg = 's...s'  # This string is known to the unit test.
-            self.w = self.editWidget(event)
+            self.w = event.w if event else None
             self.stringRect = self.getRectanglePoints(self.w)
             self.stringRectangle1(event)
             return
-        self.w = self.editWidget(event)
+        self.w = event.w if event else None
         if self.w and self._checkSelection(event):
             self.stringRect = self.getRectanglePoints(self.w)
             k.setLabelBlue('String rectangle: ')
@@ -219,7 +219,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
         """Yank into the rectangle defined by the start and end of selected text."""
         # c = self.c
         k = self.c.k
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w:
             return
         killRect = self.theKillRectangle

@@ -649,7 +649,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         This corresponds to C-M-/ in Emacs.
         """
         c, p = self.c, self.c.p
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w:
             return
         s = w.getAllText()
@@ -684,7 +684,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         Inserts the longest common prefix of the word at the cursor. Displays
         all possible completions if the prefix is the same as the word.
         """
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w:
             return
         s = w.getAllText()

@@ -108,7 +108,7 @@ class ControlCommandsClass(BaseEditCommandsClass):
     def shellCommandOnRegion(self, event: LeoKeyEvent) -> None:
         """Execute a command taken from the selected text in a separate process."""
         k = self.c.k
-        w = self.editWidget(event)
+        w = event.w if event else None
         if w:
             if w.hasSelection():
                 command = w.getSelectedText()
@@ -149,7 +149,7 @@ class ControlCommandsClass(BaseEditCommandsClass):
     @cmd('suspend')
     def suspend(self, event: LeoKeyEvent) -> None:
         """Minimize the present Leo window."""
-        w = self.editWidget(event)
+        w = event.w if event else None
         if not w:
             return
         self.c.frame.top.iconify()

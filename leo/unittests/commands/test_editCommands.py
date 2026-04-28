@@ -4195,7 +4195,8 @@ class TestEditCommands(LeoUnitTest):
         )  # fmt: skip
         for which, result in table:
             w.setInsertPoint(5)  # Must be inside the target.
-            c.editCommands.capitalizeHelper(event=None, which=which, undoType='X')
+            event = LeoKeyEvent(c, w=w)  # Leo 6.8.9.
+            c.editCommands.capitalizeHelper(event=event, which=which, undoType='X')
             s = w.getAllText()
             word = s[2:12]
             self.assertEqual(word, result, msg=which)
@@ -4361,7 +4362,7 @@ class TestEditCommands(LeoUnitTest):
             # ('1.0','4.5',False),
             (5, 50, True),
         ):
-            event = None
+            event = LeoKeyEvent(c, w=w)  # Leo 6.8.9.
             extend = True
             ec.moveSpot = None
             w.setInsertPoint(i)
