@@ -370,28 +370,22 @@ class LeoKeyEvent:
         assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
 
         self.w: QTextMixin
-        self.widget: Any  # The best we can do.
         if w is None:
             # Special case for headlines.
             edit_wrapper = c.edit_widget(c.p)
             if edit_wrapper:
                 self.w = edit_wrapper
-                self.widget = self.w.widget
             else:
                 focus_widget = g.app.gui.get_focus()
                 widget = focus_widget if g.isTextWrapper(focus_widget) else c.frame.body.widget
-                self.widget = widget
                 name = c.widget_name(widget) if widget else 'dummy-wrapper'
                 self.w = QTextEditWrapper(widget=widget, name=name, c=c)
-                # print(f"LeoKeyEvent: new {self.w.__class__.__name__} from {widget.__class__.__name__}"
         elif c.widget_name(w).startswith('log'):
-            self.w = self.widget = c.frame.log.logCtrl
+            self.w = c.frame.log.logCtrl
         elif isinstance(w, QtWidgets.QWidget):
-            self.widget = w
             self.w = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            # print(f"LeoKeyEvent: new {self.w.__class__.__name__} from {w.__class__.__name__}")
         else:
-            self.w = self.widget = w
+            self.w = w
 
         # Optional ivars
         self.x = x

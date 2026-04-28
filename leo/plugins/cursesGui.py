@@ -271,10 +271,6 @@ class TextFrame(leoFrame.LeoFrame):
                 self.leoWidget = w
                 self.widget = w
 
-        # Leo uses widget_name(event.widget) to decide if a 'default' keystroke belongs
-        # to typing in the body text, in the tree control, or whereever.
-        # Canonicalize the setting.
-
         char = key
         stroke = c.k.shortcutFromSetting(char)
         g.trace('char', repr(char), 'stroke', repr(stroke))

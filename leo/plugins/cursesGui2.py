@@ -2469,7 +2469,7 @@ class CoreFrame(leoFrame.LeoFrame):
         """
         trace = False and not g.unitTesting
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event and event.widget
+        w = event and event.w
         if not isinstance(w, StringTextWrapper):
             g.trace('not a StringTextWrapper', repr(w))
             return

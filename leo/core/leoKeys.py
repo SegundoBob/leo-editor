@@ -2597,16 +2597,15 @@ class KeyHandlerClass:
             k.resetLabel()
             if commandName != 'repeat-complex-command':
                 k.mb_history.insert(0, commandName)
-            w = event and event.widget
+            w = event and event.w
             if hasattr(w, 'permanent') and not w.permanent:
                 # In a headline that is being edited.
                 c.endEditing()
                 c.bodyWantsFocusNow()
                 # Change the event widget so we don't refer to the to-be-deleted headline widget.
                 event.w = c.frame.body.wrapper
-                event.widget = c.frame.body.wrapper.widget
-            else:
-                c.widgetWantsFocusNow(event and event.widget)  # So cut-text works, e.g.
+            elif event:
+                c.widgetWantsFocusNow(event.w)
             try:
                 func(event)
             except Exception:
@@ -3452,7 +3451,7 @@ class KeyHandlerClass:
         assert hasattr(event, 'char'), repr(event)
         assert hasattr(event, 'stroke'), repr(event)
         assert hasattr(event, 'w'), repr(event)
-        assert hasattr(event, 'widget'), repr(event)
+        ### assert hasattr(event, 'widget'), repr(event)
         assert g.isStrokeOrNone(event.stroke)
         # See LeoKeyEvent.__init__ for why the following test is correct.
         assert not isinstance(event.w, QtWidgets.QWidget), repr(event.w)
@@ -4218,7 +4217,7 @@ class KeyHandlerClass:
         if state == 0:
             k.inputModeName = modeName
             k.modePrompt = prompt or modeName
-            k.modeWidget = event.widget if event else None
+            k.modeWidget = event.w if event else None
             k.setState(modeName, 1, handler=k.generalModeHandler)
             self.initMode(event, modeName)
             # Careful: k.initMode can execute commands that will destroy a commander.
@@ -4238,7 +4237,7 @@ class KeyHandlerClass:
                 self.endMode()
                 # New in 4.4.1: pass an event describing the original widget.
                 if event:
-                    event.w = event.widget = k.modeWidget
+                    event.w = k.modeWidget
                 else:
                     event = g.app.gui.create_key_event(c, w=k.modeWidget)
                 func(event)
