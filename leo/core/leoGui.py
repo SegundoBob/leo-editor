@@ -18,13 +18,12 @@ from leo.core import leoGlobals as g
 from leo.core import leoFrame
 from leo.core.leoAPI import StringTextWrapper
 from leo.core.leoQt import QtWidgets
-from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper
+from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper, QTextMixin
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoNodes import Position
     from leo.plugins.qt_frame import FindTabManager
-    from leo.plugins.qt_text import QTextMixin
 
     Widget = Any  # 'Any' is the correct annotation for base class widgets.
 
@@ -361,53 +360,70 @@ class LeoKeyEvent:
         x_root: int = None,
         y_root: int = None,
     ) -> None:
-        """Ctor for LeoKeyEvent class."""
+        """
+        Ctor for LeoKeyEvent class.
+
+        The cursesGui2 plugin calls this ctor only with with
+        w = LeoBody(StringTextWrapper), whose name is 'body'.
+        """
         self.c = c
         self.char = char or ''
+        self.x = x
+        self.y = y
+        self.x_root = x_root
+        self.y_root = y_root
+
+        # Compute self.stroke.
         self.stroke: Any = (
             binding if g.isStroke(binding) else g.KeyStroke(binding) if binding else None
         )
         assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
 
+        # Compute self.w and self.widget.
+        # Coming soon: PR # 4646 will eliminate the widget ivar!
+        # https://github.com/leo-editor/leo-editor/pull/4646/
         self.w: QTextMixin
         self.widget: Any  # The best we can do.
         if w is None:
             # Special case for headlines.
-            edit_wrapper = c.edit_widget(c.p)
-            if edit_wrapper:
+            if edit_wrapper := c.edit_widget(c.p):
                 self.w = edit_wrapper
                 self.widget = self.w.widget
-            else:
-                focus_widget = g.app.gui.get_focus()
-                widget = focus_widget if g.isTextWrapper(focus_widget) else c.frame.body.widget
-                self.widget = widget
-                name = c.widget_name(widget) if widget else 'dummy-wrapper'
-                self.w = QTextEditWrapper(widget=widget, name=name, c=c)
-        elif c.widget_name(w).startswith('log'):
+                return
+            w = g.app.gui.get_focus()
+            if w is None:
+                return
+        if c.widget_name(w).startswith('log'):
             self.w = self.widget = c.frame.log.logCtrl
-        elif isinstance(w, QTextEditWrapper):
-            self.w = self.widget = w
-        elif isinstance(w, QtWidgets.QTextEdit):
+            return
+        if isinstance(w, QTextMixin):
+            self.w = self.widget = w  # A wrapper that handles text.
+            return
+        if wrapper := getattr(w, 'wrapper', None):
+            # g.trace(f"Use w.wrapper: {wrapper!r}")
+            self.w = self.widget = wrapper
+            return
+        if wrapper := getattr(w, 'leo_wrapper', None):
+            # g.trace(f"Use w.leo_wrapper: {wrapper!r}")
+            self.w = self.widget = wrapper
+            return
+        if isinstance(w, QtWidgets.QTextEdit):
             self.widget = w
-            self.w = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
-        elif isinstance(w, QtWidgets.QLineEdit):
+            self.w = w.leo_wrapper = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
+            g.trace(f"New wrapper for {w.objectName() or repr(w)}")
+            return
+        if isinstance(w, QtWidgets.QLineEdit):
             self.widget = w
-            self.w = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
-        elif isinstance(w, QtWidgets.QWidget):
-            self.w = self.widget = w  # type:ignore
-        else:
+            self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
+            g.trace(f"New wrapper for {w.objectName() or repr(w)}")
+            return
+        # Anything should be valid here: we don't expect the wrapper to do key handling.
+        self.w = self.widget = w
+        if not isinstance(w, QtWidgets.QWidget):
             # Should be a wrapper.
             name = c.widget_name(w)
             if not name.startswith(('body', 'canvas', 'head', 'mini')):
                 print(f"LeoKeyEvent: unusual w: {w.__class__.__name__} name: {name}")
-            self.w = self.widget = w
-
-        # Optional ivars
-        self.x = x
-        self.y = y
-        # Support for fastGotoNode plugin
-        self.x_root = x_root
-        self.y_root = y_root
 
     # @+node:ekr.20140907103315.18774: *3* LeoKeyEvent.__repr__
     def __repr__(self) -> str:
