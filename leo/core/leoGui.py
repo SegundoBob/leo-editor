@@ -367,6 +367,7 @@ class LeoKeyEvent:
         w = LeoBody(StringTextWrapper), whose name is 'body'.
         """
         trace = 'keys' in g.app.debug
+        tag = 'LeoKeyEvent.__init__:'
         self.c = c
         self.char = char or ''
         self.x = x
@@ -385,6 +386,17 @@ class LeoKeyEvent:
         # https://github.com/leo-editor/leo-editor/pull/4646/
         self.w: QTextMixin
         self.widget: Any  # The best we can do.
+
+        def obj_name(obj: Any) -> str:
+            if obj is None:
+                return 'None'
+            name = None
+            if hasattr(obj, 'objectName'):
+                name = obj.objectName()
+            return name or repr(obj)
+
+        if trace:
+            print(f"{tag} {id(w)} {w.__class__.__name__} {obj_name(w)}")
         if w is None:
             # Special case for headlines.
             if edit_wrapper := c.edit_widget(c.p):
@@ -412,22 +424,22 @@ class LeoKeyEvent:
             self.widget = w
             self.w = w.leo_wrapper = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
             if trace:
-                g.trace(f"New wrapper for {w.objectName() or repr(w)}")
+                print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
             return
         if isinstance(w, QtWidgets.QLineEdit):
             self.widget = w
             self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
             if trace:
-                g.trace(f"New wrapper for {w.objectName() or repr(w)}")
+                print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
             return
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = self.widget = w
         if not isinstance(w, QtWidgets.QWidget):
             # Should be a wrapper, but we don't much care.
-            name = c.widget_name(w)
-            # For now, let's leave this trace in.
-            if not name.startswith(('body', 'canvas', 'head', 'mini')):
-                print(f"LeoKeyEvent: unusual w: {w.__class__.__name__} name: {name}")
+            if trace:
+                name = obj_name(w)
+                if not name.startswith(('body', 'canvas', 'head', 'mini')):
+                    print(f"{tag} Unusual w: {w.__class__.__name__} name: {name}")
 
     # @+node:ekr.20140907103315.18774: *3* LeoKeyEvent.__repr__
     def __repr__(self) -> str:
