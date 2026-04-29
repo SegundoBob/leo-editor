@@ -18,7 +18,7 @@ from leo.core import leoGlobals as g
 from leo.core import leoFrame
 from leo.core.leoAPI import StringTextWrapper
 from leo.core.leoQt import QtWidgets
-from leo.plugins.qt_text import QTextEditWrapper
+from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper
 
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
@@ -383,14 +383,23 @@ class LeoKeyEvent:
                 self.widget = widget
                 name = c.widget_name(widget) if widget else 'dummy-wrapper'
                 self.w = QTextEditWrapper(widget=widget, name=name, c=c)
-                # print(f"LeoKeyEvent: new {self.w.__class__.__name__} from {widget.__class__.__name__}"
         elif c.widget_name(w).startswith('log'):
             self.w = self.widget = c.frame.log.logCtrl
-        elif isinstance(w, QtWidgets.QWidget):
+        elif isinstance(w, QTextEditWrapper):
+            self.w = self.widget = w
+        elif isinstance(w, QtWidgets.QTextEdit):
             self.widget = w
             self.w = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            # print(f"LeoKeyEvent: new {self.w.__class__.__name__} from {w.__class__.__name__}")
+        elif isinstance(w, QtWidgets.QLineEdit):
+            self.widget = w
+            self.w = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
+        elif isinstance(w, QtWidgets.QWidget):
+            self.w = self.widget = w  # type:ignore
         else:
+            # Should be a wrapper.
+            name = c.widget_name(w)
+            if not name.startswith(('body', 'canvas', 'head', 'mini')):
+                print(f"LeoKeyEvent: unusual w: {w.__class__.__name__} name: {name}")
             self.w = self.widget = w
 
         # Optional ivars
