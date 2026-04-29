@@ -1292,13 +1292,10 @@ class KeyHandler:
         if isinstance(ch, int):
             g.trace('can not happen: ch: %r binding: %r' % (ch, binding))
         elif (
-            ch
-            and len(ch) == 1
-            and binding
-            and len(binding) == 1
-            and ch.isalpha()
-            and binding.isalpha()
-        ):
+            ch and len(ch) == 1
+            and binding and len(binding) == 1
+            and ch.isalpha() and binding.isalpha()
+        ):  # fmt: skip
             if ch != binding:
                 if trace:
                     g.trace('caps-lock')
