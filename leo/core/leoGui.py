@@ -366,6 +366,7 @@ class LeoKeyEvent:
         The cursesGui2 plugin calls this ctor only with with
         w = LeoBody(StringTextWrapper), whose name is 'body'.
         """
+        trace = 'keys' in g.app.debug
         self.c = c
         self.char = char or ''
         self.x = x
@@ -396,7 +397,7 @@ class LeoKeyEvent:
         if c.widget_name(w).startswith('log'):
             self.w = self.widget = c.frame.log.logCtrl
             return
-        if isinstance(w, QTextMixin):
+        if isinstance(w, QTextMixin):  # This will always succeed when using the console gui.
             self.w = self.widget = w  # A wrapper that handles text.
             return
         if wrapper := getattr(w, 'wrapper', None):
@@ -410,18 +411,21 @@ class LeoKeyEvent:
         if isinstance(w, QtWidgets.QTextEdit):
             self.widget = w
             self.w = w.leo_wrapper = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            g.trace(f"New wrapper for {w.objectName() or repr(w)}")
+            if trace:
+                g.trace(f"New wrapper for {w.objectName() or repr(w)}")
             return
         if isinstance(w, QtWidgets.QLineEdit):
             self.widget = w
             self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            g.trace(f"New wrapper for {w.objectName() or repr(w)}")
+            if trace:
+                g.trace(f"New wrapper for {w.objectName() or repr(w)}")
             return
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = self.widget = w
         if not isinstance(w, QtWidgets.QWidget):
-            # Should be a wrapper.
+            # Should be a wrapper, but we don't much care.
             name = c.widget_name(w)
+            # For now, let's leave this trace in.
             if not name.startswith(('body', 'canvas', 'head', 'mini')):
                 print(f"LeoKeyEvent: unusual w: {w.__class__.__name__} name: {name}")
 
