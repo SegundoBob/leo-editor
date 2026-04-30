@@ -120,7 +120,7 @@ class StringTextWrapper(QTextMixin):
 
     def getName(self) -> str:
         """StringTextWrapper."""
-        return self.name  # Essential.
+        return self.name or ''  # Essential.
 
     # @+node:ekr.20140903172510.18578: *3* StringTextWrapper: Clipboard
     def clipboard_clear(self) -> None:

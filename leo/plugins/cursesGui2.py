@@ -4192,7 +4192,7 @@ class TextMixin:
 
     # @+node:ekr.20170511053143.4: *4* TextMixin.getName
     def getName(self) -> str:
-        return self.name  # Essential.
+        return self.name or ''  # Essential.
 
     # @+node:ekr.20170511053143.8: *4* TextMixin: Generic high-level interface
     # These call only wrapper methods.
