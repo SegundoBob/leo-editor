@@ -65,14 +65,7 @@ class LeoGui:
 
     # @+node:ekr.20051206103652: *3* LeoGui.widget_name
     def widget_name(self, w: Widget) -> str:
-        # First try the widget's getName method.
-        if not w:
-            return '<no widget>'
-        if hasattr(w, 'getName'):
-            return w.getName()
-        if hasattr(w, '_name'):
-            return w._name
-        return repr(w)
+        return w.getName() or '' if hasattr(w, 'getName') else ''
 
     # @+node:ekr.20070228154059: *3* LeoGui: May be defined in subclasses
     def dismiss_splash_screen(self) -> None:
