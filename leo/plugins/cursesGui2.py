@@ -2764,19 +2764,14 @@ class CoreTree(leoFrame.LeoTree):
     # @+node:ekr.20170511105355.9: *5* CTree.setHeadline
     def setHeadline(self, p: Position, s: str) -> None:
         """Force the actual text of the headline widget to p.h."""
-        trace = False and not g.unitTesting
         # This is used by unit tests to force the headline and p into alignment.
         if not p:
-            if trace:
-                g.trace('*** no p')
             return
         # Don't do this here: the caller should do it.
         # p.setHeadString(s)
-        e = self.headline_wrapper(p)
-        assert isinstance(e, HeadWrapper), repr(e)
-        e.setAllText(s)
-        if trace:
-            g.trace(e)
+        w = self.headline_wrapper(p)
+        assert isinstance(w, HeadWrapper), repr(w)
+        w.setAllText(s)
 
     # @+node:ekr.20170523115818.1: *5* CTree.set_body_text_after_select
     def set_body_text_after_select(self, p: Position, old_p: Position) -> None:

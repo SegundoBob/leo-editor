@@ -911,9 +911,9 @@ class LeoQtTree(leoFrame.LeoTree):
         return items
 
     # @+node:ekr.20110605121601.18418: *4* LeoQtTree.connectEditorWidget & callback
-    def connectEditorWidget(self, e: QLineEdit, item: QTreeWidgetItem) -> QHeadlineWrapper:
+    def connectEditorWidget(self, w: QLineEdit, item: QTreeWidgetItem) -> QHeadlineWrapper:
         """
-        Connect QLineEdit e to QTreeItem item.
+        Connect QLineEdit w to QTreeItem item.
 
         Also callback for when the editor ends.
 
@@ -925,7 +925,7 @@ class LeoQtTree(leoFrame.LeoTree):
         # @+node:ekr.20201109043641.1: *5* function: editingFinished_callback
         def editingFinished_callback() -> None:
             """Called when Qt emits the editingFinished signal."""
-            s = e.text()
+            s = w.text()
             # #3633: Replace newlines with a blank.
             if '\n' in s:
                 s = re.sub(r'\s*\n\s*', ' ', s).replace('  ', ' ').rstrip()
@@ -946,12 +946,11 @@ class LeoQtTree(leoFrame.LeoTree):
             c.outerUpdate()
 
         # @-others
-        if e:
+        if w:
             # Hook up the widget.
-            wrapper = self.getWrapper(e, item)
-            e.editingFinished.connect(editingFinished_callback)
+            wrapper = self.getWrapper(w, item)
+            w.editingFinished.connect(editingFinished_callback)
             return wrapper  # 2011/02/12
-        # g.trace('can not happen: no e')
         return None
 
     # @+node:ekr.20110605121601.18419: *4* LeoQtTree.contractItem & expandItem

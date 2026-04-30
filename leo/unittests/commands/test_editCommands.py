@@ -4267,26 +4267,26 @@ class TestEditCommands(LeoUnitTest):
     # @+node:ekr.20210905064816.7: *4* test_findWord
     def test_findWord(self):
         c = self.c
-        e, k, w = c.editCommands, c.k, c.frame.body.wrapper
+        ec, k, w = c.editCommands, c.k, c.frame.body.wrapper
         w.setAllText('start\ntargetWord\n')
         w.setInsertPoint(0)
         k.arg = 't'  # 'targetWord'
-        e.w = w
-        e.oneLineFlag = False
-        e.findWord1(event=None)
+        ec.w = w
+        ec.oneLineFlag = False
+        ec.findWord1(event=None)
         i, j = w.getSelectionRange()
         self.assertEqual(i, 6)
 
     # @+node:ekr.20210905064816.8: *4* test_findWordInLine
     def test_findWordInLine(self):
         c = self.c
-        e, k, w = c.editCommands, c.k, c.frame.body.wrapper
+        ec, k, w = c.editCommands, c.k, c.frame.body.wrapper
         w.setAllText('abc\ntargetWord\n')
         k.arg = 't'  # 'targetWord'
         w.setInsertPoint(0)
-        e.w = w
-        e.oneLineFlag = False
-        e.findWord1(event=None)
+        ec.w = w
+        ec.oneLineFlag = False
+        ec.findWord1(event=None)
         i, j = w.getSelectionRange()
         self.assertEqual(i, 4)
 
