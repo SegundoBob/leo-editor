@@ -177,7 +177,7 @@ class textGui(leoGui.LeoGui):
         elif s in ('q', 'quit'):
             self.killed = True
 
-    # @+node:ekr.20150107090324.20: *3* widget_name
+    # @+node:ekr.20150107090324.20: *3* widget_name (cursesGui.py)
     def widget_name(self, w):
         if isinstance(w, textBodyCtrl):
             return 'body'
