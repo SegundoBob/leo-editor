@@ -4464,8 +4464,7 @@ class Commands:
 
     # @+node:ekr.20080514131122.17: *5* c.widget_name
     def widget_name(self, widget: Widget) -> str:
-        # c = self
-        return g.app.gui.widget_name(widget) if g.app.gui else '<no widget>'
+        return g.app.gui.widget_name(widget) if g.app.gui else ''
 
     # @+node:ekr.20171124101045.1: *4* c.Events
     # @+node:ekr.20060923202156: *5* c.onCanvasKey
