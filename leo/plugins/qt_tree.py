@@ -1270,9 +1270,9 @@ class LeoQtTree(leoFrame.LeoTree):
             return
         # Don't do this here: the caller should do it.
         # p.setHeadString(s)
-        e = self.headline_wrapper(p)
-        if e:
-            e.setAllText(s)
+        w = self.headline_wrapper(p)
+        if w:
+            w.setAllText(s)
         else:
             item = self.position2item(p)
             if item:
