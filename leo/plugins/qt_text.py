@@ -180,7 +180,7 @@ class QTextMixin:
 
     # @+node:ekr.20140901062324.18825: *3* QTextMixin.getName
     def getName(self) -> str:
-        return self.name  # Essential.
+        return self.name or ''  # Essential.
 
     # @+node:ekr.20140901122110.18733: *3* QTextMixin.Event handlers
     # These are independent of the kind of Qt widget.

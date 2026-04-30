@@ -1701,21 +1701,11 @@ class LeoQtGui(leoGui.LeoGui):
 
     # @+node:ekr.20110605121601.18527: *4* LeoQtGui.widget_name
     def widget_name(self, w: QWidget) -> str:
-        if not w:
-            return '<no widget>'
-        try:
-            if name := w.getName():
-                return name
-        except AttributeError:
-            pass
-        try:
-            if name := w.objectName():
-                return name
-        except AttributeError:
-            pass
-        if name := getattr(w, '_name', None):
-            return name
-        return w.__class__.__name__
+        return (
+                 w.getName()    or '' if hasattr(w, 'getName')
+            else w.objectName() or '' if hasattr(w, 'objectName')
+            else ''
+        )  # fmt: skip
 
     # @+node:ekr.20190819091957.1: *3* LeoQtGui:Widget constructors
     # @+node:ekr.20190819094016.1: *4* LeoQtGui.createButton
