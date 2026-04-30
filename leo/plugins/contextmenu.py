@@ -174,7 +174,7 @@ def configuredcommands_rclick(c: Cmdr, p: Position, menu: LeoQtMenu) -> None:
             w = g.app.gui.get_focus(c)
             # #2000: The log pane is a confusing special case.
             wrapper = getattr(w, 'wrapper', None) or getattr(w, 'leo_log_wrapper', None)  # #2000.
-            key_event = LeoKeyEvent(c, char=None, event=None, binding=None, w=wrapper)
+            key_event = LeoKeyEvent(c, w=wrapper)
             return lambda: c.doCommandByName(command_name, event=key_event)
 
         configcmd_rclick_cb = create_callback(command_name)

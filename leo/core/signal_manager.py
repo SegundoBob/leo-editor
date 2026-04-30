@@ -19,8 +19,7 @@ from collections import defaultdict
 from collections.abc import Callable
 from typing import Any
 
-Args = Any
-KWargs = Any
+
 # @-<< signal_manager imports >>
 
 
@@ -49,7 +48,7 @@ def _setup(obj: object) -> None:
 
 
 # @+node:tbrown.20171028115601.6: ** emit
-def emit(source: object, signal_name: str, *args: Args, **kwargs: KWargs) -> None:
+def emit(source: object, signal_name: str, *args: Any, **kwargs: Any) -> None:
     """Emit signal to all listeners"""
     if not hasattr(source, '_signal_data'):
         return
@@ -121,7 +120,7 @@ class SignalManager:
 
     # @+others
     # @+node:tbrown.20171028115601.13: *3* emit
-    def emit(self, signal_name: str, *args: Args, **kwargs: KWargs) -> None:
+    def emit(self, signal_name: str, *args: Any, **kwargs: Any) -> None:
         """Emit signal to all listeners"""
         emit(self, signal_name, *args, **kwargs)
 

@@ -1054,15 +1054,8 @@ class VimCommands:
             # Copy the list so it can't change in the loop.
             for event in self.dot_list[:]:
                 # Only k.masterKeyHandler can insert characters!
-                #
-                # #1757: Create a LeoKeyEvent.
-                event = LeoKeyEvent(
-                    binding=g.KeyStroke(event.stroke),
-                    c=self.c,
-                    char=event.char,
-                    event=event,
-                    w=self.w,
-                )
+                binding = g.KeyStroke(event.stroke)
+                event = LeoKeyEvent(self.c, binding=binding, char=event.char, w=self.w)
                 self.k.masterKeyHandler(event)
             # For the dot list to be the old dot list, whatever happens.
             self.command_list = self.old_dot_list[:]

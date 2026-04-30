@@ -87,8 +87,7 @@ class BaseEditCommandsClass:
     def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> QTextMixin:
         """Return the edit widget for the event. Also sets self.w"""
         c = self.c
-        w = event and event.widget
-        # wname = c.widget_name(w) if w else '<no widget>'
+        w = event.widget if event else None  # event.widget is correct.
         if w and g.isTextWrapper(w):
             pass
         else:

@@ -13,8 +13,6 @@ if TYPE_CHECKING:
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
 
-    Args = Any
-    KWargs = Any
     QWidget = QtWidgets.QWidget
 
 
@@ -108,7 +106,7 @@ def showColorNames(event: LeoKeyEvent) -> None:
         color_list: list[str] = []
         box = QtWidgets.QComboBox()
 
-        def onActivated(n: int, *args: Args, **keys: KWargs) -> None:
+        def onActivated(n: int, *args: Any, **keys: Any) -> None:
             color = color_list[n]
             sheet = template % (color, color)
             box.setStyleSheet(sheet)

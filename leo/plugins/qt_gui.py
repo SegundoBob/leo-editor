@@ -60,10 +60,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoNodes import Position
-    # from leo.plugins.qt_text import QTextEditWrapper
 
-    Args = Any
-    KWargs = Any
     QDialog = QtWidgets.QDialog
     QEvent: TypeAlias = QtCore.QEvent
     QFont = QtGui.QFont
@@ -82,7 +79,6 @@ if TYPE_CHECKING:  # pragma: no cover
     QTabWidget = QtWidgets.QTabWidget
     QVBoxLayout = QtWidgets.QVBoxLayout
     QWidget = QtWidgets.QWidget
-    Value = Any
 
 
 # @-<< qt_gui annotations >>
@@ -115,7 +111,6 @@ class LeoQtGui(leoGui.LeoGui):
         self.iconimages: dict[str, QIcon] = {}  # Keys are paths, values are Icons.
         self.globalFindDialog: QDialog = None
         self.idleTimeClass = qt_idle_time.IdleTime
-        self.insert_char_flag = False  # A flag for eventFilter.
         self.mGuiName = 'qt'
         self.show_tips_flag = False  # #2390: Can't be inited in reload_settings.
         self.styleSheetManagerClass = StyleSheetManager
@@ -874,7 +869,7 @@ class LeoQtGui(leoGui.LeoGui):
     def runPropertiesDialog(
         self,
         title: str = 'Properties',
-        data: Value = None,
+        data: Any = None,
         callback: Callable = None,
         buttons: list[str] = None,
     ) -> tuple[str, dict]:
@@ -936,7 +931,7 @@ class LeoQtGui(leoGui.LeoGui):
         label: str = '',
         msg: str = '',
         c: Cmdr = None,
-        **keys: KWargs,
+        **keys: Any,
     ) -> None:
         if g.unitTesting:
             return None
@@ -1096,6 +1091,7 @@ class LeoQtGui(leoGui.LeoGui):
         """
         # w's type is in (DynamicWindow,QMinibufferWrapper,LeoQtLog,LeoQtTree,
         # QTextEditWrapper,LeoQTextBrowser,LeoQuickSearchWidget,cleoQtUI)
+        # g.trace(f"{id(w)} {self.widget_name(w):>22} {w.__class__.__name__}")
         assert isinstance(obj, QtWidgets.QWidget), obj
         theFilter = qt_events.LeoQtEventFilter(c, w=w, tag=tag)
         obj.installEventFilter(theFilter)
@@ -1312,32 +1308,11 @@ class LeoQtGui(leoGui.LeoGui):
             return image, image.height()
         return None, None
 
-    # @+node:ekr.20131007055150.17608: *3* LeoQtGui.insertKeyEvent
-    def insertKeyEvent(self, event: QEvent, i: int) -> None:
-        """Insert the key given by event in location i of widget event.w."""
-        assert isinstance(event, leoGui.LeoKeyEvent)
-        qevent = event.event
-        assert isinstance(qevent, QtGui.QKeyEvent)
-        qw = getattr(event.w, 'widget', None)
-        if qw and isinstance(qw, QtWidgets.QTextEdit):
-            if 1:
-                # Assume that qevent.text() *is* the desired text.
-                # This means we don't have to hack eventFilter.
-                qw.insertPlainText(qevent.text())
-            else:
-                # Make no such assumption.
-                # We would like to use qevent to insert the character,
-                # but this would invoke eventFilter again!
-                # So set this flag for eventFilter, which will
-                # return False, indicating that the widget must handle
-                # qevent, which *presumably* is the best that can be done.
-                g.app.gui.insert_char_flag = True
-
     # @+node:ekr.20110605121601.18528: *3* LeoQtGui.makeScriptButton
     def makeScriptButton(
         self,
         c: Cmdr,
-        args: Args = None,
+        args: Any = None,
         p: Position = None,  # A node containing the script.
         script: str = None,  # The script itself.
         buttonText: str = None,
@@ -1585,7 +1560,7 @@ class LeoQtGui(leoGui.LeoGui):
             c.redraw()  # #2390: Show the change immediately.
 
     # @+node:ekr.20180127103142.1: *4* onNext (not used)
-    def onNext(self, *args: Args, **keys: KWargs) -> bool:
+    def onNext(self, *args: Any, **keys: Any) -> bool:
         g.trace(args, keys)
         return True
 
@@ -1726,18 +1701,21 @@ class LeoQtGui(leoGui.LeoGui):
 
     # @+node:ekr.20110605121601.18527: *4* LeoQtGui.widget_name
     def widget_name(self, w: QWidget) -> str:
-        # First try the widget's getName method.
         if not w:
-            name = '<no widget>'
-        elif hasattr(w, 'getName'):
-            name = w.getName()
-        elif hasattr(w, 'objectName'):
-            name = str(w.objectName())
-        elif hasattr(w, '_name'):
-            name = w._name
-        else:
-            name = repr(w)
-        return name
+            return '<no widget>'
+        try:
+            if name := w.getName():
+                return name
+        except AttributeError:
+            pass
+        try:
+            if name := w.objectName():
+                return name
+        except AttributeError:
+            pass
+        if name := getattr(w, '_name', None):
+            return name
+        return w.__class__.__name__
 
     # @+node:ekr.20190819091957.1: *3* LeoQtGui:Widget constructors
     # @+node:ekr.20190819094016.1: *4* LeoQtGui.createButton

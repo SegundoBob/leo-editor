@@ -511,7 +511,7 @@ class BindingInfo:
                         val = val.__name__
                     s = f"{ivar}: {val!r}"
                     result.append(s)
-        return "<{' '.join(result).strip()}>"
+        return f"<{' '.join(result).strip()}>"
 
     # @+node:ekr.20120129040823.10226: *4* BindingInfo.isModeBinding
     def isModeBinding(self) -> bool:
@@ -1811,7 +1811,7 @@ class SettingsDict(dict):
         return copy.deepcopy(self)
 
     # @+node:ekr.20190904052828.1: *4* td.add_to_list
-    def add_to_list(self, key: str, val: Value) -> None:
+    def add_to_list(self, key: str, val: BindingInfo) -> None:
         """Update the *list*, self.d [key]"""
         if key is None:
             g.trace('TypeDict: None is not a valid key', g.callers())
@@ -8432,10 +8432,17 @@ def openUrl(p: Position) -> None:  # pragma: no cover
 # @+node:ekr.20110605121601.18135: *3* g.openUrlOnClick (open-url-under-cursor)
 def openUrlOnClick(event: QMouseEvent, url: str = None) -> Optional[str]:  # pragma: no cover
     """Open the URL under the cursor.  Return it for unit testing."""
+    from leo.core.leoGui import LeoKeyEvent
+    from leo.plugins.qt_text import QTextEditWrapper
+
     # QTextEditWrapper.mouseReleaseEvent calls this outside Leo's command logic.
     # Make sure to catch all exceptions!
     try:
-        return openUrlHelper(event, url)
+        c = g.app.log.c  # A hack.
+        widget = c.frame.body.widget  # Another hack.
+        wrapper = QTextEditWrapper(widget=widget, name='QMouseEvent-wrapper', c=c)
+        leo_event = LeoKeyEvent(c, w=wrapper)
+        return openUrlHelper(leo_event, url)
     except Exception:
         g.es_exception()
         return None
@@ -8444,15 +8451,13 @@ def openUrlOnClick(event: QMouseEvent, url: str = None) -> Optional[str]:  # pra
 # @+node:ekr.20170216091704.1: *4* g.openUrlHelper
 def openUrlHelper(event: LeoKeyEvent, url: str = None) -> Optional[str]:
     """Open the unl, url or gnx under the cursor.  Return it for unit testing."""
-    c = getattr(event, 'c', None)
+    if not event:
+        return None
+    c, w = event.c, event.w
     if not c:
         return None
-    w = getattr(event, 'w', c.frame.body.wrapper)
     if not g.app.gui.isTextWrapper(w):
-        g.internalError('must be a text wrapper', w)
         return None
-    if event:
-        event.widget = w
     # Part 1: get the url.
     if url is None:
         s = w.getAllText()

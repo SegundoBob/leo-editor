@@ -33,7 +33,6 @@ if TYPE_CHECKING:  # pragma: no cover
     QPoint = QtCore.QPoint
     QTreeWidgetItem: TypeAlias = QtWidgets.QTreeWidgetItem
     QWidget = QtWidgets.QWidget
-    Value = Any
 
 
 # @-<< qt_tree annotations >>
@@ -71,8 +70,8 @@ class LeoQtTree(leoFrame.LeoTree):
         w = self.treeWidget
         # Declutter data...
         # list of pairs of patterns for decluttering
-        self.declutter_patterns: list[tuple[Value, Value]] = None
-        self.declutter_data: dict[Value, Value] = {}
+        self.declutter_patterns: list[tuple[Any, Any]] = None
+        self.declutter_data: dict[Any, Any] = {}
         self.loaded_images: dict[str, QIcon] = {}
 
         if 0:  # None of this works.
@@ -358,7 +357,7 @@ class LeoQtTree(leoFrame.LeoTree):
         # @+node:vitalije.20200327163522.1: *7* apply_declutter_rules
         def apply_declutter_rules(
             cmds: list[tuple[Callable, str]], pattern: str
-        ) -> list[tuple[Value, str]]:
+        ) -> list[tuple[Any, str]]:
             """
             Applies all commands for the matched rule. Returns the list
             of the applied operations paired with their single parameter.
@@ -408,12 +407,12 @@ class LeoQtTree(leoFrame.LeoTree):
         return icon
 
     # @+node:vitalije.20200327162532.1: *6* LeoQtTree.get_declutter_patterns
-    def get_declutter_patterns(self) -> list[tuple[Value, Value]]:
+    def get_declutter_patterns(self) -> list[tuple[Any, Any]]:
         "Initializes self.declutter_patterns from configuration and returns it"
         if self.declutter_patterns is not None:
             return self.declutter_patterns
         c = self.c
-        patterns: list[Value] = []
+        patterns: list[Any] = []
         warned = False
         lines = c.config.getData("tree-declutter-patterns")
         for line in lines:
