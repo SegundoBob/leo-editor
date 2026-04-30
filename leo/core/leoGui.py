@@ -406,8 +406,8 @@ class LeoKeyEvent:
             print(f"{tag} {id(w)} {w.__class__.__name__} {obj_name(w)}")
         if w is None:
             # Special case for headlines.
-            if edit_wrapper := c.edit_widget(c.p):
-                self.w = edit_wrapper
+            if headline_wrapper := c.headline_wrapper(c.p):
+                self.w = headline_wrapper
                 return
             # Default to the widget with focus, if any.
             w = g.app.gui.get_focus()

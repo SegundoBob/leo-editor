@@ -883,7 +883,7 @@ class LeoFind:
         c, p = self.c, self.c.p
         #
         # The gui widget may not exist for headlines.
-        gui_w = c.edit_widget(p) if self.in_headline else c.frame.body.wrapper
+        gui_w = c.headline_wrapper(p) if self.in_headline else c.frame.body.wrapper
         #
         # Init the work widget, so we don't get stuck.
         s = p.h if self.in_headline else p.b
@@ -2452,7 +2452,7 @@ class LeoFind:
         """Replace selection with self.change_text."""
         c, u = self.c, self.c.undoer
         wrapper = c.frame.body and c.frame.body.wrapper
-        gui_w = c.edit_widget(p) if self.in_headline else wrapper
+        gui_w = c.headline_wrapper(p) if self.in_headline else wrapper
         if not gui_w:  # pragma: no cover
             self.in_headline = False
             gui_w = wrapper
@@ -2490,7 +2490,7 @@ class LeoFind:
             # #2220: Let onHeadChanged handle undo, etc.
             c.frame.tree.onHeadChanged(p, undoType='Change Headline')
             # gui_w will change after a redraw.
-            gui_w = c.edit_widget(p)
+            gui_w = c.headline_wrapper(p)
             if gui_w:
                 # find-next and find-prev work regardless of insert point.
                 gui_w.setSelectionRange(start, start + len(change_text))
@@ -2972,7 +2972,7 @@ class LeoFind:
             c.endEditing()
             c.redraw(p)
             c.frame.tree.editLabel(p)
-            w = c.edit_widget(p)  # #2220
+            w = c.headline_wrapper(p)  # #2220
             if w:
                 w.setSelectionRange(pos, newpos, insert)  # #2220
         else:
@@ -3240,12 +3240,12 @@ class LeoFind:
         c, p = self.c, self.c.p
         wrapper = c.frame.body.wrapper
         if self.in_headline:
-            w = c.edit_widget(p)
+            w = c.headline_wrapper(p)
             if not w:
                 # Selecting the minibuffer can kill the edit widget.
                 selection = 0, 0, 0
                 c.redrawAndEdit(p, selectAll=False, selection=selection, keepMinibuffer=True)
-                w = c.edit_widget(p)
+                w = c.headline_wrapper(p)
             if not w:  # Should never happen.
                 g.trace('**** no edit widget!')
                 self.in_headline = False

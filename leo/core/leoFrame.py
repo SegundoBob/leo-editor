@@ -962,7 +962,7 @@ class LeoTree:
         Officially change a headline.
         Set the old undo text to the previous revert point.
         """
-        c, u, w = self.c, self.c.undoer, self.edit_widget(p)
+        c, u, w = self.c, self.c.undoer, self.headline_wrapper(p)
         if not w:
             g.trace('no w')
             return
@@ -1110,7 +1110,7 @@ class LeoTree:
     ) -> tuple[Widget, Any]:  # Any is the best possible annotation.
         raise NotImplementedError
 
-    def edit_widget(self, p: Position) -> Widget:
+    def headline_wrapper(self, p: Position) -> Widget:
         raise NotImplementedError
 
     # @+node:ekr.20040803072955.128: *3* LeoTree.select & helpers
@@ -1698,8 +1698,8 @@ class NullTree(LeoTree):
         self.c = frame.c
         self.editWidgetsDict: dict[VNode, StringTextWrapper] = {}
 
-    # @+node:ekr.20070228163350.2: *3* NullTree.edit_widget
-    def edit_widget(self, p: Position) -> QTextMixin:
+    # @+node:ekr.20070228163350.2: *3* NullTree.headline_wrapper
+    def headline_wrapper(self, p: Position) -> QTextMixin:
         d = self.editWidgetsDict
         if not p or not p.v:
             return None
@@ -1750,7 +1750,7 @@ class NullTree(LeoTree):
         """Set the actual text of the headline widget.
 
         This is called from the undo/redo logic to change the text before redrawing."""
-        w = self.edit_widget(p)
+        w = self.headline_wrapper(p)
         if w:
             w.delete(0, w.getLastIndex())
             if s.endswith('\n') or s.endswith('\r'):

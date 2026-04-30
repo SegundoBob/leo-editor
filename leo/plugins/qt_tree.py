@@ -1146,8 +1146,8 @@ class LeoQtTree(leoFrame.LeoTree):
         vScroll.setValue(vPos)
 
     # @+node:ekr.20110605121601.17905: *3* LeoQtTree:Selecting & editing
-    # @+node:ekr.20110605121601.17908: *4* LeoQtTree.edit_widget
-    def edit_widget(self, p: Position) -> QHeadlineWrapper:
+    # @+node:ekr.20110605121601.17908: *4* LeoQtTree.headline_wrapper
+    def headline_wrapper(self, p: Position) -> QHeadlineWrapper:
         """Returns the edit widget (A QLineEdit) for position p."""
         item = self.position2item(p)
         if item:
@@ -1160,6 +1160,8 @@ class LeoQtTree(leoFrame.LeoTree):
             # But warning: calling this method twice might not work!
             return None
         return None
+
+    edit_widget = headline_wrapper  # Compatibility.
 
     # @+node:ekr.20110605121601.17909: *4* LeoQtTree.editLabel and helper
     def editLabel(
@@ -1269,7 +1271,7 @@ class LeoQtTree(leoFrame.LeoTree):
             return
         # Don't do this here: the caller should do it.
         # p.setHeadString(s)
-        e = self.edit_widget(p)
+        e = self.headline_wrapper(p)
         if e:
             e.setAllText(s)
         else:

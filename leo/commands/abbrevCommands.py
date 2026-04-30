@@ -408,7 +408,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 p.h = new_s
                 c.redraw(p)
                 c.editHeadline()
-                w = c.edit_widget(p)
+                w = c.headline_wrapper(p)
                 w.setSelectionRange(i, j, insert=j)
                 return True
         s = p.b

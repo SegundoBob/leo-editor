@@ -338,7 +338,7 @@ class LeoMenu:
                 # Redirect (MacOS only).
                 wname = c.widget_name(w)
                 if wname.startswith('head'):
-                    w = c.frame.tree.edit_widget(c.p)
+                    w = c.frame.tree.headline_wrapper(c.p)
             return w if g.isTextWidget(w) else None
 
         if isinstance(command, str):

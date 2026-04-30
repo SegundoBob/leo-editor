@@ -1607,10 +1607,12 @@ class Commands:
             if p.v.expandedPositions:
                 g.printObj(p.v.expandedPositions, indent=p.level(), tag=p.h)
 
-    # @+node:ekr.20040306220230.1: *5* c.edit_widget
-    def edit_widget(self, p: Position) -> Widget:
+    # @+node:ekr.20040306220230.1: *5* c.headline_wrapper
+    def headline_wrapper(self, p: Position) -> Widget:
         c = self
-        return c.frame.tree.edit_widget(p) if p else None
+        return c.frame.tree.headline_wrapper(p) if p else None
+
+    edit_widget = headline_wrapper  # Compatibility.
 
     # @+node:ekr.20031218072017.2986: *5* c.fileName & relativeFileName & shortFileName
     # Compatibility with scripts

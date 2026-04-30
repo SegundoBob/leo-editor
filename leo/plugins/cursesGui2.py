@@ -2663,7 +2663,7 @@ class CoreTree(leoFrame.LeoTree):
             if trace:
                 g.trace('NO wrapper')
             return  # Startup.
-        w = self.edit_widget(p)
+        w = self.headline_wrapper(p)
         if not w:
             if trace:
                 g.trace('****** no w for p: %s', repr(p))
@@ -2734,8 +2734,8 @@ class CoreTree(leoFrame.LeoTree):
         # vScroll.setValue(vPos)
 
     # @+node:ekr.20170511105355.1: *4* CTree.Selecting & editing
-    # @+node:ekr.20170511105355.4: *5* CTree.edit_widget
-    def edit_widget(self, p: Position) -> HeadWrapper:
+    # @+node:ekr.20170511105355.4: *5* CTree.headline_wrapper
+    def headline_wrapper(self, p: Position) -> HeadWrapper:
         """Returns the edit widget for position p."""
         return HeadWrapper(c=self.c, name='head', p=p)
 
@@ -2772,7 +2772,7 @@ class CoreTree(leoFrame.LeoTree):
             return
         # Don't do this here: the caller should do it.
         # p.setHeadString(s)
-        e = self.edit_widget(p)
+        e = self.headline_wrapper(p)
         assert isinstance(e, HeadWrapper), repr(e)
         e.setAllText(s)
         if trace:
@@ -4351,7 +4351,7 @@ class BodyWrapper(StringTextWrapper):
 # @+node:ekr.20170522002403.1: *3* class HeadWrapper (StringTextWrapper) cursesGui2.py
 class HeadWrapper(StringTextWrapper):
     """
-    A Wrapper class for headline widgets, returned by c.edit_widget(p)
+    A Wrapper class for headline widgets, returned by c.headline_wrapper(p)
     """
 
     def __init__(self, c: Cmdr, name: str, p: Position) -> None:

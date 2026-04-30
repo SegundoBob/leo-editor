@@ -452,7 +452,7 @@ class ScreenCastController:
             n2 = 0.095
         p.h = ''
         c.editHeadline()
-        w = tree.edit_widget(p)
+        w = tree.headline_wrapper(p)
         # Support undo.
         undoData = c.undoer.beforeChangeNodeContents(p)
         p.setDirty()

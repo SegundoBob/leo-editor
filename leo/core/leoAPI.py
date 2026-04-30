@@ -317,7 +317,7 @@ class TreeAPI:
     ) -> tuple[Widget, QTextMixin]:
         return None, None
 
-    def edit_widget(self, p: Position) -> None:
+    def headline_wrapper(self, p: Position) -> None:
         return None
 
     def redraw(self, p: Position = None) -> None:

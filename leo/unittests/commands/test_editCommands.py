@@ -4232,7 +4232,7 @@ class TestEditCommands(LeoUnitTest):
         c.selectPosition(p)
         c.redraw(p)  # To make node visible
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         try:
             assert w
             end = w.getLastIndex()
@@ -4399,7 +4399,7 @@ class TestEditCommands(LeoUnitTest):
         p.h = h
         c.selectPosition(p)
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         assert w
         end = w.getLastIndex()
         w.setSelectionRange(end, end)
@@ -4420,7 +4420,7 @@ class TestEditCommands(LeoUnitTest):
         p.h = h
         c.selectPosition(p)
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         assert w
         paste = 'ABC'
         g.app.gui.replaceClipboardWith(paste)
@@ -4439,7 +4439,7 @@ class TestEditCommands(LeoUnitTest):
         p.h = h
         c.selectPosition(p)
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         assert w
         end = w.getLastIndex()
         g.app.gui.set_focus(c, w)
@@ -4460,7 +4460,7 @@ class TestEditCommands(LeoUnitTest):
         c.selectPosition(p)
         c.selectPosition(p)
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         end = w.getLastIndex()
         w.setSelectionRange(end, end, insert=end)
         paste = 'ABC'
@@ -4487,7 +4487,7 @@ class TestEditCommands(LeoUnitTest):
         c.selectPosition(p)
         c.redraw(p)  # To make node visible
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         wName = g.app.gui.widget_name(w)
         assert wName.startswith('head'), 'w.name:%s' % wName
         g.app.gui.event_generate(c, '\n', 'Return', w)
@@ -4514,7 +4514,7 @@ class TestEditCommands(LeoUnitTest):
         c.selectPosition(p)
         c.redraw(p)  # To make node visible
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         end = w.getLastIndex()
         w.setSelectionRange(end, end)
         paste = 'ABC'
@@ -4536,7 +4536,7 @@ class TestEditCommands(LeoUnitTest):
         c.selectPosition(p)
         c.redraw(p)  # Required
         c.frame.tree.editLabel(p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         end = w.getLastIndex()
         w.setSelectionRange(end, end)
         # char, shortcut.
@@ -4625,7 +4625,7 @@ class TestEditCommands(LeoUnitTest):
         p = c.rootPosition().insertAfter()
         p.h = h
         c.redrawAndEdit(p)  # Required
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         assert w
         end = w.getLastIndex()
         wName = g.app.gui.widget_name(w)
