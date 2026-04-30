@@ -1052,8 +1052,8 @@ class LeoServer:
         if not hasattr(self, 'c') or not self.c:
             return
         try:
-            gui_w = self.c.headline_wrapper(self.c.p)
-            gui_w.setSelectionRange(0, 0, insert=0)
+            w = self.c.headline_wrapper(self.c.p)
+            w.setSelectionRange(0, 0, insert=0)
         except Exception:
             print("Could not reset headline cursor")
         # Important: this will redraw if necessary.
@@ -5290,8 +5290,8 @@ class LeoServer:
             if hasattr(w, "sel"):
                 return w.sel[0], w.sel[1]
             c = self.c
-            gui_w = c.headline_wrapper(c.p)
-            selRange = gui_w.getSelectionRange()
+            w = c.headline_wrapper(c.p)
+            selRange = w.getSelectionRange()
             return selRange
         except Exception:
             print("Error retrieving current focused widget selection range.")
