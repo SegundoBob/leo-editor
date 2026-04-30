@@ -596,7 +596,7 @@ if QtWidgets:
 
         # @+node:ekr.20110605121601.18007: *3* LeoQTextBrowser. __repr__ & __str__
         def __repr__(self) -> str:
-            return f"(LeoQTextBrowser) {id(self)}"
+            return f"<LeoQTextBrowser: {id(self)} {self.objectName() or 'no name'}>"
 
         __str__ = __repr__
 
