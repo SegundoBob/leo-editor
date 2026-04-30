@@ -55,6 +55,7 @@ from leo.core.leoQt import (
 )
 from leo.plugins import qt_events, qt_text
 from leo.plugins.mod_scripting import build_rclick_tree
+from leo.plugins.qt_text import QTextEditWrapper
 from leo.plugins.qt_tree import LeoQtTree
 from leo.plugins.qt_layout import LayoutCacheWidget
 
@@ -69,7 +70,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position
     from leo.plugins.leoFrame import LeoLog
     from leo.plugins.mod_scripting import ScriptingController
-    from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper, QTextEditWrapper
+    from leo.plugins.qt_text import LeoQTextBrowser, QScintillaWrapper
 
     QBoxLayout = QtWidgets.QBoxLayout
     QComboBox = QtWidgets.QComboBox
@@ -762,6 +763,8 @@ class DynamicWindow(QtWidgets.QMainWindow):
             w.setFrameShadow(shadow)
             w.setLineWidth(lineWidth)
             self.setName(w, name)
+        if not hasattr(w, 'leo_wrapper'):
+            w.leo_wrapper = QTextEditWrapper(widget=w, name=name, c=c)
         return w
 
     # @+node:ekr.20110605121601.18164: *4* dw.createTreeWidget
