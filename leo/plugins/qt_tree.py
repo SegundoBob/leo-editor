@@ -103,7 +103,7 @@ class LeoQtTree(leoFrame.LeoTree):
         n = c.config.getInt('icon-height') or 16
         w.setIconSize(QtCore.QSize(160, n))
 
-    # @+node:ekr.20110605121601.17866: *4* LeoQtTree.get_name
+    # @+node:ekr.20110605121601.17866: *4* LeoQtTree.getName
     def getName(self) -> str:
         """Return the name of this widget: must start with "canvas"."""
         return 'canvas(tree)'

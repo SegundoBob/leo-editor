@@ -1671,7 +1671,7 @@ class LeoQtBody(leoFrame.LeoBody):
         self.set_widget()  # Sets self.widget and self.wrapper.
         self.setWrap(c.p)
 
-    # @+node:ekr.20110605121601.18185: *4* LeoQtBody.get_name
+    # @+node:ekr.20110605121601.18185: *4* LeoQtBody.getName
     def getName(self) -> str:
         return 'body-widget'
 

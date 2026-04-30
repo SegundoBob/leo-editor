@@ -103,7 +103,7 @@ class StringTextWrapper(QTextMixin):
     """A class that represents Leo's body pane as a Python string."""
 
     # @+others
-    # @+node:ekr.20070228074228.2: *3* StringTextWrapper.__init__
+    # @+node:ekr.20070228074228.2: *3* StringTextWrapper.__init__, __repr__ & getName
     def __init__(self, c: Cmdr, name: str) -> None:
         """Ctor for the StringTextWrapper class."""
         super().__init__(c)
