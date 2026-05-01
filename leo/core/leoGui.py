@@ -370,7 +370,7 @@ class LeoKeyEvent:
         - The "before" part is Qt's event handling, controlled by eventFiler methods.
         - The "after" part consists of Leo's command handlers.
         """
-        trace = 'keys' in g.app.debug
+        # trace = 'keys' in g.app.debug
         tag = 'LeoKeyEvent.__init__:'
         self.c = c
         self.char = char or ''
@@ -388,15 +388,10 @@ class LeoKeyEvent:
         self.w: QTextMixin
 
         def obj_name(obj: Any) -> str:
-            if obj is None:
-                return 'None'
-            name = None
-            if hasattr(obj, 'objectName'):
-                name = obj.objectName()
-            return name or repr(obj)
+            return g.app.gui.widget_name(obj)
 
-        if trace:
-            print(f"{tag} {id(w)} {w.__class__.__name__} {obj_name(w)}")
+        # print(f"{tag} {id(w):>16} {w.__class__.__name__} {obj_name(w)}")
+
         if w is None:
             # Special case for headlines.
             if headline_wrapper := c.headline_wrapper(c.p):
@@ -411,32 +406,31 @@ class LeoKeyEvent:
         if c.widget_name(w).startswith('log'):
             self.w = c.frame.log.logCtrl
             return
-        if isinstance(w, QTextMixin):  # This will always succeed when using the console gui.
-            self.w = w  # A wrapper that handles text.
+        if isinstance(w, QTextMixin):
+            # print(f"{tag} Use QTextMixin: {w.__class__.__name__}")
+            self.w = w
             return
         if wrapper := getattr(w, 'wrapper', None):
-            # g.trace(f"Use w.wrapper: {wrapper!r}")
+            # print(f"{tag} Use w.wrapper: {wrapper.__class__.__name__}")
             self.w = wrapper
             return
         if wrapper := getattr(w, 'leo_wrapper', None):
-            # g.trace(f"Use w.leo_wrapper: {wrapper!r}")
+            # print(f"{tag} Use w.leo_wrapper: {wrapper.__class__.__name__}")
             self.w = wrapper
             return
         if isinstance(w, QtWidgets.QTextEdit):
             # Inject the `leo_wrapper` ivar into the widget so that this method
             # will never reallocate another wrapper for this widget.
             self.w = w.leo_wrapper = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            if trace:
-                print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
+            print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
             return
         if isinstance(w, QtWidgets.QLineEdit):
             self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            if trace:
-                print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
+            print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
             return
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = w
-        if trace and not isinstance(w, QtWidgets.QWidget):
+        if not isinstance(w, QtWidgets.QWidget):
             # We expect that w is a wrapper, but we don't much care.
             name = obj_name(w)
             if not name.startswith(('body', 'canvas', 'head', 'mini')):
