@@ -92,7 +92,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         """Kill the previous word."""
         c = self.c
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             self.beginCommand(w, undoType='backward-kill-word')
             c.editCommands.backwardWord(event)
             self.killWordHelper(event)
@@ -101,14 +101,14 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     def killWord(self, event: LeoKeyEvent) -> None:
         """Kill the word containing the cursor."""
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             self.beginCommand(w, undoType='kill-word')
             self.killWordHelper(event)
 
     def killWordHelper(self, event: LeoKeyEvent) -> None:
         c = self.c
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             # self.killWs(event)
             c.editCommands.extendToWord(event)
             i, j = w.getSelectionRange()

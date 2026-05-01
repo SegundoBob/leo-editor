@@ -1638,7 +1638,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Print the line number of the line containing the cursor."""
         k = self.c.k
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             s = w.getAllText()
             i = w.getInsertPoint()
             row, col = g.convertPythonIndexToRowCol(s, i)
@@ -2021,7 +2021,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def insertParentheses(self, event: LeoKeyEvent) -> None:
         """Insert () at the cursor."""
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             self.beginCommand(w, undoType='insert-parenthesis')
             i = w.getInsertPoint()
             w.insert(i, '()')
@@ -2494,7 +2494,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def splitLine(self, event: LeoKeyEvent) -> None:
         """Split a line at the cursor position."""
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             self.beginCommand(w, undoType='split-line')
             s = w.getAllText()
             ins = w.getInsertPoint()
@@ -2969,7 +2969,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def extendModeHelper(self, event: LeoKeyEvent, val: bool) -> None:
         c = self.c
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             self.extendMode = val
             if not g.unitTesting:
                 # g.red('extend mode','on' if val else 'off'))
@@ -3327,7 +3327,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Push the selection range and insert point on the stack."""
         c = self.c
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             p = c.p.copy()
             i, j = w.getSelectionRange()
             ins = w.getInsertPoint()

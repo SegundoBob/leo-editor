@@ -730,7 +730,7 @@ class LeoLog:
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
         self.selectTab(tabName, wrap=wrap)
         w = self.logCtrl
-        if w:
+        if g.isTextWrapper(w):
             w.delete(0, w.getLastIndex())
 
     # @+node:ekr.20070302094848.2: *3* LeoLog.createTab

@@ -247,7 +247,7 @@ class AutoCompleterClass:
         if not c.widget_name(w).lower().startswith('body'):
             return
         self.language = c.getLanguage(c.p)
-        if w:
+        if g.isTextWrapper(w):
             self.w = w
             self.start(event)
 
@@ -4015,7 +4015,7 @@ class KeyHandlerClass:
         c, w = k.c, k.w
         k.setLabelGrey('')
         k.mb_prefix = ''
-        if w:
+        if g.isTextWrapper(w):
             w.setSelectionRange(0, 0, insert=0)
             state = k.unboundKeyAction
             if c.vim_mode and c.vimCommands:
@@ -4034,7 +4034,7 @@ class KeyHandlerClass:
     def setLabel(self, s: str, protect: bool = False) -> None:
         """Set the label of the minibuffer."""
         c, k, w = self.c, self, self.w
-        if w:
+        if g.isTextWrapper(w):
             # Support for the curses gui.
             if hasattr(g.app.gui, 'set_minibuffer_label'):
                 g.app.gui.set_minibuffer_label(c, s)

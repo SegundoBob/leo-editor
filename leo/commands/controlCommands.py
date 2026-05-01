@@ -109,7 +109,7 @@ class ControlCommandsClass(BaseEditCommandsClass):
         """Execute a command taken from the selected text in a separate process."""
         k = self.c.k
         w = event.w if event else None
-        if w:
+        if g.isTextWrapper(w):
             if w.hasSelection():
                 command = w.getSelectedText()
                 self.executeSubprocess(event, command)

@@ -2491,7 +2491,7 @@ class LeoFind:
             c.frame.tree.onHeadChanged(p, undoType='Change Headline')
             # w will change after a redraw.
             w = c.headline_wrapper(p)
-            if w:
+            if g.isTextWrapper(w):
                 # find-next and find-prev work regardless of insert point.
                 w.setSelectionRange(start, start + len(change_text))
         else:
@@ -2973,7 +2973,7 @@ class LeoFind:
             c.redraw(p)
             c.frame.tree.editLabel(p)
             w = c.headline_wrapper(p)  # #2220
-            if w:
+            if g.isTextWrapper(w):
                 w.setSelectionRange(pos, newpos, insert)  # #2220
         else:
             # Tricky code.  Do not change without careful thought.
