@@ -2328,22 +2328,18 @@ class CoreFrame(leoFrame.LeoFrame):
     # @+node:ekr.20171128052121.4: *6* CFrame.create_find_findbox
     def create_find_findbox(self) -> None:
         """Create the Find: label and text area."""
-        c = self.c
-        fc = c.findCommands
         ftm = self.ftm
         assert ftm
         assert ftm.find_findbox is None
-        ftm.find_findbox = self.createLineEdit('findPattern', disabled=fc.expert_mode)
+        ftm.find_findbox = self.createLineEdit('findPattern')
 
     # @+node:ekr.20171128052121.5: *6* CFrame.create_find_replacebox
     def create_find_replacebox(self) -> None:
         """Create the Replace: label and text area."""
-        c = self.c
-        fc = c.findCommands
         ftm = self.ftm
         assert ftm
         assert ftm.find_replacebox is None
-        ftm.find_replacebox = self.createLineEdit('findChange', disabled=fc.expert_mode)
+        ftm.find_replacebox = self.createLineEdit('findChange')
 
     # @+node:ekr.20171128052121.6: *6* CFrame.create_find_checkboxes
     def create_find_checkboxes(self) -> None:

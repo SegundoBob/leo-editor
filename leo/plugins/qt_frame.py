@@ -355,7 +355,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
         fc = c.findCommands
         ftm = fc.ftm
         assert ftm.find_findbox is None
-        ftm.find_findbox = w = dw.createLineEdit(parent, 'findPattern', disabled=fc.expert_mode)
+        ftm.find_findbox = w = dw.createLineEdit(parent, 'findPattern')
         w.leo_wrapper = QLineEditWrapper(widget=w, name='find-wrapper', c=c)
         lab2 = self.createLabel(parent, 'findLabel', 'Find:')
         grid.addWidget(lab2, row, 0)
@@ -370,7 +370,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
         fc = c.findCommands
         ftm = fc.ftm
         assert ftm.find_replacebox is None
-        ftm.find_replacebox = w = dw.createLineEdit(parent, 'findChange', disabled=fc.expert_mode)
+        ftm.find_replacebox = w = dw.createLineEdit(parent, 'findChange')
         w.leo_wrapper = QLineEditWrapper(widget=w, name='replace-wrapper', c=c)
         lab3 = dw.createLabel(parent, 'changeLabel', 'Replace:')
         grid.addWidget(lab3, row, 0)
@@ -488,20 +488,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
         row += max_row2
         row += 2
         return row
-
-    # @+node:ekr.20150618072619.1: *5* dw.create_find_status
-    if 0:
-
-        def create_find_status(self, grid: QGridLayout, parent: QWidget, row: int) -> None:
-            """Create the status line."""
-            dw = self
-            status_label = dw.createLabel(parent, 'status-label', 'Status')
-            status_line = dw.createLineEdit(parent, 'find-status', disabled=True)
-            grid.addWidget(status_label, row, 0)
-            grid.addWidget(status_line, row, 1, 1, 2)
-            # Official ivars.
-            dw.find_status_label = status_label
-            dw.find_status_edit = status_line
 
     # @+node:ekr.20131118172620.16891: *5* dw.override_events
     def override_events(self) -> None:
@@ -693,12 +679,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
         return w
 
     # @+node:ekr.20110605121601.18159: *4* dw.createLineEdit
-    def createLineEdit(
-        self, parent: QWidget, name: str, disabled: bool = True
-    ) -> QtWidgets.QLineEdit:
+    def createLineEdit(self, parent: QWidget, name: str) -> QtWidgets.QLineEdit:
         w = QtWidgets.QLineEdit(parent)
         w.setObjectName(name)
-        w.leo_disabled = disabled  # Inject the ivar.
         return w
 
     # @+node:ekr.20110605121601.18160: *4* dw.createRadioButton

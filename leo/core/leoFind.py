@@ -97,16 +97,13 @@ class LeoFind:
     def __init__(self, c: Cmdr) -> None:
         """Ctor for LeoFind class."""
         self.c = c
-        self.expert_mode = False  # Set in finishCreate.
         # Created by dw.createFindTab.
         self.ftm: FindTabManager = None
         self.k: KeyHandler = c.k
         self.re_obj: re.Pattern = None
-        #
         # The work "widget".
         self.work_s = ''  # p.b or p.c.
         self.work_sel: tuple[int, int, int] = None  # pos, newpos, insert.
-        #
         # Options ivars: set by FindTabManager.init.
         # These *must* be initially None, not False.
         self.ignore_case: bool = None
