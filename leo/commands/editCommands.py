@@ -936,7 +936,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Set the fill column used by the center-line and center-region commands."""
         k = self.c.k
         self.w = event.w if event else None
-        if not self.w:
+        if not g.isTextWrapper(self.w):
             return  # pragma: no cover (defensive)
         k.setLabelBlue('Set Fill Column: ')
         k.get1Arg(event, handler=self.setFillColumn1)
@@ -1025,7 +1025,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Put the cursor at the next occurrence of a character on a line."""
         k = self.c.k
         self.w = event.w if event else None
-        if not self.w:
+        if not g.isTextWrapper(self.w):
             return
         self.event = event
         self.backward = backward
