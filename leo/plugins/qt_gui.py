@@ -233,7 +233,326 @@ class LeoQtGui(leoGui.LeoGui):
             g.pr('LeoQtGui.destroySelf: calling qtApp.Quit')
         self.qtApp.quit()
 
-    # @+node:ekr.20110605121601.18485: *3* LeoQtGui.Clipboard
+    # @+node:ekr.20110605121601.18510: *3* LeoQtGui.getFontFromParams
+    size_warnings: list[str] = []
+    font_ids: list[int] = []  # id's of traced fonts.
+
+    def getFontFromParams(
+        self,
+        family: str,
+        size: str,
+        slant: str,
+        weight: str,
+        defaultSize: int = 12,
+        tag='',
+    ) -> Optional[QFont]:
+        """Required to handle syntax coloring."""
+        if isinstance(size, str):
+            if size.endswith('pt'):
+                size = size[:-2].strip()
+            elif size.endswith('px'):
+                if size not in self.size_warnings:
+                    self.size_warnings.append(size)
+                    g.es(f"px ignored in font setting: {size}")
+                size = size[:-2].strip()
+        try:
+            i_size = int(size)
+        except Exception:
+            i_size = 0
+        if i_size < 1:
+            i_size = defaultSize
+        d = {
+            'black': Weight.Black,
+            'bold': Weight.Bold,
+            'demibold': Weight.DemiBold,
+            'light': Weight.Light,
+            'normal': Weight.Normal,
+        }
+        weight_val = d.get(weight.lower(), Weight.Normal)
+        italic = slant == 'italic'
+        if not family:
+            family = 'DejaVu Sans Mono'
+        try:
+            font = QtGui.QFont(family, i_size, weight_val, italic)
+            if sys.platform.startswith('linux'):
+                try:
+                    font.setHintingPreference(font.PreferFullHinting)
+                except AttributeError:
+                    pass
+            return font
+        except Exception:
+            g.es_print("exception setting font", g.callers(4))
+            g.es_print(f"family: {family}\n  size: {i_size}\n slant: {slant}\nweight: {weight}")
+            # g.es_exception() # Confusing for most users.
+            return None
+
+    # @+node:ekr.20110605121601.18511: *3* LeoQtGui.getFullVersion
+    def getFullVersion(self, c: Cmdr = None) -> str:
+        """Return the PyQt version (for signon)"""
+        try:
+            qtLevel = f"version {QtCore.qVersion()}"
+        except Exception:
+            # g.es_exception()
+            qtLevel = '<qtLevel>'
+        return f"PyQt {qtLevel}"
+
+    # @+node:ekr.20110605121601.18528: *3* LeoQtGui.makeScriptButton
+    def makeScriptButton(
+        self,
+        c: Cmdr,
+        args: Any = None,
+        p: Position = None,  # A node containing the script.
+        script: str = None,  # The script itself.
+        buttonText: str = None,
+        balloonText: str = 'Script Button',
+        shortcut: str = None,
+        bg: str = 'LightSteelBlue1',
+        define_g: bool = True,
+        define_name: str = '__main__',
+        silent: bool = False,  # Passed on to c.executeScript.
+    ) -> None:
+        """
+        Create a script button for the script in node p.
+        The button's text defaults to p.headString."""
+        # pylint: disable=line-too-long
+        k = c.k
+        if p and not buttonText:
+            buttonText = p.h.strip()
+        if not buttonText:
+            buttonText = 'Unnamed Script Button'
+        # @+<< create the button b >>
+        # @+node:ekr.20110605121601.18529: *4* << create the button b >>
+        iconBar = c.frame.getIconBarObject()
+        b = iconBar.add(text=buttonText)
+
+        # @-<< create the button b >>
+        # @+<< define the callbacks for b >>
+        # @+node:ekr.20110605121601.18530: *4* << define the callbacks for b >>
+        def deleteButtonCallback(
+            event: LeoKeyEvent = None, b: QPushButton = b, c: Cmdr = c
+        ) -> None:
+            if b:
+                b.pack_forget()
+            c.bodyWantsFocus()
+
+        def executeScriptCallback(
+            event: LeoKeyEvent = None,
+            b: QPushButton = b,
+            c: Cmdr = c,
+            buttonText: str = buttonText,
+            p: Position = p and p.copy(),
+            script: str = script,
+        ) -> None:
+            if c.disableCommandsMessage:
+                g.blue('', c.disableCommandsMessage)
+            else:
+                g.app.scriptDict = {'script_gnx': p.gnx}
+                c.executeScript(
+                    args=args,
+                    p=p,
+                    script=script,
+                    define_g=define_g,
+                    define_name=define_name,
+                    silent=silent,
+                )
+                # Remove the button if the script asks to be removed.
+                if g.app.scriptDict.get('removeMe'):
+                    g.es('removing', f"'{buttonText}'", 'button at its request')
+                    b.pack_forget()
+            # Do not assume the script will want to remain in this commander.
+
+        # @-<< define the callbacks for b >>
+
+        b.configure(command=executeScriptCallback)
+        if shortcut:
+            # @+<< bind the shortcut to executeScriptCallback >>
+            # @+node:ekr.20110605121601.18531: *4* << bind the shortcut to executeScriptCallback >>
+            # In LeoQtGui.makeScriptButton.
+            func = executeScriptCallback
+            if shortcut:
+                shortcut = g.KeyStroke(shortcut)  # type:ignore
+            ok = k.bindKey('button', shortcut, func, buttonText)
+            if ok:
+                g.blue('bound @button', buttonText, 'to', shortcut)
+            # @-<< bind the shortcut to executeScriptCallback >>
+        # @+<< create press-buttonText-button command >>
+        # @+node:ekr.20110605121601.18532: *4* << create press-buttonText-button command >> LeoQtGui.makeScriptButton
+        # #1121. Like sc.cleanButtonText
+        buttonCommandName = f"press-{buttonText.replace(' ', '-').strip('-')}-button"
+        #
+        # This will use any shortcut defined in an @shortcuts node.
+        k.registerCommand(buttonCommandName, executeScriptCallback, pane='button')
+        # @-<< create press-buttonText-button command >>
+
+    # @+node:ekr.20200304125716.1: *3* LeoQtGui.onContextMenu
+    def onContextMenu(self, c: Cmdr, w: QTextMixin, point: QPoint) -> None:
+        """LeoQtGui: Common context menu handling."""
+        # #1286.
+        handlers = g.tree_popup_handlers
+        if not handlers:
+            return  # #4164: The "No popup handlers" message is annoying.
+        menu = QtWidgets.QMenu(c.frame.top)  # #1995.
+        menuPos = w.mapToGlobal(point)
+        p = c.p.copy()
+        done: set[Callable] = set()
+        for handler in handlers:
+            # every handler has to add it's QActions by itself
+            if handler in done:
+                # do not run the same handler twice
+                continue
+            try:
+                handler(c, p, menu)
+                done.add(handler)
+            except Exception:
+                g.es_print('Exception executing right-click handler')
+                g.es_exception()
+        menu.popup(menuPos)
+        self._contextmenu = menu
+
+    # @+node:ekr.20170612065255.1: *3* LeoQtGui.put_help
+    def put_help(self, c: Cmdr, s: str, short_title: str = '') -> Any:
+        """Put the help command."""
+        s = textwrap.dedent(s.rstrip())
+        if s.startswith('<') and not s.startswith('<<'):
+            pass  # how to do selective replace??
+        pc = g.app.pluginsController
+        table = (
+            'viewrendered3.py',
+            'viewrendered.py',
+        )
+        for name in table:
+            if pc.isLoaded(name):
+                vr = pc.loadOnePlugin(name)
+                break
+        else:
+            vr = pc.loadOnePlugin('viewrendered.py')
+        if vr:
+            kw = {
+                'c': c,
+                'flags': 'rst',
+                'kind': 'rst',
+                'label': '',
+                'msg': s,
+                'name': 'Apropos',
+                'short_title': short_title,
+                'title': '',
+            }
+            vr.show_scrolled_message(tag='Apropos', kw=kw)
+            c.bodyWantsFocus()
+            if g.unitTesting:
+                vr.close_rendering_pane(event={'c': c})
+        elif g.unitTesting:
+            pass
+        else:
+            g.es(s)
+        return vr  # For unit tests
+
+    # @+node:ekr.20110605121601.18521: *3* LeoQtGui.runAtIdle
+    def runAtIdle(self, aFunc: Callable) -> None:
+        """This can not be called in some contexts."""
+        QtCore.QTimer.singleShot(0, aFunc)
+
+    # @+node:ekr.20130930062914.16000: *3* LeoQtGui.runMainLoop
+    def runMainLoop(self) -> None:
+        """Start the Qt main loop."""
+        try:  # #2127: A crash here hard-crashes Leo: There is no main loop!
+            g.app.gui.dismiss_splash_screen()
+            c = g.app.log and g.app.log.c
+            if c and c.config.getBool('show-tips', default=False):
+                g.app.gui.show_tips(c)
+        except Exception:
+            g.es_exception()
+        if self.script:
+            log = g.app.log
+            if log:
+                g.pr('Start of batch script...\n')
+                log.c.executeScript(script=self.script)
+                g.pr('End of batch script')
+            else:
+                g.pr('no log, no commander for executeScript in LeoQtGui.runMainLoop')
+        else:
+            # This can be alarming when using Python's -i option.
+            sys.exit(self.qtApp.exec())
+
+    # @+node:ekr.20180117053546.1: *3* LeoQtGui.show_tips & helpers
+    @g.command('show-tips')
+    def show_next_tip(self, event: LeoKeyEvent = None) -> None:
+        c = g.app.log and g.app.log.c
+        if c:
+            g.app.gui.show_tips(c)
+
+    # @+<< define DialogWithCheckBox >>
+    # @+node:ekr.20220123052350.1: *4* << define DialogWithCheckBox >>
+    class DialogWithCheckBox(QtWidgets.QMessageBox):
+        def __init__(self, controller: LeoQtGui, checked: bool, tip: UserTip) -> None:
+            super().__init__()
+            c = g.app.log.c
+            self.leo_checked = True
+            self.setObjectName('TipMessageBox')
+            self.setIcon(Icon.Information)  # #2127.
+            # self.setMinimumSize(5000, 4000)
+            # Doesn't work.
+            # Prevent the dialog from jumping around when
+            # selecting multiple tips.
+            self.setWindowTitle('Leo Tips')
+            self.setText(repr(tip))
+            self.next_tip_button = self.addButton('Show Next Tip', ButtonRole.ActionRole)
+            self.addButton('Ok', ButtonRole.YesRole)
+            c.styleSheetManager.set_style_sheets(w=self)
+            # Workaround #693.
+            layout = self.layout()
+            cb = QtWidgets.QCheckBox()
+            cb.setObjectName('TipCheckbox')
+            cb.setText('Show Tip On Startup')
+            # #2383: State is a tri-state, so use the official constants.
+            state = Checked if checked else Unchecked
+            cb.setCheckState(state)  # #2127.
+            cb.stateChanged.connect(controller.onClick)
+            layout.addWidget(cb, 4, 0, -1, -1)  # type:ignore
+            if 0:  # Does not work well.
+                sizePolicy = QtWidgets.QSizePolicy
+                vSpacer = QtWidgets.QSpacerItem(200, 200, sizePolicy.Minimum, sizePolicy.Expanding)
+                layout.addItem(vSpacer)
+
+    # @-<< define DialogWithCheckBox >>
+
+    def show_tips(self, c: Cmdr) -> None:
+        if g.unitTesting:
+            return
+        from leo.core import leoTips
+
+        tm = leoTips.TipManager()
+        self.show_tips_flag = c.config.getBool('show-tips', default=False)  # 2390.
+        while True:  # QMessageBox is always a modal dialog.
+            tip = tm.get_next_tip()
+            m = self.DialogWithCheckBox(controller=self, checked=self.show_tips_flag, tip=tip)
+            try:
+                c.in_qt_dialog = True
+                m.exec()
+            finally:
+                c.in_qt_dialog = False
+            b = m.clickedButton()
+            if b != m.next_tip_button:
+                break
+
+    # @+node:ekr.20180117080131.1: *4* onButton (not used)
+    def onButton(self, m: QPushButton) -> None:
+        m.hide()
+
+    # @+node:ekr.20180117073603.1: *4* onClick
+    def onClick(self, state: str) -> None:
+        c = g.app.log.c
+        self.show_tips_flag = bool(state)
+        if c:  # #2390: The setting *has* changed.
+            c.config.setUserSetting('@bool show-tips', self.show_tips_flag)
+            c.redraw()  # #2390: Show the change immediately.
+
+    # @+node:ekr.20180127103142.1: *4* onNext (not used)
+    def onNext(self, *args: Any, **keys: Any) -> bool:
+        g.trace(args, keys)
+        return True
+
+    # @+node:ekr.20110605121601.18485: *3* LeoQtGui: Clipboard
     # @+node:ekr.20160917125946.1: *4* LeoQtGui.replaceClipboardWith
     def replaceClipboardWith(self, s: str) -> None:
         """Replace the clipboard with the string s."""
@@ -267,7 +586,7 @@ class LeoQtGui(leoGui.LeoGui):
         # Alas, returning s reopens #218.
         return
 
-    # @+node:ekr.20110605121601.18487: *3* LeoQtGui.Dialogs & panels
+    # @+node:ekr.20110605121601.18487: *3* LeoQtGui: Dialogs & panels
     # @+node:ekr.20231010004932.1: *4* LeoQtGui._save/_restore_focus
     def _save_focus(self, c):
         """
@@ -997,7 +1316,7 @@ class LeoQtGui(leoGui.LeoGui):
             c.in_qt_dialog = False
         # @-<< emergency fallback >>
 
-    # @+node:ekr.20110607182447.16456: *3* LeoQtGui.Event handlers
+    # @+node:ekr.20110607182447.16456: *3* LeoQtGui: Event handlers
     # @+node:ekr.20190824094650.1: *4* LeoQtGui.close_event
     def close_event(self, event: QEvent) -> None:
         # Save session data.
@@ -1097,7 +1416,7 @@ class LeoQtGui(leoGui.LeoGui):
         obj.installEventFilter(theFilter)
         w.ev_filter = theFilter  # Set the official ivar in w.
 
-    # @+node:ekr.20110605121601.18508: *3* LeoQtGui.Focus
+    # @+node:ekr.20110605121601.18508: *3* LeoQtGui: Focus
     # @+node:ekr.20190601055031.1: *4* LeoQtGui.ensure_commander_visible
     def ensure_commander_visible(self, c1: Cmdr) -> None:
         """
@@ -1137,70 +1456,7 @@ class LeoQtGui(leoGui.LeoGui):
             g.trace('(LeoQtGui)', name)
         w.setFocus()
 
-    # @+node:ekr.20110605121601.18510: *3* LeoQtGui.getFontFromParams
-    size_warnings: list[str] = []
-    font_ids: list[int] = []  # id's of traced fonts.
-
-    def getFontFromParams(
-        self,
-        family: str,
-        size: str,
-        slant: str,
-        weight: str,
-        defaultSize: int = 12,
-        tag='',
-    ) -> Optional[QFont]:
-        """Required to handle syntax coloring."""
-        if isinstance(size, str):
-            if size.endswith('pt'):
-                size = size[:-2].strip()
-            elif size.endswith('px'):
-                if size not in self.size_warnings:
-                    self.size_warnings.append(size)
-                    g.es(f"px ignored in font setting: {size}")
-                size = size[:-2].strip()
-        try:
-            i_size = int(size)
-        except Exception:
-            i_size = 0
-        if i_size < 1:
-            i_size = defaultSize
-        d = {
-            'black': Weight.Black,
-            'bold': Weight.Bold,
-            'demibold': Weight.DemiBold,
-            'light': Weight.Light,
-            'normal': Weight.Normal,
-        }
-        weight_val = d.get(weight.lower(), Weight.Normal)
-        italic = slant == 'italic'
-        if not family:
-            family = 'DejaVu Sans Mono'
-        try:
-            font = QtGui.QFont(family, i_size, weight_val, italic)
-            if sys.platform.startswith('linux'):
-                try:
-                    font.setHintingPreference(font.PreferFullHinting)
-                except AttributeError:
-                    pass
-            return font
-        except Exception:
-            g.es_print("exception setting font", g.callers(4))
-            g.es_print(f"family: {family}\n  size: {i_size}\n slant: {slant}\nweight: {weight}")
-            # g.es_exception() # Confusing for most users.
-            return None
-
-    # @+node:ekr.20110605121601.18511: *3* LeoQtGui.getFullVersion
-    def getFullVersion(self, c: Cmdr = None) -> str:
-        """Return the PyQt version (for signon)"""
-        try:
-            qtLevel = f"version {QtCore.qVersion()}"
-        except Exception:
-            # g.es_exception()
-            qtLevel = '<qtLevel>'
-        return f"PyQt {qtLevel}"
-
-    # @+node:ekr.20110605121601.18514: *3* LeoQtGui.Icons
+    # @+node:ekr.20110605121601.18514: *3* LeoQtGui: Icons
     # @+node:ekr.20110605121601.18515: *4* LeoQtGui.attachLeoIcon
     def attachLeoIcon(self, window: QMainWindow | QDialog) -> None:
         """Attach a Leo icon to the window."""
@@ -1308,263 +1564,7 @@ class LeoQtGui(leoGui.LeoGui):
             return image, image.height()
         return None, None
 
-    # @+node:ekr.20110605121601.18528: *3* LeoQtGui.makeScriptButton
-    def makeScriptButton(
-        self,
-        c: Cmdr,
-        args: Any = None,
-        p: Position = None,  # A node containing the script.
-        script: str = None,  # The script itself.
-        buttonText: str = None,
-        balloonText: str = 'Script Button',
-        shortcut: str = None,
-        bg: str = 'LightSteelBlue1',
-        define_g: bool = True,
-        define_name: str = '__main__',
-        silent: bool = False,  # Passed on to c.executeScript.
-    ) -> None:
-        """
-        Create a script button for the script in node p.
-        The button's text defaults to p.headString."""
-        # pylint: disable=line-too-long
-        k = c.k
-        if p and not buttonText:
-            buttonText = p.h.strip()
-        if not buttonText:
-            buttonText = 'Unnamed Script Button'
-        # @+<< create the button b >>
-        # @+node:ekr.20110605121601.18529: *4* << create the button b >>
-        iconBar = c.frame.getIconBarObject()
-        b = iconBar.add(text=buttonText)
-
-        # @-<< create the button b >>
-        # @+<< define the callbacks for b >>
-        # @+node:ekr.20110605121601.18530: *4* << define the callbacks for b >>
-        def deleteButtonCallback(
-            event: LeoKeyEvent = None, b: QPushButton = b, c: Cmdr = c
-        ) -> None:
-            if b:
-                b.pack_forget()
-            c.bodyWantsFocus()
-
-        def executeScriptCallback(
-            event: LeoKeyEvent = None,
-            b: QPushButton = b,
-            c: Cmdr = c,
-            buttonText: str = buttonText,
-            p: Position = p and p.copy(),
-            script: str = script,
-        ) -> None:
-            if c.disableCommandsMessage:
-                g.blue('', c.disableCommandsMessage)
-            else:
-                g.app.scriptDict = {'script_gnx': p.gnx}
-                c.executeScript(
-                    args=args,
-                    p=p,
-                    script=script,
-                    define_g=define_g,
-                    define_name=define_name,
-                    silent=silent,
-                )
-                # Remove the button if the script asks to be removed.
-                if g.app.scriptDict.get('removeMe'):
-                    g.es('removing', f"'{buttonText}'", 'button at its request')
-                    b.pack_forget()
-            # Do not assume the script will want to remain in this commander.
-
-        # @-<< define the callbacks for b >>
-
-        b.configure(command=executeScriptCallback)
-        if shortcut:
-            # @+<< bind the shortcut to executeScriptCallback >>
-            # @+node:ekr.20110605121601.18531: *4* << bind the shortcut to executeScriptCallback >>
-            # In LeoQtGui.makeScriptButton.
-            func = executeScriptCallback
-            if shortcut:
-                shortcut = g.KeyStroke(shortcut)  # type:ignore
-            ok = k.bindKey('button', shortcut, func, buttonText)
-            if ok:
-                g.blue('bound @button', buttonText, 'to', shortcut)
-            # @-<< bind the shortcut to executeScriptCallback >>
-        # @+<< create press-buttonText-button command >>
-        # @+node:ekr.20110605121601.18532: *4* << create press-buttonText-button command >> LeoQtGui.makeScriptButton
-        # #1121. Like sc.cleanButtonText
-        buttonCommandName = f"press-{buttonText.replace(' ', '-').strip('-')}-button"
-        #
-        # This will use any shortcut defined in an @shortcuts node.
-        k.registerCommand(buttonCommandName, executeScriptCallback, pane='button')
-        # @-<< create press-buttonText-button command >>
-
-    # @+node:ekr.20200304125716.1: *3* LeoQtGui.onContextMenu
-    def onContextMenu(self, c: Cmdr, w: QTextMixin, point: QPoint) -> None:
-        """LeoQtGui: Common context menu handling."""
-        # #1286.
-        handlers = g.tree_popup_handlers
-        if not handlers:
-            return  # #4164: The "No popup handlers" message is annoying.
-        menu = QtWidgets.QMenu(c.frame.top)  # #1995.
-        menuPos = w.mapToGlobal(point)
-        p = c.p.copy()
-        done: set[Callable] = set()
-        for handler in handlers:
-            # every handler has to add it's QActions by itself
-            if handler in done:
-                # do not run the same handler twice
-                continue
-            try:
-                handler(c, p, menu)
-                done.add(handler)
-            except Exception:
-                g.es_print('Exception executing right-click handler')
-                g.es_exception()
-        menu.popup(menuPos)
-        self._contextmenu = menu
-
-    # @+node:ekr.20170612065255.1: *3* LeoQtGui.put_help
-    def put_help(self, c: Cmdr, s: str, short_title: str = '') -> Any:
-        """Put the help command."""
-        s = textwrap.dedent(s.rstrip())
-        if s.startswith('<') and not s.startswith('<<'):
-            pass  # how to do selective replace??
-        pc = g.app.pluginsController
-        table = (
-            'viewrendered3.py',
-            'viewrendered.py',
-        )
-        for name in table:
-            if pc.isLoaded(name):
-                vr = pc.loadOnePlugin(name)
-                break
-        else:
-            vr = pc.loadOnePlugin('viewrendered.py')
-        if vr:
-            kw = {
-                'c': c,
-                'flags': 'rst',
-                'kind': 'rst',
-                'label': '',
-                'msg': s,
-                'name': 'Apropos',
-                'short_title': short_title,
-                'title': '',
-            }
-            vr.show_scrolled_message(tag='Apropos', kw=kw)
-            c.bodyWantsFocus()
-            if g.unitTesting:
-                vr.close_rendering_pane(event={'c': c})
-        elif g.unitTesting:
-            pass
-        else:
-            g.es(s)
-        return vr  # For unit tests
-
-    # @+node:ekr.20110605121601.18521: *3* LeoQtGui.runAtIdle
-    def runAtIdle(self, aFunc: Callable) -> None:
-        """This can not be called in some contexts."""
-        QtCore.QTimer.singleShot(0, aFunc)
-
-    # @+node:ekr.20130930062914.16000: *3* LeoQtGui.runMainLoop
-    def runMainLoop(self) -> None:
-        """Start the Qt main loop."""
-        try:  # #2127: A crash here hard-crashes Leo: There is no main loop!
-            g.app.gui.dismiss_splash_screen()
-            c = g.app.log and g.app.log.c
-            if c and c.config.getBool('show-tips', default=False):
-                g.app.gui.show_tips(c)
-        except Exception:
-            g.es_exception()
-        if self.script:
-            log = g.app.log
-            if log:
-                g.pr('Start of batch script...\n')
-                log.c.executeScript(script=self.script)
-                g.pr('End of batch script')
-            else:
-                g.pr('no log, no commander for executeScript in LeoQtGui.runMainLoop')
-        else:
-            # This can be alarming when using Python's -i option.
-            sys.exit(self.qtApp.exec())
-
-    # @+node:ekr.20180117053546.1: *3* LeoQtGui.show_tips & helpers
-    @g.command('show-tips')
-    def show_next_tip(self, event: LeoKeyEvent = None) -> None:
-        c = g.app.log and g.app.log.c
-        if c:
-            g.app.gui.show_tips(c)
-
-    # @+<< define DialogWithCheckBox >>
-    # @+node:ekr.20220123052350.1: *4* << define DialogWithCheckBox >>
-    class DialogWithCheckBox(QtWidgets.QMessageBox):
-        def __init__(self, controller: LeoQtGui, checked: bool, tip: UserTip) -> None:
-            super().__init__()
-            c = g.app.log.c
-            self.leo_checked = True
-            self.setObjectName('TipMessageBox')
-            self.setIcon(Icon.Information)  # #2127.
-            # self.setMinimumSize(5000, 4000)
-            # Doesn't work.
-            # Prevent the dialog from jumping around when
-            # selecting multiple tips.
-            self.setWindowTitle('Leo Tips')
-            self.setText(repr(tip))
-            self.next_tip_button = self.addButton('Show Next Tip', ButtonRole.ActionRole)
-            self.addButton('Ok', ButtonRole.YesRole)
-            c.styleSheetManager.set_style_sheets(w=self)
-            # Workaround #693.
-            layout = self.layout()
-            cb = QtWidgets.QCheckBox()
-            cb.setObjectName('TipCheckbox')
-            cb.setText('Show Tip On Startup')
-            # #2383: State is a tri-state, so use the official constants.
-            state = Checked if checked else Unchecked
-            cb.setCheckState(state)  # #2127.
-            cb.stateChanged.connect(controller.onClick)
-            layout.addWidget(cb, 4, 0, -1, -1)  # type:ignore
-            if 0:  # Does not work well.
-                sizePolicy = QtWidgets.QSizePolicy
-                vSpacer = QtWidgets.QSpacerItem(200, 200, sizePolicy.Minimum, sizePolicy.Expanding)
-                layout.addItem(vSpacer)
-
-    # @-<< define DialogWithCheckBox >>
-
-    def show_tips(self, c: Cmdr) -> None:
-        if g.unitTesting:
-            return
-        from leo.core import leoTips
-
-        tm = leoTips.TipManager()
-        self.show_tips_flag = c.config.getBool('show-tips', default=False)  # 2390.
-        while True:  # QMessageBox is always a modal dialog.
-            tip = tm.get_next_tip()
-            m = self.DialogWithCheckBox(controller=self, checked=self.show_tips_flag, tip=tip)
-            try:
-                c.in_qt_dialog = True
-                m.exec()
-            finally:
-                c.in_qt_dialog = False
-            b = m.clickedButton()
-            if b != m.next_tip_button:
-                break
-
-    # @+node:ekr.20180117080131.1: *4* onButton (not used)
-    def onButton(self, m: QPushButton) -> None:
-        m.hide()
-
-    # @+node:ekr.20180117073603.1: *4* onClick
-    def onClick(self, state: str) -> None:
-        c = g.app.log.c
-        self.show_tips_flag = bool(state)
-        if c:  # #2390: The setting *has* changed.
-            c.config.setUserSetting('@bool show-tips', self.show_tips_flag)
-            c.redraw()  # #2390: Show the change immediately.
-
-    # @+node:ekr.20180127103142.1: *4* onNext (not used)
-    def onNext(self, *args: Any, **keys: Any) -> bool:
-        g.trace(args, keys)
-        return True
-
-    # @+node:ekr.20111215193352.10220: *3* LeoQtGui.Splash Screen
+    # @+node:ekr.20111215193352.10220: *3* LeoQtGui: Splash Screen
     # @+node:ekr.20110605121601.18479: *4* LeoQtGui.createSplashScreen
     def createSplashScreen(self) -> QWidget:
         """Put up a splash screen with Leo's logo."""
@@ -1628,7 +1628,7 @@ class LeoQtGui(leoGui.LeoGui):
             # gui.splashScreen.deleteLater()
             gui.splashScreen = None
 
-    # @+node:ekr.20140825042850.18411: *3* LeoQtGui:Utils...
+    # @+node:ekr.20140825042850.18411: *3* LeoQtGui: Utils
     # @+node:ekr.20240519114809.1: *4* LeoQtGui._self_and_subtree
     def _self_and_subtree(self, qt_obj: QObject) -> Generator:
         """Yield w and all of w's descendants."""
@@ -1707,7 +1707,7 @@ class LeoQtGui(leoGui.LeoGui):
             else ''
         )  # fmt: skip
 
-    # @+node:ekr.20190819091957.1: *3* LeoQtGui:Widget constructors
+    # @+node:ekr.20190819091957.1: *3* LeoQtGui: Widget constructors
     # @+node:ekr.20190819094016.1: *4* LeoQtGui.createButton
     def createButton(self, parent: QWidget, name: str, label: str) -> QPushButton:
         w = QtWidgets.QPushButton(parent)
@@ -1809,7 +1809,7 @@ class StyleClassManager:
     style_sclass_property = 'style_class'  # name of QObject property for styling
 
     # @+others
-    # @+node:tbrown.20150724090431.2: *3* update_view
+    # @+node:tbrown.20150724090431.2: *3* StyleClassManager.update_view
     def update_view(self, w: QTextMixin) -> None:
         """update_view - Make Qt apply w's style
 
@@ -1818,7 +1818,7 @@ class StyleClassManager:
 
         w.setStyleSheet("/* */")  # forces visual update
 
-    # @+node:tbrown.20150724090431.3: *3* add_sclass
+    # @+node:tbrown.20150724090431.3: *3* StyleClassManager.add_sclass
     def add_sclass(self, w: QTextMixin, prop: str) -> None:
         """Add style class to QWidget w"""
         if not prop:
@@ -1828,12 +1828,12 @@ class StyleClassManager:
             props.append(prop)
             self.set_sclasses(w, props)
 
-    # @+node:tbrown.20150724090431.4: *3* clear_sclasses
+    # @+node:tbrown.20150724090431.4: *3* StyleClassManager.clear_sclasses
     def clear_sclasses(self, w: QTextMixin) -> None:
         """Remove all style classes from QWidget w"""
         w.setProperty(self.style_sclass_property, '')
 
-    # @+node:tbrown.20150724090431.5: *3* has_sclass
+    # @+node:tbrown.20150724090431.5: *3* StyleClassManager.has_sclass
     def has_sclass(self, w: QTextMixin, prop: str) -> bool:
         """Check for style class or list of classes prop on QWidget w"""
         if not prop:
@@ -1845,7 +1845,7 @@ class StyleClassManager:
             ans = [i in props for i in prop]
         return all(ans)
 
-    # @+node:tbrown.20150724090431.6: *3* remove_sclass
+    # @+node:tbrown.20150724090431.6: *3* StyleClassManager.remove_sclass
     def remove_sclass(self, w: QTextMixin, prop: str) -> None:
         """Remove style class or list of classes prop from QWidget w"""
         if not prop:
@@ -1858,12 +1858,12 @@ class StyleClassManager:
 
         self.set_sclasses(w, props)
 
-    # @+node:tbrown.20150724090431.8: *3* sclasses
+    # @+node:tbrown.20150724090431.8: *3* StyleClassManager.sclasses
     def sclasses(self, w: QTextMixin) -> list[str]:
         """return list of style classes for QWidget w"""
         return str(w.property(self.style_sclass_property) or '').split()
 
-    # @+node:tbrown.20150724090431.9: *3* set_sclasses
+    # @+node:tbrown.20150724090431.9: *3* StyleClassManager.set_sclasses
     def set_sclasses(self, w: QTextMixin, classes: list[str]) -> None:
         """Set style classes for QWidget w to list in classes"""
         w.setProperty(self.style_sclass_property, f" {' '.join(set(classes))} ")
@@ -1876,8 +1876,7 @@ class StyleSheetManager:
     """A class to manage (reload) Qt style sheets."""
 
     # @+others
-    # @+node:ekr.20180316091829.1: *3*  ssm.Birth
-    # @+node:ekr.20140912110338.19371: *4* ssm.__init__
+    # @+node:ekr.20140912110338.19371: *3*  StyleSheetManager.__init__
     def __init__(self, c: Cmdr, safe: bool = False) -> None:
         """Ctor the ReloadStyle class."""
         self.c = c
@@ -1890,7 +1889,7 @@ class StyleSheetManager:
         # g.es("No '@settings' node found in outline.  See:")
         # g.es("https://leo-editor.github.io/leo-editor/tutorial-basics.html#configuring-leo")
 
-    # @+node:ekr.20170222051716.1: *4* ssm.reload_settings
+    # @+node:ekr.20170222051716.1: *3*  StyleSheetManager.reload_settings
     def reload_settings(self, sheet: str = None) -> None:
         """
         Recompute and apply the stylesheet.
@@ -1905,8 +1904,8 @@ class StyleSheetManager:
 
     reloadSettings = reload_settings
 
-    # @+node:ekr.20180316091500.1: *3* ssm.Paths...
-    # @+node:ekr.20180316065346.1: *4* ssm.compute_icon_directories
+    # @+node:ekr.20180316091500.1: *3* StyleSheetManager: Paths...
+    # @+node:ekr.20180316065346.1: *4* StyleSheetManager.compute_icon_directories
     def compute_icon_directories(self) -> list[str]:
         """
         Return a list of *existing* directories that could contain theme-related icons.
@@ -1931,7 +1930,7 @@ class StyleSheetManager:
                 table.append(directory2)
         return [g.os_path_normslashes(z) for z in table if g.os_path_exists(z)]
 
-    # @+node:ekr.20180315101238.1: *4* ssm.compute_theme_directories
+    # @+node:ekr.20180315101238.1: *4* StyleSheetManager.compute_theme_directories
     def compute_theme_directories(self) -> list[str]:
         """
         Return a list of *existing* directories that could contain theme .leo files.
@@ -1944,7 +1943,7 @@ class StyleSheetManager:
         # All entries are known to exist and have normalized slashes.
         return table
 
-    # @+node:ekr.20170307083738.1: *4* ssm.find_icon_path
+    # @+node:ekr.20170307083738.1: *4* StyleSheetManager.find_icon_path
     def find_icon_path(self, setting: str) -> Optional[str]:
         """Return the path to the open/close indicator icon."""
         c = self.c
@@ -1958,8 +1957,8 @@ class StyleSheetManager:
         g.es_print('no icon found for:', setting)
         return None
 
-    # @+node:ekr.20180316091920.1: *3* ssm.Settings
-    # @+node:ekr.20110605121601.18176: *4* ssm.default_style_sheet
+    # @+node:ekr.20180316091920.1: *3* StyleSheetManager: Settings
+    # @+node:ekr.20110605121601.18176: *4* StyleSheetManager.default_style_sheet
     def default_style_sheet(self) -> str:
         """Return a reasonable default style sheet."""
         # Valid color names: http://www.w3.org/TR/SVG/types.html#ColorKeywords
@@ -1984,13 +1983,13 @@ class StyleSheetManager:
     }
     '''
 
-    # @+node:ekr.20140916170549.19551: *4* ssm.get_data
+    # @+node:ekr.20140916170549.19551: *4* StyleSheetManager.get_data
     def get_data(self, setting: str) -> list:
         """Return the value of the @data node for the setting."""
         c = self.c
         return c.config.getData(setting, strip_comments=False, strip_data=False) or []
 
-    # @+node:ekr.20140916170549.19552: *4* ssm.get_style_sheet_from_settings
+    # @+node:ekr.20140916170549.19552: *4* StyleSheetManager.get_style_sheet_from_settings
     def get_style_sheet_from_settings(self) -> str:
         """
         Scan for themes or @data qt-gui-plugin-style-sheet nodes.
@@ -2004,14 +2003,14 @@ class StyleSheetManager:
         sheet = self.expand_css_constants(sheet)
         return sheet
 
-    # @+node:ekr.20140915194122.19476: *4* ssm.print_style_sheet
+    # @+node:ekr.20140915194122.19476: *4* StyleSheetManager.print_style_sheet
     def print_style_sheet(self) -> None:
         """Show the top-level style sheet."""
         w = self.get_master_widget()
         sheet = w.styleSheet()
         print(f"style sheet for: {w}...\n\n{sheet}")
 
-    # @+node:ekr.20110605121601.18175: *4* ssm.set_style_sheets
+    # @+node:ekr.20110605121601.18175: *4* StyleSheetManager.set_style_sheets
     def set_style_sheets(self, all: bool = True, top: QWidget = None, w: QWidget = None) -> None:
         """Set the master style sheet for all widgets using config settings."""
         c = self.c
@@ -2045,9 +2044,9 @@ class StyleSheetManager:
                 w = self.get_master_widget(top)
             w.setStyleSheet(sheet)
 
-    # @+node:ekr.20180316091943.1: *3* ssm.Stylesheet
+    # @+node:ekr.20180316091943.1: *3* StyleSheetManager: Stylesheets
     # Computations on stylesheets themselves.
-    # @+node:ekr.20140915062551.19510: *4* ssm.expand_css_constants & helpers
+    # @+node:ekr.20140915062551.19510: *4* StyleSheetManager.expand_css_constants & helpers
     css_warning_given = False  # For do_pass.
 
     def expand_css_constants(self, sheet: str, settingsDict: g.SettingsDict = None) -> str:
@@ -2079,7 +2078,7 @@ class StyleSheetManager:
         sheet = sheet.replace('\\\n', '')  # join lines ending in \
         return sheet
 
-    # @+node:ekr.20150617085045.1: *5* ssm.adjust_sizes
+    # @+node:ekr.20150617085045.1: *5* StyleSheetManager.adjust_sizes
     def adjust_sizes(self, settingsDict: dict) -> tuple[dict, Any]:
         """Adjust constants to reflect c._style_deltas."""
         c = self.c
@@ -2103,7 +2102,7 @@ class StyleSheetManager:
                 constants['@' + delta] = f"{size}{units}"
         return constants, deltas
 
-    # @+node:ekr.20180316093159.1: *5* ssm.do_pass
+    # @+node:ekr.20180316093159.1: *5* StyleSheetManager.do_pass
     def do_pass(
         self,
         constants: dict,
@@ -2155,7 +2154,7 @@ class StyleSheetManager:
                 # So rely on whoever calls .setStyleSheet() to do the right thing.
         return sheet
 
-    # @+node:tbrown.20131120093739.27085: *5* ssm.find_constants_referenced
+    # @+node:tbrown.20131120093739.27085: *5* StyleSheetManager.find_constants_referenced
     def find_constants_referenced(self, text: str) -> list[str]:
         """find_constants - Return a list of constants referenced in the supplied text,
         constants match::
@@ -2173,7 +2172,7 @@ class StyleSheetManager:
                 aList.remove(s)
         return aList
 
-    # @+node:ekr.20150617090104.1: *5* ssm.replace_indicator_constants
+    # @+node:ekr.20150617090104.1: *5* StyleSheetManager.replace_indicator_constants
     def replace_indicator_constants(self, sheet: str) -> str:
         """
         In the stylesheet, replace (if they exist)::
@@ -2211,7 +2210,7 @@ class StyleSheetManager:
                 sheet = sheet.replace(old, new)
         return sheet
 
-    # @+node:ekr.20180320054305.1: *5* ssm.resolve_urls
+    # @+node:ekr.20180320054305.1: *5* StyleSheetManager.resolve_urls
     def resolve_urls(self, sheet: str) -> str:
         """Resolve all relative url's so they use absolute paths."""
         trace = 'themes' in g.app.debug
@@ -2255,7 +2254,7 @@ class StyleSheetManager:
             sheet = sheet.replace(old, new)
         return sheet
 
-    # @+node:ekr.20140912110338.19372: *4* ssm.munge
+    # @+node:ekr.20140912110338.19372: *4* StyleSheetManager.munge
     def munge(self, stylesheet: str) -> str:
         """
         Return the stylesheet without extra whitespace.
@@ -2268,7 +2267,7 @@ class StyleSheetManager:
         )
         return s.rstrip()  # Don't care about ending newline.
 
-    # @+node:tom.20220310224019.1: *4* ssm.rescale_sizes
+    # @+node:tom.20220310224019.1: *4* StyleSheetManager.rescale_sizes
     def rescale_sizes(self, sheet: str, factor: float) -> str:
         """
         # @+<< docstring >>
@@ -2320,8 +2319,8 @@ class StyleSheetManager:
         newsheet = re.sub(RE, scale, sheet)
         return newsheet
 
-    # @+node:ekr.20180316092116.1: *3* ssm.Widgets
-    # @+node:ekr.20140913054442.19390: *4* ssm.get_master_widget
+    # @+node:ekr.20180316092116.1: *3* StyleSheetManager: Widgets
+    # @+node:ekr.20140913054442.19390: *4* StyleSheetManager.get_master_widget
     def get_master_widget(self, top: QWidget = None) -> QWidget:
         """
         Carefully return the master widget.
@@ -2332,7 +2331,7 @@ class StyleSheetManager:
         master = top.leo_master or top
         return master
 
-    # @+node:ekr.20140913054442.19391: *4* ssm.set selected_style_sheet
+    # @+node:ekr.20140913054442.19391: *4* StyleSheetManager.set selected_style_sheet
     def set_selected_style_sheet(self) -> None:
         """For manual testing: update the stylesheet using c.p.b."""
         if not g.unitTesting:

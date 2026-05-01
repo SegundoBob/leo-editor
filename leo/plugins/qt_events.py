@@ -73,7 +73,7 @@ class LossageData:
 # @+node:ekr.20141028061518.17: ** class LeoQtEventFilter
 class LeoQtEventFilter(QtCore.QObject):
     # @+others
-    # @+node:ekr.20110605121601.18539: *3* LeoQtEventFilter.__init__
+    # @+node:ekr.20110605121601.18539: *3*  LeoQtEventFilter.__init__
     def __init__(self, c, w, tag=''):
         """Ctor for LeoQtEventFilter class."""
         super().__init__()
@@ -387,7 +387,7 @@ class LeoQtEventFilter(QtCore.QObject):
         mods = [b for a, b in mod_table if (modifiers & a)]
         return mods
 
-    # @+node:ekr.20140907103315.18767: *3* LeoQtEventFilter:Tracing
+    # @+node:ekr.20140907103315.18767: *3* LeoQtEventFilter: Tracing
     # @+node:ekr.20190922075339.1: *4* LeoQtEventFilter.traceKeys
     def traceKeys(self, obj, event):
         if g.unitTesting:

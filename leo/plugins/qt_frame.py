@@ -1657,7 +1657,7 @@ class LeoQtBody(leoFrame.LeoBody):
     """A class that represents the body pane of a Qt window."""
 
     # @+others
-    # @+node:ekr.20110605121601.18182: *3* LeoQtBody.ctor & helpers
+    # @+node:ekr.20110605121601.18182: *3*  LeoQtBody.__init__ & helpers
     def __init__(self, frame: LeoQtFrame) -> None:
         """Ctor for LeoQtBody class."""
         # Call the base class constructor.
@@ -1912,7 +1912,7 @@ class LeoQtFrame(leoFrame.LeoFrame):
         """A kludge: called to enable text changed events."""
         self.initComplete = True
 
-    # @+node:ekr.20110605121601.18274: *3* LeoQtFrame.Configuration
+    # @+node:ekr.20110605121601.18274: *3* LeoQtFrame: Configuration
     # @+node:ekr.20240510092709.1: *4* LeoQtFrame.compute_ratio & compute_secondary_ratio
     # @+node:ekr.20240510093119.1: *5* LeoQtFrame.compute_ratio
     def compute_ratio(self) -> float:
@@ -2035,7 +2035,7 @@ class LeoQtFrame(leoFrame.LeoFrame):
         s2 = s - s1
         splitter.setSizes([s1, s2])
 
-    # @+node:ekr.20110605121601.18285: *3* LeoQtFrame.Event handlers
+    # @+node:ekr.20110605121601.18285: *3* LeoQtFrame: Event handlers
     # @+node:ekr.20110605121601.18286: *4* LeoQtFrame.OnCloseLeoEvent
     # Called from quit logic and when user closes the window.
     # Returns True if the close happened.
@@ -2059,7 +2059,7 @@ class LeoQtFrame(leoFrame.LeoFrame):
     def OnActivateTree(self, event: QEvent = None) -> None:
         pass
 
-    # @+node:ekr.20110605121601.18293: *3* LeoQtFrame.Gui-dependent commands
+    # @+node:ekr.20110605121601.18293: *3* LeoQtFrame: Gui-dependent commands
     # @+node:ekr.20110605121601.18301: *4* LeoQtFrame.Window Menu...
     # @+node:ekr.20110605121601.18302: *5* LeoQtFrame.toggleActivePane
     @frame_cmd('toggle-active-pane')
@@ -2162,7 +2162,7 @@ class LeoQtFrame(leoFrame.LeoFrame):
             else:
                 w.setWindowState(WindowState.WindowMaximized)
 
-    # @+node:ekr.20110605121601.18311: *3* LeoQtFrame.Qt bindings...
+    # @+node:ekr.20110605121601.18311: *3* LeoQtFrame: Qt bindings
     # @+node:ekr.20190611053431.1: *4* LeoQtFrame.bringToFront
     def bringToFront(self) -> None:
         if 'size' in g.app.debug:
@@ -2322,7 +2322,7 @@ class LeoQtLog(leoFrame.LeoLog):
     def getName(self) -> str:
         return 'log'  # Required for proper pane bindings.
 
-    # @+node:ekr.20150717102728.1: *3* LeoQtLog: clear-log & dump-log
+    # @+node:ekr.20150717102728.1: *3* LeoQtLog.clear-log & dump-log
     @log_cmd('clear-log')
     @log_cmd('log-clear')
     def clearLog(self, event: LeoKeyEvent = None) -> None:
@@ -2350,12 +2350,11 @@ class LeoQtLog(leoFrame.LeoLog):
         g.printObj([dump(z) for z in w.toPlainText().split('\n')], tag=f"{fn}: w.toPlainText")
         g.printObj([f"{dump(z)}<br />" for z in w.toHtml().split('<br />')], tag=f"{fn}: w.toHtml")
 
-    # @+node:ekr.20110605121601.18333: *3* LeoQtLog.color tab stuff
+    # @+node:ekr.20110605121601.18333: *3* LeoQtLog.createColorPicker
     def createColorPicker(self, tabName: str) -> None:
         g.warning('color picker not ready for qt')
 
-    # @+node:ekr.20110605121601.18334: *3* LeoQtLog.font tab stuff
-    # @+node:ekr.20110605121601.18335: *4* LeoQtLog.createFontPicker
+    # @+node:ekr.20110605121601.18335: *3* LeoQtLog.createFontPicker
     def createFontPicker(self, tabName: str) -> None:
         # log = self
         font, ok = QtWidgets.QFontDialog.getFont()
@@ -2395,7 +2394,7 @@ class LeoQtLog(leoFrame.LeoLog):
             if val3:
                 g.es(key3, val3, tabName='Fonts')
 
-    # @+node:ekr.20110605121601.18339: *4* LeoQtLog.hideFontTab
+    # @+node:ekr.20110605121601.18339: *3* LeoQtLog.hideFontTab
     def hideFontTab(self, event: LeoKeyEvent = None) -> None:
         c = self.c
         c.frame.log.selectTab('Log')
@@ -2552,7 +2551,7 @@ class LeoQtLog(leoFrame.LeoLog):
         sb.setSliderPosition(pos)
         w.repaint()  # Slow, but essential.
 
-    # @+node:ekr.20110605121601.18324: *3* LeoQtLog.Tab
+    # @+node:ekr.20110605121601.18324: *3* LeoQtLog: Tab
     # @+node:ekr.20110605121601.18325: *4* LeoQtLog.clearTab
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
         w = self.logDict.get(tabName)
