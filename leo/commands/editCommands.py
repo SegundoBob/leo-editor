@@ -644,7 +644,7 @@ class EditCommandsClass(BaseEditCommandsClass):
 
     def tabifyHelper(self, event: LeoKeyEvent, which: str) -> None:
         w = event.w if event else None
-        if not w or not w.hasSelection():
+        if not g.isTextWrapper(w):
             return
         self.beginCommand(w, undoType=which)
         i, end = w.getSelectionRange()
