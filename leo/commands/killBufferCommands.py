@@ -72,7 +72,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     def backwardKillSentence(self, event: LeoKeyEvent) -> None:
         """Kill the previous sentence."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -185,7 +185,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         # Extend (frm, to) if it spans a line.
         i, j = w.getSelectionRange()
@@ -213,7 +213,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     ) -> None:
         """A helper method for kill-paragraph commands."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.get(frm, to)
         if undoType:
@@ -230,7 +230,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     def killToEndOfLine(self, event: LeoKeyEvent) -> None:
         """Kill from the cursor to end of the line."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -254,7 +254,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     def killLine(self, event: LeoKeyEvent) -> None:
         """Kill the line containing the cursor."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -275,7 +275,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     def killRegion(self, event: LeoKeyEvent) -> None:
         """Kill the text selection."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         i, j = w.getSelectionRange()
         if i == j:
@@ -291,7 +291,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     def killRegionSave(self, event: LeoKeyEvent) -> None:
         """Add the selected text to the kill ring, but do not delete it."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         i, j = w.getSelectionRange()
         if i == j:
@@ -305,7 +305,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
     def killSentence(self, event: LeoKeyEvent) -> None:
         """Kill the sentence containing the cursor."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -325,7 +325,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         """Kill whitespace."""
         ws = ''
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         i = j = ins = w.getInsertPoint()
@@ -364,7 +364,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         current = c.p
         if not current:
@@ -405,7 +405,7 @@ class KillBufferCommandsClass(BaseEditCommandsClass):
         """Kill characters from the insertion point to a given character."""
         k = self.c.k
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         state = k.getState('zap-to-char')
         if state == 0:

@@ -2575,7 +2575,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """
         c, k = self.c, self.c.k
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         c.widgetWantsFocusNow(w)
         # Put the request in the proper range.
@@ -2590,7 +2590,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.305: *5* ec.moveWithinLineHelper
     def moveWithinLineHelper(self, event: LeoKeyEvent, spot: str, extend: bool) -> None:
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         # Bug fix: 2012/02/28: don't use the Qt end-line logic:
         # it apparently does not work for wrapped lines.
@@ -2640,7 +2640,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         c.widgetWantsFocusNow(w)
         s = w.getAllText()
@@ -2759,7 +2759,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         or the start of the line if already there.
         """
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -2781,7 +2781,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def backToIndentation(self, event: LeoKeyEvent) -> None:
         """Position the point at the first non-blank character on the line."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -2850,7 +2850,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.293: *5* ec.moveUpOrDownHelper
     def moveUpOrDownHelper(self, event: LeoKeyEvent, direction: str, extend: bool) -> None:
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         ins = w.getInsertPoint()
         s = w.getAllText()
@@ -2896,7 +2896,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.295: *5* ec.moveToBufferHelper
     def moveToBufferHelper(self, event: LeoKeyEvent, spot: str, extend: bool) -> None:
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         if hasattr(w, 'leoMoveCursorHelper'):
             extend = extend or self.extendMode
@@ -2934,7 +2934,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.297: *5* ec.moveToCharacterHelper
     def moveToCharacterHelper(self, event: LeoKeyEvent, spot: str, extend: bool) -> None:
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         if hasattr(w, 'leoMoveCursorHelper'):
             extend = extend or self.extendMode
@@ -2996,7 +2996,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         if hasattr(w, 'leoMoveCursorHelper'):
             w.leoMoveCursorHelper(kind='exchange', extend=False)
@@ -3015,7 +3015,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def extendToLine(self, event: LeoKeyEvent) -> None:
         """Select the line at the cursor."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         n = len(s)
@@ -3033,7 +3033,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def extendToSentence(self, event: LeoKeyEvent) -> None:
         """Select the line at the cursor."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         s = w.getAllText()
         n = len(s)
@@ -3054,7 +3054,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     ) -> tuple[int, int]:
         """Compute the word at the cursor. Select it if select arg is True."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return 0, 0  # pragma: no cover (defensive)
         s = w.getAllText()
         n = len(s)
@@ -3142,7 +3142,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def movePastCloseHelper(self, event: LeoKeyEvent, extend: bool) -> None:
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         c.widgetWantsFocusNow(w)
         s = w.getAllText()
@@ -3208,7 +3208,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     ) -> None:  # kind in back/forward.
         """Move the cursor up/down one page, possibly extending the selection."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         linesPerPage = 15  # To do.
         if hasattr(w, 'leoMoveCursorHelper'):
@@ -3259,7 +3259,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.309: *5* ec.backwardParagraphHelper
     def backwardParagraphHelper(self, event: LeoKeyEvent, extend: bool) -> None:
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         s = w.getAllText()
         i, j = w.getSelectionRange()
@@ -3284,7 +3284,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514063305.310: *5* ec.forwardParagraphHelper
     def forwardParagraphHelper(self, event: LeoKeyEvent, extend: bool) -> None:
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -3343,7 +3343,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Select all text."""
         k = self.c.k
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         # Bug fix 2013/12/13: Special case the minibuffer.
         if w == k.w:
@@ -3376,7 +3376,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def backSentenceHelper(self, event: LeoKeyEvent, extend: bool) -> None:
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         c.widgetWantsFocusNow(w)
         s = w.getAllText()
@@ -3442,7 +3442,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def forwardSentenceHelper(self, event: LeoKeyEvent, extend: bool) -> None:
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         c.widgetWantsFocusNow(w)
         s = w.getAllText()
@@ -3520,7 +3520,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Kill the previous paragraph."""
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         self.beginCommand(w, undoType='backward-kill-paragraph')
         try:
@@ -3567,7 +3567,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def fillParagraph(self, event: LeoKeyEvent) -> None:
         """Fill the selected paragraph"""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         # Clear the selection range.
         i, j = w.getSelectionRange()
@@ -3580,7 +3580,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Kill the present paragraph."""
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         self.beginCommand(w, undoType='kill-paragraph')
         try:
@@ -3596,7 +3596,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def extendToParagraph(self, event: LeoKeyEvent) -> None:
         """Select the paragraph surrounding the cursor."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = w.getInsertPoint()
@@ -3665,7 +3665,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """Print the number of lines and characters in the selected text."""
         k = self.c.k
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         txt = w.getSelectedText()
         lines = 1
@@ -3685,7 +3685,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         sel_1, sel_2 = w.getSelectionRange()
@@ -3729,7 +3729,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         s = w.getAllText()
         sel_1, sel_2 = w.getSelectionRange()
@@ -4028,7 +4028,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def transposeLines(self, event: LeoKeyEvent) -> None:
         """Transpose the line containing the cursor with the preceding line."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         ins = w.getInsertPoint()
         s = w.getAllText()
@@ -4060,7 +4060,7 @@ class EditCommandsClass(BaseEditCommandsClass):
         transposes into ‘BAR, FOO’.
         """
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         self.beginCommand(w, undoType='transpose-words')
         s = w.getAllText()
@@ -4088,7 +4088,7 @@ class EditCommandsClass(BaseEditCommandsClass):
     def transposeCharacters(self, event: LeoKeyEvent) -> None:
         """Swap the characters at the cursor."""
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return  # pragma: no cover (defensive)
         self.beginCommand(w, undoType='swap-characters')
         s = w.getAllText()
