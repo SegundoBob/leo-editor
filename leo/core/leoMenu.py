@@ -121,7 +121,7 @@ class LeoMenu:
     def error(self, s: str) -> None:
         g.error('', s)
 
-    # @+node:ekr.20031218072017.3781: *3* LeoMenu.Gui-independent menu routines
+    # @+node:ekr.20031218072017.3781: *3* LeoMenu: Gui-independent menu routines
     # @+node:ekr.20060926213642: *4* LeoMenu.capitalizeMinibufferMenuName
     def capitalizeMinibufferMenuName(self, s: str, removeHyphens: bool) -> str:
         result = []
@@ -273,7 +273,7 @@ class LeoMenu:
             return first != last
         return False
 
-    # @+node:ekr.20051022053758.1: *3* LeoMenu.Helpers
+    # @+node:ekr.20051022053758.1: *3* LeoMenu: Helpers
     # @+node:ekr.20031218072017.3783: *4* LeoMenu.canonicalize*
     def canonicalizeMenuName(self, name: str) -> str:
         # #1121 & #1188. Allow Chinese characters in command names
@@ -657,7 +657,7 @@ class LeoMenu:
         cmn = self.canonicalizeMenuName(menuName)
         del self.menus[cmn]
 
-    # @+node:ekr.20031218072017.3808: *3* LeoMenu.Must be overridden in menu subclasses
+    # @+node:ekr.20031218072017.3808: *3* LeoMenu: Must be overridden in menu subclasses
     # @+node:ekr.20031218072017.3809: *4* LeoMenu.9 Routines with Tk spellings
     def add_cascade(self, parent: Widget, label: str, menu: QtMenuWrapper, underline: int) -> None:
         pass

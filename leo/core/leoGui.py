@@ -38,7 +38,7 @@ class LeoGui:
     """
 
     # @+others
-    # @+node:ekr.20031218072017.3722: *3* LeoGui.__init__
+    # @+node:ekr.20031218072017.3722: *3*  LeoGui.__init__
     def __init__(self, guiName: str) -> None:
         """Ctor for the LeoGui class."""
         self.active = False  # Used only by qt_gui.
@@ -342,7 +342,7 @@ class LeoKeyEvent:
     __slots__ = ('c', 'char', 'stroke', 'w', 'x', 'x_root', 'y', 'y_root')
 
     # @+others
-    # @+node:ekr.20110605121601.18846: *3* LeoKeyEvent.__init__
+    # @+node:ekr.20110605121601.18846: *3*  LeoKeyEvent.__init__
     def __init__(
         self,
         c: Cmdr,
@@ -442,7 +442,7 @@ class LeoKeyEvent:
             if not name.startswith(('body', 'canvas', 'head', 'mini')):
                 print(f"{tag} Unusual w: {w.__class__.__name__} name: {name}")
 
-    # @+node:ekr.20140907103315.18774: *3* LeoKeyEvent.__repr__
+    # @+node:ekr.20140907103315.18774: *3*  LeoKeyEvent.__repr__
     def __repr__(self) -> str:
         d = {'c': self.c.shortFileName()}
         for ivar in ('char', 'stroke', 'w'):
@@ -470,7 +470,7 @@ class NullGui(LeoGui):
     """Null gui class."""
 
     # @+others
-    # @+node:ekr.20031218072017.2225: *3* NullGui.__init__
+    # @+node:ekr.20031218072017.2225: *3*  NullGui.__init__
     def __init__(self, guiName: str = 'nullGui') -> None:
         """ctor for the NullGui class."""
         super().__init__(guiName)
@@ -646,7 +646,7 @@ class NullGui(LeoGui):
         """Return True if w is a Text widget suitable for text-oriented commands."""
         return issubclass(w.__class__, StringTextWrapper)
 
-    # @+node:ekr.20070301172456: *3* NullGui.panels
+    # @+node:ekr.20070301172456: *3* NullGui: panels
     def createComparePanel(self, c: Cmdr) -> None:
         """Create Compare panel."""
 
@@ -716,7 +716,7 @@ class StringFindTabManager:
     """A string-based FindTabManager class for unit tests."""
 
     # @+others
-    # @+node:ekr.20210221130549.2: *3*  sftm.ctor
+    # @+node:ekr.20210221130549.2: *3*  sftm.__init__
 
     def __init__(self, c: Cmdr) -> None:
         """Ctor for the FindTabManager class."""
@@ -864,7 +864,7 @@ class StringFindTabManager:
         if not w.isChecked():
             w.toggle()
 
-    # @+node:ekr.20210221130549.3: *3* sftm.text getters/setters
+    # @+node:ekr.20210221130549.3: *3* sftm: getters/setters
     def get_find_text(self) -> str:
         s = self.find_findbox.text()
         if s and s[-1] in ('\r', '\n'):
