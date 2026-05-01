@@ -1021,18 +1021,15 @@ class LeoQtTree(leoFrame.LeoTree):
     def getWrapper(self, e: QLineEdit, item: QTreeWidgetItem) -> QHeadlineWrapper:
         """Return the QHeadlineWrapper that wraps e (a QLineEdit)."""
         c = self.c
-        if e:
-            wrapper = self.editWidgetsDict.get(e)
-            if wrapper:
-                pass
-            else:
-                if item:
-                    # 2011/02/12: item can be None.
-                    wrapper = qt_text.QHeadlineWrapper(c, item, name='head', widget=e)
-                    self.editWidgetsDict[e] = wrapper
+        if not e:
+            return None
+        if wrapper := self.editWidgetsDict.get(e):
             return wrapper
-        g.trace('no e')
-        return None
+        if not item:
+            return None
+        wrapper = qt_text.QHeadlineWrapper(c, item, name='head', widget=e)
+        self.editWidgetsDict[e] = wrapper
+        return wrapper
 
     # @+node:ekr.20110605121601.18429: *4* LeoQtTree.nthChildItem
     def nthChildItem(self, n: int, parent_item: QTreeWidgetItem) -> QTreeWidgetItem:
