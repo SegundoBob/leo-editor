@@ -55,7 +55,7 @@ from leo.core.leoQt import (
 )
 from leo.plugins import qt_events, qt_text
 from leo.plugins.mod_scripting import build_rclick_tree
-from leo.plugins.qt_text import QTextEditWrapper
+from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper
 from leo.plugins.qt_tree import LeoQtTree
 from leo.plugins.qt_layout import LayoutCacheWidget
 
@@ -356,6 +356,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
         ftm = fc.ftm
         assert ftm.find_findbox is None
         ftm.find_findbox = w = dw.createLineEdit(parent, 'findPattern', disabled=fc.expert_mode)
+        w.leo_wrapper = QLineEditWrapper(widget=w, name='find-wrapper', c=c)
         lab2 = self.createLabel(parent, 'findLabel', 'Find:')
         grid.addWidget(lab2, row, 0)
         grid.addWidget(w, row, 1, 1, 2)
@@ -370,6 +371,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
         ftm = fc.ftm
         assert ftm.find_replacebox is None
         ftm.find_replacebox = w = dw.createLineEdit(parent, 'findChange', disabled=fc.expert_mode)
+        w.leo_wrapper = QLineEditWrapper(widget=w, name='replace-wrapper', c=c)
         lab3 = dw.createLabel(parent, 'changeLabel', 'Replace:')
         grid.addWidget(lab3, row, 0)
         grid.addWidget(w, row, 1, 1, 2)
@@ -691,7 +693,9 @@ class DynamicWindow(QtWidgets.QMainWindow):
         return w
 
     # @+node:ekr.20110605121601.18159: *4* dw.createLineEdit
-    def createLineEdit(self, parent: QWidget, name: str, disabled: bool = True) -> QWidget:
+    def createLineEdit(
+        self, parent: QWidget, name: str, disabled: bool = True
+    ) -> QtWidgets.QLineEdit:
         w = QtWidgets.QLineEdit(parent)
         w.setObjectName(name)
         w.leo_disabled = disabled  # Inject the ivar.
