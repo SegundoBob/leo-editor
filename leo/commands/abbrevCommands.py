@@ -264,7 +264,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c, p = self.c, self.c.p
         w = event.w if event else None
         w_name = g.app.gui.widget_name(w)
-        if not w:
+        if not g.isTextWrapper(w):
             if trace and verbose:
                 g.trace('no w')
             return False
@@ -650,7 +650,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """
         c, p = self.c, self.c.p
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = ins1 = w.getInsertPoint()
@@ -685,7 +685,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         all possible completions if the prefix is the same as the word.
         """
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = ins1 = w.getInsertPoint()

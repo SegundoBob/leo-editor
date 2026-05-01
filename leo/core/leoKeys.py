@@ -292,8 +292,9 @@ class AutoCompleterClass:
     @ac_cmd('show-calltips')
     def showCalltips(self, event: LeoKeyEvent = None) -> None:
         """Show the calltips at the cursor."""
-        c, k, w = self.c, self.c.k, event and event.w
-        if not w:
+        c, k = self.c, self.c.k
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         is_headline = c.widget_name(w).startswith('head')
         if k.enable_calltips and not is_headline:
@@ -306,8 +307,9 @@ class AutoCompleterClass:
     @ac_cmd('show-calltips-force')
     def showCalltipsForce(self, event: LeoKeyEvent = None) -> None:
         """Show the calltips at the cursor, even if calltips are not presently enabled."""
-        c, w = self.c, event and event.w
-        if not w:
+        c = self.c
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         is_headline = c.widget_name(w).startswith('head')
         if not is_headline:

@@ -149,9 +149,6 @@ class ControlCommandsClass(BaseEditCommandsClass):
     @cmd('suspend')
     def suspend(self, event: LeoKeyEvent) -> None:
         """Minimize the present Leo window."""
-        w = event.w if event else None
-        if not w:
-            return
         self.c.frame.top.iconify()
 
     @cmd('iconify-frame')

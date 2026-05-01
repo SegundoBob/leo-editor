@@ -3350,7 +3350,7 @@ class LeoFind:
         if not c.config.getBool('preload-find-pattern', default=False):
             # Make *sure* we don't preload the find pattern if it is not wanted.
             return
-        if not w:
+        if not g.isTextWrapper(w):
             return
         #
         # #1436: Don't create a selection if there isn't one.

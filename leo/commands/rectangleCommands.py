@@ -220,7 +220,7 @@ class RectangleCommandsClass(BaseEditCommandsClass):
         # c = self.c
         k = self.c.k
         w = event.w if event else None
-        if not w:
+        if not g.isTextWrapper(w):
             return
         killRect = self.theKillRectangle
 
