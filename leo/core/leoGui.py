@@ -370,7 +370,6 @@ class LeoKeyEvent:
         - The "before" part is Qt's event handling, controlled by eventFiler methods.
         - The "after" part consists of Leo's command handlers.
         """
-        # trace = 'keys' in g.app.debug
         tag = 'LeoKeyEvent.__init__:'
         self.c = c
         self.char = char or ''
@@ -385,37 +384,42 @@ class LeoKeyEvent:
         )
         assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
 
-        self.w: QTextMixin
-
         def obj_name(obj: Any) -> str:
             return g.app.gui.widget_name(obj)
 
-        # print(f"{tag} {id(w):>16} {w.__class__.__name__} {obj_name(w)}")
+        def trace(message: str) -> None:
+            if 'keys' in g.app.debug:
+                print('')
+                print(message)
 
         if w is None:
             # Special case for headlines.
             if headline_wrapper := c.headline_wrapper(c.p):
+                trace(f"{tag} no w: headline")
                 self.w = headline_wrapper
                 return
             # Default to the widget with focus, if any.
             w = g.app.gui.get_focus()
+            trace(f"{tag} no w: focus: {w.__class__.__name__}")
             if w is None:
                 return
+        else:
+            trace(f"{tag} w: text? {isinstance(w, QTextMixin):1} {w.__class__.__name__}")
 
         # Ensure that self.w is a wrapper for all key-related Qt widgets.
         if c.widget_name(w).startswith('log'):
             self.w = c.frame.log.logCtrl
             return
         if isinstance(w, QTextMixin):
-            # print(f"{tag} Use QTextMixin: {w.__class__.__name__}")
+            trace(f"{tag} Use QTextMixin: {w.__class__.__name__}")
             self.w = w
             return
         if wrapper := getattr(w, 'wrapper', None):
-            # print(f"{tag} Use w.wrapper: {wrapper.__class__.__name__}")
+            trace(f"{tag} Use w.wrapper: {wrapper.__class__.__name__}")
             self.w = wrapper
             return
         if wrapper := getattr(w, 'leo_wrapper', None):
-            # print(f"{tag} Use w.leo_wrapper: {wrapper.__class__.__name__}")
+            trace(f"{tag} Use w.leo_wrapper: {wrapper.__class__.__name__}")
             self.w = wrapper
             return
         if isinstance(w, QtWidgets.QTextEdit):
