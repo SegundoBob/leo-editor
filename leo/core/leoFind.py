@@ -2357,39 +2357,34 @@ class LeoFind:
         else:
             p = c.rootPosition()
             after = None
-        count, found = 0, None
-        clones, skip = [], set()
+        count = 0
+        clones: list[Position] = []
+        cloned_vnodes: list[VNode] = []
         while p and p != after:
             progress = p.copy()
             if g.inAtNosearch(p):
                 p.moveToNodeAfterTree()
-            elif p.v in skip:  # pragma: no cover (minor)
-                p.moveToThreadNext()
             elif self._cfa_find_next_match(p):
-                count += 1
-                if flatten:
-                    skip.add(p.v)
+                if p.v not in cloned_vnodes:
                     clones.append(p.copy())
+                    cloned_vnodes.append(p.v)
+                    count += 1
+                if flatten:
                     p.moveToThreadNext()
                 else:
-                    if p not in clones:
-                        clones.append(p.copy())
-                    # Don't look at the node or it's descendants.
-                    for p2 in p.self_and_subtree(copy=False):
-                        skip.add(p2.v)
                     p.moveToNodeAfterTree()
             else:
                 p.moveToThreadNext()
             assert p != progress
         if clones:
             undoData = u.beforeInsertNode(c.p)
-            found = self._cfa_create_nodes(clones, flattened=False)
-            u.afterInsertNode(found, 'Clone Find All', undoData)
-            assert c.positionExists(found, trace=True), found
+            found_p = self._cfa_create_nodes(clones, flattened=False)
+            u.afterInsertNode(found_p, 'Clone Find All', undoData)
+            assert c.positionExists(found_p, trace=True), found_p
             c.setChanged()
-            c.selectPosition(found)
-            # Put the count in found.h.
-            found.h = found.h.replace('Found:', f"Found {count}:")
+            c.selectPosition(found_p)
+            # Put the count in found_p.h.
+            found_p.h = found_p.h.replace('Found:', f"Found {count}:")
         # Reset data after calculating results.
         self.ftm.set_radio_button('entire-outline')
         # suboutline-only is a one-shot for batch commands.
@@ -2426,12 +2421,11 @@ class LeoFind:
         found.v.children.sort(key=lambda v: v.h.lower())
         return found
 
-    # @+node:ekr.20210110073117.10: *5* find._cfa_find_next_match (for unit tests)
+    # @+node:ekr.20210110073117.10: *5* find._cfa_find_next_match
     def _cfa_find_next_match(self, p: Position) -> bool:
         """
         Find the next batch match at p.
         """
-        # Called only from unit tests.
         table = []
         if self.search_headline:
             table.append(p.h)
