@@ -387,59 +387,62 @@ class LeoKeyEvent:
         def obj_name(obj: Any) -> str:
             return g.app.gui.widget_name(obj)
 
-        def trace(message: str) -> None:
+        def trace(prefix: str, message: str) -> None:
             if 'keys' in g.app.debug:
-                print('')
-                print(message)
+                trace_always(prefix, message)
+
+        def trace_always(prefix: str, message: str) -> None:
+            print('')
+            print(f"{tag} {prefix:>14}: {message}")
 
         if w is None:
             # Special case for headlines.
             if headline_wrapper := c.headline_wrapper(c.p):
-                trace(f"{tag} no w: headline")
+                trace('no w', 'headline')
                 self.w = headline_wrapper
                 return
             # Default to the widget with focus, if any.
             w = g.app.gui.get_focus()
-            trace(f"{tag} no w: focus: {w.__class__.__name__}")
+            trace('no w: focus', w.__class__.__name__)
             if w is None:
                 return
         else:
-            trace(f"{tag} w: text? {isinstance(w, QTextMixin):1} {w.__class__.__name__}")
+            trace(f" text? {isinstance(w, QTextMixin):1} w", w.__class__.__name__)
 
         # Ensure that self.w is a wrapper for all key-related Qt widgets.
         if c.widget_name(w).startswith('log'):
             self.w = c.frame.log.logCtrl
             return
         if isinstance(w, QTextMixin):
-            trace(f"{tag} Use QTextMixin: {w.__class__.__name__}")
+            trace('QTextMixin', 'w.__class__.__name__')
             self.w = w
             return
         if wrapper := getattr(w, 'wrapper', None):
-            trace(f"{tag} Use w.wrapper: {wrapper.__class__.__name__}")
+            trace('w.wrapper', wrapper.__class__.__name__)
             self.w = wrapper
             return
         if wrapper := getattr(w, 'leo_wrapper', None):
-            trace(f"{tag} Use w.leo_wrapper: {wrapper.__class__.__name__}")
+            trace('w.leo_wrapper', wrapper.__class__.__name__)
             self.w = wrapper
             return
         if isinstance(w, QtWidgets.QTextEdit):
             # Inject the `leo_wrapper` ivar into the widget so that this method
             # will never reallocate another wrapper for this widget.
             self.w = w.leo_wrapper = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
+            trace_always('new wrapper', f"{self.w.__class__.__name__} for {obj_name(w)}")
             return
         if isinstance(w, QtWidgets.QLineEdit):
             self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
+            trace_always('New wrapper', f"{self.w.__class__.__name__} for {obj_name(w)}")
             return
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = w
-        trace(f"{tag} unknown: {w.__class__.__name__}")
+        trace_always('unknown w', w.__class__.__name__)
         if not isinstance(w, QtWidgets.QWidget):
             # We expect that w is a wrapper, but we don't much care.
             name = obj_name(w)
             if not name.startswith(('body', 'canvas', 'head', 'mini')):
-                print(f"{tag} Unusual w: {w.__class__.__name__} name: {name}")
+                trace_always('unusual w', f"{w.__class__.__name__} name: {name}")
 
     # @+node:ekr.20140907103315.18774: *3*  LeoKeyEvent.__repr__
     def __repr__(self) -> str:
