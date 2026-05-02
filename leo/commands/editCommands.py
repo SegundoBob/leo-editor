@@ -798,17 +798,17 @@ class EditCommandsClass(BaseEditCommandsClass):
     @cmd('focus-to-log')
     def focusToLog(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
         """Put the keyboard focus in Leo's log pane."""
-        self.c.logWantsFocus()
+        self.c.logWantsFocusNow()
 
     @cmd('focus-to-minibuffer')
     def focusToMinibuffer(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
         """Put the keyboard focus in Leo's minibuffer."""
-        self.c.minibufferWantsFocus()
+        self.c.minibufferWantsFocusNow()
 
     @cmd('focus-to-tree')
     def focusToTree(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
         """Put the keyboard focus in Leo's outline pane."""
-        self.c.treeWantsFocus()
+        self.c.treeWantsFocusNow()
 
     # @+node:ekr.20150514063305.201: *4* ec.clicks in the icon box
     # These call the actual event handlers so as to trigger hooks.
