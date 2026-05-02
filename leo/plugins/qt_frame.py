@@ -3813,7 +3813,7 @@ class QtIconBarClass:
     def add(self, *args: Any, **keys: Any) -> QAction:
         """Add a button to the icon bar."""
         c = self.c
-        if not g.isTextWrapper(self.w):
+        if not self.w:
             return None
         command: Callable = keys.get('command')
         text: str = keys.get('text')
