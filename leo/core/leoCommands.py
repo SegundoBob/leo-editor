@@ -1607,10 +1607,12 @@ class Commands:
             if p.v.expandedPositions:
                 g.printObj(p.v.expandedPositions, indent=p.level(), tag=p.h)
 
-    # @+node:ekr.20040306220230.1: *5* c.edit_widget
-    def edit_widget(self, p: Position) -> Widget:
+    # @+node:ekr.20040306220230.1: *5* c.headline_wrapper
+    def headline_wrapper(self, p: Position) -> Widget:
         c = self
-        return c.frame.tree.edit_widget(p) if p else None
+        return c.frame.tree.headline_wrapper(p) if p else None
+
+    edit_widget = headline_wrapper  # Compatibility.
 
     # @+node:ekr.20031218072017.2986: *5* c.fileName & relativeFileName & shortFileName
     # Compatibility with scripts
@@ -4462,8 +4464,7 @@ class Commands:
 
     # @+node:ekr.20080514131122.17: *5* c.widget_name
     def widget_name(self, widget: Widget) -> str:
-        # c = self
-        return g.app.gui.widget_name(widget) if g.app.gui else '<no widget>'
+        return g.app.gui.widget_name(widget) if g.app.gui else ''
 
     # @+node:ekr.20171124101045.1: *4* c.Events
     # @+node:ekr.20060923202156: *5* c.onCanvasKey

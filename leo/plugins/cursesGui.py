@@ -177,7 +177,7 @@ class textGui(leoGui.LeoGui):
         elif s in ('q', 'quit'):
             self.killed = True
 
-    # @+node:ekr.20150107090324.20: *3* widget_name
+    # @+node:ekr.20150107090324.20: *3* widget_name (cursesGui.py)
     def widget_name(self, w):
         if isinstance(w, textBodyCtrl):
             return 'body'
@@ -270,10 +270,6 @@ class TextFrame(leoFrame.LeoFrame):
                 self.keysym = keysym
                 self.leoWidget = w
                 self.widget = w
-
-        # Leo uses widget_name(event.widget) to decide if a 'default' keystroke belongs
-        # to typing in the body text, in the tree control, or whereever.
-        # Canonicalize the setting.
 
         char = key
         stroke = c.k.shortcutFromSetting(char)
@@ -554,11 +550,11 @@ class textTree(leoFrame.LeoTree):
         w.setAllText(p.b)
         # and something to do with undo?
 
-    # @+node:ekr.20150107090324.66: *3* editLabel & edit_widget (cursesGui)
+    # @+node:ekr.20150107090324.66: *3* editLabel & headline_wrapper (cursesGui)
     def editLabel(self, v, selectAll: bool = False, selection: tuple = None) -> tuple[None, None]:
         return None, None
 
-    def edit_widget(self, p):
+    def headline_wrapper(self, p):
         return None
 
     # @+node:ekr.20150107090324.67: *3* text_draw_tree & helper

@@ -38,7 +38,7 @@ class LeoGui:
     """
 
     # @+others
-    # @+node:ekr.20031218072017.3722: *3* LeoGui.__init__
+    # @+node:ekr.20031218072017.3722: *3*  LeoGui.__init__
     def __init__(self, guiName: str) -> None:
         """Ctor for the LeoGui class."""
         self.active = False  # Used only by qt_gui.
@@ -65,14 +65,7 @@ class LeoGui:
 
     # @+node:ekr.20051206103652: *3* LeoGui.widget_name
     def widget_name(self, w: Widget) -> str:
-        # First try the widget's getName method.
-        if not w:
-            return '<no widget>'
-        if hasattr(w, 'getName'):
-            return w.getName()
-        if hasattr(w, '_name'):
-            return w._name
-        return repr(w)
+        return w.getName() or '' if hasattr(w, 'getName') else ''
 
     # @+node:ekr.20070228154059: *3* LeoGui: May be defined in subclasses
     def dismiss_splash_screen(self) -> None:
@@ -346,15 +339,17 @@ class LeoGui:
 class LeoKeyEvent:
     """A gui-independent wrapper for gui events."""
 
+    __slots__ = ('c', 'char', 'stroke', 'w', 'x', 'x_root', 'y', 'y_root')
+
     # @+others
-    # @+node:ekr.20110605121601.18846: *3* LeoKeyEvent.__init__
+    # @+node:ekr.20110605121601.18846: *3*  LeoKeyEvent.__init__
     def __init__(
         self,
         c: Cmdr,
         *,
         binding: Any = None,
         char: str = None,
-        w: Any = None,
+        w: Any = None,  # w can be either a Qt widget or one of Leo's wrappers.
         x: int = None,
         y: int = None,
         x_root: int = None,
@@ -363,10 +358,18 @@ class LeoKeyEvent:
         """
         Ctor for LeoKeyEvent class.
 
-        The cursesGui2 plugin calls this ctor only with with
-        w = LeoBody(StringTextWrapper), whose name is 'body'.
+        The `w` kwarg can be either a (Qt) widget or an instance of one of
+        Leo's wrapper classes.
+
+        This method *computes* `event.w`. When `w` is a text-related Qt *widget*,
+        this method ensures that `event.w` is the correct text *wrapper*.
+
+        For the console gui (cursesGui2.py), `w` is always a StringTextWrapper.
+
+        This method is the "midpoint" of Leo's key-handling code:
+        - The "before" part is Qt's event handling, controlled by eventFiler methods.
+        - The "after" part consists of Leo's command handlers.
         """
-        trace = 'keys' in g.app.debug
         tag = 'LeoKeyEvent.__init__:'
         self.c = c
         self.char = char or ''
@@ -381,67 +384,67 @@ class LeoKeyEvent:
         )
         assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
 
-        # Compute self.w and self.widget.
-        # Coming soon: PR # 4646 will eliminate the widget ivar!
-        # https://github.com/leo-editor/leo-editor/pull/4646/
-        self.w: QTextMixin
-        self.widget: Any  # The best we can do.
-
         def obj_name(obj: Any) -> str:
-            if obj is None:
-                return 'None'
-            name = None
-            if hasattr(obj, 'objectName'):
-                name = obj.objectName()
-            return name or repr(obj)
+            return g.app.gui.widget_name(obj)
 
-        if trace:
-            print(f"{tag} {id(w)} {w.__class__.__name__} {obj_name(w)}")
+        def trace(prefix: str, message: str) -> None:
+            if 'keys' in g.app.debug:
+                trace_always(prefix, message)
+
+        def trace_always(prefix: str, message: str) -> None:
+            print('')
+            print(f"{tag} {prefix:>14}: {message}")
+
         if w is None:
             # Special case for headlines.
-            if edit_wrapper := c.edit_widget(c.p):
-                self.w = edit_wrapper
-                self.widget = self.w.widget
+            if headline_wrapper := c.headline_wrapper(c.p):
+                trace('no w', 'headline')
+                self.w = headline_wrapper
                 return
+            # Default to the widget with focus, if any.
             w = g.app.gui.get_focus()
+            trace('no w: focus', w.__class__.__name__)
             if w is None:
                 return
+        else:
+            trace(f" text? {isinstance(w, QTextMixin):1} w", w.__class__.__name__)
+
+        # Ensure that self.w is a wrapper for all key-related Qt widgets.
         if c.widget_name(w).startswith('log'):
-            self.w = self.widget = c.frame.log.logCtrl
+            self.w = c.frame.log.logCtrl
             return
-        if isinstance(w, QTextMixin):  # This will always succeed when using the console gui.
-            self.w = self.widget = w  # A wrapper that handles text.
+        if isinstance(w, QTextMixin):
+            trace('QTextMixin', 'w.__class__.__name__')
+            self.w = w
             return
         if wrapper := getattr(w, 'wrapper', None):
-            # g.trace(f"Use w.wrapper: {wrapper!r}")
-            self.w = self.widget = wrapper
+            trace('w.wrapper', wrapper.__class__.__name__)
+            self.w = wrapper
             return
         if wrapper := getattr(w, 'leo_wrapper', None):
-            # g.trace(f"Use w.leo_wrapper: {wrapper!r}")
-            self.w = self.widget = wrapper
+            trace('w.leo_wrapper', wrapper.__class__.__name__)
+            self.w = wrapper
             return
         if isinstance(w, QtWidgets.QTextEdit):
-            self.widget = w
+            # Inject the `leo_wrapper` ivar into the widget so that this method
+            # will never reallocate another wrapper for this widget.
             self.w = w.leo_wrapper = QTextEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            if trace:
-                print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
+            trace_always('new wrapper', f"{self.w.__class__.__name__} for {obj_name(w)}")
             return
         if isinstance(w, QtWidgets.QLineEdit):
-            self.widget = w
             self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
-            if trace:
-                print(f"{tag} New wrapper: {self.w.__class__.__name__} for {obj_name(w)}")
+            trace_always('New wrapper', f"{self.w.__class__.__name__} for {obj_name(w)}")
             return
         # Anything should be valid here: we don't expect the wrapper to do key handling.
-        self.w = self.widget = w
+        self.w = w
+        trace_always('unknown w', w.__class__.__name__)
         if not isinstance(w, QtWidgets.QWidget):
-            # Should be a wrapper, but we don't much care.
-            if trace:
-                name = obj_name(w)
-                if not name.startswith(('body', 'canvas', 'head', 'mini')):
-                    print(f"{tag} Unusual w: {w.__class__.__name__} name: {name}")
+            # We expect that w is a wrapper, but we don't much care.
+            name = obj_name(w)
+            if not name.startswith(('body', 'canvas', 'head', 'mini')):
+                trace_always('unusual w', f"{w.__class__.__name__} name: {name}")
 
-    # @+node:ekr.20140907103315.18774: *3* LeoKeyEvent.__repr__
+    # @+node:ekr.20140907103315.18774: *3*  LeoKeyEvent.__repr__
     def __repr__(self) -> str:
         d = {'c': self.c.shortFileName()}
         for ivar in ('char', 'stroke', 'w'):
@@ -469,7 +472,7 @@ class NullGui(LeoGui):
     """Null gui class."""
 
     # @+others
-    # @+node:ekr.20031218072017.2225: *3* NullGui.__init__
+    # @+node:ekr.20031218072017.2225: *3*  NullGui.__init__
     def __init__(self, guiName: str = 'nullGui') -> None:
         """ctor for the NullGui class."""
         super().__init__(guiName)
@@ -645,7 +648,7 @@ class NullGui(LeoGui):
         """Return True if w is a Text widget suitable for text-oriented commands."""
         return issubclass(w.__class__, StringTextWrapper)
 
-    # @+node:ekr.20070301172456: *3* NullGui.panels
+    # @+node:ekr.20070301172456: *3* NullGui: panels
     def createComparePanel(self, c: Cmdr) -> None:
         """Create Compare panel."""
 
@@ -715,7 +718,7 @@ class StringFindTabManager:
     """A string-based FindTabManager class for unit tests."""
 
     # @+others
-    # @+node:ekr.20210221130549.2: *3*  sftm.ctor
+    # @+node:ekr.20210221130549.2: *3*  sftm.__init__
 
     def __init__(self, c: Cmdr) -> None:
         """Ctor for the FindTabManager class."""
@@ -863,7 +866,7 @@ class StringFindTabManager:
         if not w.isChecked():
             w.toggle()
 
-    # @+node:ekr.20210221130549.3: *3* sftm.text getters/setters
+    # @+node:ekr.20210221130549.3: *3* sftm: getters/setters
     def get_find_text(self) -> str:
         s = self.find_findbox.text()
         if s and s[-1] in ('\r', '\n'):

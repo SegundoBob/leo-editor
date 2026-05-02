@@ -131,7 +131,7 @@ class LeoBody:
         # Init user settings.
         self.use_chapters = False  # May be overridden in subclasses.
 
-    # @+node:ekr.20031218072017.3677: *3* LeoBody.Coloring
+    # @+node:ekr.20031218072017.3677: *3* LeoBody: Coloring
     def forceFullRecolor(self) -> None:
         pass
 
@@ -148,7 +148,7 @@ class LeoBody:
 
     recolor_now = recolor
 
-    # @+node:ekr.20060528100747: *3* LeoBody.Editors
+    # @+node:ekr.20060528100747: *3* LeoBody: Editors
     # @+node:ekr.20070424053629.1: *4* LeoBody.utils
     # @+node:ekr.20060530204135: *5* LeoBody.recolorWidget (QScintilla only)
     def recolorWidget(self, p: Position, w: QTextMixin) -> None:
@@ -163,7 +163,7 @@ class LeoBody:
             finally:
                 c.frame.body.wrapper = old_wrapper
 
-    # @+node:ekr.20031218072017.4018: *3* LeoBody.Text
+    # @+node:ekr.20031218072017.4018: *3* LeoBody: Text
     # @+node:ekr.20031218072017.4030: *4* LeoBody.getInsertLines
     def getInsertLines(self) -> tuple[str, str, str]:
         """
@@ -254,7 +254,7 @@ class LeoFrame:
     instances = 0
 
     # @+others
-    # @+node:ekr.20031218072017.3679: *3* LeoFrame.__init__
+    # @+node:ekr.20031218072017.3679: *3*  LeoFrame.__init__
     def __init__(self, c: Cmdr, gui: LeoGui) -> None:
         self.c = c
         self.gui = gui
@@ -298,7 +298,7 @@ class LeoFrame:
         p._linkAsRoot()
         return v
 
-    # @+node:ekr.20061109125528: *3* LeoFrame.May be defined in subclasses
+    # @+node:ekr.20061109125528: *3* LeoFrame: May be defined in subclasses
     # @+node:ekr.20031218072017.3688: *4* LeoFrame.getTitle & setTitle
     def getTitle(self) -> str:
         return self.title
@@ -324,7 +324,7 @@ class LeoFrame:
     def compute_secondary_ratio(self) -> float:
         return 0.5
 
-    # @+node:ekr.20061109125528.1: *3* LeoFrame.Must be defined in base class
+    # @+node:ekr.20061109125528.1: *3* LeoFrame: Must be defined in base class
     # @+node:ekr.20031218072017.3689: *4* LeoFrame.initialRatios
     def initialRatios(self) -> tuple[bool, float, float]:
         c = self.c
@@ -603,7 +603,7 @@ class LeoFrame:
             k.setDefaultInputState()
             k.showStateAndMode()
 
-    # @+node:ekr.20031218072017.3680: *3* LeoFrame.Must be defined in subclasses
+    # @+node:ekr.20031218072017.3680: *3* LeoFrame: Must be defined in subclasses
     def bringToFront(self) -> None:
         raise NotImplementedError
 
@@ -705,8 +705,7 @@ class LeoLog:
     """The base class for the log pane in Leo windows."""
 
     # @+others
-    # @+node:ekr.20150509054436.1: *3* LeoLog.Birth
-    # @+node:ekr.20031218072017.3695: *4* LeoLog.__init__
+    # @+node:ekr.20031218072017.3695: *3*  LeoLog.__init__
     def __init__(self, frame: LeoLog | LeoQtFrame | NullFrame) -> None:
         """Ctor for LeoLog class."""
         g._assert(frame is None or issubclass(frame.__class__, LeoFrame))
@@ -731,7 +730,7 @@ class LeoLog:
     def clearTab(self, tabName: str, wrap: str = 'none') -> None:
         self.selectTab(tabName, wrap=wrap)
         w = self.logCtrl
-        if w:
+        if g.isTextWrapper(w):
             w.delete(0, w.getLastIndex())
 
     # @+node:ekr.20070302094848.2: *3* LeoLog.createTab
@@ -940,67 +939,7 @@ class LeoTree:
     """The base class for the outline pane in Leo windows."""
 
     # @+others
-    # @+node:ekr.20081005065934.8: *3* LeoTree.May be defined in subclasses
-    # These are new in Leo 4.6.
-
-    def initAfterLoad(self) -> None:
-        """Do late initialization. Called in g.openWithFileName after a successful load."""
-
-    # Hints for optimization. The proper default is c.redraw()
-
-    def redraw_after_head_changed(self) -> None:
-        self.c.redraw()
-
-    def redraw_after_select(self, p: Position = None) -> None:
-        self.c.redraw()
-
-    # @+node:ekr.20040803072955.91: *4* LeoTree.onHeadChanged
-    # Tricky code: do not change without careful thought and testing.
-    # Important: This code *is* used by the leoBridge module.
-    def onHeadChanged(self, p: Position, undoType: str = 'Typing') -> None:
-        """
-        Officially change a headline.
-        Set the old undo text to the previous revert point.
-        """
-        c, u, w = self.c, self.c.undoer, self.edit_widget(p)
-        if not w:
-            g.trace('no w')
-            return
-        ch = '\n'  # We only report the final keystroke.
-        s = w.getAllText()
-        # @+<< truncate s if it has multiple lines >>
-        # @+node:ekr.20040803072955.94: *5* << truncate s if it has multiple lines >>
-        # #3633: Replace newlines with a blank.
-        if '\n' in s:
-            s = re.sub(r'\s*\n\s*', ' ', s).replace('  ', ' ').rstrip()
-        limit = 1000
-        if len(s) > limit:
-            g.warning("truncating headline to", limit, "characters")
-            s = s[:limit]
-        s = g.checkUnicode(s or '')
-        # @-<< truncate s if it has multiple lines >>
-        # Make the change official, but undo to the *old* revert point.
-        changed = s != p.h
-        if not changed:
-            return  # Leo 6.4: only call the hooks if the headline has actually changed.
-        if g.doHook("headkey1", c=c, p=p, ch=ch, changed=changed):
-            return  # The hook claims to have handled the event.
-        # Handle undo.
-        undoData = u.beforeChangeHeadline(p)
-        p.initHeadString(s)  # change p.h *after* calling undoer's before method.
-        if not c.changed:
-            c.setChanged()
-        # New in Leo 4.4.5: we must recolor the body because
-        # the headline may contain directives.
-        c.frame.scanForTabWidth(p)
-        c.recolor(p)
-        p.setDirty()
-        u.afterChangeHeadline(p, undoType, undoData)
-        # Fix bug 1280689: don't call the non-existent c.treeEditFocusHelper
-        c.redraw_after_head_changed()
-        g.doHook("headkey2", c=c, p=p, ch=ch, changed=changed)
-
-    # @+node:ekr.20031218072017.3705: *3* LeoTree.__init__
+    # @+node:ekr.20031218072017.3705: *3*  LeoTree.__init__
     def __init__(self, frame: Widget) -> None:
         """Ctor for the LeoTree class."""
         self.frame = frame
@@ -1013,105 +952,6 @@ class LeoTree:
         self.use_chapters = False  # May be overridden in subclasses.
         # Define these here to keep pylint happy.
         self.canvas: Any = None
-
-    # @+node:ekr.20061109165848: *3* LeoTree.Must be defined in base class
-    # @+node:ekr.20040803072955.126: *4* LeoTree.endEditLabel
-    def endEditLabel(self) -> None:
-        """End editing of a headline and update p.h."""
-        # Important: this will redraw if necessary.
-        self.onHeadChanged(self.c.p)
-        # Do *not* call setDefaultUnboundKeyAction here: it might put us in ignore mode!
-        # k.setDefaultInputState()
-        # k.showStateAndMode()
-        # This interferes with the find command and interferes with focus generally!
-        # c.bodyWantsFocus()
-
-    # @+node:ekr.20031218072017.3716: *4* LeoTree.getEditTextDict
-    def getEditTextDict(self, v: VNode) -> Widget:
-        # New in 4.2: the default is an empty list.
-        return self.edit_text_dict.get(v, [])
-
-    # @+node:ekr.20040803072955.88: *4* LeoTree.onHeadlineKey
-    def onHeadlineKey(self, event: LeoKeyEvent) -> None:
-        """Handle a key event in a headline."""
-        if not event:
-            return
-        w = event.w
-        ch = event.char
-        # This test prevents flashing in the headline when the control key is held down.
-        if ch and w:
-            self.updateHead(event, w)
-
-    # @+node:ekr.20120314064059.9739: *4* LeoTree.OnIconCtrlClick (@url)
-    def OnIconCtrlClick(self, p: Position) -> None:
-        g.openUrl(p)
-
-    # @+node:ekr.20031218072017.2312: *4* LeoTree.OnIconDoubleClick (do nothing)
-    def OnIconDoubleClick(self, p: Position) -> None:
-        pass
-
-    # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
-    def updateHead(self, event: LeoKeyEvent, w: QTextMixin) -> None:
-        """
-        Update a headline from an event.
-
-        The headline officially changes only when editing ends.
-        """
-        k = self.c.k
-        ch = event.char if event else ''
-        i, j = w.getSelectionRange()
-        ins = w.getInsertPoint()
-        if i != j:
-            ins = i
-        if ch in ('\b', 'BackSpace'):
-            if i != j:
-                w.delete(i, j)
-                # Bug fix: 2018/04/19.
-                w.setSelectionRange(i, i, insert=i)
-            elif i > 0:
-                i -= 1
-                w.delete(i)
-                w.setSelectionRange(i, i, insert=i)
-            else:
-                w.setSelectionRange(0, 0, insert=0)
-        elif ch and ch not in ('\n', '\r'):
-            if i != j:
-                w.delete(i, j)
-            elif k.unboundKeyAction == 'overwrite':
-                w.delete(i, i + 1)
-            w.insert(ins, ch)
-            w.setSelectionRange(ins + 1, ins + 1, insert=ins + 1)
-        s = w.getAllText()
-        if s.endswith('\n'):
-            s = s[:-1]
-        # 2011/11/14: Not used at present.
-        # w.setWidth(self.headWidth(s=s))
-        if ch in ('\n', '\r'):
-            self.endEditLabel()
-
-    # @+node:ekr.20031218072017.3706: *3* LeoTree.Must be defined in subclasses
-    # Drawing & scrolling.
-
-    def redraw(self, p: Position = None) -> None:
-        raise NotImplementedError
-
-    redraw_now = redraw
-
-    def scrollTo(self, p: Position) -> None:
-        raise NotImplementedError
-
-    # Headlines.
-
-    def editLabel(
-        self,
-        p: Position,
-        selectAll: bool = False,
-        selection: tuple = None,
-    ) -> tuple[Widget, Any]:  # Any is the best possible annotation.
-        raise NotImplementedError
-
-    def edit_widget(self, p: Position) -> Widget:
-        raise NotImplementedError
 
     # @+node:ekr.20040803072955.128: *3* LeoTree.select & helpers
     tree_select_lockout = False
@@ -1271,6 +1111,165 @@ class LeoTree:
             s = c.frame.computeStatusUnl(p)
             c.frame.putStatusLine(s)
 
+    # @+node:ekr.20081005065934.8: *3* LeoTree: May be defined in subclasses
+    # These are new in Leo 4.6.
+
+    def initAfterLoad(self) -> None:
+        """Do late initialization. Called in g.openWithFileName after a successful load."""
+
+    # Hints for optimization. The proper default is c.redraw()
+
+    def redraw_after_head_changed(self) -> None:
+        self.c.redraw()
+
+    def redraw_after_select(self, p: Position = None) -> None:
+        self.c.redraw()
+
+    # @+node:ekr.20040803072955.91: *4* LeoTree.onHeadChanged
+    # Tricky code: do not change without careful thought and testing.
+    # Important: This code *is* used by the leoBridge module.
+    def onHeadChanged(self, p: Position, undoType: str = 'Typing') -> None:
+        """
+        Officially change a headline.
+        Set the old undo text to the previous revert point.
+        """
+        c, u, w = self.c, self.c.undoer, self.headline_wrapper(p)
+        if not w:
+            g.trace('no w')
+            return
+        ch = '\n'  # We only report the final keystroke.
+        s = w.getAllText()
+        # @+<< truncate s if it has multiple lines >>
+        # @+node:ekr.20040803072955.94: *5* << truncate s if it has multiple lines >>
+        # #3633: Replace newlines with a blank.
+        if '\n' in s:
+            s = re.sub(r'\s*\n\s*', ' ', s).replace('  ', ' ').rstrip()
+        limit = 1000
+        if len(s) > limit:
+            g.warning("truncating headline to", limit, "characters")
+            s = s[:limit]
+        s = g.checkUnicode(s or '')
+        # @-<< truncate s if it has multiple lines >>
+        # Make the change official, but undo to the *old* revert point.
+        changed = s != p.h
+        if not changed:
+            return  # Leo 6.4: only call the hooks if the headline has actually changed.
+        if g.doHook("headkey1", c=c, p=p, ch=ch, changed=changed):
+            return  # The hook claims to have handled the event.
+        # Handle undo.
+        undoData = u.beforeChangeHeadline(p)
+        p.initHeadString(s)  # change p.h *after* calling undoer's before method.
+        if not c.changed:
+            c.setChanged()
+        # New in Leo 4.4.5: we must recolor the body because
+        # the headline may contain directives.
+        c.frame.scanForTabWidth(p)
+        c.recolor(p)
+        p.setDirty()
+        u.afterChangeHeadline(p, undoType, undoData)
+        # Fix bug 1280689: don't call the non-existent c.treeEditFocusHelper
+        c.redraw_after_head_changed()
+        g.doHook("headkey2", c=c, p=p, ch=ch, changed=changed)
+
+    # @+node:ekr.20061109165848: *3* LeoTree: Must be defined in base class
+    # @+node:ekr.20040803072955.126: *4* LeoTree.endEditLabel
+    def endEditLabel(self) -> None:
+        """End editing of a headline and update p.h."""
+        # Important: this will redraw if necessary.
+        self.onHeadChanged(self.c.p)
+        # Do *not* call setDefaultUnboundKeyAction here: it might put us in ignore mode!
+        # k.setDefaultInputState()
+        # k.showStateAndMode()
+        # This interferes with the find command and interferes with focus generally!
+        # c.bodyWantsFocus()
+
+    # @+node:ekr.20031218072017.3716: *4* LeoTree.getEditTextDict
+    def getEditTextDict(self, v: VNode) -> Widget:
+        # New in 4.2: the default is an empty list.
+        return self.edit_text_dict.get(v, [])
+
+    # @+node:ekr.20040803072955.88: *4* LeoTree.onHeadlineKey
+    def onHeadlineKey(self, event: LeoKeyEvent) -> None:
+        """Handle a key event in a headline."""
+        if not event:
+            return
+        w = event.w
+        ch = event.char
+        # This test prevents flashing in the headline when the control key is held down.
+        if ch and w:
+            self.updateHead(event, w)
+
+    # @+node:ekr.20120314064059.9739: *4* LeoTree.OnIconCtrlClick (@url)
+    def OnIconCtrlClick(self, p: Position) -> None:
+        g.openUrl(p)
+
+    # @+node:ekr.20031218072017.2312: *4* LeoTree.OnIconDoubleClick (do nothing)
+    def OnIconDoubleClick(self, p: Position) -> None:
+        pass
+
+    # @+node:ekr.20051026083544.2: *4* LeoTree.updateHead
+    def updateHead(self, event: LeoKeyEvent, w: QTextMixin) -> None:
+        """
+        Update a headline from an event.
+
+        The headline officially changes only when editing ends.
+        """
+        k = self.c.k
+        ch = event.char if event else ''
+        i, j = w.getSelectionRange()
+        ins = w.getInsertPoint()
+        if i != j:
+            ins = i
+        if ch in ('\b', 'BackSpace'):
+            if i != j:
+                w.delete(i, j)
+                # Bug fix: 2018/04/19.
+                w.setSelectionRange(i, i, insert=i)
+            elif i > 0:
+                i -= 1
+                w.delete(i)
+                w.setSelectionRange(i, i, insert=i)
+            else:
+                w.setSelectionRange(0, 0, insert=0)
+        elif ch and ch not in ('\n', '\r'):
+            if i != j:
+                w.delete(i, j)
+            elif k.unboundKeyAction == 'overwrite':
+                w.delete(i, i + 1)
+            w.insert(ins, ch)
+            w.setSelectionRange(ins + 1, ins + 1, insert=ins + 1)
+        s = w.getAllText()
+        if s.endswith('\n'):
+            s = s[:-1]
+        # 2011/11/14: Not used at present.
+        # w.setWidth(self.headWidth(s=s))
+        if ch in ('\n', '\r'):
+            self.endEditLabel()
+
+    # @+node:ekr.20031218072017.3706: *3* LeoTree: Must be defined in subclasses
+    # Drawing & scrolling.
+
+    def redraw(self, p: Position = None) -> None:
+        raise NotImplementedError
+
+    redraw_now = redraw
+
+    def scrollTo(self, p: Position) -> None:
+        raise NotImplementedError
+
+    # Headlines.
+
+    def editLabel(
+        self,
+        p: Position,
+        selectAll: bool = False,
+        selection: tuple = None,
+    ) -> tuple[Widget, Any]:  # Any is the best possible annotation.
+        raise NotImplementedError
+
+    def headline_wrapper(self, p: Position) -> Widget:
+        raise NotImplementedError
+
     # @-others
 
 
@@ -1345,7 +1344,12 @@ class NullFrame(LeoFrame):
         self.x = 40
         self.y = 40
 
-    # @+node:ekr.20061109124552: *3* NullFrame.do nothings
+    # @+node:ekr.20171112115045.1: *3*  NullFrame.finishCreate
+    def finishCreate(self) -> None:
+        # 2017/11/12: For #503: Use string/null gui for unit tests.
+        self.createFirstTreeNode()  # Call the base LeoFrame method.
+
+    # @+node:ekr.20061109124552: *3* NullFrame: do nothings
     def bringToFront(self) -> None:
         pass
 
@@ -1462,11 +1466,6 @@ class NullFrame(LeoFrame):
     def update(self) -> None:
         pass
 
-    # @+node:ekr.20171112115045.1: *3* NullFrame.finishCreate
-    def finishCreate(self) -> None:
-        # 2017/11/12: For #503: Use string/null gui for unit tests.
-        self.createFirstTreeNode()  # Call the base LeoFrame method.
-
     # @-others
 
 
@@ -1479,31 +1478,6 @@ class NullIconBarClass:
     def __init__(self, c: Cmdr) -> None:
         """Ctor for NullIconBarClass."""
         self.c = c
-
-    # @+node:ekr.20070301165343: *3*  NullIconBarClass.Do nothing
-    def addRow(self, height: str = None) -> None:
-        pass
-
-    def addRowIfNeeded(self) -> None:
-        pass
-
-    def addWidget(self, w: QTextMixin) -> None:
-        pass
-
-    def createChaptersIcon(self) -> None:
-        pass
-
-    def deleteButton(self, w: QTextMixin) -> None:
-        pass
-
-    def getNewFrame(self) -> None:
-        return None
-
-    def hide(self) -> None:
-        pass
-
-    def show(self) -> None:
-        pass
 
     # @+node:ekr.20070301164543.2: *3* NullIconBarClass.add
     def add(self, *args: Any, **keys: Any) -> Widget:
@@ -1555,6 +1529,31 @@ class NullIconBarClass:
         except Exception:
             pass
 
+    # @+node:ekr.20070301165343: *3* NullIconBarClass: Do nothing
+    def addRow(self, height: str = None) -> None:
+        pass
+
+    def addRowIfNeeded(self) -> None:
+        pass
+
+    def addWidget(self, w: QTextMixin) -> None:
+        pass
+
+    def createChaptersIcon(self) -> None:
+        pass
+
+    def deleteButton(self, w: QTextMixin) -> None:
+        pass
+
+    def getNewFrame(self) -> None:
+        return None
+
+    def hide(self) -> None:
+        pass
+
+    def show(self) -> None:
+        pass
+
     # @-others
 
 
@@ -1563,8 +1562,7 @@ class NullLog(LeoLog):
     """A do-nothing log class."""
 
     # @+others
-    # @+node:ekr.20070302095500: *3* NullLog.Birth
-    # @+node:ekr.20041012083237: *4* NullLog.__init__
+    # @+node:ekr.20041012083237: *3*  NullLog.__init__
     def __init__(self, *, frame: NullFrame = None) -> None:
         super().__init__(frame)
         c = self.c
@@ -1572,7 +1570,7 @@ class NullLog(LeoLog):
         # self.logCtrl is now a property of the base LeoLog class.
         self.widget = StringTextWrapper(c=c, name='null-log')
 
-    # @+node:ekr.20120216123546.10951: *4* NullLog.finishCreate
+    # @+node:ekr.20120216123546.10951: *3*  NullLog.finishCreate
     def finishCreate(self) -> None:
         pass
 
@@ -1652,7 +1650,7 @@ class NullStatusLineClass:
         self.textWidget = StringTextWrapper(c, name='status-line')
 
     # @+others
-    # @+node:ekr.20070302171917: *3* NullStatusLineClass.methods
+    # @+node:ekr.20070302171917: *3* NullStatusLineClass: methods
     def computeStatusUnl(self, p: Position) -> str:
         return ''
 
@@ -1698,8 +1696,8 @@ class NullTree(LeoTree):
         self.c = frame.c
         self.editWidgetsDict: dict[VNode, StringTextWrapper] = {}
 
-    # @+node:ekr.20070228163350.2: *3* NullTree.edit_widget
-    def edit_widget(self, p: Position) -> QTextMixin:
+    # @+node:ekr.20070228163350.2: *3* NullTree.headline_wrapper
+    def headline_wrapper(self, p: Position) -> QTextMixin:
         d = self.editWidgetsDict
         if not p or not p.v:
             return None
@@ -1732,7 +1730,7 @@ class NullTree(LeoTree):
             w = d.get(key)
             g.pr('w', w, 'v.h:', key.headString, 's:', repr(w.s))
 
-    # @+node:ekr.20070228163350.1: *3* NullTree.Drawing & scrolling
+    # @+node:ekr.20070228163350.1: *3* NullTree.redraw and scrollTo
     def redraw(self, p: Position = None) -> None:
         self.redrawCount += 1
 
@@ -1750,7 +1748,7 @@ class NullTree(LeoTree):
         """Set the actual text of the headline widget.
 
         This is called from the undo/redo logic to change the text before redrawing."""
-        w = self.edit_widget(p)
+        w = self.headline_wrapper(p)
         if w:
             w.delete(0, w.getLastIndex())
             if s.endswith('\n') or s.endswith('\r'):

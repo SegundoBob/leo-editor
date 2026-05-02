@@ -97,16 +97,13 @@ class LeoFind:
     def __init__(self, c: Cmdr) -> None:
         """Ctor for LeoFind class."""
         self.c = c
-        self.expert_mode = False  # Set in finishCreate.
         # Created by dw.createFindTab.
         self.ftm: FindTabManager = None
         self.k: KeyHandler = c.k
         self.re_obj: re.Pattern = None
-        #
         # The work "widget".
         self.work_s = ''  # p.b or p.c.
         self.work_sel: tuple[int, int, int] = None  # pos, newpos, insert.
-        #
         # Options ivars: set by FindTabManager.init.
         # These *must* be initially None, not False.
         self.ignore_case: bool = None
@@ -883,11 +880,11 @@ class LeoFind:
         c, p = self.c, self.c.p
         #
         # The gui widget may not exist for headlines.
-        gui_w = c.edit_widget(p) if self.in_headline else c.frame.body.wrapper
+        w = c.headline_wrapper(p) if self.in_headline else c.frame.body.wrapper
         #
         # Init the work widget, so we don't get stuck.
         s = p.h if self.in_headline else p.b
-        ins = gui_w.getInsertPoint() if gui_w else 0
+        ins = w.getInsertPoint() if w else 0
         self.work_s = s
         self.work_sel = (ins, ins, ins)
         #
@@ -2452,13 +2449,13 @@ class LeoFind:
         """Replace selection with self.change_text."""
         c, u = self.c, self.c.undoer
         wrapper = c.frame.body and c.frame.body.wrapper
-        gui_w = c.edit_widget(p) if self.in_headline else wrapper
-        if not gui_w:  # pragma: no cover
+        w = c.headline_wrapper(p) if self.in_headline else wrapper
+        if not w:  # pragma: no cover
             self.in_headline = False
-            gui_w = wrapper
-        if not gui_w:  # pragma: no cover
+            w = wrapper
+        if not w:  # pragma: no cover
             return False
-        oldSel = sel = gui_w.getSelectionRange()
+        oldSel = sel = w.getSelectionRange()
         start, end = sel
         if start > end:  # pragma: no cover
             start, end = end, start
@@ -2477,25 +2474,25 @@ class LeoFind:
         # Update both the gui widget and the work "widget"
         new_ins = start if self.reverse else start + len(change_text)
         if start != end:
-            gui_w.delete(start, end)
-        gui_w.insert(start, change_text)
-        gui_w.setInsertPoint(new_ins)
-        self.work_s = gui_w.getAllText()  # #2220.
+            w.delete(start, end)
+        w.insert(start, change_text)
+        w.setInsertPoint(new_ins)
+        self.work_s = w.getAllText()  # #2220.
         self.work_sel = (new_ins, new_ins, new_ins)
         # Update the selection for the next match.
-        gui_w.setSelectionRange(start, start + len(change_text))
-        c.widgetWantsFocus(gui_w)
+        w.setSelectionRange(start, start + len(change_text))
+        c.widgetWantsFocus(w)
         # No redraws here: they would destroy the headline selection.
         if self.in_headline:
             # #2220: Let onHeadChanged handle undo, etc.
             c.frame.tree.onHeadChanged(p, undoType='Change Headline')
-            # gui_w will change after a redraw.
-            gui_w = c.edit_widget(p)
-            if gui_w:
+            # w will change after a redraw.
+            w = c.headline_wrapper(p)
+            if g.isTextWrapper(w):
                 # find-next and find-prev work regardless of insert point.
-                gui_w.setSelectionRange(start, start + len(change_text))
+                w.setSelectionRange(start, start + len(change_text))
         else:
-            p.v.b = gui_w.getAllText()
+            p.v.b = w.getAllText()
             u.afterChangeBody(p, 'Change Body', bunch)
 
         if self.mark_changes and not p.isMarked():  # pragma: no cover
@@ -2972,8 +2969,8 @@ class LeoFind:
             c.endEditing()
             c.redraw(p)
             c.frame.tree.editLabel(p)
-            w = c.edit_widget(p)  # #2220
-            if w:
+            w = c.headline_wrapper(p)  # #2220
+            if g.isTextWrapper(w):
                 w.setSelectionRange(pos, newpos, insert)  # #2220
         else:
             # Tricky code.  Do not change without careful thought.
@@ -3139,9 +3136,9 @@ class LeoFind:
         if len(self.stack) <= 1:
             self.in_headline = False
         # Init the work widget from the gui widget.
-        gui_w = self.set_widget()
-        s = gui_w.getAllText()
-        i, j = gui_w.getSelectionRange()
+        w = self.set_widget()
+        s = w.getAllText()
+        i, j = w.getSelectionRange()
         if again:
             ins = i if reverse else j + len(pattern)
         else:
@@ -3240,12 +3237,12 @@ class LeoFind:
         c, p = self.c, self.c.p
         wrapper = c.frame.body.wrapper
         if self.in_headline:
-            w = c.edit_widget(p)
+            w = c.headline_wrapper(p)
             if not w:
                 # Selecting the minibuffer can kill the edit widget.
                 selection = 0, 0, 0
                 c.redrawAndEdit(p, selectAll=False, selection=selection, keepMinibuffer=True)
-                w = c.edit_widget(p)
+                w = c.headline_wrapper(p)
             if not w:  # Should never happen.
                 g.trace('**** no edit widget!')
                 self.in_headline = False
@@ -3350,7 +3347,7 @@ class LeoFind:
         if not c.config.getBool('preload-find-pattern', default=False):
             # Make *sure* we don't preload the find pattern if it is not wanted.
             return
-        if not w:
+        if not g.isTextWrapper(w):
             return
         #
         # #1436: Don't create a selection if there isn't one.

@@ -571,8 +571,8 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         Prompt for the name of a file.
         Insert the file's contents in the body at the insertion point.
         """
-        w = self.editWidget(event)
-        if not w:
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         fn = self.getReadableTextFile()
         if not fn:
@@ -629,8 +629,8 @@ class EditFileCommandsClass(BaseEditCommandsClass):
     def saveFile(self, event: LeoKeyEvent) -> None:
         """Prompt for the name of a file and put the body text of the selected node into it.."""
         c = self.c
-        w = self.editWidget(event)
-        if not w:
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         fileName = g.app.gui.runSaveFileDialog(
             c,

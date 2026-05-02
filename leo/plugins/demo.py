@@ -455,7 +455,7 @@ class Demo:
         tree = c.frame.tree
         p.h = ''
         c.editHeadline()
-        w = tree.edit_widget(p)
+        w = tree.headline_wrapper(p)
         if undo:
             undoData = c.undoer.beforeChangeNodeContents(p)
             p.setDirty()

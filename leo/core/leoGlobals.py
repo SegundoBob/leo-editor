@@ -1804,13 +1804,13 @@ class SettingsDict(dict):
     __str__ = __repr__
 
     # @+others
-    # @+node:ekr.20120223062418.10422: *4* td.copy
+    # @+node:ekr.20120223062418.10422: *4* SettingsDict.copy
     def copy(self, name: str = None) -> Value:
         """Return a new dict with the same contents."""
         # The result is a g.SettingsDict.
         return copy.deepcopy(self)
 
-    # @+node:ekr.20190904052828.1: *4* td.add_to_list
+    # @+node:ekr.20190904052828.1: *4* SettingsDict.add_to_list
     def add_to_list(self, key: str, val: BindingInfo) -> None:
         """Update the *list*, self.d [key]"""
         if key is None:
@@ -1821,7 +1821,7 @@ class SettingsDict(dict):
             aList.append(val)
             self[key] = aList
 
-    # @+node:ekr.20190903181030.1: *4* td.get_setting & get_string_setting
+    # @+node:ekr.20190903181030.1: *4* SettingsDict.get_setting & get_string_setting
     def get_setting(self, key: str) -> Optional[str]:
         """Return the canonical setting name."""
         key = key.replace('-', '').replace('_', '')
@@ -1833,7 +1833,7 @@ class SettingsDict(dict):
         val = self.get_setting(key)
         return val if val and isinstance(val, str) else None
 
-    # @+node:ekr.20190904103552.1: *4* td.name & setName
+    # @+node:ekr.20190904103552.1: *4* SettingsDict.name & setName
     def name(self) -> str:
         return self._name
 

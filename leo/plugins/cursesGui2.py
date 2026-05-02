@@ -2328,22 +2328,18 @@ class CoreFrame(leoFrame.LeoFrame):
     # @+node:ekr.20171128052121.4: *6* CFrame.create_find_findbox
     def create_find_findbox(self) -> None:
         """Create the Find: label and text area."""
-        c = self.c
-        fc = c.findCommands
         ftm = self.ftm
         assert ftm
         assert ftm.find_findbox is None
-        ftm.find_findbox = self.createLineEdit('findPattern', disabled=fc.expert_mode)
+        ftm.find_findbox = self.createLineEdit('findPattern')
 
     # @+node:ekr.20171128052121.5: *6* CFrame.create_find_replacebox
     def create_find_replacebox(self) -> None:
         """Create the Replace: label and text area."""
-        c = self.c
-        fc = c.findCommands
         ftm = self.ftm
         assert ftm
         assert ftm.find_replacebox is None
-        ftm.find_replacebox = self.createLineEdit('findChange', disabled=fc.expert_mode)
+        ftm.find_replacebox = self.createLineEdit('findChange')
 
     # @+node:ekr.20171128052121.6: *6* CFrame.create_find_checkboxes
     def create_find_checkboxes(self) -> None:
@@ -2466,7 +2462,7 @@ class CoreFrame(leoFrame.LeoFrame):
         """
         trace = False and not g.unitTesting
         c, p, u = self.c, self.c.p, self.c.undoer
-        w = event and event.widget
+        w = event and event.w
         if not isinstance(w, StringTextWrapper):
             g.trace('not a StringTextWrapper', repr(w))
             return
@@ -2663,7 +2659,7 @@ class CoreTree(leoFrame.LeoTree):
             if trace:
                 g.trace('NO wrapper')
             return  # Startup.
-        w = self.edit_widget(p)
+        w = self.headline_wrapper(p)
         if not w:
             if trace:
                 g.trace('****** no w for p: %s', repr(p))
@@ -2734,8 +2730,8 @@ class CoreTree(leoFrame.LeoTree):
         # vScroll.setValue(vPos)
 
     # @+node:ekr.20170511105355.1: *4* CTree.Selecting & editing
-    # @+node:ekr.20170511105355.4: *5* CTree.edit_widget
-    def edit_widget(self, p: Position) -> HeadWrapper:
+    # @+node:ekr.20170511105355.4: *5* CTree.headline_wrapper
+    def headline_wrapper(self, p: Position) -> HeadWrapper:
         """Returns the edit widget for position p."""
         return HeadWrapper(c=self.c, name='head', p=p)
 
@@ -2764,19 +2760,14 @@ class CoreTree(leoFrame.LeoTree):
     # @+node:ekr.20170511105355.9: *5* CTree.setHeadline
     def setHeadline(self, p: Position, s: str) -> None:
         """Force the actual text of the headline widget to p.h."""
-        trace = False and not g.unitTesting
         # This is used by unit tests to force the headline and p into alignment.
         if not p:
-            if trace:
-                g.trace('*** no p')
             return
         # Don't do this here: the caller should do it.
         # p.setHeadString(s)
-        e = self.edit_widget(p)
-        assert isinstance(e, HeadWrapper), repr(e)
-        e.setAllText(s)
-        if trace:
-            g.trace(e)
+        w = self.headline_wrapper(p)
+        assert isinstance(w, HeadWrapper), repr(w)
+        w.setAllText(s)
 
     # @+node:ekr.20170523115818.1: *5* CTree.set_body_text_after_select
     def set_body_text_after_select(self, p: Position, old_p: Position) -> None:
@@ -4176,7 +4167,7 @@ class TextMixin:
     """A minimal mixin class for QTextEditWrapper and QScintillaWrapper classes."""
 
     # @+others
-    # @+node:ekr.20170511053143.2: *4* tm.ctor & helper
+    # @+node:ekr.20170511053143.2: *4* TextMixin.__init__ & helper
     def __init__(self, c: Cmdr = None) -> None:
         """Ctor for TextMixin class"""
         self.c = c
@@ -4184,7 +4175,7 @@ class TextMixin:
         if c:
             self.injectIvars(c)
 
-    # @+node:ekr.20170511053143.3: *5* tm.injectIvars (cursesGui2)
+    # @+node:ekr.20170511053143.3: *5* TextMixin.injectIvars (cursesGui2)
     def injectIvars(self, c: Cmdr) -> Any:
         """Inject standard leo ivars into the QTextEdit or QsciScintilla widget."""
         self.leo_active = True
@@ -4195,20 +4186,20 @@ class TextMixin:
         self.leo_frame = None
         return self
 
-    # @+node:ekr.20170511053143.4: *4* tm.getName
+    # @+node:ekr.20170511053143.4: *4* TextMixin.getName
     def getName(self) -> str:
-        return self.name  # Essential.
+        return self.name or ''  # Essential.
 
-    # @+node:ekr.20170511053143.8: *4* tm.Generic high-level interface
+    # @+node:ekr.20170511053143.8: *4* TextMixin: Generic high-level interface
     # These call only wrapper methods.
-    # @+node:ekr.20170511053143.13: *5* tm.appendText
+    # @+node:ekr.20170511053143.13: *5* TextMixin.appendText
     def appendText(self, s: str) -> None:
         """TextMixin"""
         s2 = self.getAllText()
         self.setAllText(s2 + s)
         self.setInsertPoint(len(s2))
 
-    # @+node:ekr.20170511053143.10: *5* tm.clipboard_clear/append
+    # @+node:ekr.20170511053143.10: *5* TextMixin.clipboard_clear/append
     def clipboard_append(self, s: str) -> None:
         s1 = g.app.gui.getTextFromClipboard()
         g.app.gui.replaceClipboardWith(s1 + s)
@@ -4216,7 +4207,7 @@ class TextMixin:
     def clipboard_clear(self) -> None:
         g.app.gui.replaceClipboardWith('')
 
-    # @+node:ekr.20170511053143.14: *5* tm.delete
+    # @+node:ekr.20170511053143.14: *5* TextMixin.delete
     def delete(self, i: int, j: int = None) -> None:
         """TextMixin"""
         s = self.getAllText()
@@ -4229,20 +4220,20 @@ class TextMixin:
         # Bug fix: Significant in external tests.
         self.setSelectionRange(i, i, insert=i)
 
-    # @+node:ekr.20170511053143.15: *5* tm.deleteTextSelection
+    # @+node:ekr.20170511053143.15: *5* TextMixin.deleteTextSelection
     def deleteTextSelection(self) -> None:
         """TextMixin"""
         i, j = self.getSelectionRange()
         self.delete(i, j)
 
-    # @+node:ekr.20170511053143.9: *5* tm.Enable/disable
+    # @+node:ekr.20170511053143.9: *5* TextMixin.Enable/disable
     def disable(self) -> None:
         self.enabled = False
 
     def enable(self, enabled: bool = True) -> None:
         self.enabled = enabled
 
-    # @+node:ekr.20170511053143.16: *5* tm.get
+    # @+node:ekr.20170511053143.16: *5* TextMixin.get
     def get(self, i: int, j: int = None) -> str:
         """TextMixin"""
         # 2012/04/12: fix the following two bugs by using the vanilla code:
@@ -4253,7 +4244,7 @@ class TextMixin:
             j = i + 1
         return all_s[i:j]
 
-    # @+node:ekr.20170511053143.17: *5* tm.getLastIndex & getLength
+    # @+node:ekr.20170511053143.17: *5* TextMixin.getLastIndex & getLength
     def getLastIndex(self) -> int:
         """TextMixin"""
         return len(self.getAllText())
@@ -4262,7 +4253,7 @@ class TextMixin:
         """TextMixin"""
         return len(self.getAllText())
 
-    # @+node:ekr.20170511053143.18: *5* tm.getSelectedText
+    # @+node:ekr.20170511053143.18: *5* TextMixin.getSelectedText
     def getSelectedText(self) -> str:
         """TextMixin"""
         i, j = self.getSelectionRange()
@@ -4271,7 +4262,7 @@ class TextMixin:
         s = self.getAllText()
         return s[i:j]
 
-    # @+node:ekr.20170511053143.19: *5* tm.insert
+    # @+node:ekr.20170511053143.19: *5* TextMixin.insert
     def insert(self, i: int, s: str) -> int:
         """TextMixin"""
         all_s = self.getAllText()
@@ -4279,7 +4270,7 @@ class TextMixin:
         self.setInsertPoint(i + len(s))
         return i
 
-    # @+node:ekr.20170511053143.24: *5* tm.rememberSelectionAndScroll
+    # @+node:ekr.20170511053143.24: *5* TextMixin.rememberSelectionAndScroll
     def rememberSelectionAndScroll(self) -> None:
         v = self.c.p.v  # Always accurate.
         v.insertSpot = self.getInsertPoint()
@@ -4291,23 +4282,23 @@ class TextMixin:
         v.selectionLength = j - i
         v.scrollBarSpot = self.getYScrollPosition()
 
-    # @+node:ekr.20170511053143.20: *5* tm.seeInsertPoint
+    # @+node:ekr.20170511053143.20: *5* TextMixin.seeInsertPoint
     def seeInsertPoint(self) -> None:
         """Ensure the insert point is visible."""
         # getInsertPoint defined in client classes.
         self.see(self.getInsertPoint())
 
-    # @+node:ekr.20170511053143.21: *5* tm.selectAllText
+    # @+node:ekr.20170511053143.21: *5* TextMixin.selectAllText
     def selectAllText(self) -> None:
         """TextMixin."""
         self.setSelectionRange(0, self.getLength())
 
-    # @+node:ekr.20170511053143.11: *5* tm.setFocus
+    # @+node:ekr.20170511053143.11: *5* TextMixin.setFocus
     def setFocus(self) -> None:
         """TextMixin.setFocus"""
         g.app.gui.set_focus(self)
 
-    # @+node:ekr.20170511053143.23: *5* tm.toPythonIndexRowCol
+    # @+node:ekr.20170511053143.23: *5* TextMixin.toPythonIndexRowCol
     def toPythonIndexRowCol(self, index: int) -> tuple[int, int]:
         """TextMixin"""
         s = self.getAllText()
@@ -4351,7 +4342,7 @@ class BodyWrapper(StringTextWrapper):
 # @+node:ekr.20170522002403.1: *3* class HeadWrapper (StringTextWrapper) cursesGui2.py
 class HeadWrapper(StringTextWrapper):
     """
-    A Wrapper class for headline widgets, returned by c.edit_widget(p)
+    A Wrapper class for headline widgets, returned by c.headline_wrapper(p)
     """
 
     def __init__(self, c: Cmdr, name: str, p: Position) -> None:
