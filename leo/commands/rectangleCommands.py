@@ -61,7 +61,9 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def clearRectangle(self, event: LeoKeyEvent) -> None:
         """Clear the rectangle defined by the start and end of selected text."""
         w = event.w if event else None
-        if not w or not self._checkSelection(event):
+        if not g.isTextWrapper(w):
+            return
+        if not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -82,7 +84,9 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def closeRectangle(self, event: LeoKeyEvent) -> None:
         """Delete the rectangle if it contains nothing but whitespace.."""
         w = event.w if event else None
-        if not w or not self._checkSelection(event):
+        if not g.isTextWrapper(w):
+            return
+        if not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -108,7 +112,9 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def deleteRectangle(self, event: LeoKeyEvent) -> None:
         """Delete the rectangle defined by the start and end of selected text."""
         w = event.w if event else None
-        if not w or not self._checkSelection(event):
+        if not g.isTextWrapper(w):
+            return
+        if not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -128,7 +134,9 @@ class RectangleCommandsClass(BaseEditCommandsClass):
     def killRectangle(self, event: LeoKeyEvent) -> None:
         """Kill the rectangle defined by the start and end of selected text."""
         w = event.w if event else None
-        if not w or not self._checkSelection(event):
+        if not g.isTextWrapper(w):
+            return
+        if not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:
@@ -155,7 +163,9 @@ class RectangleCommandsClass(BaseEditCommandsClass):
         text. This pushes the previous contents of the rectangle rightward.
         """
         w = event.w if event else None
-        if not w or not self._checkSelection(event):
+        if not g.isTextWrapper(w):
+            return
+        if not self._checkSelection(event):
             return
 
         def toInt(index: str) -> int:

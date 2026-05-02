@@ -437,7 +437,7 @@ class LeoKeyEvent:
             return
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = w
-        trace_always('unknown w', w.__class__.__name__)
+        trace('unknown w', w.__class__.__name__)
         if not isinstance(w, QtWidgets.QWidget):
             # We expect that w is a wrapper, but we don't much care.
             name = obj_name(w)
