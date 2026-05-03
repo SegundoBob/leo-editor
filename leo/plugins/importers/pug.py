@@ -19,10 +19,6 @@ class Pug_Importer(Importer):
     language = 'pug'
     block_patterns: tuple = tuple()  # No block patterns: import as single node.
 
-    def __init__(self, c: Cmdr) -> None:
-        """Pug_Importer.__init__"""
-        super().__init__(c)
-
 
 # @-others
 

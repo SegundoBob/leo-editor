@@ -1,5 +1,5 @@
 # @+leo-ver=5-thin
-# @+node:swot.20260501212006.1: * @file /Users/swot/app/leo-editor/leo/modes/pug.py
+# @+node:swot.20260501212006.1: * @file ../modes/pug.py
 # @@language python
 # @+<< docs >>
 # @+node:swot.20260501212107.1: ** << docs >>
