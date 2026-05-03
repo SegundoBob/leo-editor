@@ -262,9 +262,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Verbose only for *both* 'abbrev' and 'verbose'.
         verbose = all(z in g.app.debug for z in ('abbrev', 'verbose'))
         c, p = self.c, self.c.p
-        w = self.editWidget(event, forceFocus=False)
+        w = event.w if event else None
         w_name = g.app.gui.widget_name(w)
-        if not w:
+        if not g.isTextWrapper(w):
             if trace and verbose:
                 g.trace('no w')
             return False
@@ -408,7 +408,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 p.h = new_s
                 c.redraw(p)
                 c.editHeadline()
-                w = c.edit_widget(p)
+                w = c.headline_wrapper(p)
                 w.setSelectionRange(i, j, insert=j)
                 return True
         s = p.b
@@ -649,8 +649,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         This corresponds to C-M-/ in Emacs.
         """
         c, p = self.c, self.c.p
-        w = self.editWidget(event)
-        if not w:
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = ins1 = w.getInsertPoint()
@@ -684,8 +684,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         Inserts the longest common prefix of the word at the cursor. Displays
         all possible completions if the prefix is the same as the word.
         """
-        w = self.editWidget(event)
-        if not w:
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         s = w.getAllText()
         ins = ins1 = w.getInsertPoint()

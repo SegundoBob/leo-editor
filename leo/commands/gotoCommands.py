@@ -533,7 +533,7 @@ def show_file_line(event: LeoKeyEvent) -> None:
     if not c:
         return
     w = c.frame.body.wrapper
-    if not w:
+    if not g.isTextWrapper(w):
         return
     # n0 is the 1-based line number of the first line of p.b.
     n0 = GoToCommands(c).find_node_start(p=c.p)  # 1-based.

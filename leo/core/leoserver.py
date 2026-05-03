@@ -1052,8 +1052,8 @@ class LeoServer:
         if not hasattr(self, 'c') or not self.c:
             return
         try:
-            gui_w = self.c.edit_widget(self.c.p)
-            gui_w.setSelectionRange(0, 0, insert=0)
+            w = self.c.headline_wrapper(self.c.p)
+            w.setSelectionRange(0, 0, insert=0)
         except Exception:
             print("Could not reset headline cursor")
         # Important: this will redraw if necessary.
@@ -2177,12 +2177,7 @@ class LeoServer:
             fc.in_headline = False
             c.bodyWantsFocus()
             c.bodyWantsFocusNow()
-        #
-        # if fc.in_headline:
-        #     ins = len(p.h)
-        #     gui_w = c.edit_widget(p)
-        #     gui_w.setSelectionRange(ins, ins, insert=ins)
-        #
+
         try:
             settings = fc.ftm.get_settings()
             p, pos, newpos = fc.do_find_next(settings)
@@ -2221,11 +2216,6 @@ class LeoServer:
             fc.in_headline = False
             c.bodyWantsFocus()
             c.bodyWantsFocusNow()
-        #
-        # if fc.in_headline:
-        #     gui_w = c.edit_widget(p)
-        #     gui_w.setSelectionRange(0, 0, insert=0)
-        #
         try:
             settings = fc.ftm.get_settings()
             p, pos, newpos = fc.do_find_prev(settings)
@@ -5300,8 +5290,8 @@ class LeoServer:
             if hasattr(w, "sel"):
                 return w.sel[0], w.sel[1]
             c = self.c
-            gui_w = c.edit_widget(c.p)
-            selRange = gui_w.getSelectionRange()
+            w = c.headline_wrapper(c.p)
+            selRange = w.getSelectionRange()
             return selRange
         except Exception:
             print("Error retrieving current focused widget selection range.")

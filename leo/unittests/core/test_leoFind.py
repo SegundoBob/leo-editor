@@ -362,7 +362,7 @@ class TestFind(LeoUnitTest):
         # Find test_p.
         p, pos, newpos = x.do_find_next(settings)
         self.assertEqual(p, test_p)
-        w = c.edit_widget(p)
+        w = c.headline_wrapper(p)
         self.assertEqual(test_p.h, w.getAllText())
         self.assertEqual(w.getSelectionRange(), (pos, newpos))
         # Do change-then-find.
@@ -449,7 +449,7 @@ class TestFind(LeoUnitTest):
         p, pos, newpos = x.do_find_next(settings)
         assert p
         self.assertEqual(p.h, settings.find_text)
-        w = self.c.edit_widget(p)
+        w = self.c.headline_wrapper(p)
         assert w
         s = p.h[pos:newpos]
         self.assertEqual(s, settings.find_text)

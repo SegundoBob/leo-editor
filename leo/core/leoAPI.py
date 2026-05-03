@@ -103,7 +103,7 @@ class StringTextWrapper(QTextMixin):
     """A class that represents Leo's body pane as a Python string."""
 
     # @+others
-    # @+node:ekr.20070228074228.2: *3* StringTextWrapper.__init__
+    # @+node:ekr.20070228074228.2: *3* StringTextWrapper.__init__, __repr__ & getName
     def __init__(self, c: Cmdr, name: str) -> None:
         """Ctor for the StringTextWrapper class."""
         super().__init__(c)
@@ -120,7 +120,7 @@ class StringTextWrapper(QTextMixin):
 
     def getName(self) -> str:
         """StringTextWrapper."""
-        return self.name  # Essential.
+        return self.name or ''  # Essential.
 
     # @+node:ekr.20140903172510.18578: *3* StringTextWrapper: Clipboard
     def clipboard_clear(self) -> None:
@@ -317,7 +317,7 @@ class TreeAPI:
     ) -> tuple[Widget, QTextMixin]:
         return None, None
 
-    def edit_widget(self, p: Position) -> None:
+    def headline_wrapper(self, p: Position) -> None:
         return None
 
     def redraw(self, p: Position = None) -> None:

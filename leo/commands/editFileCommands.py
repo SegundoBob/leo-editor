@@ -571,8 +571,8 @@ class EditFileCommandsClass(BaseEditCommandsClass):
         Prompt for the name of a file.
         Insert the file's contents in the body at the insertion point.
         """
-        w = self.editWidget(event)
-        if not w:
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         fn = self.getReadableTextFile()
         if not fn:
@@ -629,8 +629,8 @@ class EditFileCommandsClass(BaseEditCommandsClass):
     def saveFile(self, event: LeoKeyEvent) -> None:
         """Prompt for the name of a file and put the body text of the selected node into it.."""
         c = self.c
-        w = self.editWidget(event)
-        if not w:
+        w = event.w if event else None
+        if not g.isTextWrapper(w):
             return
         fileName = g.app.gui.runSaveFileDialog(
             c,
@@ -828,7 +828,7 @@ class GitDiffController:
         if not g.unitTesting:
             g.es_print(f"diffing {n} file{g.plural(n)}")
             if n > 5:
-                g.es_print('This may take awhile...')
+                g.es_print('This may take a while...')
         c.selectPosition(c.lastTopLevel())  # pre-select to help undo-insert
 
         # Create the root node.
@@ -1304,6 +1304,7 @@ class GitDiffController:
     # @+node:ekr.20170806191942.2: *4* gdc.create_compare_node
     def create_compare_node(
         self,
+        branch: str,
         c1: Cmdr,
         c2: Cmdr,
         d: dict[str, tuple[VNode, VNode]],
@@ -1314,6 +1315,11 @@ class GitDiffController:
         """Create nodes describing the changes."""
         if not d:
             return
+        branches_match = (
+            branch == rev2 or
+            rev2 == 'HEAD' or
+            rev1 == 'HEAD' and rev2 == ''  # diffing the latest changes.
+        )  # fmt: skip
         parent = self.file_node.insertAsLastChild()
         parent.setHeadString(f"diff: {kind}")
         for key in d:
@@ -1345,7 +1351,8 @@ class GitDiffController:
                 p2.b = v1.b
                 # Node 3: New node
                 assert v1.fileIndex == v2.fileIndex
-                if p_in_c:  # Make a clone, if possible.
+                # Make a clone, if possible.
+                if p_in_c and branches_match:  # #4645.
                     p3 = p_in_c.clone()
                     p3.moveToLastChildOf(organizer)
                 else:
@@ -1642,6 +1649,7 @@ class GitDiffController:
         rev2: str = '',
     ) -> None:
         """Create an outline-oriented diff from the *hidden* outlines c1 and c2."""
+        branch, _commit = g.gitInfo()
         added, deleted, changed = self.compute_dicts(c1, c2)
         table = (
             (added,   'Added'),
@@ -1649,7 +1657,7 @@ class GitDiffController:
             (changed, 'Changed'),
         )  # fmt: skip
         for d, kind in table:
-            self.create_compare_node(c1, c2, d, kind, rev1, rev2)
+            self.create_compare_node(branch, c1, c2, d, kind, rev1, rev2)
 
     # @+node:ekr.20170806191707.1: *5* gdc.compute_dicts
     def compute_dicts(self, c1: Cmdr, c2: Cmdr) -> tuple[dict, dict, dict]:

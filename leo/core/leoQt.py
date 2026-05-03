@@ -2,7 +2,7 @@
 # @+node:ekr.20140810053602.18074: * @file leoQt.py
 """Leo's Qt import wrapper, specialized for Qt6."""
 
-# pylint: disable=no-name-in-module,unused-import)
+# pylint: disable=no-name-in-module,unused-import
 from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt, QUrl

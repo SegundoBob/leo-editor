@@ -22,7 +22,7 @@ class BaseEditCommandsClass:
     """The base class for all edit command classes"""
 
     # @+others
-    # @+node:ekr.20150516040334.1: *3* BaseEdit.ctor
+    # @+node:ekr.20150516040334.1: *3* BaseEdit.__init__
     def __init__(self, c: Cmdr) -> None:
         """
         Ctor for the BaseEditCommandsClass class.
@@ -32,8 +32,7 @@ class BaseEditCommandsClass:
         """
         self.c = c
 
-    # @+node:ekr.20150514043714.3: *3* BaseEdit.begin/endCommand (handles undo)
-    # @+node:ekr.20150514043714.4: *4* BaseEdit.beginCommand
+    # @+node:ekr.20150514043714.4: *3* BaseEdit.beginCommand
     def beginCommand(self, w: QTextMixin, undoType: str = 'Typing') -> QTextMixin:
         """Do the common processing at the start of each command."""
         c, p, u = self.c, self.c.p, self.c.undoer
@@ -52,14 +51,17 @@ class BaseEditCommandsClass:
             self.undoData = None  # pragma: no cover
         return w
 
-    # @+node:ekr.20150514043714.6: *4* BaseEdit.endCommand
+    # @+node:ekr.20150514043714.6: *3* BaseEdit.endCommand
     def endCommand(self, label: str = None, changed: bool = True, setLabel: bool = True) -> None:
         """
         Do the common processing at the end of each command.
         Handles undo only if we are in the body pane.
         """
-        k, p, u = self.c.k, self.c.p, self.c.undoer
-        w = self.editWidget(event=None)
+        c = self.c
+        k, p, u = c.k, c.p, c.undoer
+        w = c.frame.body and c.frame.body.wrapper
+        if not w:
+            return
         bunch = self.undoData
         if bunch and bunch.name.startswith('body') and changed:
             newText = w.getAllText()
@@ -83,50 +85,14 @@ class BaseEditCommandsClass:
             else:
                 k.resetLabel()
 
-    # @+node:ekr.20150514043714.7: *3* BaseEdit.editWidget
-    def editWidget(self, event: LeoKeyEvent, forceFocus: bool = True) -> QTextMixin:
-        """Return the edit widget for the event. Also sets self.w"""
-        c = self.c
-        w = event.widget if event else None  # event.widget is correct.
-        if w and g.isTextWrapper(w):
-            pass
-        else:
-            w = c.frame.body and c.frame.body.wrapper
-        if w and forceFocus:
-            c.widgetWantsFocusNow(w)
-        self.w = w
-        return w
-
-    # @+node:ekr.20150514043714.8: *3* BaseEdit.getWSString
-    def getWSString(self, s: str) -> str:  # pragma: no cover
-        """Return s with all characters replaced by tab or space."""
-        return ''.join([ch if ch == '\t' else ' ' for ch in s])
-
-    # @+node:ekr.20150514043714.10: *3* BaseEdit.Helpers
-    # @+node:ekr.20150514043714.11: *4* BaseEdit._chckSel
-    def _chckSel(self, event: LeoKeyEvent, warning: str = 'no selection') -> bool:
+    # @+node:ekr.20150514043714.11: *3* BaseEdit._checkSelection
+    def _checkSelection(self, event: LeoKeyEvent, warning: str = 'no selection') -> bool:
         """Return True if there is a selection in the edit widget."""
-        w = self.editWidget(event)
+        w = event.w if event else None
         val = bool(w and w.hasSelection())
         if warning and not val:  # pragma: no cover
             g.es(warning, color='red')
         return val
-
-    # @+node:ekr.20150514043714.13: *4* BaseEdit.getRectanglePoints
-    def getRectanglePoints(self, w: QTextMixin) -> tuple[int, int, int, int]:
-        """Return the rectangle corresponding to the selection range."""
-        c = self.c
-        c.widgetWantsFocusNow(w)
-        s = w.getAllText()
-        i, j = w.getSelectionRange()
-        r1, r2 = g.convertPythonIndexToRowCol(s, i)
-        r3, r4 = g.convertPythonIndexToRowCol(s, j)
-        return r1 + 1, r2, r3 + 1, r4
-
-    # @+node:ekr.20150514043714.14: *4* BaseEdit.keyboardQuit
-    def keyboardQuit(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
-        """Clear the state and the minibuffer label."""
-        self.c.k.keyboardQuit()
 
     # @-others
 
