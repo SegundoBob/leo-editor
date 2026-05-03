@@ -1315,6 +1315,11 @@ class GitDiffController:
         """Create nodes describing the changes."""
         if not d:
             return
+        branches_match = (
+            branch == rev2 or
+            rev2 == 'HEAD' or
+            rev1 == 'HEAD' and rev2 == ''  # diffing the latest changes.
+        )  # fmt: skip
         parent = self.file_node.insertAsLastChild()
         parent.setHeadString(f"diff: {kind}")
         for key in d:
@@ -1347,7 +1352,7 @@ class GitDiffController:
                 # Node 3: New node
                 assert v1.fileIndex == v2.fileIndex
                 # Make a clone, if possible.
-                if p_in_c and branch == rev2:  # #4645: clone only if the branches match.
+                if p_in_c and branches_match:  # #4645.
                     p3 = p_in_c.clone()
                     p3.moveToLastChildOf(organizer)
                 else:
