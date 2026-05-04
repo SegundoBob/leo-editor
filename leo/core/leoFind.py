@@ -1806,6 +1806,7 @@ class LeoFind:
 
     # @+node:ekr.20230124103253.1: *7* find.make_result_from_matches
     def make_result_from_matches(self, matches: list[dict]) -> str:
+        self.seen_vnodes: list[VNode] = []
         results: list[str] = ['\n']
         # Report settings.
         results.append(
@@ -1849,8 +1850,12 @@ class LeoFind:
         else:
             g.trace(f"Can not happen: no position for {v}")
             return
+        # Leo 6.8.9: Show headlines, not matching lines.
+        if p.v in self.seen_vnodes:
+            return
+        self.seen_vnodes.append(p.v)
         unl = p.get_UNL()
-        log.put(line.strip() + '\n', nodeLink=f"{unl}::{line_number - 1}")  # Local line.
+        log.put(p.h.strip() + '\n', nodeLink=f"{unl}::{line_number - 1}")  # Local line.
 
     # @+node:ekr.20230124101551.1: *7* find.find_all_matches_in_string & helpers
     def find_all_matches_in_string(self, s: str) -> list[int]:
