@@ -8277,6 +8277,7 @@ def handleUnl(unl_s: str, c: Cmdr) -> Optional[Cmdr]:
     if c2 != c:
         g.app.selectLeoWindow(c2)  # Switch outlines.
     c2.redraw(p)
+    c2.bodyWantsFocusNow()  # #4661.
     return c2
 
 

@@ -2456,7 +2456,6 @@ class LeoQtLog(leoFrame.LeoLog):
         if not isinstance(w, QtWidgets.QTextEdit):
             g.trace('BAD widget', w.__class__.__name__)
             return
-        ### g.trace(s.strip())
         sb = w.horizontalScrollBar()
         s = self.to_html(color, s)
         if nodeLink:
