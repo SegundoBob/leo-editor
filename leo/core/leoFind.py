@@ -1296,7 +1296,7 @@ class LeoFind:
         self.restore(saveData)
         return count
 
-    # @+node:ekr.20260504060502.1: *7* find_all_literal_matches_in_string
+    # @+node:ekr.20260504060502.1: *7* find.find_all_literal_matches_in_string
     def find_all_literal_matches_in_string(self, s: str, *, replace_flag: bool = True) -> list[int]:
         """
         Find all matches in string s. For 'change-all'
