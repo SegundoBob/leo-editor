@@ -2843,7 +2843,9 @@ class LeoFind:
 
     # @+node:ekr.20210110073117.49: *4* find.replace_back_slashes
     def replace_back_slashes(self, s: str) -> str:
-        """Replace backslash-n with a newline and backslash-t with a tab."""
+        """
+        Replace backslash-n with a newline and backslash-t with a tab.
+        """
         # Compare: https://docs.python.org/3/library/ast.html#ast.literal_eval
         i, result = 0, []
         while i < len(s):
@@ -2861,12 +2863,13 @@ class LeoFind:
                 result.append('\t')
             elif ch == 'f':
                 result.append('\f')
-            elif ch == '\\':  # 4284
-                result.append(ch)
+            elif ch == '\\':
+                # #4601 Replace two backslashes with a single backslash.
                 result.append(ch)
             else:
+                # #4601: A backslash followed by some other characters.
                 result.append('\\')
-                i -= 1
+                result.append(ch)
             assert progress < i
         return ''.join(result)
 
