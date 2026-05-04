@@ -2795,10 +2795,10 @@ class LeoFind:
         word: bool,
     ) -> tuple[int, int]:
         """Do a plain search."""
+        pattern = self.replace_back_slashes(pattern)  # #4660: Do this first.
         if nocase:
             s = s.lower()
             pattern = pattern.lower()
-        pattern = self.replace_back_slashes(pattern)
         n = len(pattern)
         if word:
             while 1:
