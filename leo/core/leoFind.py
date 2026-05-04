@@ -2781,7 +2781,6 @@ class LeoFind:
     # @+node:ekr.20210110073117.45: *5* find._inner_search_match_word
     def _inner_search_match_word(self, s: str, i: int, pattern: str) -> bool:
         """Do a whole-word search."""
-        pattern = self.replace_back_slashes(pattern)
         return bool(s and pattern and g.match_word(s, i, pattern, ignore_case=self.ignore_case))
 
     # @+node:ekr.20210110073117.46: *5* find._inner_search_plain
