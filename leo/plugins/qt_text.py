@@ -258,16 +258,15 @@ class QTextMixin:
         if 'focus' in g.app.debug:
             print('BaseQTextWrapper.setFocus', self.widget)
         # Call the base class
-        assert isinstance(
-            self.widget,
-            (
-                QtWidgets.QTextBrowser,
-                QtWidgets.QLineEdit,
-                QtWidgets.QTextEdit,
-                Qsci and Qsci.QsciScintilla,
-            ),
-        ), self.widget
-        QtWidgets.QTextBrowser.setFocus(self.widget)
+        classes = [
+            QtWidgets.QTextBrowser,
+            QtWidgets.QLineEdit,
+            QtWidgets.QTextEdit,
+        ]
+        if Qsci:
+            classes.append(Qsci.QsciScintilla)
+        assert isinstance(self.widget, tuple(classes)), self.widget
+        QtWidgets.QTextBrowser.setFocus(self.widget)  # type:ignore
 
     # @+node:ekr.20140901062324.18717: *4* QTextMixin.Generic text
     # @+node:ekr.20140901062324.18703: *5* QTextMixin.appendText
