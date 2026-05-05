@@ -211,10 +211,10 @@ from leo.core.leoQt import QtMultimedia, QtSvg, QUrl
 from leo.core.leoQt import ContextMenuPolicy, WrapMode
 from leo.plugins import qt_text
 
+qwv: Any = None
 try:
     from leo.core.leoQt import WebEngineAttribute, QtWebEngineWidgets
 
-    qwv: Any
     qwv = QtWebEngineWidgets.QWebEngineView
     has_webengineview = True
 except Exception:
