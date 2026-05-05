@@ -214,6 +214,7 @@ from leo.plugins import qt_text
 try:
     from leo.core.leoQt import WebEngineAttribute, QtWebEngineWidgets
 
+    qwv: Any
     qwv = QtWebEngineWidgets.QWebEngineView
     has_webengineview = True
 except Exception:
