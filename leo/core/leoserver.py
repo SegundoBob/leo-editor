@@ -1926,8 +1926,7 @@ class LeoServer:
 
     # @+node:felix.20220309205509.1: *5* server.goto_nav_entry
     def goto_nav_entry(self, param: Param) -> Response:
-        # activate entry in scon.its
-        tag = 'goto_nav_entry'
+        # activate entry in scon.its.
         c = self._check_c(param)
         scon: QuickSearchController = c.patched_quicksearch_controller
         try:
@@ -1935,8 +1934,7 @@ class LeoServer:
             scon.onSelectItem(it)
             focus = self._get_focus()
             result = {"focus": focus}
-        except Exception as e:
-            # raise ServerError(f"{tag}: exception selecting a nav entry: {e}")
+        except Exception:
             raise
         return self._make_response(result)
 
