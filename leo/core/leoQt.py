@@ -8,9 +8,10 @@
 # @+node:ekr.20260505180734.1: ** << leoQt.py: imports >>
 from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtCore import Qt
-from PyQt6.QtCore import QUrl  # noqa
-from PyQt6.QtGui import QAction, QCloseEvent  # noqa
+from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtGui import QAction, QCloseEvent
+
+assert QUrl and QAction and QCloseEvent  # To placate pyflakes.
 # @-<< leoQt.py: imports >>
 
 # A public list of missing Qt modules. Good for debugging.
