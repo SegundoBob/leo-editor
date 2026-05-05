@@ -198,7 +198,7 @@ async def client_main_loop(timeout):
                     "param": param,
                 }
                 if trace:
-                    print(f"{tag}: send: id: {n} package: {request_package}")
+                    print(f"{tag}: send: id: {n:4} {action:>40} {param}")
                 # Send the next request.
                 request = json.dumps(request_package, separators=(',', ':'))
                 await websocket.send(request)
