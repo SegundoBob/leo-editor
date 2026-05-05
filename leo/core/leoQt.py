@@ -3,10 +3,9 @@
 """Leo's Qt import wrapper, specialized for Qt6."""
 
 # pylint: disable=no-name-in-module,unused-import
-from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtCore import Qt, QUrl
-from PyQt6.QtGui import QAction, QActionGroup, QCloseEvent
+from PyQt6.QtCore import Qt, QUrl  # noqa
+from PyQt6.QtGui import QAction, QActionGroup, QCloseEvent  # noqa
 
 # A public list of missing Qt modules. Good for debugging.
 _missing_modules: list[str] = []
