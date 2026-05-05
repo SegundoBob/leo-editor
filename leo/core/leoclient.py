@@ -32,8 +32,7 @@ n_unknown_response_times = 0
 # @+node:ekr.20210219105145.1: ** function: _dump_outline
 def _dump_outline(c):  # pragma: no cover
     """Dump the outline."""
-    tag = '_dump_outline'
-    print(f"{tag}: {c.shortFileName()}...\n")
+    print(f"_dump_outline: {c.shortFileName()}...\n")
     for p in c.all_positions():
         level_s = ' ' * 2 * p.level()
         print(f"{level_s}{p.childIndex():2} {p.v.gnx} {p.h}")
@@ -255,6 +254,8 @@ def main():
         print(f"{tag}: Keyboard interrupt")
     except ConnectionRefusedError:
         print(f"{tag}: No server running")
+    except asyncio.CancelledError:
+        print(f"{tag}: Cancelled")
 
 
 # @-others
