@@ -5927,7 +5927,7 @@ def main() -> None:  # pragma: no cover (tested in client)
                         id_s = d.get('id', 'None')
                         action_s = d.get('action', 'None')
                         param_s = d.get('param', {})
-                        error = f"Error: {tag}: id: {id_s:4} {action_s:>40} {param_s} {e!s}"
+                        error = f"{tag}: Error: id: {id_s:4} {action_s:>40} {param_s} {e!s}"
                     else:
                         error = f"json syntax error: {json_message!r}"
                     data = f"{d}" if d else f"json syntax error: {json_message!r}"
