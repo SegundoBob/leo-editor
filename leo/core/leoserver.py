@@ -1934,8 +1934,8 @@ class LeoServer:
             scon.onSelectItem(it)
             focus = self._get_focus()
             result = {"focus": focus}
-        except Exception:
-            raise
+        except Exception as e:
+            raise ServerError(e)
         return self._make_response(result)
 
     # @+node:felix.20210621233316.19: *4* server.search commands
