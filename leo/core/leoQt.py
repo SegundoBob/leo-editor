@@ -3,9 +3,11 @@
 """Leo's Qt import wrapper, specialized for Qt6."""
 
 # pylint: disable=no-name-in-module,unused-import
+from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtCore import Qt, QUrl  # noqa
-from PyQt6.QtGui import QAction, QActionGroup, QCloseEvent  # noqa
+from PyQt6.QtCore import Qt
+from PyQt6.QtCore import QUrl  # noqa
+from PyQt6.QtGui import QAction, QCloseEvent  # noqa
 
 # A public list of missing Qt modules. Good for debugging.
 _missing_modules: list[str] = []
@@ -130,6 +132,10 @@ WrapMode = QtGui.QTextOption.WrapMode
 # @+<< define standard abbreviations >>
 # @+node:ekr.20240528050716.1: ** << define standard abbreviations >>
 qt_version = QtCore.QT_VERSION_STR
+
+QWebEngineSettings: Any
+WebEngineAttribute: Any
+
 try:
     QWebEngineSettings = QtWebEngineCore.QWebEngineSettings
     WebEngineAttribute = QWebEngineSettings.WebAttribute
