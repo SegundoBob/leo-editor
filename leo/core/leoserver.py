@@ -905,7 +905,8 @@ class QuickSearchController:
         tgt = self.its.get(it)
         if not tgt:
             if not g.unitTesting:
-                print("onSelectItem: no target found for 'it' as key:" + str(it))
+                # print("onSelectItem: no target found for 'it' as key:" + str(it))
+                raise ServerError(f"onSelectItem: no target found for {it!s}")
             return
 
         # generic callable
@@ -1935,7 +1936,8 @@ class LeoServer:
             focus = self._get_focus()
             result = {"focus": focus}
         except Exception as e:
-            raise ServerError(f"{tag}: exception selecting a nav entry: {e}")
+            # raise ServerError(f"{tag}: exception selecting a nav entry: {e}")
+            raise
         return self._make_response(result)
 
     # @+node:felix.20210621233316.19: *4* server.search commands
@@ -5923,11 +5925,15 @@ def main() -> None:  # pragma: no cover (tested in client)
                     await websocket.close(code=1000, reason=str(e))
                     return
                 except ServerError as e:
+                    if d:
+                        id_s = d.get('id', 'None')
+                        action_s = d.get('action', 'None')
+                        param_s = d.get('param', {})
+                        error = f"Error: {tag}: id: {id_s:4} {action_s:>40} {param_s} {e!s}"
+                    else:
+                        error = f"json syntax error: {json_message!r}"
                     data = f"{d}" if d else f"json syntax error: {json_message!r}"
-                    error = f"{tag}:  ServerError: {e}...\n{tag}:  {data}"
-                    print("", flush=True)
                     print(error, flush=True)
-                    print("", flush=True)
                     package = {
                         "id": controller.current_id,
                         "action": controller.action,
