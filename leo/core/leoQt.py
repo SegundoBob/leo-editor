@@ -3,17 +3,21 @@
 """Leo's Qt import wrapper, specialized for Qt6."""
 
 # pylint: disable=no-name-in-module,unused-import
+
+# @+<< leoQt.py: imports >>
+# @+node:ekr.20260505180734.1: ** << leoQt.py: imports >>
 from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt
 from PyQt6.QtCore import QUrl  # noqa
 from PyQt6.QtGui import QAction, QCloseEvent  # noqa
+# @-<< leoQt.py: imports >>
 
 # A public list of missing Qt modules. Good for debugging.
 _missing_modules: list[str] = []
 
-# @+<< import optional Qt modules >>
-# @+node:ekr.20240528041831.1: ** << import optional Qt modules >>
+# @+<< leoQt.py: import optional Qt modules >>
+# @+node:ekr.20240528041831.1: ** << leoQt.py: import optional Qt modules >>
 # Leo 6.8.0: do *not* assume these exist.
 try:
     from PyQt6 import Qsci
@@ -77,9 +81,9 @@ except Exception:
     uic = None
     # On Linux, uic may be a standalone program.
     _missing_modules.append('uic')
-# @-<< import optional Qt modules >>
-# @+<< define PyQt6 enumerations >>
-# @+node:ekr.20240303142509.3: ** << define PyQt6 enumerations >>
+# @-<< leoQt.py: import optional Qt modules >>
+# @+<< leoQt.py: define PyQt6 enumerations >>
+# @+node:ekr.20240303142509.3: ** << leoQt.py: define PyQt6 enumerations >>
 AlignmentFlag = Qt.AlignmentFlag
 AlignLeft = Qt.AlignmentFlag.AlignLeft
 AlignRight = Qt.AlignmentFlag.AlignRight
@@ -128,9 +132,9 @@ WidgetAttribute = Qt.WidgetAttribute
 WindowState = Qt.WindowState
 WindowType = Qt.WindowType
 WrapMode = QtGui.QTextOption.WrapMode
-# @-<< define PyQt6 enumerations >>
-# @+<< define standard abbreviations >>
-# @+node:ekr.20240528050716.1: ** << define standard abbreviations >>
+# @-<< leoQt.py: define PyQt6 enumerations >>
+# @+<< leoQt.py: define standard abbreviations >>
+# @+node:ekr.20240528050716.1: ** << leoQt.py: define standard abbreviations >>
 qt_version = QtCore.QT_VERSION_STR
 
 QWebEngineSettings: Any
@@ -143,5 +147,5 @@ except Exception:
     QWebEngineSettings = None
     WebEngineAttribute = None
     _missing_modules.append('QtWebEngineCore.QWebEngineSettings')
-# @-<< define standard abbreviations >>
+# @-<< leoQt.py: define standard abbreviations >>
 # @-leo
