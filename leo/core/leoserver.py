@@ -5554,11 +5554,11 @@ def main() -> None:  # pragma: no cover (tested in client)
         """
         Close the server by stopping the loop
         """
-        print('Closing Leo Server', flush=True)
-        if gLoop.is_running():
+        global gLoop
+        if gLoop and gLoop.is_running():
+            print('Closing Leo Server', flush=True)
             gLoop.stop()
-        else:
-            print('Loop was not running', flush=True)
+            gLoop = None
 
     # @+node:ekr.20210825172913.1: *3* function: general_yes_no_dialog & helpers
     def general_yes_no_dialog(
@@ -6019,7 +6019,9 @@ def main() -> None:  # pragma: no cover (tested in client)
                 await realtime_server.wait_closed()
 
             except KeyboardInterrupt:
-                print("Process interrupted", flush=True)
+                print("leoserver: keyboard interrupt", flush=True)
+            except asyncio.exceptions.CancelledError:
+                print("leoserver: cancelled", flush=True)
             finally:
                 if realtime_server:
                     realtime_server.close()
@@ -6031,7 +6033,12 @@ def main() -> None:  # pragma: no cover (tested in client)
         try:
             asyncio.run(start_server())
         except KeyboardInterrupt:
+            print('')
             print("Process interrupted", flush=True)
+        except Exception as e:
+            print('')
+            print(f"leoserver.py: exception starting the server:\n{e!r}")
+            return
     else:
         # For Python below 3.14
         loop = asyncio.get_event_loop()
