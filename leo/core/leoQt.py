@@ -144,29 +144,6 @@ WindowState = Qt.WindowState
 WindowType = Qt.WindowType
 WrapMode = QtGui.QTextOption.WrapMode
 # @-<< define PyQt6 enumerations >>
-# @+<< asserts for pyflakes >>
-# @+node:ekr.20240528045757.1: ** << asserts for pyflakes >>
-
-# For pyflakes so it doesn't complain about unused imports.
-assert QAction
-assert QActionGroup
-assert QCloseEvent
-assert QUrl
-
-# assert QtCore
-# assert Qsci
-# assert QtDesigner
-# assert QtGui
-# assert QtMultimedia
-# assert QtNetwork
-# assert QtOpenGL
-# assert QtSvg
-# assert printsupport
-# assert QtWebEngineCore
-# assert QtWebEngineWidgets
-# assert QtWidgets
-# assert uic
-# @-<< asserts for pyflakes >>
 # @+<< define standard abbreviations >>
 # @+node:ekr.20240528050716.1: ** << define standard abbreviations >>
 qt_version = QtCore.QT_VERSION_STR
@@ -178,18 +155,4 @@ except Exception:
     WebEngineAttribute = None
     _missing_modules.append('QtWebEngineCore.QWebEngineSettings')
 # @-<< define standard abbreviations >>
-
-if 0:  # Quickly becomes annoying.
-    # @+<< print a hint if an optional module does not exist >>
-    # @+node:ekr.20240528050657.1: ** << print a hint if an optional module does not exist >>
-    if _missing_modules:
-        print('')
-        print('leoQt.py: the following optional Qt modules do not exist:')
-        for z in sorted(_missing_modules):
-            print(f"  {z}")
-        print('')
-        print('Please run `pip install -r requirements.txt`')
-        print('')
-    # @-<< print a hint if an optional module does not exist >>
-
 # @-leo
