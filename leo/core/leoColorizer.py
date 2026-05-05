@@ -3680,6 +3680,7 @@ class QScintillaColorizer(BaseColorizer):
         # Define/configure various lexers.
         self.reloadSettings()
         self.nullLexer: NullScintillaLexer | g.NullObject
+        self.lexersDict: dict[str, Any]
         if Qsci:
             self.lexersDict = self.makeLexersDict()
             self.nullLexer = NullScintillaLexer(c)
