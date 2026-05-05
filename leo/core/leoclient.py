@@ -136,10 +136,7 @@ def _get_action_list():
 def _show_response(n, d):
     global n_known_response_times
     global n_unknown_response_times
-    # global times_d
     global tot_response_time
-    # global trace
-    # global verbose
 
     # Calculate response time.
     t1 = times_d.get(n)
@@ -152,12 +149,12 @@ def _show_response(n, d):
         tot_response_time += response_time
         n_known_response_times += 1
         response_time_s = f"{response_time:3.2}"
-    if not trace and not verbose:
+    if not trace:
         return
     action = d.get('action')
     if not verbose:
-        print(f"id: {d.get('id', '---'):3} d: {sorted(d)}")
         return
+    print(f"id: {d.get('id', '---'):3} d: {sorted(d)}")
     if action == 'open_file':
         g.printObj(d, tag=f"{tag}: got: open-file response time: {response_time_s}")
     elif action == 'get_all_commands':
@@ -178,12 +175,12 @@ async def client_main_loop(timeout):
     uri = f"ws://{wsHost}:{wsPort}"
     action_list = _get_action_list()
     async with websockets.connect(uri) as websocket:
-        if trace and verbose:
+        if trace:
             print(f"{tag}: asyncInterval.timeout: {timeout}")
         # Await the startup package.
         json_s = g.toUnicode(await websocket.recv())
         d = json.loads(json_s)
-        if trace and verbose:
+        if trace:
             print(f"startup package: {d}")
         n = 0
         while True:
@@ -201,7 +198,7 @@ async def client_main_loop(timeout):
                     "action": action,
                     "param": param,
                 }
-                if trace and verbose:
+                if trace:
                     print(f"{tag}: send: id: {n} package: {request_package}")
                 # Send the next request.
                 request = json.dumps(request_package, separators=(',', ':'))
@@ -249,14 +246,15 @@ async def client_main_loop(timeout):
         )  # About 0.1, regardless of tracing.
 
 
-# @+node:ekr.20210205141432.1: ** function: main
+# @+node:ekr.20210205141432.1: ** function: main (leoclient.py)
 def main():
-    loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(client_main_loop(timeout))
+        asyncio.run(client_main_loop(timeout))  # #4664
     except KeyboardInterrupt:
         # This terminates the server abnormally.
         print(f"{tag}: Keyboard interrupt")
+    except ConnectionRefusedError:
+        print(f"{tag}: No server running")
 
 
 # @-others

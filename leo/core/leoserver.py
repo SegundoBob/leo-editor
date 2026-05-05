@@ -119,6 +119,7 @@ SERVER_STARTED_TOKEN = "LeoBridge started"  # Output when started successfully
 # Websocket connections (to be sent 'notify' messages)
 connectionsPool: set[Any] = set()
 connectionsTotal = 0  # Current connected client total
+gLoop = None  # Current server loop.
 # Customizable server options
 argFile = ""
 traces: list[str] = []  # list of traces names, to be used as flags to output traces
@@ -5505,7 +5506,7 @@ class LeoServer:
     # @-others
 
 
-# @+node:felix.20210621233316.105: ** main & helpers
+# @+node:felix.20210621233316.105: ** main & helpers (leoserver.py)
 def main() -> None:  # pragma: no cover (tested in client)
     """python script for leo integration via leoBridge"""
     if not websockets:
@@ -5554,8 +5555,8 @@ def main() -> None:  # pragma: no cover (tested in client)
         Close the server by stopping the loop
         """
         print('Closing Leo Server', flush=True)
-        if loop.is_running():
-            loop.stop()
+        if gLoop.is_running():
+            gLoop.stop()
         else:
             print('Loop was not running', flush=True)
 
