@@ -8277,6 +8277,22 @@ def handleUnl(unl_s: str, c: Cmdr) -> Optional[Cmdr]:
     if c2 != c:
         g.app.selectLeoWindow(c2)  # Switch outlines.
     c2.redraw(p)
+    # #4661: Select the line given by the Unl.
+    c2.bodyWantsFocusNow()
+    i = unl.find('::')
+    if i > -1:
+        n_s = unl[i + 2 :].strip()
+        try:
+            n = int(n_s)
+        except TypeError:
+            return c2
+        # Select line n of p.b. Similar to GoToCommands.success.
+        w = c.frame.body.wrapper
+        s = w.getAllText()
+        ins = g.convertRowColToPythonIndex(s, n - 1, 0)
+        w.setInsertPoint(ins)
+        c.bodyWantsFocusNow()
+        w.seeInsertPoint()
     return c2
 
 

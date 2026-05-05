@@ -1213,7 +1213,7 @@ class LeoFind:
         c.redraw()
         return n
 
-    # @+node:ekr.20031218072017.3069: *6* find._change_all_helper
+    # @+node:ekr.20031218072017.3069: *6* find._change_all_helper & helper
     def _change_all_helper(self, settings: Settings) -> int:
         """Do the change-all command. Return the number of changes, or 0 for error."""
         # Caller has checked settings.
@@ -1223,13 +1223,13 @@ class LeoFind:
 
         saveData = self.save()
         u.beforeChangeGroup(current, undoType)
-        # Fix bug 338172: ReplaceAll will not replace newlines
-        # indicated as \n in target string.
         if not self.find_text:  # pragma: no cover
             return 0
         if not self.search_headline and not self.search_body:  # pragma: no cover
             return 0
+        self.find_text = self.replace_back_slashes(self.find_text)  # #4609
         self.change_text = self.replace_back_slashes(self.change_text)
+        matches_dict: list[dict[str, Any]] = []
         if self.pattern_match:
             ok = self.compile_pattern()
             if not ok:
@@ -1244,17 +1244,25 @@ class LeoFind:
         count = 0
         for p in positions:
             count_h, count_b = 0, 0
+            body, head = [], []
             undoData = u.beforeChangeNodeContents(p)
             if self.search_headline:
                 count_h, new_h = self._change_all_search_and_replace(p.h)
                 if count_h:
+                    head = self.find_all_literal_matches_in_string(p.v.h)
                     count += count_h
                     p.h = new_h
+                    p.v.setDirty()  # #4660.
             if self.search_body:
                 count_b, new_b = self._change_all_search_and_replace(p.b)
                 if count_b:
                     count += count_b
+                    body = self.find_all_literal_matches_in_string(p.v.b)
                     p.b = new_b
+                    p.v.setDirty()  # #4660
+            if body or head:
+                matches_dict.append({'body': body, 'head': head, 'v': p.v})
+
             # Check if there was at least one change with either body or headline
             if count_h or count_b:
                 u.afterChangeNodeContents(p, 'Replace All', undoData)
@@ -1265,7 +1273,15 @@ class LeoFind:
                     p.setMarked()
                     p.setDirty()
                     u.afterMark(p, markUndoType, bunch)
-
+        if matches_dict:
+            # Create the result dict.
+            result_string = self.make_result_from_matches(matches_dict)
+            # Create the summary node.
+            undoData = u.beforeInsertNode(c.p)
+            new_p = found_p = self.create_summary_node('change-all', result_string)
+            u.afterInsertNode(found_p, undoType, undoData)
+        else:
+            new_p = c.p
         # suboutline-only is a one-shot for batch commands.
         self.ftm.set_radio_button('entire-outline')
         self.root = None
@@ -1276,9 +1292,26 @@ class LeoFind:
         if not g.unitTesting:  # pragma: no cover
             g.es_print(f"changed {count} instances{g.plural(count)} in {t2 - t1:4.2f} sec.")
         c.recolor()
-        c.redraw(p)
+        c.redraw(new_p)
         self.restore(saveData)
         return count
+
+    # @+node:ekr.20260504060502.1: *7* find.find_all_literal_matches_in_string
+    def find_all_literal_matches_in_string(self, s: str, *, replace_flag: bool = True) -> list[int]:
+        """
+        Find all matches in string s. For 'change-all'
+
+        Return a list of indices into s.
+        """
+        # This hack would be dangerous on MacOs: it uses '\r' instead of '\n' (!)
+        if g.isWindows:
+            # Ignore '\r' characters, which may appear in @edit nodes.
+            # Fixes this bug: https://groups.google.com/forum/#!topic/leo-editor/yR8eL5cZpi4
+            s = s.replace('\r', '')
+        if not s.strip():
+            return []
+        f = self.find_all_regex if self.pattern_match else self.find_all_plain
+        return f(self.find_text, s)
 
     # @+node:ekr.20190602134414.1: *6* find._change_all_search_and_replace & helpers
     def _change_all_search_and_replace(self, s: str) -> tuple[int, str]:
@@ -1721,7 +1754,7 @@ class LeoFind:
             vnodes = list(set(z.v for z in c.p.self_and_subtree()))
         else:
             vnodes = list(c.all_unique_nodes())
-        matches_dict: list[dict] = []
+        matches_dict: list[dict[str, Any]] = []
         distinct_body_lines, total_matches, total_nodes = 0, 0, 0
         for v in vnodes:
             body, head = [], []
@@ -1756,7 +1789,7 @@ class LeoFind:
         result_string = self.make_result_from_matches(matches_dict)
         # Create the summary node.
         undoData = u.beforeInsertNode(c.p)
-        found_p = self.create_find_all_node(result_string)
+        found_p = self.create_summary_node('find-all', result_string)
         u.afterInsertNode(found_p, undoType, undoData)
         c.selectPosition(found_p)
 
@@ -1783,15 +1816,15 @@ class LeoFind:
             'total_nodes': total_nodes,
         }
 
-    # @+node:ekr.20150717105329.1: *7* find.create_find_all_node
-    def create_find_all_node(self, result: str) -> Position:
+    # @+node:ekr.20150717105329.1: *7* find.create_summary_node
+    def create_summary_node(self, kind: str, result: str) -> Position:
         """
         Create a "Found All" node as the last node of the outline.
         """
         c = self.c
         found = c.lastTopLevel().insertAfter()
         assert found
-        found.h = f"find-all:{self.find_text}"
+        found.h = f"{kind}:{self.find_text}"
         status = self.compute_result_status(find_all_flag=True)
         status = status.strip().lstrip('(').rstrip(')').strip()
         found.b = f"@nosearch\n# {status}\n{result}"
@@ -1806,6 +1839,7 @@ class LeoFind:
 
     # @+node:ekr.20230124103253.1: *7* find.make_result_from_matches
     def make_result_from_matches(self, matches: list[dict]) -> str:
+        self.seen_vnodes: list[VNode] = []
         results: list[str] = ['\n']
         # Report settings.
         results.append(
@@ -1849,13 +1883,17 @@ class LeoFind:
         else:
             g.trace(f"Can not happen: no position for {v}")
             return
+        # Leo 6.8.9: Show headlines, not matching lines.
+        if p.v in self.seen_vnodes:
+            return
+        self.seen_vnodes.append(p.v)
         unl = p.get_UNL()
-        log.put(line.strip() + '\n', nodeLink=f"{unl}::{line_number - 1}")  # Local line.
+        log.put(p.h.strip() + '\n', nodeLink=f"{unl}::{line_number - 1}")  # Local line.
 
-    # @+node:ekr.20230124101551.1: *7* find.find_all_matches_in_string & helpers
+    # @+node:ekr.20230124101551.1: *7* find.find_all_matches_in_string
     def find_all_matches_in_string(self, s: str) -> list[int]:
         """
-        Find all matches in string s.
+        Find all matches in string s. For 'find-all'
 
         Return a list of indices into s.
         """
@@ -1870,7 +1908,7 @@ class LeoFind:
         f = self.find_all_regex if self.pattern_match else self.find_all_plain
         return f(find_s, s)
 
-    # @+node:ekr.20230124130028.2: *8* find.find_all_plain
+    # @+node:ekr.20230124130028.2: *7* find.find_all_plain
     def find_all_plain(self, find_s: str, s: str) -> list[int]:
         """
         Perform all plain finds s, including whole-word finds.
@@ -1891,7 +1929,7 @@ class LeoFind:
             i += len(find_s)
         return result
 
-    # @+node:ekr.20230124130028.3: *8* find.find_all_regex
+    # @+node:ekr.20230124130028.3: *7* find.find_all_regex
     def find_all_regex(self, find_s: str, s: str) -> list[int]:
         """
         Perform all regex find/replace on s.
@@ -2743,7 +2781,6 @@ class LeoFind:
     # @+node:ekr.20210110073117.45: *5* find._inner_search_match_word
     def _inner_search_match_word(self, s: str, i: int, pattern: str) -> bool:
         """Do a whole-word search."""
-        pattern = self.replace_back_slashes(pattern)
         return bool(s and pattern and g.match_word(s, i, pattern, ignore_case=self.ignore_case))
 
     # @+node:ekr.20210110073117.46: *5* find._inner_search_plain
@@ -2757,10 +2794,10 @@ class LeoFind:
         word: bool,
     ) -> tuple[int, int]:
         """Do a plain search."""
+        pattern = self.replace_back_slashes(pattern)  # #4660: Do this first.
         if nocase:
             s = s.lower()
             pattern = pattern.lower()
-        pattern = self.replace_back_slashes(pattern)
         n = len(pattern)
         if word:
             while 1:
@@ -2843,7 +2880,9 @@ class LeoFind:
 
     # @+node:ekr.20210110073117.49: *4* find.replace_back_slashes
     def replace_back_slashes(self, s: str) -> str:
-        """Replace backslash-n with a newline and backslash-t with a tab."""
+        """
+        Replace backslash-n with a newline and backslash-t with a tab.
+        """
         # Compare: https://docs.python.org/3/library/ast.html#ast.literal_eval
         i, result = 0, []
         while i < len(s):
@@ -2861,12 +2900,13 @@ class LeoFind:
                 result.append('\t')
             elif ch == 'f':
                 result.append('\f')
-            elif ch == '\\':  # 4284
-                result.append(ch)
+            elif ch == '\\':
+                # #4601 Replace two backslashes with a single backslash.
                 result.append(ch)
             else:
+                # #4601: A backslash followed by some other characters.
                 result.append('\\')
-                i -= 1
+                result.append(ch)
             assert progress < i
         return ''.join(result)
 
