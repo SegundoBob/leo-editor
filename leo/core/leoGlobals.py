@@ -75,12 +75,11 @@ if TYPE_CHECKING:  # pragma: no cover
 # @-<< leoGlobals: annotations >>
 # @+<< leoGlobals: global constants >>
 # @+node:ekr.20240515093718.1: ** << leoGlobals: global constants >>
-in_bridge = False  # True: leoApp object loads a null Gui.
+in_bridge = False  # True: leoApp object loads a null Gui by default.
 in_vs_code = False  # #2098.
-minimum_python_version = '3.9'
-minimum_python_version_tuple = (3, 9, 0)
-v1, v2, v3, junk2, junk3 = sys.version_info
-python_version_tuple = (v1, v2, v3)
+minimum_python_version = '3.10'
+minimum_python_version_tuple = (3, 10, 0)
+python_version_tuple = sys.version_info[:3]
 isPython3 = python_version_tuple >= (3, 0, 0)
 isValidPython = python_version_tuple >= minimum_python_version_tuple
 isMac = sys.platform.startswith('darwin')
