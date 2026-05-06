@@ -15,8 +15,8 @@ https://github.com/leo-editor/leo-editor/issues/3837
 
 import glob
 import os
-import sys
 import subprocess
+import sys
 
 version = '6.8.8'
 
@@ -43,7 +43,8 @@ else:
     wheel_file = f"leo-{version}-py3-none-any.whl"
     #  --no-cache-dir  # slow
     #  --force-reinstall
-    command = rf"python -m pip install {dist_dir}{os.sep}{wheel_file}"
+    python = sys.executable
+    command = rf"{python} -m pip install {dist_dir}{os.sep}{wheel_file}"
     print(command)
     subprocess.Popen(command).communicate()
 

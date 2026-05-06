@@ -13,8 +13,8 @@ https://github.com/leo-editor/leo-editor/issues/3837
 
 import os
 import shutil
-import sys
 import subprocess
+import sys
 
 file_name = os.path.basename(__file__)
 
@@ -34,7 +34,8 @@ else:
 
     # Remove Leo from Python's site-packages directory.
     # --yes: Don’t ask for confirmation of uninstall deletions.
-    command = 'python -m pip uninstall leo'
+    python = sys.executable
+    command = f"{python} -m pip uninstall leo"
     print(command)
     subprocess.Popen(command).communicate()
 

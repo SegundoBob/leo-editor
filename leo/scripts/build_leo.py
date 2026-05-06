@@ -15,6 +15,7 @@ https://github.com/leo-editor/leo-editor/issues/3837
 import glob
 import os
 import subprocess
+import sys
 
 print(os.path.basename(__file__))
 
@@ -32,7 +33,8 @@ for z in glob.glob(f"{dist_dir}{os.sep}*.*"):
     os.remove(z)
 
 # build *both* sdist and wheel.
-command = 'python -m build > build_log.txt'
+python = sys.executable
+command = f"{python} -m build > build_log.txt"
 print('')
 print(command)
 print('')

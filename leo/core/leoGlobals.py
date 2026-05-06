@@ -7461,7 +7461,7 @@ def execute_shell_commands(commands: str | list[str], trace: bool = False) -> No
             g.trace(command)
         if command.startswith('&'):
             command = command[1:].strip()
-        proc = subprocess.Popen(command, shell=True)
+        proc = subprocess.Popen(command)
         if wait:
             proc.communicate()
 
@@ -7870,7 +7870,8 @@ def run_coverage_tests(module: str = '', filename: str = '') -> None:
     unittests_dir = g.finalize_join(g.app.loadDir, '..', 'unittests')
     assert os.path.exists(unittests_dir)
     os.chdir(unittests_dir)
-    prefix = r"python -m pytest --cov-report html --cov-report term-missing --cov "
+    python = sys.executable
+    prefix = rf"{python} -m pytest --cov-report html --cov-report term-missing --cov "
     command = f"{prefix} {module} {filename}"
     g.execute_shell_commands(command)
 
