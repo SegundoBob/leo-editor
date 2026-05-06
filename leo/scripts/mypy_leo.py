@@ -24,12 +24,10 @@ leo_editor_dir = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 os.chdir(leo_editor_dir)
 
 args = ' '.join(sys.argv[1:])
-isWindows = sys.platform.startswith('win')
-python = 'py' if isWindows else 'python'
-
+python = sys.executable
 if 1:  # Quick.
-    command = rf'{python} -m mypy leo'
+    command = rf"{python} -m mypy leo"
 else:  # Safe.
-    command = rf'{python} -m mypy --no-incremental leo'
+    command = rf"{python} -m mypy --no-incremental leo"
 subprocess.Popen(command).communicate()
 # @-leo

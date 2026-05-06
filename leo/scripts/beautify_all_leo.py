@@ -32,8 +32,7 @@ args = " ".join(
         # '--verbose',
     )
 )
-isWindows = sys.platform.startswith('win')
-python = 'py' if isWindows else 'python'
+### isWindows = sys.platform.startswith('win')
 targets = (
     f"leo{os.sep}commands",
     f"leo{os.sep}core",
@@ -44,6 +43,7 @@ targets = (
     f"leo{os.sep}unittests",
 )
 # Use -m so that __name__ == '__main__'.
+python = sys.executable
 command = f"{python} -m ruff format {args} {' '.join(targets)}"
 subprocess.Popen(command).communicate()
 # @-leo

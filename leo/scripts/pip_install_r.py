@@ -22,9 +22,7 @@ assert os.path.exists(leo_editor_dir), repr(leo_editor_dir)
 assert os.path.isdir(leo_editor_dir), repr(leo_editor_dir)
 os.chdir(leo_editor_dir)
 
-isWindows = sys.platform.startswith('win')
-python = 'py' if isWindows else 'python'
-
+python = sys.executable
 for command in [
     f"{python} -m pip install -r requirements.txt --no-warn-script-location",
     f"{python} -m pip list",
