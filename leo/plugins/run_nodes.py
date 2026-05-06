@@ -322,7 +322,7 @@ def OpenProcess(p):
     OutThread = readingThread()
     ErrThread = readingThread()
 
-    proc = subprocess.Popen(command, shell=True)
+    proc = subprocess.Popen(command)
     In = proc.stdin
     OutThread.File = proc.stdout  # type:ignore
     ErrThread.File = proc.stderr  # type:ignore

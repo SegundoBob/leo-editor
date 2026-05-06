@@ -1081,7 +1081,7 @@ class Commands:
                 first_line = f.readline()
             return first_line.startswith('#!')
 
-        # @+node:tom.20241014154415.20: *4* runFile
+        # @+node:tom.20241014154415.20: *4* runFile @cmd c.execute-external-file
         def runfile(fullpath: str, processor: str, terminal: str) -> None:
             direc: str = os.path.expanduser(os.path.dirname(fullpath))
             if g.isWindows:
@@ -3392,7 +3392,7 @@ class Commands:
         try:
             proc = subprocess.Popen(
                 final_command,
-                shell=True,
+                shell=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -5233,12 +5233,12 @@ class Commands:
         args.append(f"--config {toml_s}")
 
         # Calculate the ruff command.
-        python = 'py' if g.isWindows else 'python'
+        python = sys.executable
         command = f"{python} -m ruff format {' '.join(args)} {filename}"
 
         # Run the command.
         try:
-            subprocess.Popen(command, shell=True).communicate()  # Wait for results.
+            subprocess.Popen(command).communicate()  # Wait for results.
             results = g.readFile(filename)
             if g.isWindows:
                 results = results.replace('\r', '')

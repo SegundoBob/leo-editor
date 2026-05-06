@@ -5024,7 +5024,6 @@ def getGitVersion(directory: str = None) -> tuple[str, str, str]:
             'git log -n 1 --date=iso',
             cwd=directory or g.app.loadDir,
             stderr=subprocess.DEVNULL,
-            shell=True,
         )
     # #1209.
     except subprocess.CalledProcessError as e:

@@ -124,7 +124,7 @@ def getList(c, all):
     return aList
 
 
-# @+node:ekr.20040915085351.6: *3* runList
+# @+node:ekr.20040915085351.6: *3* runList (at_produce.py)
 def runList(c, aList):
     """
     Run all commands in aList (in a separate thread).
@@ -138,9 +138,6 @@ def runList(c, aList):
                 c.at_produce_command = command
                 command = command.lstrip(pr).lstrip()
                 f.write('produce: %s\n' % command)
-                # EKR: 2017/05/05
-                # Replace popen3 per https://docs.python.org/2.4/lib/node245.html
-                # fi, fo, fe  = os.popen3(command)
                 p = subprocess.Popen(
                     command,
                     # bufsize=bufsize,
@@ -148,7 +145,7 @@ def runList(c, aList):
                     stdin=PIPE,
                     stdout=PIPE,
                     stderr=PIPE,
-                    shell=True,
+                    # shell=True, # $4662.
                 )
                 fi, fo, fe = p.stdin, p.stdout, p.stderr
                 while 1:
