@@ -30,5 +30,5 @@ isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
 command = rf'{python} -m ruff check leo'
-subprocess.Popen(command, shell=True).communicate()
+subprocess.Popen(command).communicate()
 # @-leo

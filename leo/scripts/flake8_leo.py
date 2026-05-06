@@ -28,6 +28,6 @@ isWindows = sys.platform.startswith('win')
 python = 'py' if isWindows else 'python'
 
 command = rf'{python} -m flake8 {args} --show-source --config={leo_editor_dir}{os.sep}setup.cfg'
-subprocess.Popen(command, shell=True).communicate()
+subprocess.Popen(command).communicate()
 
 # @-leo

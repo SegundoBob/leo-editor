@@ -36,7 +36,7 @@ else:
     # --yes: Don’t ask for confirmation of uninstall deletions.
     command = 'python -m pip uninstall leo'
     print(command)
-    subprocess.Popen(command, shell=True).communicate()
+    subprocess.Popen(command).communicate()
 
     if 0:  # This hack should no longer be necessary.
         # Delete the leo/leo.egg-info directory.

@@ -21,5 +21,5 @@ os.chdir(home_dir)
 # Install.
 command = 'python -m pip install leo==6.8.8'
 print(command)
-subprocess.Popen(command, shell=True).communicate()
+subprocess.Popen(command).communicate()
 # @-leo

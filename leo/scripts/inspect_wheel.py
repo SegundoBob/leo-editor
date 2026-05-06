@@ -26,7 +26,7 @@ os.chdir(leo_editor_dir)
 
 command = r'python -m wheel_inspect dist\leo-6.8.8-py3-none-any.whl >inspect_wheel.txt'
 print(command)
-subprocess.Popen(command, shell=True).communicate()
+subprocess.Popen(command).communicate()
 
 print('See inspect_wheel.txt')
 # @-leo

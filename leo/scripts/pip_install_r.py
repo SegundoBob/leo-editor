@@ -30,5 +30,5 @@ for command in [
     f"{python} -m pip list",
 ]:
     print(command)
-    subprocess.Popen(command, shell=True).communicate()
+    subprocess.Popen(command).communicate()
 # @-leo

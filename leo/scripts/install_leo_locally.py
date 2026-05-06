@@ -45,7 +45,7 @@ else:
     #  --force-reinstall
     command = rf"python -m pip install {dist_dir}{os.sep}{wheel_file}"
     print(command)
-    subprocess.Popen(command, shell=True).communicate()
+    subprocess.Popen(command).communicate()
 
     # List site-packages/leo*.
     python_dir = os.path.dirname(sys.executable)
