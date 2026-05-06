@@ -3,98 +3,88 @@
 """Leo's Qt import wrapper, specialized for Qt6."""
 
 # pylint: disable=no-name-in-module,unused-import
+
+# @+<< leoQt.py: imports >>
+# @+node:ekr.20260505180734.1: ** << leoQt.py: imports >>
 from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt, QUrl
-from PyQt6.QtGui import QAction, QActionGroup, QCloseEvent
+from PyQt6.QtGui import QAction, QCloseEvent
+
+assert QUrl and QAction and QCloseEvent  # To placate pyflakes.
+# @-<< leoQt.py: imports >>
 
 # A public list of missing Qt modules. Good for debugging.
 _missing_modules: list[str] = []
 
-if 0:
-    # @+<< testing: set all optional Qt modules to None >>
-    # @+node:ekr.20240528043206.1: ** << testing: set all optional Qt modules to None >>
-    Qsci: Any = None
+# @+<< leoQt.py: import optional Qt modules >>
+# @+node:ekr.20240528041831.1: ** << leoQt.py: import optional Qt modules >>
+# Leo 6.8.0: do *not* assume these exist.
+try:
+    from PyQt6 import Qsci
+
+    assert Qsci
+except Exception:
+    Qsci = None
+    _missing_modules.append('Qsci')
+
+try:
+    from PyQt6 import QtDesigner
+except Exception:
     QtDesigner = None
+    _missing_modules.append('PyQt6.QtDesigner')
+
+try:
+    from PyQt6 import QtMultimedia
+except Exception:
     QtMultimedia = None
+    _missing_modules.append('PyQt6.QtMultimedia')
+
+try:
+    from PyQt6 import QtNetwork
+except Exception:
     QtNetwork = None
+    _missing_modules.append('PyQt6.QtNetwork')
+
+try:
+    from PyQt6 import QtOpenGL
+except Exception:
     QtOpenGL = None
+    _missing_modules.append('PyQt6.QtOpenGL')
+
+try:
+    from PyQt6 import QtPrintSupport as printsupport
+except Exception:
     printsupport = None
+    _missing_modules.append('PyQt6.QtPrintSupport')
+
+try:
+    from PyQt6 import QtWebEngineCore  # included with PyQt6-WebEngine
+except Exception:
     QtWebEngineCore = None
+    _missing_modules.append('PyQt6.QtWebEngineCore')
+
+try:
+    from PyQt6 import QtWebEngineWidgets
+except Exception:
     QtWebEngineWidgets = None
+    _missing_modules.append('PyQt6.QtWebEngineWidgets')
+
+try:
+    import PyQt6.QtSvg as QtSvg
+except Exception:
     QtSvg = None
+    _missing_modules.append('PyQt6.QtSvg')
+
+try:
+    from PyQt6 import uic
+except Exception:
     uic = None
-    # @-<< testing: set all optional Qt modules to None >>
-else:
-    # @+<< import optional Qt modules >>
-    # @+node:ekr.20240528041831.1: ** << import optional Qt modules >>
-    # Leo 6.8.0: do *not* assume these exist.
-    try:
-        from PyQt6 import Qsci
-
-        assert Qsci
-    except Exception:
-        Qsci = None
-        _missing_modules.append('Qsci')
-
-    try:
-        from PyQt6 import QtDesigner
-    except Exception:
-        QtDesigner = None
-        _missing_modules.append('PyQt6.QtDesigner')
-
-    try:
-        from PyQt6 import QtMultimedia
-    except Exception:
-        QtMultimedia = None
-        _missing_modules.append('PyQt6.QtMultimedia')
-
-    try:
-        from PyQt6 import QtNetwork
-    except Exception:
-        QtNetwork = None
-        _missing_modules.append('PyQt6.QtNetwork')
-
-    try:
-        from PyQt6 import QtOpenGL
-    except Exception:
-        QtOpenGL = None
-        _missing_modules.append('PyQt6.QtOpenGL')
-
-    try:
-        from PyQt6 import QtPrintSupport as printsupport
-    except Exception:
-        printsupport = None
-        _missing_modules.append('PyQt6.QtPrintSupport')
-
-    try:
-        from PyQt6 import QtWebEngineCore  # included with PyQt6-WebEngine
-    except Exception:
-        QtWebEngineCore = None
-        _missing_modules.append('PyQt6.QtWebEngineCore')
-
-    try:
-        from PyQt6 import QtWebEngineWidgets
-    except Exception:
-        QtWebEngineWidgets = None
-        _missing_modules.append('PyQt6.QtWebEngineWidgets')
-
-    try:
-        import PyQt6.QtSvg as QtSvg
-    except Exception:
-        QtSvg = None
-        _missing_modules.append('PyQt6.QtSvg')
-
-    try:
-        from PyQt6 import uic
-    except Exception:
-        uic = None
-        # On Linux, uic may be a standalone program.
-        _missing_modules.append('uic')
-    # @-<< import optional Qt modules >>
-
-# @+<< define PyQt6 enumerations >>
-# @+node:ekr.20240303142509.3: ** << define PyQt6 enumerations >>
+    # On Linux, uic may be a standalone program.
+    _missing_modules.append('uic')
+# @-<< leoQt.py: import optional Qt modules >>
+# @+<< leoQt.py: define PyQt6 enumerations >>
+# @+node:ekr.20240303142509.3: ** << leoQt.py: define PyQt6 enumerations >>
 AlignmentFlag = Qt.AlignmentFlag
 AlignLeft = Qt.AlignmentFlag.AlignLeft
 AlignRight = Qt.AlignmentFlag.AlignRight
@@ -143,10 +133,14 @@ WidgetAttribute = Qt.WidgetAttribute
 WindowState = Qt.WindowState
 WindowType = Qt.WindowType
 WrapMode = QtGui.QTextOption.WrapMode
-# @-<< define PyQt6 enumerations >>
-# @+<< define standard abbreviations >>
-# @+node:ekr.20240528050716.1: ** << define standard abbreviations >>
+# @-<< leoQt.py: define PyQt6 enumerations >>
+# @+<< leoQt.py: define standard abbreviations >>
+# @+node:ekr.20240528050716.1: ** << leoQt.py: define standard abbreviations >>
 qt_version = QtCore.QT_VERSION_STR
+
+QWebEngineSettings: Any
+WebEngineAttribute: Any
+
 try:
     QWebEngineSettings = QtWebEngineCore.QWebEngineSettings
     WebEngineAttribute = QWebEngineSettings.WebAttribute
@@ -154,5 +148,5 @@ except Exception:
     QWebEngineSettings = None
     WebEngineAttribute = None
     _missing_modules.append('QtWebEngineCore.QWebEngineSettings')
-# @-<< define standard abbreviations >>
+# @-<< leoQt.py: define standard abbreviations >>
 # @-leo

@@ -751,7 +751,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
             w.setLineWidth(lineWidth)
             self.setName(w, name)
         if not hasattr(w, 'leo_wrapper'):
-            w.leo_wrapper = QTextEditWrapper(widget=w, name=name, c=c)
+            w.leo_wrapper = QTextEditWrapper(widget=w, name=name, c=c)  # type:ignore
         return w
 
     # @+node:ekr.20110605121601.18164: *4* dw.createTreeWidget
