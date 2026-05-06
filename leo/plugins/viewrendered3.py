@@ -1049,7 +1049,8 @@ except ImportError:
     if not g.unitTesting:
         g.trace("Can't import QtWebEngineWidgets")
 
-qwv = None
+QWebEngineSettings: Any = None
+qwv: Any = None
 if has_webengineview:
     qwv = QtWebEngineWidgets.QWebEngineView
     try:
