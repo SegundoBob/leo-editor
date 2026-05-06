@@ -2479,6 +2479,7 @@
 </v>
 <v t="ekr.20251204122149.1"></v>
 <v t="ekr.20251204122305.1"></v>
+<v t="ekr.20131019035402.17573"></v>
 </vnodes>
 <tnodes>
 <t tx="EKR.20040524104904.140">Leo stores options in **@settings trees**, outlines whose headline is ``@settings``. When opening a .leo file, Leo looks for ``@settings`` trees not only in the outline being opened but also in various ``leoSettings.leo`` files. This scheme allows for the following kinds of settings:
@@ -15070,7 +15071,7 @@ The Leonine World
 
 **User-defined types**: Headlines naturally describe a node's contents: **headlines naturally define types**. Leo's core supports types such as @button, @rst, @url, etc. Plugins define @bookmark, @graph, @html and @task types. Scripts can easily define other types.
 
-.. _`clone-find`: tutorial-basics.html#clone-find-commands
+.. _`clone-find`: https://leo-editor.github.io/leo-editor/commands.html#id1
 
 **Work flow**: The `clone-find`_ commands gather all match a pattern under a single node. No need to keep searching for them. You can change the clones, and the original nodes change as well. This is a great way to fix bugs or to write books.
 
