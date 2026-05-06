@@ -942,8 +942,7 @@ class Commands:
             if not filetype:
                 return ''
             cmd = f'ftype {filetype}'
-            # pylint: disable=subprocess-run-check
-            proc = subprocess.run(cmd, shell=True, capture_output=True)
+            proc = subprocess.run(cmd, shell=True, capture_output=True, check=False)
             ftype_str = proc.stdout.decode('utf-8') or 'none'
             if not ftype_str:
                 return ''
@@ -973,10 +972,9 @@ class Commands:
                 'x-terminal-emulator',
             )
             TERM_STRINGS = ('*-terminal', '*term')
-            # pylint: disable=subprocess-run-check
             for ts in TERM_STRINGS:
                 cmd = f'find {dir} -type f -name {ts}'
-                proc = subprocess.run(cmd, shell=True, capture_output=True)
+                proc = subprocess.run(cmd, shell=True, capture_output=True, check=False)
                 terminals = proc.stdout.decode('utf-8')
                 for t in terminals.splitlines():
                     bare_term = t.split('/')[-1]
@@ -1031,11 +1029,10 @@ class Commands:
                 return EXECUTE_ARGS[terminal]
 
             # @+others
-            # @+node:tom.20241014154415.17: *5* get_help_message
+            # @+node:tom.20241014154415.17: *5* get_help_message (c.execute-external-file)
             def get_help_message(terminal: str, help_cmd: str) -> str:
                 cmd = f'{terminal} {help_cmd}'
-                # pylint: disable=subprocess-run-check
-                proc = subprocess.run(cmd, shell=True, capture_output=True)
+                proc = subprocess.run(cmd, shell=True, capture_output=True, check=False)
                 msg = proc.stdout.decode('utf-8')
                 if not msg:
                     # g.es('error:', proc.stderr.decode('utf-8'))

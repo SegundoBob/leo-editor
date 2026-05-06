@@ -250,7 +250,6 @@ class BackgroundProcessManager:
             self.process_return_data = []
             proc = subprocess.Popen(
                 command,
-                shell=False,  # #4662.
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 universal_newlines=True,

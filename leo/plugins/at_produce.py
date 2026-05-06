@@ -140,8 +140,6 @@ def runList(c, aList):
                 f.write('produce: %s\n' % command)
                 p = subprocess.Popen(
                     command,
-                    # bufsize=bufsize,
-                    # close_fds=True, # Dubious to disable this.
                     stdin=PIPE,
                     stdout=PIPE,
                     stderr=PIPE,
