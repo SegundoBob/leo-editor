@@ -32,7 +32,6 @@ args = " ".join(
         # '--verbose',
     )
 )
-### isWindows = sys.platform.startswith('win')
 targets = (
     f"leo{os.sep}commands",
     f"leo{os.sep}core",
