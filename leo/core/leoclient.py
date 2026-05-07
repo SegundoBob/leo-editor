@@ -258,6 +258,10 @@ def main():
         print(f"{tag}: No server running")
     except asyncio.CancelledError:
         print(f"{tag}: Cancelled")
+    except OSError:
+        print(f"{tag}: No server running")
+    except Exception as e:
+        print(f"{tag}: Unexpected exception: {e}")
 
 
 # @-others
