@@ -119,6 +119,7 @@ SERVER_STARTED_TOKEN = "LeoBridge started"  # Output when started successfully
 # Websocket connections (to be sent 'notify' messages)
 connectionsPool: set[Any] = set()
 connectionsTotal = 0  # Current connected client total
+gLoop = None  # Current server loop.
 # Customizable server options
 argFile = ""
 traces: list[str] = []  # list of traces names, to be used as flags to output traces
@@ -904,7 +905,8 @@ class QuickSearchController:
         tgt = self.its.get(it)
         if not tgt:
             if not g.unitTesting:
-                print("onSelectItem: no target found for 'it' as key:" + str(it))
+                # print("onSelectItem: no target found for 'it' as key:" + str(it))
+                raise ServerError(f"onSelectItem: no target found for {it!s}")
             return
 
         # generic callable
@@ -942,7 +944,7 @@ class LeoServer:
 
     # @+others
     # @+node:felix.20210621233316.5: *3* server.__init__
-    def __init__(self, testing: bool = False) -> None:
+    def __init__(self, *, silent: bool = False, testing: bool = False) -> None:
         import leo.core.leoApp as leoApp
         import leo.core.leoBridge as leoBridge
 
@@ -1007,7 +1009,7 @@ class LeoServer:
         g.app.externalFilesController = ServerExternalFilesController()  # Replace
         g.app.idleTimeManager.start()
         t2 = time.process_time()
-        if not testing:
+        if not silent and not testing:
             print(f"LeoServer: init leoBridge in {t2 - t1:4.2} sec.", flush=True)
 
     # @+node:felix.20240110004711.1: *3* server.finishCreate
@@ -1924,8 +1926,7 @@ class LeoServer:
 
     # @+node:felix.20220309205509.1: *5* server.goto_nav_entry
     def goto_nav_entry(self, param: Param) -> Response:
-        # activate entry in scon.its
-        tag = 'goto_nav_entry'
+        # activate entry in scon.its.
         c = self._check_c(param)
         scon: QuickSearchController = c.patched_quicksearch_controller
         try:
@@ -1934,7 +1935,7 @@ class LeoServer:
             focus = self._get_focus()
             result = {"focus": focus}
         except Exception as e:
-            raise ServerError(f"{tag}: exception selecting a nav entry: {e}")
+            raise ServerError(e)
         return self._make_response(result)
 
     # @+node:felix.20210621233316.19: *4* server.search commands
@@ -5505,7 +5506,7 @@ class LeoServer:
     # @-others
 
 
-# @+node:felix.20210621233316.105: ** main & helpers
+# @+node:felix.20210621233316.105: ** main & helpers (leoserver.py)
 def main() -> None:  # pragma: no cover (tested in client)
     """python script for leo integration via leoBridge"""
     if not websockets:
@@ -5553,11 +5554,11 @@ def main() -> None:  # pragma: no cover (tested in client)
         """
         Close the server by stopping the loop
         """
-        print('Closing Leo Server', flush=True)
-        if loop.is_running():
-            loop.stop()
-        else:
-            print('Loop was not running', flush=True)
+        global gLoop
+        if gLoop and gLoop.is_running():
+            print('Closing Leo Server', flush=True)
+            gLoop.stop()
+            gLoop = None
 
     # @+node:ekr.20210825172913.1: *3* function: general_yes_no_dialog & helpers
     def general_yes_no_dialog(
@@ -5922,11 +5923,15 @@ def main() -> None:  # pragma: no cover (tested in client)
                     await websocket.close(code=1000, reason=str(e))
                     return
                 except ServerError as e:
+                    if d:
+                        id_s = d.get('id', 'None')
+                        action_s = d.get('action', 'None')
+                        param_s = d.get('param', {})
+                        error = f"{tag}: Error: id: {id_s:4} {action_s:>40} {param_s} {e!s}"
+                    else:
+                        error = f"json syntax error: {json_message!r}"
                     data = f"{d}" if d else f"json syntax error: {json_message!r}"
-                    error = f"{tag}:  ServerError: {e}...\n{tag}:  {data}"
-                    print("", flush=True)
                     print(error, flush=True)
-                    print("", flush=True)
                     package = {
                         "id": controller.current_id,
                         "action": controller.action,
@@ -6018,7 +6023,9 @@ def main() -> None:  # pragma: no cover (tested in client)
                 await realtime_server.wait_closed()
 
             except KeyboardInterrupt:
-                print("Process interrupted", flush=True)
+                print("leoserver: keyboard interrupt", flush=True)
+            except asyncio.exceptions.CancelledError:
+                print("leoserver: cancelled", flush=True)
             finally:
                 if realtime_server:
                     realtime_server.close()
@@ -6030,7 +6037,12 @@ def main() -> None:  # pragma: no cover (tested in client)
         try:
             asyncio.run(start_server())
         except KeyboardInterrupt:
+            print('')
             print("Process interrupted", flush=True)
+        except Exception as e:
+            print('')
+            print(f"leoserver.py: exception starting the server:\n{e!r}")
+            return
     else:
         # For Python below 3.14
         loop = asyncio.get_event_loop()

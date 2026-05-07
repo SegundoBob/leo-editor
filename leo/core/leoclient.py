@@ -2,6 +2,12 @@
 # @+node:ekr.20210202110241.1: * @file leoclient.py
 """
 An example client for leoserver.py, based on work by Félix Malboeuf. Used by permission.
+
+First start the server in one console: `python -m leo.core.leoserver`.
+Then start the client in another console: `python -m leo.core.leoclient`.
+
+This client runs the commands given in the `_get_action_list` function.
+The last command ends both the client and the server.
 """
 
 import asyncio
@@ -24,6 +30,7 @@ verbose = False
 timeout = 0.1
 times_d: dict[int, float] = {}  # Keys are n, values are time sent.
 tot_response_time = 0.0
+n_async_responses = 0
 n_known_response_times = 0
 n_unknown_response_times = 0
 
@@ -32,8 +39,7 @@ n_unknown_response_times = 0
 # @+node:ekr.20210219105145.1: ** function: _dump_outline
 def _dump_outline(c):  # pragma: no cover
     """Dump the outline."""
-    tag = '_dump_outline'
-    print(f"{tag}: {c.shortFileName()}...\n")
+    print(f"_dump_outline: {c.shortFileName()}...\n")
     for p in c.all_positions():
         level_s = ' ' * 2 * p.level()
         print(f"{level_s}{p.childIndex():2} {p.v.gnx} {p.h}")
@@ -49,7 +55,7 @@ def _get_action_list():
     import inspect
     import os
 
-    server = leoserver.LeoServer()
+    server = leoserver.LeoServer(silent=True)
     # file_name = "xyzzy.leo"
     file_name = g.finalize_join(g.app.loadDir, '..', 'test', 'test.leo')
     assert os.path.exists(file_name), repr(file_name)
@@ -136,10 +142,7 @@ def _get_action_list():
 def _show_response(n, d):
     global n_known_response_times
     global n_unknown_response_times
-    # global times_d
     global tot_response_time
-    # global trace
-    # global verbose
 
     # Calculate response time.
     t1 = times_d.get(n)
@@ -152,12 +155,12 @@ def _show_response(n, d):
         tot_response_time += response_time
         n_known_response_times += 1
         response_time_s = f"{response_time:3.2}"
-    if not trace and not verbose:
+    if not trace:
         return
     action = d.get('action')
     if not verbose:
-        print(f"id: {d.get('id', '---'):3} d: {sorted(d)}")
         return
+    print(f"id: {d.get('id', '---'):3} d: {sorted(d)}")
     if action == 'open_file':
         g.printObj(d, tag=f"{tag}: got: open-file response time: {response_time_s}")
     elif action == 'get_all_commands':
@@ -168,22 +171,17 @@ def _show_response(n, d):
 
 
 # @+node:ekr.20210205144500.1: ** function: client_main_loop
-n_async_responses = 0
-n_known_response_times = 0
-n_unknown_response_times = 0
-
-
 async def client_main_loop(timeout):
     global n_async_responses
     uri = f"ws://{wsHost}:{wsPort}"
     action_list = _get_action_list()
     async with websockets.connect(uri) as websocket:
-        if trace and verbose:
+        if trace:
             print(f"{tag}: asyncInterval.timeout: {timeout}")
         # Await the startup package.
         json_s = g.toUnicode(await websocket.recv())
         d = json.loads(json_s)
-        if trace and verbose:
+        if trace:
             print(f"startup package: {d}")
         n = 0
         while True:
@@ -201,8 +199,8 @@ async def client_main_loop(timeout):
                     "action": action,
                     "param": param,
                 }
-                if trace and verbose:
-                    print(f"{tag}: send: id: {n} package: {request_package}")
+                if trace:
+                    print(f"{tag}: send: id: {n:4} {action:>40} {param}")
                 # Send the next request.
                 request = json.dumps(request_package, separators=(',', ':'))
                 await websocket.send(request)
@@ -249,14 +247,17 @@ async def client_main_loop(timeout):
         )  # About 0.1, regardless of tracing.
 
 
-# @+node:ekr.20210205141432.1: ** function: main
+# @+node:ekr.20210205141432.1: ** function: main (leoclient.py)
 def main():
-    loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(client_main_loop(timeout))
+        asyncio.run(client_main_loop(timeout))  # #4664
     except KeyboardInterrupt:
         # This terminates the server abnormally.
         print(f"{tag}: Keyboard interrupt")
+    except ConnectionRefusedError:
+        print(f"{tag}: No server running")
+    except asyncio.CancelledError:
+        print(f"{tag}: Cancelled")
 
 
 # @-others
