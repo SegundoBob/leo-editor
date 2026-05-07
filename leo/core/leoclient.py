@@ -24,6 +24,7 @@ verbose = False
 timeout = 0.1
 times_d: dict[int, float] = {}  # Keys are n, values are time sent.
 tot_response_time = 0.0
+n_async_responses = 0
 n_known_response_times = 0
 n_unknown_response_times = 0
 
@@ -164,11 +165,6 @@ def _show_response(n, d):
 
 
 # @+node:ekr.20210205144500.1: ** function: client_main_loop
-n_async_responses = 0
-n_known_response_times = 0
-n_unknown_response_times = 0
-
-
 async def client_main_loop(timeout):
     global n_async_responses
     uri = f"ws://{wsHost}:{wsPort}"
