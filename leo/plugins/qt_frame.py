@@ -2561,8 +2561,10 @@ class LeoQtLog(leoFrame.LeoLog):
         c = self.c
         contents: Any
         if widget is None:
+            ### g.trace(f"{tabName:>4}: parent: {self.tabWidget.__class__.__name__} {g.callers(2)}")
             # widget is subclass of QTextBrowser.
-            widget = qt_text.LeoQTextBrowser(parent=None, c=c)
+            # #4652. Set the parent.
+            widget = qt_text.LeoQTextBrowser(parent=self.tabWidget, c=c)
             # contents is a wrapper.
             contents = qt_text.QTextEditWrapper(widget=widget, name='log', c=c)
             # Inject an ivar into the QTextBrowser that points to the wrapper.
@@ -2579,6 +2581,7 @@ class LeoQtLog(leoFrame.LeoLog):
             self.tabWidget.addTab(widget, tabName)
         else:
             # #1161: Don't set the wrapper unless it has the correct type.
+            ### g.trace(f"{tabName:>4}: widget: {widget.__class__.__name__} {g.callers(2)}")
             contents = widget  # Unlike text widgets, contents is the actual widget.
             if isinstance(contents, qt_text.QTextEditWrapper):
                 widget.leo_log_wrapper = widget  # The leo_log_wrapper is the widget itself.

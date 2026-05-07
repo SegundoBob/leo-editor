@@ -18,6 +18,7 @@ from leo.core import leoGlobals as g
 from leo.core import leoFrame
 from leo.core.leoAPI import StringTextWrapper
 from leo.core.leoQt import QtWidgets
+from leo.plugins.qt_frame import LeoQTreeWidget
 from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper, QTextMixin
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -434,6 +435,9 @@ class LeoKeyEvent:
         if isinstance(w, QtWidgets.QLineEdit):
             self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
             trace_always('New wrapper', f"{self.w.__class__.__name__} for {obj_name(w)}")
+            return
+        if isinstance(w, LeoQTreeWidget):  # A very special case.
+            self.w = w
             return
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = w

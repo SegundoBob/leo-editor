@@ -2409,21 +2409,21 @@ class KeyHandlerClass:
     def makeMasterGuiBinding(self, stroke: Stroke, w: QTextMixin = None) -> None:
         """Make a master gui binding for stroke in pane w, or in all the standard widgets."""
         c, k = self.c, self
-        f = c.frame
+        if not (c.frame and c.frame.body and c.frame.tree):
+            return
         if w:
             widgets = [w]
         else:
-            # New in Leo 4.5: we *must* make the binding in the binding widget.
-            bindingWidget = (
-                f.tree and hasattr(f.tree, 'bindingWidget') and f.tree.bindingWidget or None
-            )
-            wrapper = f.body and hasattr(f.body, 'wrapper') and f.body.wrapper or None
-            canvas = f.tree and hasattr(f.tree, 'canvas') and f.tree.canvas or None
-            widgets = [c.miniBufferWidget, wrapper, canvas, bindingWidget]
-        aList: list[QTextMixin]
+            #### New in Leo 4.5: we *must* make the binding in the binding widget.
+            ### bindingWidget = getattr(c.frame.tree, 'bindingWidget', None)
+
+            ### What about log widgets???
+
+            wrapper = getattr(c.frame.body, 'wrapper', None)
+            canvas = getattr(c.frame.tree, 'canvas', None)
+            widgets = [z for z in (wrapper, canvas) if z]
         for w in widgets:
-            if not w:
-                continue
+            ### g.print_unique_message(f"{g.my_name()}: {w.__class__.__name__:>20} {g.callers()}")  ###
             # Make the binding only if no binding for the stroke exists in the widget.
             aList = k.masterGuiBindingsDict.get(stroke, [])
             if w not in aList:
