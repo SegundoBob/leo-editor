@@ -36,9 +36,7 @@ leo_editor_dir = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 os.chdir(leo_editor_dir)
 
 args = ' '.join(sys.argv[1:])
-isWindows = sys.platform.startswith('win')
-python = 'py' if isWindows else 'python'
-
+python = sys.executable
 for command in [
     rf'{python} -m leo.scripts.beautify_all_leo',
     rf'{python} -m leo.scripts.flake8_leo',
@@ -49,5 +47,5 @@ for command in [
     rf'{python} -m leo.scripts.check_leo',
     rf'{python} -m leo.scripts.pylint_leo',
 ]:
-    subprocess.Popen(command, shell=True).communicate()
+    subprocess.Popen(command).communicate()
 # @-leo
