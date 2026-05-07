@@ -25,9 +25,7 @@ leo_editor_dir = os.path.abspath(os.path.join(__file__, '..', '..', '..'))
 os.chdir(leo_editor_dir)
 
 args = ' '.join(sys.argv[1:])
-isWindows = sys.platform.startswith('win')
-python = 'py' if isWindows else 'python'
-
+python = sys.executable
 rc_file_name = PylintCommand(c=None).get_rc_file()  # #4191.
 rc_file = rf"--rcfile {rc_file_name}"
 # print(__file__, rc_file)
@@ -35,5 +33,5 @@ extensions = 'PyQt6.QtCore,PyQt6.QtGui,PyQt6.QtWidgets,PyQt6.QtWebEngineWidgets'
 extension_pkg = f"--extension-pkg-allow-list={extensions}"
 command = rf"{python} -m pylint leo {rc_file} {extension_pkg}"
 
-subprocess.Popen(command, shell=True).communicate()
+subprocess.Popen(command).communicate()
 # @-leo

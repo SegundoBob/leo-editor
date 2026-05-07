@@ -245,20 +245,11 @@ class BackgroundProcessManager:
         Start or queue a process described by command and fn.
         """
 
-        # Note: we can't set shell=True (at least on Windows) because the process
-        #       terminates immediately.
-        #
-        #       Anyway, setting shell=True is supposedly a security hazard.
-        #       https://docs.python.org/3/library/subprocess.html#security-considerations
-        #
-        #       However, we do not expect tools such as pylint, mypy, etc.
-        #       to create error messages that contain shell injection attacks!
         def open_process(data: ProcessData) -> Popen:
             g.es_print(f'{data.kind}: {g.shortFileName(data.fn)}')
             self.process_return_data = []
             proc = subprocess.Popen(
                 command,
-                shell=False,
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 universal_newlines=True,

@@ -466,12 +466,10 @@ class ExternalFilesController:
             # could exist in @open-with nodes.
             command = '<no command>'
             if kind in ('os.system', 'os.startfile'):
-                # New in Leo 5.7:
-                # Use subProcess.Popen(..., shell=True)
                 c_arg = self.join(arg, fn)
                 if not testing:
                     try:
-                        subprocess.Popen(c_arg, shell=True)
+                        subprocess.Popen(c_arg)
                     except OSError:
                         g.es_print('c_arg', repr(c_arg))
                         g.es_exception()
@@ -497,7 +495,7 @@ class ExternalFilesController:
                 command = f"subprocess.Popen({c_arg})"
                 if not testing:
                     try:
-                        subprocess.Popen(c_arg, shell=True)
+                        subprocess.Popen(c_arg)
                     except OSError:
                         g.es_print('c_arg', repr(c_arg))
                         g.es_exception()
