@@ -944,7 +944,7 @@ class LeoServer:
 
     # @+others
     # @+node:felix.20210621233316.5: *3* server.__init__
-    def __init__(self, testing: bool = False) -> None:
+    def __init__(self, *, silent: bool = False, testing: bool = False) -> None:
         import leo.core.leoApp as leoApp
         import leo.core.leoBridge as leoBridge
 
@@ -1009,7 +1009,7 @@ class LeoServer:
         g.app.externalFilesController = ServerExternalFilesController()  # Replace
         g.app.idleTimeManager.start()
         t2 = time.process_time()
-        if not testing:
+        if not silent and not testing:
             print(f"LeoServer: init leoBridge in {t2 - t1:4.2} sec.", flush=True)
 
     # @+node:felix.20240110004711.1: *3* server.finishCreate

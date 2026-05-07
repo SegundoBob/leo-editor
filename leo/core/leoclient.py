@@ -2,6 +2,12 @@
 # @+node:ekr.20210202110241.1: * @file leoclient.py
 """
 An example client for leoserver.py, based on work by Félix Malboeuf. Used by permission.
+
+First start the server in one console: `python -m leo.core.leoserver`.
+Then start the client in another console: `python -m leo.core.leoclient`.
+
+This client runs the commands given in the `_get_action_list` function.
+The last command ends both the client and the server.
 """
 
 import asyncio
@@ -49,7 +55,7 @@ def _get_action_list():
     import inspect
     import os
 
-    server = leoserver.LeoServer()
+    server = leoserver.LeoServer(silent=True)
     # file_name = "xyzzy.leo"
     file_name = g.finalize_join(g.app.loadDir, '..', 'test', 'test.leo')
     assert os.path.exists(file_name), repr(file_name)
