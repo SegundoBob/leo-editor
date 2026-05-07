@@ -316,9 +316,9 @@ class VimCommander:
             ext = 'txt'
             fn = efc.create_temp_file(c, ext, c.p)
         c_arg = '%s %s' % (' '.join(args), fn)
-        command = 'subprocess.Popen(%s,shell=True)' % c_arg
+        command = f"subprocess.Popen({c_arg})"
         try:
-            subprocess.Popen(c_arg, shell=True)
+            subprocess.Popen(c_arg)
         except OSError:
             g.es_print(command)
             g.es_exception()

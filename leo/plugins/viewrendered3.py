@@ -1363,12 +1363,12 @@ def find_dir(name, path):
     return None
 
 
-# @+node:tom.20221231143118.1: ** get_gems()
+# @+node:tom.20221231143118.1: ** get_gems() (VR3)
 def check_gems(gem: str, encoding: str = 'utf-8') -> bool:
     """Check if a particular ruby gem is installed."""
     cmd = f'gem list {gem}'
     # pylint: disable = subprocess-run-check
-    proc = subprocess.run(cmd, shell=True, capture_output=True)
+    proc = subprocess.run(cmd, capture_output=True)
     installed = gem in proc.stdout.decode(encoding)
     return installed
 
