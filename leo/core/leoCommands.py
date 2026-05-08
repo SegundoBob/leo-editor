@@ -4715,7 +4715,10 @@ class Commands:
 
     def logWantsFocusNow(self) -> None:
         c, log = self, self.frame.log
-        c.widgetWantsFocusNow(log and log.logCtrl)
+        try:  # 4652
+            c.widgetWantsFocusNow(log.logCtrl.widget)
+        except AttributeError:
+            c.widgetWantsFocusNow(log.logCtrl)
 
     def minibufferWantsFocusNow(self) -> None:
         c = self
