@@ -19,6 +19,7 @@ from leo.core import leoGlobals as g
 from leo.core import leoExternalFiles
 from leo.core.leoCache import GlobalCacher
 from leo.core.leoQt import QCloseEvent
+from leo.plugins.cursesGui2 import KeyEvent
 
 if TYPE_CHECKING:
     from leo.core.leoJupytext import JupytextManager
@@ -1445,10 +1446,13 @@ class LeoApp:
     @cmd('quit-leo')
     def onQuit(self, event: LeoKeyEvent = None) -> None:
         """Exit Leo, prompting to save unsaved outlines first."""
+        # #4625: Special case for console gui.
+        name = g.app.gui.guiName()
+        gui_event: Any = QCloseEvent() if name == 'qt' else KeyEvent(g.app.log.c)
         if 'shutdown' in g.app.debug:
-            g.trace()
-        # #2433 - use the same method as clicking on the close box.
-        g.app.gui.close_event(QCloseEvent())  # type:ignore
+            g.trace(gui_event)
+        # #2433: Use the same method as clicking on the close box.
+        g.app.gui.close_event(gui_event)
 
     # @+node:ekr.20230703100758.1: *4* app.saveSession
     def saveSession(self) -> None:
