@@ -18,6 +18,7 @@ from leo.core import leoGlobals as g
 from leo.core import leoFrame
 from leo.core.leoAPI import StringTextWrapper
 from leo.core.leoQt import QtWidgets
+from leo.plugins.qt_frame import LeoQTreeWidget
 from leo.plugins.qt_text import QLineEditWrapper, QTextEditWrapper, QTextMixin
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -389,7 +390,7 @@ class LeoKeyEvent:
 
         def trace(prefix: str, message: str) -> None:
             if 'keys' in g.app.debug:
-                trace_always(prefix, message)
+                print(f"{tag} {prefix:>14}: {message}")
 
         def trace_always(prefix: str, message: str) -> None:
             print('')
@@ -398,16 +399,16 @@ class LeoKeyEvent:
         if w is None:
             # Special case for headlines.
             if headline_wrapper := c.headline_wrapper(c.p):
-                trace('no w', 'headline')
                 self.w = headline_wrapper
+                trace('no w: in headline', self.w.__class__.__name__)
                 return
             # Default to the widget with focus, if any.
             w = g.app.gui.get_focus()
-            trace('no w: focus', w.__class__.__name__)
+            trace('no w --> ', w.__class__.__name__)
             if w is None:
                 return
-        else:
-            trace(f" text? {isinstance(w, QTextMixin):1} w", w.__class__.__name__)
+        # else:
+        #     trace(f" text? {isinstance(w, QTextMixin):1} w", w.__class__.__name__)
 
         # Ensure that self.w is a wrapper for all key-related Qt widgets.
         if c.widget_name(w).startswith('log'):
@@ -435,6 +436,10 @@ class LeoKeyEvent:
             self.w = w.leo_wrapper = QLineEditWrapper(widget=w, name=c.widget_name(w), c=c)
             trace_always('New wrapper', f"{self.w.__class__.__name__} for {obj_name(w)}")
             return
+        if isinstance(w, LeoQTreeWidget):  # A very special case.
+            self.w = w
+            return
+
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = w
         trace('unknown w', w.__class__.__name__)
