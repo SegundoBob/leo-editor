@@ -526,6 +526,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 # Leave p.h alone.
                 g.trace('scripting error in', p.h)
                 g.es_exception()
+        # #4614:
+        val = val.replace('\n', ' ').replace('\r', ' ')
         # #4529
         p.h = f"{p.h[:i]}{val}{p.h[j:]}"
         # Set the insertion point and continue editing the headline.
