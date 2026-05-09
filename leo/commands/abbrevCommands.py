@@ -552,7 +552,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return fail
         if word[0].isalpha() and i > 0 and s[i - 1] not in ' \t\n':
             return fail
-        assert word and val
+        # We can assert word and val.
         return i, tag, word, val
 
     # @+node:ekr.20150514043850.16: *4* abbrev.next_place
