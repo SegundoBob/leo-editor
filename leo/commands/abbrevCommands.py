@@ -281,10 +281,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Handle headlines separately.
         if w_name.startswith('head'):
             for prefix in prefixes:
-                i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
+                _i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
                 if word:
                     # #4462: Make only one substitution in headlines.
-                    self.make_first_headline_substitution(i, j, p, val)
+                    self.make_first_headline_substitution(ch, p, word, val)
                     # Do not call c.endEditing here.
                     return True
             return False
@@ -501,19 +501,19 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return val, do_placeholder
 
     # @+node:ekr.20161121102113.1: *4* abbrev.make_first_headline_substitution
-    def make_first_headline_substitution(self, i: int, j: int, p: Position, val: str) -> None:
+    def make_first_headline_substitution(self, ch: str, p: Position, word: str, val: str) -> None:
         """
         Make *only* the first scripting substitution in p.h.
         """
         c = self.c
-        c.endEditing()  # Required.
-        pattern = re.compile(
-            r'^(.*)%s(.+)%s(.*)$'
-            % (
-                re.escape(c.abbrev_subst_start),
-                re.escape(c.abbrev_subst_end),
-            )
-        )
+        u = c.undoer
+
+        # End editing, so we can get p.h before appending ch.
+        c.endEditing()
+
+        # Look for scripting substitutions.
+        sub_start, sub_end = c.abbrev_subst_start, c.abbrev_subst_end
+        pattern = re.compile(rf"^(.*){sub_start}(.+){sub_end}(.*)$")
         if m := pattern.match(val):
             content = m.group(2)
             c.abbrev_subst_env['x'] = ''
@@ -526,13 +526,25 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 # Leave p.h alone.
                 g.trace('scripting error in', p.h)
                 g.es_exception()
-        # #4614:
-        val = val.replace('\n', ' ').replace('\r', ' ')
-        # #4529
-        p.h = f"{p.h[:i]}{val}{p.h[j:]}"
-        # Set the insertion point and continue editing the headline.
-        ins = i + len(val)
-        c.frame.tree.editLabel(p, selection=(ins, ins, ins))
+
+        # Compute s, the final value of p.h..
+        val = val.replace('\n', '').replace('\r', '')
+        bunch = u.beforeChangeHeadline(p)
+        p.h = s = f"{p.h}{ch}".replace(word, val)
+        u.afterChangeHeadline(p, 'Expand Headline Abbreviation', bunch)
+
+        # Select the placeholder if it exists. Otherwise, the last character.
+        place_start, place_end = c.abbrev_place_start, c.abbrev_place_end
+        i_start = s.find(place_start, 0)
+        i_end = s.find(place_end, 0)
+        if -1 < i_start < i_end:
+            end = i_end + len(place_end)
+            i, j, ins = i_start, end, end
+        else:
+            i = j = ins = len(s)
+
+        # Continue editing the headline with the correct selection.
+        c.frame.tree.editLabel(p, selection=(i, j, ins))
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
     def match_prefix(
