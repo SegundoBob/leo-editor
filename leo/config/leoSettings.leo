@@ -2295,6 +2295,7 @@
 </v>
 <v t="ekr.20140915194122.23428"></v>
 <v t="ekr.20260111055007.1"></v>
+<v t="ekr.20170208063946.1"></v>
 </vnodes>
 <tnodes>
 <t tx="TL.20080702085131.2">If True: Save the Leo file and all modified derived files every time the external editor saves a modified file.
@@ -10301,7 +10302,7 @@ try:
         demo = MyDemo(c, trace=False)
         demo.bind('callout', callout)
         demo.bind('title', title)
-        demo.start(script_string=script_string)
+        demo.start(script_tree=c.p)
 except Exception:
     g.app.demo = None
     raise
