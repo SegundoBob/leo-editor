@@ -274,23 +274,34 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 g.trace('no ch')
             return False
         s, i, j, prefixes = self.get_prefixes(w)
-        for prefix in prefixes:
-            i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
-            if word:
-                # #4462: Make only one substitution in headlines.
-                # #4590: Don't do this if the user explicitly called for the next placeholder.
-                if val != '__NEXT_PLACEHOLDER' and self.enabled and w_name.startswith('head'):
-                    self.make_first_headline_substitution(i, j, p, val)
-                    return True
-                if val == '__NEXT_PLACEHOLDER':
-                    i = w.getInsertPoint()
-                    if i > 0:
-                        w.delete(i - 1)
-                # Do not call c.endEditing here.
-                break
-        else:
+        if not prefixes:
             if trace and verbose:
                 g.trace(f"No prefix in {s!r}")
+            return False
+        ### g.printObj(prefixes, tag=w_name)
+        # Headlines are a special case.
+        if w_name.startswith('head'):
+            for prefix in prefixes:
+                i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
+                ### g.trace('tag', tag, 'word', word, 'val', repr(val))
+                if word:
+                    # #4462: Make only one substitution in headlines.
+                    self.make_first_headline_substitution(i, j, p, val)
+                    # Do not call c.endEditing here.
+                    return True
+            return False
+        # General case.
+        for prefix in prefixes:
+            i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
+            if not word:
+                continue
+            if val == '__NEXT_PLACEHOLDER':
+                g.trace('word', word, 'val', val)  ###
+                i = w.getInsertPoint()
+                if i > 0:
+                    w.delete(i - 1)
+            break
+        else:
             return False
         c.abbrev_subst_env['_abr'] = word
         if trace:
@@ -300,20 +311,21 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.last_hit = p.copy()
             self.expand_tree(w, i, j, val, word)
             c.undoer.clearAndWarn('tree-abbreviation')
+            return True
+        # Never expand a search for text matches.
+        assert val  ###
+        place_holder = '__NEXT_PLACEHOLDER' in val  ###
+        if place_holder:
+            expand_search = bool(self.last_hit)
         else:
-            # Never expand a search for text matches.
-            place_holder = '__NEXT_PLACEHOLDER' in val
-            if place_holder:
-                expand_search = bool(self.last_hit)
-            else:
-                self.last_hit = None
-                expand_search = False
-            self.expand_text(w, i, j, val, word, expand_search)
-            # Restore the selection range.
-            if self.save_ins:
-                ins = self.save_ins
-                sel1, sel2 = self.save_sel
-                w.setSelectionRange(sel1, sel2, insert=ins)
+            self.last_hit = None
+            expand_search = False
+        self.expand_text(w, i, j, val, word, expand_search)
+        # Restore the selection range.
+        if self.save_ins:
+            ins = self.save_ins
+            sel1, sel2 = self.save_sel
+            w.setSelectionRange(sel1, sel2, insert=ins)
         return True
 
     # @+node:ekr.20161121121636.1: *4* abbrev.exec_content
