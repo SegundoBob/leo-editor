@@ -499,8 +499,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.endEditing()
 
         # Look for scripting substitutions.
-        sub_start, sub_end = c.abbrev_subst_start, c.abbrev_subst_end
-        pattern = re.compile(rf"^(.*){sub_start}(.+){sub_end}(.*)$")
+        sub_start = re.escape(c.abbrev_subst_start)
+        sub_end = re.escape(c.abbrev_subst_end)
+        pattern = re.compile(rf"^(.*?){sub_start}(.+){sub_end}(.*?)$")
         if m := pattern.match(val):
             content = m.group(2)
             c.abbrev_subst_env['x'] = ''
