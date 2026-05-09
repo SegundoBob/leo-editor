@@ -294,14 +294,18 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
+                assert val
+                ### g.trace('word', word, 'val', val)  ###
                 if val == '__NEXT_PLACEHOLDER':
-                    ### g.trace('word', word, 'val', val)  ###
+                    # Delete the placeholder.
+                    # This does *not* make the substitution!
                     i = w.getInsertPoint()
                     if i > 0:
                         w.delete(i - 1)
                 break
         else:
             return False
+        # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
         if trace:
             g.trace(f"Found {word!r} = {val!r}")
@@ -312,7 +316,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             c.undoer.clearAndWarn('tree-abbreviation')
             return True
         # Never expand a search for text matches.
-        assert val  ###
         place_holder = '__NEXT_PLACEHOLDER' in val  ###
         if place_holder:
             expand_search = bool(self.last_hit)
@@ -539,20 +542,26 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         val = self.tree_abbrevs_d.get(word)
         if not val:
             val, tag = self.abbrevs.get(word, (None, None))
-        if val:
-            # Require a word match if the abbreviation is itself a word.
-            if ch in ' \t\n':
-                word = word.rstrip()
-            if word.isalnum() and word[0].isalpha():
-                if i == 0 or s[i - 1] in ' \t\n':
-                    pass
-                else:
-                    i -= 1
-                    word, val = None, None  # 2017/03/19.
-        else:
-            i -= 1
-            word, val = None, None
+        if not val:
+            return -1, tag, None, None
+        # Require a word match if the abbreviation is itself a word.
+        if ch in ' \t\n':
+            word = word.rstrip()
+        if not word:
+            return -1, tag, None, None
+        if word.isalnum() and word[0].isalpha():
+            if i == 0 or s[i - 1] in ' \t\n':
+                pass
+            else:
+                return -1, tag, None, None
+        assert word and val
         return i, tag, word, val
+        # else:
+        #     i -= 1
+        #     word, val = None, None
+        # if word:
+        #     assert val is not None
+        # return i, tag, word, val
 
     # @+node:ekr.20150514043850.16: *4* abbrev.next_place
     def next_place(self, s: str, offset: int = 0) -> tuple[str, int, int]:
