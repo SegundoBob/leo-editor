@@ -542,15 +542,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         val = self.tree_abbrevs_d.get(word)
         if not val:
             val, tag = self.abbrevs.get(word, (None, None))
+        fail = -1, tag, None, None
         if not val:
-            return -1, tag, None, None
+            return fail
         # Require a word match if the abbreviation is itself a word.
         if ch in ' \t\n':
             word = word.rstrip()
         if not word:
-            return -1, tag, None, None
+            return fail
         if word[0].isalpha() and i > 0 and s[i - 1] not in ' \t\n':
-            return -1, tag, None, None
+            return fail
         assert word and val
         return i, tag, word, val
 
