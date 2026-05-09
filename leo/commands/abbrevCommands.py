@@ -257,36 +257,25 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Return True if the abbreviation was expanded.
         """
-        # Trace for *either* 'abbrev' or 'keys'
-        trace = any(z in g.app.debug for z in ('abbrev', 'keys'))
-        # Verbose only for *both* 'abbrev' and 'verbose'.
-        verbose = all(z in g.app.debug for z in ('abbrev', 'verbose'))
         p = self.c.p
         w = event.w if event else None
-        w_name = g.app.gui.widget_name(w)
         if not g.isTextWrapper(w):
-            if trace and verbose:
-                g.trace('no w')
             return False
         ch = self.get_ch(event, stroke, w)
         if not ch:
-            if trace and verbose:
-                g.trace('no ch')
             return False
         s, i, j, prefixes = self.get_prefixes(w)
         if not prefixes:
-            if trace and verbose:
-                g.trace(f"No prefix in {s!r}")
             return False
         # Handle headlines separately.
+        w_name = g.app.gui.widget_name(w)
         if w_name.startswith('head'):
             for prefix in prefixes:
                 _i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
                 if word:
                     # #4462: Make only one substitution in headlines.
                     self.make_first_headline_substitution(ch, p, word, val)
-                    # Do not call c.endEditing here.
-                    return True
+                    return True  # Do not call c.endEditing.
             return False
         # General case.
         for prefix in prefixes:
@@ -297,8 +286,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                     i = w.getInsertPoint()
                     if i > 0:
                         w.delete(i - 1)
-                if trace:
-                    g.trace(f"Found {word!r} = {val!r}")
                 self.make_general_replacements(i, j, w, word, val, tag)
                 return True
         return False
