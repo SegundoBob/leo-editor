@@ -293,14 +293,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # General case.
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
-            if not word:
-                continue
-            if val == '__NEXT_PLACEHOLDER':
-                g.trace('word', word, 'val', val)  ###
-                i = w.getInsertPoint()
-                if i > 0:
-                    w.delete(i - 1)
-            break
+            if word:
+                if val == '__NEXT_PLACEHOLDER':
+                    ### g.trace('word', word, 'val', val)  ###
+                    i = w.getInsertPoint()
+                    if i > 0:
+                        w.delete(i - 1)
+                break
         else:
             return False
         c.abbrev_subst_env['_abr'] = word
