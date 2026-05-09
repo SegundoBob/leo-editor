@@ -261,7 +261,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         trace = any(z in g.app.debug for z in ('abbrev', 'keys'))
         # Verbose only for *both* 'abbrev' and 'verbose'.
         verbose = all(z in g.app.debug for z in ('abbrev', 'verbose'))
-        c, p = self.c, self.c.p
+        p = self.c.p
         w = event.w if event else None
         w_name = g.app.gui.widget_name(w)
         if not g.isTextWrapper(w):
@@ -278,12 +278,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if trace and verbose:
                 g.trace(f"No prefix in {s!r}")
             return False
-        ### g.printObj(prefixes, tag=w_name)
-        # Headlines are a special case.
+        # Handle headlines separately.
         if w_name.startswith('head'):
             for prefix in prefixes:
                 i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
-                ### g.trace('tag', tag, 'word', word, 'val', repr(val))
                 if word:
                     # #4462: Make only one substitution in headlines.
                     self.make_first_headline_substitution(i, j, p, val)
@@ -294,41 +292,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
-                assert val
-                ### g.trace('word', word, 'val', val)  ###
                 if val == '__NEXT_PLACEHOLDER':
-                    # Delete the placeholder.
-                    # This does *not* make the substitution!
+                    # Delete just the placeholder.
                     i = w.getInsertPoint()
                     if i > 0:
                         w.delete(i - 1)
-                break
-        else:
-            return False
-        # Handle a word that matches a prefix.
-        c.abbrev_subst_env['_abr'] = word
-        if trace:
-            g.trace(f"Found {word!r} = {val!r}")
-        if tag == 'tree':
-            self.root = p.copy()
-            self.last_hit = p.copy()
-            self.expand_tree(w, i, j, val, word)
-            c.undoer.clearAndWarn('tree-abbreviation')
-            return True
-        # Never expand a search for text matches.
-        place_holder = '__NEXT_PLACEHOLDER' in val  ###
-        if place_holder:
-            expand_search = bool(self.last_hit)
-        else:
-            self.last_hit = None
-            expand_search = False
-        self.expand_text(w, i, j, val, word, expand_search)
-        # Restore the selection range.
-        if self.save_ins:
-            ins = self.save_ins
-            sel1, sel2 = self.save_sel
-            w.setSelectionRange(sel1, sel2, insert=ins)
-        return True
+                if trace:
+                    g.trace(f"Found {word!r} = {val!r}")
+                self.make_general_replacements(i, j, w, word, val, tag)
+                return True
+        return False
 
     # @+node:ekr.20161121121636.1: *4* abbrev.exec_content
     def exec_content(self, content: str) -> None:
@@ -453,6 +426,34 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # c.frame.body.forceFullRecolor()
         # c.bodyWantsFocusNow()
         return False
+
+    # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
+    def make_general_replacements(
+        self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
+    ) -> None:
+        c, p = self.c, self.c.p
+
+        # Handle a word that matches a prefix.
+        c.abbrev_subst_env['_abr'] = word
+        if tag == 'tree':
+            self.root = p.copy()
+            self.last_hit = p.copy()
+            self.expand_tree(w, i, j, val, word)
+            c.undoer.clearAndWarn('tree-abbreviation')
+            return
+        # Never expand a search for text matches.
+        place_holder = '__NEXT_PLACEHOLDER' in val
+        if place_holder:
+            expand_search = bool(self.last_hit)
+        else:
+            self.last_hit = None
+            expand_search = False
+        self.expand_text(w, i, j, val, word, expand_search)
+        # Restore the selection range.
+        if self.save_ins:
+            ins = self.save_ins
+            sel1, sel2 = self.save_sel
+            w.setSelectionRange(sel1, sel2, insert=ins)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
     def make_script_substitutions(self, i: int, j: int, val: str) -> tuple[str, bool]:
