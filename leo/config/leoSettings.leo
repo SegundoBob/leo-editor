@@ -11562,7 +11562,7 @@ For more details, see https://github.com/leo-editor/leo-editor/issues/3047
 <t tx="ekr.20230205102733.1">False (legacy): Don't filter body text.
 True:           Remove unindented @language, @others and @wrap directives.
 </t>
-<t tx="ekr.20230221053634.1"># type demo;; to insert template and ,, to select next &lt;|placeholder|&gt;
+<t tx="ekr.20230221053634.1"># Good for GitHub issues.
 
 details;;=&lt;details&gt;&lt;summary&gt;&lt;b&gt;&lt;|Title|&gt;&lt;/b&gt;&lt;/summary&gt;
 \:&lt;br&gt;
