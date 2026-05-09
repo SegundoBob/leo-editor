@@ -549,19 +549,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             word = word.rstrip()
         if not word:
             return -1, tag, None, None
-        if word.isalnum() and word[0].isalpha():
-            if i == 0 or s[i - 1] in ' \t\n':
-                pass
-            else:
-                return -1, tag, None, None
+        if word[0].isalpha() and i > 0 and s[i - 1] not in ' \t\n':
+            return -1, tag, None, None
         assert word and val
         return i, tag, word, val
-        # else:
-        #     i -= 1
-        #     word, val = None, None
-        # if word:
-        #     assert val is not None
-        # return i, tag, word, val
 
     # @+node:ekr.20150514043850.16: *4* abbrev.next_place
     def next_place(self, s: str, offset: int = 0) -> tuple[str, int, int]:
