@@ -485,7 +485,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             c.p.v.b = w.getAllText()
         return val, do_placeholder
 
-    # @+node:ekr.20161121102113.1: *4* abbrev.make_script_substitutions_in_headline
+    # @+node:ekr.20161121102113.1: *4* abbrev.make_first_headline_substitution
     def make_first_headline_substitution(self, i: int, j: int, p: Position, val: str) -> None:
         """
         Make *only* the first scripting substitution in p.h.
