@@ -46,8 +46,8 @@ class ControlCommandsClass(BaseEditCommandsClass):
                 shell=g.isWindows,
             )
             out, err = proc.communicate()
-            for line in g.splitLines(out):  # type:ignore
-                g.es_print(g.toUnicode(line.rstrip()))
+            for line in g.splitLines(g.toUnicode(out)):
+                g.es_print(line.rstrip())
         except Exception:
             g.es_exception()
         k.keyboardQuit()  # Inits vim mode too.
