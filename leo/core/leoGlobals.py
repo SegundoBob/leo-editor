@@ -1956,8 +1956,8 @@ class Tracer:
             g.pr(f"{self.calledDict.get(key, 0):d}", key)  # noqa  # conflict between flake8 and black.
             # Print the called functions.
             d = self.callDict.get(key)
-            for key2 in sorted(d):  # type:ignore
-                g.pr(f"{d.get(key2):8d}", key2)  # type:ignore
+            for key2 in sorted(d):
+                g.pr(f"{d.get(key2):8d}", key2)
 
     # @+node:ekr.20080531075119.5: *4* stop
     def stop(self) -> None:
