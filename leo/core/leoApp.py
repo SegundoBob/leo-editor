@@ -1446,20 +1446,11 @@ class LeoApp:
     @cmd('quit-leo')
     def onQuit(self, event: LeoKeyEvent = None) -> None:
         """Exit Leo, prompting to save unsaved outlines first."""
-        # #4625: Special case for console gui.
-        name = g.app.gui.guiName()
-        gui_event: Any
-        if name == 'qt':
-            gui_event = QCloseEvent()
-        else:
-            # Do *not* import KeyEvent at the top level!
-            from leo.plugins.cursesGui2 import KeyEvent
-
-            gui_event = KeyEvent(g.app.log.c)
         if 'shutdown' in g.app.debug:
-            g.trace(gui_event)
-        # #2433: Use the same method as clicking on the close box.
-        g.app.gui.close_event(gui_event)
+            g.trace()
+
+        # #2433 - use the same method as clicking on the close box.
+        g.app.gui.close_event(QCloseEvent())
 
     # @+node:ekr.20230703100758.1: *4* app.saveSession
     def saveSession(self) -> None:
