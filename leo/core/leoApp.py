@@ -1448,7 +1448,7 @@ class LeoApp:
         if 'shutdown' in g.app.debug:
             g.trace()
         # #2433 - use the same method as clicking on the close box.
-        g.app.gui.close_event(QCloseEvent())  # type:ignore
+        g.app.gui.close_event(QCloseEvent())
 
     # @+node:ekr.20230703100758.1: *4* app.saveSession
     def saveSession(self) -> None:

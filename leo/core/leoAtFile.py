@@ -349,7 +349,7 @@ class AtFile:
             return
         path = c.fullPath(p)
         if g.os_path_exists(path):
-            g.openWithFileName(path, old_c=c)  # type:ignore
+            g.openWithFileName(path, old_c=c)
         else:
             g.red(f"file not found: {path}")
 
@@ -1449,7 +1449,7 @@ class AtFile:
         )
         for pred, func in table:
             if pred():
-                func(p)  # type:ignore
+                func(p)
                 break
         else:  # pragma: no cover
             g.trace(f"Can not happen: {p.h}")
@@ -1622,7 +1622,7 @@ class AtFile:
         )
         for pred, func in table:
             if pred():
-                func(p)  # type:ignore
+                func(p)
                 return
         g.trace(f"Can not happen unknown @<file> kind: {p.h}")
 
@@ -3343,7 +3343,7 @@ class AtFile:
     def getPathUa(self, p: Position) -> str:
         if hasattr(p.v, 'tempAttributes'):
             d = p.v.tempAttributes.get('read-path', {})
-            return d.get('path')  # type:ignore
+            return d.get('path')
         return ''
 
     def setPathUa(self, p: Position, path: str) -> None:

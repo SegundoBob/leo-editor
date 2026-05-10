@@ -1915,7 +1915,7 @@ class LocalConfigManager:
         family = self.get(family, "family")
         size = self.get(size, "size")
         if size in (None, 0):
-            size = str(defaultSize)  # type:ignore
+            size = str(defaultSize)
         slant = self.get(slant, "slant")
         if slant in (None, ""):
             slant = "roman"
