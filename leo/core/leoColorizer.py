@@ -1640,7 +1640,7 @@ class JEditColorizer(BaseColorizer):
             self.setTag(tag, s, i, j)
 
         # PR #4619: Scan only tags that could contain UNL's, URL's, and GNX's.
-        if tag in _url_bearing_tags or self.language == 'md' and tag != 'url':
+        if tag in _url_bearing_tags or self.language in ('md', 'rest'):  # #4669.
             j = min(j, len(s))
             # PR #4619: Avoid str.lower.
             url_leadins_set = _url_leadins_set
@@ -1673,7 +1673,7 @@ class JEditColorizer(BaseColorizer):
     # @+node:ekr.20110605121601.18608: *5* jedit.match_any_url
     def match_any_url(self, s: str, i: int) -> int:
         """Like match_compiled_regexp, but with special case for trailing ')'"""
-        # Called by the main colorizer loop and colorRangeWithTag.
+        # Called by colorRangeWithTag.
         n = self.match_compiled_regexp_helper(s, i, g.url_regex)
         if n <= 0:
             return 0
@@ -1686,8 +1686,7 @@ class JEditColorizer(BaseColorizer):
         if s2.endswith(')') and '(' not in s2:
             n -= 1
         j = i + n
-        kind = 'url'
-        self.colorRangeWithTag(s, i, j, kind)
+        self.setTag('url', s, i, j)
         return n
 
     # @+node:ekr.20110605121601.18593: *5* jedit.match_at_color
