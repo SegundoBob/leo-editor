@@ -2120,7 +2120,7 @@ class KeyHandlerClass:
     def bindKey(
         self,
         pane: str,
-        shortcut: str,
+        shortcut: Any,
         callback: Callable,
         commandName: str,
         modeFlag: bool = False,

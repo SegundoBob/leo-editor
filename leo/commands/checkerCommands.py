@@ -8,36 +8,34 @@ from __future__ import annotations
 import os
 import pathlib
 import re
-import shlex
 import sys
 import time
 from typing import Optional, TYPE_CHECKING
 
-#
 # Third-party imports.
 try:
+    import mypy
     from mypy import api as mypy_api
 except Exception:
+    mypy = None
     mypy_api = None
+
 try:
-    import flake8
-    # #2248: Import only flake8.
+    import flake8  # #2248: Import only flake8.
 except ImportError:
     flake8 = None  # type:ignore
-try:
-    import mypy
-except Exception:
-    mypy = None  # type:ignore
+
 try:
     import pyflakes
     from pyflakes import api, reporter
 except Exception:
     pyflakes = None  # type:ignore
+
 try:
     from pylint import lint
 except Exception:
-    lint = None  # type:ignore
-#
+    lint = None
+
 # Leo imports.
 from leo.core import leoGlobals as g
 
@@ -743,8 +741,6 @@ class PylintCommand:
         if g.isWindows:
             args = args.replace('\\', '\\\\')
         command = f'{sys.executable} -c "from pylint import lint; args=[{args}]; lint.Run(args)"'
-        if not g.isWindows:
-            command = shlex.split(command)  # type:ignore
 
         # Run the command using the BPM.
         bpm = g.app.backgroundProcessManager

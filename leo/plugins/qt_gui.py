@@ -313,19 +313,17 @@ class LeoQtGui(leoGui.LeoGui):
     ) -> None:
         """
         Create a script button for the script in node p.
-        The button's text defaults to p.headString."""
-        # pylint: disable=line-too-long
+        The button's text defaults to p.headString.
+        """
         k = c.k
         if p and not buttonText:
             buttonText = p.h.strip()
         if not buttonText:
             buttonText = 'Unnamed Script Button'
-        # @+<< create the button b >>
-        # @+node:ekr.20110605121601.18529: *4* << create the button b >>
+        # create the button.
         iconBar = c.frame.getIconBarObject()
         b = iconBar.add(text=buttonText)
 
-        # @-<< create the button b >>
         # @+<< define the callbacks for b >>
         # @+node:ekr.20110605121601.18530: *4* << define the callbacks for b >>
         def deleteButtonCallback(
@@ -362,27 +360,16 @@ class LeoQtGui(leoGui.LeoGui):
             # Do not assume the script will want to remain in this commander.
 
         # @-<< define the callbacks for b >>
-
         b.configure(command=executeScriptCallback)
         if shortcut:
-            # @+<< bind the shortcut to executeScriptCallback >>
-            # @+node:ekr.20110605121601.18531: *4* << bind the shortcut to executeScriptCallback >>
-            # In LeoQtGui.makeScriptButton.
-            func = executeScriptCallback
-            if shortcut:
-                shortcut = g.KeyStroke(shortcut)  # type:ignore
-            ok = k.bindKey('button', shortcut, func, buttonText)
+            ok = k.bindKey('button', shortcut, executeScriptCallback, buttonText)
             if ok:
-                g.blue('bound @button', buttonText, 'to', shortcut)
-            # @-<< bind the shortcut to executeScriptCallback >>
-        # @+<< create press-buttonText-button command >>
-        # @+node:ekr.20110605121601.18532: *4* << create press-buttonText-button command >> LeoQtGui.makeScriptButton
-        # #1121. Like sc.cleanButtonText
+                g.blue(f"bound @button {buttonText} to: {shortcut}")
+
+        # #1121: create press-buttonText-button command
         buttonCommandName = f"press-{buttonText.replace(' ', '-').strip('-')}-button"
-        #
         # This will use any shortcut defined in an @shortcuts node.
         k.registerCommand(buttonCommandName, executeScriptCallback, pane='button')
-        # @-<< create press-buttonText-button command >>
 
     # @+node:ekr.20200304125716.1: *3* LeoQtGui.onContextMenu
     def onContextMenu(self, c: Cmdr, w: QTextMixin, point: QPoint) -> None:
