@@ -2675,9 +2675,9 @@ tupleToString = objToString
 # @+node:ekr.20120912153732.10597: *4* g.wait
 def sleep(n: float) -> None:
     """Wait about n milliseconds."""
-    from time import sleep  # type:ignore
+    from time import sleep
 
-    sleep(n)  # type:ignore
+    sleep(n)
 
 
 # @+node:ekr.20171023140544.1: *4* g.printObj & aliases
@@ -3952,8 +3952,6 @@ def writeFile(contents: bytes | str, encoding: str, fileName: str) -> bool:
         return True
     except Exception as e:
         print(f"exception writing: {fileName}:\n{e}")
-        # g.trace(g.callers())
-        # g.es_exception()
         return False
 
 
