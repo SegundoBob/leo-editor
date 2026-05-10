@@ -629,7 +629,7 @@ class Commands:
             try:
                 aList = [z.strip() for z in c.fixedWindowPositionData if z.strip()]
                 w, h, left, t = aList
-                c.fixedWindowPosition = [int(w), int(h), int(left), int(t)]  # ty--pe:ignore
+                c.fixedWindowPosition = [int(w), int(h), int(left), int(t)]
             except Exception:
                 g.error('bad @data fixedWindowPosition', repr(self.fixedWindowPosition))
         else:
@@ -2119,7 +2119,7 @@ class Commands:
             # a VNode not in the tree
             return None
         v, n = stack.pop()
-        p = leoNodes.Position(v, n, stack)  # type:ignore
+        p = leoNodes.Position(v, n, stack)
         return p
 
     # @+node:ekr.20090130135126.1: *4* c.Properties

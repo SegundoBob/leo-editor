@@ -207,7 +207,7 @@ def check_cmd_instance_dict(c: Cmdr, g: LeoGlobals) -> None:
     for key in d:
         ivars = d.get(key)
         # Produces warnings.
-        obj = ivars2instance(c, g, ivars)  # type:ignore
+        obj = ivars2instance(c, g, ivars)
         if obj:
             name = obj.__class__.__name__
             if name != key:
@@ -310,7 +310,7 @@ commander_command = CommanderCommand
 
 
 # @+node:ekr.20150508164812.1: *3* g.ivars2instance
-def ivars2instance(c: Cmdr, g: LeoGlobals, ivars: list[str]) -> object:
+def ivars2instance(c: Cmdr, g: LeoGlobals, ivars: list[str]) -> Any:
     """
     Return the instance of c given by ivars.
     ivars is a list of strings.
@@ -5177,7 +5177,7 @@ def gitInfo(path: str = None) -> tuple[str, str]:
     except IOError:
         try:
             path = g.finalize_join(git_dir, 'packed-refs')
-            with open(path) as f:  # type:ignore
+            with open(path) as f:
                 for line in f:
                     if line.strip().endswith(' ' + pointer):
                         commit = line.split()[0][0:12]
@@ -7336,15 +7336,14 @@ def createTopologyList(c: Cmdr, root: Position = None, useHeadlines: bool = Fals
     if not root:
         root = c.rootPosition()
     v = root
+    aList: list
     if useHeadlines:
-        aList = [
-            (v.numberOfChildren(), v.headString()),
-        ]  # type: ignore
+        aList = [(v.numberOfChildren(), v.headString())]
     else:
-        aList = [v.numberOfChildren()]  # type: ignore
+        aList = [v.numberOfChildren()]
     child = v.firstChild()
     while child:
-        aList.append(g.createTopologyList(c, child, useHeadlines))  # type: ignore
+        aList.append(g.createTopologyList(c, child, useHeadlines))
         child = child.next()
     return aList
 

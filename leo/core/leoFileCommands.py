@@ -1178,8 +1178,8 @@ class FileCommands:
             g.trace('there should be at least one top level node!')
             return None
 
-        def findNode(x: VNode) -> VNode:
-            return fc.gnxDict.get(x, c.hiddenRootNode)  # type:ignore
+        def findNode(x: Any) -> VNode:
+            return fc.gnxDict.get(x, c.hiddenRootNode)
 
         # let us replace every gnx with the corresponding vnode
         for v in vnodes:
@@ -1226,7 +1226,7 @@ class FileCommands:
                 ).fetchall(),
             )
             # mypy complained that geom must be a tuple, not a generator.
-            geom = tuple(d.get(*x) for x in zip(keys, geom))  # type:ignore
+            geom = tuple(d.get(*x) for x in zip(keys, geom))
         except sqlite3.OperationalError:
             pass
         return geom
