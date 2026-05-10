@@ -1039,8 +1039,6 @@ class LeoApp:
         #    app.createBrowserGui()
         elif argName in ('console', 'curses'):
             app.createCursesGui()
-        elif argName == 'text':
-            app.createTextGui()
         if not app.gui:
             # Raise an emergency dialog.
             message = (
@@ -1089,11 +1087,6 @@ class LeoApp:
         qt_gui.init()
         if app.gui and fileName and verbose:
             print(f"Qt Gui created in {fileName}")
-
-    # @+node:ekr.20170419093747.1: *5* app.createTextGui (was createCursesGui)
-    def createTextGui(self, fileName: str = '', verbose: bool = False) -> None:
-        app = self
-        app.pluginsController.loadOnePlugin('leo.plugins.cursesGui', verbose=verbose)
 
     # @+node:ekr.20090126063121.3: *5* app.createWxGui
     def createWxGui(self, fileName: str = '', verbose: bool = False) -> None:
