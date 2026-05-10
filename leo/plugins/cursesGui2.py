@@ -1726,8 +1726,8 @@ class LeoCursesGui(leoGui.LeoGui):
     # Do *not* define setClipboardSelection.
     # setClipboardSelection = replaceClipboardWith
     # @+node:ekr.20260508095719.1: *4* CGui.close_event
-    def close_event(self, event: KeyEvent) -> None:
-        c = event.c
+    def close_event(self, event: Any) -> None:
+        c = self.log.c
         g.app.closeLeoWindow(frame=c.frame)
 
     # @+node:ekr.20170502021145.1: *4* CGui.dialogs
