@@ -374,7 +374,7 @@ def open_outline(self: Self, event: LeoKeyEvent = None) -> None:
     ]
     fileName = g.app.gui.runOpenFileDialog(c, title="Open", filetypes=filetypes)
     if fileName:
-        g.openWithFileName(fileName, old_c=c)  # type:ignore
+        g.openWithFileName(fileName, old_c=c)
 
 
 # @+node:ekr.20140717074441.17772: *3* c_file.refreshFromDisk

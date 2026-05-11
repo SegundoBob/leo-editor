@@ -766,7 +766,7 @@ class Demo:
 
 # @+node:ekr.20170208045907.1: ** Graphics classes & helpers
 # @+node:ekr.20170206203005.1: *3*  class Label (QLabel)
-class Label(QtWidgets.QLabel):  # type:ignore
+class Label(QtWidgets.QLabel):
     """A class for user-defined callouts in demo.py."""
 
     def __init__(self, text, font=None, pane=None, position=None, stylesheet=None):
