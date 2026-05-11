@@ -20,6 +20,7 @@ from leo.core import leoExternalFiles
 from leo.core.leoCache import GlobalCacher
 from leo.core.leoQt import QCloseEvent
 
+
 if TYPE_CHECKING:
     from leo.core.leoJupytext import JupytextManager
 
@@ -1440,6 +1441,7 @@ class LeoApp:
         """Exit Leo, prompting to save unsaved outlines first."""
         if 'shutdown' in g.app.debug:
             g.trace()
+
         # #2433 - use the same method as clicking on the close box.
         g.app.gui.close_event(QCloseEvent())
 
