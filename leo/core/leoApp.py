@@ -2393,8 +2393,14 @@ class LoadManager:
             return
         # #1128: support for restart-leo.
         if not g.app.start_minimized:
-            try:  # Careful: we may be unit testing.
+            try:
                 g.app.log.c.frame.bringToFront()
+            except Exception:
+                pass
+        # #4614:
+        if 'abbrev' in g.app.debug:
+            try:
+                g.app.log.c.abbrevCommands.listAbbrevs()
             except Exception:
                 pass
         g.app.gui.runMainLoop()

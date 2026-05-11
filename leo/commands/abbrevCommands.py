@@ -37,7 +37,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     """
 
     # @+others
-    # @+node:ekr.20150514043850.2: *3* abbrev.Birth
+    # @+node:ekr.20150514043850.2: *3* abbrev: Birth
     # @+node:ekr.20150514043850.3: *4* abbrev.ctor
     def __init__(self, c: Cmdr) -> None:
         """Ctor for AbbrevCommandsClass class."""
@@ -61,12 +61,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w: QTextMixin = None
 
-    # @+node:ekr.20150514043850.5: *4* abbrev.finishCreate & helpers
+    # @+node:ekr.20150514043850.5: *4* abbrev.finishCreate
     def finishCreate(self) -> None:
         """AbbrevCommandsClass.finishCreate."""
         self.reload_settings()
 
-    # @+node:ekr.20170221035644.1: *5* abbrev.reload_settings & helpers
+    # @+node:ekr.20170221035644.1: *4* abbrev.reload_settings & helpers
     def reload_settings(self) -> None:
         """Reload all abbreviation settings."""
         self.abbrevs = {}
@@ -77,7 +77,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     reloadSettings = reload_settings
 
-    # @+node:ekr.20150514043850.6: *6* abbrev.init_abbrev
+    # @+node:ekr.20150514043850.6: *5* abbrev.init_abbrev & helper
     def init_abbrev(self) -> None:
         """
         Init the user abbreviations from @data global-abbreviations
@@ -106,17 +106,39 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             # End any remaining abbreviation.
             if abbrev:
                 result.append(''.join(abbrev))
-            for s in result:
+            for s in sorted(result):
                 self.addAbbrevHelper(s, tag)
 
-        # fake the next placeholder abbreviation
+        # Define the expansion of the placeholder (usually ',,') to be '__NEXT_PLACEHOLDER'.
         if c.config.getString("abbreviations-next-placeholder"):
-            self.addAbbrevHelper(
-                f'{c.config.getString("abbreviations-next-placeholder")}=__NEXT_PLACEHOLDER',
-                'global',
-            )
+            name = c.config.getString("abbreviations-next-placeholder")
+            self.addAbbrevHelper(f"{name}=__NEXT_PLACEHOLDER", 'global')
 
-    # @+node:ekr.20150514043850.7: *6* abbrev.init_env
+    # @+node:ekr.20150514043850.25: *6* abbrev.addAbbrevHelper
+    def addAbbrevHelper(self, s: str, tag: str = '') -> None:
+        """Enter the abbreviation 's' into the self.abbrevs dict."""
+        if not s.strip():
+            return
+        try:
+            d = self.abbrevs
+            data = s.split('=')
+            # Do *not* strip ws so the user can specify ws.
+            name = data[0].replace('\\t', '\t').replace('\\n', '\n')
+            val = '='.join(data[1:])
+            if val.endswith('\n'):
+                val = val[:-1]
+            val = self.n_regex.sub('\n', val).replace('\\\\n', '\\n')
+            old, tag = d.get(
+                name,
+                (None, None),
+            )
+            if old and old != val and not g.unitTesting:
+                g.es_print(f"redefining abbreviation {name}\nfrom {old!r} to {val!r}")
+            d[name] = val, tag
+        except ValueError:
+            g.es_print(f"bad abbreviation: {s}")
+
+    # @+node:ekr.20150514043850.7: *5* abbrev.init_env
     def init_env(self) -> None:
         """
         Init c.abbrev_subst_env by executing the contents of the
@@ -159,7 +181,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         else:
             c.abbrev_subst_start = ''  # Was False.
 
-    # @+node:ekr.20150514043850.8: *6* abbrev.init_settings (called from reload_settings)
+    # @+node:ekr.20150514043850.8: *5* abbrev.init_settings (called from reload_settings)
     def init_settings(self) -> None:
         """Called from AbbrevCommands.reload_settings aka reloadSettings."""
         c = self.c
@@ -192,7 +214,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             else:
                 self.subst_env = c.config.getData(key, strip_data=False)
 
-    # @+node:ekr.20150514043850.9: *6* abbrev.init_tree_abbrev
+    # @+node:ekr.20150514043850.9: *5* abbrev.init_tree_abbrev
     def init_tree_abbrev(self) -> None:
         """Init tree_abbrevs_d from @data tree-abbreviations nodes."""
         c = self.c
@@ -227,7 +249,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 g.app.disable_redraw = old_disable
         self.tree_abbrevs_d = d
 
-    # @+node:ekr.20170227062001.1: *7* abbrev.init_tree_abbrev_helper
+    # @+node:ekr.20170227062001.1: *6* abbrev.init_tree_abbrev_helper
     def init_tree_abbrev_helper(self, d: dict[str, str], tree_s: str) -> None:
         """Init d from tree_s, the text of a copied outline."""
         c = self.c
@@ -281,11 +303,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
-                # if val == '__NEXT_PLACEHOLDER':
-                #     # Delete just the placeholder.
-                #     i = w.getInsertPoint()
-                #     if i > 0:
-                #         w.delete(i - 1)
                 self.make_general_replacements(i, j, w, word, val, tag)
                 return True
         return False
@@ -416,7 +433,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
     ) -> None:
         c, p = self.c, self.c.p
-        g.trace(val)  ###
         if val == '__NEXT_PLACEHOLDER':
             # Delete just the placeholder.
             i = w.getInsertPoint()
@@ -659,7 +675,38 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             prefixes.append('')
         return s, i, j, prefixes
 
-    # @+node:ekr.20150514043850.19: *3* abbrev.dynamic abbreviation...
+    # @+node:ekr.20260511152312.1: *3* abbrev: Commands
+    # @+node:ekr.20150514043850.28: *4* abbrev.killAllAbbrevs
+    @cmd('abbrev-kill-all')
+    def killAllAbbrevs(self, event: LeoKeyEvent) -> None:
+        """Delete all abbreviations."""
+        self.abbrevs = {}
+
+    # @+node:ekr.20150514043850.29: *4* abbrev.listAbbrevs
+    @cmd('abbrev-list')
+    def listAbbrevs(self, event: LeoKeyEvent = None) -> None:
+        """List all abbreviations."""
+        d = self.abbrevs
+        if not d:
+            return
+        print('')
+        g.es_print(f"Abbreviations for {self.c.shortFileName()}...")
+        for name, value in sorted(d.items()):
+            s, _tag = value
+            s = s.replace('\n', '\\n')
+            tail = s.removesuffix('\\n')
+            print(f"{name:>15} {g.truncate(tail, 90)}")
+
+    # @+node:ekr.20150514043850.32: *4* abbrev.toggleAbbrevMode
+    @cmd('toggle-abbrev-mode')
+    def toggleAbbrevMode(self, event: LeoKeyEvent = None) -> None:
+        """Toggle abbreviation mode."""
+        k = self.c.k
+        k.abbrevOn = not k.abbrevOn
+        k.keyboardQuit()
+        if not g.unitTesting and not g.app.batchMode:
+            g.es('Abbreviations are ' + ('on' if k.abbrevOn else 'off'))
+
     # @+node:ekr.20150514043850.20: *4* abbrev.dynamicCompletion C-M-/
     @cmd('dabbrev-completion')
     def dynamicCompletion(self, event: LeoKeyEvent = None) -> None:
@@ -769,6 +816,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             c.undoer.afterChangeNodeContents(p, command='dabbrev-expand', bunch=b)
             c.recolor()
 
+    # @+node:ekr.20150514043850.19: *3* abbrev: Utils
     # @+node:ekr.20150514043850.23: *4* abbrev.getDynamicList (helper)
     def getDynamicList(self, w: QTextMixin, s: str) -> list[str]:
         """Return a list of dynamic abbreviations."""
@@ -782,65 +830,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             items = self.dynaregex.findall(w.getAllText())
         items = sorted(set([z for z in items if z.startswith(s)]))
         return items
-
-    # @+node:ekr.20150514043850.24: *3* abbrev.static abbrevs
-    # @+node:ekr.20150514043850.25: *4* abbrev.addAbbrevHelper
-    def addAbbrevHelper(self, s: str, tag: str = '') -> None:
-        """Enter the abbreviation 's' into the self.abbrevs dict."""
-        if not s.strip():
-            return
-        try:
-            d = self.abbrevs
-            data = s.split('=')
-            # Do *not* strip ws so the user can specify ws.
-            name = data[0].replace('\\t', '\t').replace('\\n', '\n')
-            val = '='.join(data[1:])
-            if val.endswith('\n'):
-                val = val[:-1]
-            val = self.n_regex.sub('\n', val).replace('\\\\n', '\\n')
-            old, tag = d.get(
-                name,
-                (None, None),
-            )
-            if old and old != val and not g.unitTesting:
-                g.es_print(f"redefining abbreviation {name}\nfrom {old!r} to {val!r}")
-            d[name] = val, tag
-        except ValueError:
-            g.es_print(f"bad abbreviation: {s}")
-
-    # @+node:ekr.20150514043850.28: *4* abbrev.killAllAbbrevs
-    @cmd('abbrev-kill-all')
-    def killAllAbbrevs(self, event: LeoKeyEvent) -> None:
-        """Delete all abbreviations."""
-        self.abbrevs = {}
-
-    # @+node:ekr.20150514043850.29: *4* abbrev.listAbbrevs
-    @cmd('abbrev-list')
-    def listAbbrevs(self, event: LeoKeyEvent = None) -> None:
-        """List all abbreviations."""
-        d = self.abbrevs
-        if d:
-            g.es_print('Abbreviations...')
-            keys = list(d.keys())
-            keys.sort()
-            for name in keys:
-                val, tag = d.get(name)
-                val = val.replace('\n', '\\n')
-                tag = tag or ''
-                tag = tag + ': ' if tag else ''
-                g.es_print('', f"{tag}{name}={val}")
-        else:
-            g.es_print('No present abbreviations')
-
-    # @+node:ekr.20150514043850.32: *4* abbrev.toggleAbbrevMode
-    @cmd('toggle-abbrev-mode')
-    def toggleAbbrevMode(self, event: LeoKeyEvent = None) -> None:
-        """Toggle abbreviation mode."""
-        k = self.c.k
-        k.abbrevOn = not k.abbrevOn
-        k.keyboardQuit()
-        if not g.unitTesting and not g.app.batchMode:
-            g.es('Abbreviations are ' + ('on' if k.abbrevOn else 'off'))
 
     # @-others
 
