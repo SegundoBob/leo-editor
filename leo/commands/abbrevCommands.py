@@ -152,7 +152,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             )
             script = script.replace("\r\n", "\n")
             try:
-                exec(script, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
+                exec(script, c.abbrev_subst_env, c.abbrev_subst_env)
             except Exception:
                 g.es('Error executing @data abbreviations-subst-env')
                 g.es_exception()
@@ -456,14 +456,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.save_sel = None
         while c.abbrev_subst_start in val:
             prefix, rest = val.split(c.abbrev_subst_start, 1)
-            content = rest.split(c.abbrev_subst_end, 1)
-            if len(content) != 2:
+            content_list = rest.split(c.abbrev_subst_end, 1)
+            if len(content_list) != 2:
                 break
-            content, rest = content  # type:ignore
+            content, rest = content_list
             try:
                 self.expanding = True
                 c.abbrev_subst_env['x'] = ''
-                exec(content, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
+                exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
             except Exception:
                 g.es_print('exception evaluating', content)
                 g.es_exception()

@@ -584,7 +584,7 @@ if QtWidgets:
 
             hl_color_setting = c.config.getString('line-highlight-color') or ''
             hl_color = QColor(hl_color_setting)
-            self.hiliter_params = {
+            self.hiliter_params: dict[str, Any] = {
                 'lastblock': -2,
                 'last_style_hash': 0,
                 'last_color_setting': hl_color_setting,
@@ -941,7 +941,7 @@ if QtWidgets:
             # https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
 
             selection = editor.ExtraSelection()
-            selection.format.setBackground(hl_color)  # type:ignore
+            selection.format.setBackground(hl_color)
             selection.format.setProperty(FullWidthSelection, True)
             selection.cursor = curs
             selection.cursor.clearSelection()

@@ -231,7 +231,7 @@ class BaseLeoPlugin:
         Ctor for the BaseLeoPlugin class.
         """
         # mypy can't infer the type of keywords['c'].
-        self.c: Cmdr = keywords['c']  # type:ignore
+        self.c: Any = keywords['c']
         self.commandNames: list[str] = []
 
     # @+node:ekr.20100908125007.6013: *3* BaseLeoPlugin.setCommand

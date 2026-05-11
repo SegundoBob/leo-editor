@@ -1441,7 +1441,7 @@ class LeoApp:
         if 'shutdown' in g.app.debug:
             g.trace()
         # #2433 - use the same method as clicking on the close box.
-        g.app.gui.close_event(QCloseEvent())  # type:ignore
+        g.app.gui.close_event(QCloseEvent())
 
     # @+node:ekr.20230703100758.1: *4* app.saveSession
     def saveSession(self) -> None:
@@ -3106,7 +3106,7 @@ class LoadManager:
                     return
                 log = app.log
                 # Compute the effective args.
-                d = {
+                d: dict[str, Any] = {
                     'color': None,
                     'commas': False,
                     'newline': True,
@@ -3115,7 +3115,7 @@ class LoadManager:
                 }
                 # Handle keywords for g.pr and g.es_print.
                 d = g.doKeywordArgs(keys, d)
-                color: str = d.get('color')  # type:ignore
+                color: str = d.get('color')
                 if color == 'suppress':
                     return
                 if log and color is None:

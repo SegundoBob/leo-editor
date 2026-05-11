@@ -449,7 +449,7 @@ class Commands:
     def initOptionsIvars(self) -> None:
         """Init Commander ivars corresponding to user options."""
         self.fixed = False
-        self.fixedWindowPosition: list[tuple[int, int, int, int]] = []
+        self.fixedWindowPosition: list[int] = []
         self.forceExecuteEntireBody = False
         self.focus_border_color = 'white'
         self.focus_border_width = 1  # pixels
@@ -629,7 +629,7 @@ class Commands:
             try:
                 aList = [z.strip() for z in c.fixedWindowPositionData if z.strip()]
                 w, h, left, t = aList
-                c.fixedWindowPosition = int(w), int(h), int(left), int(t)  # type:ignore
+                c.fixedWindowPosition = [int(w), int(h), int(left), int(t)]
             except Exception:
                 g.error('bad @data fixedWindowPosition', repr(self.fixedWindowPosition))
         else:
@@ -2119,7 +2119,7 @@ class Commands:
             # a VNode not in the tree
             return None
         v, n = stack.pop()
-        p = leoNodes.Position(v, n, stack)  # type:ignore
+        p = leoNodes.Position(v, n, stack)
         return p
 
     # @+node:ekr.20090130135126.1: *4* c.Properties
