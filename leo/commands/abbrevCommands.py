@@ -281,18 +281,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
-                if val == '__NEXT_PLACEHOLDER':
-                    # Delete just the placeholder.
-                    i = w.getInsertPoint()
-                    if i > 0:
-                        w.delete(i - 1)
+                # if val == '__NEXT_PLACEHOLDER':
+                #     # Delete just the placeholder.
+                #     i = w.getInsertPoint()
+                #     if i > 0:
+                #         w.delete(i - 1)
                 self.make_general_replacements(i, j, w, word, val, tag)
                 return True
         return False
-
-    # @+node:ekr.20161121121636.1: *4* abbrev.exec_content
-    def exec_content(self, content: str) -> None:
-        """Execute the content in the environment, and return the result."""
 
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
     def expand_text(
@@ -367,7 +363,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         else:
             g.trace('paste failed')
 
-    # @+node:ekr.20150514043850.14: *4* abbrev.find_place_holder
+    # @+node:ekr.20260511085932.1: *4* abbrev: shared utils
+    # @+node:ekr.20150514043850.14: *5* abbrev.find_place_holder
     def find_place_holder(self, p: Position, do_placeholder: bool) -> bool:
         """
         Search for the next place-holder.
@@ -414,12 +411,17 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # c.bodyWantsFocusNow()
         return False
 
-    # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
+    # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements & helpers
     def make_general_replacements(
         self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
     ) -> None:
         c, p = self.c, self.c.p
-
+        g.trace(val)  ###
+        if val == '__NEXT_PLACEHOLDER':
+            # Delete just the placeholder.
+            i = w.getInsertPoint()
+            if i > 0:
+                w.delete(i - 1)
         # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
         if tag == 'tree':
@@ -428,9 +430,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.expand_tree(w, i, j, val, word)
             c.undoer.clearAndWarn('tree-abbreviation')
             return
-        # Never expand a search for text matches.
-        place_holder = '__NEXT_PLACEHOLDER' in val
-        if place_holder:
+        # Expand, but never expand a search for text matches.
+        if '__NEXT_PLACEHOLDER' in val:
             expand_search = bool(self.last_hit)
         else:
             self.last_hit = None
@@ -441,6 +442,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             ins = self.save_ins
             sel1, sel2 = self.save_sel
             w.setSelectionRange(sel1, sel2, insert=ins)
+
+    # @+node:ekr.20161121121636.1: *5* abbrev.exec_content
+    def exec_content(self, content: str) -> None:
+        """Execute the content in the environment, and return the result."""
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
     def make_script_substitutions(self, i: int, j: int, val: str) -> tuple[str, bool]:
