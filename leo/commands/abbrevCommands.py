@@ -497,10 +497,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if val.endswith('\n'):
                 val = val[:-1]
             val = self.number_regex.sub('\n', val).replace('\\\\n', '\\n')
-            old, tag = d.get(
-                name,
-                (None, None),
-            )
+            old, tag = d.get(name, (None, None))
             if old and old != val and not g.unitTesting:
                 g.es_print(f"redefining abbreviation {name}\nfrom {old!r} to {val!r}")
             d[name] = val, tag
