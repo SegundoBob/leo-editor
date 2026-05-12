@@ -48,7 +48,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'w',
     )
 
-    new = True  ###
+    ### new = True  ###
 
     # @+others
     # @+node:ekr.20150514043850.3: *3* abbrev.__init__
@@ -92,7 +92,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if not prefixes:
             return False
         # First, do we see the placeholder (,,)?
-        if self.new:
+        if True:  ### self.new:
             word = s[i:j] + ch
             if word.endswith(self.next_placeholder):
                 self.do_placeholder(warn_flag=True)
@@ -140,32 +140,32 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
     def expand_text(self, w: QTextMixin, i: int, j: int, val: str, word: str) -> None:
         """Make a text expansion at location i,j of widget w."""
-        c = self.c
-        if self.new:
+        ### c = self.c
+        if True:  ### self.new:
             warn_flag = self.last_hit and '__NEXT_PLACEHOLDER' in val
             val = self.make_script_substitutions(i, j, val)
             self.replace_selection(w, i, j, val)
             self.do_placeholder(warn_flag)
             return
-        expand_search = bool('__NEXT_PLACEHOLDER' in val and self.last_hit)
-        val = (
-            '' if word == self.next_placeholder
-            else self.make_script_substitutions(i, j, val)
-        )  # fmt: skip
-        self.replace_selection(w, i, j, val)
-        # Search to the end.  We may have been called via a tree abbrev.
-        p = c.p.copy()
-        if expand_search:
-            while p:
-                if self.find_place_holder(p):
-                    return
-                p.moveToThreadNext()
-        else:
-            self.find_place_holder(p)
-            # if self.find_place_holder(p):
-            # Don't restore the insert point when selecting next placeholder.
-            # self.save_ins = None
-            # self.save_sel = None
+        # expand_search = bool('__NEXT_PLACEHOLDER' in val and self.last_hit)
+        # val = (
+        #     '' if word == self.next_placeholder
+        #     else self.make_script_substitutions(i, j, val)
+        # )  # fmt: skip
+        # self.replace_selection(w, i, j, val)
+        # # Search to the end.  We may have been called via a tree abbrev.
+        # p = c.p.copy()
+        # if expand_search:
+        #     while p:
+        #         if self.find_place_holder(p):
+        #             return
+        #         p.moveToThreadNext()
+        # else:
+        #     self.find_place_holder(p)
+        #     # if self.find_place_holder(p):
+        #     # Don't restore the insert point when selecting next placeholder.
+        #     # self.save_ins = None
+        #     # self.save_sel = None
 
     # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree & helper
     def expand_tree(self, w: QTextMixin, i: int, j: int, tree_s: str, word: str) -> None:
@@ -511,11 +511,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             for s in sorted(result):
                 self.addAbbrevHelper(s, tag)
 
-        # Define the expansion of the placeholder (usually ',,') to be '__NEXT_PLACEHOLDER'.
-        if self.new:
-            return  ###
-        if self.next_placeholder:
-            self.addAbbrevHelper(f"{self.next_placeholder}=__NEXT_PLACEHOLDER", 'global')
+        ###
+        # # Define the expansion of the placeholder (usually ',,') to be '__NEXT_PLACEHOLDER'.
+        # if self.new:
+        #     return  ###
+        # if self.next_placeholder:
+        #     self.addAbbrevHelper(f"{self.next_placeholder}=__NEXT_PLACEHOLDER", 'global')
 
     # @+node:ekr.20150514043850.25: *5* abbrev.addAbbrevHelper
     def addAbbrevHelper(self, s: str, tag: str = '') -> None:
