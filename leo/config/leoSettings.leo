@@ -12127,10 +12127,7 @@ the ``&lt;|`` in::
 
     w;;=while &lt;|condition|&gt;:
     \:    &lt;|code|&gt;
-
-This would expand with the ``&lt;|condition|&gt;`` selected, and ``,,``,
-if that's an abbreviation linked to next_place(), see 
-``@@data abbreviations examples``, would select ``&lt;|code|&gt;``.</t>
+</t>
 <t tx="tbrown.20130813134319.7223"></t>
 <t tx="tbrown.20130813134319.7224">Set this to True for rich text edits to be saved automatically.
 
