@@ -1,0 +1,50 @@
+# @+leo-ver=5-thin
+# @+node:ekr.20260512145309.1: * @file ../unittests/commands/test_leoAbbrev.py
+"""Tests of leoAbbrev.py"""
+
+from leo.core import leoGlobals as g
+from leo.core.leoGui import LeoKeyEvent
+from leo.core.leoTest2 import LeoUnitTest
+
+assert g
+
+
+# @+others
+# @+node:ekr.20260512145550.104: ** class TestAbbrev (LeoUnitTest)
+class TestAbbrev(LeoUnitTest):
+    # @+others
+    # @+node:ekr.20260512150121.1: *3* TestAbbrev.test_simple_abbreviations
+    def test_simple_abbreviations(self):
+
+        c = self.c
+        p = c.p
+        w = c.frame.body.wrapper
+        x = c.abbrevCommands
+        x.abbrevs = {}
+        x.next_placeholder = ',,'
+        definitions = (
+            'ex;;=!',
+        )  # fmt: skip
+        for definition in definitions:
+            x.addAbbrevHelper(definition)
+        # g.printObj(x.abbrevs)
+        table = (
+            ('ex;',  '!'),
+        )  # fmt: skip
+
+        def test(results, expected) -> None:
+            assert results == expected, f"expected: {expected!r} got: {results!r}"
+
+        for contents, expected in table:
+            p.b = contents
+            w.setInsertPoint(len(contents), contents)
+            event = LeoKeyEvent(c, char=';', binding=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            test(p.b, expected)
+            test(w.getAllText(), expected)
+
+    # @-others
+
+
+# @-others
+# @-leo
