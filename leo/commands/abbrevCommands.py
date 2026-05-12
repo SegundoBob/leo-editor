@@ -36,6 +36,21 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     See apropos-abbreviations for details.
     """
 
+    __slots__ = (
+        'abbrevs',
+        'c',
+        'dynaregex',
+        'enabled',
+        'expanding',
+        'last_hit',
+        'n_regex',
+        'save_ins',
+        'save_sel',
+        'subst_env',
+        'tree_abbrevs_d',
+        'w',
+    )
+
     # @+others
     # @+node:ekr.20150514043850.3: *3* abbrev.__init__
     def __init__(self, c: Cmdr) -> None:
@@ -52,10 +67,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.enabled = False
         self.expanding = False  # True: expanding abbreviations.
         self.last_hit = None  # Distinguish between text and tree abbreviations.
-        self.root = None  # The root of tree abbreviations.
         self.save_ins = None  # Saved insert point.
         self.save_sel = None  # Saved selection range.
-        self.store = {'rlist': [], 'stext': ''}  # For dynamic expansion.
         self.subst_env: list[str] = []  # The scripting environment.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w: QTextMixin = None
@@ -275,7 +288,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
         if tag == 'tree':
-            self.root = p.copy()
             self.last_hit = p.copy()
             self.expand_tree(w, i, j, val, word)
             c.undoer.clearAndWarn('tree-abbreviation')
