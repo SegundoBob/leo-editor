@@ -44,8 +44,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'expanding',
         'last_hit',
         'number_regex',
-        ### 'save_ins',
-        ### 'save_sel',
         'tree_abbrevs_d',
         'w',
     )
@@ -68,8 +66,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.enabled = False
         self.expanding = False  # True: expanding abbreviations.
         self.last_hit = None  # Distinguish between text and tree abbreviations.
-        ### self.save_ins = None  # Saved insert point.
-        ### self.save_sel = None  # Saved selection range.
         self.subst_env: list[str] = []  # The scripting environment.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w: QTextMixin = None
@@ -137,10 +133,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                     return
                 p.moveToThreadNext()
         elif self.find_place_holder(p):
-            ###
-            # Don't restore the insert point when selecting next placeholder.
-            # self.save_ins = None
-            # self.save_sel = None
             return
         if warn_flag:
             g.es_print(f"No next placeholder {c.abbrev_place_start}...{c.abbrev_place_end}")
@@ -395,27 +387,17 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if '__NEXT_PLACEHOLDER' not in val:
             self.last_hit = None
         self.expand_text(w, i, j, val, word)
-        ###
-        # # Restore the selection range.
-        # if self.save_ins:
-        #     ins = self.save_ins
-        #     sel1, sel2 = self.save_sel
-        #     w.setSelectionRange(sel1, sel2, insert=ins)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
     def make_script_substitutions(self, i: int, j: int, val: str) -> str:
         """Make scripting substitutions in node p."""
         c = self.c
-        ### w = c.frame.body.wrapper
         if not c.abbrev_subst_start:
             return val
         if c.abbrev_subst_start not in val:
             return val
 
         # Perform all scripting substitutions.
-        ###
-        # self.save_ins = None
-        # self.save_sel = None
         while c.abbrev_subst_start in val:
             prefix, rest = val.split(c.abbrev_subst_start, 1)
             content_list = rest.split(c.subst_end, 1)
@@ -434,10 +416,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 self.expanding = False
             x = c.abbrev_subst_env.get('x') or ''
             val = f"{prefix}{x}{rest}"
-            ###
-            # Save the selection range.
-            # self.save_ins = w.getInsertPoint()
-            # self.save_sel = w.getSelectionRange()
         return val
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
@@ -470,12 +448,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
         bunch = u.beforeChangeBody(p)
-        ###
-        # if i == j:
-        #     abbrev = ''
-        # else:
-        #     abbrev = w.get(i, j)
-        #     w.delete(i, j)
         if i != j:
             w.delete(i, j)
         if s is None:
@@ -490,14 +462,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             # Fix part of #438. Don't leave the headline.
             p.v.b = w.getAllText()
             u.afterChangeBody(p, 'Abbreviation', bunch)
-        ###
-        # # Adjust self.save_sel & self.save_ins
-        # if s is not None and self.save_sel is not None:
-        #     i, j = self.save_sel
-        #     ins = self.save_ins
-        #     delta = len(s) - len(abbrev)
-        #     self.save_sel = i + delta, j + delta
-        #     self.save_ins = ins + delta
 
     # @+node:ekr.20150514043850.5: *3* abbrev.finishCreate
     def finishCreate(self) -> None:
