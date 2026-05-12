@@ -2,6 +2,7 @@
 # @+node:ekr.20260512145309.1: * @file ../unittests/commands/test_leoAbbrev.py
 """Tests of leoAbbrev.py"""
 
+import re
 from leo.core import leoGlobals as g
 from leo.core.leoGui import LeoKeyEvent
 from leo.core.leoTest2 import LeoUnitTest
@@ -61,6 +62,7 @@ class TestAbbrev(LeoUnitTest):
         definitions = (
             'details;;=<details><summary><b>Title</b></summary>\n<br>\n\n</details>',
         )  # fmt: skip
+
         for definition in definitions:
             x.addAbbrevHelper(definition)
 
@@ -77,6 +79,47 @@ class TestAbbrev(LeoUnitTest):
             x.expandAbbrev(event=event, stroke=None)
             test(p.b, expected)
             test(w.getAllText(), expected)
+
+    # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
+    def test_scripting_abbreviations(self):
+
+        import time
+
+        c = self.c
+        p = c.p
+        w = c.frame.body.wrapper
+        x = c.abbrevCommands
+        x.abbrevs = {}
+
+        # Init the ivars.
+        x.enable = True
+        x.next_placeholder = ',,'
+        c.abbrev_subst_end = '}|}'
+        c.abbrev_subst_start = '{|{'
+        c.abbrev_subst_env = {'c': c, 'g': g, 'time': time, '_values': {}}
+
+        # These must be the definition munged by c.config.getData.
+        definitions = (
+            'date;;={|{x=time.strftime("%Y/%m/%d")}|}',
+        )  # fmt: skip
+
+        for definition in definitions:
+            x.addAbbrevHelper(definition)
+
+        pattern = r'[0-9]{4}/[0-9]{2}/[0-2]{2}'
+
+        def test(results: str) -> None:
+            assert re.match(pattern, results), f"\nresults: {results!r} regex: {pattern!r}"
+
+        for definition in definitions:
+            i = definition.find(';=')
+            p.b = contents = definition[:i]
+            # script = definition[i + 2 :]
+            w.setInsertPoint(len(contents), contents)
+            event = LeoKeyEvent(c, char=';', binding=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            test(p.b)
+            test(w.getAllText())
 
     # @-others
 
