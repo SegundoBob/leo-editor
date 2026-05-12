@@ -56,27 +56,21 @@ class TestAbbrev(LeoUnitTest):
         x = c.abbrevCommands
         x.abbrevs = {}
         x.next_placeholder = ',,'
-        # details;;=<details><summary><b>Title</b></summary>
-        # \:<br>
-        # \:
-        # \:</details>
-        # This is the definition munged by c.config.getData.
-        definition = 'details;;=<details><summary><b>Title</b></summary>\n<br>\n\n</details>'
-        expected = (
-            '<details><summary><b>Title</b></summary>\n'
-            '<br>\n'
-            '\n'
-            '</details>'  # No trailing newline.
+
+        # These must be the definition munged by c.config.getData.
+        definitions = (
+            'details;;=<details><summary><b>Title</b></summary>\n<br>\n\n</details>',
         )  # fmt: skip
-        x.addAbbrevHelper(definition)
-        table = (
-            ('details;', expected),
-        )  # fmt: skip
+        for definition in definitions:
+            x.addAbbrevHelper(definition)
 
         def test(results, expected) -> None:
             assert results == expected, f"\nexpected: {expected!r}\n     got: {results!r}"
 
-        for contents, expected in table:
+        for definition in definitions:
+            i = definition.find(';=')
+            contents = definition[:i]
+            expected = definition[i + 2 :]
             p.b = contents
             w.setInsertPoint(len(contents), contents)
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
