@@ -50,7 +50,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'w',
     )
 
-    new = True  ###
+    new = False  ###
 
     # @+others
     # @+node:ekr.20150514043850.3: *3* abbrev.__init__
@@ -124,6 +124,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder
     def do_placeholder(self) -> None:
         """Find the next place-holder string."""
+        g.trace(g.callers())
         p = self.c.p.copy()
         if self.last_hit:
             # We are in a tree abbrev.
