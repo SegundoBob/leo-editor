@@ -50,6 +50,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'w',
     )
 
+    new = True  ###
+
     # @+others
     # @+node:ekr.20150514043850.3: *3* abbrev.__init__
     def __init__(self, c: Cmdr) -> None:
@@ -93,6 +95,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         s, i, j, prefixes = self.get_prefixes(w)
         if not prefixes:
             return False
+        # First, do we see the placeholder (,,)?
+        if self.new:
+            word = s[i:j] + ch
+            if word.endswith(self.next_placeholder):
+                self.do_placeholder()
+                return True
+
         # Does the incoming string match any definition?
         # Handle headlines separately.
         w_name = g.app.gui.widget_name(w)
@@ -112,17 +121,32 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 return True
         return False
 
+    # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder
+    def do_placeholder(self) -> None:
+        """Find the next place-holder string."""
+        p = self.c.p.copy()
+        if self.last_hit:
+            # We are in a tree abbrev.
+            while p:
+                if self.find_place_holder(p):
+                    return
+                p.moveToThreadNext()
+        elif self.find_place_holder(p):
+            # Don't restore the insert point when selecting next placeholder.
+            self.save_ins = None
+            self.save_sel = None
+            return
+        g.es_print(f"No next placeholder {self.next_placeholder!r}")
+        g.trace(g.callers(2))
+
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
-    def expand_text(
-        self,
-        w: QTextMixin,
-        i: int,
-        j: int,
-        val: str,
-        word: str,
-    ) -> None:
+    def expand_text(self, w: QTextMixin, i: int, j: int, val: str, word: str) -> None:
         """Make a text expansion at location i,j of widget w."""
         c = self.c
+        if self.new:
+            self.replace_selection(w, i, j, val)
+            ### self.do_placeholder()
+            return  ###
         expand_search = bool('__NEXT_PLACEHOLDER' in val and self.last_hit)
         val = (
             '' if word == self.next_placeholder
@@ -252,6 +276,47 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
         end = start + len(place_holder)
         return s2, start, end
+
+    # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
+    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
+        """Get the ch from the stroke."""
+        ch = g.checkUnicode(event and event.char or '')
+        if w.hasSelection():
+            return None
+        assert g.isStrokeOrNone(stroke), stroke
+        if stroke in ('BackSpace', 'Delete'):
+            return None
+        d = {'Return': '\n', 'Tab': '\t', 'space': ' ', 'underscore': '_'}
+        if stroke:
+            ch = d.get(stroke.s, stroke.s)
+            if len(ch) > 1:
+                if (
+                    stroke.find('Ctrl+') > -1 or
+                    stroke.find('Alt+') > -1 or
+                    stroke.find('Meta+') > -1
+                ):  # fmt: skip
+                    ch = ''
+                else:
+                    ch = event.char if event else ''
+        else:
+            ch = event.char
+        return ch
+
+    # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
+    def get_prefixes(self, w: QTextMixin) -> tuple[str, int, int, list[str]]:
+        """Return the prefixes at the current insertion point of w."""
+        # New code allows *any* sequence longer than 1 to be an abbreviation.
+        # Any whitespace stops the search.
+        s = w.getAllText()
+        j = w.getInsertPoint()
+        i, prefixes = j - 1, []
+        while len(s) > i >= 0 and s[i] not in ' \t\n':
+            prefixes.append(s[i:j])
+            i -= 1
+        prefixes = list(reversed(prefixes))
+        if '' not in prefixes:
+            prefixes.append('')
+        return s, i, j, prefixes
 
     # @+node:ekr.20161121102113.1: *4* abbrev.make_first_headline_substitution
     def make_first_headline_substitution(self, ch: str, p: Position, word: str, val: str) -> None:
@@ -414,47 +479,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.save_sel = i + delta, j + delta
             self.save_ins = ins + delta
 
-    # @+node:ekr.20161121111502.1: *4* abbrev_get_ch
-    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
-        """Get the ch from the stroke."""
-        ch = g.checkUnicode(event and event.char or '')
-        if w.hasSelection():
-            return None
-        assert g.isStrokeOrNone(stroke), stroke
-        if stroke in ('BackSpace', 'Delete'):
-            return None
-        d = {'Return': '\n', 'Tab': '\t', 'space': ' ', 'underscore': '_'}
-        if stroke:
-            ch = d.get(stroke.s, stroke.s)
-            if len(ch) > 1:
-                if (
-                    stroke.find('Ctrl+') > -1 or
-                    stroke.find('Alt+') > -1 or
-                    stroke.find('Meta+') > -1
-                ):  # fmt: skip
-                    ch = ''
-                else:
-                    ch = event.char if event else ''
-        else:
-            ch = event.char
-        return ch
-
-    # @+node:ekr.20161121112346.1: *4* abbrev_get_prefixes
-    def get_prefixes(self, w: QTextMixin) -> tuple[str, int, int, list[str]]:
-        """Return the prefixes at the current insertion point of w."""
-        # New code allows *any* sequence longer than 1 to be an abbreviation.
-        # Any whitespace stops the search.
-        s = w.getAllText()
-        j = w.getInsertPoint()
-        i, prefixes = j - 1, []
-        while len(s) > i >= 0 and s[i] not in ' \t\n':
-            prefixes.append(s[i:j])
-            i -= 1
-        prefixes = list(reversed(prefixes))
-        if '' not in prefixes:
-            prefixes.append('')
-        return s, i, j, prefixes
-
     # @+node:ekr.20150514043850.5: *3* abbrev.finishCreate
     def finishCreate(self) -> None:
         """AbbrevCommandsClass.finishCreate."""
@@ -504,6 +528,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 self.addAbbrevHelper(s, tag)
 
         # Define the expansion of the placeholder (usually ',,') to be '__NEXT_PLACEHOLDER'.
+        if self.new:
+            return  ###
         if self.next_placeholder:
             self.addAbbrevHelper(f"{self.next_placeholder}=__NEXT_PLACEHOLDER", 'global')
 
