@@ -46,7 +46,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'n_regex',
         'save_ins',
         'save_sel',
-        'subst_env',
         'tree_abbrevs_d',
         'w',
     )
@@ -267,7 +266,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Look for scripting substitutions.
         sub_start = re.escape(c.abbrev_subst_start)
-        sub_end = re.escape(self.subst_end)
+        sub_end = re.escape(c.subst_end)
         pattern = re.compile(rf"^(.*?){sub_start}(.+){sub_end}(.*?)$")
         if m := pattern.match(val):
             content = m.group(2)
@@ -343,7 +342,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.save_sel = None
         while c.abbrev_subst_start in val:
             prefix, rest = val.split(c.abbrev_subst_start, 1)
-            content_list = rest.split(self.subst_end, 1)
+            content_list = rest.split(c.subst_end, 1)
             if len(content_list) != 2:
                 break
             content: str
@@ -582,13 +581,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c = self.c
         if not c.config:
             return
-        # Commander ivars, for k.masterKeyHandler and unit tests.
+        # Commander ivars for scripting environments, unit tests, etc.
         c.k.abbrevOn = c.config.getBool('enable-abbreviations', default=False)
         c.abbrev_place_end = c.config.getString('abbreviations-place-end')
         c.abbrev_place_start = c.config.getString('abbreviations-place-start')
-
-        # Local ivars.
-        self.subst_end = c.config.getString('abbreviations-subst-end')
+        c.subst_end = c.config.getString('abbreviations-subst-end')
         self.next_placeholder = c.config.getString("abbreviations-next-placeholder") or ''
 
         # The environment for all substitutions.

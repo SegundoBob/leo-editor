@@ -2293,11 +2293,8 @@
 <v t="tbrown.20140505094209.37266"><vh>@bool outline-tabs-show-close = True</vh></v>
 </v>
 </v>
-<v t="tbrown.20151114110207.1"></v>
 <v t="ekr.20140915194122.23428"></v>
 <v t="ekr.20260111055007.1"></v>
-<v t="ekr.20170208063946.1"></v>
-<v t="tbrown.20151114110207.1"></v>
 </vnodes>
 <tnodes>
 <t tx="TL.20080702085131.2">If True: Save the Leo file and all modified derived files every time the external editor saves a modified file.
