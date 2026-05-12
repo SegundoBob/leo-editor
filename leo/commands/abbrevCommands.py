@@ -215,74 +215,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         #   c.bodyWantsFocusNow()
         return False
 
-    # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements & helpers
-    def make_general_replacements(
-        self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
-    ) -> None:
-        c, p = self.c, self.c.p
-        if val == '__NEXT_PLACEHOLDER':
-            # Delete the last character.
-            i = w.getInsertPoint()
-            w.delete(i)
-
-        # Handle a word that matches a prefix.
-        c.abbrev_subst_env['_abr'] = word
-        if tag == 'tree':
-            self.root = p.copy()
-            self.last_hit = p.copy()
-            self.expand_tree(w, i, j, val, word)
-            c.undoer.clearAndWarn('tree-abbreviation')
-            return
-        # Expand, but never expand a search for text matches.
-        if '__NEXT_PLACEHOLDER' not in val:
-            self.last_hit = None
-        self.expand_text(w, i, j, val, word)
-        # Restore the selection range.
-        if self.save_ins:
-            ins = self.save_ins
-            sel1, sel2 = self.save_sel
-            w.setSelectionRange(sel1, sel2, insert=ins)
-
-    # @+node:ekr.20161121121636.1: *5* abbrev.exec_content
-    def exec_content(self, content: str) -> None:
-        """Execute the content in the environment, and return the result."""
-
-    # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
-    def make_script_substitutions(self, i: int, j: int, val: str) -> str:
-        """Make scripting substitutions in node p."""
-        c = self.c
-        w = c.frame.body.wrapper
-        if not c.abbrev_subst_start:
-            return val
-        if c.abbrev_subst_start not in val:
-            return val
-
-        # Perform all scripting substitutions.
-        self.save_ins = None
-        self.save_sel = None
-        while c.abbrev_subst_start in val:
-            prefix, rest = val.split(c.abbrev_subst_start, 1)
-            content_list = rest.split(self.subst_end, 1)
-            if len(content_list) != 2:
-                break
-            content: str
-            content, rest = content_list
-            try:
-                self.expanding = True
-                c.abbrev_subst_env['x'] = ''
-                exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
-            except Exception:
-                g.es_print('exception evaluating', content)
-                g.es_exception()
-            finally:
-                self.expanding = False
-            x = c.abbrev_subst_env.get('x') or ''
-            val = f"{prefix}{x}{rest}"
-            # Save the selection range.
-            self.save_ins = w.getInsertPoint()
-            self.save_sel = w.getSelectionRange()
-        return val
-
     # @+node:ekr.20161121102113.1: *4* abbrev.make_first_headline_substitution
     def make_first_headline_substitution(self, ch: str, p: Position, word: str, val: str) -> None:
         """
@@ -329,6 +261,70 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Continue editing the headline with the correct selection.
         c.frame.tree.editLabel(p, selection=(i, j, ins))
+
+    # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
+    def make_general_replacements(
+        self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
+    ) -> None:
+        c, p = self.c, self.c.p
+        if val == '__NEXT_PLACEHOLDER':
+            # Delete the last character.
+            i = w.getInsertPoint()
+            w.delete(i)
+
+        # Handle a word that matches a prefix.
+        c.abbrev_subst_env['_abr'] = word
+        if tag == 'tree':
+            self.root = p.copy()
+            self.last_hit = p.copy()
+            self.expand_tree(w, i, j, val, word)
+            c.undoer.clearAndWarn('tree-abbreviation')
+            return
+        # Expand, but never expand a search for text matches.
+        if '__NEXT_PLACEHOLDER' not in val:
+            self.last_hit = None
+        self.expand_text(w, i, j, val, word)
+        # Restore the selection range.
+        if self.save_ins:
+            ins = self.save_ins
+            sel1, sel2 = self.save_sel
+            w.setSelectionRange(sel1, sel2, insert=ins)
+
+    # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
+    def make_script_substitutions(self, i: int, j: int, val: str) -> str:
+        """Make scripting substitutions in node p."""
+        c = self.c
+        w = c.frame.body.wrapper
+        if not c.abbrev_subst_start:
+            return val
+        if c.abbrev_subst_start not in val:
+            return val
+
+        # Perform all scripting substitutions.
+        self.save_ins = None
+        self.save_sel = None
+        while c.abbrev_subst_start in val:
+            prefix, rest = val.split(c.abbrev_subst_start, 1)
+            content_list = rest.split(self.subst_end, 1)
+            if len(content_list) != 2:
+                break
+            content: str
+            content, rest = content_list
+            try:
+                self.expanding = True
+                c.abbrev_subst_env['x'] = ''
+                exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
+            except Exception:
+                g.es_print('exception evaluating', content)
+                g.es_exception()
+            finally:
+                self.expanding = False
+            x = c.abbrev_subst_env.get('x') or ''
+            val = f"{prefix}{x}{rest}"
+            # Save the selection range.
+            self.save_ins = w.getInsertPoint()
+            self.save_sel = w.getSelectionRange()
+        return val
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
     def match_prefix(
