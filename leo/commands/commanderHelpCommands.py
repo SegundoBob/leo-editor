@@ -272,7 +272,7 @@ def createMyLeoSettings(c: Cmdr) -> Optional[Cmdr]:
         "myLeoSettings.leo personal settings file created {time}\n\n"
         "Only nodes that are descendants of the @settings node are read.\n\n"
         "Only settings you need to modify should be in this file, do\n"
-        "not copy large parts of leoSettings.py here.\n\n"
+        "not copy large parts of leoSettings.leo here.\n\n"
         "For more information see https://leo-editor.github.io/leo-editor/customizing.html"
         "".format(time=time.asctime())
     )
