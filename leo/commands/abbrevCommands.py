@@ -307,7 +307,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Look for scripting substitutions.
         sub_start = re.escape(c.abbrev_subst_start)
-        sub_end = re.escape(c.subst_end)
+        sub_end = re.escape(c.abbrev_subst_end)
         pattern = re.compile(rf"^(.*?){sub_start}(.+){sub_end}(.*?)$")
         if m := pattern.match(val):
             content = m.group(2)
@@ -375,7 +375,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Perform all scripting substitutions.
         while c.abbrev_subst_start in val:
             prefix, rest = val.split(c.abbrev_subst_start, 1)
-            content_list = rest.split(c.subst_end, 1)
+            content_list = rest.split(c.abbrev_subst_end, 1)
             if len(content_list) != 2:
                 break
             content: str
@@ -391,6 +391,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 self.expanding = False
             x = c.abbrev_subst_env.get('x') or ''
             val = f"{prefix}{x}{rest}"
+
         return val
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
@@ -558,7 +559,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Local settings. Normally not accessed via c.abbrev_subst_env.
         self.enabled = getBool('scripting-at-script-nodes') or getBool('scripting-abbreviations')
         self.globalDynamicAbbrevs = getBool('globalDynamicAbbrevs')
-        self.next_placeholder = getString("abbreviations-next-placeholder") or ''
+        self.next_placeholder = getString("abbreviations-next-placeholder") or ''  # ,, by default
 
         # Allow @data abbreviations-subst-env *only* in leoSettings.leo or myLeoSettings.leo!
         key = 'abbreviations-subst-env'
@@ -572,11 +573,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.k.abbrevOn = getBool('enable-abbreviations', default=False)
 
         # Commander ivars for scripting environments, unit tests, etc.
-        c.abbrev_place_end = getString('abbreviations-place-end')
-        c.abbrev_place_start = getString('abbreviations-place-start')
+        c.abbrev_place_end = getString('abbreviations-place-end')  # |> by default.
+        c.abbrev_place_start = getString('abbreviations-place-start')  # <| by default.
         c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}  # May be augmented in init_env.
         c.abbrev_subst_start = getString('abbreviations-subst-start') or ''
-        c.subst_end = getString('abbreviations-subst-end')
+        c.abbrev_subst_end = getString('abbreviations-subst-end')
 
     # @+node:ekr.20150514043850.9: *4* abbrev.init_tree_abbrev
     def init_tree_abbrev(self) -> None:
