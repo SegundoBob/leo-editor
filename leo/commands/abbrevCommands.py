@@ -412,9 +412,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             word = word.rstrip()
         if not word:
             return fail
-        if word[0].isalpha() and i > 0 and s[i - 1].isalpha():
-            return fail
-        # We can assert word and val.
         return i, tag, word, val
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
