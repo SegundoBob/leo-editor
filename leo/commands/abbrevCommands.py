@@ -181,7 +181,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         else:
             g.trace('paste failed')
 
-    # @+node:ekr.20150514043850.14: *4* abbrev.find_place_holder
+    # @+node:ekr.20150514043850.14: *4* abbrev.find_place_holder & helper
     def find_place_holder(self, p: Position) -> bool:
         """
         Search for the next place-holder.
@@ -227,6 +227,32 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         #   c.frame.body.forceFullRecolor()
         #   c.bodyWantsFocusNow()
         return False
+
+    # @+node:ekr.20150514043850.16: *5* abbrev.next_place
+    def next_place(self, s: str, offset: int = 0) -> tuple[str, int, int]:
+        """
+        Given string s containing a placeholder like <| block |>,
+        return (s2,start,end) where s2 is s without the <| and |>,
+        and start, end are the positions of the beginning and end of block.
+        """
+        c = self.c
+        if c.abbrev_place_start is None or c.abbrev_place_end is None:
+            return s, None, None  # #1345.
+        new_pos = s.find(c.abbrev_place_start, offset)
+        new_end = s.find(c.abbrev_place_end, offset)
+        if (new_pos < 0 or new_end < 0) and offset:
+            new_pos = s.find(c.abbrev_place_start)
+            new_end = s.find(c.abbrev_place_end)
+            if not (new_pos < 0 or new_end < 0):
+                g.es("Found earlier placeholder")
+        if new_pos < 0 or new_end < 0:
+            return s, None, None
+        start = new_pos
+        place_holder_delim = s[new_pos : new_end + len(c.abbrev_place_end)]
+        place_holder = place_holder_delim[len(c.abbrev_place_start) : -len(c.abbrev_place_end)]
+        s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
+        end = start + len(place_holder)
+        return s2, start, end
 
     # @+node:ekr.20161121102113.1: *4* abbrev.make_first_headline_substitution
     def make_first_headline_substitution(self, ch: str, p: Position, word: str, val: str) -> None:
@@ -361,32 +387,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return fail
         # We can assert word and val.
         return i, tag, word, val
-
-    # @+node:ekr.20150514043850.16: *4* abbrev.next_place
-    def next_place(self, s: str, offset: int = 0) -> tuple[str, int, int]:
-        """
-        Given string s containing a placeholder like <| block |>,
-        return (s2,start,end) where s2 is s without the <| and |>,
-        and start, end are the positions of the beginning and end of block.
-        """
-        c = self.c
-        if c.abbrev_place_start is None or c.abbrev_place_end is None:
-            return s, None, None  # #1345.
-        new_pos = s.find(c.abbrev_place_start, offset)
-        new_end = s.find(c.abbrev_place_end, offset)
-        if (new_pos < 0 or new_end < 0) and offset:
-            new_pos = s.find(c.abbrev_place_start)
-            new_end = s.find(c.abbrev_place_end)
-            if not (new_pos < 0 or new_end < 0):
-                g.es("Found earlier placeholder")
-        if new_pos < 0 or new_end < 0:
-            return s, None, None
-        start = new_pos
-        place_holder_delim = s[new_pos : new_end + len(c.abbrev_place_end)]
-        place_holder = place_holder_delim[len(c.abbrev_place_start) : -len(c.abbrev_place_end)]
-        s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
-        end = start + len(place_holder)
-        return s2, start, end
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
