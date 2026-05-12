@@ -581,27 +581,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c = self.c
         if not c.config:
             return
-        # Commander ivars for scripting environments, unit tests, etc.
-        c.k.abbrevOn = c.config.getBool('enable-abbreviations', default=False)
-        c.abbrev_place_end = c.config.getString('abbreviations-place-end')
-        c.abbrev_place_start = c.config.getString('abbreviations-place-start')
-        c.subst_end = c.config.getString('abbreviations-subst-end')
-        self.next_placeholder = c.config.getString("abbreviations-next-placeholder") or ''
+        getBool, getString = c.config.getBool, c.config.getString
 
-        # The environment for all substitutions.
-        # May be augmented in init_env.
-        c.abbrev_subst_env = {
-            'c': c,
-            'g': g,
-            '_values': {},
-        }
-        c.abbrev_subst_start = c.config.getString('abbreviations-subst-start') or ''
-        # Local settings.
-        self.enabled = (
-            c.config.getBool('scripting-at-script-nodes') or
-            c.config.getBool('scripting-abbreviations')
-        )  # fmt: skip
-        self.globalDynamicAbbrevs = c.config.getBool('globalDynamicAbbrevs')
+        # Local settings. These must *not* be accessible via abbreviations.
+        self.enabled = getBool('scripting-at-script-nodes') or getBool('scripting-abbreviations')
+        self.globalDynamicAbbrevs = getBool('globalDynamicAbbrevs')
+        self.next_placeholder = getString("abbreviations-next-placeholder") or ''
+
         # Allow @data abbreviations-subst-env *only* in leoSettings.leo or myLeoSettings.leo!
         key = 'abbreviations-subst-env'
         if c.config.isLocalSetting(key, 'data'):
@@ -609,6 +595,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.subst_env = []
         else:
             self.subst_env = c.config.getData(key, strip_data=False)
+
+        # Inject one ivar.
+        c.k.abbrevOn = getBool('enable-abbreviations', default=False)
+
+        # Commander ivars for scripting environments, unit tests, etc.
+        c.abbrev_place_end = getString('abbreviations-place-end')
+        c.abbrev_place_start = getString('abbreviations-place-start')
+        c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}  # May be augmented in init_env.
+        c.abbrev_subst_start = getString('abbreviations-subst-start') or ''
+        c.subst_end = getString('abbreviations-subst-end')
 
     # @+node:ekr.20150514043850.9: *4* abbrev.init_tree_abbrev
     def init_tree_abbrev(self) -> None:
