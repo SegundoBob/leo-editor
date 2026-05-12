@@ -503,7 +503,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             for s in sorted(result):
                 self.addAbbrevHelper(s, tag)
 
-        ### To do: remove ???
         # Define the expansion of the placeholder (usually ',,') to be '__NEXT_PLACEHOLDER'.
         if self.next_placeholder:
             self.addAbbrevHelper(f"{self.next_placeholder}=__NEXT_PLACEHOLDER", 'global')
