@@ -76,8 +76,8 @@ class NodeIndices:
                 id_, t, n = self.scanGnx(gnx)
                 if t == ni.timeString and n is not None:
                     try:
-                        n = int(n)  # type:ignore
-                        self.lastIndex = max(self.lastIndex, n)  # type:ignore
+                        n_i = int(n)
+                        self.lastIndex = max(self.lastIndex, n_i)
                     except Exception:  # pragma: no cover
                         g.es_exception()
                         self.lastIndex += 1
@@ -1454,9 +1454,8 @@ class Position:
             p.v = p.v.children[n]
             p._childIndex = n
         else:
-            # mypy rightly doesn't like setting p.v to None.
             # Leo's code must use the test `if p:` as appropriate.
-            p.v = None  # type:ignore   # pragma: no cover
+            p.v = None
         return p
 
     # @+node:ekr.20080416161551.207: *4* p.moveToParent
@@ -1466,9 +1465,8 @@ class Position:
         if p.v and p.stack:
             p.v, p._childIndex = p.stack.pop()
         else:
-            # mypy rightly doesn't like setting p.v to None.
             # Leo's code must use the test `if p:` as appropriate.
-            p.v = None  # type:ignore
+            p.v = None
         return p
 
     # @+node:ekr.20080416161551.208: *4* p.moveToThreadBack

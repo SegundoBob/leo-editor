@@ -98,7 +98,7 @@ class GlobalCacher:
             if trace:
                 g.es_exception()
             # Use a plain dict as a dummy.
-            self.db = {}  # type:ignore
+            self.db = {}
 
     # @+others
     # @+node:ekr.20180627045750.1: *3* g_cacher.clear

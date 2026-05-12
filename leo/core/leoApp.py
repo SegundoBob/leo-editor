@@ -20,6 +20,7 @@ from leo.core import leoExternalFiles
 from leo.core.leoCache import GlobalCacher
 from leo.core.leoQt import QCloseEvent
 
+
 if TYPE_CHECKING:
     from leo.core.leoJupytext import JupytextManager
 
@@ -1039,8 +1040,6 @@ class LeoApp:
         #    app.createBrowserGui()
         elif argName in ('console', 'curses'):
             app.createCursesGui()
-        elif argName == 'text':
-            app.createTextGui()
         if not app.gui:
             # Raise an emergency dialog.
             message = (
@@ -1089,11 +1088,6 @@ class LeoApp:
         qt_gui.init()
         if app.gui and fileName and verbose:
             print(f"Qt Gui created in {fileName}")
-
-    # @+node:ekr.20170419093747.1: *5* app.createTextGui (was createCursesGui)
-    def createTextGui(self, fileName: str = '', verbose: bool = False) -> None:
-        app = self
-        app.pluginsController.loadOnePlugin('leo.plugins.cursesGui', verbose=verbose)
 
     # @+node:ekr.20090126063121.3: *5* app.createWxGui
     def createWxGui(self, fileName: str = '', verbose: bool = False) -> None:
@@ -1447,8 +1441,9 @@ class LeoApp:
         """Exit Leo, prompting to save unsaved outlines first."""
         if 'shutdown' in g.app.debug:
             g.trace()
+
         # #2433 - use the same method as clicking on the close box.
-        g.app.gui.close_event(QCloseEvent())  # type:ignore
+        g.app.gui.close_event(QCloseEvent())
 
     # @+node:ekr.20230703100758.1: *4* app.saveSession
     def saveSession(self) -> None:
@@ -3119,7 +3114,7 @@ class LoadManager:
                     return
                 log = app.log
                 # Compute the effective args.
-                d = {
+                d: dict[str, Any] = {
                     'color': None,
                     'commas': False,
                     'newline': True,
@@ -3128,7 +3123,7 @@ class LoadManager:
                 }
                 # Handle keywords for g.pr and g.es_print.
                 d = g.doKeywordArgs(keys, d)
-                color: str = d.get('color')  # type:ignore
+                color: str = d.get('color')
                 if color == 'suppress':
                     return
                 if log and color is None:

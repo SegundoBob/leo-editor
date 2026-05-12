@@ -191,7 +191,7 @@ class BridgeController:
         if self.useCaches:
             g.app.setGlobalDb()  # #556.
         else:
-            g.app.db = g.NullObject()  # type:ignore
+            g.app.db = g.NullObject()
             g.app.global_cacher = g.NullObject()  # type:ignore
         if self.readSettings:
             # reads only standard settings files, using a null gui.

@@ -43,18 +43,16 @@ class BaseSpellWrapper:
     # @+node:ekr.20150514063305.513: *3* BaseSpellWrapper.clean_dict
     def clean_dict(self, fn: str) -> None:
         if g.os_path_exists(fn):
-            f = open(fn, mode='rb')
-            s = f.read()
-            f.close()
+            with open(fn, mode='rb') as f:
+                s = f.read()
             # Blanks lines cause troubles.
             s2 = s.replace(b'\r', b'').replace(b'\n\n', b'\n')
             if s2.startswith(b'\n'):
                 s2 = s2[1:]
             if s != s2:
                 g.es_print('cleaning', fn)
-                f = open(fn, mode='wb')  # type:ignore
-                f.write(s2)
-                f.close()
+                with open(fn, mode='wb') as f:
+                    f.write(s2)
 
     # @+node:ekr.20180207071114.5: *3* BaseSpellWrapper.create
     def create(self, fn: str) -> None:
@@ -97,6 +95,37 @@ class BaseSpellWrapper:
     # @+node:ekr.20150514063305.515: *3* BaseSpellWrapper.ignore
     def ignore(self, word: str) -> None:
         self.d.add_to_session(word)
+
+    # @+node:ekr.20150514063305.517: *3* BaseSpellWrapper.process_word
+    def process_word(self, word: str) -> list[str]:
+        """
+        Check the word. Return None if the word is properly spelled.
+        Otherwise, return a list of alternatives.
+        """
+        d = self.d
+        if not d:
+            return None
+        if d.check(word):
+            return None
+        # Speed doesn't matter here. The more we find, the more convenient.
+        # Remove all digits.
+        word = ''.join([i for i in word if not i.isdigit()])
+        if d.check(word) or d.check(word.lower()):
+            return None
+        if word.find('_') > -1:
+            # Snake case.
+            words = word.split('_')
+            for word2 in words:
+                if not d.check(word2) and not d.check(word2.lower()):
+                    return d.suggest(word)
+            return None
+        words = g.unCamel(word)
+        if words:
+            for word2 in words:
+                if not d.check(word2) and not d.check(word2.lower()):
+                    return d.suggest(word)
+            return None
+        return d.suggest(word)
 
     # @+node:ekr.20180209142310.1: *3* BaseSpellWrapper.show_info
     def show_info(self) -> None:
@@ -293,6 +322,7 @@ class DefaultWrapper(BaseSpellWrapper):
 
     # @+node:ekr.20180209141933.1: *3* DefaultWrapper.show_info
     def show_info(self) -> None:
+        table: tuple
         if self.main_fn:
             g.es_print('Default spell checker')
             table = (
@@ -303,9 +333,9 @@ class DefaultWrapper(BaseSpellWrapper):
             g.es_print('\nSpell checking has been disabled.')
             g.es_print('To enable, put a main dictionary at:')
             g.es_print('~/.leo/main_spelling_dict.txt')
-            table = (  # type:ignore
+            table = (
                 ('user', self.user_fn),
-            )
+            )  # fmt: skip
         for kind, fn in table:
             g.es_print(f"{kind} dictionary: {(g.os_path_normpath(fn) if fn else 'None')}")
 
@@ -409,37 +439,6 @@ class EnchantWrapper(BaseSpellWrapper):
             g.es_print('pip install pyenchant, NOT enchant')
         return d
 
-    # @+node:ekr.20150514063305.517: *3* enchant.process_word
-    def process_word(self, word: str) -> list[str]:
-        """
-        Check the word. Return None if the word is properly spelled.
-        Otherwise, return a list of alternatives.
-        """
-        d = self.d
-        if not d:
-            return None
-        if d.check(word):
-            return None
-        # Speed doesn't matter here. The more we find, the more convenient.
-        # Remove all digits.
-        word = ''.join([i for i in word if not i.isdigit()])
-        if d.check(word) or d.check(word.lower()):
-            return None
-        if word.find('_') > -1:
-            # Snake case.
-            words = word.split('_')
-            for word2 in words:
-                if not d.check(word2) and not d.check(word2.lower()):
-                    return d.suggest(word)
-            return None
-        words = g.unCamel(word)
-        if words:
-            for word2 in words:
-                if not d.check(word2) and not d.check(word2.lower()):
-                    return d.suggest(word)
-            return None
-        return d.suggest(word)
-
     # @-others
 
 
@@ -457,6 +456,7 @@ class SpellCommandsClass(BaseEditCommandsClass):
         # pylint: disable=super-init-not-called
         self.c = c
         self.handler: SpellTabHandler = None
+        self.suggestion_idx = 0
         self.reloadSettings()
 
     def reloadSettings(self) -> None:
@@ -526,8 +526,8 @@ class SpellCommandsClass(BaseEditCommandsClass):
         if not self.suggestions:
             g.es('[no suggestions]')
             return
-        word = self.suggestions[self.suggestion_idx]  # type:ignore
-        self.suggestion_idx = (self.suggestion_idx + 1) % len(self.suggestions)  # type:ignore
+        word = self.suggestions[self.suggestion_idx]
+        self.suggestion_idx = (self.suggestion_idx + 1) % len(self.suggestions)
         self.as_you_type_replace(word)
 
     # @+node:ekr.20150514063305.496: *4* as_you_type_undo
@@ -638,13 +638,14 @@ class SpellTabHandler:
         self.currentWord: str = None
         self.outerScrolledFrame = None
         self.seen: set[str] = set()  # Adding a word to seen will ignore it until restart.
+        self.spellController: EnchantWrapper | DefaultWrapper
         if enchant:
             self.spellController = EnchantWrapper(c)
             self.tab = g.app.gui.createSpellTab(c, self, tabName)
             self.loaded = True
             return
         # Create the spellController for the show-spell-info command.
-        self.spellController = DefaultWrapper(c)  # type:ignore
+        self.spellController = DefaultWrapper(c)
         self.loaded = bool(self.spellController.main_fn)
         if self.loaded:
             # Create the spell tab only if the main dict exists.
