@@ -75,7 +75,6 @@ class TestAbbrev(LeoUnitTest):
 
         c = self.c
         p = c.p
-        w = c.frame.body.wrapper
         x = c.abbrevCommands
         x.abbrevs = {}
         x.next_placeholder = ',,'
@@ -89,8 +88,14 @@ class TestAbbrev(LeoUnitTest):
             x.addAbbrevHelper(definition)
 
         def test(results, expected) -> None:
-            assert results == expected, f"\nexpected: {expected!r}\n     got: {results!r}"
+            assert results == expected, (
+                '\n'
+                f"expected: {expected!r}\n"
+                f"     got: {results!r}"
+            )  # fmt: skip
 
+        # Test bodies.
+        w = c.frame.body.wrapper
         for definition in definitions:
             i = definition.find(';=')
             contents = definition[:i]
@@ -100,6 +105,20 @@ class TestAbbrev(LeoUnitTest):
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
             x.expandAbbrev(event=event, stroke=None)
             test(p.b, expected)
+            test(w.getAllText(), expected)
+
+        # Test headlines
+        c.editHeadline()
+        w = c.headline_wrapper(p)
+        for definition in definitions:
+            i = definition.find(';=')
+            contents = definition[:i]
+            expected = definition[i + 2 :].replace('\n', '')
+            p.h = contents
+            w.setInsertPoint(len(contents), contents)
+            event = LeoKeyEvent(c, char=';', binding=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            test(p.h, expected)
             test(w.getAllText(), expected)
 
     # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
