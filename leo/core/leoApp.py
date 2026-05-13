@@ -1740,10 +1740,10 @@ class LoadManager:
             join(g.app.globalConfigDir, settings_fn),
         )
         for path in table:
-            if g.os_path_exists(path+".leo"):
-                return path+".leo"
-            if g.os_path_exists(path+".leojs"):
-                return path+".leojs"
+            if g.os_path_exists(path + ".leo"):
+                return path + ".leo"
+            if g.os_path_exists(path + ".leojs"):
+                return path + ".leojs"
         return None
 
     # @+node:ekr.20120209051836.10252: *4* LM.computeStandardDirectories & helpers
