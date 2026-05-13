@@ -4,6 +4,7 @@
 # pylint: disable=no-member
 
 import re
+import time
 from leo.core import leoGlobals as g
 from leo.core.leoGui import LeoKeyEvent
 from leo.core.leoTest2 import LeoUnitTest
@@ -22,7 +23,8 @@ class TestAbbrev(LeoUnitTest):
         p = c.p
         x = c.abbrevCommands
         x.abbrevs = {}
-        x.next_placeholder = ',,'
+        # g.trace(repr(x.next_placeholder))
+        # x.next_placeholder = ',,'
 
         # The definition as munged by c.config.getData.
         definition = 'details;;=<details><summary><b><|Title|></b></summary>\n<br>\n\n</details>'
@@ -84,7 +86,6 @@ class TestAbbrev(LeoUnitTest):
         p = c.p
         x = c.abbrevCommands
         x.abbrevs = {}
-        x.next_placeholder = ',,'
 
         # These must be the definition munged by c.config.getData.
         definitions = (
@@ -106,7 +107,7 @@ class TestAbbrev(LeoUnitTest):
         for definition in definitions:
             i = definition.find(';=')
             contents = definition[:i]
-            expected = definition[i + 2 :]
+            expected = definition[i + 2 :].replace('<|', '').replace('|>', '')
             p.b = contents
             w.setInsertPoint(len(contents), contents)
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
@@ -131,19 +132,11 @@ class TestAbbrev(LeoUnitTest):
     # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
     def test_scripting_abbreviations(self):
 
-        import time
-
         c = self.c
         p = c.p
         x = c.abbrevCommands
         x.abbrevs = {}
-
-        # Init the ivars.
-        x.enable = True
-        x.next_placeholder = ',,'
-        c.abbrev_subst_end = '}|}'
-        c.abbrev_subst_start = '{|{'
-        c.abbrev_subst_env = {'c': c, 'g': g, 'time': time, '_values': {}}
+        c.abbrev_subst_env['time'] = time
 
         # These must be the definition munged by c.config.getData.
         definitions = (
@@ -190,12 +183,12 @@ class TestAbbrev(LeoUnitTest):
 
         # Set the ivars by hand insead of with settings.
         x.abbrevs = {}
-        x.next_placeholder = ',,'
-        c.abbrev_subst_end = '}|}'
-        c.abbrev_subst_start = '{|{'
-        c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}
-        c.abbrev_place_start = '<|'
-        c.abbrev_place_end = '|>'
+        # x.next_placeholder = ',,'
+        # c.abbrev_subst_end = '}|}'
+        # c.abbrev_subst_start = '{|{'
+        # c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}
+        # c.abbrev_place_start = '<|'
+        # c.abbrev_place_end = '|>'
 
         definitions = (
             'ex;;=!',

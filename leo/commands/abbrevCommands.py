@@ -517,40 +517,41 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         at = c.atFileCommands
-        if c.abbrev_place_start and self.enabled:
-            aList = self.subst_env
-            script_list = []
-            for z in aList:
-                # Compatibility with original design.
-                if z.startswith('\\:'):
-                    script_list.append(z[2:])
-                else:
-                    script_list.append(z)
-            script = ''.join(script_list)
-            # Allow Leo directives in @data abbreviations-subst-env trees.
-            # #1674: Avoid unnecessary entries in c.fileCommands.gnxDict.
-            root = c.rootPosition()
-            if root:
-                v = root.v
+        if not self.enabled:
+            return
+        if not c.abbrev_place_start:
+            return
+        aList = self.subst_env
+        script_list = []
+        for z in aList:
+            # Compatibility with original design.
+            if z.startswith('\\:'):
+                script_list.append(z[2:])
             else:
-                # Defensive programming. Probably will never happen.
-                v = leoNodes.VNode(context=c)
-                root = leoNodes.Position(v)
-            # Similar to g.getScript.
-            script = at.stringToString(
-                root=root,
-                s=script,
-                forcePythonSentinels=True,
-                sentinels=False,
-            )
-            script = script.replace("\r\n", "\n")
-            try:
-                exec(script, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
-            except Exception:
-                g.es('Error executing @data abbreviations-subst-env')
-                g.es_exception()
+                script_list.append(z)
+        script = ''.join(script_list)
+        # Allow Leo directives in @data abbreviations-subst-env trees.
+        # #1674: Avoid unnecessary entries in c.fileCommands.gnxDict.
+        root = c.rootPosition()
+        if root:
+            v = root.v
         else:
-            c.abbrev_subst_start = ''  # Was False.
+            # Defensive programming. Probably will never happen.
+            v = leoNodes.VNode(context=c)
+            root = leoNodes.Position(v)
+        # Similar to g.getScript.
+        script = at.stringToString(
+            root=root,
+            s=script,
+            forcePythonSentinels=True,
+            sentinels=False,
+        )
+        script = script.replace("\r\n", "\n")
+        try:
+            exec(script, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
+        except Exception:
+            g.es('Error executing @data abbreviations-subst-env')
+            g.es_exception()
 
     # @+node:ekr.20150514043850.8: *4* abbrev.init_settings (called from reload_settings)
     def init_settings(self) -> None:
@@ -563,7 +564,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Local settings. Normally not accessed via c.abbrev_subst_env.
         self.enabled = getBool('scripting-at-script-nodes') or getBool('scripting-abbreviations')
         self.globalDynamicAbbrevs = getBool('globalDynamicAbbrevs')
-        self.next_placeholder = getString("abbreviations-next-placeholder") or ''  # ,, by default
+        self.next_placeholder = getString("abbreviations-next-placeholder") or ',,'
 
         # Allow @data abbreviations-subst-env *only* in leoSettings.leo or myLeoSettings.leo!
         key = 'abbreviations-subst-env'
@@ -577,11 +578,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.k.abbrevOn = getBool('enable-abbreviations', default=False)
 
         # Commander ivars for scripting environments, unit tests, etc.
-        c.abbrev_place_end = getString('abbreviations-place-end') or ''  # |> by default.
-        c.abbrev_place_start = getString('abbreviations-place-start') or ''  # <| by default.
+        c.abbrev_place_end = getString('abbreviations-place-end') or '|>'
+        c.abbrev_place_start = getString('abbreviations-place-start') or '<|'
         c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}  # May be augmented in init_env.
-        c.abbrev_subst_start = getString('abbreviations-subst-start') or ''  # '}|}' by default.
-        c.abbrev_subst_end = getString('abbreviations-subst-end') or ''  # '{|{' by default.
+        c.abbrev_subst_start = getString('abbreviations-subst-start') or '{|{'
+        c.abbrev_subst_end = getString('abbreviations-subst-end') or '}|}'
 
     # @+node:ekr.20150514043850.9: *4* abbrev.init_tree_abbrev
     def init_tree_abbrev(self) -> None:
