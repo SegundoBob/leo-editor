@@ -43,7 +43,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'enabled',
         'expanding',
         'last_hit',
-        'n_comma_messages',
         'number_regex',
         'tree_abbrevs_d',
         'w',
@@ -65,7 +64,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.enabled = False
         self.expanding = False  # True: expanding abbreviations.
         self.last_hit = None  # Distinguish between text and tree abbreviations.
-        self.n_comma_messages = 0  # For a unit test.
         self.subst_env: list[str] = []  # The scripting environment.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w: QTextMixin = None
@@ -94,12 +92,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Do we see the placeholder? (,, by default)
         word = s[i:j] + ch
         if word.endswith(self.next_placeholder):
-            self.do_placeholder(warn_flag=True)
+            self.do_placeholder()
             return True
 
         # Does the incoming string match any definition?
         # Handle headlines separately.
         w_name = g.app.gui.widget_name(w)
+        ### g.trace('word', word)
         if w_name.startswith('head'):
             for prefix in prefixes:
                 _i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
@@ -107,6 +106,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                     # #4462: Make only one substitution in headlines.
                     self.make_first_headline_substitution(ch, p, word, val)
                     return True  # Do not call c.endEditing.
+            ### g.trace('FAIL', s)
             return False
         # General case.
         for prefix in prefixes:
@@ -116,8 +116,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 return True
         return False
 
-    # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder
-    def do_placeholder(self, warn_flag: bool) -> None:
+    # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder & helpers
+    def do_placeholder(self) -> None:
         """
         Find the next place-holder string.
 
@@ -127,65 +127,17 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         p = c.p.copy()
         if self.last_hit:
             # We are in a tree abbrev.
+            all = False
             while p:
-                if self.find_place_holder(p):
+                if self.find_place_holder(p, all=all):
                     return
+                all = True
                 p.moveToThreadNext()
-        elif self.find_place_holder(p):
-            return
-        if warn_flag:
-            self.n_comma_messages += 1  # For unit testing
-            if not g.unitTesting:
-                g.es_print(f"No next placeholder {c.abbrev_place_start}...{c.abbrev_place_end}")
-
-    # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
-    def expand_text(self, w: QTextMixin, i: int, j: int, val: str, word: str) -> None:
-        """Make a text expansion at location i,j of widget w."""
-        warn_flag = self.last_hit and '__NEXT_PLACEHOLDER' in val
-        val = self.make_script_substitutions(i, j, val)
-        self.replace_selection(w, i, j, val)
-        self.do_placeholder(warn_flag)
-
-    # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree & helper
-    def expand_tree(self, w: QTextMixin, i: int, j: int, tree_s: str, word: str) -> None:
-        """
-        Paste tree_s as children of c.p.
-        This happens *before* any substitutions are made.
-        """
-        c = self.c
-        if not c.canPasteOutline(tree_s):
-            g.trace(f"bad copied outline: {tree_s}")
-            return
-        old_p = c.p.copy()
-        self.replace_selection(w, i, j, None)
-        self.paste_tree(old_p, tree_s)
-        # Make all script substitutions first.
-        for p in old_p.self_and_subtree():
-            # Search for the next place-holder.
-            p.b = self.make_script_substitutions(0, 0, p.b)
-        # Now search for all place-holders.
-        for p in old_p.subtree():
-            if self.find_place_holder(p):
-                break
-
-    # @+node:ekr.20150514043850.17: *5* abbrev.paste_tree
-    def paste_tree(self, old_p: Position, s: str) -> None:
-        """Paste the tree corresponding to s (xml) into the tree."""
-        c = self.c
-        c.fileCommands.leo_file_encoding = 'utf-8'
-        p = c.pasteOutline(s=s, undoFlag=False)
-        if p:
-            # Promote the name node, then delete it.
-            p.moveToLastChildOf(old_p)
-            c.selectPosition(p)
-            c.promote(undoFlag=False)
-            p.doDelete()
-            c.redraw(old_p)  # 2017/02/27: required.
         else:
-            g.trace('paste failed')
+            self.find_place_holder(p, all=False)
 
-    # @+node:ekr.20150514043850.14: *4* abbrev.find_place_holder & helper
-    def find_place_holder(self, p: Position) -> bool:
+    # @+node:ekr.20150514043850.14: *5* abbrev.find_place_holder
+    def find_place_holder(self, p: Position, *, all: bool) -> bool:
         """
         Search for the next place-holder.
         If found, select the place-holder (without the delims).
@@ -194,7 +146,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Do #438: Search for placeholder in headline.
         s = p.h
         if c.abbrev_place_start and c.abbrev_place_start in s:
-            new_s, i, j = self.next_place(s, offset=0)
+            w = c.headline_wrapper(p)
+            g.trace(w)
+            offset = w.getInsertPoint() if w else 0
+            new_s, i, j = self.next_place(s, offset=offset)
             if i is not None:
                 p.h = new_s
                 c.redraw(p)
@@ -204,7 +159,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 return True
         s = p.b
         if c.abbrev_place_start and c.abbrev_place_start in s:
-            new_s, i, j = self.next_place(s, offset=0)
+            w = c.frame.body.wrapper
+            offset = w.getInsertPoint()
+            new_s, i, j = self.next_place(s, offset=offset)
             if i is None:
                 return False
             w = c.frame.body.wrapper
@@ -232,7 +189,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return False
 
     # @+node:ekr.20150514043850.16: *5* abbrev.next_place
-    def next_place(self, s: str, offset: int = 0) -> tuple[str, int, int]:
+    def next_place(self, s: str, *, offset: int) -> tuple[str, int, int]:
         """
         Given string s containing a placeholder like <| block |>,
         return (s2,start,end) where s2 is s without the <| and |>,
@@ -256,6 +213,53 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
         end = start + len(place_holder)
         return s2, start, end
+
+    # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
+    def expand_text(self, w: QTextMixin, i: int, j: int, val: str, word: str) -> None:
+        """Make a text expansion at location i,j of widget w."""
+        val = self.make_script_substitutions(i, j, val)
+        self.replace_selection(w, i, j, val)
+        self.do_placeholder()
+
+    # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree & helper
+    def expand_tree(self, w: QTextMixin, i: int, j: int, tree_s: str, word: str) -> None:
+        """
+        Paste tree_s as children of c.p.
+        This happens *before* any substitutions are made.
+        """
+        c = self.c
+        if not c.canPasteOutline(tree_s):
+            g.trace(f"bad copied outline: {tree_s}")
+            return
+        old_p = c.p.copy()
+        self.replace_selection(w, i, j, None)
+        self.paste_tree(old_p, tree_s)
+        # Make all script substitutions first.
+        for p in old_p.self_and_subtree():
+            # Search for the next place-holder.
+            p.b = self.make_script_substitutions(0, 0, p.b)
+        # Now search for all place-holders.
+        all = False
+        for p in old_p.subtree():
+            if self.find_place_holder(p, all=all):
+                break
+            all = True
+
+    # @+node:ekr.20150514043850.17: *5* abbrev.paste_tree
+    def paste_tree(self, old_p: Position, s: str) -> None:
+        """Paste the tree corresponding to s (xml) into the tree."""
+        c = self.c
+        c.fileCommands.leo_file_encoding = 'utf-8'
+        p = c.pasteOutline(s=s, undoFlag=False)
+        if p:
+            # Promote the name node, then delete it.
+            p.moveToLastChildOf(old_p)
+            c.selectPosition(p)
+            c.promote(undoFlag=False)
+            p.doDelete()
+            c.redraw(old_p)  # 2017/02/27: required.
+        else:
+            g.trace('paste failed')
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
@@ -424,6 +428,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """Replace w[i:j] by s."""
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
+        ### g.trace(w_name, repr(s))
         bunch = u.beforeChangeBody(p)
         if i != j:
             w.delete(i, j)
@@ -553,7 +558,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             g.es('Error executing @data abbreviations-subst-env')
             g.es_exception()
 
-    # @+node:ekr.20150514043850.8: *4* abbrev.init_settings (called from reload_settings)
+    # @+node:ekr.20150514043850.8: *4* abbrev.init_settings
     def init_settings(self) -> None:
         """Called from AbbrevCommands.reload_settings aka reloadSettings."""
         c = self.c

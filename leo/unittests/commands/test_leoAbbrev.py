@@ -16,68 +16,93 @@ assert g
 # @+node:ekr.20260512145550.104: ** class TestAbbrev (LeoUnitTest)
 class TestAbbrev(LeoUnitTest):
     # @+others
-    # @+node:ekr.20260513023424.1: *3* TestAbbrev.test_comma_key
-    def test_comma_key(self):
+    # @+node:ekr.20260513064130.1: *3* TestAbbrev.test_active_comma
+    def test_active_comma(self):
 
         c = self.c
         p = c.p
         x = c.abbrevCommands
         x.abbrevs = {}
-        # g.trace(repr(x.next_placeholder))
-        # x.next_placeholder = ',,'
+
+        # The definition as munged by c.config.getData.
+        definition = 'details;;=<details><summary><b>Title</b></summary>\n<br>\n\n</details>'
+        x.addAbbrevHelper(definition)
+
+        if 0:  # Test 1: Test active double comma in the body
+            w = c.frame.body.wrapper
+
+            # Expand the definition.
+            p.b = 'details;'
+            event = LeoKeyEvent(c, char=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+
+            # Type two commas.
+            event = LeoKeyEvent(c, char=',', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            x.expandAbbrev(event=event, stroke=None)
+
+            # Check the expansion (no comma) and the selection.
+            s = w.getAllText()
+            i = definition.find(';=')
+            expected = definition[i + 2 :].replace('', '').replace('', '')
+            assert s == expected, repr(s)  # Test 2.1
+            s2 = w.getSelectedText()
+            assert s2 == 'Title', repr(s2)  # Test. 2.2.
+
+        # Test 2: Test active double comma in a headline.
+        c.editHeadline()
+        w = c.headline_wrapper(p)
+
+        # Expand the definition.
+        p.h = 'details;'
+        event = LeoKeyEvent(c, char=';', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        g.trace(w.getAllText())
+        ### breakpoint()  ###
+
+        # Type two commas.
+        event = LeoKeyEvent(c, char=',', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        g.trace(w.getAllText())
+        x.expandAbbrev(event=event, stroke=None)
+
+        # Check the expansion (no comma) and the selection.
+        s = w.getAllText()
+        i = definition.find(';=')
+        expected = definition[i + 2 :].replace('\n', '')
+        assert s == expected, repr(s)  # Test 2.1
+        s2 = w.getSelectedText()
+        assert s2 == 'Title', repr(s2)  # Test 2.2.
+
+    # @+node:ekr.20260513023424.1: *3* TestAbbrev.test_bare_comma
+    def test_bare_comma(self):
+
+        c = self.c
+        p = c.p
+        x = c.abbrevCommands
+        x.abbrevs = {}
 
         # The definition as munged by c.config.getData.
         definition = 'details;;=<details><summary><b><|Title|></b></summary>\n<br>\n\n</details>'
         x.addAbbrevHelper(definition)
 
-        # Test bare double commas in the body.
+        # Test 1: Test bare double commas in the body.
         w = c.frame.body.wrapper
-        x.n_comma_messages = 0
         p.b = ','
         event = LeoKeyEvent(c, char=',', w=w)
         x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 1, x.n_comma_messages  # Test 1
+        s = w.getAllText()
+        assert s == ',', repr(s)  # Test 1.
 
-        # Test active double comma in the body
-        w = c.frame.body.wrapper
-        x.n_comma_messages = 0
-        # First, expand the definition.
-        p.b = 'details;'
-        event = LeoKeyEvent(c, char=';', w=w)
-        x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.1.
-        # Now type two commas.
-        event = LeoKeyEvent(c, char=',', w=w)
-        x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.2.
-        x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.3.
-
-        # Test bare double commas in headlines.
+        # Test 2: Test bare double commas in headlines
         c.editHeadline()
         w = c.headline_wrapper(p)
-        x.n_comma_messages = 0
         p.h = ','
         w.setAllText(',')
         event = LeoKeyEvent(c, char=',', w=w)
         x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 1, x.n_comma_messages  # Test 3.
-
-        # Test active double comma in a headline.
-        c.editHeadline()
-        w = c.headline_wrapper(p)
-        x.n_comma_messages = 0
-        # First, expand the definition.
-        p.h = 'details;'
-        event = LeoKeyEvent(c, char=';', w=w)
-        x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.1.
-        # Now type two commas.
-        event = LeoKeyEvent(c, char=',', w=w)
-        x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.2.
-        x.expandAbbrev(event=event, stroke=None)
-        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.3.
+        s = w.getAllText()
+        assert s == ',', repr(s)  # Test 2
 
     # @+node:ekr.20260512164351.1: *3* TestAbbrev.test_multiline_abbreviations
     def test_multiline_abbreviations(self):
