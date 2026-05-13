@@ -451,7 +451,6 @@ class Undoer:
         if u.redoing or u.undoing:
             return
         # Set the type & helpers.
-        ### bunch.kind = 'node'
         bunch.kind = 'afterChangeNodeContents'
         bunch.undoType = command
         bunch.undoHelper = u.undoNodeContents
@@ -511,8 +510,7 @@ class Undoer:
     # @+node:ekr.20230721130238.1: *5* u.afterChangeTree
     def afterChangeTree(self, command: str, bunch: g.Bunch) -> None:
         c = self.c
-        ### p = self.p
-        p = bunch.p or c.p
+        p = self.p
         u = self
         w = c.frame.body.wrapper
         # Set types.
