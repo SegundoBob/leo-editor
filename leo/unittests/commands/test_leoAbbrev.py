@@ -19,33 +19,54 @@ class TestAbbrev(LeoUnitTest):
 
         c = self.c
         p = c.p
-        w = c.frame.body.wrapper
         x = c.abbrevCommands
+
+        # Set the ivars by hand insead of with settings.
         x.abbrevs = {}
         x.next_placeholder = ',,'
+        c.abbrev_subst_end = '}|}'
+        c.abbrev_subst_start = '{|{'
+        c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}
+        c.abbrev_place_start = '<|'
+        c.abbrev_place_end = '|>'
+
         definitions = (
             'ex;;=!',
             'fmt;;=  # fmt: skip',
         )  # fmt: skip\n'
         for definition in definitions:
             x.addAbbrevHelper(definition)
-        # g.printObj(x.abbrevs)
+
         table = (
             ('ex;',         '!'),
             ('whateverex;', 'whatever!'),
             ('fmt;',        '  # fmt: skip'),
-            (')fmt;',       ')  # fmt: skip'),  # rust format will alter this.
+            (')fmt;',       ')  # fmt: skip'),
         )  # fmt: skip
 
         def test(results, expected) -> None:
             assert results == expected, f"expected: {expected!r} got: {results!r}"
 
+        # Test body.
+        w = c.frame.body.wrapper
         for contents, expected in table:
             p.b = contents
             w.setInsertPoint(len(contents), contents)
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
             x.expandAbbrev(event=event, stroke=None)
             test(p.b, expected)
+            test(w.getAllText(), expected)
+
+        # Test headlines.
+        c.editHeadline()
+        w = c.headline_wrapper(p)
+        for contents, expected in table:
+            p.h = contents
+            w.setAllText(contents)
+            w.setInsertPoint(len(contents), contents)
+            event = LeoKeyEvent(c, char=';', binding=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            test(p.h, expected)
             test(w.getAllText(), expected)
 
     # @+node:ekr.20260512164351.1: *3* TestAbbrev.test_multiline_abbreviations
@@ -114,7 +135,6 @@ class TestAbbrev(LeoUnitTest):
         for definition in definitions:
             i = definition.find(';=')
             p.b = contents = definition[:i]
-            # script = definition[i + 2 :]
             w.setInsertPoint(len(contents), contents)
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
             x.expandAbbrev(event=event, stroke=None)
