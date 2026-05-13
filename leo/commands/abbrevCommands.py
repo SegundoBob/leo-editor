@@ -227,12 +227,20 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         This happens *before* any substitutions are made.
         """
         c = self.c
+        old_p = c.p.copy()
+        u, undoType = c.undoer, 'Expand Tree Abbreviation'
         if not c.canPasteOutline(tree_s):
             g.trace(f"bad copied outline: {tree_s}")
             return
-        old_p = c.p.copy()
+
+        # Replace the old node with a new node.
+        u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
         self.replace_selection(w, i, j, None)
-        self.paste_tree(old_p, tree_s)
+        c.deleteOutline(op_name="Cut Node")
+        c.pasteOutline(s=tree_s)
+        u.afterChangeGroup(c.p, undoType=undoType)
+        c.redraw(c.p)
+
         # Make all script substitutions first.
         for p in old_p.self_and_subtree():
             # Search for the next place-holder.
@@ -243,22 +251,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if self.find_place_holder(p, all=all):
                 break
             all = True
-
-    # @+node:ekr.20150514043850.17: *5* abbrev.paste_tree
-    def paste_tree(self, old_p: Position, s: str) -> None:
-        """Paste the tree corresponding to s (xml) into the tree."""
-        c = self.c
-        c.fileCommands.leo_file_encoding = 'utf-8'
-        p = c.pasteOutline(s=s, undoFlag=False)
-        if p:
-            # Promote the name node, then delete it.
-            p.moveToLastChildOf(old_p)
-            c.selectPosition(p)
-            c.promote(undoFlag=False)
-            p.doDelete()
-            c.redraw(old_p)  # 2017/02/27: required.
-        else:
-            g.trace('paste failed')
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
@@ -363,7 +355,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if tag == 'tree':
             self.last_hit = p.copy()
             self.expand_tree(w, i, j, val, word)
-            c.undoer.clearAndWarn('tree-abbreviation')
             return
         # Expand, but never expand a search for text matches.
         if '__NEXT_PLACEHOLDER' not in val:
@@ -427,8 +418,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """Replace w[i:j] by s."""
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
-        ### g.trace(w_name, repr(s))
-        bunch = u.beforeChangeBody(p)
+        bunch = u.beforeChangeNodeContents(p)  # Handle changes to either p.b or p.h.
         if i != j:
             w.delete(i, j)
         if s is None:
@@ -442,7 +432,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         else:
             # Fix part of #438. Don't leave the headline.
             p.v.b = w.getAllText()
-            u.afterChangeBody(p, 'Abbreviation', bunch)
+        u.afterChangeNodeContents(p, command='Abbreviation', bunch=bunch)
 
     # @+node:ekr.20150514043850.5: *3* abbrev.finishCreate
     def finishCreate(self) -> None:
