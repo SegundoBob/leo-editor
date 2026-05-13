@@ -119,9 +119,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder & helpers
     def do_placeholder(self) -> None:
         """
-        Find the next place-holder string.
+        Find the *next* place-holder string, "<|...|>" by default.
 
-        By default this is <|...|>
+        # 4614: Never go backwards!
         """
         c = self.c
         p = c.p.copy()
