@@ -573,11 +573,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.k.abbrevOn = getBool('enable-abbreviations', default=False)
 
         # Commander ivars for scripting environments, unit tests, etc.
-        c.abbrev_place_end = getString('abbreviations-place-end')  # |> by default.
-        c.abbrev_place_start = getString('abbreviations-place-start')  # <| by default.
+        c.abbrev_place_end = getString('abbreviations-place-end') or ''  # |> by default.
+        c.abbrev_place_start = getString('abbreviations-place-start') or ''  # <| by default.
         c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}  # May be augmented in init_env.
-        c.abbrev_subst_start = getString('abbreviations-subst-start') or ''
-        c.abbrev_subst_end = getString('abbreviations-subst-end')
+        c.abbrev_subst_start = getString('abbreviations-subst-start') or ''  # '}|}' by default.
+        c.abbrev_subst_end = getString('abbreviations-subst-end') or ''  # '{|{' by default.
 
     # @+node:ekr.20150514043850.9: *4* abbrev.init_tree_abbrev
     def init_tree_abbrev(self) -> None:

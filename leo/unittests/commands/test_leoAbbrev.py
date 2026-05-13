@@ -109,7 +109,6 @@ class TestAbbrev(LeoUnitTest):
 
         c = self.c
         p = c.p
-        w = c.frame.body.wrapper
         x = c.abbrevCommands
         x.abbrevs = {}
 
@@ -128,11 +127,13 @@ class TestAbbrev(LeoUnitTest):
         for definition in definitions:
             x.addAbbrevHelper(definition)
 
-        pattern = r'[0-9]{4}/[0-9]{2}/[0-2]{2}'
+        pattern = r'[0-9]{4}/[0-9]{2}/[0-9]{2}'
 
         def test(results: str) -> None:
             assert re.match(pattern, results), f"\nresults: {results!r} regex: {pattern!r}"
 
+        # Test the body.
+        w = c.frame.body.wrapper
         for definition in definitions:
             i = definition.find(';=')
             p.b = contents = definition[:i]
@@ -140,6 +141,18 @@ class TestAbbrev(LeoUnitTest):
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
             x.expandAbbrev(event=event, stroke=None)
             test(p.b)
+            test(w.getAllText())
+
+        # Test headlines.
+        c.editHeadline()
+        w = c.headline_wrapper(p)
+        for definition in definitions:
+            i = definition.find(';=')
+            p.h = contents = definition[:i]
+            w.setInsertPoint(len(contents), contents)
+            event = LeoKeyEvent(c, char=';', binding=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            test(p.h)
             test(w.getAllText())
 
     # @-others
