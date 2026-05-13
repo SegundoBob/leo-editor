@@ -15,60 +15,67 @@ assert g
 # @+node:ekr.20260512145550.104: ** class TestAbbrev (LeoUnitTest)
 class TestAbbrev(LeoUnitTest):
     # @+others
-    # @+node:ekr.20260512150121.1: *3* TestAbbrev.test_simple_abbreviations
-    def test_simple_abbreviations(self):
+    # @+node:ekr.20260513023424.1: *3* TestAbbrev.test_comma_key
+    def test_comma_key(self):
 
         c = self.c
         p = c.p
         x = c.abbrevCommands
-
-        # Set the ivars by hand insead of with settings.
         x.abbrevs = {}
         x.next_placeholder = ',,'
-        c.abbrev_subst_end = '}|}'
-        c.abbrev_subst_start = '{|{'
-        c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}
-        c.abbrev_place_start = '<|'
-        c.abbrev_place_end = '|>'
 
-        definitions = (
-            'ex;;=!',
-            'fmt;;=  # fmt: skip',
-        )  # fmt: skip\n'
-        for definition in definitions:
-            x.addAbbrevHelper(definition)
+        # The definition as munged by c.config.getData.
+        definition = 'details;;=<details><summary><b><|Title|></b></summary>\n<br>\n\n</details>'
+        x.addAbbrevHelper(definition)
 
-        table = (
-            ('ex;',         '!'),
-            ('whateverex;', 'whatever!'),
-            ('fmt;',        '  # fmt: skip'),
-            (')fmt;',       ')  # fmt: skip'),
-        )  # fmt: skip
-
-        def test(results, expected) -> None:
-            assert results == expected, f"expected: {expected!r} got: {results!r}"
-
-        # Test body.
+        # Test bare double commas in the body.
         w = c.frame.body.wrapper
-        for contents, expected in table:
-            p.b = contents
-            w.setInsertPoint(len(contents), contents)
-            event = LeoKeyEvent(c, char=';', binding=';', w=w)
-            x.expandAbbrev(event=event, stroke=None)
-            test(p.b, expected)
-            test(w.getAllText(), expected)
+        x.n_comma_messages = 0
+        p.b = ','
+        event = LeoKeyEvent(c, char=',', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 1, x.n_comma_messages  # Test 1
 
-        # Test headlines.
+        # Test active double comma in the body
+        w = c.frame.body.wrapper
+        x.n_comma_messages = 0
+        # First, expand the definition.
+        p.b = 'details;'
+        event = LeoKeyEvent(c, char=';', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.1.
+        # Now type two commas.
+        event = LeoKeyEvent(c, char=',', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.2.
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.3.
+
+        # Test bare double commas in headlines.
         c.editHeadline()
         w = c.headline_wrapper(p)
-        for contents, expected in table:
-            p.h = contents
-            w.setAllText(contents)
-            w.setInsertPoint(len(contents), contents)
-            event = LeoKeyEvent(c, char=';', binding=';', w=w)
-            x.expandAbbrev(event=event, stroke=None)
-            test(p.h, expected)
-            test(w.getAllText(), expected)
+        x.n_comma_messages = 0
+        p.h = ','
+        w.setAllText(',')
+        event = LeoKeyEvent(c, char=',', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 1, x.n_comma_messages  # Test 3.
+
+        # Test active double comma in a headline.
+        c.editHeadline()
+        w = c.headline_wrapper(p)
+        x.n_comma_messages = 0
+        # First, expand the definition.
+        p.h = 'details;'
+        event = LeoKeyEvent(c, char=';', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.1.
+        # Now type two commas.
+        event = LeoKeyEvent(c, char=',', w=w)
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.2.
+        x.expandAbbrev(event=event, stroke=None)
+        assert x.n_comma_messages == 0, x.n_comma_messages  # Test 2.3.
 
     # @+node:ekr.20260512164351.1: *3* TestAbbrev.test_multiline_abbreviations
     def test_multiline_abbreviations(self):
@@ -81,7 +88,7 @@ class TestAbbrev(LeoUnitTest):
 
         # These must be the definition munged by c.config.getData.
         definitions = (
-            'details;;=<details><summary><b>Title</b></summary>\n<br>\n\n</details>',
+            'details;;=<details><summary><b><|Title|></b></summary>\n<br>\n\n</details>',
         )  # fmt: skip
 
         for definition in definitions:
@@ -173,6 +180,61 @@ class TestAbbrev(LeoUnitTest):
             x.expandAbbrev(event=event, stroke=None)
             test(p.h)
             test(w.getAllText())
+
+    # @+node:ekr.20260512150121.1: *3* TestAbbrev.test_simple_abbreviations
+    def test_simple_abbreviations(self):
+
+        c = self.c
+        p = c.p
+        x = c.abbrevCommands
+
+        # Set the ivars by hand insead of with settings.
+        x.abbrevs = {}
+        x.next_placeholder = ',,'
+        c.abbrev_subst_end = '}|}'
+        c.abbrev_subst_start = '{|{'
+        c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}
+        c.abbrev_place_start = '<|'
+        c.abbrev_place_end = '|>'
+
+        definitions = (
+            'ex;;=!',
+            'fmt;;=  # fmt: skip',
+        )  # fmt: skip\n'
+        for definition in definitions:
+            x.addAbbrevHelper(definition)
+
+        table = (
+            ('ex;',         '!'),
+            ('whateverex;', 'whatever!'),
+            ('fmt;',        '  # fmt: skip'),
+            (')fmt;',       ')  # fmt: skip'),
+        )  # fmt: skip
+
+        def test(results, expected) -> None:
+            assert results == expected, f"expected: {expected!r} got: {results!r}"
+
+        # Test body.
+        w = c.frame.body.wrapper
+        for contents, expected in table:
+            p.b = contents
+            w.setInsertPoint(len(contents), contents)
+            event = LeoKeyEvent(c, char=';', binding=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            test(p.b, expected)
+            test(w.getAllText(), expected)
+
+        # Test headlines.
+        c.editHeadline()
+        w = c.headline_wrapper(p)
+        for contents, expected in table:
+            p.h = contents
+            w.setAllText(contents)
+            w.setInsertPoint(len(contents), contents)
+            event = LeoKeyEvent(c, char=';', binding=';', w=w)
+            x.expandAbbrev(event=event, stroke=None)
+            test(p.h, expected)
+            test(w.getAllText(), expected)
 
     # @-others
 
