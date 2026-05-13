@@ -147,8 +147,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         s = p.h
         if c.abbrev_place_start and c.abbrev_place_start in s:
             w = c.headline_wrapper(p)
-            g.trace(w)
-            offset = w.getInsertPoint() if w else 0
+            offset = 0 if all else w.getInsertPoint() if w else 0
             new_s, i, j = self.next_place(s, offset=offset)
             if i is not None:
                 p.h = new_s
@@ -160,7 +159,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         s = p.b
         if c.abbrev_place_start and c.abbrev_place_start in s:
             w = c.frame.body.wrapper
-            offset = w.getInsertPoint()
+            offset = 0 if all else w.getInsertPoint() if w else 0
             new_s, i, j = self.next_place(s, offset=offset)
             if i is None:
                 return False
