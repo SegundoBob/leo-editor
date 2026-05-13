@@ -39,10 +39,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     __slots__ = (
         'abbrevs',
         'c',
-        'dynaregex',
+        'dyna_regex',
         'enabled',
         'expanding',
         'last_hit',
+        'n_comma_messages',
         'number_regex',
         'tree_abbrevs_d',
         'w',
@@ -56,7 +57,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.c = c
         # Set local ivars.
         self.abbrevs: dict[str, tuple[str, str]] = {}  # Keys are names, values are (abbrev,tag).
-        self.dynaregex = re.compile(  # For dynamic abbreviations
+        self.dyna_regex = re.compile(  # For dynamic abbreviations
             r'[%s%s\-_]+' % (string.ascii_letters, string.digits)
         )
         # Not a unicode problem.
@@ -64,6 +65,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.enabled = False
         self.expanding = False  # True: expanding abbreviations.
         self.last_hit = None  # Distinguish between text and tree abbreviations.
+        self.n_comma_messages = 0  # For a unit test.
         self.subst_env: list[str] = []  # The scripting environment.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w: QTextMixin = None
@@ -132,7 +134,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         elif self.find_place_holder(p):
             return
         if warn_flag:
-            g.es_print(f"No next placeholder {c.abbrev_place_start}...{c.abbrev_place_end}")
+            self.n_comma_messages += 1  # For unit testing
+            if not g.unitTesting:
+                g.es_print(f"No next placeholder {c.abbrev_place_start}...{c.abbrev_place_end}")
 
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
     def expand_text(self, w: QTextMixin, i: int, j: int, val: str, word: str) -> None:
@@ -643,10 +647,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             # Look in all nodes.h
             items = []
             for p in self.c.all_unique_positions():
-                items.extend(self.dynaregex.findall(p.b))
+                items.extend(self.dyna_regex.findall(p.b))
         else:
             # Just look in this node.
-            items = self.dynaregex.findall(w.getAllText())
+            items = self.dyna_regex.findall(w.getAllText())
         items = sorted(set([z for z in items if z.startswith(s)]))
         return items
 
