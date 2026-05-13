@@ -220,7 +220,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.replace_selection(w, i, j, val)
         self.do_placeholder()
 
-    # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree & helper
+    # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree
     def expand_tree(self, w: QTextMixin, i: int, j: int, tree_s: str, word: str) -> None:
         """
         Paste tree_s as children of c.p.
