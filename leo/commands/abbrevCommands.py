@@ -202,8 +202,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if (new_pos < 0 or new_end < 0) and offset:
             new_pos = s.find(c.abbrev_place_start)
             new_end = s.find(c.abbrev_place_end)
-            if not (new_pos < 0 or new_end < 0):
-                g.es("Found earlier placeholder")
         if new_pos < 0 or new_end < 0:
             return s, None, None
         start = new_pos
