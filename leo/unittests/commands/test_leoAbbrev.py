@@ -161,6 +161,7 @@ class TestAbbrev(LeoUnitTest):
         p = c.p
         x = c.abbrevCommands
         x.abbrevs = {}
+        x.scripting_enabled = True
         c.abbrev_subst_env['time'] = time
 
         # These must be the definition munged by c.config.getData.

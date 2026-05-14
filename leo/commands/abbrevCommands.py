@@ -195,20 +195,24 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         and start, end are the positions of the beginning and end of block.
         """
         c = self.c
+        fail = s, None, None
         if c.abbrev_place_start is None or c.abbrev_place_end is None:
-            return s, None, None  # #1345.
+            return fail
         new_pos = s.find(c.abbrev_place_start, offset)
         new_end = s.find(c.abbrev_place_end, offset)
         if (new_pos < 0 or new_end < 0) and offset:
             new_pos = s.find(c.abbrev_place_start)
             new_end = s.find(c.abbrev_place_end)
         if new_pos < 0 or new_end < 0:
-            return s, None, None
+            return fail
         start = new_pos
         place_holder_delim = s[new_pos : new_end + len(c.abbrev_place_end)]
         place_holder = place_holder_delim[len(c.abbrev_place_start) : -len(c.abbrev_place_end)]
         s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
         end = start + len(place_holder)
+        # #4614: The start and end delims must be on the same line.
+        if '\n' in s2[start:end]:
+            return fail
         return s2, start, end
 
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
@@ -303,21 +307,25 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.endEditing()
 
         # Look for scripting substitutions.
-        sub_start = re.escape(c.abbrev_subst_start)
-        sub_end = re.escape(c.abbrev_subst_end)
-        pattern = re.compile(rf"^(.*?){sub_start}(.+){sub_end}(.*?)$")
-        if m := pattern.match(val):
-            content = m.group(2)
-            c.abbrev_subst_env['x'] = ''
-            try:
-                exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
-                x = c.abbrev_subst_env.get('x')
-                if x:
-                    val = f"{m.group(1)}{x}{m.group(3)}"
-            except Exception:
-                # Leave p.h alone.
-                g.trace('scripting error in', p.h)
-                g.es_exception()
+        val = self.make_script_substitutions(0, len(val), val)
+
+        ###
+        # if self.scripting_enabled
+        #     sub_start = re.escape(c.abbrev_subst_start)
+        #     sub_end = re.escape(c.abbrev_subst_end)
+        #     pattern = re.compile(rf"^(.*?){sub_start}(.+){sub_end}(.*?)$")
+        #     if m := pattern.match(val):
+        #         content = m.group(2)
+        #         c.abbrev_subst_env['x'] = ''
+        #         try:
+        #             exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
+        #             x = c.abbrev_subst_env.get('x')
+        #             if x:
+        #                 val = f"{m.group(1)}{x}{m.group(3)}"
+        #         except Exception:
+        #             # Leave p.h alone.
+        #             g.trace('scripting error in', p.h)
+        #             g.es_exception()
 
         # Compute s, the final value of p.h..
         val = val.replace('\n', '').replace('\r', '')
@@ -363,9 +371,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     def make_script_substitutions(self, i: int, j: int, val: str) -> str:
         """Make scripting substitutions in node p."""
         c = self.c
-        if not c.abbrev_subst_start:
+        if not self.scripting_enabled:
             return val
-        if c.abbrev_subst_start not in val:
+        if not c.abbrev_subst_start or not c.abbrev_subst_end:
+            return val
+        if c.abbrev_subst_start not in val or c.abbrev_subst_end not in val:
             return val
 
         # Perform all scripting substitutions.
@@ -511,7 +521,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         at = c.atFileCommands
         if not self.scripting_enabled:
             return
-        if not c.abbrev_place_start:
+        if not c.abbrev_place_start or not c.abbrev_place_end:
             return
         aList = self.subst_env
         script_list = []
