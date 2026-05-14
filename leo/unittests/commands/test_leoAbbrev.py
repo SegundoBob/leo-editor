@@ -25,7 +25,7 @@ class TestAbbrev(LeoUnitTest):
         x.abbrevs = {}
 
         # The definition as munged by c.config.getData.
-        definition = 'details;;=<details><summary><b>Title</b></summary>\n<br>\n\n</details>'
+        definition = 'details;;=<details><summary><b><|Title|></b></summary>\n<br>\n\n</details>'
         x.addAbbrevHelper(definition)
 
         if 1:  # Test 1: Test active double comma in the body
@@ -44,10 +44,10 @@ class TestAbbrev(LeoUnitTest):
             # Check the expansion (no comma) and the selection.
             s = w.getAllText()
             i = definition.find(';=')
-            expected = definition[i + 2 :].replace('', '').replace('', '')
-            assert s == expected, repr(s)  # Test 2.1
+            expected = definition[i + 2 :].replace('<|', '').replace('|>', '')
+            assert s == expected, repr(s)  # Test 2.1: Body contents.
             s2 = w.getSelectedText()
-            assert s2 == 'Title', repr(s2)  # Test. 2.2.
+            assert s2 == 'Title', repr(s2)  # Test. 2.2: Body selection.
 
         # Test 2: Test active double comma in a headline.
         c.editHeadline()
@@ -57,22 +57,19 @@ class TestAbbrev(LeoUnitTest):
         p.h = 'details;'
         event = LeoKeyEvent(c, char=';', w=w)
         x.expandAbbrev(event=event, stroke=None)
-        ### g.trace(w.getAllText())
-        ### breakpoint()  ###
 
         # Type two commas.
         event = LeoKeyEvent(c, char=',', w=w)
         x.expandAbbrev(event=event, stroke=None)
-        g.trace(w.getAllText())
         x.expandAbbrev(event=event, stroke=None)
 
         # Check the expansion (no comma) and the selection.
         s = w.getAllText()
         i = definition.find(';=')
-        expected = definition[i + 2 :].replace('\n', '')
-        assert s == expected, repr(s)  # Test 2.1
+        expected = definition[i + 2 :].replace('\n', '').replace('<|', '').replace('|>', '')
+        assert s == expected, repr(s)  # Test 2.1: Headline contents.
         s2 = w.getSelectedText()
-        assert s2 == 'Title', repr(s2)  # Test 2.2.
+        assert s2 == 'Title', repr(s2)  # Test 2.2: Headline selection.
 
     # @+node:ekr.20260513023424.1: *3* TestAbbrev.test_bare_comma
     def test_bare_comma(self):
