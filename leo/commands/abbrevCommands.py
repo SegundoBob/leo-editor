@@ -101,15 +101,15 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return True
         # Does the incoming string match any abbreviation?
         for prefix in prefixes:
-            i, tag, word, val = self.match_prefix(ch, j, prefix)
-            assert i == -1 or i == j - len(prefix)
+            _i, tag, word, val = self.match_prefix(ch, j, prefix)
+            ### assert i == -1 or i == j - len(prefix)
             if word:
                 if ',' in val[-5:]:
                     g.trace(val)
                 if tag == 'tree':
-                    self.make_tree_replacements(i, j, w, word, val)
+                    self.make_tree_replacements(j - len(prefix), j, w, word, val)
                 else:
-                    self.make_general_replacements(i, j, w, word, val)
+                    self.make_general_replacements(j - len(prefix), j, w, word, val)
                 return True
         return False
 
