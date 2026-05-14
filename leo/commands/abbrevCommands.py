@@ -88,8 +88,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if not prefixes:
             return False
         if i == j:
-            return False
-        # Do we see the placeholder? (,, by default)
+            return False  # Defensive. Should never happen.
+
+        # Handle a trailing placeholder. (,, by default)
         word = s[i:j] + ch
         if word.endswith(self.next_placeholder):
             self.do_placeholder(w)
