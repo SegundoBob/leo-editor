@@ -55,7 +55,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # pylint: disable=super-init-not-called
         self.c = c
         # Set local ivars.
-        ### self.abbrevs: dict[str, tuple[str, str]] = {}  # Keys are names, values are (abbrev,tag).
         self.abbrevs: dict[str, str] = {}  # Keys are names, values are abbreviations.
         self.dyna_regex = re.compile(  # For dynamic abbreviations
             r'[%s%s\-_]+' % (string.ascii_letters, string.digits)
@@ -105,13 +104,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         for prefix in prefixes:
             word2 = prefix + ch
             i2 = j - len(prefix)
-            val = self.tree_abbrevs_d.get(word2)
-            if val:
+            if val := self.tree_abbrevs_d.get(word2):
                 self.make_tree_replacements(i2, j, w, word2, val)
                 return True
-            ### val, _tag = self.abbrevs.get(word2, (None, None))
-            val = self.abbrevs.get(word2)
-            if val:
+            if val := self.abbrevs.get(word2):
                 self.make_general_replacements(i2, j, w, word2, val)
                 return True
         return False
@@ -164,7 +160,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         ok, new_s, i, j = self.next_place(s)
         if not ok:
             return False
-        g.trace(new_s[i:j])  ###
+        ### g.trace(new_s[i:j])  ###
         switch = p != c.p
         if switch:
             c.selectPosition(p)
@@ -444,11 +440,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if val.endswith('\n'):
                 val = val[:-1]
             val = self.number_regex.sub('\n', val).replace('\\\\n', '\\n')
-            ### old, tag = d.get(name, (None, None))
             old = d.get(name)
             if old and old != val and not g.unitTesting:
                 g.es_print(f"redefining abbreviation {name}\nfrom {old!r} to {val!r}")
-            ### d[name] = val, tag
             d[name] = val
         except ValueError:
             g.es_print(f"bad abbreviation: {s}")
@@ -726,9 +720,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return
         print('')
         g.es_print(f"Abbreviations for {self.c.shortFileName()}...")
-        ### for name, value in sorted(d.items()):
         for name, s in sorted(d.items()):
-            ###   s, _tag = value
             s = s.replace('\n', '\\n')
             tail = s.removesuffix('\\n')
             print(f"{name:>15} {g.truncate(tail, 90)}")
