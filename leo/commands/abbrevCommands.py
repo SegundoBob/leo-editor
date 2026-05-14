@@ -99,26 +99,19 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 print('Selected text', repr(w.getSelectedText()))
             self.do_placeholder(w)
             return True
-        # Does the incoming string match any abbreviation?
+
+        # Try to match an abbreviation.
         for prefix in prefixes:
             word2 = prefix + ch
+            i2 = j - len(prefix)
             val = self.tree_abbrevs_d.get(word2)
             if val:
-                self.make_tree_replacements(j - len(prefix), j, w, word2, val)
+                self.make_tree_replacements(i2, j, w, word2, val)
                 return True
             val, _tag = self.abbrevs.get(word2, (None, None))
             if val:
-                self.make_general_replacements(j - len(prefix), j, w, word2, val)
+                self.make_general_replacements(i2, j, w, word2, val)
                 return True
-            # tag, word, val = self.match_prefix(ch, j, prefix)
-            # if tag != 'fail':
-            #     if ',' in val[-5:]:
-            #         g.trace(val)
-            #     if tag == 'tree':
-            #         self.make_tree_replacements(j - len(prefix), j, w, word, val)
-            #     else:
-            #         self.make_general_replacements(j - len(prefix), j, w, word, val)
-            #     return True
         return False
 
     # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder & helpers
@@ -366,20 +359,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.abbrev_subst_env['_abr'] = word
         self.last_hit = c.p.copy()
         self.expand_tree(w, i, j, val, word)
-
-    # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
-    def match_prefix(self, ch: str, i: int, prefix: str) -> tuple[str, str, str]:
-        """A match helper."""
-        fail = 'fail', '', ''
-        word = prefix + ch
-        val = self.tree_abbrevs_d.get(word)
-        if val:
-            tag = 'tree'
-        else:
-            val, tag = self.abbrevs.get(word, (None, None))
-        if not val:
-            return fail
-        return tag, word, val
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
