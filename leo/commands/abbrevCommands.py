@@ -92,12 +92,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Do we see the placeholder? (,, by default)
         word = s[i:j] + ch
         if word.endswith(self.next_placeholder):
-            print('')
-            print('Entry', 'word', word)
-            print('All text', w.getAllText())
-            print('Selected text', repr(w.getSelectedText()))
-            # g.trace('Entry', w.getAllText())  ###
-            # w.setAllText(w.getAllText()[-len(self.next_placeholder)])
+            if not g.unitTesting:
+                print('')
+                print('Entry', 'word', word)
+                print('All text', w.getAllText())
+                print('Selected text', repr(w.getSelectedText()))
             self.do_placeholder(w)
             return True
         # Does the incoming string match any abbreviation?
@@ -274,7 +273,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return ch or ''
 
     # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
-    def get_prefixes(self, s: str, w: QTextMixin) -> tuple[str, int, int, list[str]]:
+    def get_prefixes(self, s: str, w: QTextMixin) -> tuple[int, int, list[str]]:
         """
         Return the prefixes at the current insertion point of w.
 
