@@ -128,7 +128,7 @@ class TestAbbrev(LeoUnitTest):
             )  # fmt: skip
 
         # Test bodies.
-        if 0:
+        if 1:
             w = c.frame.body.wrapper
             for definition in definitions:
                 i = definition.find(';=')
@@ -146,12 +146,9 @@ class TestAbbrev(LeoUnitTest):
             for definition in definitions:
                 c.editHeadline()
                 w = c.headline_wrapper(p)
-                ### g.trace(w)  ###
                 i = definition.find(';=')
                 contents = definition[:i]
-                expected = (
-                    definition[i + 2 :].replace('\\n', '').replace('<|', '').replace('|>', '')
-                )
+                expected = definition[i + 2 :].replace('\n', '').replace('<|', '').replace('|>', '')
                 p.h = contents
                 w.setInsertPoint(len(contents), contents)
                 event = LeoKeyEvent(c, char=';', binding=';', w=w)
