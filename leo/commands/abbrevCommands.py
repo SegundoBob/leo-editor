@@ -306,26 +306,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # End editing, so we can get p.h before appending ch.
         c.endEditing()
 
-        # Look for scripting substitutions.
+        # Make all scripting substitutions.
         val = self.make_script_substitutions(0, len(val), val)
-
-        ###
-        # if self.scripting_enabled
-        #     sub_start = re.escape(c.abbrev_subst_start)
-        #     sub_end = re.escape(c.abbrev_subst_end)
-        #     pattern = re.compile(rf"^(.*?){sub_start}(.+){sub_end}(.*?)$")
-        #     if m := pattern.match(val):
-        #         content = m.group(2)
-        #         c.abbrev_subst_env['x'] = ''
-        #         try:
-        #             exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
-        #             x = c.abbrev_subst_env.get('x')
-        #             if x:
-        #                 val = f"{m.group(1)}{x}{m.group(3)}"
-        #         except Exception:
-        #             # Leave p.h alone.
-        #             g.trace('scripting error in', p.h)
-        #             g.es_exception()
 
         # Compute s, the final value of p.h..
         val = val.replace('\n', '').replace('\r', '')
