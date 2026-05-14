@@ -40,7 +40,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'abbrevs',
         'c',
         'dyna_regex',
-        'enabled',
+        'scripting_enabled',
         'expanding',
         'last_hit',
         'number_regex',
@@ -61,7 +61,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         )
         # Not a unicode problem.
         self.number_regex = re.compile(r'(?<!\\)\\n')  # to replace \\n but not \\\\n
-        self.enabled = False
+        self.scripting_enabled = False
         self.expanding = False  # True: expanding abbreviations.
         self.last_hit = None  # Distinguish between text and tree abbreviations.
         self.subst_env: list[str] = []  # The scripting environment.
@@ -511,7 +511,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         at = c.atFileCommands
-        if not self.enabled:
+        if not self.scripting_enabled:
             return
         if not c.abbrev_place_start:
             return
@@ -556,7 +556,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         getBool, getString = c.config.getBool, c.config.getString
 
         # Local settings. Normally not accessed via c.abbrev_subst_env.
-        self.enabled = getBool('scripting-at-script-nodes') or getBool('scripting-abbreviations')
+        self.scripting_enabled = (
+            getBool('scripting-at-script-nodes') or
+            getBool('scripting-abbreviations')
+        )  # fmt: skip
         self.globalDynamicAbbrevs = getBool('globalDynamicAbbrevs')
         self.next_placeholder = getString("abbreviations-next-placeholder") or ',,'
 
