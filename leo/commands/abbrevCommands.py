@@ -85,7 +85,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         ch = self.get_ch(event, stroke, w)
         if not ch.strip():
             return False
-        s, i, j, prefixes = self.get_prefixes(w)
+        s = w.getAllText()
+        i, j, prefixes = self.get_prefixes(s, w)
         if not prefixes:
             return False
         # Do we see the placeholder? (,, by default)
@@ -273,11 +274,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return ch or ''
 
     # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
-    def get_prefixes(self, w: QTextMixin) -> tuple[str, int, int, list[str]]:
-        """Return the prefixes at the current insertion point of w."""
-        # New code allows *any* sequence longer than 1 to be an abbreviation.
-        # Any whitespace stops the search.
-        s = w.getAllText()
+    def get_prefixes(self, s: str, w: QTextMixin) -> tuple[str, int, int, list[str]]:
+        """
+        Return the prefixes at the current insertion point of w.
+
+        Any sequence longer than 1 may abbreviation.
+
+        Any whitespace stops the search.
+        """
         j = w.getInsertPoint()
         i, prefixes = j - 1, []
         while len(s) > i >= 0 and s[i] not in ' \t\n':
@@ -286,7 +290,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         prefixes = list(reversed(prefixes))
         if '' not in prefixes:
             prefixes.append('')
-        return s, i, j, prefixes
+        return i, j, prefixes
 
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
     def make_general_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
