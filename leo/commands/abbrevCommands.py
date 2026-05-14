@@ -77,7 +77,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Return True if the abbreviation was expanded.
         """
-        ### p = self.c.p
         w = event.w if event else None
         if self.expanding:
             return False
@@ -94,26 +93,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if word.endswith(self.next_placeholder):
             self.do_placeholder(w)
             return True
-
-        # Does the incoming string match any definition?
-        # Handle headlines separately.
-        ### w_name = g.app.gui.widget_name(w)
-        ### g.trace('word', word)
-        ###
-        # # # if w_name.startswith('head'):
-        # # #     for prefix in prefixes:
-        # # #         _i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
-        # # #         if word:
-        # # #             # #4462: Make only one substitution in headlines.
-        # # #             self.make_first_headline_substitution(ch, p, word, val)
-        # # #             return True  # Do not call c.endEditing.
-        # # #     ### g.trace('FAIL', s)
-        # # #     return False
-        # General case.
+        # Does the incoming string match any abbreviation?
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
-                ### g.trace(i, g.app.gui.widget_name(w))  ###
                 self.make_general_replacements(i, j, w, word, val, tag)
                 return True
         return False
@@ -203,7 +186,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         start_pat, end_pat = c.abbrev_place_start, c.abbrev_place_end
         if not start_pat or not end_pat:
             return fail
-        ### g.trace(g.truncate(s, 20))  ###
+
+        # Find the next match.
         new_pos = s.find(start_pat, offset)
         new_end = s.find(end_pat, offset)
         if (new_pos < 0 or new_end < 0) and offset:
@@ -211,11 +195,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             new_end = s.find(end_pat)
         if new_pos < 0 or new_end < 0:
             return fail
+
+        # Make the substitution.
         start = new_pos
         place_holder_delim = s[new_pos : new_end + len(end_pat)]
         place_holder = place_holder_delim[len(start_pat) : -len(end_pat)]
         s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
         end = start + len(place_holder)
+
         # #4614: The start and end delims must be on the same line.
         if '\n' in s2[start:end]:
             return fail
@@ -224,7 +211,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
     def expand_text(self, w: QTextMixin, i: int, j: int, val: str) -> None:
         """Make a text expansion at location i,j of widget w."""
-        ### g.trace(i, j, w.getAllText()[i:j], 'val', g.truncate(val, 30))
         val = self.make_script_substitutions(i, j, val)
         self.replace_selection(w, i, j, val)
         self.do_placeholder(w)
@@ -343,7 +329,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
     ) -> None:
         c, p = self.c, self.c.p
-        ### if val == '__NEXT_PLACEHOLDER':
         if val == self.next_placeholder:  # ',,'
             # Delete the last character.
             i = w.getInsertPoint()
@@ -357,7 +342,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return
 
         # Expand, but never expand a search for text matches.
-        ### if '__NEXT_PLACEHOLDER' not in val:
         if self.next_placeholder not in val:  # ',,'
             self.last_hit = None
         self.expand_text(w, i, j, val)
@@ -409,21 +393,20 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         fail = -1, tag, None, None
         if not val:
             return fail
-        # Require a word match if the abbreviation is itself a word.
         if ch in ' \t\n':
             word = word.rstrip()
         if not word:
             return fail
-        ### g.trace('FOUND', i, j, word)
         return i, tag, word, val
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
         """Replace w[i:j] by s."""
-        ### g.trace(g.truncate(s, 20))  ###
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
-        bunch = u.beforeChangeNodeContents(p)  # Handle changes to either p.b or p.h.
+        bunch = u.beforeChangeNodeContents(p)
+
+        # Make the replacement.
         if i != j:
             w.delete(i, j)
         if s is None:
@@ -432,12 +415,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             w.insert(i, s)
             ins = i + len(s)
         w.setSelectionRange(ins, ins, ins)
+
+        # Update p.b or p.h.
         if w_name.startswith('head'):
-            ### pass  # Don't set p.h here!
-            p.v.h = w.getAllText()
+            p.v.h = w.getAllText()  # #4614.
         else:
-            # Fix part of #438. Don't leave the headline.
             p.v.b = w.getAllText()
+
+        # Complete the undo.
         u.afterChangeNodeContents(p, command='Abbreviation', bunch=bunch)
 
     # @+node:ekr.20150514043850.5: *3* abbrev.finishCreate
