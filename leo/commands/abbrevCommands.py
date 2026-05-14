@@ -97,7 +97,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
-                self.make_general_replacements(i, j, w, word, val, tag)
+                if tag == 'tree':
+                    self.make_tree_replacements(i, j, w, word, val)
+                else:
+                    self.make_general_replacements(i, j, w, word, val)
                 return True
         return False
 
@@ -209,7 +212,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         This happens *before* any substitutions are made.
         """
         c = self.c
-        ### old_p = c.p.copy()
         u, undoType = c.undoer, 'Expand Tree Abbreviation'
         if c.p.hasChildren():
             g.es_print('tree abbreviations must not have children', color='blue')
@@ -310,10 +312,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.frame.tree.editLabel(p, selection=(i, j, ins))
 
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
-    def make_general_replacements(
-        self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
-    ) -> None:
-        c, p = self.c, self.c.p
+    def make_general_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
+        ### c, p = self.c, self.c.p
+        c = self.c
         if val == self.next_placeholder:  # ',,'
             # Delete the last character.
             i = w.getInsertPoint()
@@ -321,14 +322,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
-        if tag == 'tree':
-            self.last_hit = p.copy()
-            self.expand_tree(w, i, j, val, word)
-            return
 
         # Expand, but never expand a search for text matches.
         if self.next_placeholder not in val:  # ',,'
             self.last_hit = None
+
         self.expand_text(w, i, j, val)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
@@ -364,6 +362,20 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         return val
 
+    # @+node:ekr.20260514103638.1: *4* abbrev.make_tree_replacements
+    def make_tree_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
+
+        c = self.c
+        if val == self.next_placeholder:  # ',,'
+            # Delete the last character.
+            i = w.getInsertPoint()
+            w.delete(i)
+
+        # Handle a word that matches a prefix.
+        c.abbrev_subst_env['_abr'] = word
+        self.last_hit = c.p.copy()
+        self.expand_tree(w, i, j, val, word)
+
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
     def match_prefix(
         self, ch: str, i: int, j: int, prefix: str, s: str
@@ -371,9 +383,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """A match helper."""
         i = j - len(prefix)
         word = g.checkUnicode(prefix) + g.checkUnicode(ch)
-        tag = 'tree'
         val = self.tree_abbrevs_d.get(word)
-        if not val:
+        if val:
+            tag = 'tree'
+        else:
             val, tag = self.abbrevs.get(word, (None, None))
         fail = -1, tag, None, None
         if not val:
