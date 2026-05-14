@@ -209,7 +209,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         This happens *before* any substitutions are made.
         """
         c = self.c
-        old_p = c.p.copy()
+        ### old_p = c.p.copy()
         u, undoType = c.undoer, 'Expand Tree Abbreviation'
         if c.p.hasChildren():
             g.es_print('tree abbreviations must not have children', color='blue')
@@ -227,11 +227,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.redraw(c.p)
 
         # Make all script substitutions first.
-        for p in old_p.self_and_subtree():
+        for p in c.p.self_and_subtree():
             # Search for the next place-holder.
             p.b = self.make_script_substitutions(0, 0, p.b)
         # Now search for all place-holders.
-        for p in old_p.subtree():
+        for p in c.p.subtree():
             if self.find_place_holder(p, w):
                 break
 
