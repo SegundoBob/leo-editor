@@ -134,26 +134,28 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return False
         w_name = g.app.gui.widget_name(w)
         if w_name.startswith('head'):
-            s = p.h
-            if not (start in s and end in s):
+            s = w.getAllText()
+            g.trace(s)  ###
+            # if not (start in s and end in s):
+            #     return False
+            ### offset = 0 if all else w.getInsertPoint() if w else 0
+            ### new_s, i, j = self.next_place(s, offset=offset)
+            ok, new_s, i, j = self.next_place(s)  ### , offset=offset)
+            if not ok:
                 return False
-            offset = 0 if all else w.getInsertPoint() if w else 0
-            new_s, i, j = self.next_place(s, offset=offset)
-            if i is not None:
-                p.h = new_s
-                c.redraw(p)
-                c.editHeadline()
-                w = c.headline_wrapper(p)
-                w.setSelectionRange(i, j, insert=j)
-                return True
-            return False
+            p.h = new_s.replace('\n', ' ')  ### Experimental.
+            c.redraw(p)
+            c.editHeadline()
+            w = c.headline_wrapper(p)
+            w.setSelectionRange(i, j, insert=j)
+            return True
         s = p.b
         if not (start in s and end in s):
             return False
         w = c.frame.body.wrapper
-        offset = 0 if all else w.getInsertPoint() if w else 0
-        new_s, i, j = self.next_place(s, offset=offset)
-        if i is None:
+        ### offset = 0 if all else w.getInsertPoint() if w else 0
+        ok, new_s, i, j = self.next_place(s)  ###, offset=offset)
+        if not ok:
             return False
         switch = p != c.p
         if switch:
@@ -175,38 +177,31 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return True
 
     # @+node:ekr.20150514043850.16: *5* abbrev.next_place
-    def next_place(self, s: str, *, offset: int) -> tuple[str, int, int]:
+    def next_place(self, s: str) -> tuple[bool, str, int, int]:
         """
         Given string s containing a placeholder like  block ,
-        return (s2,start,end) where s2 is s without the <| and |>,
+        return (s2, start, end) where s2 is s without the <| and |>,
         and start, end are the positions of the beginning and end of block.
         """
         c = self.c
-        fail = s, None, None
+        fail = False, None, None, None
         start_pat, end_pat = c.abbrev_place_start, c.abbrev_place_end
         if not start_pat or not end_pat:
             return fail
 
         # Find the next match.
-        new_pos = s.find(start_pat, offset)
-        new_end = s.find(end_pat, offset)
-        if (new_pos < 0 or new_end < 0) and offset:
-            new_pos = s.find(start_pat)
-            new_end = s.find(end_pat)
-        if new_pos < 0 or new_end < 0:
+        start = s.find(start_pat, 0)
+        if start == -1:
+            return fail
+        end = s.find(end_pat, start)
+        if end == -1:
+            return fail
+        if '\n' in s[start:end]:  # #4614.
             return fail
 
         # Make the substitution.
-        start = new_pos
-        place_holder_delim = s[new_pos : new_end + len(end_pat)]
-        place_holder = place_holder_delim[len(start_pat) : -len(end_pat)]
-        s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
-        end = start + len(place_holder)
-
-        # #4614: The start and end delims must be on the same line.
-        if '\n' in s2[start:end]:
-            return fail
-        return s2, start, end
+        s2 = s[:start] + s[start + len(start_pat) : end] + s[end + len(end_pat) :]
+        return True, s2, start, end - len(start_pat)
 
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
     def expand_text(self, w: QTextMixin, i: int, j: int, val: str) -> None:
@@ -401,7 +396,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
-        """Undoably eplace w[i:j] by s."""
+        """Undoably replace w[i:j] by s."""
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
         bunch = u.beforeChangeNodeContents(p)

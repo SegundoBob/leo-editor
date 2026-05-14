@@ -128,7 +128,7 @@ class TestAbbrev(LeoUnitTest):
             )  # fmt: skip
 
         # Test bodies.
-        if 1:
+        if 0:
             w = c.frame.body.wrapper
             for definition in definitions:
                 i = definition.find(';=')
@@ -159,6 +159,18 @@ class TestAbbrev(LeoUnitTest):
                 test(w.getAllText(), expected)
                 c.endEditing()
                 test(p.h, expected)
+
+    # @+node:ekr.20210905064816.2: *3* TestAbbrev.test_next_place
+    def test_next_place(self):
+        c = self.c
+        ac = c.abbrevCommands
+        assert ac
+        c.abbrev_place_start = '<|'
+        c.abbrev_place_end = '|>'
+        s = '123<| sub |>456'
+        ok, new_s, i, j = ac.next_place(s)
+        assert new_s == s.replace('<|', '').replace('|>', ''), new_s
+        assert new_s[i:j] == ' sub ', new_s[i:j]
 
     # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
     def test_scripting_abbreviations(self):

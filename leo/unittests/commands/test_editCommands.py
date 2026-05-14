@@ -4146,17 +4146,6 @@ class TestEditCommands(LeoUnitTest):
         )
 
     # @+node:ekr.20210905064816.1: *3* TestEditCommands: Others
-    # @+node:ekr.20210905064816.2: *4* test_abbrevCommands_next_place
-    def test_abbrevCommands_next_place(self):
-        c = self.c
-        ac = c.abbrevCommands
-        assert ac
-        c.abbrev_place_start = '<|'
-        c.abbrev_place_end = '|>'
-        s = '123<| sub |>456'
-        new_s, i, j = ac.next_place(s, offset=0)
-        assert new_s == s.replace('<|', '').replace('|>', '')
-
     # @+node:ekr.20210905064816.3: *4* test_addAbbrevHelper
     def test_addAbbrevHelper(self):
         c = self.c
