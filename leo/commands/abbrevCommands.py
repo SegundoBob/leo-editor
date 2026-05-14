@@ -101,8 +101,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return True
         # Does the incoming string match any abbreviation?
         for prefix in prefixes:
-            _i, tag, word, val = self.match_prefix(ch, j, prefix)
-            ### assert i == -1 or i == j - len(prefix)
+            ### _i, tag, word, val = self.match_prefix(ch, j, prefix)
+            tag, word, val = self.match_prefix(ch, j, prefix)
             if word:
                 if ',' in val[-5:]:
                     g.trace(val)
@@ -360,9 +360,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.expand_tree(w, i, j, val, word)
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
-    def match_prefix(self, ch: str, i: int, prefix: str) -> tuple[int, str, str, str]:
+    def match_prefix(self, ch: str, i: int, prefix: str) -> tuple[str, str, str]:
         """A match helper."""
-        fail = -1, None, None, None
+        ### fail = -1, None, None, None
+        fail = 'fail', None, None
         word = prefix + ch
         val = self.tree_abbrevs_d.get(word)
         if val:
@@ -371,7 +372,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             val, tag = self.abbrevs.get(word, (None, None))
         if not val:
             return fail
-        return i - len(prefix), tag, word, val
+        ### return i - len(prefix), tag, word, val
+        return tag, word, val
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
