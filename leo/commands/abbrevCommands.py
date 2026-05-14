@@ -201,7 +201,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
     def expand_text(self, w: QTextMixin, i: int, j: int, val: str) -> None:
         """Make a text expansion at location i,j of widget w."""
-        val = self.make_script_substitutions(i, j, val)
+        val = self.make_script_substitutions(val)
         self.replace_selection(w, i, j, val)
         self.do_placeholder(w)
 
@@ -231,7 +231,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Make all script substitutions first.
         for p in c.p.self_and_subtree():
             # Search for the next place-holder.
-            p.b = self.make_script_substitutions(0, 0, p.b)
+            p.h = self.make_script_substitutions(p.h)
+            p.b = self.make_script_substitutions(p.b)
         # Now search for all place-holders.
         for p in c.p.subtree():
             if self.find_place_holder(p, w):
@@ -278,39 +279,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             prefixes.append('')
         return s, i, j, prefixes
 
-    # @+node:ekr.20161121102113.1: *4* abbrev.make_first_headline_substitution
-    def make_first_headline_substitution(self, ch: str, p: Position, word: str, val: str) -> None:
-        """
-        Make *only* the first scripting substitution in p.h.
-        """
-        c = self.c
-        u = c.undoer
-
-        # End editing, so we can get p.h before appending ch.
-        c.endEditing()
-
-        # Make all scripting substitutions.
-        val = self.make_script_substitutions(0, len(val), val)
-
-        # Compute s, the final value of p.h..
-        val = val.replace('\n', '').replace('\r', '')
-        bunch = u.beforeChangeHeadline(p)
-        p.h = s = f"{p.h}{ch}".replace(word, val)
-        u.afterChangeHeadline(p, 'Expand Headline Abbreviation', bunch)
-
-        # Select the placeholder if it exists. Otherwise, the last character.
-        place_start, place_end = c.abbrev_place_start, c.abbrev_place_end
-        i_start = s.find(place_start, 0)
-        i_end = s.find(place_end, 0)
-        if -1 < i_start < i_end:
-            end = i_end + len(place_end)
-            i, j, ins = i_start, end, end
-        else:
-            i = j = ins = len(s)
-
-        # Continue editing the headline with the correct selection.
-        c.frame.tree.editLabel(p, selection=(i, j, ins))
-
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
     def make_general_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
         ### c, p = self.c, self.c.p
@@ -330,7 +298,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.expand_text(w, i, j, val)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
-    def make_script_substitutions(self, i: int, j: int, val: str) -> str:
+    def make_script_substitutions(self, val: str) -> str:
         """Make scripting substitutions in node p."""
         c = self.c
         if not self.scripting_enabled:
@@ -352,8 +320,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 self.expanding = True
                 c.abbrev_subst_env['x'] = ''
                 exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
-            except Exception:
-                g.es_print('exception evaluating', content)
+            except NameError:
+                pass  # The script should define the name.
+            except Exception as e:
+                g.es_print(f"exception evaluating {content!r}: {e}")
                 g.es_exception()
             finally:
                 self.expanding = False
