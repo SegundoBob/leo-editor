@@ -532,7 +532,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         )
         script = script.replace("\r\n", "\n")
         try:
-            exec(script, c.abbrev_subst_env, c.abbrev_subst_env)  # type:ignore
+            exec(script, c.abbrev_subst_env, c.abbrev_subst_env)
         except Exception:
             g.es('Error executing @data abbreviations-subst-env')
             g.es_exception()
