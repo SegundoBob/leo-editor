@@ -101,15 +101,24 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return True
         # Does the incoming string match any abbreviation?
         for prefix in prefixes:
-            tag, word, val = self.match_prefix(ch, j, prefix)
-            if tag != 'fail':
-                if ',' in val[-5:]:
-                    g.trace(val)
-                if tag == 'tree':
-                    self.make_tree_replacements(j - len(prefix), j, w, word, val)
-                else:
-                    self.make_general_replacements(j - len(prefix), j, w, word, val)
+            word2 = prefix + ch
+            val = self.tree_abbrevs_d.get(word2)
+            if val:
+                self.make_tree_replacements(j - len(prefix), j, w, word2, val)
                 return True
+            val, _tag = self.abbrevs.get(word2, (None, None))
+            if val:
+                self.make_general_replacements(j - len(prefix), j, w, word2, val)
+                return True
+            # tag, word, val = self.match_prefix(ch, j, prefix)
+            # if tag != 'fail':
+            #     if ',' in val[-5:]:
+            #         g.trace(val)
+            #     if tag == 'tree':
+            #         self.make_tree_replacements(j - len(prefix), j, w, word, val)
+            #     else:
+            #         self.make_general_replacements(j - len(prefix), j, w, word, val)
+            #     return True
         return False
 
     # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder & helpers
