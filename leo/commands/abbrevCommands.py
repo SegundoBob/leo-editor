@@ -101,7 +101,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return True
         # Does the incoming string match any abbreviation?
         for prefix in prefixes:
-            i, tag, word, val = self.match_prefix(ch, j, prefix, s)
+            i, tag, word, val = self.match_prefix(ch, j, prefix)
+            assert i == -1 or i == j - len(prefix)
             if word:
                 if ',' in val[-5:]:
                     g.trace(val)
@@ -359,10 +360,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.expand_tree(w, i, j, val, word)
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
-    def match_prefix(self, ch: str, i: int, prefix: str, s: str) -> tuple[int, str, str, str]:
+    def match_prefix(self, ch: str, i: int, prefix: str) -> tuple[int, str, str, str]:
         """A match helper."""
         fail = -1, None, None, None
-        ### i = j - len(prefix)
         word = prefix + ch
         val = self.tree_abbrevs_d.get(word)
         if val:
