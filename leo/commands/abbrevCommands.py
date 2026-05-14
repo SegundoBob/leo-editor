@@ -135,15 +135,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         w_name = g.app.gui.widget_name(w)
         if w_name.startswith('head'):
             s = w.getAllText()
-            g.trace(s)  ###
-            # if not (start in s and end in s):
-            #     return False
-            ### offset = 0 if all else w.getInsertPoint() if w else 0
-            ### new_s, i, j = self.next_place(s, offset=offset)
-            ok, new_s, i, j = self.next_place(s)  ### , offset=offset)
+            ok, new_s, i, j = self.next_place(s)
             if not ok:
                 return False
-            p.h = new_s.replace('\n', ' ')  ### Experimental.
+            p.h = new_s.replace('\n', '')
             c.redraw(p)
             c.editHeadline()
             w = c.headline_wrapper(p)
@@ -153,8 +148,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if not (start in s and end in s):
             return False
         w = c.frame.body.wrapper
-        ### offset = 0 if all else w.getInsertPoint() if w else 0
-        ok, new_s, i, j = self.next_place(s)  ###, offset=offset)
+        ok, new_s, i, j = self.next_place(s)
         if not ok:
             return False
         switch = p != c.p
