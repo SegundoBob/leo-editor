@@ -112,17 +112,15 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         p = c.p.copy()
         if self.last_hit:
             # We are in a tree abbrev.
-            all = False
             while p:
-                if self.find_place_holder(p, w, all=all):
+                if self.find_place_holder(p, w):
                     return
-                all = True
                 p.moveToThreadNext()
         else:
-            self.find_place_holder(p, w, all=False)
+            self.find_place_holder(p, w)
 
     # @+node:ekr.20150514043850.14: *5* abbrev.find_place_holder
-    def find_place_holder(self, p: Position, w: QTextMixin, *, all: bool) -> bool:
+    def find_place_holder(self, p: Position, w: QTextMixin) -> bool:
         """
         Search for the next place-holder.
         If found, select the place-holder (without the delims).
@@ -233,11 +231,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             # Search for the next place-holder.
             p.b = self.make_script_substitutions(0, 0, p.b)
         # Now search for all place-holders.
-        all = False
         for p in old_p.subtree():
-            if self.find_place_holder(p, w, all=all):
+            if self.find_place_holder(p, w):
                 break
-            all = True
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
