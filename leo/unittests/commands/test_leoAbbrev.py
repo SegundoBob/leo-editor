@@ -89,7 +89,7 @@ class TestAbbrev(LeoUnitTest):
         event = LeoKeyEvent(c, char=',', w=w)
         x.expandAbbrev(event=event, stroke=None)
         s = w.getAllText()
-        assert s == ',', repr(s)  # Test 1.
+        assert s == '', repr(s)  # Test 1.
 
         # Test 2: Test bare double commas in headlines
         c.editHeadline()
@@ -99,7 +99,7 @@ class TestAbbrev(LeoUnitTest):
         event = LeoKeyEvent(c, char=',', w=w)
         x.expandAbbrev(event=event, stroke=None)
         s = w.getAllText()
-        assert s == ',', repr(s)  # Test 2
+        assert s == '', repr(s)  # Test 2
 
     # @+node:ekr.20260512164351.1: *3* TestAbbrev.test_multiline_abbreviations
     def test_multiline_abbreviations(self):
