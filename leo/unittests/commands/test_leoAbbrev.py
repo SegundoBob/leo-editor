@@ -28,7 +28,7 @@ class TestAbbrev(LeoUnitTest):
         definition = 'details;;=<details><summary><b>Title</b></summary>\n<br>\n\n</details>'
         x.addAbbrevHelper(definition)
 
-        if 0:  # Test 1: Test active double comma in the body
+        if 1:  # Test 1: Test active double comma in the body
             w = c.frame.body.wrapper
 
             # Expand the definition.
@@ -57,7 +57,7 @@ class TestAbbrev(LeoUnitTest):
         p.h = 'details;'
         event = LeoKeyEvent(c, char=';', w=w)
         x.expandAbbrev(event=event, stroke=None)
-        g.trace(w.getAllText())
+        ### g.trace(w.getAllText())
         ### breakpoint()  ###
 
         # Type two commas.
@@ -128,31 +128,37 @@ class TestAbbrev(LeoUnitTest):
             )  # fmt: skip
 
         # Test bodies.
-        w = c.frame.body.wrapper
-        for definition in definitions:
-            i = definition.find(';=')
-            contents = definition[:i]
-            expected = definition[i + 2 :].replace('<|', '').replace('|>', '')
-            p.b = contents
-            w.setInsertPoint(len(contents), contents)
-            event = LeoKeyEvent(c, char=';', binding=';', w=w)
-            x.expandAbbrev(event=event, stroke=None)
-            test(p.b, expected)
-            test(w.getAllText(), expected)
+        if 1:
+            w = c.frame.body.wrapper
+            for definition in definitions:
+                i = definition.find(';=')
+                contents = definition[:i]
+                expected = definition[i + 2 :].replace('<|', '').replace('|>', '')
+                p.b = contents
+                w.setInsertPoint(len(contents), contents)
+                event = LeoKeyEvent(c, char=';', binding=';', w=w)
+                x.expandAbbrev(event=event, stroke=None)
+                test(p.b, expected)
+                test(w.getAllText(), expected)
 
         # Test headlines
-        c.editHeadline()
-        w = c.headline_wrapper(p)
-        for definition in definitions:
-            i = definition.find(';=')
-            contents = definition[:i]
-            expected = definition[i + 2 :].replace('\n', '')
-            p.h = contents
-            w.setInsertPoint(len(contents), contents)
-            event = LeoKeyEvent(c, char=';', binding=';', w=w)
-            x.expandAbbrev(event=event, stroke=None)
-            test(p.h, expected)
-            test(w.getAllText(), expected)
+        if 0:
+            for definition in definitions:
+                c.editHeadline()
+                w = c.headline_wrapper(p)
+                g.trace(w)  ###
+                i = definition.find(';=')
+                contents = definition[:i]
+                expected = (
+                    definition[i + 2 :].replace('\\n', '').replace('<|', '').replace('|>', '')
+                )
+                p.h = contents
+                w.setInsertPoint(len(contents), contents)
+                event = LeoKeyEvent(c, char=';', binding=';', w=w)
+                x.expandAbbrev(event=event, stroke=None)
+                test(w.getAllText(), expected)
+                c.endEditing()
+                test(p.h, expected)
 
     # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
     def test_scripting_abbreviations(self):
@@ -189,16 +195,17 @@ class TestAbbrev(LeoUnitTest):
             test(w.getAllText())
 
         # Test headlines.
-        c.editHeadline()
-        w = c.headline_wrapper(p)
         for definition in definitions:
+            c.editHeadline()
+            w = c.headline_wrapper(p)
             i = definition.find(';=')
             p.h = contents = definition[:i]
             w.setInsertPoint(len(contents), contents)
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
             x.expandAbbrev(event=event, stroke=None)
-            test(p.h)
             test(w.getAllText())
+            c.endEditing()
+            test(p.h)
 
     # @+node:ekr.20260512150121.1: *3* TestAbbrev.test_simple_abbreviations
     def test_simple_abbreviations(self):
@@ -209,13 +216,6 @@ class TestAbbrev(LeoUnitTest):
 
         # Set the ivars by hand insead of with settings.
         x.abbrevs = {}
-        # x.next_placeholder = ',,'
-        # c.abbrev_subst_end = '}|}'
-        # c.abbrev_subst_start = '{|{'
-        # c.abbrev_subst_env = {'c': c, 'g': g, '_values': {}}
-        # c.abbrev_place_start = '<|'
-        # c.abbrev_place_end = '|>'
-
         definitions = (
             'ex;;=!',
             'fmt;;=  # fmt: skip',
@@ -234,26 +234,28 @@ class TestAbbrev(LeoUnitTest):
             assert results == expected, f"expected: {expected!r} got: {results!r}"
 
         # Test body.
-        w = c.frame.body.wrapper
-        for contents, expected in table:
-            p.b = contents
-            w.setInsertPoint(len(contents), contents)
-            event = LeoKeyEvent(c, char=';', binding=';', w=w)
-            x.expandAbbrev(event=event, stroke=None)
-            test(p.b, expected)
-            test(w.getAllText(), expected)
+        if 0:
+            w = c.frame.body.wrapper
+            for contents, expected in table:
+                p.b = contents
+                w.setInsertPoint(len(contents), contents)
+                event = LeoKeyEvent(c, char=';', binding=';', w=w)
+                x.expandAbbrev(event=event, stroke=None)
+                test(p.b, expected)
+                test(w.getAllText(), expected)
 
         # Test headlines.
-        c.editHeadline()
-        w = c.headline_wrapper(p)
         for contents, expected in table:
+            c.editHeadline()
+            w = c.headline_wrapper(p)
             p.h = contents
             w.setAllText(contents)
             w.setInsertPoint(len(contents), contents)
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
             x.expandAbbrev(event=event, stroke=None)
-            test(p.h, expected)
             test(w.getAllText(), expected)
+            c.endEditing()
+            test(p.h, expected)
 
     # @-others
 

@@ -77,11 +77,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Return True if the abbreviation was expanded.
         """
-        p = self.c.p
+        ### p = self.c.p
         w = event.w if event else None
-        if not g.isTextWrapper(w):
-            return False
         if self.expanding:
+            return False
+        if not g.isTextWrapper(w):
             return False
         ch = self.get_ch(event, stroke, w)
         if not ch:
@@ -92,34 +92,36 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Do we see the placeholder? (,, by default)
         word = s[i:j] + ch
         if word.endswith(self.next_placeholder):
-            self.do_placeholder()
+            self.do_placeholder(w)
             return True
 
         # Does the incoming string match any definition?
         # Handle headlines separately.
-        w_name = g.app.gui.widget_name(w)
+        ### w_name = g.app.gui.widget_name(w)
         ### g.trace('word', word)
-        if w_name.startswith('head'):
-            for prefix in prefixes:
-                _i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
-                if word:
-                    # #4462: Make only one substitution in headlines.
-                    self.make_first_headline_substitution(ch, p, word, val)
-                    return True  # Do not call c.endEditing.
-            ### g.trace('FAIL', s)
-            return False
+        ###
+        # # # if w_name.startswith('head'):
+        # # #     for prefix in prefixes:
+        # # #         _i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
+        # # #         if word:
+        # # #             # #4462: Make only one substitution in headlines.
+        # # #             self.make_first_headline_substitution(ch, p, word, val)
+        # # #             return True  # Do not call c.endEditing.
+        # # #     ### g.trace('FAIL', s)
+        # # #     return False
         # General case.
         for prefix in prefixes:
             i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
             if word:
+                ### g.trace(i, g.app.gui.widget_name(w))  ###
                 self.make_general_replacements(i, j, w, word, val, tag)
                 return True
         return False
 
     # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder & helpers
-    def do_placeholder(self) -> None:
+    def do_placeholder(self, w: QTextMixin) -> None:
         """
-        Find the *next* place-holder string, "<|...|>" by default.
+        Find the *next* place-holder string, "..." by default.
 
         # 4614: Never go backwards!
         """
@@ -129,24 +131,29 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             # We are in a tree abbrev.
             all = False
             while p:
-                if self.find_place_holder(p, all=all):
+                if self.find_place_holder(p, w, all=all):
                     return
                 all = True
                 p.moveToThreadNext()
         else:
-            self.find_place_holder(p, all=False)
+            self.find_place_holder(p, w, all=False)
 
     # @+node:ekr.20150514043850.14: *5* abbrev.find_place_holder
-    def find_place_holder(self, p: Position, *, all: bool) -> bool:
+    def find_place_holder(self, p: Position, w: QTextMixin, *, all: bool) -> bool:
         """
         Search for the next place-holder.
         If found, select the place-holder (without the delims).
         """
         c = self.c
         # Do #438: Search for placeholder in headline.
-        s = p.h
-        if c.abbrev_place_start and c.abbrev_place_start in s:
-            w = c.headline_wrapper(p)
+        start, end = c.abbrev_place_start, c.abbrev_place_end
+        if not (start and end):
+            return False
+        w_name = g.app.gui.widget_name(w)
+        if w_name.startswith('head'):
+            s = p.h
+            if not (start in s and end in s):
+                return False
             offset = 0 if all else w.getInsertPoint() if w else 0
             new_s, i, j = self.next_place(s, offset=offset)
             if i is not None:
@@ -156,58 +163,57 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 w = c.headline_wrapper(p)
                 w.setSelectionRange(i, j, insert=j)
                 return True
+            return False
         s = p.b
-        if c.abbrev_place_start and c.abbrev_place_start in s:
-            w = c.frame.body.wrapper
-            offset = 0 if all else w.getInsertPoint() if w else 0
-            new_s, i, j = self.next_place(s, offset=offset)
-            if i is None:
-                return False
-            w = c.frame.body.wrapper
-            switch = p != c.p
-            if switch:
-                c.selectPosition(p)
-            else:
-                scroll = w.getYScrollPosition()
-            w.setAllText(new_s)
-            p.v.b = new_s
-            if switch:
-                c.redraw()
-            w.setSelectionRange(i, j, insert=j)
-            if switch:
-                w.seeInsertPoint()
-            else:
-                # Keep the scroll point if possible.
-                w.setYScrollPosition(scroll)
-                w.seeInsertPoint()
-            c.bodyWantsFocusNow()
-            return True
-        # #453: do nothing here.
-        #   c.frame.body.forceFullRecolor()
-        #   c.bodyWantsFocusNow()
-        return False
+        if not (start in s and end in s):
+            return False
+        w = c.frame.body.wrapper
+        offset = 0 if all else w.getInsertPoint() if w else 0
+        new_s, i, j = self.next_place(s, offset=offset)
+        if i is None:
+            return False
+        switch = p != c.p
+        if switch:
+            c.selectPosition(p)
+        else:
+            scroll = w.getYScrollPosition()
+        w.setAllText(new_s)
+        p.v.b = new_s
+        if switch:
+            c.redraw()
+        w.setSelectionRange(i, j, insert=j)
+        if switch:
+            w.seeInsertPoint()
+        else:
+            # Keep the scroll point if possible.
+            w.setYScrollPosition(scroll)
+            w.seeInsertPoint()
+        c.bodyWantsFocusNow()
+        return True
 
     # @+node:ekr.20150514043850.16: *5* abbrev.next_place
     def next_place(self, s: str, *, offset: int) -> tuple[str, int, int]:
         """
-        Given string s containing a placeholder like <| block |>,
+        Given string s containing a placeholder like  block ,
         return (s2,start,end) where s2 is s without the <| and |>,
         and start, end are the positions of the beginning and end of block.
         """
         c = self.c
         fail = s, None, None
-        if c.abbrev_place_start is None or c.abbrev_place_end is None:
+        start_pat, end_pat = c.abbrev_place_start, c.abbrev_place_end
+        if not start_pat or not end_pat:
             return fail
-        new_pos = s.find(c.abbrev_place_start, offset)
-        new_end = s.find(c.abbrev_place_end, offset)
+        ### g.trace(g.truncate(s, 20))  ###
+        new_pos = s.find(start_pat, offset)
+        new_end = s.find(end_pat, offset)
         if (new_pos < 0 or new_end < 0) and offset:
-            new_pos = s.find(c.abbrev_place_start)
-            new_end = s.find(c.abbrev_place_end)
+            new_pos = s.find(start_pat)
+            new_end = s.find(end_pat)
         if new_pos < 0 or new_end < 0:
             return fail
         start = new_pos
-        place_holder_delim = s[new_pos : new_end + len(c.abbrev_place_end)]
-        place_holder = place_holder_delim[len(c.abbrev_place_start) : -len(c.abbrev_place_end)]
+        place_holder_delim = s[new_pos : new_end + len(end_pat)]
+        place_holder = place_holder_delim[len(start_pat) : -len(end_pat)]
         s2 = s[:start] + place_holder + s[start + len(place_holder_delim) :]
         end = start + len(place_holder)
         # #4614: The start and end delims must be on the same line.
@@ -216,11 +222,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return s2, start, end
 
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
-    def expand_text(self, w: QTextMixin, i: int, j: int, val: str, word: str) -> None:
+    def expand_text(self, w: QTextMixin, i: int, j: int, val: str) -> None:
         """Make a text expansion at location i,j of widget w."""
+        ### g.trace(i, j, w.getAllText()[i:j], 'val', g.truncate(val, 30))
         val = self.make_script_substitutions(i, j, val)
         self.replace_selection(w, i, j, val)
-        self.do_placeholder()
+        self.do_placeholder(w)
 
     # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree
     def expand_tree(self, w: QTextMixin, i: int, j: int, tree_s: str, word: str) -> None:
@@ -231,8 +238,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c = self.c
         old_p = c.p.copy()
         u, undoType = c.undoer, 'Expand Tree Abbreviation'
+        if c.p.hasChildren():
+            g.es_print('tree abbreviations must not have children', color='blue')
+            return
         if not c.canPasteOutline(tree_s):
-            g.trace(f"bad copied outline: {tree_s}")
+            g.es_print(f"bad copied outline: {tree_s}")
             return
 
         # Replace the old node with a new node.
@@ -250,7 +260,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Now search for all place-holders.
         all = False
         for p in old_p.subtree():
-            if self.find_place_holder(p, all=all):
+            if self.find_place_holder(p, w, all=all):
                 break
             all = True
 
@@ -333,7 +343,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self, i: int, j: int, w: QTextMixin, word: str, val: str, tag: str
     ) -> None:
         c, p = self.c, self.c.p
-        if val == '__NEXT_PLACEHOLDER':
+        ### if val == '__NEXT_PLACEHOLDER':
+        if val == self.next_placeholder:  # ',,'
             # Delete the last character.
             i = w.getInsertPoint()
             w.delete(i)
@@ -344,10 +355,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             self.last_hit = p.copy()
             self.expand_tree(w, i, j, val, word)
             return
+
         # Expand, but never expand a search for text matches.
-        if '__NEXT_PLACEHOLDER' not in val:
+        ### if '__NEXT_PLACEHOLDER' not in val:
+        if self.next_placeholder not in val:  # ',,'
             self.last_hit = None
-        self.expand_text(w, i, j, val, word)
+        self.expand_text(w, i, j, val)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
     def make_script_substitutions(self, i: int, j: int, val: str) -> str:
@@ -401,11 +414,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             word = word.rstrip()
         if not word:
             return fail
+        ### g.trace('FOUND', i, j, word)
         return i, tag, word, val
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
         """Replace w[i:j] by s."""
+        ### g.trace(g.truncate(s, 20))  ###
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
         bunch = u.beforeChangeNodeContents(p)  # Handle changes to either p.b or p.h.
@@ -418,7 +433,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             ins = i + len(s)
         w.setSelectionRange(ins, ins, ins)
         if w_name.startswith('head'):
-            pass  # Don't set p.h here!
+            ### pass  # Don't set p.h here!
+            p.v.h = w.getAllText()
         else:
             # Fix part of #438. Don't leave the headline.
             p.v.b = w.getAllText()
