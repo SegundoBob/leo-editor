@@ -233,7 +233,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Replace the old node with a new node.
         u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
-        self.replace_selection(w, i, j, None)
+        self.replace_selection(w, i, j, '')
         c.deleteOutline(op_name="Cut Node")
         c.pasteOutline(s=tree_s)
         u.afterChangeGroup(c.p, undoType=undoType)
@@ -401,25 +401,19 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
-        """Replace w[i:j] by s."""
+        """Undoably eplace w[i:j] by s."""
         p, u = self.c.p, self.c.undoer
         w_name = g.app.gui.widget_name(w)
         bunch = u.beforeChangeNodeContents(p)
 
         # Make the replacement.
-        if i != j:
-            w.delete(i, j)
-        if s is None:
-            ins = i
-        else:
-            w.insert(i, s)
-            ins = i + len(s)
+        w.delete(i, j)
+        w.insert(i, s)
+        ins = i + len(s)
         w.setSelectionRange(ins, ins, ins)
 
-        # Update p.b or p.h.
-        if w_name.startswith('head'):
-            p.v.h = w.getAllText()  # #4614.
-        else:
+        # Update only body text. Setting p.h here would be wrong.
+        if w_name.startswith('body'):
             p.v.b = w.getAllText()
 
         # Complete the undo.
