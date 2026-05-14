@@ -142,11 +142,11 @@ class TestAbbrev(LeoUnitTest):
                 test(w.getAllText(), expected)
 
         # Test headlines
-        if 0:
+        if 1:
             for definition in definitions:
                 c.editHeadline()
                 w = c.headline_wrapper(p)
-                g.trace(w)  ###
+                ### g.trace(w)  ###
                 i = definition.find(';=')
                 contents = definition[:i]
                 expected = (
@@ -234,7 +234,7 @@ class TestAbbrev(LeoUnitTest):
             assert results == expected, f"expected: {expected!r} got: {results!r}"
 
         # Test body.
-        if 0:
+        if 1:
             w = c.frame.body.wrapper
             for contents, expected in table:
                 p.b = contents
