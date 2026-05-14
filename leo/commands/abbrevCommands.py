@@ -295,7 +295,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
 
-        # Never expand a search.
+        # Tell do_placeholder not to expand the search.
         self.last_hit = None
 
         # Now expand.
@@ -344,7 +344,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
 
-        # Expand the search to the tree.
+        # Tell do_placeholder to expand the search.
         self.last_hit = c.p.copy()
 
         # Expand!
