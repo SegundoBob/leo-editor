@@ -83,7 +83,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if not g.isTextWrapper(w):
             return False
         ch = self.get_ch(event, stroke, w)
-        if not ch:
+        if not ch.strip():
             return False
         s, i, j, prefixes = self.get_prefixes(w)
         if not prefixes:
@@ -91,12 +91,20 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Do we see the placeholder? (,, by default)
         word = s[i:j] + ch
         if word.endswith(self.next_placeholder):
+            print('')
+            print('Entry', 'word', word)
+            print('All text', w.getAllText())
+            print('Selected text', repr(w.getSelectedText()))
+            # g.trace('Entry', w.getAllText())  ###
+            # w.setAllText(w.getAllText()[-len(self.next_placeholder)])
             self.do_placeholder(w)
             return True
         # Does the incoming string match any abbreviation?
         for prefix in prefixes:
-            i, tag, word, val = self.match_prefix(ch, i, j, prefix, s)
+            i, tag, word, val = self.match_prefix(ch, j, prefix, s)
             if word:
+                if ',' in val[-5:]:
+                    g.trace(val)
                 if tag == 'tree':
                     self.make_tree_replacements(i, j, w, word, val)
                 else:
@@ -152,6 +160,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         ok, new_s, i, j = self.next_place(s)
         if not ok:
             return False
+        g.trace(new_s[i:j])  ###
         switch = p != c.p
         if switch:
             c.selectPosition(p)
@@ -243,10 +252,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """Get the ch from the stroke."""
         ch = g.checkUnicode(event and event.char or '')
         if w.hasSelection():
-            return None
+            return ''
         assert g.isStrokeOrNone(stroke), stroke
         if stroke in ('BackSpace', 'Delete'):
-            return None
+            return ''
         d = {'Return': '\n', 'Tab': '\t', 'space': ' ', 'underscore': '_'}
         if stroke:
             ch = d.get(stroke.s, stroke.s)
@@ -261,7 +270,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                     ch = event.char if event else ''
         else:
             ch = event.char
-        return ch
+        return ch or ''
 
     # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
     def get_prefixes(self, w: QTextMixin) -> tuple[str, int, int, list[str]]:
@@ -281,8 +290,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
     def make_general_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
-        ### c, p = self.c, self.c.p
         c = self.c
+
         if val == self.next_placeholder:  # ',,'
             # Delete the last character.
             i = w.getInsertPoint()
@@ -347,25 +356,19 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.expand_tree(w, i, j, val, word)
 
     # @+node:ekr.20161121112837.1: *4* abbrev.match_prefix
-    def match_prefix(
-        self, ch: str, i: int, j: int, prefix: str, s: str
-    ) -> tuple[int, str, str, str]:
+    def match_prefix(self, ch: str, i: int, prefix: str, s: str) -> tuple[int, str, str, str]:
         """A match helper."""
-        i = j - len(prefix)
-        word = g.checkUnicode(prefix) + g.checkUnicode(ch)
+        fail = -1, None, None, None
+        ### i = j - len(prefix)
+        word = prefix + ch
         val = self.tree_abbrevs_d.get(word)
         if val:
             tag = 'tree'
         else:
             val, tag = self.abbrevs.get(word, (None, None))
-        fail = -1, tag, None, None
         if not val:
             return fail
-        if ch in ' \t\n':
-            word = word.rstrip()
-        if not word:
-            return fail
-        return i, tag, word, val
+        return i - len(prefix), tag, word, val
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
