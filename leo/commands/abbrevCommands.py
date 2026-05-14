@@ -73,8 +73,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """
         Not a command.  Expand abbreviations..
 
-        Words start with '@'.
-
         Return True if the abbreviation was expanded.
         """
         w = event.w if event else None
