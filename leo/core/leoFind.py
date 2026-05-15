@@ -360,6 +360,8 @@ class LeoFind:
     # @+node:ekr.20210925161148.1: *3* find.interactive_search_helper
     def interactive_search_helper(
         self,
+        *,
+        dry_run: bool = False,
         root: Position = None,
         settings: Settings = None,
     ) -> None:  # pragma: no cover
@@ -413,7 +415,8 @@ class LeoFind:
             return
         if root:
             c.selectPosition(root)
-        self.do_find_next(d)
+        if not dry_run:
+            self.do_find_next(d)
 
     # @+node:ekr.20031218072017.3055: *3* LeoFind.Commands (immediate execution)
     # @+node:ekr.20031218072017.3062: *4* find.change-then-find & helper
