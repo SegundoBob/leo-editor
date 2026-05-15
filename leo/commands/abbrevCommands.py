@@ -35,6 +35,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     See apropos-abbreviations for details.
     """
 
+    # @+<< AbbrevCommandsClass: __slots__ >>
+    # @+node:ekr.20260515152425.1: *3* << AbbrevCommandsClass: __slots__ >>
     __slots__ = (
         'abbrevs',
         'c',
@@ -45,6 +47,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'tree_abbrevs_d',
         'w',
     )
+    # @-<< AbbrevCommandsClass: __slots__ >>
 
     # @+others
     # @+node:ekr.20150514043850.3: *3* abbrev.__init__
