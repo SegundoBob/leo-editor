@@ -184,7 +184,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return False
         if not w == c.frame.body.wrapper:
             g.trace('OOOOPS')
-        ### w = c.frame.body.wrapper
         ok, new_s, i, j = self.next_place(s)
         if not ok:
             return False
@@ -291,7 +290,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return event_ch
 
     # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
-    def get_prefixes(self, ins: int, s: str) -> list[str]:  ### tuple[int, int, list[str]]:
+    def get_prefixes(self, ins: int, s: str) -> list[str]:
         """
         Return the prefixes at given insert point.
 
@@ -299,7 +298,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Any whitespace stops the search.
         """
-        ### i, prefixes = j - 1, []
         i, prefixes = ins - 1, []
         while len(s) > i >= 0 and s[i] not in ' \t\n':
             prefixes.append(s[i:ins])
@@ -307,7 +305,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         prefixes = list(reversed(prefixes))
         if '' not in prefixes:
             prefixes.append('')
-        ### return i, j, prefixes
         return prefixes
 
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
