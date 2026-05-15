@@ -42,8 +42,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'dyna_regex',
         'scripting_enabled',
         'expanding',
-        'last_hit',
         'number_regex',
+        'search_root',
         'tree_abbrevs_d',
         'w',
     )
@@ -63,7 +63,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.number_regex = re.compile(r'(?<!\\)\\n')  # to replace \\n but not \\\\n
         self.scripting_enabled = False
         self.expanding = False  # True: expanding abbreviations.
-        self.last_hit: Position = None  # A flag for do_placeholder.
+        self.search_root: Position = None  # Limist searches to this tree.
         self.subst_env: list[str] = []  # The scripting environment.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w: QTextMixin = None
@@ -88,7 +88,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         s = w.getAllText()
         ins = w.getInsertPoint()
         g.trace(f"ch: {ch} s: {g.truncate(s, 20)}")
-        if self.next_placeholder.endswith(ch):
+        if self.next_placeholder.endswith(s[ins - 1] + ch):
             # Handle a trailing placeholder. (,, by default)
             self.do_bare_placeholder()
             return True
@@ -111,7 +111,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20260515032837.1: *4* abbrev.do_bare_placeholder
     def do_bare_placeholder(self) -> None:
         w = self.w
-        g.trace(self.last_hit.h if self.last_hit else 'None')
+        g.trace(self.search_root.h if self.search_root else 'None')
         self.do_placeholder()
         i, j = w.getSelectionRange()
         w.delete(j - 1)
@@ -125,15 +125,33 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         Find the *next* place-holder string, "<|...|>" by default.
         """
         c = self.c
-        p = c.p.copy()
-        if self.last_hit:
-            # We are in a tree abbrev.
-            while p:
-                if self.find_place_holder(p):
-                    return
-                p.moveToThreadNext()
-        else:
-            self.find_place_holder(p)
+        p = c.p
+        ### This searches too much.
+        while p and not self.find_place_holder(p):
+            p.moveToThreadNext()
+
+        # p = c.p
+        # if self.search_root.isAncestorOf(p):
+        #     for p in p.self_and_subtree():
+        #         if self.find_place_holder(p):
+        #             return
+
+        # p = c.p
+        # after = p.nodeAfterTree()
+        # while p and p != after:
+        #     if self.find_place_holder(p):
+        #         return
+        #     p.moveToThreadNext()
+
+        # p = c.p.copy()
+        # if self.search_root:
+        #     # We are in a tree abbrev.
+        #     while p:
+        #         if self.find_place_holder(p):
+        #             return
+        #         p.moveToThreadNext()
+        # else:
+        #     self.find_place_holder(p)
 
     # @+node:ekr.20150514043850.14: *5* abbrev.find_place_holder
     def find_place_holder(self, p: Position) -> bool:
@@ -295,14 +313,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
     def make_general_replacements(self, i: int, j: int, word: str, val: str) -> None:
         c = self.c
-
-        # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
-
-        # Tell do_placeholder not to expand the search.
-        self.last_hit = None
-
-        # Now expand.
+        self.search_root = c.p.copy()
         self.expand_text(i, j, val)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
@@ -342,16 +354,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20260514103638.1: *4* abbrev.make_tree_replacements
     def make_tree_replacements(self, i: int, j: int, word: str, val: str) -> None:
-
         c = self.c
-
-        # Handle a word that matches a prefix.
         c.abbrev_subst_env['_abr'] = word
-
-        # Tell do_placeholder to expand the search.
-        self.last_hit = c.p.copy()
-
-        # Expand!
+        self.search_root = c.p.copy()
         self.expand_tree(i, j, val, word)
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
