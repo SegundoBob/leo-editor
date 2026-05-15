@@ -85,24 +85,25 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         ):  # fmt: skip
             return False
         s = w.getAllText()
-        ### word = s[i:j] + ch
-        if (s + ch).endswith(self.next_placeholder):
+        ins = w.getInsertPoint()
+        g.trace(f"ch: {ch} s: {g.truncate(s, 20)}")
+        if self.next_placeholder.endswith(ch):
             # Handle a trailing placeholder. (,, by default)
             self.do_bare_placeholder(w)
             return True
-        i, j, prefixes = self.get_prefixes(s, w)
-        if i == j or not prefixes:
+        prefixes = self.get_prefixes(ins, s)
+        if not prefixes:
             return False
 
         # Try to match an abbreviation.
         for prefix in prefixes:
-            word2 = prefix + ch
-            i2 = j - len(prefix)
-            if val := self.tree_abbrevs_d.get(word2):
-                self.make_tree_replacements(i2, j, w, word2, val)
+            word = prefix + ch
+            i = ins - len(prefix)
+            if val := self.tree_abbrevs_d.get(word):
+                self.make_tree_replacements(i, ins, w, word, val)
                 return True
-            if val := self.abbrevs.get(word2):
-                self.make_general_replacements(i2, j, w, word2, val)
+            if val := self.abbrevs.get(word):
+                self.make_general_replacements(i, ins, w, word, val)
                 return True
         return False
 
@@ -267,7 +268,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return event_ch
 
     # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
-    def get_prefixes(self, s: str, w: QTextMixin) -> tuple[int, int, list[str]]:
+    def get_prefixes(self, ins: int, s: str) -> list[str]:  ### tuple[int, int, list[str]]:
         """
         Return the prefixes at the current insertion point of w.
 
@@ -275,15 +276,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Any whitespace stops the search.
         """
-        j = w.getInsertPoint()
-        i, prefixes = j - 1, []
+        ### i, prefixes = j - 1, []
+        i, prefixes = ins - 1, []
         while len(s) > i >= 0 and s[i] not in ' \t\n':
-            prefixes.append(s[i:j])
+            prefixes.append(s[i:ins])
             i -= 1
         prefixes = list(reversed(prefixes))
         if '' not in prefixes:
             prefixes.append('')
-        return i, j, prefixes
+        ### return i, j, prefixes
+        return prefixes
 
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
     def make_general_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
