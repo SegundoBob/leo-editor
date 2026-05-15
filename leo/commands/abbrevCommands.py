@@ -17,8 +17,6 @@ from leo.commands.baseCommands import BaseEditCommandsClass
 if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoCommands import Commands as Cmdr
     from leo.core.leoGui import LeoKeyEvent
-
-    ### from leo.core.leoNodes import Position
     from leo.plugins.qt_text import QTextMixin
 
 # @-<< abbrevCommands imports & abbreviations >>
@@ -44,7 +42,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'scripting_enabled',
         'expanding',
         'number_regex',
-        ### 'search_root',
         'tree_abbrevs_d',
         'w',
     )
@@ -64,7 +61,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.number_regex = re.compile(r'(?<!\\)\\n')  # to replace \\n but not \\\\n
         self.scripting_enabled = False
         self.expanding = False  # True: expanding abbreviations.
-        ### self.search_root: Position = None  # Limist searches to this tree.
         self.subst_env: list[str] = []  # The scripting environment.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
         self.w: QTextMixin = None
@@ -76,7 +72,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Return True if the abbreviation was expanded.
         """
-        c = self.c
+        ### c = self.c
         ch = self.get_ch(event, stroke)
         w = event.w if event else None
         if (
@@ -100,18 +96,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             word = prefix + ch
             i = ins - len(prefix)
             if val := self.tree_abbrevs_d.get(word):
-                # self.make_tree_replacements(i, ins, word, val)
-                c.abbrev_subst_env['_abr'] = word
+                self.make_all_script_substitutions(val)
                 self.expand_tree(i, ins, val, word)
-                self.init_place_holder_search()
+                self.init_place_holder_search(tree_flag=True)
                 return True
             if val := self.abbrevs.get(word):
-                ### self.make_general_replacements(i, ins, word, val)
-                c.abbrev_subst_env['_abr'] = word
-                ### self.expand_text(i, ins, val)
-                val = self.make_script_substitutions(val)
+                self.make_all_script_substitutions(val)
                 self.replace_selection(i, ins, val)
-                self.init_place_holder_search()
+                self.init_place_holder_search(tree_flag=False)
                 return True
         return False
 
@@ -137,17 +129,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.pasteOutline(s=tree_s)
         u.afterChangeGroup(c.p, undoType=undoType)
         c.redraw(c.p)
-
-        # Make all script substitutions first.
-        for p in c.p.self_and_subtree():
-            # Search for the next place-holder.
-            p.h = self.make_script_substitutions(p.h)
-            p.b = self.make_script_substitutions(p.b)
-        ###
-        # # Now search for all place-holders.
-        # for p in c.p.subtree():
-        #     if self.find_place_holder(p):
-        #         break
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke) -> str:
@@ -185,20 +166,53 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return prefixes
 
     # @+node:ekr.20260515084054.1: *4* abbrev.init_place_holder_search
-    def init_place_holder_search(self) -> None:
-        # c = self.c
-        pass
+    def init_place_holder_search(self, tree_flag: bool) -> None:
+        c = self.c
+        finder = c.findCommands
+        w = self.w
+        w.setInsertPoint(0)
+        start_pat = re.escape(c.abbrev_place_start)
+        end_pat = re.escape(c.abbrev_place_end)
+        finder.reverse = False
+
+        settings = g.Bunch(
+            in_headline     = False,
+            find_text       = rf"({start_pat}.*?{end_pat})",
+            change_text     = '',
+            file_only       = True,
+            mark_changes    = False,
+            mark_finds      = False,
+            ignore_case     = True,
+            node_only       = not tree_flag,
+            pattern_match   = True,
+            search_body     = True,
+            search_headline = True,
+            suboutline_only = True,
+            whole_word      = False,
+        )  # fmt: skip
+
+        finder.interactive_search_helper(root=c.p, settings=settings)
+
+    # @+node:ekr.20260515090223.1: *4* abbrev.make_all_script_substitutions
+    def make_all_script_substitutions(self, val: str) -> None:
+        c = self.c
+        p = c.p
+        if not self.scripting_enabled:
+            return
+        if not c.abbrev_subst_start or not c.abbrev_subst_end:
+            return
+        for p in p.self_and_subtree():
+            p.h = self.make_script_substitutions(p.h, val)
+            p.b = self.make_script_substitutions(p.b, val)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
-    def make_script_substitutions(self, val: str) -> str:
+    def make_script_substitutions(self, val: str, word: str) -> str:
         """Make scripting substitutions in node p."""
         c = self.c
-        if not self.scripting_enabled:
-            return val
-        if not c.abbrev_subst_start or not c.abbrev_subst_end:
-            return val
         if c.abbrev_subst_start not in val or c.abbrev_subst_end not in val:
             return val
+
+        c.abbrev_subst_env['_abr'] = word
 
         # Perform all scripting substitutions.
         while c.abbrev_subst_start in val:
