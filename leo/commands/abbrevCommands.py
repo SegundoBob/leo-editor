@@ -75,31 +75,24 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Return True if the abbreviation was expanded.
         """
+        ch = self.get_ch(event, stroke)
         w = event.w if event else None
-        if self.expanding:
-            return False
-        if not g.isTextWrapper(w):
-            return False
-        ch = self.get_ch(event, stroke, w)
-        if not ch.strip():
+        if (
+            self.expanding or
+            not g.isTextWrapper(w) or
+            w.hasSelection() or
+            not ch.strip()
+        ):  # fmt: skip
             return False
         s = w.getAllText()
-        i, j, prefixes = self.get_prefixes(s, w)
-        if not prefixes:
-            return False
-        if i == j:
-            return False  # Defensive. Should never happen.
-
-        # Handle a trailing placeholder. (,, by default)
-        word = s[i:j] + ch
-        if word.endswith(self.next_placeholder):
-            g.trace(word, self.last_hit.h if self.last_hit else 'None')
-            self.do_placeholder(w)
-            i2, j2 = w.getSelectionRange()
-            w.delete(j - 1)
-            i2, j2 = max(0, i2 - 1), max(i2, j2 - 1)
-            w.setSelectionRange(i2, j2, insert=j2)
+        ### word = s[i:j] + ch
+        if (s + ch).endswith(self.next_placeholder):
+            # Handle a trailing placeholder. (,, by default)
+            self.do_bare_placeholder(w)
             return True
+        i, j, prefixes = self.get_prefixes(s, w)
+        if i == j or not prefixes:
+            return False
 
         # Try to match an abbreviation.
         for prefix in prefixes:
@@ -112,6 +105,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 self.make_general_replacements(i2, j, w, word2, val)
                 return True
         return False
+
+    # @+node:ekr.20260515032837.1: *4* abbrev.do_bare_placeholder
+    def do_bare_placeholder(self, w: QTextMixin) -> None:
+        g.trace(self.last_hit.h if self.last_hit else 'None')
+        self.do_placeholder(w)
+        i, j = w.getSelectionRange()
+        w.delete(j - 1)
+        # i2, j2 = w.getSelectionRange()
+        # i2, j2 = max(0, i2 - 1), max(i2, j2 - 1)
+        # w.setSelectionRange(i2, j2, insert=j2)
 
     # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder & helpers
     def do_placeholder(self, w: QTextMixin) -> None:
@@ -190,18 +193,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         """
         c = self.c
         fail = False, None, None, None
+
+        # Defensive.
         start_pat, end_pat = c.abbrev_place_start, c.abbrev_place_end
         if not start_pat or not end_pat:
             return fail
 
         # Find the next match.
         start = s.find(start_pat, 0)
-        if start == -1:
-            return fail
         end = s.find(end_pat, start)
-        if end == -1:
-            return fail
-        if '\n' in s[start:end]:  # #4614.
+        if start == -1 or end == -1 or '\n' in s[start:end]:
             return fail
 
         # Make the substitution.
@@ -249,10 +250,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
                 break
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
-    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
+    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke) -> str:
         """Return the ch from the stroke or event."""
-        if w.hasSelection():
-            return ''
         event_ch = event.char or '' if event else ''
         assert g.isStrokeOrNone(stroke), stroke
         if stroke in ('BackSpace', 'Delete'):
