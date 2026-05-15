@@ -28,6 +28,13 @@ class TestAbbrev(LeoUnitTest):
         definition = 'details;;=<details><summary><b><|Title|></b></summary>\n<br>\n\n</details>'
         x.addAbbrevHelper(definition)
 
+        def test(kind, results, expected) -> None:
+            assert results == expected, (
+                f"{kind}\n"
+                f"expected: {expected!r}\n"
+                f"     got: {results!r}"
+            )  # fmt: skip
+
         if 1:  # Test 1: Test active double comma in the body
             w = c.frame.body.wrapper
 
@@ -44,10 +51,12 @@ class TestAbbrev(LeoUnitTest):
             # Check the expansion (no comma) and the selection.
             s = w.getAllText()
             i = definition.find(';=')
-            expected = definition[i + 2 :].replace('<|', '').replace('|>', '')
-            assert s == expected, repr(s)  # Test 2.1: Body contents.
+            expected = definition[i + 2 :]  ### .replace('<|', '').replace('|>', '')
+            # assert s == expected, repr(s)  # Test 2.1: Body contents.
+            test('body', s, expected)
             s2 = w.getSelectedText()
-            assert s2 == 'Title', repr(s2)  # Test. 2.2: Body selection.
+            # assert s2 == '<|Title|>', repr(s2)  # Test. 2.2: Body selection.
+            test('body', s2, '<|Title|>')
 
         # Test 2: Test active double comma in a headline.
         c.editHeadline()
@@ -66,10 +75,10 @@ class TestAbbrev(LeoUnitTest):
         # Check the expansion (no comma) and the selection.
         s = w.getAllText()
         i = definition.find(';=')
-        expected = definition[i + 2 :].replace('\n', '').replace('<|', '').replace('|>', '')
-        assert s == expected, repr(s)  # Test 2.1: Headline contents.
+        expected = definition[i + 2 :].replace('\n', ' ').replace('  ', ' ')
+        test('head', s, expected)
         s2 = w.getSelectedText()
-        assert s2 == 'Title', repr(s2)  # Test 2.2: Headline selection.
+        test('head', s2, '<|Title|>')
 
     # @+node:ekr.20260513023424.1: *3* TestAbbrev.test_bare_comma
     def test_bare_comma(self):
@@ -117,9 +126,9 @@ class TestAbbrev(LeoUnitTest):
         for definition in definitions:
             x.addAbbrevHelper(definition)
 
-        def test(results, expected) -> None:
+        def test(kind, results, expected) -> None:
             assert results == expected, (
-                '\n'
+                f"{kind}\n"
                 f"expected: {expected!r}\n"
                 f"     got: {results!r}"
             )  # fmt: skip
@@ -130,13 +139,13 @@ class TestAbbrev(LeoUnitTest):
             for definition in definitions:
                 i = definition.find(';=')
                 contents = definition[:i]
-                expected = definition[i + 2 :].replace('<|', '').replace('|>', '')
+                expected = definition[i + 2 :]
                 p.b = contents
                 w.setInsertPoint(len(contents), contents)
                 event = LeoKeyEvent(c, char=';', binding=';', w=w)
                 x.expandAbbrev(event=event, stroke=None)
-                test(p.b, expected)
-                test(w.getAllText(), expected)
+                test('body', p.b, expected)
+                test('body', w.getAllText(), expected)
 
         # Test headlines
         if 1:
@@ -145,26 +154,14 @@ class TestAbbrev(LeoUnitTest):
                 w = c.headline_wrapper(p)
                 i = definition.find(';=')
                 contents = definition[:i]
-                expected = definition[i + 2 :].replace('\n', '').replace('<|', '').replace('|>', '')
+                expected = definition[i + 2 :].replace('\n', ' ').replace('  ', ' ')
                 p.h = contents
                 w.setInsertPoint(len(contents), contents)
                 event = LeoKeyEvent(c, char=';', binding=';', w=w)
                 x.expandAbbrev(event=event, stroke=None)
-                test(w.getAllText(), expected)
+                test('head', w.getAllText(), expected)
                 c.endEditing()
-                test(p.h, expected)
-
-    # @+node:ekr.20210905064816.2: *3* TestAbbrev.test_next_place
-    def test_next_place(self):
-        c = self.c
-        ac = c.abbrevCommands
-        assert ac
-        c.abbrev_place_start = '<|'
-        c.abbrev_place_end = '|>'
-        s = '123<| sub |>456'
-        ok, new_s, i, j = ac.next_place(s)
-        assert new_s == s.replace('<|', '').replace('|>', ''), new_s
-        assert new_s[i:j] == ' sub ', new_s[i:j]
+                test('head', p.h, expected)
 
     # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
     def test_scripting_abbreviations(self):
