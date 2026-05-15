@@ -93,6 +93,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Handle a trailing placeholder. (,, by default)
         word = s[i:j] + ch
         if word.endswith(self.next_placeholder):
+            g.trace(word, self.last_hit.h if self.last_hit else 'None')
             self.do_placeholder(w)
             i2, j2 = w.getSelectionRange()
             w.delete(j - 1)
@@ -145,10 +146,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             ok, new_s, i, j = self.next_place(s)
             if not ok:
                 return False
-            p.h = new_s.replace('\n', '')
-            c.redraw(p)
-            c.editHeadline()
-            w = c.headline_wrapper(p)
+            ### c.endEditing()  ### Experimental.
+            ### p.h = new_s.replace('\n', '')
+            w.setAllText(new_s.replace('\n', ''))
+            ### c.redraw(p)
+            ### c.editHeadline()
+            ### w = c.headline_wrapper(p)
             w.setSelectionRange(i, j, insert=j)
             return True
         s = p.b
@@ -158,9 +161,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         ok, new_s, i, j = self.next_place(s)
         if not ok:
             return False
-        ### g.trace(new_s[i:j])  ###
         switch = p != c.p
         if switch:
+            c.endEditing()  ### Experimental.
             c.selectPosition(p)
         else:
             scroll = w.getYScrollPosition()
@@ -181,7 +184,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.16: *5* abbrev.next_place
     def next_place(self, s: str) -> tuple[bool, str, int, int]:
         """
-        Given string s containing a placeholder like  block ,
+        Given string s containing a placeholder like <|...|>,
         return (s2, start, end) where s2 is s without the <| and |>,
         and start, end are the positions of the beginning and end of block.
         """
@@ -247,28 +250,22 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke, w: QTextMixin) -> str:
-        """Get the ch from the stroke."""
-        ch = g.checkUnicode(event and event.char or '')
+        """Return the ch from the stroke or event."""
         if w.hasSelection():
             return ''
+        event_ch = event.char or '' if event else ''
         assert g.isStrokeOrNone(stroke), stroke
         if stroke in ('BackSpace', 'Delete'):
             return ''
         d = {'Return': '\n', 'Tab': '\t', 'space': ' ', 'underscore': '_'}
-        if stroke:
-            ch = d.get(stroke.s, stroke.s)
-            if len(ch) > 1:
-                if (
-                    stroke.find('Ctrl+') > -1 or
-                    stroke.find('Alt+') > -1 or
-                    stroke.find('Meta+') > -1
-                ):  # fmt: skip
-                    ch = ''
-                else:
-                    ch = event.char if event else ''
-        else:
-            ch = event.char
-        return ch or ''
+        if not stroke:
+            return event_ch
+        ch = d.get(stroke.s, stroke.s)
+        if len(ch) == 1:
+            return ch
+        if any(stroke.find(z) > -1 for z in ('Ctrl+', 'Alt+', 'Meta+')):
+            return ''
+        return event_ch
 
     # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
     def get_prefixes(self, s: str, w: QTextMixin) -> tuple[int, int, list[str]]:
