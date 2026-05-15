@@ -84,12 +84,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             not ch.strip()
         ):  # fmt: skip
             return False
+        self.w = w
         s = w.getAllText()
         ins = w.getInsertPoint()
         g.trace(f"ch: {ch} s: {g.truncate(s, 20)}")
         if self.next_placeholder.endswith(ch):
             # Handle a trailing placeholder. (,, by default)
-            self.do_bare_placeholder(w)
+            self.do_bare_placeholder()
             return True
         prefixes = self.get_prefixes(ins, s)
         if not prefixes:
@@ -100,17 +101,18 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             word = prefix + ch
             i = ins - len(prefix)
             if val := self.tree_abbrevs_d.get(word):
-                self.make_tree_replacements(i, ins, w, word, val)
+                self.make_tree_replacements(i, ins, word, val)
                 return True
             if val := self.abbrevs.get(word):
-                self.make_general_replacements(i, ins, w, word, val)
+                self.make_general_replacements(i, ins, word, val)
                 return True
         return False
 
     # @+node:ekr.20260515032837.1: *4* abbrev.do_bare_placeholder
-    def do_bare_placeholder(self, w: QTextMixin) -> None:
+    def do_bare_placeholder(self) -> None:
+        w = self.w
         g.trace(self.last_hit.h if self.last_hit else 'None')
-        self.do_placeholder(w)
+        self.do_placeholder()
         i, j = w.getSelectionRange()
         w.delete(j - 1)
         # i2, j2 = w.getSelectionRange()
@@ -118,7 +120,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # w.setSelectionRange(i2, j2, insert=j2)
 
     # @+node:ekr.20260512105951.1: *4* abbrev.do_placeholder & helpers
-    def do_placeholder(self, w: QTextMixin) -> None:
+    def do_placeholder(self) -> None:
         """
         Find the *next* place-holder string, "<|...|>" by default.
         """
@@ -127,19 +129,20 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if self.last_hit:
             # We are in a tree abbrev.
             while p:
-                if self.find_place_holder(p, w):
+                if self.find_place_holder(p):
                     return
                 p.moveToThreadNext()
         else:
-            self.find_place_holder(p, w)
+            self.find_place_holder(p)
 
     # @+node:ekr.20150514043850.14: *5* abbrev.find_place_holder
-    def find_place_holder(self, p: Position, w: QTextMixin) -> bool:
+    def find_place_holder(self, p: Position) -> bool:
         """
         Search for the next place-holder.
         If found, select the place-holder (without the delims).
         """
         c = self.c
+        w = self.w
         # Do #438: Search for placeholder in headline.
         start, end = c.abbrev_place_start, c.abbrev_place_end
         if not (start and end):
@@ -161,7 +164,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         s = p.b
         if not (start in s and end in s):
             return False
-        w = c.frame.body.wrapper
+        if not w == c.frame.body.wrapper:
+            g.trace('OOOOPS')
+        ### w = c.frame.body.wrapper
         ok, new_s, i, j = self.next_place(s)
         if not ok:
             return False
@@ -211,14 +216,14 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return True, s2, start, end - len(start_pat)
 
     # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
-    def expand_text(self, w: QTextMixin, i: int, j: int, val: str) -> None:
+    def expand_text(self, i: int, j: int, val: str) -> None:
         """Make a text expansion at location i,j of widget w."""
         val = self.make_script_substitutions(val)
-        self.replace_selection(w, i, j, val)
-        self.do_placeholder(w)
+        self.replace_selection(i, j, val)
+        self.do_placeholder()
 
     # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree
-    def expand_tree(self, w: QTextMixin, i: int, j: int, tree_s: str, word: str) -> None:
+    def expand_tree(self, i: int, j: int, tree_s: str, word: str) -> None:
         """
         Paste tree_s as children of c.p.
         This happens *before* any substitutions are made.
@@ -234,7 +239,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Replace the old node with a new node.
         u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
-        self.replace_selection(w, i, j, '')
+        self.replace_selection(i, j, '')
         c.deleteOutline(op_name="Cut Node")
         c.pasteOutline(s=tree_s)
         u.afterChangeGroup(c.p, undoType=undoType)
@@ -247,7 +252,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             p.b = self.make_script_substitutions(p.b)
         # Now search for all place-holders.
         for p in c.p.subtree():
-            if self.find_place_holder(p, w):
+            if self.find_place_holder(p):
                 break
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
@@ -270,7 +275,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
     def get_prefixes(self, ins: int, s: str) -> list[str]:  ### tuple[int, int, list[str]]:
         """
-        Return the prefixes at the current insertion point of w.
+        Return the prefixes at given insert point.
 
         Any sequence longer than 1 may abbreviation.
 
@@ -288,7 +293,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return prefixes
 
     # @+node:ekr.20260509051202.1: *4* abbrev.make_general_replacements
-    def make_general_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
+    def make_general_replacements(self, i: int, j: int, word: str, val: str) -> None:
         c = self.c
 
         # Handle a word that matches a prefix.
@@ -298,7 +303,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.last_hit = None
 
         # Now expand.
-        self.expand_text(w, i, j, val)
+        self.expand_text(i, j, val)
 
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
     def make_script_substitutions(self, val: str) -> str:
@@ -336,7 +341,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         return val
 
     # @+node:ekr.20260514103638.1: *4* abbrev.make_tree_replacements
-    def make_tree_replacements(self, i: int, j: int, w: QTextMixin, word: str, val: str) -> None:
+    def make_tree_replacements(self, i: int, j: int, word: str, val: str) -> None:
 
         c = self.c
 
@@ -347,12 +352,15 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.last_hit = c.p.copy()
 
         # Expand!
-        self.expand_tree(w, i, j, val, word)
+        self.expand_tree(i, j, val, word)
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
-    def replace_selection(self, w: QTextMixin, i: int, j: int, s: str) -> None:
+    def replace_selection(self, i: int, j: int, s: str) -> None:
         """Undoably replace w[i:j] by s."""
-        p, u = self.c.p, self.c.undoer
+        c = self.c
+        p = c.p
+        u = c.undoer
+        w = self.w
         w_name = g.app.gui.widget_name(w)
         bunch = u.beforeChangeNodeContents(p)
 
