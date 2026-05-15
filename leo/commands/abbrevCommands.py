@@ -75,15 +75,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Return True if the abbreviation was expanded.
         """
-        ### c = self.c
         ch = self.get_ch(event, stroke)
         w = event.w if event else None
-        if (
-            self.expanding or
-            not g.isTextWrapper(w) or
-            w.hasSelection() or
-            not ch.strip()
-        ):  # fmt: skip
+        if self.expanding or not g.isTextWrapper(w) or w.hasSelection() or not ch.strip():
             return False
         self.w = w
         s = w.getAllText()
@@ -99,12 +93,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             word = prefix + ch
             i = ins - len(prefix)
             if val := self.tree_abbrevs_d.get(word):
-                self.make_all_script_substitutions(val)
                 self.expand_tree(i, ins, val, word)
+                ### self.make_all_script_substitutions(val)
                 self.init_place_holder_search(tree_flag=True)
                 return True
             if val := self.abbrevs.get(word):
-                self.make_all_script_substitutions(val)
+                ### self.make_all_script_substitutions(val)
                 self.replace_selection(i, ins, val)
                 self.init_place_holder_search(tree_flag=False)
                 return True
@@ -172,8 +166,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     def init_place_holder_search(self, tree_flag: bool) -> None:
         c = self.c
         finder = c.findCommands
-        w = self.w
-        w.setInsertPoint(0)
         start_pat = re.escape(c.abbrev_place_start)
         end_pat = re.escape(c.abbrev_place_end)
         finder.reverse = False
@@ -194,7 +186,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             whole_word      = False,
         )  # fmt: skip
 
-        finder.interactive_search_helper(root=c.p, settings=settings)
+        if 0:  # Not ready.
+            finder.interactive_search_helper(root=c.p, settings=settings, dry_run=True)
 
     # @+node:ekr.20260515090223.1: *4* abbrev.make_all_script_substitutions
     def make_all_script_substitutions(self, val: str) -> None:
@@ -249,13 +242,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         u = c.undoer
         w = self.w
         w_name = g.app.gui.widget_name(w)
+
+        # Start the undo.
         bunch = u.beforeChangeNodeContents(p)
 
         # Make the replacement.
         w.delete(i, j)
         w.insert(i, s)
-        ins = i + len(s)
-        w.setSelectionRange(ins, ins, ins)
 
         # Update only body text. Setting p.h here would be wrong.
         if w_name.startswith('body'):
