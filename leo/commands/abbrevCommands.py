@@ -86,8 +86,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return False
         self.w = w
         s = w.getAllText()
+        if not s:
+            return False
         ins = w.getInsertPoint()
-        g.trace(f"ch: {ch} s: {g.truncate(s, 20)}")
+        # g.trace(f"ch: {ch} s: {g.truncate(s, 20)}")
         if self.next_placeholder.endswith(s[ins - 1] + ch):
             # Handle a trailing placeholder. (,, by default)
             self.do_bare_placeholder()
@@ -111,7 +113,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20260515032837.1: *4* abbrev.do_bare_placeholder
     def do_bare_placeholder(self) -> None:
         w = self.w
-        g.trace(self.search_root.h if self.search_root else 'None')
+        # g.trace(self.search_root.h if self.search_root else 'None')
         self.do_placeholder()
         i, j = w.getSelectionRange()
         w.delete(j - 1)
@@ -127,7 +129,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c = self.c
         p = c.p
         ### This searches too much.
-        while p and not self.find_place_holder(p):
+        while p:
+            if self.find_place_holder(p):
+                return
             p.moveToThreadNext()
 
         # p = c.p
@@ -156,121 +160,75 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.14: *5* abbrev.find_place_holder
     def find_place_holder(self, p: Position) -> bool:
         """
-        Search for the next place-holder.
-        If found, select the place-holder (without the delims).
+        Search for the next place-holder and select it.
         """
         c = self.c
         w = self.w
-        # Do #438: Search for placeholder in headline.
-        start, end = c.abbrev_place_start, c.abbrev_place_end
-        if not (start and end):
-            return False
-        w_name = g.app.gui.widget_name(w)
-        if w_name.startswith('head'):
-            s = w.getAllText()
-            ok, new_s, i, j = self.next_place(s)
-            if not ok:
-                return False
-            ### c.endEditing()  ### Experimental.
-            ### p.h = new_s.replace('\n', '')
-            w.setAllText(new_s.replace('\n', ''))
-            ### c.redraw(p)
-            ### c.editHeadline()
-            ### w = c.headline_wrapper(p)
-            w.setSelectionRange(i, j, insert=j)
-            return True
-        s = p.b
-        if not (start in s and end in s):
-            return False
-        if not w == c.frame.body.wrapper:
-            g.trace('OOOOPS')
-        ok, new_s, i, j = self.next_place(s)
-        if not ok:
-            return False
-        switch = p != c.p
-        if switch:
-            c.endEditing()  ### Experimental.
-            c.selectPosition(p)
-        else:
-            scroll = w.getYScrollPosition()
-        w.setAllText(new_s)
-        p.v.b = new_s
-        if switch:
-            c.redraw()
-        w.setSelectionRange(i, j, insert=j)
-        if switch:
-            w.seeInsertPoint()
-        else:
-            # Keep the scroll point if possible.
-            w.setYScrollPosition(scroll)
-            w.seeInsertPoint()
-        c.bodyWantsFocusNow()
-        return True
-
-    # @+node:ekr.20150514043850.16: *5* abbrev.next_place
-    def next_place(self, s: str) -> tuple[bool, str, int, int]:
-        """
-        Given string s containing a placeholder like <|...|>,
-        return (s2, start, end) where s2 is s without the <| and |>,
-        and start, end are the positions of the beginning and end of block.
-        """
-        c = self.c
-        fail = False, None, None, None
-
-        # Defensive.
         start_pat, end_pat = c.abbrev_place_start, c.abbrev_place_end
-        if not start_pat or not end_pat:
-            return fail
+        if not (start_pat and end_pat):
+            return False
+        c.endEditing()
+        for kind, s in (('head', p.h), ('body', p.b)):
+            start = s.find(start_pat, 0)
+            end = s.find(end_pat, start)
+            if start > -1 and end > -1 and '\n' not in s[start:end]:
+                if kind == 'head':
+                    c.redraw(p)
+                    c.editHeadline()
+                    w = c.headline_wrapper(p)
+                else:
+                    c.bodyWantsFocusNow()
+                    w = c.frame.body.wrapper
+                i, j = start, end + len(end_pat)
+                ### g.trace(kind, i, j, s[i:j])
+                w.setAllText(s)  # Crucial!
+                w.setSelectionRange(i, j)  # Do not use 'insert' kwarg!
+                return True
+        return False
 
-        # Find the next match.
-        start = s.find(start_pat, 0)
-        end = s.find(end_pat, start)
-        if start == -1 or end == -1 or '\n' in s[start:end]:
-            return fail
-
-        # Make the substitution.
-        s2 = s[:start] + s[start + len(start_pat) : end] + s[end + len(end_pat) :]
-        return True, s2, start, end - len(start_pat)
-
-    # @+node:ekr.20150514043850.12: *4* abbrev.expand_text
-    def expand_text(self, i: int, j: int, val: str) -> None:
-        """Make a text expansion at location i,j of widget w."""
-        val = self.make_script_substitutions(val)
-        self.replace_selection(i, j, val)
-        self.do_placeholder()
-
-    # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree
-    def expand_tree(self, i: int, j: int, tree_s: str, word: str) -> None:
-        """
-        Paste tree_s as children of c.p.
-        This happens *before* any substitutions are made.
-        """
-        c = self.c
-        u, undoType = c.undoer, 'Expand Tree Abbreviation'
-        if c.p.hasChildren():
-            g.es_print('tree abbreviations must not have children', color='blue')
-            return
-        if not c.canPasteOutline(tree_s):
-            g.es_print(f"bad copied outline: {tree_s}")
-            return
-
-        # Replace the old node with a new node.
-        u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
-        self.replace_selection(i, j, '')
-        c.deleteOutline(op_name="Cut Node")
-        c.pasteOutline(s=tree_s)
-        u.afterChangeGroup(c.p, undoType=undoType)
-        c.redraw(c.p)
-
-        # Make all script substitutions first.
-        for p in c.p.self_and_subtree():
-            # Search for the next place-holder.
-            p.h = self.make_script_substitutions(p.h)
-            p.b = self.make_script_substitutions(p.b)
-        # Now search for all place-holders.
-        for p in c.p.subtree():
-            if self.find_place_holder(p):
-                break
+        # # # w_name = g.app.gui.widget_name(w)
+        # # # if w_name.startswith('head'):
+        # # #     s = w.getAllText()
+        # # #     ### ok, new_s, i, j = self.next_place(s)
+        # # #     ok, i, j = self.next_place(s)
+        # # #     if not ok:
+        # # #         return False
+        # # #     ### c.endEditing()  ### Experimental.
+        # # #     ### p.h = new_s.replace('\n', '')
+        # # #     ### w.setAllText(new_s.replace('\n', ''))
+        # # #     ### c.redraw(p)
+        # # #     ### c.editHeadline()
+        # # #     ### w = c.headline_wrapper(p)
+        # # #     w.setSelectionRange(i, j, insert=j)
+        # # #     return True
+        # # # s = p.b
+        # # # if not (start in s and end in s):
+        # # #     return False
+        # # # if not w == c.frame.body.wrapper:
+        # # #     g.trace('OOOOPS')
+        # # # ### ok, new_s, i, j = self.next_place(s)
+        # # # ok, i, j = self.next_place(s)
+        # # # if not ok:
+        # # #     return False
+        # # # switch = p != c.p
+        # # # if switch:
+        # # #     c.endEditing()  ### Experimental.
+        # # #     c.selectPosition(p)
+        # # # else:
+        # # #     scroll = w.getYScrollPosition()
+        # # # w.setAllText(new_s)
+        # # # p.v.b = new_s
+        # # # if switch:
+        # # #     c.redraw()
+        # # # w.setSelectionRange(i, j, insert=j)
+        # # # if switch:
+        # # #     w.seeInsertPoint()
+        # # # else:
+        # # #     # Keep the scroll point if possible.
+        # # #     w.setYScrollPosition(scroll)
+        # # #     w.seeInsertPoint()
+        # # # c.bodyWantsFocusNow()
+        # # # return True
 
     # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
     def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke) -> str:
@@ -314,6 +272,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.search_root = c.p.copy()
         self.expand_text(i, j, val)
 
+    # @+node:ekr.20150514043850.12: *5* abbrev.expand_text
+    def expand_text(self, i: int, j: int, val: str) -> None:
+        """Make a text expansion at location i,j of widget w."""
+        val = self.make_script_substitutions(val)
+        self.replace_selection(i, j, val)
+        self.do_placeholder()
+
     # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
     def make_script_substitutions(self, val: str) -> str:
         """Make scripting substitutions in node p."""
@@ -355,6 +320,39 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.abbrev_subst_env['_abr'] = word
         self.search_root = c.p.copy()
         self.expand_tree(i, j, val, word)
+
+    # @+node:ekr.20150514043850.13: *5* abbrev.expand_tree
+    def expand_tree(self, i: int, j: int, tree_s: str, word: str) -> None:
+        """
+        Paste tree_s as children of c.p.
+        This happens *before* any substitutions are made.
+        """
+        c = self.c
+        u, undoType = c.undoer, 'Expand Tree Abbreviation'
+        if c.p.hasChildren():
+            g.es_print('tree abbreviations must not have children', color='blue')
+            return
+        if not c.canPasteOutline(tree_s):
+            g.es_print(f"bad copied outline: {tree_s}")
+            return
+
+        # Replace the old node with a new node.
+        u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
+        self.replace_selection(i, j, '')
+        c.deleteOutline(op_name="Cut Node")
+        c.pasteOutline(s=tree_s)
+        u.afterChangeGroup(c.p, undoType=undoType)
+        c.redraw(c.p)
+
+        # Make all script substitutions first.
+        for p in c.p.self_and_subtree():
+            # Search for the next place-holder.
+            p.h = self.make_script_substitutions(p.h)
+            p.b = self.make_script_substitutions(p.b)
+        # Now search for all place-holders.
+        for p in c.p.subtree():
+            if self.find_place_holder(p):
+                break
 
     # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
     def replace_selection(self, i: int, j: int, s: str) -> None:
