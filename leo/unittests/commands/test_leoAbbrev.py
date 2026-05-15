@@ -6,7 +6,7 @@
 import re
 import time
 from leo.core import leoGlobals as g
-from leo.core.leoGui import LeoKeyEvent
+from leo.core.leoGui import LeoKeyEvent, StringFindTabManager
 from leo.core.leoTest2 import LeoUnitTest
 
 assert g
@@ -15,6 +15,11 @@ assert g
 # @+others
 # @+node:ekr.20260512145550.104: ** class TestAbbrev (LeoUnitTest)
 class TestAbbrev(LeoUnitTest):
+    def setUp(self) -> None:
+        super().setUp()
+        c = self.c
+        c.findCommands.ftm = StringFindTabManager(c)
+
     # @+others
     # @+node:ekr.20260512164351.1: *3* TestAbbrev.test_multiline_abbreviations
     def test_multiline_abbreviations(self):
@@ -60,14 +65,15 @@ class TestAbbrev(LeoUnitTest):
                 w = c.headline_wrapper(p)
                 i = definition.find(';=')
                 contents = definition[:i]
-                expected = definition[i + 2 :].replace('\n', ' ').replace('  ', ' ')
+                expected = definition[i + 2 :]
                 p.h = contents
                 w.setInsertPoint(len(contents), contents)
                 event = LeoKeyEvent(c, char=';', binding=';', w=w)
                 x.expandAbbrev(event=event, stroke=None)
                 test('head', w.getAllText(), expected)
                 c.endEditing()
-                test('head', p.h, expected)
+                expected_p_h = expected.replace('\n', ' ').replace('  ', ' ')
+                test('head', p.h, expected_p_h)
 
     # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
     def test_scripting_abbreviations(self):
