@@ -153,9 +153,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
     # @+node:ekr.20260516063651.1: *4* abbrev: expansion
     # @+node:ekr.20150514043850.13: *5* abbrev.expand_tree
-    def expand_tree(self, i: int, j: int, tree_s: str, word: str) -> None:
+    def expand_tree(self, i: int, j: int, word: str, expansion: str) -> None:
         """
-        Paste tree_s as children of c.p.
+        Paste `expansion` as children of c.p.
         This happens *before* any substitutions are made.
         """
         c = self.c
@@ -163,15 +163,15 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if c.p.hasChildren():
             g.es_print('tree abbreviations must not have children', color='blue')
             return
-        if not c.canPasteOutline(tree_s):
-            g.es_print(f"bad copied outline: {tree_s}")
+        if not c.canPasteOutline(expansion):
+            g.es_print(f"bad copied outline: {expansion}")
             return
 
         # Replace the old node with a new node.
         u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
         self.replace_selection(i, j, '')
         c.deleteOutline(op_name="Cut Node")
-        c.pasteOutline(s=tree_s)
+        c.pasteOutline(s=expansion)
         u.afterChangeGroup(c.p, undoType=undoType)
         c.redraw(c.p)
 
@@ -274,14 +274,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             content_list = rest.split(c.abbrev_subst_end, 1)
             if len(content_list) != 2:
                 break
-            ### content: str
             content, rest = content_list
             try:
                 self.expanding = True
                 c.abbrev_subst_env['x'] = ''
                 exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
-            # except NameError:
-            #     pass  # The script should define the name ???
+            except NameError:
+                pass  # The script should define the name ???
             except Exception as e:
                 g.es_print(f"exception evaluating {content!r}: {e}")
                 g.trace(g.callers())
