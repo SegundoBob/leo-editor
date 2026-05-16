@@ -100,7 +100,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # @-<< expandAbbrev: prolog >>
 
         # Try to match an abbreviation.
-        ### g.trace(g.app.gui.widget_name(w), self.w.getInsertPoint(), self.c.p.h)  ###
         for prefix in prefixes:
             word = prefix + ch
             i = ins - len(prefix)
@@ -179,6 +178,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20260515084054.1: *5* abbrev.init_place_holder_search
     def init_place_holder_search(self) -> None:
         c = self.c
+        w = self.w
         finder = c.findCommands
         start_pat = re.escape(c.abbrev_place_start)
         end_pat = re.escape(c.abbrev_place_end)
@@ -200,10 +200,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         )  # fmt: skip
         assert settings
 
-        # Set up the search, but don't run it.
-        ###  finder.interactive_search_helper(settings=settings, dry_run=True)
-
-        ### g.trace(self.w.getInsertPoint(), c.p.h)  ###
+        ins = w.getInsertPoint()
+        try:
+            finder.interactive_search_helper(settings=settings, dry_run=True)
+        finally:
+            w.setInsertPoint(ins)
 
     # @+node:ekr.20150514043850.18: *5* abbrev.replace_selection
     def replace_selection(self, i: int, j: int, s: str) -> None:
@@ -232,13 +233,11 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     def make_all_scripting_substitutions(self, word: str) -> None:
         """Make scripting substitutions throughout c.p's tree."""
         c = self.c
-        w = self.w
         if not self.scripting_enabled:
             return
 
         c.abbrev_subst_env['_abr'] = word
 
-        ins = w.getInsertPoint()
         if self.in_head:
             c.endEditing()
         try:
@@ -248,7 +247,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         finally:
             if self.in_head:
                 c.editHeadline()
-            w.setInsertPoint(min(ins, len(w.getAllText())))
 
     # @+node:ekr.20150514043850.15: *5* abbrev.make_script_substitutions
     def make_script_substitutions(self, word: str) -> None:
@@ -276,16 +274,15 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             p.v.setSelection(min(ins, len(s)), len(s))
         new_ins = min(ins, len(s))
         w.setInsertPoint(new_ins)
-        g.trace(ins, new_ins, p.h)  ###
 
     # @+node:ekr.20260516060909.1: *5* abbrev._substitution_helper
     def _substitution_helper(self, content: str) -> str:
-        """Replace 'word' by the 'definition' in the content string'"""
+        """
+        Replace 'word' by the 'definition' in the 'content' string.
+        """
         c = self.c
-        w = self.w
         if c.abbrev_subst_start not in content:
             return content
-        ins = w.getInsertPoint()
         while c.abbrev_subst_start in content:
             prefix, rest = content.split(c.abbrev_subst_start, 1)
             content_list = rest.split(c.abbrev_subst_end, 1)
@@ -308,7 +305,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             # Make sure there are no endless expansions.
             x = x.replace(c.abbrev_subst_start, '').replace(c.abbrev_subst_end, '')
             content = f"{prefix}{x}{rest}"
-        w.setInsertPoint(min(ins, len(w.getAllText())))
         return content
 
     # @+node:ekr.20150514043850.5: *3* abbrev.finishCreate
