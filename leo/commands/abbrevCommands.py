@@ -238,8 +238,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         c.abbrev_subst_env['_abr'] = word
 
+        ins = w.getInsertPoint()
         if self.in_head:
-            ins = w.getInsertPoint()
             c.endEditing()
         try:
             for p in c.p.self_and_subtree():
@@ -248,7 +248,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         finally:
             if self.in_head:
                 c.editHeadline()
-                w.setInsertPoint(min(ins, len(w.getAllText())))
+            w.setInsertPoint(min(ins, len(w.getAllText())))
 
     # @+node:ekr.20150514043850.15: *5* abbrev.make_script_substitutions
     def make_script_substitutions(self, word: str) -> None:
@@ -267,14 +267,16 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if self.in_head:
             c.endEditing()
             try:
-                p.h = self._substitution_helper(p.h)
+                p.h = s = self._substitution_helper(p.h)
             finally:
                 c.treeWantsFocusNow()
                 c.editHeadline()
         else:
-            p.b = self._substitution_helper(p.b)
-        w.setInsertPoint(min(ins, len(w.getAllText())))
-        ### g.trace(g.app.gui.widget_name(w), ins, p.h)
+            p.b = s = self._substitution_helper(p.b)
+            p.v.setSelection(min(ins, len(s)), len(s))
+        new_ins = min(ins, len(s))
+        w.setInsertPoint(new_ins)
+        g.trace(ins, new_ins, p.h)  ###
 
     # @+node:ekr.20260516060909.1: *5* abbrev._substitution_helper
     def _substitution_helper(self, content: str) -> str:
