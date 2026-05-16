@@ -209,7 +209,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         p = c.p
         u = c.undoer
         w = self.w
-        w_name = g.app.gui.widget_name(w)
 
         # Start the undo.
         bunch = u.beforeChangeNodeContents(p)
@@ -219,7 +218,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         w.insert(i, s)
 
         # Update only body text. Setting p.h here would be wrong.
-        if w_name.startswith('body'):
+        if not self.in_head:
             p.v.b = w.getAllText()
 
         # Complete the undo.
