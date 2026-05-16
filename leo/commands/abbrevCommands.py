@@ -41,6 +41,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         'abbrevs',
         'c',
         'dyna_regex',
+        'in_head',
         'scripting_enabled',
         'expanding',
         'number_regex',
@@ -60,9 +61,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         self.dyna_regex = re.compile(  # For dynamic abbreviations
             r'[%s%s\-_]+' % (string.ascii_letters, string.digits)
         )
-        # Not a unicode problem.
+        self.in_head = False  #
         self.number_regex = re.compile(r'(?<!\\)\\n')  # to replace \\n but not \\\\n
-        self.scripting_enabled = False
+        self.scripting_enabled = False  # Global setting.
         self.expanding = False  # True: expanding abbreviations.
         self.subst_env: list[str] = []  # The scripting environment.
         self.tree_abbrevs_d: dict[str, str] = {}  # Keys are names, values are (tree,tag).
@@ -75,11 +76,17 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         Return True if the abbreviation was expanded.
         """
+        # Define ins, prefixes, self.in_head and self.w
+        # Return if there is nothing to do.
+        # @+<< expandAbbrev: prolog >>
+        # @+node:ekr.20260516052046.1: *4* << expandAbbrev: prolog >>
         ch = self.get_ch(event, stroke)
         w = event.w if event else None
         if self.expanding or not g.isTextWrapper(w) or w.hasSelection() or not ch.strip():
             return False
-        self.w = w
+        w_name = g.app.gui.widget_name(w)
+        if not w_name.startswith(('body', 'head')):
+            return False
         s = w.getAllText()
         if not s:
             return False
@@ -87,24 +94,65 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         prefixes = self.get_prefixes(ins, s)
         if not prefixes:
             return False
+        # Set local ivars.
+        self.in_head = w_name.startswith('head')
+        self.w = w
+        # @-<< expandAbbrev: prolog >>
 
         # Try to match an abbreviation.
         for prefix in prefixes:
             word = prefix + ch
             i = ins - len(prefix)
-            if val := self.tree_abbrevs_d.get(word):
-                self.expand_tree(i, ins, val, word)
-                ### self.make_all_script_substitutions(val)
-                self.init_place_holder_search(tree_flag=True)
+            if expansion := self.tree_abbrevs_d.get(word):
+                self.expand_tree(i, ins, word, expansion)
+                self.make_all_scripting_substitutions(word)
+                self.init_place_holder_search()
                 return True
-            if val := self.abbrevs.get(word):
-                ### self.make_all_script_substitutions(val)
-                self.replace_selection(i, ins, val)
-                self.init_place_holder_search(tree_flag=False)
+            if expansion := self.abbrevs.get(word):
+                self.replace_selection(i, ins, expansion)
+                self.make_script_substitutions(word)
+                self.init_place_holder_search()
                 return True
         return False
 
-    # @+node:ekr.20150514043850.13: *4* abbrev.expand_tree
+    # @+node:ekr.20260516063712.1: *4* abbrev: startup
+    # @+node:ekr.20161121111502.1: *5* abbrev.get_ch
+    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke) -> str:
+        """Return the ch from the stroke or event."""
+        event_ch = event.char or '' if event else ''
+        assert g.isStrokeOrNone(stroke), stroke
+        if stroke in ('BackSpace', 'Delete'):
+            return ''
+        d = {'Return': '\n', 'Tab': '\t', 'space': ' ', 'underscore': '_'}
+        if not stroke:
+            return event_ch
+        ch = d.get(stroke.s, stroke.s)
+        if len(ch) == 1:
+            return ch
+        if any(stroke.find(z) > -1 for z in ('Ctrl+', 'Alt+', 'Meta+')):
+            return ''
+        return event_ch
+
+    # @+node:ekr.20161121112346.1: *5* abbrev.get_prefixes
+    def get_prefixes(self, ins: int, s: str) -> list[str]:
+        """
+        Return the prefixes at given insert point.
+
+        Any sequence longer than 1 may abbreviation.
+
+        Any whitespace stops the search.
+        """
+        i, prefixes = ins - 1, []
+        while len(s) > i >= 0 and s[i] not in ' \t\n':
+            prefixes.append(s[i:ins])
+            i -= 1
+        prefixes = list(reversed(prefixes))
+        if '' not in prefixes:
+            prefixes.append('')
+        return prefixes
+
+    # @+node:ekr.20260516063651.1: *4* abbrev: expansion
+    # @+node:ekr.20150514043850.13: *5* abbrev.expand_tree
     def expand_tree(self, i: int, j: int, tree_s: str, word: str) -> None:
         """
         Paste tree_s as children of c.p.
@@ -127,43 +175,8 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         u.afterChangeGroup(c.p, undoType=undoType)
         c.redraw(c.p)
 
-    # @+node:ekr.20161121111502.1: *4* abbrev.get_ch
-    def get_ch(self, event: LeoKeyEvent, stroke: g.KeyStroke) -> str:
-        """Return the ch from the stroke or event."""
-        event_ch = event.char or '' if event else ''
-        assert g.isStrokeOrNone(stroke), stroke
-        if stroke in ('BackSpace', 'Delete'):
-            return ''
-        d = {'Return': '\n', 'Tab': '\t', 'space': ' ', 'underscore': '_'}
-        if not stroke:
-            return event_ch
-        ch = d.get(stroke.s, stroke.s)
-        if len(ch) == 1:
-            return ch
-        if any(stroke.find(z) > -1 for z in ('Ctrl+', 'Alt+', 'Meta+')):
-            return ''
-        return event_ch
-
-    # @+node:ekr.20161121112346.1: *4* abbrev.get_prefixes
-    def get_prefixes(self, ins: int, s: str) -> list[str]:
-        """
-        Return the prefixes at given insert point.
-
-        Any sequence longer than 1 may abbreviation.
-
-        Any whitespace stops the search.
-        """
-        i, prefixes = ins - 1, []
-        while len(s) > i >= 0 and s[i] not in ' \t\n':
-            prefixes.append(s[i:ins])
-            i -= 1
-        prefixes = list(reversed(prefixes))
-        if '' not in prefixes:
-            prefixes.append('')
-        return prefixes
-
-    # @+node:ekr.20260515084054.1: *4* abbrev.init_place_holder_search
-    def init_place_holder_search(self, tree_flag: bool) -> None:
+    # @+node:ekr.20260515084054.1: *5* abbrev.init_place_holder_search
+    def init_place_holder_search(self) -> None:
         c = self.c
         finder = c.findCommands
         start_pat = re.escape(c.abbrev_place_start)
@@ -178,7 +191,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             mark_changes    = False,
             mark_finds      = False,
             ignore_case     = True,
-            node_only       = not tree_flag,
+            node_only       = False,
             pattern_match   = True,
             search_body     = True,
             search_headline = True,
@@ -186,55 +199,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             whole_word      = False,
         )  # fmt: skip
 
-        if 0:  # Not ready.
-            finder.interactive_search_helper(root=c.p, settings=settings, dry_run=True)
+        # Set up the search, but don't run it.
+        finder.interactive_search_helper(settings=settings, dry_run=True)
 
-    # @+node:ekr.20260515090223.1: *4* abbrev.make_all_script_substitutions
-    def make_all_script_substitutions(self, val: str) -> None:
-        c = self.c
-        p = c.p
-        if not self.scripting_enabled:
-            return
-        if not c.abbrev_subst_start or not c.abbrev_subst_end:
-            return
-        for p in p.self_and_subtree():
-            p.h = self.make_script_substitutions(p.h, val)
-            p.b = self.make_script_substitutions(p.b, val)
-
-    # @+node:ekr.20150514043850.15: *4* abbrev.make_script_substitutions
-    def make_script_substitutions(self, val: str, word: str) -> str:
-        """Make scripting substitutions in node p."""
-        c = self.c
-        if c.abbrev_subst_start not in val or c.abbrev_subst_end not in val:
-            return val
-
-        c.abbrev_subst_env['_abr'] = word
-
-        # Perform all scripting substitutions.
-        while c.abbrev_subst_start in val:
-            prefix, rest = val.split(c.abbrev_subst_start, 1)
-            content_list = rest.split(c.abbrev_subst_end, 1)
-            if len(content_list) != 2:
-                break
-            content: str
-            content, rest = content_list
-            try:
-                self.expanding = True
-                c.abbrev_subst_env['x'] = ''
-                exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
-            except NameError:
-                pass  # The script should define the name.
-            except Exception as e:
-                g.es_print(f"exception evaluating {content!r}: {e}")
-                g.es_exception()
-            finally:
-                self.expanding = False
-            x = c.abbrev_subst_env.get('x') or ''
-            val = f"{prefix}{x}{rest}"
-
-        return val
-
-    # @+node:ekr.20150514043850.18: *4* abbrev.replace_selection
+    # @+node:ekr.20150514043850.18: *5* abbrev.replace_selection
     def replace_selection(self, i: int, j: int, s: str) -> None:
         """Undoably replace w[i:j] by s."""
         c = self.c
@@ -256,6 +224,76 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Complete the undo.
         u.afterChangeNodeContents(p, command='Abbreviation', bunch=bunch)
+
+    # @+node:ekr.20260516063743.1: *4* abbrev: script substitution
+    # @+node:ekr.20260516063159.1: *5* abbrev.make_all_scripting_substitutions
+    def make_all_scripting_substitutions(self, word: str) -> None:
+        """Make scripting substitutions throughout c.p's tree."""
+        c = self.c
+        if not self.scripting_enabled:
+            return
+
+        c.abbrev_subst_env['_abr'] = word
+
+        if self.in_head:
+            c.endEditing()
+        try:
+            for p in c.p.self_and_subtree():
+                p.h = self._substitution_helper(p.h)
+                p.b = self._substitution_helper(p.b)
+        finally:
+            if self.in_head:
+                c.editHeadline()
+
+    # @+node:ekr.20150514043850.15: *5* abbrev.make_script_substitutions
+    def make_script_substitutions(self, word: str) -> None:
+        """
+        Replace word by expansion in p.h and/or p.b
+        """
+        c = self.c
+        p = c.p
+        if not self.scripting_enabled:
+            return
+
+        c.abbrev_subst_env['_abr'] = word
+
+        if self.in_head:
+            c.endEditing()
+            try:
+                p.h = self._substitution_helper(p.h)
+            finally:
+                c.editHeadline()
+        else:
+            p.b = self._substitution_helper(p.b)
+
+    # @+node:ekr.20260516060909.1: *5* abbrev._substitution_helper
+    def _substitution_helper(self, content: str) -> str:
+        """Replace 'word' by the 'definition' in the content string'"""
+        c = self.c
+        while c.abbrev_subst_start in content:
+            prefix, rest = content.split(c.abbrev_subst_start, 1)
+            content_list = rest.split(c.abbrev_subst_end, 1)
+            if len(content_list) != 2:
+                break
+            ### content: str
+            content, rest = content_list
+            try:
+                self.expanding = True
+                c.abbrev_subst_env['x'] = ''
+                exec(content, c.abbrev_subst_env, c.abbrev_subst_env)
+            # except NameError:
+            #     pass  # The script should define the name ???
+            except Exception as e:
+                g.es_print(f"exception evaluating {content!r}: {e}")
+                g.trace(g.callers())
+                g.es_exception()
+            finally:
+                self.expanding = False
+            x = c.abbrev_subst_env.get('x') or ''
+            # Make sure there are no endless expansions.
+            x = x.replace(c.abbrev_subst_start, '').replace(c.abbrev_subst_end, '')
+            content = f"{prefix}{x}{rest}"
+        return content
 
     # @+node:ekr.20150514043850.5: *3* abbrev.finishCreate
     def finishCreate(self) -> None:

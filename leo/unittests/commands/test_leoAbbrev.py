@@ -96,7 +96,7 @@ class TestAbbrev(LeoUnitTest):
         pattern = r'[0-9]{4}/[0-9]{2}/[0-9]{2}'
 
         def test(results: str) -> None:
-            assert re.match(pattern, results), f"\nresults: {results!r} regex: {pattern!r}"
+            assert re.match(pattern, results), f"results: {results!r} regex: {pattern!r}"
 
         # Test the body.
         w = c.frame.body.wrapper
@@ -106,8 +106,8 @@ class TestAbbrev(LeoUnitTest):
             w.setInsertPoint(len(contents), contents)
             event = LeoKeyEvent(c, char=';', binding=';', w=w)
             x.expandAbbrev(event=event, stroke=None)
-            test(p.b)
             test(w.getAllText())
+            test(p.b)
 
         # Test headlines.
         for definition in definitions:
