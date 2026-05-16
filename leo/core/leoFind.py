@@ -405,18 +405,17 @@ class LeoFind:
         c = self.c
         d = self.default_settings()  # A g.bunch
         if settings:
-            # Settings can be a dict or a g.Bunch.
-            # g.Bunch has no update method.
             for key in settings.keys():
                 d[key] = settings[key]
         self.ftm.set_widgets_from_dict(d)  # So the *next* find-next will work.
         self.show_find_options_in_status_area()
         if not self.check_args('find-next'):
             return
+        if dry_run:
+            return
         if root:
             c.selectPosition(root)
-        if not dry_run:
-            self.do_find_next(d)
+        self.do_find_next(d)
 
     # @+node:ekr.20031218072017.3055: *3* LeoFind.Commands (immediate execution)
     # @+node:ekr.20031218072017.3062: *4* find.change-then-find & helper
