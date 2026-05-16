@@ -111,7 +111,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if expansion := self.abbrevs.get(word):
                 self.replace_selection(i, ins, expansion)
                 self.make_script_substitutions(word)
-                self.init_place_holder_search()
                 return True
         return False
 
