@@ -250,7 +250,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
     # @+node:ekr.20150514043850.15: *5* abbrev.make_script_substitutions
     def make_script_substitutions(self, word: str) -> None:
         """
-        Replace word by expansion in p.h and/or p.b
+        Replace word by scripting expansion in p.h or p.b.
         """
         c = self.c
         p = c.p
@@ -260,19 +260,28 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         c.abbrev_subst_env['_abr'] = word
 
+        # For local expansions, replace the contents only if they have changed!
         ins = w.getInsertPoint()
         if self.in_head:
             c.endEditing()
             try:
-                p.h = s = self._substitution_helper(p.h)
+                contents = p.h
+                new_contents = self._substitution_helper(contents)
+                if new_contents != contents:
+                    p.h = new_contents
             finally:
                 c.treeWantsFocusNow()
                 c.editHeadline()
+                new_ins = min(ins, len(new_contents))
+                w.setInsertPoint(new_ins)
         else:
-            p.b = s = self._substitution_helper(p.b)
-            p.v.setSelection(min(ins, len(s)), len(s))
-        new_ins = min(ins, len(s))
-        w.setInsertPoint(new_ins)
+            contents = p.b
+            new_contents = self._substitution_helper(contents)
+            if new_contents != contents:
+                p.b = new_contents
+                new_ins = min(ins, len(new_contents))
+                p.setSelection(new_ins, len(new_contents))
+                w.setInsertPoint(new_ins)
 
     # @+node:ekr.20260516060909.1: *5* abbrev._substitution_helper
     def _substitution_helper(self, content: str) -> str:
