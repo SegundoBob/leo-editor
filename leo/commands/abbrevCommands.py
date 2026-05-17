@@ -208,12 +208,17 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return any(template_regex.match(z) for z in g.splitLines(s))
 
         # Init the search only if <\...\> appears in the expansion.
-        positions = [p] if node_only else [z for z in p.self_and_subtree()]
-        if not (z for z in positions if any(find_template(z2) for z2 in (z.h, z.b))):
+        positions = [p] if node_only else (z for z in p.self_and_subtree())
+        for p in positions:
+            if any(find_template(z) for z in (p.h, p.b)):
+                break
+        else:
             return
 
         # Search!
-        c.endEditing()
+        c.endEditing()  # No need to re-edit the headline!
+        if not g.unitTesting:
+            g.es_print(f"Searching for {start_pat}...{end_pat}", color='blue')
         finder.interactive_search_helper(settings=settings)
 
     # @+node:ekr.20150514043850.18: *5* abbrev.replace_selection
@@ -246,17 +251,28 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if not self.scripting_enabled:
             return
 
+        # Do nothing if {|{... appears nowwhere in c.p's tree.
+        start_pat = re.escape(c.abbrev_subst_start)
+        end_pat = re.escape(c.abbrev_subst_end)
+        substitution_regex = re.compile(rf"^.*?{start_pat}.*?{end_pat}")
+
+        def find_template(s: str) -> bool:
+            return any(substitution_regex.match(z) for z in g.splitLines(s))
+
+        for p in c.p.self_and_subtree():
+            if any(find_template(z) for z in (p.h, p.b)):
+                break
+        else:
+            return
+
         c.abbrev_subst_env['_abr'] = word
 
-        if self.in_head:
-            c.endEditing()
-        try:
-            for p in c.p.self_and_subtree():
-                p.h = self._substitution_helper(p.h)
-                p.b = self._substitution_helper(p.b)
-        finally:
-            if self.in_head:
-                c.editHeadline()
+        c.endEditing()  # No need to re-edit the headline!
+        if not g.unitTesting:
+            g.es_print(f"Replacing {start_pat}...{end_pat}", color='blue')
+        for p in c.p.self_and_subtree():
+            p.h = self._substitution_helper(p.h)
+            p.b = self._substitution_helper(p.b)
 
     # @+node:ekr.20150514043850.15: *5* abbrev.make_script_substitutions
     def make_script_substitutions(self, word: str) -> None:
@@ -271,7 +287,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         c.abbrev_subst_env['_abr'] = word
 
-        # For local expansions, replace the contents only if they have changed!
+        # Replace the contents only if they have changed!
         ins = w.getInsertPoint()
         if self.in_head:
             c.endEditing()
