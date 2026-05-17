@@ -266,12 +266,10 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             return
 
         c.abbrev_subst_env['_abr'] = word
-
         c.endEditing()  # No need to re-edit the headline!
-        if not g.unitTesting:
-            g.es_print(f"Replacing {start_pat}...{end_pat}", color='blue')
+
+        # A hack to accommodate existing abbreviations: evaluate bodies before headlines.
         for p in c.p.self_and_subtree():
-            # Evaluate bodies before headlines.
             p.b = self._substitution_helper(p.b)
             p.h = self._substitution_helper(p.h)
 
