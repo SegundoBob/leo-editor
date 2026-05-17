@@ -106,11 +106,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             if expansion := self.tree_abbrevs_d.get(word):
                 self.expand_tree(i, ins, word, expansion)
                 self.make_all_scripting_substitutions(word)
-                self.init_place_holder_search()
+                self.init_place_holder_search(node_only=False)
                 return True
             if expansion := self.abbrevs.get(word):
                 self.replace_selection(i, ins, expansion)
                 self.make_script_substitutions(word)
+                self.init_place_holder_search(node_only=True)
                 return True
         return False
 
@@ -175,14 +176,18 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.redraw(c.p)
 
     # @+node:ekr.20260515084054.1: *5* abbrev.init_place_holder_search
-    def init_place_holder_search(self) -> None:
+    def init_place_holder_search(self, *, node_only: bool) -> None:
         c = self.c
-        w = self.w
+        p = c.p
         finder = c.findCommands
         start_pat = re.escape(c.abbrev_place_start)
         end_pat = re.escape(c.abbrev_place_end)
+        template_regex = re.compile(rf"^.*?{start_pat}.*?{end_pat}")
         finder.reverse = False
+
+        # Define the settings for Leo's find command.
         settings = g.Bunch(
+            p               = c.p,  ###
             in_headline     = False,
             find_text       = rf"({start_pat}.*?{end_pat})",
             change_text     = '',
@@ -190,7 +195,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             mark_changes    = False,
             mark_finds      = False,
             ignore_case     = True,
-            node_only       = False,
+            node_only       = node_only,
             pattern_match   = True,
             search_body     = True,
             search_headline = True,
@@ -199,11 +204,17 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         )  # fmt: skip
         assert settings
 
-        ins = w.getInsertPoint()
-        try:
-            finder.interactive_search_helper(settings=settings, dry_run=True)
-        finally:
-            w.setInsertPoint(ins)
+        def find_template(s: str) -> bool:
+            return any(template_regex.match(z) for z in g.splitLines(s))
+
+        # Init the search only if <\...\> appears in the expansion.
+        positions = [p] if node_only else [z for z in p.self_and_subtree()]
+        if not (z for z in positions if any(find_template(z2) for z2 in (z.h, z.b))):
+            return
+
+        # Search!
+        c.endEditing()
+        finder.interactive_search_helper(settings=settings)
 
     # @+node:ekr.20150514043850.18: *5* abbrev.replace_selection
     def replace_selection(self, i: int, j: int, s: str) -> None:
