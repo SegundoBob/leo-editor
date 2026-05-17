@@ -271,8 +271,9 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         if not g.unitTesting:
             g.es_print(f"Replacing {start_pat}...{end_pat}", color='blue')
         for p in c.p.self_and_subtree():
-            p.h = self._substitution_helper(p.h)
+            # Evaluate bodies before headlines.
             p.b = self._substitution_helper(p.b)
+            p.h = self._substitution_helper(p.h)
 
     # @+node:ekr.20150514043850.15: *5* abbrev.make_script_substitutions
     def make_script_substitutions(self, word: str) -> None:
