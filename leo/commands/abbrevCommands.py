@@ -224,6 +224,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         c.endEditing()  # No need to re-edit the headline!
         if not g.unitTesting:
             g.es_print(f"Searching for {start_pat}...{end_pat}", color='blue')
+        self.w.setInsertPoint(0)  # Start search at start.
         finder.interactive_search_helper(settings=settings)
 
     # @+node:ekr.20150514043850.18: *5* abbrev.replace_selection
