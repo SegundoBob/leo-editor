@@ -170,8 +170,13 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         # Replace the old node with a new node.
         u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
         self.replace_selection(i, j, '')
-        c.deleteOutline(op_name="Cut Node")
-        c.pasteOutline(s=expansion)
+        if c.canDeleteHeadline():
+            c.deleteOutline(op_name="Cut Node")
+            c.pasteOutline(s=expansion)
+        else:
+            c.pasteOutline(s=expansion)
+            c.selectPosition(c.p.moveToBack())
+            c.deleteOutline(op_name="Cut Node")
         u.afterChangeGroup(c.p, undoType=undoType)
         c.redraw(c.p)
 
