@@ -192,7 +192,7 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         # Define the settings for Leo's find command.
         settings = g.Bunch(
-            p               = c.p,  ###
+            p               = c.p,
             in_headline     = False,
             find_text       = rf"({start_pat}.*?{end_pat})",
             change_text     = '',

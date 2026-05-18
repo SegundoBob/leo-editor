@@ -5,9 +5,13 @@
 
 import re
 import time
+from typing import TYPE_CHECKING
 from leo.core import leoGlobals as g
 from leo.core.leoGui import LeoKeyEvent, StringFindTabManager
 from leo.core.leoTest2 import LeoUnitTest
+
+if TYPE_CHECKING:
+    from leo.plugins.qt_text import QTextMixin
 
 assert g
 
@@ -74,6 +78,83 @@ class TestAbbrev(LeoUnitTest):
                 c.endEditing()
                 expected_p_h = expected.replace('\n', ' ').replace('  ', ' ')
                 test('head', p.h, expected_p_h)
+
+    # @+node:ekr.20260518063848.1: *3* TestAbbrev.test_find_command_selects_place_holder
+    def test_find_command_selects_place_holder(self):
+
+        c = self.c
+        p = c.p
+        finder = c.findCommands
+        x = c.abbrevCommands
+        x.abbrevs = {}
+
+        # These must be the definition munged by c.config.getData.
+        definitions = (
+            'details;;=<details><summary><b><|Title|></b></summary>\n<br>\n\n</details>',
+            'html;;='
+                '<html>\n<head>\n<title><|title|></title>\n'
+                '<style>\n</style>\n</head>\n<body>\n<|content|>\n</body>\n</html>',
+        )  # fmt: skip
+
+        expected_selections = (
+            '<|Title|>',
+            '<|title|>',
+        )
+
+        for definition in definitions:
+            x.addAbbrevHelper(definition)
+
+        def test_contents(kind, results: str, expected: str) -> None:
+            assert results == expected, (
+                f"{kind}\n"
+                f"expected: {expected!r}\n"
+                f"     got: {results!r}"
+            )  # fmt: skip
+
+        def test_selection(kind, w: QTextMixin, expected: str) -> None:
+            # See LeoFind.show_success.
+            results = w.getSelectedText()
+            # g.trace(kind, repr(results), w, g.truncate(w.getAllText().replace('\n', '\\n'), 40))
+            assert results == expected, (
+                f"{kind} id: {id(w)}\n"
+                f"expected: {expected!r}\n"
+                f"     got: {results!r}"
+            )  # fmt: skip
+
+        # Test bodies.
+        if 1:
+            w = c.frame.body.wrapper
+            for test_number, definition in enumerate(definitions):
+                finder.in_headline = False
+                i = definition.find(';=')
+                contents = definition[:i]
+                expected = definition[i + 2 :]
+                p.b = contents
+                w.setInsertPoint(len(contents), contents)
+                event = LeoKeyEvent(c, char=';', binding=';', w=w)
+                x.expandAbbrev(event=event, stroke=None)
+                test_contents('body', p.b, expected)
+                test_contents('body', w.getAllText(), expected)
+                test_selection('body', w, expected_selections[test_number])
+
+        # Test headlines
+        if 1:
+            for test_number, definition in enumerate(definitions):
+                finder.in_headline = True
+                c.editHeadline()
+                w = c.headline_wrapper(p)
+                i = definition.find(';=')
+                contents = definition[:i]
+                expected = definition[i + 2 :]
+                p.h = contents
+                w.setInsertPoint(len(contents), contents)
+                event = LeoKeyEvent(c, char=';', binding=';', w=w)
+                x.expandAbbrev(event=event, stroke=None)
+                test_contents('head', w.getAllText(), expected)
+                test_selection('head', w, expected_selections[test_number])
+                c.endEditing()
+                expected_p_h = expected.replace('\n', ' ').replace('  ', ' ')
+                test_contents('head', p.h, expected_p_h)
 
     # @+node:ekr.20260512173657.1: *3* TestAbbrev.test_scripting_abbreviations
     def test_scripting_abbreviations(self):

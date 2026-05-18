@@ -409,6 +409,10 @@ class LeoFind:
                 d[key] = settings[key]
         self.ftm.set_widgets_from_dict(d)  # So the *next* find-next will work.
         self.show_find_options_in_status_area()
+        # #4614: Init these ivars early so check_args won't complain.
+        self.search_body = d.get('search_body', False)
+        self.search_headline = d.get('search_headline', False)
+        self.find_text = d.get('find_text', '')
         if not self.check_args('find-next'):
             return
         if dry_run:
