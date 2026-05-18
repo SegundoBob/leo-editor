@@ -41,11 +41,13 @@ class GoToCommands:
             c.nodeHistory.skipBeadUpdate = True
             try:
                 p, offset = self.find_file_line_helper(n, p)
+                g.trace(p.h, offset)  ###
             finally:
                 c.nodeHistory.skipBeadUpdate = False
             return p, offset
         p, offset = self.find_file_line_helper(n, p)
         return p, offset
+        return  ### pylint error
 
     # @+node:ekr.20230727074847.1: *4* goto.find_file_line_helper
     def find_file_line_helper(self, n: int, p: Position = None) -> tuple[Position, int]:
