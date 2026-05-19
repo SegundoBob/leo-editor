@@ -8291,7 +8291,6 @@ def handleUnl(unl_s: str, c: Cmdr) -> Optional[Cmdr]:
             offset = n - 1
 
         # Select line n of p.b. Similar to GoToCommands.success.
-        ### g.trace(unl_s, n_s, n, offset)
         s = w.getAllText()
         ins = g.convertRowColToPythonIndex(s, offset, 0)
         w.setInsertPoint(ins)
