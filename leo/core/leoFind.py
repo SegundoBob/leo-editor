@@ -356,10 +356,8 @@ class LeoFind:
             if ivar in valid:
                 val = settings.get(ivar)
                 if val in (True, False):
-                    # g.trace(f"{ivar:10} = {val!r}")
                     setattr(self, ivar, val)
                 elif isinstance(val, str):
-                    # g.trace(f"{ivar:10} = {val!r}")
                     setattr(self, ivar, val)
                 else:  # pragma: no cover
                     g.trace(f"bad value: {ivar!r} = {val!r}")
@@ -2972,27 +2970,18 @@ class LeoFind:
         """
         c, p = self.c, data.p
 
-        ###
-        # if not g.unitTesting:
-        #     g.trace('data', data)
-        #     g.trace(repr(self.previous_settings))
-        #     g.trace(self.ftm)
-
-        # #4688: Restore previous settings, if they exist.
+        # #4688: Restore previous settings.
         if self.previous_settings:
             self.init_ivars_from_settings(self.previous_settings)
             self.ftm.set_widgets_from_dict(self.previous_settings)
             self.previous_settings = None
-            # self.request_reverse = False
-            # self.request_pattern_match = False
-            # self.request_whole_word = False
 
         c.frame.bringToFront()  # Needed on the Mac
         if not p or not c.positionExists(p):  # pragma: no cover
             # Better than selecting the root!
             return
+
         c.selectPosition(p)
-        # Fix bug 1258373: https://bugs.launchpad.net/leo-editor/+bug/1258373
         if self.in_headline:
             c.treeWantsFocus()
         else:
