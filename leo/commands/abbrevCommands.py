@@ -167,16 +167,51 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             g.es_print(f"bad copied outline: {expansion}")
             return
 
-        # Replace the old node with a new node.
+        # Begin the undo.
         u.beforeChangeGroup(c.p, command=undoType, verboseUndoGroup=True)
         self.replace_selection(i, j, '')
+
+        # Set status flags.
+        isRoot = c.p.isRoot()
+        wasHoisted = len(c.hoistStack) > 0
+        parent = c.p.getParent()
+        noSiblings = parent and parent.numberOfChildren() == 1
+        isFirstChild = parent and parent.firstChild() == c.p
+        prevSibling = c.p.moveToBack()
+        prevSiblingExpanded = prevSibling and prevSibling.isExpanded()
+
+        # Carefully replace the old node with the new node.
         if c.canDeleteHeadline():
+            if prevSiblingExpanded:
+                prevSibling.contract()  # To prevent pasting as last child of prevSibling.
             c.deleteOutline(op_name="Cut Node")
             c.pasteOutline(s=expansion)
+            if noSiblings:
+                c.moveOutlineRight()  # Inserted below instead of as child, so move right.
+            if isRoot:
+                c.moveOutlineUp()  # Delete & paste made it second position, so move up.
         else:
             c.pasteOutline(s=expansion)
             c.selectPosition(c.p.moveToBack())
             c.deleteOutline(op_name="Cut Node")
+            if wasHoisted:
+                c.selectVisNext()
+
+        # Replace the container node with its first child.
+        child = c.p.copy().moveToFirstChild()
+        if child:
+            c.selectPosition(child)
+            c.moveOutlineLeft()
+            c.goToPrevSibling()
+            c.deleteOutline(op_name="Cut Node")
+            if isFirstChild or (not isRoot):
+                c.selectVisNext()
+
+        # Restore the previous expansion.
+        if prevSiblingExpanded:
+            prevSibling.expand()
+
+        # End the undo.
         u.afterChangeGroup(c.p, undoType=undoType)
         c.redraw(c.p)
 
