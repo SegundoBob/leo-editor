@@ -636,7 +636,6 @@ class LayoutCacheWidget(QWidget):
                     sizes[other_index] -= delta
                     splitter.setSizes(sizes)
                     return
-            g.trace('Fail 1')
 
         # #4325. Try resizing a parent frame.
         parent_splitter, _junk = g.app.gui.find_parent_splitter(splitter)
@@ -657,8 +656,6 @@ class LayoutCacheWidget(QWidget):
                 sizes[other_index] -= delta
                 parent_splitter.setSizes(sizes)
                 return
-
-        g.trace('Fail 2')
 
     # @+node:tom.20240923194438.6: *4* LCW.restoreFromLayout
     def restoreFromLayout(self, layout: Dict = None) -> None:

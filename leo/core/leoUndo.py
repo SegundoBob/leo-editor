@@ -451,7 +451,7 @@ class Undoer:
         if u.redoing or u.undoing:
             return
         # Set the type & helpers.
-        bunch.kind = 'node'
+        bunch.kind = 'afterChangeNodeContents'
         bunch.undoType = command
         bunch.undoHelper = u.undoNodeContents
         bunch.redoHelper = u.redoNodeContents
@@ -514,7 +514,7 @@ class Undoer:
         u = self
         w = c.frame.body.wrapper
         # Set types.
-        bunch.kind = command
+        bunch.kind = 'afterChangeTree'
         bunch.undoType = command
         bunch.undoHelper = u.undoChangeTree
         bunch.redoHelper = u.redoChangeTree
@@ -522,9 +522,9 @@ class Undoer:
         bunch.newIns = w.getInsertPoint()
         bunch.newSel = w.getSelectionRange()
         bunch.newMarked = p.isMarked()
+
         # Push the bunch.
-        u.bead += 1
-        u.beads[u.bead :] = [bunch]
+        u.pushBead(bunch)
         # Recalculate the menu labels.
         u.setUndoTypes()
 
@@ -814,6 +814,7 @@ class Undoer:
         c, u = self.c, self
         w = c.frame.body.wrapper
         bunch = u.createCommonBunch(p)
+        bunch.kind = 'beforeChangeNodeContents'
         bunch.oldBody = p.b
         bunch.oldHead = p.h
         # #1413: Always restore yScroll if possible.
@@ -825,7 +826,7 @@ class Undoer:
         c = self.c
         w = self.c.frame.body.wrapper
         bunch = self.createCommonBunch(p)  # Sets u.oldMarked, u.oldSel, u.p
-
+        bunch.kind = 'beforeChangeTree'
         bunch.oldPastedTree = c.fileCommands.outline_to_clipboard_string(c.p)
         bunch.oldBody = p.b
         bunch.oldHead = p.h
