@@ -89,6 +89,7 @@
 </v>
 <v t="ekr.20260419074741.1"><vh>Unused settings</vh>
 <v t="jlunz.20151119171553.1"><vh>@bool cursor-stay-on-paste = True</vh></v>
+<v t="tbrown.20151114110207.1"><vh>@string abbreviations-next-placeholder = ,,</vh></v>
 </v>
 </v>
 <v t="ekr.20041119034357.1"><vh>@settings</vh>
@@ -196,7 +197,6 @@
 <v t="tbrown.20120821183537.18663"><vh>@string abbreviations-place-start = &lt;|</vh></v>
 <v t="tbrown.20120820202856.25329"><vh>@string abbreviations-subst-end = }|}</vh></v>
 <v t="tbrown.20120820202856.25328"><vh>@string abbreviations-subst-start = {|{</vh></v>
-<v t="tbrown.20151114110207.1"><vh>@string abbreviations-next-placeholder = ,,</vh></v>
 </v>
 <v t="ekr.20140917051508.19548"><vh>Appearance (change these first)</vh>
 <v t="ekr.20140912075503.19369"><vh>Qt Gui settings</vh>
@@ -10301,7 +10301,7 @@ try:
         demo = MyDemo(c, trace=False)
         demo.bind('callout', callout)
         demo.bind('title', title)
-        demo.start(script_string=script_string)
+        demo.start(script_tree=c.p)
 except Exception:
     g.app.demo = None
     raise
@@ -11561,7 +11561,14 @@ For more details, see https://github.com/leo-editor/leo-editor/issues/3047
 <t tx="ekr.20230205102733.1">False (legacy): Don't filter body text.
 True:           Remove unindented @language, @others and @wrap directives.
 </t>
-<t tx="ekr.20230221053634.1"># type html;; to insert template and ,, to select next &lt;|placeholder|&gt;
+<t tx="ekr.20230221053634.1"># Good for GitHub issues.
+
+details;;=&lt;details&gt;&lt;summary&gt;&lt;b&gt;&lt;|Title|&gt;&lt;/b&gt;&lt;/summary&gt;
+\:&lt;br&gt;
+\:
+\:&lt;/details&gt;
+
+# type html;; to insert template and ,, to select next &lt;|placeholder|&gt;
 
 html;;=&lt;html&gt;
 \:&lt;head&gt;
@@ -12117,10 +12124,7 @@ the ``&lt;|`` in::
 
     w;;=while &lt;|condition|&gt;:
     \:    &lt;|code|&gt;
-
-This would expand with the ``&lt;|condition|&gt;`` selected, and ``,,``,
-if that's an abbreviation linked to next_place(), see 
-``@@data abbreviations examples``, would select ``&lt;|code|&gt;``.</t>
+</t>
 <t tx="tbrown.20130813134319.7223"></t>
 <t tx="tbrown.20130813134319.7224">Set this to True for rich text edits to be saved automatically.
 

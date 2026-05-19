@@ -54,7 +54,7 @@ try:
 
     QTabWidget = QtWidgets.QTabWidget
 except Exception:
-    g.es_exception()  ###
+    g.es_exception()
     Qt = QtCore = None
     QTabWidget = None
 
@@ -103,7 +103,7 @@ class TestNullGui(LeoUnitTest):
             (c.frame.body, NullBody),
             (c.frame.iconBar, NullIconBarClass),
             (c.frame.log, NullLog),
-            (c.frame.miniBufferWidget, None.__class__),  ###
+            (c.frame.miniBufferWidget, None.__class__),
             (c.frame.statusLine, NullStatusLineClass),
             (c.frame.tree, NullTree),
             # NullBody ivars...

@@ -360,6 +360,8 @@ class LeoFind:
     # @+node:ekr.20210925161148.1: *3* find.interactive_search_helper
     def interactive_search_helper(
         self,
+        *,
+        dry_run: bool = False,
         root: Position = None,
         settings: Settings = None,
     ) -> None:  # pragma: no cover
@@ -403,13 +405,17 @@ class LeoFind:
         c = self.c
         d = self.default_settings()  # A g.bunch
         if settings:
-            # Settings can be a dict or a g.Bunch.
-            # g.Bunch has no update method.
             for key in settings.keys():
                 d[key] = settings[key]
         self.ftm.set_widgets_from_dict(d)  # So the *next* find-next will work.
         self.show_find_options_in_status_area()
+        # #4614: Init these ivars early so check_args won't complain.
+        self.search_body = d.get('search_body', False)
+        self.search_headline = d.get('search_headline', False)
+        self.find_text = d.get('find_text', '')
         if not self.check_args('find-next'):
+            return
+        if dry_run:
             return
         if root:
             c.selectPosition(root)

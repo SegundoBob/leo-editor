@@ -267,7 +267,7 @@ class Demo:
         """
 
     # @+node:ekr.20170128213103.33: *4* demo.start & helpers
-    def start(self, script_tree, auto_run=False, delim='###', root=None):
+    def start(self, script_tree, *, auto_run=False, delim='###', root=None):
         """Start a demo. script_tree contains the demo scripts."""
         from leo.core import leoNodes
 

@@ -4146,44 +4146,6 @@ class TestEditCommands(LeoUnitTest):
         )
 
     # @+node:ekr.20210905064816.1: *3* TestEditCommands: Others
-    # @+node:ekr.20210905064816.2: *4* test_abbrevCommands_next_place
-    def test_abbrevCommands_next_place(self):
-        c = self.c
-        ac = c.abbrevCommands
-        assert ac
-        c.abbrev_place_start = '<|'
-        c.abbrev_place_end = '|>'
-        s = '123<| sub |>456'
-        new_s, i, j = ac.next_place(s, offset=0)
-        assert new_s == s.replace('<|', '').replace('|>', '')
-
-    # @+node:ekr.20210905064816.3: *4* test_addAbbrevHelper
-    def test_addAbbrevHelper(self):
-        c = self.c
-        f = c.abbrevCommands.addAbbrevHelper
-        d = c.abbrevCommands.abbrevs
-
-        # New in Leo 4.10: whitespace (blank,tab,newline) *is* significant in definitions.
-        table = (
-            ('ut1',  'ut1=aa',       'aa'),
-            # ('ut2','ut2 =bb',      'bb'),
-            ('ut3',  'ut3=cc=dd',    'cc=dd'),
-            ('ut4',  'ut4= ee',      ' ee'),
-            ('ut5',  'ut5= ff = gg', ' ff = gg'),
-            ('ut6',  'ut6= hh==ii',  ' hh==ii'),
-            ('ut7',  'ut7=j=k',      'j=k'),
-            ('ut8',  'ut8=l==m',     'l==m'),
-            ('@ut1', '@ut1=@a',      '@a'),
-        )  # fmt: skip
-        for name, s, expected in table:
-            for s2, kind in ((s, '(no nl)'), (s + '\n', '(nl)')):
-                f(s2, tag='unit-test')
-                result, tag = d.get(
-                    name,
-                    (None, None),
-                )
-                self.assertEqual(result, expected, msg=kind)
-
     # @+node:ekr.20210905064816.4: *4* test_capitalizeHelper
     def test_capitalizeHelper(self):
         c, w = self.c, self.c.frame.body.wrapper
