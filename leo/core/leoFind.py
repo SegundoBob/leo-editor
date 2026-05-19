@@ -22,7 +22,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.plugins.qt_text import QTextMixin
 
     MatchGroups = tuple  # Best we can do so far.
-    Settings = g.Bunch
     UndoData = g.Bunch
 
 # @-<< leoFind imports & annotations >>
@@ -156,7 +155,7 @@ class LeoFind:
         self.reload_settings()
 
     # @+node:ekr.20210110073117.6: *4* find.default_settings
-    def default_settings(self) -> Settings:
+    def default_settings(self) -> g.Bunch:
         """Return a dict representing all default settings."""
         c = self.c
         return g.Bunch(
@@ -194,7 +193,7 @@ class LeoFind:
             dw.finishCreateLogPane()
 
     # @+node:ekr.20210110073117.4: *4* find.init_ivars_from_settings
-    def init_ivars_from_settings(self, settings: Settings) -> None:
+    def init_ivars_from_settings(self, settings: g.Bunch) -> None:
         """
         Initialize all ivars from settings, including required defaults.
 
@@ -240,7 +239,7 @@ class LeoFind:
         self,
         root: Position,
         replacements: list[tuple[str, str]],
-        settings: Settings = None,
+        settings: g.Bunch = None,
     ) -> int:
         # @+<< docstring: find.batch_change >>
         # @+node:ekr.20210925161347.1: *4* << docstring: find.batch_change >>
@@ -328,7 +327,7 @@ class LeoFind:
         return count
 
     # @+node:ekr.20210108083003.1: *4* find._init_from_dict
-    def _init_from_dict(self, settings: Settings) -> None:
+    def _init_from_dict(self, settings: g.Bunch) -> None:
         """Initialize ivars from settings (a dict or g.Bunch)."""
 
         # The valid ivars and reasonable defaults.
@@ -374,7 +373,7 @@ class LeoFind:
         *,
         dry_run: bool = False,
         root: Position = None,
-        settings: Settings = None,
+        settings: g.Bunch = None,
     ) -> None:  # pragma: no cover
         # @+<< docstring: find.interactive_search >>
         # @+node:ekr.20210925161451.1: *4* << docstring: find.interactive_search >>
@@ -445,7 +444,7 @@ class LeoFind:
 
     # @+node:ekr.20210114100105.1: *5* find.do_change_then_find
     # A stand-alone method for unit testing.
-    def do_change_then_find(self, settings: Settings) -> bool:
+    def do_change_then_find(self, settings: g.Bunch) -> bool:
         """
         Do the change-then-find command from settings.
 
@@ -882,12 +881,12 @@ class LeoFind:
         self.do_find_prev(settings)
 
     # @+node:ekr.20031218072017.3074: *5* find.do_find_next & do_find_prev
-    def do_find_prev(self, settings: Settings) -> tuple[Position, int, int]:
+    def do_find_prev(self, settings: g.Bunch) -> tuple[Position, int, int]:
         """Find the previous instance of self.find_text."""
         self.request_reverse = True
         return self.do_find_next(settings)
 
-    def do_find_next(self, settings: Settings) -> tuple[Position, int, int]:
+    def do_find_next(self, settings: g.Bunch) -> tuple[Position, int, int]:
         """
         Find the next instance of self.find_text.
 
@@ -1212,7 +1211,7 @@ class LeoFind:
         self.do_change_all(settings)
 
     # @+node:ekr.20131117164142.17016: *5* find.do_change_all & helpers
-    def do_change_all(self, settings: Settings) -> int:
+    def do_change_all(self, settings: g.Bunch) -> int:
         c = self.c
         # Settings...
         self.init_ivars_from_settings(settings)
@@ -1231,7 +1230,7 @@ class LeoFind:
         return n
 
     # @+node:ekr.20031218072017.3069: *6* find._change_all_helper & helper
-    def _change_all_helper(self, settings: Settings) -> int:
+    def _change_all_helper(self, settings: g.Bunch) -> int:
         """Do the change-all command. Return the number of changes, or 0 for error."""
         # Caller has checked settings.
         c, current, u = self.c, self.c.p, self.c.undoer
@@ -1490,7 +1489,7 @@ class LeoFind:
 
     # @+node:ekr.20210114094846.1: *5* find.do_clone_find_all
     # A stand-alone method for unit testing.
-    def do_clone_find_all(self, settings: Settings) -> int:
+    def do_clone_find_all(self, settings: g.Bunch) -> int:
         """
         Do the clone-all-find commands from settings.
 
@@ -1552,7 +1551,7 @@ class LeoFind:
 
     # @+node:ekr.20210114094944.1: *5* find.do_clone_find_all_flattened
     # A stand-alone method for unit testing.
-    def do_clone_find_all_flattened(self, settings: Settings) -> int:
+    def do_clone_find_all_flattened(self, settings: g.Bunch) -> int:
         """
         Do the clone-find-all-flattened command from the settings.
 
@@ -1720,7 +1719,7 @@ class LeoFind:
         self.do_change_all(settings)  # Correct: convert to change-all.
 
     # @+node:ekr.20031218072017.3073: *5* find.do_find_all & helpers
-    def do_find_all(self, settings: Settings) -> dict[str, Any]:
+    def do_find_all(self, settings: g.Bunch) -> dict[str, Any]:
         """
         Top-level helper for find-all command.
 
@@ -1750,7 +1749,7 @@ class LeoFind:
         return result_dict
 
     # @+node:ekr.20160422073500.1: *6* find._find_all_helper & helpers
-    def _find_all_helper(self, settings: Settings) -> dict[str, Any]:
+    def _find_all_helper(self, settings: g.Bunch) -> dict[str, Any]:
         """
         Handle the find-all command from p to after.
 
@@ -2393,11 +2392,11 @@ class LeoFind:
 
     # @+node:ekr.20210112192427.1: *3* LeoFind.Commands: helpers
     # @+node:ekr.20210110073117.9: *4* find._cf_helper & helpers
-    def _cf_helper(
-        self, settings: Settings, flatten: bool
-    ) -> int:  # Caller has  checked the settings.
+    def _cf_helper(self, settings: g.Bunch, flatten: bool) -> int:
         """
         The common part of the clone-find commands.
+
+        The caller must check the settings.
 
         Return the number of found nodes.
         """
