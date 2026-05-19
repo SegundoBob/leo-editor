@@ -257,20 +257,24 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
 
         if node_only:
             # Tell the search command to restore settings on failure.
-            finder.previous_settings = g.Bunch(
-                find_text       = finder.find_text,
-                change_text     = finder.change_text,
-                file_only       = finder.file_only,
-                mark_changes    = finder.mark_changes,
-                mark_finds      = finder.mark_finds,
-                ignore_case     = finder.ignore_case,
-                node_only       = finder.node_only,
-                pattern_match   = finder.pattern_match,
-                search_body     = finder.search_body,
-                search_headline = finder.search_headline,
-                suboutline_only = finder.suboutline_only,
-                whole_word      = finder.whole_word,
-            )  # fmt: skip
+            ivars = (
+                'change_text',
+                'file_only',
+                'find_text',
+                'ignore_case',
+                'mark_changes',
+                'mark_finds',
+                'node_only',
+                'pattern_match',
+                'search_body',
+                'search_headline',
+                'suboutline_only',
+                'whole_word',
+            )
+            bunch = g.Bunch()
+            for ivar in ivars:
+                bunch[ivar] = getattr(finder, ivar)
+            finder.previous_settings = bunch
 
         # Search!
         c.endEditing()  # No need to re-edit the headline!
