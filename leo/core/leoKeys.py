@@ -2409,7 +2409,7 @@ class KeyHandlerClass:
     def makeMasterGuiBinding(self, stroke: Stroke, w: QTextMixin = None) -> None:
         """Make a master gui binding for stroke in pane w, or in all the standard widgets."""
         c, k = self.c, self
-        if not c.frame:  ### and c.frame.body and c.frame.tree):
+        if not c.frame:
             return
         if w:
             widgets = [w]
