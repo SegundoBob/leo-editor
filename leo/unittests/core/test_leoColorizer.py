@@ -4,11 +4,12 @@
 
 # pylint: disable=line-too-long
 
+from typing import Any
 from leo.core import leoGlobals as g
 from leo.core import leoColorizer
 from leo.core.leoColorizer import JEditColorizer
-from leo.core.leoQt import Qt
-from leo.core.leoTest2 import LeoUnitTest
+from leo.core.leoQt import Qt, QtGui, UnderlineStyle
+from leo.core.leoTest2 import create_app, LeoUnitTest
 
 assert g
 
@@ -167,7 +168,28 @@ class TestColorizer(LeoUnitTest):
         language = g.findLanguageDirectives(c, c.p)
         self.assertEqual(language, 'python')
 
-    # @+node:ekr.20260519084534.1: *3* TestColorizer.test_underlines_in_setTag
+    # @+node:ekr.20260519084534.1: *3* TestQtColorizer.test_underlines_in_setTag
+    def test_underlines_in_setTag(self):
+        # Test the calls in setTag.
+        # colorer = self.c.frame.body.colorizer
+
+        # Constants.
+        red = QtGui.QColor('red')
+        white = QtGui.QColor('white')
+        format = QtGui.QTextCharFormat()
+        styles = (
+            UnderlineStyle.SingleUnderline,
+            UnderlineStyle.DotLine,
+            UnderlineStyle.NoUnderline,
+        )
+
+        # Tests.
+        format.setBackground(white)
+        for style in styles:
+            format.setForeground(red)
+            format.setUnderlineStyle(style)
+        format.setFontUnderline(True)
+
     # @+node:ekr.20260519084430.1: *3* TestColorizer: per-language tests
     # @+node:ekr.20210905170507.5: *4* TestColorizer.test_colorizer_Actionscript
     def test_colorizer_Actionscript(self):
@@ -1623,6 +1645,40 @@ class TestColorizer(LeoUnitTest):
         """
         )
         self.color('pug', text)
+
+    # @-others
+
+
+# @+node:ekr.20260519090359.1: ** class TestQtColorizer(LeoUnitTest)
+class TestQtColorizer(LeoUnitTest):
+    """Qt test cases for leoColorizer.py"""
+
+    @classmethod
+    def setUpClass(cls: Any) -> None:
+        create_app(gui_name='qt')
+
+    # @+others
+    # @+node:ekr.20260519084534.1: *3* TestQtColorizer.test_underlines_in_setTag
+    def test_underlines_in_setTag(self):
+        # Test the calls in setTag.
+        # colorer = self.c.frame.body.colorizer
+
+        # Constants.
+        red = QtGui.QColor('red')
+        white = QtGui.QColor('white')
+        format = QtGui.QTextCharFormat()
+        styles = (
+            UnderlineStyle.SingleUnderline,
+            UnderlineStyle.DotLine,
+            UnderlineStyle.NoUnderline,
+        )
+
+        # Tests.
+        format.setBackground(white)
+        for style in styles:
+            format.setForeground(red)
+            format.setUnderlineStyle(style)
+        format.setFontUnderline(True)
 
     # @-others
 
