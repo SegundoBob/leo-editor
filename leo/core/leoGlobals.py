@@ -8273,30 +8273,33 @@ def handleUnl(unl_s: str, c: Cmdr) -> Optional[Cmdr]:
     if c2 != c:
         g.app.selectLeoWindow(c2)  # Switch outlines.
     c2.redraw(p)
-    # #4661: Select the line given by the Unl.
-    c2.bodyWantsFocusNow()
-    i = unl.find('::')
-    if i > -1:
-        n_s = unl[i + 2 :].strip()
-        try:
-            n = int(n_s)
-        except TypeError:
-            return c2
-        if n < 0:
-            _p2, offset = c.gotoCommands.find_file_line(-n, p)  # Calls c.redraw().
-            offset += 1
-            g.trace(offset)
-        else:
-            offset = n - 1
 
-        # Select line n of p.b. Similar to GoToCommands.success.
-        w = c.frame.body.wrapper
-        s = w.getAllText()
-        ### ins = g.convertRowColToPythonIndex(s, n - 1, 0)
-        ins = g.convertRowColToPythonIndex(s, offset, 0)
-        w.setInsertPoint(ins)
-        c.bodyWantsFocusNow()
-        w.seeInsertPoint()
+    if 0:  ### #4683:  Remove all this.
+        # #4661: Select the line given by the Unl.
+        c2.bodyWantsFocusNow()
+        i = unl.find('::')
+        if i > -1:
+            n_s = unl[i + 2 :].strip()
+            try:
+                n = int(n_s)
+            except TypeError:
+                return c2
+            if n < 0:
+                _p2, offset = c.gotoCommands.find_file_line(-n, p)  # Calls c.redraw().
+                offset += 1
+                g.trace(offset)
+            else:
+                offset = n - 1
+
+            # Select line n of p.b. Similar to GoToCommands.success.
+            w = c.frame.body.wrapper
+            s = w.getAllText()
+            ### ins = g.convertRowColToPythonIndex(s, n - 1, 0)
+            ins = g.convertRowColToPythonIndex(s, offset, 0)
+            w.setInsertPoint(ins)
+            c.bodyWantsFocusNow()
+            w.seeInsertPoint()
+
     return c2
 
 
@@ -8471,8 +8474,6 @@ def openUrlOnClick(event: QMouseEvent, url: str = None) -> Optional[str]:  # pra
 # @+node:ekr.20170216091704.1: *4* g.openUrlHelper
 def openUrlHelper(event: LeoKeyEvent, url: str = None) -> Optional[str]:
     """Open the unl, url or gnx under the cursor.  Return it for unit testing."""
-    if 0:  ### pylint error
-        return
     if not event:
         return None
     c, w = event.c, event.w
