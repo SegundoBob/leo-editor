@@ -889,6 +889,8 @@ class LeoLog:
         # Output each line using log.put, with or without a nodeLink.
         found_matches = 0
         for i, line in enumerate(lines):
+            # if 'pylint_error_test.py' in line:
+            #     g.trace(repr(line))
             m, filename_i, line_number_i = find_match(line)
             if m:
                 filename = m.group(filename_i)
@@ -898,8 +900,7 @@ class LeoLog:
                     unl = p.get_UNL()
                     found_matches += 1
                     if trace:
-                        # LeoQtLog.put writes: f'<a href="{url}" title="{nodeLink}">{s}</a>'
-                        g.trace(f"{unl}::-{line_number}")
+                        g.trace(f"{p.h} nodeLink: {unl}::-{line_number}")
                     self.put(line, nodeLink=f"{unl}::-{line_number}")  # Use global line.
                 else:  # An unusual case.
                     message = f"no p for {filename!r}"
