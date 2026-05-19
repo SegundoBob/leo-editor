@@ -255,6 +255,23 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         else:
             return
 
+        if node_only:
+            # Tell the search command to restore settings on failure.
+            finder.previous_settings = g.Bunch(
+                find_text       = finder.find_text,
+                change_text     = finder.change_text,
+                file_only       = finder.file_only,
+                mark_changes    = finder.mark_changes,
+                mark_finds      = finder.mark_finds,
+                ignore_case     = finder.ignore_case,
+                node_only       = finder.node_only,
+                pattern_match   = finder.pattern_match,
+                search_body     = finder.search_body,
+                search_headline = finder.search_headline,
+                suboutline_only = finder.suboutline_only,
+                whole_word      = finder.whole_word,
+            )  # fmt: skip
+
         # Search!
         c.endEditing()  # No need to re-edit the headline!
         # g.es_print(f"Searching for {start_pat}...{end_pat}", color='blue')

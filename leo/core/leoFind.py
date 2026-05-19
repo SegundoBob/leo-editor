@@ -104,8 +104,8 @@ class LeoFind:
         # The work "widget".
         self.work_s = ''  # p.b or p.c.
         self.work_sel: tuple[int, int, int] = None  # pos, newpos, insert.
-        # Options ivars: set by FindTabManager.init.
-        # These *must* be initially None, not False.
+
+        # Options ivars: set by FindTabManager.init: must be None, not False.
         self.ignore_case: bool = None
         self.node_only: bool = None
         self.file_only: bool = None
@@ -116,7 +116,7 @@ class LeoFind:
         self.mark_changes: bool = None
         self.mark_finds: bool = None
         self.whole_word: bool = None
-        #
+
         # For isearch commands...
         self.stack: list[tuple[Position, int, int, bool]] = []
         self.inverseBindingDict: dict[str, list[tuple[str, Stroke]]] = {}
@@ -126,26 +126,29 @@ class LeoFind:
         self.iSearchStrokes: list[Stroke] = []
         self.findTextList: list = []
         self.changeTextList: list = []
-        #
+
         # For find/change...
         self.find_text = ""
         self.change_text = ""
-        #
+
         # State machine...
         self.escape_handler: Callable = None
         self.handler: Callable = None
+
         # "Delayed" requests for do_find_next.
         self.request_reverse = False
         self.request_pattern_match = False
         self.request_whole_word = False
+
         # Internal state...
         self.changeAllFlag = False
         self.find_def_data: g.Bunch = None
         self.in_headline = False
         self.match_obj: re.Match = None
+        self.previous_settings: g.Bunch = None
         self.reverse = False
-        self.root: Position = None  # The start of the search, especially for suboutline-only.
-        #
+        self.root: Position = None  # The start of the search. For suboutline-only.
+
         # User settings.
         self.minibuffer_mode: bool = None
         self.reverse_find_defs: bool = None
@@ -201,14 +204,14 @@ class LeoFind:
             if not self.check_args('find-next'):
                 return <appropriate error indication>
         """
-        #
+
         # Init required defaults.
         self.reverse = False
-        #
+
         # Init find/change strings.
         self.change_text = settings.change_text
         self.find_text = settings.find_text
-        #
+
         # Init find options.
         self.file_only = settings.file_only
         self.ignore_case = settings.ignore_case
@@ -220,7 +223,6 @@ class LeoFind:
         self.search_headline = settings.search_headline
         self.suboutline_only = settings.suboutline_only
         self.whole_word = settings.whole_word
-        # self.wrapping = settings.wrapping
 
     # @+node:ekr.20171113164709.1: *4* find.reload_settings
     def reload_settings(self) -> None:
@@ -328,8 +330,15 @@ class LeoFind:
     # @+node:ekr.20210108083003.1: *4* find._init_from_dict
     def _init_from_dict(self, settings: Settings) -> None:
         """Initialize ivars from settings (a dict or g.Bunch)."""
+
         # The valid ivars and reasonable defaults.
         valid = dict(
+            # New.
+            find_text='',
+            change_text='',
+            mark_changes=False,
+            mark_finds=False,
+            # Existing.
             ignore_case=False,
             node_only=False,
             pattern_match=False,
@@ -347,9 +356,13 @@ class LeoFind:
             if ivar in valid:
                 val = settings.get(ivar)
                 if val in (True, False):
+                    # g.trace(f"{ivar:10} = {val!r}")
+                    setattr(self, ivar, val)
+                elif isinstance(val, str):
+                    # g.trace(f"{ivar:10} = {val!r}")
                     setattr(self, ivar, val)
                 else:  # pragma: no cover
-                    g.trace("bad value: {ivar!r} = {val!r}")
+                    g.trace(f"bad value: {ivar!r} = {val!r}")
                     errors += 1
             else:  # pragma: no cover
                 g.trace(f"ignoring {ivar!r} setting")
@@ -884,19 +897,19 @@ class LeoFind:
 
         """
         c, p = self.c, self.c.p
-        #
+
         # The gui widget may not exist for headlines.
         w = c.headline_wrapper(p) if self.in_headline else c.frame.body.wrapper
-        #
+
         # Init the work widget, so we don't get stuck.
         s = p.h if self.in_headline else p.b
         ins = w.getInsertPoint() if w else 0
         self.work_s = s
         self.work_sel = (ins, ins, ins)
-        #
+
         # Set the settings *after* initing the search.
         self.init_ivars_from_settings(settings)
-        #
+
         # Honor delayed requests.
         for ivar in ('reverse', 'pattern_match', 'whole_word'):
             request = 'request_' + ivar
@@ -904,7 +917,7 @@ class LeoFind:
             if val:  # Only *set* the ivar!
                 setattr(self, ivar, val)  # Set the ivar.
                 setattr(self, request, False)  # Clear the request!
-        #
+
         # Leo 6.4: set/clear self.root
         if self.root:  # pragma: no cover
             if p != self.root and not self.root.isAncestorOf(p):
@@ -949,7 +962,7 @@ class LeoFind:
             self.root = node
             self.set_find_scope_file_only()  # Update find-tab & status area.
             p = node
-        #
+
         # Now check the args.
         tag = 'find-prev' if self.reverse else 'find-next'
         if not self.check_args(tag):  # Issues error message.
@@ -2958,6 +2971,22 @@ class LeoFind:
         Restore Leo's gui and settings from data, a g.Bunch.
         """
         c, p = self.c, data.p
+
+        ###
+        # if not g.unitTesting:
+        #     g.trace('data', data)
+        #     g.trace(repr(self.previous_settings))
+        #     g.trace(self.ftm)
+
+        # #4688: Restore previous settings, if they exist.
+        if self.previous_settings:
+            self.init_ivars_from_settings(self.previous_settings)
+            self.ftm.set_widgets_from_dict(self.previous_settings)
+            self.previous_settings = None
+            # self.request_reverse = False
+            # self.request_pattern_match = False
+            # self.request_whole_word = False
+
         c.frame.bringToFront()  # Needed on the Mac
         if not p or not c.positionExists(p):  # pragma: no cover
             # Better than selecting the root!
