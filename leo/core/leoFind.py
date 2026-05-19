@@ -20,10 +20,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoNodes import Position, VNode
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
-
-    MatchGroups = tuple  # Best we can do so far.
-    UndoData = g.Bunch
-
 # @-<< leoFind imports & annotations >>
 # @+<< Theory of operation of find/change >>
 # @+node:ekr.20031218072017.2414: ** << Theory of operation of find/change >>
@@ -2864,14 +2860,12 @@ class LeoFind:
         return -1, -1
 
     # @+node:ekr.20210110073117.48: *4* find.make_regex_subs
-    def make_regex_subs(self, change_text: str, groups: MatchGroups) -> str:
+    def make_regex_subs(self, change_text: str, groups: tuple) -> str:
         """
         Substitute group[i-1] for \\i strings in change_text.
 
         Groups is a tuple of strings, one for every matched group.
         """
-
-        # g.printObj(list(groups), tag=f"groups in {change_text!r}")
 
         def repl(match_object: re.Match) -> str:
             """re.sub calls this function once per group."""
@@ -2891,8 +2885,7 @@ class LeoFind:
             # No replacement.
             return match_object.group(0)
 
-        result = re.sub(r'\\([0-9])', repl, change_text)
-        return result
+        return re.sub(r'\\([0-9])', repl, change_text)
 
     # @+node:ekr.20210110073117.49: *4* find.replace_back_slashes
     def replace_back_slashes(self, s: str) -> str:
@@ -2963,7 +2956,7 @@ class LeoFind:
         return val
 
     # @+node:ekr.20031218072017.3089: *4* find.restore
-    def restore(self, data: UndoData) -> None:
+    def restore(self, data: g.Bunch) -> None:
         """
         Restore Leo's gui and settings from data, a g.Bunch.
         """
@@ -2991,7 +2984,7 @@ class LeoFind:
             c.widgetWantsFocus(w)
 
     # @+node:ekr.20031218072017.3090: *4* find.save
-    def save(self) -> UndoData:
+    def save(self) -> g.Bunch:
         """Save everything needed to restore after a search fails."""
         c = self.c
         if self.in_headline:  # pragma: no cover
