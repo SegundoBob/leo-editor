@@ -169,23 +169,23 @@ class LeoFind:
         """Return a dict representing all default settings."""
         return g.Bunch(
             # State...
-            in_headline=False,
-            reverse=False,
+            in_headline = False,
+            reverse     = False,
             # Find/change strings...
-            find_text='',
-            change_text='',
+            find_text   = '',
+            change_text = '',
             # Find options...
-            file_only=False,
-            ignore_case=False,
-            mark_changes=False,
-            mark_finds=False,
-            node_only=False,
-            pattern_match=False,
-            search_body=True,
-            search_headline=True,
-            suboutline_only=False,
-            whole_word=False,
-        )
+            file_only       = False,
+            ignore_case     = False,
+            mark_changes    = False,
+            mark_finds      = False,
+            node_only       = False,
+            pattern_match   = False,
+            search_body     = True,
+            search_headline = True,
+            suboutline_only = False,
+            whole_word      = False,
+        )  # fmt: skip
 
     # @+node:ekr.20131117164142.17022: *4* find.finishCreate
     def finishCreate(self) -> None:  # pragma: no cover
