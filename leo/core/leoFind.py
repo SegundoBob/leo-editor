@@ -153,11 +153,10 @@ class LeoFind:
     # @+node:ekr.20210110073117.6: *4* find.default_settings
     def default_settings(self) -> g.Bunch:
         """Return a dict representing all default settings."""
-        c = self.c
         return g.Bunch(
             # State...
             in_headline=False,
-            p=c.rootPosition(),
+            reverse=False,
             # Find/change strings...
             find_text='',
             change_text='',
@@ -168,7 +167,6 @@ class LeoFind:
             mark_finds=False,
             node_only=False,
             pattern_match=False,
-            reverse=False,
             search_body=True,
             search_headline=True,
             suboutline_only=False,
@@ -418,6 +416,7 @@ class LeoFind:
         self.search_body = d.get('search_body', False)
         self.search_headline = d.get('search_headline', False)
         self.find_text = d.get('find_text', '')
+        self.reverse = d.get('reverse', False)  # Internal state.
         if not self.check_args('find-next'):
             return
         if dry_run:
