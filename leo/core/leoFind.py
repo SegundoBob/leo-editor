@@ -173,7 +173,7 @@ class LeoFind:
             search_headline=True,
             suboutline_only=False,
             whole_word=False,
-            wrapping=False,
+            # wrapping=False,
         )
 
     # @+node:ekr.20131117164142.17022: *4* find.finishCreate
