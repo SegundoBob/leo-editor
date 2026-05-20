@@ -16,7 +16,7 @@ and Asciidoc text, images, movies, sounds, rst, html, etc.
 
 # @+others
 # @+node:tom.20240521004125.1: *3* About
-About Viewrendered3 V5.22
+About Viewrendered3 V5.23
 ===========================
 
 The ViewRendered3 plugin (hereafter "VR3") renders Restructured
@@ -85,14 +85,16 @@ the plugin.
 # @+node:tom.20241124124334.1: *3* New With This Version
 New With This Version
 ======================
-
-The state machine used for processing Markdown and
-Asciidoc nodes was changed to reset to its original
-configuration. This fixed an occasional bug when an
-entire subtree was rendered.
+- Minor import bug fixes.
+- Reformatted part of the docstring.
 # @+node:tom.20241124124347.1: *3* Previous Recent Changes
 Previous Recent Changes
 ========================
+- The state machine used for processing Markdown and
+Asciidoc nodes was changed to reset to its original
+configuration. This fixed an occasional bug when an
+entire subtree was rendered.
+
 - Fixed: the freeze state was getting set to "unfreeze" after an
 update.
 
@@ -196,10 +198,8 @@ possibility is Alt-0 for VR3 and Alt-F10 for VR.
 Limitations and Quirks
 ======================
 
-    #. The plugin requires PyQt5 or PyQt6. All Leo versions since
-       6.0 can use at least PyQt5 so this requirement should
-       always be met. The PyQt6 version must be at least 6.23 to
-       avoid limited rendering capability.
+    #. The plugin requires PyQt6. The PyQt6 version must be at
+       least 6.23 to avoid limited rendering capability.
 
     #. The RsT processor (``docutils``) is fussy about having
        blank lines after blocks. A node may render correctly on
@@ -441,11 +441,17 @@ include a ``?config`` specifier.  The one shown in the example above works well.
 External Processors For Other Languages
 =======================================
 
-VR3 can make use of external processors for executing code blocks in programming languages other than Python.  Examples are Javascript and Julia.  Parameters can be passed to the processor as well.  The command line must have the format::
+VR3 can make use of external processors for executing code
+blocks in programming languages other than Python.  Examples
+are Javascript and Julia.  Parameters can be passed to the 
+processor as well.  The command line must have the format::
 
     <processor> [optional parameters] filename
 
-External language processors must be specified in the file `vr3_config.ini`.  This file is located in the `vr3` directory under Leo's Home directory.  The must be entered in the `[executables]` section. Here is an example::
+External language processors must be specified in the file
+`vr3_config.ini`.  This file is located in the `vr3` directory
+under Leo's Home directory.  The must be entered in the
+`[executables]` section. Here is an example::
 
     [executables]
     javascript = D:\usr\graalvm-ce-java11-20.0.0\languages\js\bin\js.exe
@@ -453,15 +459,25 @@ External language processors must be specified in the file `vr3_config.ini`.  Th
 
 Note that
 
-1. The name of the language (e.g., `julia`) **must** agree with the name of the language used in `@language` directives;
+1. The name of the language (e.g., `julia`) **must** agree with the
+name of the language used in `@language` directives;
 
-2. The full path to the processing executable **must** be included.  VR3 will not use the system path, and the processor need not be on the system path.
+2. The full path to the processing executable **must** be included.
+VR3 will not use the system path, and the processor need not be on
+the system path.
 
-This directory and .ini file must be created by the user.  VR3 will not create them.
+This directory and .ini file must be created by the user.  VR3 will
+not create them.
 
-A language that is specified here will not automatically be executed: only languages known by VR3 will be executed.  Code in known languages will be colorized provided that Leo has a colorizing mode file for that language.  This should normally be the case.  For example, colorizer mode files for both julia and javascript are included in the version of Leo that includes this version of VR3.
+A language that is specified here will not automatically be executed:
+only languages known by VR3 will be executed.  Code in known languages
+will be colorized provided that Leo has a colorizing mode file for
+that language.  This should normally be the case.  For example,
+colorizer mode files for both julia and javascript are included in
+the version of Leo that includes this version of VR3.
 
-VR3 can only successfully execute code if all code blocks in a node or subtree use the same language.
+VR3 can only successfully execute code if all code blocks in a node or
+subtree use the same language.
 
 # @+node:TomP.20210423000029.1: *5* @param Optional Parameters
 Optional Parameters
@@ -928,6 +944,19 @@ are used in `@language` directives.
 
 The languages that can currently be used are `javascript` and `julia`.  This list may be expanded in the future.
 
+# @+node:tom.20220225114320.1: *3* Rendering HTML From Clipboard
+Rendering HTML From Clipboard
+==============================
+
+The VR3 command *vr3-render-html-from-clip* renders the clipboard
+string contents with the assumption that it is HTML. The
+rendering can be exported to the system web browser using the VR3
+*Export* button.
+
+Pressing the *Reload* button restores the view to the current
+node.
+
+Currently VR3 has to be open for the command to work.
 # @+node:tom.20211104225431.1: *3* Easy Plotting Of X-Y Data
 Easy Plotting Of X-Y Data
 --------------------------
@@ -948,19 +977,6 @@ browser when *Other Actions/Help For Plot 2D* is clicked. This
 help is also invoked by the minibuffer command
 *vr3-help-plot-2d*.
 
-# @+node:tom.20220225114320.1: *3* Rendering HTML From Clipboard
-Rendering HTML From Clipboard
-==============================
-
-The VR3 command *vr3-render-html-from-clip* renders the clipboard
-string contents with the assumption that it is HTML. The
-rendering can be exported to the system web browser using the VR3
-*Export* button.
-
-Pressing the *Reload* button restores the view to the current
-node.
-
-Currently VR3 has to be open for the command to work.
 # @+node:TomP.20200115200833.1: *3* Acknowledgments
 Acknowledgments
 ================
@@ -1472,7 +1488,12 @@ def configure_asciidoc():
 
     asciidoc_ok = False
     asciidoc3_ok = False
-    asciidoc_has_diagram = check_gems('asciidoctor-diagram')
+    asciidoc_has_diagram = False
+    try:
+        asciidoc_has_diagram = check_gems('asciidoctor-diagram')
+        asciidoc_has_diagram = True
+    except Exception:
+        g.es('Ruby Gem "asciidoctor-diagram" is not available')
 
     # @+<< get asciidoc >>
     # @+node:tom.20211125003406.3: *3* << get asciidoc >>
