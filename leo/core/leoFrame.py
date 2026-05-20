@@ -889,8 +889,6 @@ class LeoLog:
         # Output each line using log.put, with or without a nodeLink.
         found_matches = 0
         for i, line in enumerate(lines):
-            # if 'pylint_error_test.py' in line:
-            #     g.trace(repr(line))
             m, filename_i, line_number_i = find_match(line)
             if m:
                 filename = m.group(filename_i)
