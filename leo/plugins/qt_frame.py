@@ -1272,7 +1272,6 @@ class FindTabManager:
             mark_finds=self.check_box_mark_finds.isChecked(),
             node_only=self.radio_button_node_only.isChecked(),
             pattern_match=self.check_box_regexp.isChecked(),
-            # reverse = False,
             search_body=self.check_box_search_body.isChecked(),
             search_headline=self.check_box_search_headline.isChecked(),
             suboutline_only=self.radio_button_suboutline_only.isChecked(),

@@ -773,8 +773,8 @@ class StringFindTabManager:
         """
         return g.Bunch(
             # Find/change strings...
-            find_text   = self.find_findbox.text(),
-            change_text = self.find_replacebox.text(),
+            find_text       = self.find_findbox.text(),
+            change_text     = self.find_replacebox.text(),
             # Find options...
             file_only       = self.radio_button_file_only.isChecked(),
             ignore_case     = self.check_box_ignore_case.isChecked(),

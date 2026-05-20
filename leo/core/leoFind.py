@@ -101,6 +101,20 @@ class LeoFind:
         self.work_sel: tuple[int, int, int] = None  # pos, newpos, insert.
 
         # Options ivars: set by FindTabManager.init: must be None, not False.
+        self.ivars = (
+            'change_text',
+            'file_only',
+            'find_text',
+            'ignore_case',
+            'mark_changes',
+            'mark_finds',
+            'node_only',
+            'pattern_match',
+            'search_body',
+            'search_headline',
+            'suboutline_only',
+            'whole_word',
+        )
         self.ignore_case: bool = None
         self.node_only: bool = None
         self.file_only: bool = None
@@ -200,21 +214,8 @@ class LeoFind:
         # Init required defaults.
         self.reverse = False
 
-        # Init find/change strings.
-        self.change_text = settings.change_text
-        self.find_text = settings.find_text
-
-        # Init find options.
-        self.file_only = settings.file_only
-        self.ignore_case = settings.ignore_case
-        self.mark_changes = settings.mark_changes
-        self.mark_finds = settings.mark_finds
-        self.node_only = settings.node_only
-        self.pattern_match = settings.pattern_match
-        self.search_body = settings.search_body
-        self.search_headline = settings.search_headline
-        self.suboutline_only = settings.suboutline_only
-        self.whole_word = settings.whole_word
+        for ivar in self.ivars:
+            setattr(self, ivar, settings.get(ivar))
 
     # @+node:ekr.20171113164709.1: *4* find.reload_settings
     def reload_settings(self) -> None:
