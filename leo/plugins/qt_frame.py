@@ -1277,7 +1277,6 @@ class FindTabManager:
             search_headline=self.check_box_search_headline.isChecked(),
             suboutline_only=self.radio_button_suboutline_only.isChecked(),
             whole_word=self.check_box_whole_word.isChecked(),
-            # wrapping = self.check_box_wrap_around.isChecked(),
         )
 
     # @+node:ekr.20131117120458.16789: *3* FindTabManager.init_widgets (creates callbacks)

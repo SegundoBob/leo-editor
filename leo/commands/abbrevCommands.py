@@ -255,9 +255,29 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         else:
             return
 
+        if node_only:
+            # Tell the search command to restore settings on failure.
+            ivars = (
+                'change_text',
+                'file_only',
+                'find_text',
+                'ignore_case',
+                'mark_changes',
+                'mark_finds',
+                'node_only',
+                'pattern_match',
+                'search_body',
+                'search_headline',
+                'suboutline_only',
+                'whole_word',
+            )
+            bunch = g.Bunch()
+            for ivar in ivars:
+                bunch[ivar] = getattr(finder, ivar)
+            finder.previous_settings = bunch
+
         # Search!
         c.endEditing()  # No need to re-edit the headline!
-        # g.es_print(f"Searching for {start_pat}...{end_pat}", color='blue')
         self.w.setInsertPoint(0)  # Start search at start.
         finder.interactive_search_helper(settings=settings)
 
