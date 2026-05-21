@@ -4111,18 +4111,6 @@ class QtMenuWrapper(LeoQtMenu, QtWidgets.QMenu):  # type:ignore
     # @-others
 
 
-# @+node:ekr.20110605121601.18461: ** class QtSearchWidget
-class QtSearchWidget:
-    """A dummy widget class to pass to Leo's core find code."""
-
-    def __init__(self) -> None:
-        self.insertPoint = 0
-        self.selection = 0, 0
-        self.wrapper = self
-        self.body = self
-        self.text = None
-
-
 # @+node:ekr.20110605121601.18257: ** class QtStatusLineClass
 class QtStatusLineClass:
     """A class representing the status line."""
