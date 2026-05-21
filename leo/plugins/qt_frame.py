@@ -1291,12 +1291,13 @@ class FindTabManager:
         """
         c = self.c
         find = c.findCommands
+
         # Find/change text boxes.
-        table1 = (
+        text_table = (
             ('find_findbox',    'find_text',   '<find pattern here>'),
             ('find_replacebox', 'change_text', ''),
         )  # fmt: skip
-        for ivar, setting_name, default in table1:
+        for ivar, setting_name, default in text_table:
             s = c.config.getString(setting_name) or default
             w = getattr(self, ivar)
             w.insert(s)
@@ -1304,8 +1305,9 @@ class FindTabManager:
                 w.clearFocus()
             else:
                 w.setSelection(0, len(s))
+
         # Check boxes.
-        table2 = (
+        check_box_table = (
             ('ignore_case',     self.check_box_ignore_case),
             ('mark_changes',    self.check_box_mark_changes),
             ('mark_finds',      self.check_box_mark_finds),
@@ -1313,9 +1315,8 @@ class FindTabManager:
             ('search_body',     self.check_box_search_body),
             ('search_headline', self.check_box_search_headline),
             ('whole_word',      self.check_box_whole_word),
-            # ('wrap',          self.check_box_wrap_around),
         )  # fmt: skip
-        for setting_name, w in table2:
+        for setting_name, w in check_box_table:
             val = c.config.getBool(setting_name, default=False)
             # The setting name is also the name of the LeoFind ivar.
             assert hasattr(find, setting_name), setting_name
@@ -1335,14 +1336,15 @@ class FindTabManager:
                 c.bodyWantsFocusNow()
 
             w.stateChanged.connect(check_box_callback)
+
         # Radio buttons
-        table3 = (
+        radio_buttons_table = (
             ('node_only',       'node_only',       self.radio_button_node_only),
             ('entire_outline',  None,              self.radio_button_entire_outline),
             ('suboutline_only', 'suboutline_only', self.radio_button_suboutline_only),
             ('file_only',       'file_only',       self.radio_button_file_only),
         )  # fmt: skip
-        for setting_name, ivar, w in table3:
+        for setting_name, ivar, w in radio_buttons_table:
             val = c.config.getBool(setting_name, default=False)
             # The setting name is also the name of the LeoFind ivar.
             if ivar is not None:
