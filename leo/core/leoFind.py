@@ -2171,9 +2171,9 @@ class LeoFind:
         """
         Add the settings to the start of the previous searches list.
         """
-        # g.Bunch aren't directly comparable, so do so by hand.
 
         def equal(b1: g.Bunch, b2: g.Bunch) -> bool:
+            """Return True if the two settings bunches are equivalent."""
             assert sorted(list(b1.keys())) == sorted(list(b2.keys())), (repr(b1), repr(b2))
             return all(b1.get(z) == b2.get(z) for z in b1.keys())
 
