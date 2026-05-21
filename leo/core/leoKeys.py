@@ -1548,6 +1548,7 @@ class GetArg:
         c.check_event(event)
         c.minibufferWantsFocusNow()
         char = event.char if event else ''
+        g.trace(f"{state=} {char=}")  ###
         if state == 0:
             self.do_state_zero(
                 completion,
@@ -1569,6 +1570,8 @@ class GetArg:
         elif char in ('\b', 'BackSpace'):
             self.do_back_space(self.tabList, self.arg_completion)
             c.minibufferWantsFocus()
+        elif char in ('Up', 'Down'):
+            g.trace(f"*** {char=}")
         elif k.isFKey(stroke):
             # Ignore only F-keys. Ignoring all except plain keys would kill unicode searches.
             pass
@@ -3528,6 +3531,7 @@ class KeyHandlerClass:
         k = self
         state = k.state.kind
         stroke = event.stroke
+        ### g.trace(f"{state=} {k.isPlainKey(stroke)=} {stroke.s=}")  ###
         if not k.inState():
             return False
         # First, honor minibuffer bindings for all except user modes.
@@ -3641,13 +3645,16 @@ class KeyHandlerClass:
 
     # @+node:ekr.20061031131434.152: *6* k.handleMiniBindings
     def handleMiniBindings(self, event: LeoKeyEvent, state: str, stroke: Stroke) -> bool:
-        """Find and execute commands bound to the event."""
+        """
+        Find and execute commands bound to the event.
+
+        Return True if a command was executed.
+        """
         k = self
-        #
+
         # Special case for bindings handled in k.getArg:
-        if state == 'full-command' and stroke in ('Up', 'Down'):
+        if state in ('getArg', 'full-command') and stroke in ('Up', 'Down'):
             return False
-        #
         # Ignore other special keys in the minibuffer.
         if state in ('getArg', 'full-command'):
             if stroke in (
@@ -3660,15 +3667,12 @@ class KeyHandlerClass:
                 return False
             if k.isFKey(stroke):
                 return False
-        #
         # Ignore autocompletion state.
         if state.startswith('auto-'):
             return False
-        #
         # Ignore plain key binding in the minibuffer.
         if not stroke or k.isPlainKey(stroke):
             return False
-        #
         # Get the command, based on the pane.
         for pane in ('mini', 'all', 'text'):
             result = k.handleMinibufferHelper(event, pane, state, stroke)
@@ -3678,7 +3682,6 @@ class KeyHandlerClass:
             if result == 'found':
                 # Do not call k.keyboardQuit here!
                 return True
-        #
         # No binding exists.
         return False
 
