@@ -3035,7 +3035,6 @@ class LeoFind:
     ) -> QTextMixin:
         """Display the result of a successful find operation."""
         c = self.c
-        g.trace('*****')
         # Set state vars.
         # Ensure progress in backwards searches.
         insert = min(pos, newpos) if self.reverse else max(pos, newpos)
@@ -3547,9 +3546,8 @@ class LeoFind:
         bunch = prev[self.prev_searches_i]
 
         # Set the find/change text.
-        g.trace(f"{bunch.find_text=} {bunch.change_text=}")
-        self.ftm.set_change_text(bunch.change_text)
-        self.ftm.set_find_text(bunch.find_text)
+        ### g.trace(f"{bunch.find_text=} {bunch.change_text=}")
+        find_s, change_s = bunch.find_text, bunch.change_text
 
         # Show the options in the status area. Like compute_find_options_in_status_area.
         options = []
@@ -3569,9 +3567,15 @@ class LeoFind:
             val = bunch.get(key)
             if key in self.ivars:
                 setattr(self, key, val)
-                g.trace(f"Set {key}={val}")
+                ### g.trace(f"Set {key}={val}")
             if val and key in d:
                 options.append(d.get(key))
+
+        # Update the gui.
+        self.ftm.set_change_text(find_s)
+        self.ftm.set_find_text(change_s)
+        c.k.setLabelBlue('Search: ')
+        c.k.extendLabel(find_s)
         c.frame.statusLine.put(f"Find: {' '.join(options)}")
 
     # @+node:ekr.20131117164142.17008: *4* find.updateChange/FindList
