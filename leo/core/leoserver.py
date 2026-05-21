@@ -27,6 +27,7 @@ import sys
 import socket
 import textwrap
 import time
+import hmac
 from typing import Any, Generator, Iterable, Iterator, Optional
 import warnings
 
@@ -126,7 +127,8 @@ traces: list[str] = []  # list of traces names, to be used as flags to output tr
 wsLimit = 1
 wsPersist = False
 wsSkipDirty = False
-wsHost = "localhost"
+wsPassword = ""
+wsHost = "127.0.0.1"
 wsPort = 32125
 
 
@@ -5707,7 +5709,7 @@ def main() -> None:  # pragma: no cover (tested in client)
         """
         Get arguments from the command line and sets them globally.
         """
-        global wsHost, wsPort, wsLimit, wsPersist, wsSkipDirty, argFile  # traces
+        global wsHost, wsPort, wsLimit, wsPersist, wsSkipDirty, argFile, wsPassword
 
         def leo_file(s: str) -> str:
             if os.path.exists(s):
@@ -5767,11 +5769,10 @@ def main() -> None:  # pragma: no cover (tested in client)
             help='maximum number of clients. Defaults to ' + str(wsLimit),
         )
         add(
-            '',
             '--password',
             dest='wsPassword',
             type=str,
-            default='',
+            default=wsPassword,
             metavar='STR',
             help='password for client connections. Defaults to empty string',
         )
@@ -5818,6 +5819,7 @@ def main() -> None:  # pragma: no cover (tested in client)
         wsLimit = args.wsLimit
         wsPersist = bool(args.wsPersist)
         wsSkipDirty = bool(args.wsSkipDirty)
+        wsPassword = args.wsPassword
         argFile = args.argFile
         if args.traces:
             ok = True
@@ -5833,6 +5835,10 @@ def main() -> None:  # pragma: no cover (tested in client)
         if args.v:
             print(__version__)
             sys.exit(0)
+        if not wsPassword:
+            print("Warning: Client connection password is required. Use --password to set one.", flush=True)
+            sys.exit(1)
+
         # Sanitize limit.
         if wsLimit < 1:
             wsLimit = 1
@@ -5893,25 +5899,63 @@ def main() -> None:  # pragma: no cover (tested in client)
         trace = False
         verbose = False
         connected = False
+        registered = False
+        peer = websocket.remote_address if websocket.remote_address else 'unknown peer'
 
         try:
             # Websocket connection startup
             if connectionsTotal >= wsLimit:
                 print(
-                    f"{tag}: User Refused, Total: {connectionsTotal}, Limit: {wsLimit}",
+                    f"{tag}: Socket Refused {peer}, Total: {connectionsTotal}, Limit: {wsLimit}",
                     flush=True,
                 )
-                await websocket.close(1001)
+                await websocket.close(code=1000, reason="Server full: too many connections")
                 return
             connected = True  # local variable
             connectionsTotal += 1  # global variable
             print(
-                f"{tag}: User Connected, Total: {connectionsTotal}, Limit: {wsLimit}",
+                f"{tag}: Socket Connected {peer}, Total: {connectionsTotal}, Limit: {wsLimit}",
                 flush=True,
             )
+
+            try:
+                print(f"{tag}: authenticating {peer}", flush=True)
+                auth_message = await asyncio.wait_for(websocket.recv(), timeout=10)
+                if len(auth_message) > 4096:
+                    raise ValueError("oversized auth packet")
+
+                auth_data = json.loads(auth_message)
+
+                if not (
+                    auth_data.get("action") == "!auth"
+                    and hmac.compare_digest(auth_data.get("password", ""), wsPassword)
+                ):
+                    raise ValueError("invalid credentials")
+
+                print(f"{tag}: authentication success {peer}", flush=True)
+
+            except asyncio.TimeoutError:
+                print(f"{tag}: authentication timeout {peer}", flush=True)
+                await asyncio.sleep(1)
+                await websocket.close(code=1008, reason="Authentication timeout")
+                return
+
+            except json.JSONDecodeError:
+                print(f"{tag}: invalid auth json {peer}", flush=True)
+                await asyncio.sleep(1)
+                await websocket.close(code=1008, reason="Invalid auth JSON")
+                return
+
+            except Exception as e:
+                print(f"{tag}: authentication failed {peer}: {e}", flush=True)
+                await asyncio.sleep(1)
+                await websocket.close(code=1008, reason="Authentication failed")
+                return
+
             # If first connection, _init_connection will set it as the main client connection
             controller._init_connection(websocket)
             await register_client(websocket)
+            registered = True
             # Start by sending empty as 'ok'.
             n = 0
             await websocket.send(controller._make_response({"leoID": g.app.leoID}))
@@ -5969,8 +6013,9 @@ def main() -> None:  # pragma: no cover (tested in client)
         finally:
             if connected:
                 connectionsTotal -= 1
-                await unregister_client(websocket)
-                print(f"{tag} connection finished.  Total: {connectionsTotal}, Limit: {wsLimit}")
+                if registered:
+                    await unregister_client(websocket)
+                print(f"{tag} connection finished for {peer}  Total: {connectionsTotal}, Limit: {wsLimit}")
             # Check for persistence flag if all connections are closed
             if connectionsTotal == 0 and not wsPersist:
                 print("Shutting down leoserver")
