@@ -3488,7 +3488,7 @@ class LeoFind:
                 break
         return f"Find: {' '.join(result)}"
 
-    # @+node:ekr.20131117164142.17007: *4* find.start_state_machine & helper
+    # @+node:ekr.20131117164142.17007: *4* find.start_state_machine & helpers
     def start_state_machine(
         self,
         event: LeoKeyEvent,
@@ -3518,10 +3518,10 @@ class LeoFind:
         self.escape_handler = escape_handler
         self.total_links = 0  # Limit the total number of clickable links.
         # Start the state matching!
-        k.get1Arg(event, handler=self.state0, tabList=self.findTextList, completion=True)
+        k.get1Arg(event, handler=self.find_state0, tabList=self.findTextList, completion=True)
 
-    # @+node:ekr.20260521123442.1: *5* find.state0
-    def state0(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    # @+node:ekr.20260521123442.1: *5* find.find_state0
+    def find_state0(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
         """Dispatch the next handler."""
         k = self.k
         if k.getArgEscapeFlag:
@@ -3529,6 +3529,10 @@ class LeoFind:
             self.escape_handler(event)
         else:
             self.handler(event)
+
+    # @+node:ekr.20260521170130.1: *5* find.do_arrow
+    def do_arrow(self, char: str) -> None:
+        g.trace(f"{char=}")
 
     # @+node:ekr.20131117164142.17008: *4* find.updateChange/FindList
     def update_change_list(self, s: str) -> None:  # pragma: no cover (cmd)

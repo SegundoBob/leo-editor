@@ -1570,8 +1570,11 @@ class GetArg:
         elif char in ('\b', 'BackSpace'):
             self.do_back_space(self.tabList, self.arg_completion)
             c.minibufferWantsFocus()
-        elif char in ('Up', 'Down'):
-            g.trace(f"*** {char=}")
+        elif char in ('Up', 'Down'):  # 4685.
+            finder = c.findCommands
+            handler = self.after_get_arg_state[2]
+            if handler == finder.find_state0:
+                finder.do_arrow(char)
         elif k.isFKey(stroke):
             # Ignore only F-keys. Ignoring all except plain keys would kill unicode searches.
             pass
