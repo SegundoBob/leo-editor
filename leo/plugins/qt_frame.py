@@ -1262,23 +1262,24 @@ class FindTabManager:
         Similar to LeoFind.default_settings, but only for find-tab values.
         """
         return g.Bunch(
+            # State...
+            in_headline = False,
+            reverse     = False,
             # Find/change strings...
-            find_text=self.find_findbox.text(),
-            change_text=self.find_replacebox.text(),
+            find_text       = self.find_findbox.text(),
+            change_text     = self.find_replacebox.text(),
             # Find options...
-            file_only=self.radio_button_file_only.isChecked(),
-            ignore_case=self.check_box_ignore_case.isChecked(),
-            mark_changes=self.check_box_mark_changes.isChecked(),
-            mark_finds=self.check_box_mark_finds.isChecked(),
-            node_only=self.radio_button_node_only.isChecked(),
-            pattern_match=self.check_box_regexp.isChecked(),
-            # reverse = False,
-            search_body=self.check_box_search_body.isChecked(),
-            search_headline=self.check_box_search_headline.isChecked(),
-            suboutline_only=self.radio_button_suboutline_only.isChecked(),
-            whole_word=self.check_box_whole_word.isChecked(),
-            # wrapping = self.check_box_wrap_around.isChecked(),
-        )
+            file_only       = self.radio_button_file_only.isChecked(),
+            ignore_case     = self.check_box_ignore_case.isChecked(),
+            mark_changes    = self.check_box_mark_changes.isChecked(),
+            mark_finds      = self.check_box_mark_finds.isChecked(),
+            node_only       = self.radio_button_node_only.isChecked(),
+            pattern_match   = self.check_box_regexp.isChecked(),
+            search_body     = self.check_box_search_body.isChecked(),
+            search_headline = self.check_box_search_headline.isChecked(),
+            suboutline_only = self.radio_button_suboutline_only.isChecked(),
+            whole_word      = self.check_box_whole_word.isChecked(),
+        )  # fmt: skip
 
     # @+node:ekr.20131117120458.16789: *3* FindTabManager.init_widgets (creates callbacks)
     def init_widgets(self) -> None:
@@ -2561,7 +2562,6 @@ class LeoQtLog(leoFrame.LeoLog):
         c = self.c
         contents: Any
         if widget is None:
-            ### g.trace(f"{tabName:>4}: parent: {self.tabWidget.__class__.__name__} {g.callers(2)}")
             # widget is subclass of QTextBrowser.
             # #4652. Set the parent.
             widget = qt_text.LeoQTextBrowser(parent=self.tabWidget, c=c)
@@ -2581,7 +2581,6 @@ class LeoQtLog(leoFrame.LeoLog):
             self.tabWidget.addTab(widget, tabName)
         else:
             # #1161: Don't set the wrapper unless it has the correct type.
-            ### g.trace(f"{tabName:>4}: widget: {widget.__class__.__name__} {g.callers(2)}")
             contents = widget  # Unlike text widgets, contents is the actual widget.
             if isinstance(contents, qt_text.QTextEditWrapper):
                 widget.leo_log_wrapper = widget  # The leo_log_wrapper is the widget itself.

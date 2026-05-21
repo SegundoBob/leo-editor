@@ -898,8 +898,7 @@ class LeoLog:
                     unl = p.get_UNL()
                     found_matches += 1
                     if trace:
-                        # LeoQtLog.put writes: f'<a href="{url}" title="{nodeLink}">{s}</a>'
-                        g.trace(f"{unl}::-{line_number}")
+                        g.trace(f"{p.h} nodeLink: {unl}::-{line_number}")
                     self.put(line, nodeLink=f"{unl}::-{line_number}")  # Use global line.
                 else:  # An unusual case.
                     message = f"no p for {filename!r}"

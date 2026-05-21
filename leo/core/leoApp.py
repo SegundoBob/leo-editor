@@ -1714,13 +1714,13 @@ class LoadManager:
     # @+node:ekr.20120209051836.10373: *4* LM.computeMyLeoSettingsPath
     def computeMyLeoSettingsPath(self) -> Optional[str]:
         """
-        Return the full path to myLeoSettings.leo.
+        Return the full path to either myLeoSettings.leo or myLeoSettings.leojs.
 
         The "footnote": Get the local directory from lm.files[0]
         """
         lm = self
         join = g.finalize_join
-        settings_fn = 'myLeoSettings.leo'
+        settings_fn = 'myLeoSettings'
         # This seems pointless: we need a machine *directory*.
         # For now, however, we'll keep the existing code as is.
         machine_fn = lm.computeMachineName() + settings_fn
@@ -1740,11 +1740,11 @@ class LoadManager:
             join(g.app.globalConfigDir, settings_fn),
         )
         for path in table:
-            if g.os_path_exists(path):
-                break
-        else:
-            path = None
-        return path
+            if g.os_path_exists(path + ".leo"):
+                return path + ".leo"
+            if g.os_path_exists(path + ".leojs"):
+                return path + ".leojs"
+        return None
 
     # @+node:ekr.20120209051836.10252: *4* LM.computeStandardDirectories & helpers
     def computeStandardDirectories(self) -> None:
@@ -2388,8 +2388,14 @@ class LoadManager:
             return
         # #1128: support for restart-leo.
         if not g.app.start_minimized:
-            try:  # Careful: we may be unit testing.
+            try:
                 g.app.log.c.frame.bringToFront()
+            except Exception:
+                pass
+        # #4614:
+        if 'abbrev' in g.app.debug:
+            try:
+                g.app.log.c.abbrevCommands.listAbbrevs()
             except Exception:
                 pass
         g.app.gui.runMainLoop()

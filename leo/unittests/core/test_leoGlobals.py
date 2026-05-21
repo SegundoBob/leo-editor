@@ -49,7 +49,7 @@ class TestGlobals(LeoUnitTest):
     )
     # @-<< define files data >>
     # @+<< define error_patterns >>
-    # @+node:ekr.20230701060854.1: *4* << define error_patterns >>
+    # @+node:ekr.20230701060854.1: *4* << define error_patterns >> (test_leoGlobals.py)
     # m.group(1) is the filename and m.group(2) is the line number.
     error_patterns = {
         'flake8': g.flake8_pat,  # r'(.+?):([0-9]+):[0-9]+:.*$'

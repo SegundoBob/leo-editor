@@ -2012,29 +2012,20 @@ class QTextEditWrapper(QTextMixin):
             self.changingText = False
 
     # @+node:ekr.20110605121601.18095: *4* QTextEditWrapper.setInsertPoint
-    def setInsertPoint(self, i: int, s: str = None) -> None:
-        # Fix bug 981849: incorrect body content shown.
-        # Use the more careful code in setSelectionRange.
-        self.setSelectionRange(i=i, j=i, insert=i, s=s)
+    def setInsertPoint(self, i: int) -> None:
+        self.setSelectionRange(i=i, j=i, insert=i)
 
     # @+node:ekr.20110605121601.18096: *4* QTextEditWrapper.setSelectionRange
-    def setSelectionRange(
-        self,
-        i: Optional[int],
-        j: Optional[int],
-        insert: Optional[int] = None,
-        s: Optional[str] = None,
-    ) -> None:
+    def setSelectionRange(self, i: int, j: int, insert: int = None) -> None:
         """Set the selection range and the insert point."""
         c = self.c
         # Part 1
         w = self.widget
+        s = self.getAllText()
         if i is None:
             i = 0
         if j is None:
             j = i
-        if s is None:
-            s = self.getAllText()
         n = len(s)
         i = max(0, min(i, n))
         j = max(0, min(j, n))
@@ -2043,10 +2034,8 @@ class QTextEditWrapper(QTextMixin):
         else:
             ins = j if insert is None else insert
             ins = max(0, min(ins, n))
-        #
-        # Part 2:
-        # 2010/02/02: Use only tc.setPosition here.
-        # Using tc.movePosition doesn't work.
+
+        # Part 2: Use tc.setPosition. tc.movePosition doesn't work.
         tc = w.textCursor()
         if i == j:
             tc.setPosition(i)

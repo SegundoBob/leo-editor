@@ -9,9 +9,9 @@
 from typing import Any
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt, QUrl
-from PyQt6.QtGui import QAction, QCloseEvent
+from PyQt6.QtGui import QAction, QActionGroup, QCloseEvent
 
-assert QUrl and QAction and QCloseEvent  # To placate pyflakes.
+assert QUrl and QAction and QActionGroup and QCloseEvent  # To placate pyflakes.
 # @-<< leoQt.py: imports >>
 
 # A public list of missing Qt modules. Good for debugging.

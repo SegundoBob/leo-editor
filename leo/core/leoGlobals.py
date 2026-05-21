@@ -8259,6 +8259,7 @@ def handleUnl(unl_s: str, c: Cmdr) -> Optional[Cmdr]:
     Select the node given by any kind of unl.
     This must *never* open a browser.
     """
+    w = c.frame.body.wrapper
     if not unl_s:
         return None
     unl = unl_s.strip()
@@ -8273,6 +8274,7 @@ def handleUnl(unl_s: str, c: Cmdr) -> Optional[Cmdr]:
     if c2 != c:
         g.app.selectLeoWindow(c2)  # Switch outlines.
     c2.redraw(p)
+
     # #4661: Select the line given by the Unl.
     c2.bodyWantsFocusNow()
     i = unl.find('::')
@@ -8282,10 +8284,15 @@ def handleUnl(unl_s: str, c: Cmdr) -> Optional[Cmdr]:
             n = int(n_s)
         except TypeError:
             return c2
+        if n < 0:
+            _p2, offset = c.gotoCommands.find_file_line(-n, p)  # Calls c.redraw().
+            offset += 1
+        else:
+            offset = n - 1
+
         # Select line n of p.b. Similar to GoToCommands.success.
-        w = c.frame.body.wrapper
         s = w.getAllText()
-        ins = g.convertRowColToPythonIndex(s, n - 1, 0)
+        ins = g.convertRowColToPythonIndex(s, offset, 0)
         w.setInsertPoint(ins)
         c.bodyWantsFocusNow()
         w.seeInsertPoint()
@@ -8307,8 +8314,8 @@ def handleUrl(url: str, c: Cmdr = None, p: Position = None) -> Optional[str]:
     if urll.startswith('@url'):
         url = url[4:].lstrip()
     if (
-        urll.startswith(('#', 'unl://', 'unl:gnx:'))
-        or urll.startswith('file://') and '-->' in urll
+        urll.startswith(('#', 'unl://', 'unl:gnx:')) or
+        urll.startswith('file://') and '-->' in urll
     ):  # fmt: skip
         return g.handleUnl(url, c)
     try:
