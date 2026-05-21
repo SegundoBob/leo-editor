@@ -135,7 +135,6 @@ class LeoFind:
         self.iSearchStrokes: list[Stroke] = []
         self.findTextList: list = []
         self.changeTextList: list = []
-        self.prevSearches: list[g.Bunch] = []  # #4685
 
         # For find/change...
         self.find_text = ""
@@ -156,6 +155,8 @@ class LeoFind:
         self.in_headline = False
         self.match_obj: re.Match = None
         self.previous_settings: g.Bunch = None
+        self.prev_searches: list[g.Bunch] = []  # #4685
+        self.prev_searches_i = 0  # #4685
         self.reverse = False
         self.root: Position = None  # The start of the search. For suboutline-only.
 
@@ -2178,15 +2179,15 @@ class LeoFind:
             return all(b1.get(z) == b2.get(z) for z in b1.keys())
 
         # Remove any previous match.
-        for bunch in self.prevSearches:
+        for bunch in self.prev_searches:
             if equal(settings, bunch):
-                self.prevSearches.remove(bunch)
+                self.prev_searches.remove(bunch)
                 break
 
         # Insert the new setting at the start of the list.
-        self.prevSearches.insert(0, settings)
+        self.prev_searches.insert(0, settings)
 
-        g.trace(len(self.prevSearches))  ###
+        g.trace(len(self.prev_searches))  ###
 
     # @+node:ekr.20210117143611.1: *5* find.start_search1
     def start_search1(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
@@ -3035,6 +3036,7 @@ class LeoFind:
     ) -> QTextMixin:
         """Display the result of a successful find operation."""
         c = self.c
+        g.trace('*****')
         # Set state vars.
         # Ensure progress in backwards searches.
         insert = min(pos, newpos) if self.reverse else max(pos, newpos)
@@ -3532,7 +3534,34 @@ class LeoFind:
 
     # @+node:ekr.20260521170130.1: *5* find.do_arrow
     def do_arrow(self, char: str) -> None:
-        g.trace(f"{char=}")
+        prev = self.prev_searches
+        if not prev:
+            return
+        i = self.prev_searches_i
+        self.prev_searches_i = (
+            i - 1 if char == 'Up' and i - 1 >= 0 else
+            i + 1 if char == 'Down' and i + 1 < len(prev) else
+            i
+        )  # fmt: skip
+
+        # Show compact status, like find.compute_result_status.
+        bunch = prev[self.prev_searches_i]
+        status = []
+        d = {
+            'find_text':        bunch.find_text,
+            'ignore_case':      'Ignore Case',
+            'node_only':        '[Node Only]',
+            'pattern_match':    'Regex',
+            'search_body':      'Body',
+            'search_headline':  'Head',
+            'suboutline_only':  '[Outline Only]',
+            'whole_word':       'Word',
+        }  # fmt: skip
+        for key in bunch.keys():
+            val = bunch.get(key)
+            if val and key in d:
+                status.append(d.get(key))
+        g.trace(status)
 
     # @+node:ekr.20131117164142.17008: *4* find.updateChange/FindList
     def update_change_list(self, s: str) -> None:  # pragma: no cover (cmd)
