@@ -244,7 +244,6 @@ class OpmlController:
         try:
             theFile = BytesIO(s)
             parser = xml.sax.make_parser()
-            parser.setFeature(xml.sax.handler.feature_external_ges, 1)
             # Do not include external general entities.
             # The actual feature name is "http://xml.org/sax/features/external-general-entities"
             parser.setFeature(xml.sax.handler.feature_external_pes, 0)
@@ -317,7 +316,7 @@ class OpmlController:
         v = self.currentVnode
         if not v:
             return
-        for p in c.allNodes_iter():
+        for p in c.all_nodes():
             if p.v == v:
                 c.selectPosition(p)
                 break
