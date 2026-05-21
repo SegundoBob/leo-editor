@@ -3555,7 +3555,7 @@ class KeyHandlerClass:
                 if trace:
                     g.trace(state, 'k.isPlain: getArg', stroke)
                 return True
-            if stroke.s in ('Escape', 'Tab', 'BackSpace'):
+            if stroke.s in ('Escape', 'Tab', 'BackSpace', 'Up', 'Down'):
                 k.getArg(event, stroke=stroke)
                 if trace:
                     g.trace(state, f"{stroke.s!r}: getArg", stroke)
@@ -3611,14 +3611,14 @@ class KeyHandlerClass:
         """Call the state handler associated with this event."""
         k = self
         ch = event.char
-        #
+
         # Defensive programming
         if not k.state.kind:
             return None
         if not k.state.handler:
             g.error('callStateFunction: no state function for', k.state.kind)
             return None
-        #
+
         # Handle auto-completion before checking for unbound keys.
         if k.state.kind == 'auto-complete':
             # k.auto_completer_state_handler returns 'do-standard-keys' for control keys.
@@ -3634,7 +3634,7 @@ class KeyHandlerClass:
             and (ord(ch) < 32 or ord(ch) > 128)
         ):
             return None
-        #
+
         # Call the state handler.
         val = k.state.handler(event)
         return val
