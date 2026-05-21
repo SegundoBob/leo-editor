@@ -135,6 +135,7 @@ class LeoFind:
         self.iSearchStrokes: list[Stroke] = []
         self.findTextList: list = []
         self.changeTextList: list = []
+        self.prevSearches: list[g.Bunch] = []  # #4685
 
         # For find/change...
         self.find_text = ""
@@ -2165,12 +2166,35 @@ class LeoFind:
 
     startSearch = start_search  # Compatibility. Do not delete.
 
+    # @+node:ekr.20260521125623.1: *5* find._remember_setting
+    def _remember_setting(self, settings: g.Bunch) -> None:
+        """
+        Add the settings to the start of the previous searches list.
+        """
+        # g.Bunch aren't directly comparable, so do so by hand.
+
+        def equal(b1: g.Bunch, b2: g.Bunch) -> bool:
+            assert sorted(list(b1.keys())) == sorted(list(b2.keys())), (repr(b1), repr(b2))
+            return all(b1.get(z) == b2.get(z) for z in b1.keys())
+
+        # Remove any previous match.
+        for bunch in self.prevSearches:
+            if equal(settings, bunch):
+                self.prevSearches.remove(bunch)
+                break
+
+        # Insert the new setting at the start of the list.
+        self.prevSearches.insert(0, settings)
+
+        g.trace(len(self.prevSearches))
+
     # @+node:ekr.20210117143611.1: *5* find.start_search1
     def start_search1(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
         """Common handler for use by vim commands and other find commands."""
         c, k, w = self.c, self.k, self.c.frame.body.wrapper
         # Settings...
         find_pattern = k.arg
+        ### g.trace(f"{find_pattern=}", g.callers())
         self.ftm.set_find_text(find_pattern)
         self.update_find_list(find_pattern)
         self.init_vim_search(find_pattern)
@@ -2182,6 +2206,7 @@ class LeoFind:
         k.showStateAndMode()
         c.widgetWantsFocusNow(w)
         # Do the command!
+        self._remember_setting(settings)
         self.do_find_next(settings)  # Handles reverse.
 
     # @+node:ekr.20210117143614.1: *5* find._start_search_escape1
@@ -2224,6 +2249,7 @@ class LeoFind:
         k.resetLabel()
         k.showStateAndMode()
         c.widgetWantsFocusNow(w)
+        self._remember_setting(settings)
         self.do_find_next(settings)
 
     # @+node:ekr.20231127044802.1: *4* find.summarize
@@ -3462,7 +3488,7 @@ class LeoFind:
                 break
         return f"Find: {' '.join(result)}"
 
-    # @+node:ekr.20131117164142.17007: *4* find.start_state_machine
+    # @+node:ekr.20131117164142.17007: *4* find.start_state_machine & helper
     def start_state_machine(
         self,
         event: LeoKeyEvent,
@@ -3494,6 +3520,7 @@ class LeoFind:
         # Start the state matching!
         k.get1Arg(event, handler=self.state0, tabList=self.findTextList, completion=True)
 
+    # @+node:ekr.20260521123442.1: *5* find.state0
     def state0(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
         """Dispatch the next handler."""
         k = self.k
