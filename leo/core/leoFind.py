@@ -2186,7 +2186,7 @@ class LeoFind:
         # Insert the new setting at the start of the list.
         self.prevSearches.insert(0, settings)
 
-        g.trace(len(self.prevSearches))
+        g.trace(len(self.prevSearches))  ###
 
     # @+node:ekr.20210117143611.1: *5* find.start_search1
     def start_search1(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover

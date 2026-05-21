@@ -1548,7 +1548,7 @@ class GetArg:
         c.check_event(event)
         c.minibufferWantsFocusNow()
         char = event.char if event else ''
-        g.trace(f"{state=} {char=}")  ###
+        ### g.trace(f"{state=} {char=}")  ###
         if state == 0:
             self.do_state_zero(
                 completion,
