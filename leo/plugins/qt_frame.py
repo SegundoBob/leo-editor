@@ -1262,22 +1262,24 @@ class FindTabManager:
         Similar to LeoFind.default_settings, but only for find-tab values.
         """
         return g.Bunch(
+            # State...
+            in_headline = False,
+            reverse     = False,
             # Find/change strings...
-            find_text=self.find_findbox.text(),
-            change_text=self.find_replacebox.text(),
+            find_text       = self.find_findbox.text(),
+            change_text     = self.find_replacebox.text(),
             # Find options...
-            file_only=self.radio_button_file_only.isChecked(),
-            ignore_case=self.check_box_ignore_case.isChecked(),
-            mark_changes=self.check_box_mark_changes.isChecked(),
-            mark_finds=self.check_box_mark_finds.isChecked(),
-            node_only=self.radio_button_node_only.isChecked(),
-            pattern_match=self.check_box_regexp.isChecked(),
-            # reverse = False,
-            search_body=self.check_box_search_body.isChecked(),
-            search_headline=self.check_box_search_headline.isChecked(),
-            suboutline_only=self.radio_button_suboutline_only.isChecked(),
-            whole_word=self.check_box_whole_word.isChecked(),
-        )
+            file_only       = self.radio_button_file_only.isChecked(),
+            ignore_case     = self.check_box_ignore_case.isChecked(),
+            mark_changes    = self.check_box_mark_changes.isChecked(),
+            mark_finds      = self.check_box_mark_finds.isChecked(),
+            node_only       = self.radio_button_node_only.isChecked(),
+            pattern_match   = self.check_box_regexp.isChecked(),
+            search_body     = self.check_box_search_body.isChecked(),
+            search_headline = self.check_box_search_headline.isChecked(),
+            suboutline_only = self.radio_button_suboutline_only.isChecked(),
+            whole_word      = self.check_box_whole_word.isChecked(),
+        )  # fmt: skip
 
     # @+node:ekr.20131117120458.16789: *3* FindTabManager.init_widgets (creates callbacks)
     def init_widgets(self) -> None:

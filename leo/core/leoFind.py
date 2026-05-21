@@ -101,6 +101,20 @@ class LeoFind:
         self.work_sel: tuple[int, int, int] = None  # pos, newpos, insert.
 
         # Options ivars: set by FindTabManager.init: must be None, not False.
+        self.ivars = (
+            'change_text',
+            'file_only',
+            'find_text',
+            'ignore_case',
+            'mark_changes',
+            'mark_finds',
+            'node_only',
+            'pattern_match',
+            'search_body',
+            'search_headline',
+            'suboutline_only',
+            'whole_word',
+        )
         self.ignore_case: bool = None
         self.node_only: bool = None
         self.file_only: bool = None
@@ -153,27 +167,25 @@ class LeoFind:
     # @+node:ekr.20210110073117.6: *4* find.default_settings
     def default_settings(self) -> g.Bunch:
         """Return a dict representing all default settings."""
-        c = self.c
         return g.Bunch(
             # State...
-            in_headline=False,
-            p=c.rootPosition(),
+            in_headline = False,
+            reverse     = False,
             # Find/change strings...
-            find_text='',
-            change_text='',
+            find_text   = '',
+            change_text = '',
             # Find options...
-            file_only=False,
-            ignore_case=False,
-            mark_changes=False,
-            mark_finds=False,
-            node_only=False,
-            pattern_match=False,
-            reverse=False,
-            search_body=True,
-            search_headline=True,
-            suboutline_only=False,
-            whole_word=False,
-        )
+            file_only       = False,
+            ignore_case     = False,
+            mark_changes    = False,
+            mark_finds      = False,
+            node_only       = False,
+            pattern_match   = False,
+            search_body     = True,
+            search_headline = True,
+            suboutline_only = False,
+            whole_word      = False,
+        )  # fmt: skip
 
     # @+node:ekr.20131117164142.17022: *4* find.finishCreate
     def finishCreate(self) -> None:  # pragma: no cover
@@ -202,21 +214,8 @@ class LeoFind:
         # Init required defaults.
         self.reverse = False
 
-        # Init find/change strings.
-        self.change_text = settings.change_text
-        self.find_text = settings.find_text
-
-        # Init find options.
-        self.file_only = settings.file_only
-        self.ignore_case = settings.ignore_case
-        self.mark_changes = settings.mark_changes
-        self.mark_finds = settings.mark_finds
-        self.node_only = settings.node_only
-        self.pattern_match = settings.pattern_match
-        self.search_body = settings.search_body
-        self.search_headline = settings.search_headline
-        self.suboutline_only = settings.suboutline_only
-        self.whole_word = settings.whole_word
+        for ivar in self.ivars:
+            setattr(self, ivar, settings.get(ivar))
 
     # @+node:ekr.20171113164709.1: *4* find.reload_settings
     def reload_settings(self) -> None:
@@ -418,6 +417,7 @@ class LeoFind:
         self.search_body = d.get('search_body', False)
         self.search_headline = d.get('search_headline', False)
         self.find_text = d.get('find_text', '')
+        self.reverse = d.get('reverse', False)  # Internal state.
         if not self.check_args('find-next'):
             return
         if dry_run:
