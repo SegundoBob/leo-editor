@@ -7444,7 +7444,12 @@ def exec_file(path: str, d: dict[str, Value], script: str = None) -> None:
 
 
 # @+node:ekr.20131016032805.16721: *3* g.execute_shell_commands
-def execute_shell_commands(commands: str | list[str], trace: bool = False) -> None:
+def execute_shell_commands(
+    commands: str | list[str],
+    *,
+    shell: bool = False,  # Shell=True is a security vulnerability.
+    trace: bool = False,
+) -> None:
     """
     Execute each shell command in a separate process.
     Wait for each command to complete, except those starting with '&'
@@ -7457,7 +7462,7 @@ def execute_shell_commands(commands: str | list[str], trace: bool = False) -> No
             g.trace(command)
         if command.startswith('&'):
             command = command[1:].strip()
-        proc = subprocess.Popen(command)
+        proc = subprocess.Popen(command, shell=shell)
         if wait:
             proc.communicate()
 

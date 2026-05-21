@@ -380,12 +380,15 @@ class MarkupCommands:
         """
         asciidoctor_exec = _asciidoctor_exec()
         asciidoc3_exec = _asciidoc3_exec()
-        assert asciidoctor_exec or asciidoc3_exec, g.callers()
+        prog = asciidoctor_exec if asciidoctor_exec else asciidoc3_exec
+        if not prog:
+            g.es_print('asciidoc not found', color='blue')
+            return
+
         # Call the external program to write the output file.
         # The -e option deletes css.
-        prog = asciidoctor_exec if asciidoctor_exec else asciidoc3_exec
         command = f"{prog} {i_path} -o {o_path} -b html5"
-        g.execute_shell_commands(command)
+        g.execute_shell_commands(command, shell=True)  # #4681: enable shell.
 
     # @+node:ekr.20191007043043.1: *4* markup.run_pandoc
     def run_pandoc(self, i_path: str, o_path: str) -> None:
