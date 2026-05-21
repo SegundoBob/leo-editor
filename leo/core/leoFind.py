@@ -2187,8 +2187,6 @@ class LeoFind:
         # Insert the new setting at the start of the list.
         self.prev_searches.insert(0, settings)
 
-        g.trace(len(self.prev_searches))  ###
-
     # @+node:ekr.20210117143611.1: *5* find.start_search1
     def start_search1(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
         """Common handler for use by vim commands and other find commands."""
@@ -3544,9 +3542,6 @@ class LeoFind:
             i
         )  # fmt: skip
         bunch = prev[self.prev_searches_i]
-
-        # Set the find/change text.
-        ### g.trace(f"{bunch.find_text=} {bunch.change_text=}")
         find_s, change_s = bunch.find_text, bunch.change_text
 
         # Show the options in the status area. Like compute_find_options_in_status_area.
@@ -3567,7 +3562,6 @@ class LeoFind:
             val = bunch.get(key)
             if key in self.ivars:
                 setattr(self, key, val)
-                ### g.trace(f"Set {key}={val}")
             if val and key in d:
                 options.append(d.get(key))
 
