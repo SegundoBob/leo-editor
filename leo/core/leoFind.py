@@ -2194,7 +2194,7 @@ class LeoFind:
         c, k, w = self.c, self.k, self.c.frame.body.wrapper
         # Settings...
         find_pattern = k.arg
-        ### g.trace(f"{find_pattern=}", g.callers())
+        g.trace(f"{find_pattern=}")  ###
         self.ftm.set_find_text(find_pattern)
         self.update_find_list(find_pattern)
         self.init_vim_search(find_pattern)

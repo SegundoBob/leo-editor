@@ -3531,7 +3531,6 @@ class KeyHandlerClass:
         k = self
         state = k.state.kind
         stroke = event.stroke
-        ### g.trace(f"{state=} {k.isPlainKey(stroke)=} {stroke.s=}")  ###
         if not k.inState():
             return False
         # First, honor minibuffer bindings for all except user modes.
