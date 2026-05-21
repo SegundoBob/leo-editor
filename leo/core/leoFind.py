@@ -2195,7 +2195,6 @@ class LeoFind:
         c, k, w = self.c, self.k, self.c.frame.body.wrapper
         # Settings...
         find_pattern = k.arg
-        g.trace(f"{find_pattern=}")  ###
         self.ftm.set_find_text(find_pattern)
         self.update_find_list(find_pattern)
         self.init_vim_search(find_pattern)
@@ -3474,7 +3473,6 @@ class LeoFind:
             ('regeXp',  ftm.check_box_regexp),
             ('Body',    ftm.check_box_search_body),
             ('Head',    ftm.check_box_search_headline),
-            # ('wrap-Around', ftm.check_box_wrap_around),
             ('mark-Changes', ftm.check_box_mark_changes),
             ('mark-Finds', ftm.check_box_mark_finds),
         )  # fmt: skip
@@ -3534,34 +3532,47 @@ class LeoFind:
 
     # @+node:ekr.20260521170130.1: *5* find.do_arrow
     def do_arrow(self, char: str) -> None:
+        c = self.c
         prev = self.prev_searches
         if not prev:
             return
+
+        # Compute the bunch to show.
         i = self.prev_searches_i
         self.prev_searches_i = (
             i - 1 if char == 'Up' and i - 1 >= 0 else
             i + 1 if char == 'Down' and i + 1 < len(prev) else
             i
         )  # fmt: skip
-
-        # Show compact status, like find.compute_result_status.
         bunch = prev[self.prev_searches_i]
-        status = []
+
+        # Set the find/change text.
+        g.trace(f"{bunch.find_text=} {bunch.change_text=}")
+        self.ftm.set_change_text(bunch.change_text)
+        self.ftm.set_find_text(bunch.find_text)
+
+        # Show the options in the status area. Like compute_find_options_in_status_area.
+        options = []
         d = {
-            'find_text':        bunch.find_text,
-            'ignore_case':      'Ignore Case',
-            'node_only':        '[Node Only]',
-            'pattern_match':    'Regex',
+            'whole_word':       'Word',
+            'ignore_case':      'Ig-case',
+            'pattern_match':    'regeXp',
+            'node_only':        'Node',
             'search_body':      'Body',
             'search_headline':  'Head',
-            'suboutline_only':  '[Outline Only]',
-            'whole_word':       'Word',
+            'mark_changes':     'mark-Changes',
+            'mark_finds':       'mark-Finds',
+            'suboutline_only':  'Suboutline',
+            'file_only':        'File',
         }  # fmt: skip
         for key in bunch.keys():
             val = bunch.get(key)
+            if key in self.ivars:
+                setattr(self, key, val)
+                g.trace(f"Set {key}={val}")
             if val and key in d:
-                status.append(d.get(key))
-        g.trace(status)
+                options.append(d.get(key))
+        c.frame.statusLine.put(f"Find: {' '.join(options)}")
 
     # @+node:ekr.20131117164142.17008: *4* find.updateChange/FindList
     def update_change_list(self, s: str) -> None:  # pragma: no cover (cmd)
