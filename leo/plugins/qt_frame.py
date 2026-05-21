@@ -1218,7 +1218,6 @@ class FindTabManager:
         self.check_box_search_body = None
         self.check_box_search_headline = None
         self.check_box_whole_word = None
-        # self.check_box_wrap_around = None
         # Radio buttons
         self.radio_button_file_only = None
         self.radio_button_entire_outline = None
@@ -1246,8 +1245,11 @@ class FindTabManager:
         w.setSelection(0, len(s))
 
     def set_entry_focus(self) -> None:
-        # Remember the widget that had focus, changing headline widgets
-        # to the tree pane widget.  Headline widgets can disappear!
+        """
+        Remember the widget that had focus, changing headline widgets to the tree pane widget.
+
+        Headline widgets can disappear!
+        """
         c = self.c
         w = g.app.gui.get_focus(raw=True)
         if w != c.frame.body.wrapper.widget:
@@ -1365,7 +1367,7 @@ class FindTabManager:
     # @+node:ekr.20210923060904.1: *3* FindTabManager.set_widgets_from_dict
     def set_widgets_from_dict(self, d: g.Bunch) -> None:
         """Set all settings from d."""
-        # Similar to FindTabManagerinit_widgets, which has already been called.
+        # Similar to FindTabManager.init_widgets, which has already been called.
         c = self.c
         find = c.findCommands
         # Set find text.
