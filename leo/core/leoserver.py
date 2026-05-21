@@ -5767,6 +5767,15 @@ def main() -> None:  # pragma: no cover (tested in client)
             help='maximum number of clients. Defaults to ' + str(wsLimit),
         )
         add(
+            '',
+            '--password',
+            dest='wsPassword',
+            type=str,
+            default='',
+            metavar='STR',
+            help='password for client connections. Defaults to empty string',
+        )
+        add(
             '-f',
             '--file',
             dest='argFile',
@@ -5900,7 +5909,7 @@ def main() -> None:  # pragma: no cover (tested in client)
                 f"{tag}: User Connected, Total: {connectionsTotal}, Limit: {wsLimit}",
                 flush=True,
             )
-            # If first connection set it as the main client connection
+            # If first connection, _init_connection will set it as the main client connection
             controller._init_connection(websocket)
             await register_client(websocket)
             # Start by sending empty as 'ok'.
