@@ -92,7 +92,7 @@ Socket = Any
 # @-<< leoserver annotations >>
 # @+<< leoserver version >>
 # @+node:ekr.20220820160619.1: ** << leoserver version >>
-version_tuple = (1, 0, 15)
+version_tuple = (1, 0, 16)
 # Version History
 # 1.0.1 Initial commit.
 # 1.0.2 July 2022: Adding ui-scroll, undo/redo, chapters, ua's & node_tags info.
@@ -109,6 +109,7 @@ version_tuple = (1, 0, 15)
 # 1.0.13 July 2025: Added support for websockets version 14+.
 # 1.0.14 August 2025: Added support for Python 3.14+.
 # 1.0.15 September 2025: Added support for @leo <path> nodes.
+# 1.0.16 Mai 2026: Added support for password and !auth command for client authentication.
 v1, v2, v3 = version_tuple
 __version__ = f"leoserver.py version {v1}.{v2}.{v3}"
 # @-<< leoserver version >>
@@ -5836,8 +5837,9 @@ def main() -> None:  # pragma: no cover (tested in client)
             print(__version__)
             sys.exit(0)
         if not wsPassword:
-            print("Warning: Client connection password is required. Use --password to set one.", flush=True)
-            sys.exit(1)
+            print("No Client connection password given. Next version of leoserver will require a password for client connections. Use --password to set one.", flush=True)
+            # print("Warning: Client connection password is required. Use --password to set one.", flush=True)
+            # sys.exit(1)
 
         # Sanitize limit.
         if wsLimit < 1:
@@ -5919,20 +5921,24 @@ def main() -> None:  # pragma: no cover (tested in client)
             )
 
             try:
-                print(f"{tag}: authenticating {peer}", flush=True)
-                auth_message = await asyncio.wait_for(websocket.recv(), timeout=10)
-                if len(auth_message) > 4096:
-                    raise ValueError("oversized auth packet")
+                if wsPassword:
+                    print(wsPassword)
+                    print(f"{tag}: authenticating {peer}", flush=True)
+                    auth_message = await asyncio.wait_for(websocket.recv(), timeout=10)
+                    if len(auth_message) > 4096:
+                        raise ValueError("oversized auth packet")
 
-                auth_data = json.loads(auth_message)
+                    auth_data = json.loads(auth_message)
 
-                if not (
-                    auth_data.get("action") == "!auth"
-                    and hmac.compare_digest(auth_data.get("password", ""), wsPassword)
-                ):
-                    raise ValueError("invalid credentials")
+                    if not (
+                        auth_data.get("action") == "!auth"
+                        and hmac.compare_digest(auth_data.get("password", ""), wsPassword)
+                    ):
+                        raise ValueError("invalid credentials")
 
-                print(f"{tag}: authentication success {peer}", flush=True)
+                    print(f"{tag}: authentication success {peer}", flush=True)
+                else:
+                    print(f"{tag}: no authentication required for {peer}", flush=True)
 
             except asyncio.TimeoutError:
                 print(f"{tag}: authentication timeout {peer}", flush=True)
