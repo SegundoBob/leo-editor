@@ -920,7 +920,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
         findTab = QtWidgets.QWidget()
         findTab.setObjectName('findTab')
 
-        # #516 and #1507: Create a Find tab unless we are using a dialog.
+        # #516 and #1507: Create a Find tab unless we are *only* using the Find dialog.
         use_minibuffer = c.config.getBool('minibuffer-find-mode', default=False)
         use_dialog = c.config.getBool('use-find-dialog', default=False)
         if use_minibuffer or not use_dialog:
@@ -937,13 +937,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
         self.findScrollArea = findScrollArea
         self.findTab = findTab
         self.tabWidget = tabWidget  # Used by LeoQtLog.
-
-    # @+node:ekr.20131118172620.16858: *5* dw.finishCreateLogPane
-    def finishCreateLogPane(self) -> None:
-        """It's useful to create this late, because c.config is now valid."""
-        assert self.findTab
-        self.createFindTab(self.findTab, self.findScrollArea)
-        self.findScrollArea.setWidget(self.findTab)
 
     # @+node:ekr.20110605121601.18146: *4* dw.createMainLayout
     def createMainLayout(self, parent: QWidget) -> tuple[QWidget, QWidget]:
@@ -1071,7 +1064,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
         # Official ivars.
         self.leo_statusBar = w
 
-    # @+node:ekr.20240726174902.1: *4* dw.createVRPanes (new)
+    # @+node:ekr.20240726174902.1: *4* dw.createVRPanes
     def createVRPanes(self) -> list[QtWidgets.QFrame]:
         """
         Create the VR and/or the VR3 panes if either plugin is enabled.
@@ -1083,6 +1076,13 @@ class DynamicWindow(QtWidgets.QMainWindow):
         panes: list[QtWidgets.QFrame] = []
 
         return panes
+
+    # @+node:ekr.20131118172620.16858: *4* dw.finishCreateLogPane
+    def finishCreateLogPane(self) -> None:
+        """It's useful to create this late, because c.config is now valid."""
+        assert self.findTab
+        self.createFindTab(self.findTab, self.findScrollArea)
+        self.findScrollArea.setWidget(self.findTab)
 
     # @+node:ekr.20110605121601.18212: *4* dw.packLabel
     def packLabel(self, w: QWidget, n: int = None) -> None:
@@ -2303,8 +2303,7 @@ class LeoQtLog(leoFrame.LeoLog):
                 c.findCommands.startSearch(event=None)
 
         w.currentChanged.connect(tab_callback)
-        # #1286.
-        w.customContextMenuRequested.connect(self.onContextMenu)
+        w.customContextMenuRequested.connect(self.onContextMenu)  # #1286.
 
     # @+node:ekr.20110605121601.18316: *4* LeoQtLog.getName
     def getName(self) -> str:
@@ -2644,7 +2643,7 @@ class LeoQtLog(leoFrame.LeoLog):
     def numberOfVisibleTabs(self) -> int:
         return len([val for val in self.contentsDict.values() if val is not None])
 
-    # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab & helpers
+    # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab
     def selectTab(self, tabName: str, wrap: str = 'none') -> None:
         """Create the tab if necessary and make it active."""
         i = self.findTabIndex(tabName)
