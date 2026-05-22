@@ -900,46 +900,42 @@ class DynamicWindow(QtWidgets.QMainWindow):
     def createLogPane(self, parent: QWidget) -> None:
         """Create all parts of Leo's log pane."""
         c = self.leo_c
-        #
+
         # Create the log frame.
         logFrame = self.createFrame(parent, 'logFrame', vPolicy=Policy.Minimum)
         innerFrame = self.createFrame(
             logFrame, 'logInnerFrame', hPolicy=Policy.Preferred, vPolicy=Policy.Expanding
         )
         tabWidget = self.createTabWidget(innerFrame, 'logTabWidget')
-        #
+
         # Pack.
         innerGrid = self.createGrid(innerFrame, 'logInnerGrid')
         innerGrid.addWidget(tabWidget, 0, 0, 1, 1)
         outerGrid = self.createGrid(logFrame, 'logGrid')
         outerGrid.addWidget(innerFrame, 0, 0, 1, 1)
-        #
+
         # Create the Find tab, embedded in a QScrollArea.
         findScrollArea = QtWidgets.QScrollArea()
         findScrollArea.setObjectName('findScrollArea')
-        # Find tab.
         findTab = QtWidgets.QWidget()
         findTab.setObjectName('findTab')
-        #
+
         # #516 and #1507: Create a Find tab unless we are using a dialog.
-        #
-        # Careful: @bool minibuffer-ding-mode overrides @bool use-find-dialog.
         use_minibuffer = c.config.getBool('minibuffer-find-mode', default=False)
         use_dialog = c.config.getBool('use-find-dialog', default=False)
         if use_minibuffer or not use_dialog:
             tabWidget.addTab(findScrollArea, 'Find')
-        # Complete the Find tab in LeoFind.finishCreate.
-        self.findScrollArea = findScrollArea
-        self.findTab = findTab
-        #
+
         # Spell tab.
         spellTab = QtWidgets.QWidget()
         spellTab.setObjectName('spellTab')
         tabWidget.addTab(spellTab, 'Spell')
         self.createSpellTab(spellTab)
         tabWidget.setCurrentIndex(1)
-        #
+
         # Official ivars
+        self.findScrollArea = findScrollArea
+        self.findTab = findTab
         self.tabWidget = tabWidget  # Used by LeoQtLog.
 
     # @+node:ekr.20131118172620.16858: *5* dw.finishCreateLogPane
