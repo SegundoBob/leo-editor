@@ -2648,52 +2648,15 @@ class LeoQtLog(leoFrame.LeoLog):
     def numberOfVisibleTabs(self) -> int:
         return len([val for val in self.contentsDict.values() if val is not None])
 
-    # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab & helpers (**changed)
+    # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab & helpers
     def selectTab(self, tabName: str, wrap: str = 'none') -> None:
         """Create the tab if necessary and make it active."""
         i = self.findTabIndex(tabName)
         if i is None:
             self.createTab(tabName, wrap=wrap)
-            ### self.finishCreateTab(tabName)
         self.finishSelectTab(tabName)
 
-    # @+node:ekr.20190603064815.1: *5* LeoQtLog.finishCreateTab (Necessary??)
-    def finishCreateTab(self, tabName: str) -> None:
-        """Finish creating the given tab. Do not set focus!"""
-        c = self.c
-        i = self.findTabIndex(tabName)
-        widget: LeoQTextBrowser = None
-        wrapper: LeoQTextBrowser = None
-        if i is None:
-            g.trace('Can not happen', tabName)
-            self.tabName: str = None
-            return
-        g.trace('=====', tabName, g.callers())  ###
-        # #1161.
-        if tabName == 'Log':
-            widget = self.contentsDict.get('Log')
-            if widget:
-                wrapper = getattr(widget, 'leo_log_wrapper', None)
-                if wrapper and isinstance(wrapper, qt_text.QTextEditWrapper):
-                    self.logCtrl = wrapper
-            if not wrapper:
-                g.trace('NO LOG WRAPPER')
-        if tabName == 'Find':
-            # Do *not* set focus here!
-            # #1254861: Ctrl-f doesn't ensure find input field visible.
-            g.trace(c.findCommands.ftm.find_findbox)  ###
-            if c.config.getBool('auto-scroll-find-tab', default=True):
-                # This is the cause of unwanted scrolling.
-                findbox = c.findCommands.ftm.find_findbox
-                if hasattr(widget, 'ensureWidgetVisible'):
-                    widget.ensureWidgetVisible(findbox)
-                else:
-                    findbox.setFocus()
-        if tabName == 'Spell':
-            # Set a flag for the spell system.
-            self.qtFrameDict['Spell'] = self.tabWidget.widget(i)
-
-    # @+node:ekr.20190603064816.1: *5* LeoQtLog.finishSelectTab
+    # @+node:ekr.20190603064816.1: *4* LeoQtLog.finishSelectTab
     def finishSelectTab(self, tabName: str) -> None:
         """Select the proper tab."""
         w = self.tabWidget

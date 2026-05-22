@@ -88,6 +88,7 @@
 <v t="ekr.20190926110217.1"><vh>@string adoc-base-directory = None</vh></v>
 </v>
 <v t="ekr.20260419074741.1"><vh>Unused settings</vh>
+<v t="ekr.20141024165714.1"><vh>@bool auto-scroll-find-tab = True</vh></v>
 <v t="jlunz.20151119171553.1"><vh>@bool cursor-stay-on-paste = True</vh></v>
 <v t="tbrown.20151114110207.1"><vh>@string abbreviations-next-placeholder = ,,</vh></v>
 </v>
@@ -669,7 +670,6 @@
 </v>
 </v>
 <v t="ekr.20041119034357.20"><vh>Find/replace options</vh>
-<v t="ekr.20141024165714.1"><vh>@bool auto-scroll-find-tab = True</vh></v>
 <v t="ekr.20131119143342.20107"><vh>@bool minibuffer-find-mode = False</vh></v>
 <v t="tbrown.20151010094807.1"><vh>@bool show-find-result-in-status = True</vh></v>
 <v t="ekr.20150710065036.1"><vh>@bool preload-find-pattern = False</vh></v>
