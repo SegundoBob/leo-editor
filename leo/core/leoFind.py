@@ -3565,11 +3565,12 @@ class LeoFind:
                 setattr(self, key, val)
             if val and key in d:
                 options.append(d.get(key))
+        options.append(f"Change: {change_s}")
 
         # Update the gui.
         self.ftm.set_change_text(change_s)
         self.ftm.set_find_text(find_s)
-        c.k.setLabelBlue('Search: ')
+        c.k.setLabel('Search: ')
         c.k.extendLabel(find_s)
         c.frame.statusLine.put(f"Find: {' '.join(options)}")
 
