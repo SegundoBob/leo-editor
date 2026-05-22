@@ -351,12 +351,15 @@ class DynamicWindow(QtWidgets.QMainWindow):
     # @+node:ekr.20131118152731.16848: *5* dw.create_find_findbox
     def create_find_findbox(self, grid: QGridLayout, parent: QWidget, row: int) -> int:
         """Create the Find: label and text area."""
+        g.trace(parent)
         c, dw = self.leo_c, self
         fc = c.findCommands
         ftm = fc.ftm
         assert ftm.find_findbox is None
         ftm.find_findbox = w = dw.createLineEdit(parent, 'findPattern')
         w.leo_wrapper = QLineEditWrapper(widget=w, name='find-wrapper', c=c)
+        ### c.k.completeAllBindingsForWidget(w.leo_wrapper)  ### Experimental.
+        g.app.gui.setFilter(c, w, w.leo_wrapper, tag='find-tab-find-textbox')  ### Experimental.
         lab2 = self.createLabel(parent, 'findLabel', 'Find:')
         grid.addWidget(lab2, row, 0)
         grid.addWidget(w, row, 1, 1, 2)
