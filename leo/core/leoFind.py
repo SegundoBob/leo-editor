@@ -2167,8 +2167,8 @@ class LeoFind:
 
     startSearch = start_search  # Compatibility. Do not delete.
 
-    # @+node:ekr.20260521125623.1: *5* find._remember_setting
-    def _remember_setting(self, settings: g.Bunch) -> None:
+    # @+node:ekr.20260521125623.1: *5* find._remember_settings
+    def _remember_settings(self, settings: g.Bunch) -> None:
         """
         Add the settings to the start of the previous searches list.
         """
@@ -2186,6 +2186,7 @@ class LeoFind:
 
         # Insert the new setting at the start of the list.
         self.prev_searches.insert(0, settings)
+        self.prev_searches_i = 0
 
     # @+node:ekr.20210117143611.1: *5* find.start_search1
     def start_search1(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
@@ -2204,7 +2205,7 @@ class LeoFind:
         k.showStateAndMode()
         c.widgetWantsFocusNow(w)
         # Do the command!
-        self._remember_setting(settings)
+        self._remember_settings(settings)
         self.do_find_next(settings)  # Handles reverse.
 
     # @+node:ekr.20210117143614.1: *5* find._start_search_escape1
@@ -2247,7 +2248,7 @@ class LeoFind:
         k.resetLabel()
         k.showStateAndMode()
         c.widgetWantsFocusNow(w)
-        self._remember_setting(settings)
+        self._remember_settings(settings)
         self.do_find_next(settings)
 
     # @+node:ekr.20231127044802.1: *4* find.summarize
