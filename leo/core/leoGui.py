@@ -385,6 +385,9 @@ class LeoKeyEvent:
         )
         assert g.isStrokeOrNone(self.stroke), f"(LeoKeyEvent) {self.stroke!r} {g.callers()}"
 
+        def info(obj: Any) -> str:
+            return f"char: {self.char!r:>6} {id(obj)} {obj.__class__.__name__} {obj_name(obj)}"
+
         def obj_name(obj: Any) -> str:
             return g.app.gui.widget_name(obj)
 
@@ -415,15 +418,15 @@ class LeoKeyEvent:
             self.w = c.frame.log.logCtrl
             return
         if isinstance(w, QTextMixin):
-            trace('QTextMixin', f"{id(w)} {w.__class__.__name__}")
+            trace('QTextMixin', info(w))
             self.w = w
             return
         if wrapper := getattr(w, 'wrapper', None):
-            trace('w.wrapper', f"{id(w)} {w.__class__.__name__}")
+            trace('w.wrapper', info(wrapper))
             self.w = wrapper
             return
         if wrapper := getattr(w, 'leo_wrapper', None):
-            trace('w.leo_wrapper', f"{id(w)} {w.__class__.__name__}")
+            trace('w.leo_wrapper', info(wrapper))
             self.w = wrapper
             return
         if isinstance(w, QtWidgets.QTextEdit):
@@ -447,7 +450,7 @@ class LeoKeyEvent:
             # We expect that w is a wrapper, but we don't much care.
             name = obj_name(w)
             if not name.startswith(('body', 'canvas', 'head', 'mini')):
-                trace_always('unusual w', f"{w.__class__.__name__} name: {name}")
+                trace_always('unusual w', info(w))
 
     # @+node:ekr.20140907103315.18774: *3*  LeoKeyEvent.__repr__
     def __repr__(self) -> str:
