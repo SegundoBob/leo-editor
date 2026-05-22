@@ -399,12 +399,13 @@ class MarkupCommands:
         # Call pandoc to write the output file.
         # --quiet does no harm.
         command = f"pandoc {i_path} -t html5 -o {o_path}"
-        g.execute_shell_commands(command)
+        g.execute_shell_commands(command, shell=True)
 
     # @+node:ekr.20191017165427.1: *4* markup.run_sphinx
     def run_sphinx(self, i_path: str, o_path: str) -> None:
         """Process i_path and o_path with sphinx."""
         trace = True
+
         # cd to the command directory, or i_path's directory.
         command_dir = g.finalize(self.sphinx_command_dir or os.path.dirname(i_path))
         if os.path.exists(command_dir):
@@ -414,7 +415,7 @@ class MarkupCommands:
         else:
             g.error(f"command directory not found: {command_dir!r}")
             return
-        #
+
         # If a default command exists, just call it.
         # The user is responsible for making everything work.
         if self.sphinx_default_command:
@@ -438,7 +439,7 @@ class MarkupCommands:
         command = f"sphinx-build {input_dir} {output_dir} {i_path}"
         if trace:
             g.trace(f"\ncommand: {command!r}\n")
-        g.execute_shell_commands(command)
+        g.execute_shell_commands(command, shell=True)
 
     # @+node:ekr.20190515070742.24: *3* markup.write_root & helpers
     def write_root(self, root: Position) -> None:
