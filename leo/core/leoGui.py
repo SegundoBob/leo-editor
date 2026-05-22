@@ -415,7 +415,7 @@ class LeoKeyEvent:
             self.w = c.frame.log.logCtrl
             return
         if isinstance(w, QTextMixin):
-            trace('QTextMixin', 'w.__class__.__name__')
+            trace('QTextMixin', w.__class__.__name__)
             self.w = w
             return
         if wrapper := getattr(w, 'wrapper', None):
