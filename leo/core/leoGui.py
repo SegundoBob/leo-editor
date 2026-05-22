@@ -415,15 +415,15 @@ class LeoKeyEvent:
             self.w = c.frame.log.logCtrl
             return
         if isinstance(w, QTextMixin):
-            trace('QTextMixin', w.__class__.__name__)
+            trace('QTextMixin', f"{id(w)} {w.__class__.__name__}")
             self.w = w
             return
         if wrapper := getattr(w, 'wrapper', None):
-            trace('w.wrapper', wrapper.__class__.__name__)
+            trace('w.wrapper', f"{id(w)} {w.__class__.__name__}")
             self.w = wrapper
             return
         if wrapper := getattr(w, 'leo_wrapper', None):
-            trace('w.leo_wrapper', wrapper.__class__.__name__)
+            trace('w.leo_wrapper', f"{id(w)} {w.__class__.__name__}")
             self.w = wrapper
             return
         if isinstance(w, QtWidgets.QTextEdit):

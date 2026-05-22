@@ -3566,8 +3566,8 @@ class LeoFind:
                 options.append(d.get(key))
 
         # Update the gui.
-        self.ftm.set_change_text(find_s)
-        self.ftm.set_find_text(change_s)
+        self.ftm.set_change_text(change_s)
+        self.ftm.set_find_text(find_s)
         c.k.setLabelBlue('Search: ')
         c.k.extendLabel(find_s)
         c.frame.statusLine.put(f"Find: {' '.join(options)}")

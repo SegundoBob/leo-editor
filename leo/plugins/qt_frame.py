@@ -2648,16 +2648,16 @@ class LeoQtLog(leoFrame.LeoLog):
     def numberOfVisibleTabs(self) -> int:
         return len([val for val in self.contentsDict.values() if val is not None])
 
-    # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab & helpers
+    # @+node:ekr.20110605121601.18331: *4* LeoQtLog.selectTab & helpers (**changed)
     def selectTab(self, tabName: str, wrap: str = 'none') -> None:
         """Create the tab if necessary and make it active."""
         i = self.findTabIndex(tabName)
         if i is None:
             self.createTab(tabName, wrap=wrap)
-            self.finishCreateTab(tabName)
+            ### self.finishCreateTab(tabName)
         self.finishSelectTab(tabName)
 
-    # @+node:ekr.20190603064815.1: *5* LeoQtLog.finishCreateTab
+    # @+node:ekr.20190603064815.1: *5* LeoQtLog.finishCreateTab (Necessary??)
     def finishCreateTab(self, tabName: str) -> None:
         """Finish creating the given tab. Do not set focus!"""
         c = self.c
@@ -2668,6 +2668,7 @@ class LeoQtLog(leoFrame.LeoLog):
             g.trace('Can not happen', tabName)
             self.tabName: str = None
             return
+        g.trace('=====', tabName, g.callers())  ###
         # #1161.
         if tabName == 'Log':
             widget = self.contentsDict.get('Log')
@@ -2680,6 +2681,7 @@ class LeoQtLog(leoFrame.LeoLog):
         if tabName == 'Find':
             # Do *not* set focus here!
             # #1254861: Ctrl-f doesn't ensure find input field visible.
+            g.trace(c.findCommands.ftm.find_findbox)  ###
             if c.config.getBool('auto-scroll-find-tab', default=True):
                 # This is the cause of unwanted scrolling.
                 findbox = c.findCommands.ftm.find_findbox
