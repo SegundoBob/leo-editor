@@ -3,7 +3,7 @@
 """
 An example client for leoserver.py, based on work by Félix Malboeuf. Used by permission.
 
-First start the server in one console: `python -m leo.core.leoserver`.
+First start the server in one console: `python -m leo.core.leoserver --password test`.
 Then start the client in another console: `python -m leo.core.leoclient`.
 
 This client runs the commands given in the `_get_action_list` function.
@@ -21,6 +21,7 @@ from leo.core import leoserver
 
 wsHost = "localhost"
 wsPort = 32125
+password = 'test'  # Must match the server's password.
 
 tag = 'client'
 
@@ -175,9 +176,13 @@ async def client_main_loop(timeout):
     global n_async_responses
     uri = f"ws://{wsHost}:{wsPort}"
     action_list = _get_action_list()
+    print("leoserver must be started with argument --password test ", flush=True)
     async with websockets.connect(uri) as websocket:
         if trace:
             print(f"{tag}: asyncInterval.timeout: {timeout}")
+        await websocket.send(
+            json.dumps({"action": "!auth", "password": password})
+        )
         # Await the startup package.
         json_s = g.toUnicode(await websocket.recv())
         d = json.loads(json_s)
