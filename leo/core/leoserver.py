@@ -5512,6 +5512,7 @@ class LeoServer:
 # @+node:felix.20210621233316.105: ** main & helpers (leoserver.py)
 def main() -> None:  # pragma: no cover (tested in client)
     """python script for leo integration via leoBridge"""
+    global gLoop
     if not websockets:
         print('websockets not found')
         print('pip install websockets')
@@ -5913,18 +5914,11 @@ def main() -> None:  # pragma: no cover (tested in client)
                 )
                 await websocket.close(code=1000, reason="Server full: too many connections")
                 return
-            connected = True  # local variable
-            connectionsTotal += 1  # global variable
-            print(
-                f"{tag}: Socket Connected {peer}, Total: {connectionsTotal}, Limit: {wsLimit}",
-                flush=True,
-            )
-
             try:
                 if wsPassword:
                     print(wsPassword)
                     print(f"{tag}: authenticating {peer}", flush=True)
-                    auth_message = await asyncio.wait_for(websocket.recv(), timeout=10)
+                    auth_message = await asyncio.wait_for(websocket.recv(), timeout=5)
                     if len(auth_message) > 4096:
                         raise ValueError("oversized auth packet")
 
@@ -5958,6 +5952,13 @@ def main() -> None:  # pragma: no cover (tested in client)
                 await websocket.close(code=1008, reason="Authentication failed")
                 return
 
+            connected = True  # local variable
+            connectionsTotal += 1  # global variable
+            print(
+                f"{tag}: Socket Connected {peer}, Total: {connectionsTotal}, Limit: {wsLimit}",
+                flush=True,
+            )
+            
             # If first connection, _init_connection will set it as the main client connection
             controller._init_connection(websocket)
             await register_client(websocket)
@@ -6022,13 +6023,16 @@ def main() -> None:  # pragma: no cover (tested in client)
                 if registered:
                     await unregister_client(websocket)
                 print(f"{tag} connection finished for {peer}  Total: {connectionsTotal}, Limit: {wsLimit}")
-            # Check for persistence flag if all connections are closed
-            if connectionsTotal == 0 and not wsPersist:
-                print("Shutting down leoserver")
-                # Preemptive closing of tasks
-                for task in asyncio.all_tasks():
-                    task.cancel()
-                close_Server()  # Stops the run_forever loop
+                # Check for persistence flag if all connections are closed
+                if connectionsTotal == 0 and not wsPersist:
+                    print("Shutting down leoserver")
+                    # Preemptive closing of tasks
+                    for task in asyncio.all_tasks():
+                        task.cancel()
+                    close_Server()  # Stops the run_forever loop
+            else:
+                # was just a non-registered, non-authenticated connection! Just log, don't kill the server.
+                print(f"{tag}: connection finished for {peer} (never registered)")
 
     # @-others
 
@@ -6106,6 +6110,7 @@ def main() -> None:  # pragma: no cover (tested in client)
     else:
         # For Python below 3.14
         loop = asyncio.get_event_loop()
+        gLoop = loop
 
         try:
             try:
