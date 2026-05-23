@@ -357,8 +357,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
         assert ftm.find_findbox is None
         ftm.find_findbox = w = dw.createLineEdit(parent, 'findPattern')
         w.leo_wrapper = QLineEditWrapper(widget=w, name='find-wrapper', c=c)
-        ### c.k.completeAllBindingsForWidget(w.leo_wrapper)  ### Experimental.
-        ### g.app.gui.setFilter(c, w, w.leo_wrapper, tag='find-tab-find-textbox')  ### Experimental.
         lab2 = self.createLabel(parent, 'findLabel', 'Find:')
         grid.addWidget(lab2, row, 0)
         grid.addWidget(w, row, 1, 1, 2)
