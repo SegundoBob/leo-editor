@@ -5838,9 +5838,8 @@ def main() -> None:  # pragma: no cover (tested in client)
             print(__version__)
             sys.exit(0)
         if not wsPassword:
-            print("No Client connection password given. Next version of leoserver will require a password for client connections. Use --password to set one.", flush=True)
-            # print("Warning: Client connection password is required. Use --password to set one.", flush=True)
-            # sys.exit(1)
+            print("Error: Connection password argument is required. Use --password to set one.", flush=True)
+            sys.exit(1)
 
         # Sanitize limit.
         if wsLimit < 1:
@@ -5916,7 +5915,6 @@ def main() -> None:  # pragma: no cover (tested in client)
                 return
             try:
                 if wsPassword:
-                    print(wsPassword)
                     print(f"{tag}: authenticating {peer}", flush=True)
                     auth_message = await asyncio.wait_for(websocket.recv(), timeout=5)
                     if len(auth_message) > 4096:
