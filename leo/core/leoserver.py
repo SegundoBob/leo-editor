@@ -29,6 +29,7 @@ import socket
 import textwrap
 import time
 import hmac
+import ssl
 from typing import Any, Generator, Iterable, Iterator, Optional
 import warnings
 
@@ -132,7 +133,8 @@ wsSkipDirty = False
 wsPassword = ""
 wsHost = "127.0.0.1"
 wsPort = 32125
-
+wsCert = ""
+wsKey = ""
 
 # @-<< leoserver globals >>
 # @+others
@@ -5712,7 +5714,7 @@ def main() -> None:  # pragma: no cover (tested in client)
         """
         Get arguments from the command line and sets them globally.
         """
-        global wsHost, wsPort, wsLimit, wsPersist, wsSkipDirty, argFile, wsPassword
+        global wsHost, wsPort, wsLimit, wsPersist, wsSkipDirty, argFile, wsPassword, wsCert, wsKey
 
         def leo_file(s: str) -> str:
             if os.path.exists(s):
@@ -5761,6 +5763,24 @@ def main() -> None:  # pragma: no cover (tested in client)
             default=wsPort,
             metavar='N',
             help='port number. Defaults to ' + str(wsPort),
+        )
+        add(
+            '-c',
+            '--cert',
+            dest='wsCert',
+            type=str,
+            default=wsCert,
+            metavar='PATH',
+            help='path to the SSL certificate file. (.pem)',
+        )
+        add(
+            '-k',
+            '--key',
+            dest='wsKey',
+            type=str,
+            default=wsKey,
+            metavar='PATH',
+            help='Path to the SSL private key file (.key/.pem)',
         )
         add(
             '-l',
@@ -5846,6 +5866,24 @@ def main() -> None:  # pragma: no cover (tested in client)
         if wsLimit < 1:
             wsLimit = 1
 
+    # @+node:felix.20260523224253.1: *3* function: get_ssl_context
+    def get_ssl_context(cert_path: Optional[str], key_path: Optional[str]) -> Optional[ssl.SSLContext]:
+        """Returns an SSLContext if paths are valid, otherwise returns None."""
+        # Ensure both arguments were provided
+        if not cert_path or not key_path:
+            return None
+
+        # Verify files actually exist on disk
+        if not os.path.exists(cert_path) or not os.path.exists(key_path):
+            print(f"Error: Certificate files not found. Falling back to ws://")
+            return None
+
+        print(f"Running in secure mode (wss://) using {cert_path}")
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.load_cert_chain(certfile=cert_path, keyfile=key_path)
+        return context
+
+        
     # @+node:felix.20210803174312.1: *3* function: notify_clients
     async def notify_clients(action: str, excludedConn: Any = None) -> None:
         if connectionsPool:  # asyncio.wait doesn't accept an empty list
@@ -6051,6 +6089,8 @@ def main() -> None:  # pragma: no cover (tested in client)
         flush=True,
     )
 
+    ssl_context = get_ssl_context(wsCert, wsKey)
+
     # Open leoBridge.
     controller = LeoServer()  # Single instance of LeoServer, i.e., an instance of leoBridge
     if argFile:
@@ -6068,13 +6108,13 @@ def main() -> None:  # pragma: no cover (tested in client)
             realtime_server = None
             try:
                 try:
-                    server = await websockets.serve(ws_handler, wsHost, wsPort, max_size=None)
+                    server = await websockets.serve(ws_handler, wsHost, wsPort, max_size=None, ssl=ssl_context)
                     realtime_server = server
                 except OSError as e:
                     print(e)
                     print("Trying with IPv4 Family", flush=True)
                     server = await websockets.serve(
-                        ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None
+                        ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None, ssl=ssl_context
                     )
                     realtime_server = server
 
@@ -6119,13 +6159,13 @@ def main() -> None:  # pragma: no cover (tested in client)
 
         try:
             try:
-                server = websockets.serve(ws_handler, wsHost, wsPort, max_size=None)
+                server = websockets.serve(ws_handler, wsHost, wsPort, max_size=None, ssl=ssl_context)
                 realtime_server = loop.run_until_complete(server)
             except OSError as e:
                 print(e)
                 print("Trying with IPv4 Family", flush=True)
                 server = websockets.serve(
-                    ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None
+                    ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None, ssl=ssl_context
                 )
                 realtime_server = loop.run_until_complete(server)
 
