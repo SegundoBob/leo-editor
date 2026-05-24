@@ -13,6 +13,8 @@ The last command ends both the client and the server.
 import asyncio
 import json
 import time
+import hashlib
+import hmac
 
 # Third party.
 import websockets
@@ -180,9 +182,21 @@ async def client_main_loop(timeout):
     async with websockets.connect(uri) as websocket:
         if trace:
             print(f"{tag}: asyncInterval.timeout: {timeout}")
-        await websocket.send(
-            json.dumps({"action": "!auth", "password": password})
-        )
+
+        # React to the server's challenge for authentication.
+        parsedData = json.loads(g.toUnicode(await websocket.recv()))
+        if trace:
+            print(f"{tag}: got: {parsedData}")
+        if parsedData.get("action") == "challenge":
+            challenge = parsedData.get("challenge")
+            expected_hash = hmac.new(password.encode(), challenge.encode(), hashlib.sha256).hexdigest()
+            await websocket.send(json.dumps({"action": "!auth", "response": expected_hash}))
+            if trace:
+                print(f"{tag}: sent authentication response")
+        else:
+            print(f"{tag}: expected challenge, got: {parsedData}")
+            return
+
         # Await the startup package.
         json_s = g.toUnicode(await websocket.recv())
         d = json.loads(json_s)

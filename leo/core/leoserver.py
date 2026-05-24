@@ -18,6 +18,7 @@ import argparse
 import asyncio
 from collections.abc import Callable
 import fnmatch
+import hashlib
 import inspect
 import itertools
 import json
@@ -5916,15 +5917,21 @@ def main() -> None:  # pragma: no cover (tested in client)
             try:
                 if wsPassword:
                     print(f"{tag}: authenticating {peer}", flush=True)
+
+                    # First, send 'challenge' to the client to be used as salt with the returned password for authentication.
+                    challenge = os.urandom(16).hex()
+                    await websocket.send(json.dumps({"action": "challenge", "challenge": challenge}))
+
                     auth_message = await asyncio.wait_for(websocket.recv(), timeout=5)
                     if len(auth_message) > 4096:
                         raise ValueError("oversized auth packet")
 
                     auth_data = json.loads(auth_message)
+                    expected_hash = hmac.new(wsPassword.encode(), challenge.encode(), hashlib.sha256).hexdigest()
 
                     if not (
                         auth_data.get("action") == "!auth"
-                        and hmac.compare_digest(auth_data.get("password", ""), wsPassword)
+                        and hmac.compare_digest(auth_data.get("response", ""), expected_hash)
                     ):
                         raise ValueError("invalid credentials")
 
