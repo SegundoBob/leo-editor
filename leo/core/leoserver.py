@@ -5844,6 +5844,8 @@ def main() -> None:  # pragma: no cover (tested in client)
         wsPersist = bool(args.wsPersist)
         wsSkipDirty = bool(args.wsSkipDirty)
         wsPassword = args.wsPassword
+        wsCert = args.wsCert
+        wsKey = args.wsKey
         argFile = args.argFile
         if args.traces:
             ok = True
@@ -5881,7 +5883,7 @@ def main() -> None:  # pragma: no cover (tested in client)
 
         # Verify files actually exist on disk
         if not os.path.exists(cert_path) or not os.path.exists(key_path):
-            print(f"Error: Certificate files not found. Falling back to ws://")
+            print("Error: Certificate files not found. Falling back to ws://")
             return None
 
         print(f"Running in secure mode (wss://) using {cert_path}")
