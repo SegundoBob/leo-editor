@@ -136,6 +136,7 @@ wsPort = 32125
 wsCert = ""
 wsKey = ""
 
+
 # @-<< leoserver globals >>
 # @+others
 # @+node:felix.20210712224107.1: ** class SetEncoder
@@ -5859,7 +5860,10 @@ def main() -> None:  # pragma: no cover (tested in client)
             print(__version__)
             sys.exit(0)
         if not wsPassword:
-            print("Error: Connection password argument is required. Use --password to set one.", flush=True)
+            print(
+                "Error: Connection password argument is required. Use --password to set one.",
+                flush=True,
+            )
             sys.exit(1)
 
         # Sanitize limit.
@@ -5867,7 +5871,9 @@ def main() -> None:  # pragma: no cover (tested in client)
             wsLimit = 1
 
     # @+node:felix.20260523224253.1: *3* function: get_ssl_context
-    def get_ssl_context(cert_path: Optional[str], key_path: Optional[str]) -> Optional[ssl.SSLContext]:
+    def get_ssl_context(
+        cert_path: Optional[str], key_path: Optional[str]
+    ) -> Optional[ssl.SSLContext]:
         """Returns an SSLContext if paths are valid, otherwise returns None."""
         # Ensure both arguments were provided
         if not cert_path or not key_path:
@@ -5883,7 +5889,6 @@ def main() -> None:  # pragma: no cover (tested in client)
         context.load_cert_chain(certfile=cert_path, keyfile=key_path)
         return context
 
-        
     # @+node:felix.20210803174312.1: *3* function: notify_clients
     async def notify_clients(action: str, excludedConn: Any = None) -> None:
         if connectionsPool:  # asyncio.wait doesn't accept an empty list
@@ -5958,14 +5963,18 @@ def main() -> None:  # pragma: no cover (tested in client)
 
                     # First, send 'challenge' to the client to be used as salt with the returned password for authentication.
                     challenge = os.urandom(16).hex()
-                    await websocket.send(json.dumps({"action": "challenge", "challenge": challenge}))
+                    await websocket.send(
+                        json.dumps({"action": "challenge", "challenge": challenge})
+                    )
 
                     auth_message = await asyncio.wait_for(websocket.recv(), timeout=5)
                     if len(auth_message) > 4096:
                         raise ValueError("oversized auth packet")
 
                     auth_data = json.loads(auth_message)
-                    expected_hash = hmac.new(wsPassword.encode(), challenge.encode(), hashlib.sha256).hexdigest()
+                    expected_hash = hmac.new(
+                        wsPassword.encode(), challenge.encode(), hashlib.sha256
+                    ).hexdigest()
 
                     if not (
                         auth_data.get("action") == "!auth"
@@ -6001,7 +6010,7 @@ def main() -> None:  # pragma: no cover (tested in client)
                 f"{tag}: Socket Connected {peer}, Total: {connectionsTotal}, Limit: {wsLimit}",
                 flush=True,
             )
-            
+
             # If first connection, _init_connection will set it as the main client connection
             controller._init_connection(websocket)
             await register_client(websocket)
@@ -6065,7 +6074,9 @@ def main() -> None:  # pragma: no cover (tested in client)
                 connectionsTotal -= 1
                 if registered:
                     await unregister_client(websocket)
-                print(f"{tag} connection finished for {peer}  Total: {connectionsTotal}, Limit: {wsLimit}")
+                print(
+                    f"{tag} connection finished for {peer}  Total: {connectionsTotal}, Limit: {wsLimit}"
+                )
                 # Check for persistence flag if all connections are closed
                 if connectionsTotal == 0 and not wsPersist:
                     print("Shutting down leoserver")
@@ -6108,13 +6119,20 @@ def main() -> None:  # pragma: no cover (tested in client)
             realtime_server = None
             try:
                 try:
-                    server = await websockets.serve(ws_handler, wsHost, wsPort, max_size=None, ssl=ssl_context)
+                    server = await websockets.serve(
+                        ws_handler, wsHost, wsPort, max_size=None, ssl=ssl_context
+                    )
                     realtime_server = server
                 except OSError as e:
                     print(e)
                     print("Trying with IPv4 Family", flush=True)
                     server = await websockets.serve(
-                        ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None, ssl=ssl_context
+                        ws_handler,
+                        wsHost,
+                        wsPort,
+                        family=socket.AF_INET,
+                        max_size=None,
+                        ssl=ssl_context,
                     )
                     realtime_server = server
 
@@ -6159,13 +6177,20 @@ def main() -> None:  # pragma: no cover (tested in client)
 
         try:
             try:
-                server = websockets.serve(ws_handler, wsHost, wsPort, max_size=None, ssl=ssl_context)
+                server = websockets.serve(
+                    ws_handler, wsHost, wsPort, max_size=None, ssl=ssl_context
+                )
                 realtime_server = loop.run_until_complete(server)
             except OSError as e:
                 print(e)
                 print("Trying with IPv4 Family", flush=True)
                 server = websockets.serve(
-                    ws_handler, wsHost, wsPort, family=socket.AF_INET, max_size=None, ssl=ssl_context
+                    ws_handler,
+                    wsHost,
+                    wsPort,
+                    family=socket.AF_INET,
+                    max_size=None,
+                    ssl=ssl_context,
                 )
                 realtime_server = loop.run_until_complete(server)
 

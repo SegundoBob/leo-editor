@@ -189,7 +189,9 @@ async def client_main_loop(timeout):
             print(f"{tag}: got: {parsedData}")
         if parsedData.get("action") == "challenge":
             challenge = parsedData.get("challenge")
-            expected_hash = hmac.new(password.encode(), challenge.encode(), hashlib.sha256).hexdigest()
+            expected_hash = hmac.new(
+                password.encode(), challenge.encode(), hashlib.sha256
+            ).hexdigest()
             await websocket.send(json.dumps({"action": "!auth", "response": expected_hash}))
             if trace:
                 print(f"{tag}: sent authentication response")
