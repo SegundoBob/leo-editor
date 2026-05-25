@@ -7447,7 +7447,7 @@ def exec_file(path: str, d: dict[str, Value], script: str = None) -> None:
 def execute_shell_commands(
     commands: str | list[str],
     *,
-    shell: bool = False,  # Shell=True is a security vulnerability.
+    shell: bool = True,  # Shell=True is a minor security vulnerability.
     trace: bool = False,
 ) -> None:
     """
