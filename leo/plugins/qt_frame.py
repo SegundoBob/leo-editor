@@ -316,8 +316,8 @@ class DynamicWindow(QtWidgets.QMainWindow):
         row = dw.create_find_replacebox(grid, parent, row)
         max_row2 = 1
         max_row2 = dw.create_find_checkboxes(grid, parent, max_row2, row)
-        row = dw.create_find_buttons(grid, parent, max_row2, row)
-        row = dw.create_help_row(grid, parent, row)
+        if 0:  # These buttons are non-functional reminders.
+            row = dw.create_find_buttons(grid, parent, max_row2, row)
         dw.override_events()
         # Last row: Widgets that take all additional vertical space.
         w = QtWidgets.QWidget()
@@ -445,17 +445,6 @@ class DynamicWindow(QtWidgets.QMainWindow):
             assert getattr(ftm, name) is None
             setattr(ftm, name, w)
         return max_row2
-
-    # @+node:ekr.20131118152731.16853: *5* dw.create_help_row
-    def create_help_row(self, grid: QGridLayout, parent: QWidget, row: int) -> int:
-        # Help row.
-        if False:
-            w = self.createLabel(
-                parent, 'findHelp', 'For help: <alt-x>help-for-find-commands<return>'
-            )
-            grid.addWidget(w, row, 0, 1, 3)
-            row += 1
-        return row
 
     # @+node:ekr.20131118152731.16852: *5* dw.create_find_buttons
     def create_find_buttons(
