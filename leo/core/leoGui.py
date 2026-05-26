@@ -410,8 +410,8 @@ class LeoKeyEvent:
             trace('no w --> ', w.__class__.__name__)
             if w is None:
                 return
-        # else:
-        #     trace(f" text? {isinstance(w, QTextMixin):1} w", w.__class__.__name__)
+
+        # trace(f" text? {isinstance(w, QTextMixin):1} w", info(w))
 
         # Ensure that self.w is a wrapper for all key-related Qt widgets.
         if c.widget_name(w).startswith('log'):
@@ -445,12 +445,10 @@ class LeoKeyEvent:
 
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = w
-        trace('unknown w', w.__class__.__name__)
-        if not isinstance(w, QtWidgets.QWidget):
-            # We expect that w is a wrapper, but we don't much care.
-            name = obj_name(w)
-            if not name.startswith(('body', 'canvas', 'head', 'mini')):
-                trace_always('unusual w', info(w))
+        if c.widget_name(w).startswith(('body', 'canvas', 'head', 'mini', 'find-wrapper')):
+            trace('known w', info(w))
+        else:
+            trace_always('unusual w', info(w))
 
     # @+node:ekr.20140907103315.18774: *3*  LeoKeyEvent.__repr__
     def __repr__(self) -> str:
