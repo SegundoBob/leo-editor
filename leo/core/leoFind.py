@@ -18,7 +18,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoKeys import KeyHandlerClass as KeyHandler
     from leo.core.leoNodes import Position, VNode
-    from leo.plugins.leoQt import QtWidgets
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
 # @-<< leoFind imports & annotations >>
@@ -3530,7 +3529,7 @@ class LeoFind:
             self.handler(event)
 
     # @+node:ekr.20260521170130.1: *5* find.do_arrow
-    def do_arrow(self, char: str, *, in_minibuffer: bool, w: QtWidgets.QLineEdit = None) -> None:
+    def do_arrow(self, char: str, *, in_minibuffer: bool) -> None:
         """Handle 'Up' and 'Down' arrows in the minibuffer and the 'Find' Tab/Dialog."""
         c = self.c
         settings = self.ftm.get_settings()
