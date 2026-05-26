@@ -445,10 +445,12 @@ class LeoKeyEvent:
 
         # Anything should be valid here: we don't expect the wrapper to do key handling.
         self.w = w
-        if c.widget_name(w).startswith(('body', 'canvas', 'head', 'mini', 'find-wrapper')):
+        if c.widget_name(w).startswith(
+            ('body', 'canvas', 'head', 'mini', 'find-wrapper', 'MainWindow')
+        ):
             trace('known w', info(w))
         else:
-            trace_always('unusual w', info(w))
+            trace('unusual w', info(w))
 
     # @+node:ekr.20140907103315.18774: *3*  LeoKeyEvent.__repr__
     def __repr__(self) -> str:
