@@ -18,6 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from leo.core.leoGui import LeoKeyEvent
     from leo.core.leoKeys import KeyHandlerClass as KeyHandler
     from leo.core.leoNodes import Position, VNode
+    from leo.plugins.leoQt import QtWidgets
     from leo.plugins.qt_frame import FindTabManager
     from leo.plugins.qt_text import QTextMixin
 # @-<< leoFind imports & annotations >>
@@ -1099,7 +1100,7 @@ class LeoFind:
 
     # @+node:ekr.20131117164142.16919: *4* find.toggle-find-*
     @cmd('toggle-find-collapses-nodes')
-    def toggle_find_collapses_nodes(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_find_collapses_nodes(self, event: LeoKeyEvent) -> None:
         """Toggle the 'Collapse Nodes' checkbox in the find tab."""
         c = self.c
         c.sparse_find = not c.sparse_find
@@ -1107,51 +1108,49 @@ class LeoFind:
             g.es('sparse_find', c.sparse_find)
 
     @cmd('toggle-find-ignore-case-option')
-    def toggle_ignore_case_option(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_ignore_case_option(self, event: LeoKeyEvent) -> None:
         """Toggle the 'Ignore Case' checkbox in the Find tab."""
-        self.toggle_option('ignore_case')
+        self.toggle_option(event, 'ignore_case')
 
     @cmd('toggle-find-mark-changes-option')
-    def toggle_mark_changes_option(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_mark_changes_option(self, event: LeoKeyEvent) -> None:
         """Toggle the 'Mark Changes' checkbox in the Find tab."""
-        self.toggle_option('mark_changes')
+        self.toggle_option(event, 'mark_changes')
 
     @cmd('toggle-find-mark-finds-option')
-    def toggle_mark_finds_option(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_mark_finds_option(self, event: LeoKeyEvent) -> None:
         """Toggle the 'Mark Finds' checkbox in the Find tab."""
-        self.toggle_option('mark_finds')
+        self.toggle_option(event, 'mark_finds')
 
     @cmd('toggle-find-regex-option')
-    def toggle_regex_option(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_regex_option(self, event: LeoKeyEvent) -> None:
         """Toggle the 'Regexp' checkbox in the Find tab."""
-        self.toggle_option('pattern_match')
+        self.toggle_option(event, 'pattern_match')
 
     @cmd('toggle-find-in-body-option')
-    def toggle_search_body_option(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_search_body_option(self, event: LeoKeyEvent) -> None:
         """Set the 'Search Body' checkbox in the Find tab."""
-        self.toggle_option('search_body')
+        self.toggle_option(event, 'search_body')
 
     @cmd('toggle-find-in-headline-option')
-    def toggle_search_headline_option(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_search_headline_option(self, event: LeoKeyEvent) -> None:
         """Toggle the 'Search Headline' checkbox in the Find tab."""
-        self.toggle_option('search_headline')
+        self.toggle_option(event, 'search_headline')
 
     @cmd('toggle-find-word-option')
-    def toggle_whole_word_option(self, event: LeoKeyEvent) -> None:  # pragma: no cover (cmd)
+    def toggle_whole_word_option(self, event: LeoKeyEvent) -> None:
         """Toggle the 'Whole Word' checkbox in the Find tab."""
-        self.toggle_option('whole_word')
+        self.toggle_option(event, 'whole_word')
 
-    # @verbatim
-    # @cmd('toggle-find-wrap-around-option')
-    # def toggleWrapSearchOption(self, event):
-    # """Toggle the 'Wrap Around' checkbox in the Find tab."""
-    # return self.toggle_option('wrap')
-
-    def toggle_option(self, checkbox_name: str) -> None:  # pragma: no cover (cmd)
-        c, fc = self.c, self.c.findCommands
+    def toggle_option(self, event: LeoKeyEvent, checkbox_name: str) -> None:
+        c, finder = self.c, self.c.findCommands
         self.ftm.toggle_checkbox(checkbox_name)
-        options = fc.compute_find_options_in_status_area()
-        c.frame.statusLine.put(options)
+        if self.minibuffer_mode:
+            options = finder.compute_find_options_in_status_area()
+            c.frame.statusLine.put(options)
+        else:
+            # Put focus in the Find Tab/Dialog.
+            finder.start_search(event)
 
     # @+node:ekr.20131117164142.17013: *3* LeoFind.Commands (interactive)
     # @+node:ekr.20131117164142.16994: *4* find.change-all & helper
@@ -2161,7 +2160,7 @@ class LeoFind:
                 escape_handler=self.start_search_escape1,
             )
         else:
-            self.open_find_tab(event)
+            self.open_find_tab()
             self.ftm.init_focus()
             return
 
@@ -3529,20 +3528,20 @@ class LeoFind:
             self.handler(event)
 
     # @+node:ekr.20260521170130.1: *5* find.do_arrow
-    def do_arrow(self, char: str) -> None:
+    def do_arrow(self, char: str, *, in_minibuffer: bool, w: QtWidgets.QLineEdit = None) -> None:
+        """Handle 'Up' and 'Down' arrows in the minibuffer and the 'Find' Tab/Dialog."""
         c = self.c
-        prev = self.prev_searches
-        if not prev:
-            return
+        i = self.prev_searches_i
+        settings = self.ftm.get_settings()
+        self._remember_settings(settings)
 
         # Compute the bunch to show.
-        i = self.prev_searches_i
         self.prev_searches_i = (
             i - 1 if char == 'Up' and i - 1 >= 0 else
-            i + 1 if char == 'Down' and i + 1 < len(prev) else
+            i + 1 if char == 'Down' and i + 1 < len(self.prev_searches) else
             i
         )  # fmt: skip
-        bunch = prev[self.prev_searches_i]
+        bunch = self.prev_searches[self.prev_searches_i]
         find_s, change_s = bunch.find_text, bunch.change_text
 
         # Show the options in the status area. Like compute_find_options_in_status_area.
@@ -3565,14 +3564,20 @@ class LeoFind:
                 setattr(self, key, val)
             if val and key in d:
                 options.append(d.get(key))
-        options.append(f"Change: {change_s}")
 
         # Update the gui.
+        self.ftm.set_widgets_from_dict(bunch)
         self.ftm.set_change_text(change_s)
         self.ftm.set_find_text(find_s)
-        c.k.setLabel('Search: ')
-        c.k.extendLabel(find_s)
-        c.frame.statusLine.put(f"Find: {' '.join(options)}")
+        if in_minibuffer:
+            options.append(f"Change: {change_s}")
+            c.k.setLabel('Search: ')
+            c.k.extendLabel(find_s)
+            c.frame.statusLine.put(f"Find: {' '.join(options)}")
+        else:
+            # Like start_search()
+            self.open_find_tab()
+            self.ftm.init_focus()
 
     # @+node:ekr.20131117164142.17008: *4* find.updateChange/FindList
     def update_change_list(self, s: str) -> None:  # pragma: no cover (cmd)

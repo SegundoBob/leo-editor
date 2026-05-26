@@ -1573,7 +1573,7 @@ class GetArg:
             finder = c.findCommands
             handler = self.after_get_arg_state[2]
             if handler in (finder.find_state0, finder._start_search_escape2):
-                finder.do_arrow(char)
+                finder.do_arrow(char, in_minibuffer=True)
         elif k.isFKey(stroke):
             # Ignore only F-keys. Ignoring all except plain keys would kill unicode searches.
             pass

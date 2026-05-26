@@ -551,6 +551,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
             # @+node:ekr.20131118172620.16894: *7* EventWrapper.keyPress
             def keyPress(self, event: LeoKeyEvent) -> bool:
                 s = event.text()
+                w = self.w
                 out = s and s in '\t\r\n'
                 if out:
                     # Move focus to next widget.
@@ -563,7 +564,15 @@ class DynamicWindow(QtWidgets.QMainWindow):
                     elif self.func:
                         self.func()
                     return True
+
                 binding, ch, lossage = self.eventFilter.toBinding(event)
+
+                # #4685: A hack for Up/Down arrows in the Find Tab/Dialog
+                if c.widget_name(w) == 'findPattern':  # A Qt Widget, not a Leo Wrapper.
+                    if ch in ('Up', 'Down'):
+                        c.findCommands.do_arrow(char=s, in_minibuffer=False, w=w)
+                        return True
+
                 # #2094: Use code similar to the end of LeoQtEventFilter.eventFilter.
                 #        The ctor converts <Alt-X> to <Alt-x> !!
                 #        That is, we must use the stroke, not the binding.
