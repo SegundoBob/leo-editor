@@ -1054,11 +1054,12 @@ class LeoFind:
         Show the present find options in the status line.
         This is useful for commands like search-forward that do not show the Find Panel.
         """
-        frame = self.c.frame
-        frame.clearStatusLine()
-        part1, part2 = self.compute_find_options()
-        frame.putStatusLine(part1, bg='blue')
-        frame.putStatusLine(part2)
+        if g.unitTesting:
+            return
+
+        # #4685: Always open the Find Tab.
+        self.open_find_tab()
+        self.ftm.init_focus()
 
     # @+node:ekr.20171129205648.1: *5* LeoFind.compute_find_options
     def compute_find_options(self) -> tuple[str, str]:  # pragma: no cover (cmd)

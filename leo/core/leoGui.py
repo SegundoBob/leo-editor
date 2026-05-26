@@ -492,6 +492,9 @@ class NullGui(LeoGui):
         self.script = None
 
     # @+node:ekr.20031218072017.3744: *3* NullGui.dialogs
+    def openFindDialog(self, c: Cmdr) -> None:
+        return None
+
     def runAboutLeoDialog(
         self, c: Cmdr, version: str, theCopyright: str, url: str, email: str
     ) -> str:
