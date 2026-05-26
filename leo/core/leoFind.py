@@ -2170,8 +2170,7 @@ class LeoFind:
     # @+node:ekr.20260521125623.1: *5* find._remember_settings
     def _remember_settings(self, settings: g.Bunch) -> None:
         """
-        Add the settings to the start of the previous searches list,
-        but only if it does not already appear.
+        Add the settings if necessary.
         """
 
         def equal(b1: g.Bunch, b2: g.Bunch) -> bool:
@@ -2182,11 +2181,10 @@ class LeoFind:
         # Remove any previous match.
         for bunch in self.prev_searches:
             if equal(settings, bunch):
-                self.prev_searches.remove(bunch)
-                break
+                return
 
-        # Insert the setting at the start of the list.
-        self.prev_searches.insert(0, settings)
+        # Insert the setting at the *end* of the list.
+        self.prev_searches.append(settings)
 
     # @+node:ekr.20210117143611.1: *5* find.start_search1
     def start_search1(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
