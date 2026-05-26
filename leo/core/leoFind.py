@@ -2148,6 +2148,8 @@ class LeoFind:
         # #1840: headline-only one-shot
         #        Do this first, so the user can override.
         self.ftm.set_body_and_headline_checkbox()
+        settings = self.ftm.get_settings()
+        self._remember_settings(settings)
         if self.minibuffer_mode:
             # Set up the state machine.
             self.ftm.clear_focus()
@@ -2169,7 +2171,8 @@ class LeoFind:
     # @+node:ekr.20260521125623.1: *5* find._remember_settings
     def _remember_settings(self, settings: g.Bunch) -> None:
         """
-        Add the settings to the start of the previous searches list.
+        Add the settings to the start of the previous searches list,
+        but only if it does not already appear.
         """
 
         def equal(b1: g.Bunch, b2: g.Bunch) -> bool:
@@ -2183,9 +2186,8 @@ class LeoFind:
                 self.prev_searches.remove(bunch)
                 break
 
-        # Insert the new setting at the start of the list.
+        # Insert the setting at the start of the list.
         self.prev_searches.insert(0, settings)
-        self.prev_searches_i = 0
 
     # @+node:ekr.20210117143611.1: *5* find.start_search1
     def start_search1(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover
@@ -3531,18 +3533,22 @@ class LeoFind:
     def do_arrow(self, char: str, *, in_minibuffer: bool, w: QtWidgets.QLineEdit = None) -> None:
         """Handle 'Up' and 'Down' arrows in the minibuffer and the 'Find' Tab/Dialog."""
         c = self.c
-        i = self.prev_searches_i
         settings = self.ftm.get_settings()
+
+        # Change self.prev_searches_i only if the settings are new.
         self._remember_settings(settings)
 
         # Compute the bunch to show.
+        i = self.prev_searches_i
         self.prev_searches_i = (
-            i - 1 if char == 'Up' and i - 1 >= 0 else
-            i + 1 if char == 'Down' and i + 1 < len(self.prev_searches) else
+            i - 1 if (char == 'Up' and i - 1 >= 0) else
+            i + 1 if (char == 'Down' and i + 1 < len(self.prev_searches)) else
             i
         )  # fmt: skip
         bunch = self.prev_searches[self.prev_searches_i]
         find_s, change_s = bunch.find_text, bunch.change_text
+
+        # g.trace(f"{char:4} {self.prev_searches_i} of {len(self.prev_searches)} : {bunch!r}")
 
         # Show the options in the status area. Like compute_find_options_in_status_area.
         options = []

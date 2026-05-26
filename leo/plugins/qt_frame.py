@@ -570,7 +570,7 @@ class DynamicWindow(QtWidgets.QMainWindow):
                 # #4685: A hack for Up/Down arrows in the Find Tab/Dialog
                 if c.widget_name(w) == 'findPattern':  # A Qt Widget, not a Leo Wrapper.
                     if ch in ('Up', 'Down'):
-                        c.findCommands.do_arrow(char=s, in_minibuffer=False, w=w)
+                        c.findCommands.do_arrow(char=ch, in_minibuffer=False, w=w)
                         return True
 
                 # #2094: Use code similar to the end of LeoQtEventFilter.eventFilter.
