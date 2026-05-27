@@ -42,6 +42,21 @@
 </v>
 <v t="ekr.20170427114412.1"><vh>scripts</vh>
 <v t="ekr.20170428084123.1"><vh>Recursive import script</vh></v>
+<v t="ekr.20260503063616.1"><vh>--- diff scripts</vh>
+<v t="ekr.20260508180923.1"><vh>script: diff 6.8.8/devel </vh></v>
+<v t="ekr.20260503063747.1"><vh>script: diff master/6.8.9</vh></v>
+<v t="ekr.20260503052547.1"><vh>script: diff master/devel</vh></v>
+<v t="ekr.20190402091335.1"><vh>script: diff-branches/revs (master, 6.8.8, leo/core)</vh></v>
+<v t="ekr.20180816105258.1"><vh>script: diff-branches/revs (one file)</vh></v>
+<v t="ekr.20201208114843.1"><vh>script: diff-pr</vh></v>
+<v t="ekr.20220319145807.1"><vh>script: diff-two-revs-wo-comments</vh>
+<v t="ekr.20220319151900.1"><vh>function: make_diff_outlines_ignoring_comments</vh></v>
+<v t="ekr.20220319152417.1"><vh>function: strip_comments</vh></v>
+</v>
+<v t="ekr.20260116001413.1"><vh>script: summary-diff (master, 6.8.8, leo/commands)</vh></v>
+<v t="ekr.20260112121427.1"><vh>script: summary-diff (master, 6.8.8, leo/core)</vh></v>
+</v>
+<v t="ekr.20260503063649.1"><vh>--- other scripts</vh>
 <v t="ekr.20240403111007.1"><vh>script: add toolbar buttons</vh></v>
 <v t="ekr.20201222095250.1"><vh>script: check for duplicate settings in theme files</vh></v>
 <v t="ekr.20200308193719.1"><vh>script: check gnx's</vh></v>
@@ -58,13 +73,6 @@
 <v t="ekr.20240708072327.1"><vh>&lt;&lt; check table &gt;&gt;</vh></v>
 </v>
 <v t="ekr.20210829132319.1"><vh>script: cvt-tests</vh></v>
-<v t="ekr.20190402091335.1"><vh>script: diff-branches/revs (master, 6.8.8, leo/core)</vh></v>
-<v t="ekr.20180816105258.1"><vh>script: diff-branches/revs (one file)</vh></v>
-<v t="ekr.20201208114843.1"><vh>script: diff-pr</vh></v>
-<v t="ekr.20220319145807.1"><vh>script: diff-two-revs-wo-comments</vh>
-<v t="ekr.20220319151900.1"><vh>function: make_diff_outlines_ignoring_comments</vh></v>
-<v t="ekr.20220319152417.1"><vh>function: strip_comments</vh></v>
-</v>
 <v t="ekr.20240403090451.1"><vh>script: expand-toolbar</vh></v>
 <v t="ekr.20220318085657.1"><vh>script: find trailing comments</vh></v>
 <v t="ekr.20220503081113.1"><vh>script: find-non-calls</vh>
@@ -81,8 +89,6 @@
 </v>
 <v t="ekr.20210630103405.1"><vh>script: restore gnxs in leoserver.py (simple version)</vh></v>
 <v t="ekr.20200222083959.1"><vh>script: start loggin</vh></v>
-<v t="ekr.20260116001413.1"><vh>script: summary-diff (master, 6.8.8, leo/commands)</vh></v>
-<v t="ekr.20260112121427.1"><vh>script: summary-diff (master, 6.8.8, leo/core)</vh></v>
 <v t="ekr.20211014103433.1"><vh>script: web-to-outline</vh>
 <v t="ekr.20211014112513.1"><vh>Handlers</vh></v>
 <v t="ekr.20211014120710.1"><vh>new_node</vh></v>
@@ -90,10 +96,11 @@
 <v t="ekr.20200222151754.1"><vh>script: yoton "other end"</vh></v>
 </v>
 </v>
+</v>
 <v t="EKR.20040430162943"><vh>The attic</vh>
 <v t="ekr.20170302123956.1"><vh>@file ../doc/leoAttic.txt</vh></v>
 </v>
-<v t="ekr.20031218072017.2406"><vh>Code</vh>
+<v t="ekr.20031218072017.2406" descendentVnodeUnknownAttributes="7d71005809000000302e332e332e322e3071017d71025808000000616e6e6f7461746571037d71042858080000007072696f7269747971054d0f27580a000000707269736574646174657106580a000000323032362d30352d303171077573732e"><vh>Code</vh>
 <v t="ekr.20140902032918.18591"><vh>About this file</vh>
 <v t="ekr.20140831085423.18630"><vh>Terminology</vh></v>
 <v t="ekr.20140831085423.18631"><vh>Official ivars</vh></v>
@@ -136,7 +143,6 @@
 </v>
 <v t="ekr.20150514035207.1"><vh>Command classes</vh>
 <v t="ekr.20150514035236.1"><vh>@file ../commands/abbrevCommands.py</vh></v>
-<v t="ekr.20150514045700.1"><vh>&lt;&lt; abbrevCommands imports &amp; abbreviations &gt;&gt;</vh></v>
 <v t="ekr.20150514035943.1"><vh>@file ../commands/baseCommands.py</vh></v>
 <v t="ekr.20150514035559.1"><vh>@file ../commands/bufferCommands.py</vh></v>
 <v t="ekr.20161021090740.1"><vh>@file ../commands/checkerCommands.py</vh></v>
@@ -156,11 +162,11 @@
 <v t="ekr.20150514040146.1"><vh>@file ../commands/rectangleCommands.py</vh></v>
 <v t="ekr.20150514040239.1"><vh>@file ../commands/spellCommands.py</vh></v>
 </v>
-<v t="ekr.20031218072017.3625"><vh>Gui base classes</vh>
+<v t="ekr.20031218072017.3625" descendentVnodeUnknownAttributes="7d71005807000000302e332e322e3071017d71025808000000616e6e6f7461746571037d71042858080000007072696f7269747971054d0f27580a000000707269736574646174657106580a000000323032362d30352d303171077573732e"><vh>Gui base classes</vh>
 <v t="ekr.20250329033400.1"><vh>@file leoAPI.py</vh></v>
 <v t="ekr.20060123151617"><vh>@file leoFind.py</vh></v>
 <v t="ekr.20031218072017.3655"><vh>@file leoFrame.py</vh></v>
-<v t="ekr.20031218072017.3719"><vh>@file leoGui.py</vh></v>
+<v t="ekr.20031218072017.3719" descendentVnodeUnknownAttributes="7d71005805000000302e322e3071017d71025808000000616e6e6f7461746571037d71042858080000007072696f7269747971054d0f27580a000000707269736574646174657106580a000000323032362d30352d303171077573732e"><vh>@file leoGui.py</vh></v>
 <v t="ekr.20061031131434"><vh>@file leoKeys.py</vh></v>
 <v t="ekr.20031218072017.3749"><vh>@file leoMenu.py</vh></v>
 </v>
@@ -206,69 +212,6 @@
 <v t="ekr.20160317054700.1"><vh>@file ../external/make_stub_files.py</vh></v>
 <v t="ekr.20180628055640.1"><vh>@file ../external/pdb_listener.py</vh></v>
 <v t="ekr.20160316091132.1"><vh>@file ../external/py2cs.py</vh></v>
-<v t="ekr.20170428085201.1"><vh>npyscreen</vh>
-<v t="ekr.20170428084207.3"><vh>@file ../external/npyscreen/apNPSApplication.py</vh></v>
-<v t="ekr.20170428084207.11"><vh>@file ../external/npyscreen/apNPSApplicationAdvanced.py</vh></v>
-<v t="ekr.20170428084207.15"><vh>@file ../external/npyscreen/apNPSApplicationEvents.py</vh></v>
-<v t="ekr.20170428084207.29"><vh>@file ../external/npyscreen/apNPSApplicationManaged.py</vh></v>
-<v t="ekr.20170428084207.50"><vh>@file ../external/npyscreen/apOptions.py</vh></v>
-<v t="ekr.20170428084207.111"><vh>@file ../external/npyscreen/eveventhandler.py</vh></v>
-<v t="ekr.20170428084207.121"><vh>@file ../external/npyscreen/fmActionForm.py</vh></v>
-<v t="ekr.20170428084207.131"><vh>@file ../external/npyscreen/fmActionFormV2.py</vh></v>
-<v t="ekr.20170428084207.153"><vh>@file ../external/npyscreen/fmFileSelector.py</vh></v>
-<v t="ekr.20170428084207.174"><vh>@file ../external/npyscreen/fmForm.py</vh></v>
-<v t="ekr.20170428084207.223"><vh>@file ../external/npyscreen/fmFormMultiPage.py</vh></v>
-<v t="ekr.20170428084207.248"><vh>@file ../external/npyscreen/fmFormMutt.py</vh></v>
-<v t="ekr.20170428084207.258"><vh>@file ../external/npyscreen/fmFormMuttActive.py</vh></v>
-<v t="ekr.20170428084207.285"><vh>@file ../external/npyscreen/fmFormWithMenus.py</vh></v>
-<v t="ekr.20170428084207.303"><vh>@file ../external/npyscreen/fmPopup.py</vh></v>
-<v t="ekr.20170428084207.311"><vh>@file ../external/npyscreen/fm_form_edit_loop.py</vh></v>
-<v t="ekr.20170428084207.322"><vh>@file ../external/npyscreen/globals.py</vh></v>
-<v t="ekr.20170428084207.324"><vh>@file ../external/npyscreen/muMenu.py</vh></v>
-<v t="ekr.20170428084207.332"><vh>@file ../external/npyscreen/muNewMenu.py</vh></v>
-<v t="ekr.20170428084207.351"><vh>@file ../external/npyscreen/npysGlobalOptions.py</vh></v>
-<v t="ekr.20170428084207.353"><vh>@file ../external/npyscreen/npysNPSFilteredData.py</vh></v>
-<v t="ekr.20170428084207.364"><vh>@file ../external/npyscreen/npyspmfuncs.py</vh></v>
-<v t="ekr.20170428084207.370"><vh>@file ../external/npyscreen/npyssafewrapper.py</vh></v>
-<v t="ekr.20170428084207.377"><vh>@file ../external/npyscreen/npysThemeManagers.py</vh></v>
-<v t="ekr.20170428084207.390"><vh>@file ../external/npyscreen/npysThemes.py</vh></v>
-<v t="ekr.20170428084207.399"><vh>@file ../external/npyscreen/npysTree.py</vh></v>
-<v t="ekr.20170428084207.422"><vh>@file ../external/npyscreen/proto_fm_screen_area.py</vh></v>
-<v t="ekr.20170428084207.434"><vh>@file ../external/npyscreen/stdfmemail.py</vh></v>
-<v t="ekr.20170428084207.464"><vh>@file ../external/npyscreen/utilNotify.py</vh></v>
-<v t="ekr.20170428084207.477"><vh>@file ../external/npyscreen/util_viewhelp.py</vh></v>
-<v t="ekr.20170428084207.480"><vh>@file ../external/npyscreen/wgannotatetextbox.py</vh></v>
-<v t="ekr.20170428084207.494"><vh>@file ../external/npyscreen/wgautocomplete.py</vh></v>
-<v t="ekr.20170428084207.503"><vh>@file ../external/npyscreen/wgboxwidget.py</vh></v>
-<v t="ekr.20170428084207.524"><vh>@file ../external/npyscreen/wgbutton.py</vh></v>
-<v t="ekr.20170428084207.536"><vh>@file ../external/npyscreen/wgcheckbox.py</vh></v>
-<v t="ekr.20170428084207.561"><vh>@file ../external/npyscreen/wgcombobox.py</vh></v>
-<v t="ekr.20170428084207.575"><vh>@file ../external/npyscreen/wgdatecombo.py</vh></v>
-<v t="ekr.20170428084207.586"><vh>@file ../external/npyscreen/wgeditmultiline.py</vh></v>
-<v t="ekr.20170428084207.611"><vh>@file ../external/npyscreen/wgfilenamecombo.py</vh></v>
-<v t="ekr.20170428084207.618"><vh>@file ../external/npyscreen/wgFormControlCheckbox.py</vh></v>
-<v t="ekr.20170428084208.1"><vh>@file ../external/npyscreen/wggrid.py</vh></v>
-<v t="ekr.20170428084208.36"><vh>@file ../external/npyscreen/wggridcoltitles.py</vh></v>
-<v t="ekr.20170428084208.43"><vh>@file ../external/npyscreen/wgmonthbox.py</vh></v>
-<v t="ekr.20170428084208.68"><vh>@file ../external/npyscreen/wgmultiline.py</vh></v>
-<v t="ekr.20170428084208.157"><vh>@file ../external/npyscreen/wgmultilineeditable.py</vh></v>
-<v t="ekr.20170428084208.173"><vh>@file ../external/npyscreen/wgmultilinetree.py</vh></v>
-<v t="ekr.20170428084208.213"><vh>@file ../external/npyscreen/wgmultilinetreeselectable.py</vh></v>
-<v t="ekr.20170428084208.225"><vh>@file ../external/npyscreen/wgmultiselect.py</vh></v>
-<v t="ekr.20170428084208.245"><vh>@file ../external/npyscreen/wgmultiselecttree.py</vh></v>
-<v t="ekr.20170428084208.253"><vh>@file ../external/npyscreen/wgNMenuDisplay.py</vh></v>
-<v t="ekr.20170428084208.285"><vh>@file ../external/npyscreen/wgpassword.py</vh></v>
-<v t="ekr.20170428084208.290"><vh>@file ../external/npyscreen/wgselectone.py</vh></v>
-<v t="ekr.20170428084208.297"><vh>@file ../external/npyscreen/wgslider.py</vh></v>
-<v t="ekr.20170428084208.318"><vh>@file ../external/npyscreen/wgtextbox.py</vh></v>
-<v t="ekr.20170428084208.354"><vh>@file ../external/npyscreen/wgtextboxunicode.py</vh></v>
-<v t="ekr.20170428084208.359"><vh>@file ../external/npyscreen/wgtextbox_controlchrs.py</vh></v>
-<v t="ekr.20170428084208.366"><vh>@file ../external/npyscreen/wgtexttokens.py</vh></v>
-<v t="ekr.20170428084208.381"><vh>@file ../external/npyscreen/wgtitlefield.py</vh></v>
-<v t="ekr.20170428084208.398"><vh>@file ../external/npyscreen/wgwidget.py</vh></v>
-<v t="ekr.20170428084208.436"><vh>@file ../external/npyscreen/wgwidget_proto.py</vh></v>
-<v t="ekr.20170428084208.443"><vh>@file ../external/npyscreen/__init__.py</vh></v>
-</v>
 </v>
 </v>
 <v t="ekr.20180225010850.1"><vh>In leo/modes</vh>
@@ -286,11 +229,13 @@
 <v t="ekr.20241030152835.1"><vh>@file ../modes/md.py</vh></v>
 <v t="ekr.20240202211600.1"><vh>@file ../modes/nim.py</vh></v>
 <v t="ekr.20210219115553.109"><vh>@file ../modes/python.py</vh></v>
+<v t="swot.20260501212006.1"><vh>@file ../modes/pug.py</vh></v>
 <v t="ekr.20231103124615.1"><vh>@file ../modes/rust.py</vh></v>
 <v t="ekr.20231012163843.1"><vh>@file ../modes/scheme.py</vh></v>
 </v>
 <v t="ekr.20221204070905.1"><vh>In leo/scripts</vh>
 <v t="ekr.20240321122705.1"><vh>--- build scripts</vh>
+<v t="mhw.20190808083008.1"><vh>@file ../scripts/add-desktop-links.leox</vh></v>
 <v t="ekr.20240321122822.1"><vh>@file ../scripts/build_leo.py</vh></v>
 <v t="ekr.20240321122917.1"><vh>@file ../scripts/inspect_wheel.py</vh></v>
 <v t="ekr.20240321123226.1"><vh>@file ../scripts/install_leo_from_pypi.py</vh></v>
@@ -300,9 +245,9 @@
 <v t="ekr.20240322173731.1"><vh>@file ../scripts/pip_uninstall_all.py</vh></v>
 <v t="ekr.20240321123224.1"><vh>@file ../scripts/run_installed_leo.py</vh></v>
 <v t="ekr.20240321123225.1"><vh>@file ../scripts/uninstall_leo.py</vh></v>
+<v t="ekr.20260414092941.1"><vh>@file ../scripts/update_leo_tools.py</vh></v>
 <v t="ekr.20240321123225.4"><vh>@file ../scripts/upload_leo_to_pypi.py</vh></v>
 <v t="ekr.20240321123225.2"><vh>@file ../scripts/upload_leo_to_testpypi.py</vh></v>
-<v t="mhw.20190808083008.1"><vh>@file ../scripts/add-desktop-links.leox</vh></v>
 </v>
 <v t="ekr.20240321122614.1"><vh>--- test scripts</vh>
 <v t="ekr.20240323050520.1"><vh>@file ../scripts/beautify_all_leo.py</vh></v>
@@ -458,7 +403,6 @@
 <v t="mork.20041010095009"><vh>@file ../plugins/xsltWithNodes.py</vh></v>
 </v>
 <v t="ekr.20181030041436.1"><vh>Gui</vh>
-<v t="ekr.20150107090324.1"><vh>@file ../plugins/cursesGui.py</vh></v>
 <v t="ekr.20170419092835.1"><vh>@file ../plugins/cursesGui2.py</vh></v>
 <v t="peckj.20150428142633.1"><vh>@file ../plugins/python_terminal.py</vh></v>
 </v>
@@ -483,6 +427,7 @@
 <v t="ekr.20140723122936.18147"><vh>@file ../plugins/importers/pascal.py</vh></v>
 <v t="ekr.20161027100313.1"><vh>@file ../plugins/importers/perl.py</vh></v>
 <v t="ekr.20140723122936.18148"><vh>@file ../plugins/importers/php.py</vh></v>
+<v t="ekr.20250501.100"><vh>@file ../plugins/importers/pug.py</vh></v>
 <v t="ekr.20211209153303.1"><vh>@file ../plugins/importers/python.py</vh></v>
 <v t="ekr.20200316100818.1"><vh>@file ../plugins/importers/rust.py</vh></v>
 <v t="ekr.20231012140553.1"><vh>@file ../plugins/importers/scheme.py</vh></v>
@@ -609,6 +554,7 @@
 <v t="ekr.20201202144422.1"><vh>@file ../unittests/commands/test_editCommands.py</vh></v>
 <v t="ekr.20230705083159.1"><vh>@file ../unittests/commands/test_editFileCommands.py</vh></v>
 <v t="ekr.20230802060212.1"><vh>@file ../unittests/commands/test_gotoCommands.py</vh></v>
+<v t="ekr.20260512145309.1"><vh>@file ../unittests/commands/test_leoAbbrev.py</vh></v>
 <v t="ekr.20221113062857.1"><vh>@file ../unittests/commands/test_outlineCommands.py</vh></v>
 <v t="ekr.20230916141635.1"><vh>@file ../unittests/commands/test_spellCommands.py</vh></v>
 </v>
@@ -1010,9 +956,8 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
 
 &lt;/xsl:stylesheet&gt;
 </t>
-<t tx="ekr.20150425145248.1">test-bed
+<t tx="ekr.20150425145248.1">pylint
 execute-script
-pylint
 
 # check-leo
 # patch-pyflakes
@@ -1048,22 +993,6 @@ os.environ['LEO_BACKUP'] must be the path to an existing (writable) directory.
 c.backup_helper(sub_dir='leoPy')
 </t>
 <t tx="ekr.20150514035207.1"></t>
-<t tx="ekr.20150514045700.1">from __future__ import annotations
-from collections.abc import Callable
-import functools
-import re
-import string
-from typing import TYPE_CHECKING
-from leo.core import leoGlobals as g
-from leo.core import leoNodes
-from leo.commands.baseCommands import BaseEditCommandsClass
-
-if TYPE_CHECKING:  # pragma: no cover
-    from leo.core.leoCommands import Commands as Cmdr
-    from leo.core.leoGui import LeoKeyEvent
-    from leo.core.leoNodes import Position
-    from leo.plugins.qt_text import QTextEditWrapper as Wrapper
-</t>
 <t tx="ekr.20160122104332.1">@language python
 </t>
 <t tx="ekr.20160123142722.1" _mod_time="4741da24cf0b43cf212e"># An example configuration file for make_stub_files.py.
@@ -1117,8 +1046,6 @@ if 1:
     c.redraw(last)
 print('Done')
 </t>
-<t tx="ekr.20170428085201.1">@nosearch
-</t>
 <t tx="ekr.20170811173924.1">@language python
 import os
 import subprocess
@@ -1135,10 +1062,10 @@ assert g.os_path_exists(new_dir), repr(new_dir)
 assert g.os_path_exists(path), repr(path)
 stamp = time.strftime("%Y%m%d-%H%M%S")
 fn = g.finalize_join(path, f"leo-bundle-all-{stamp}")
-bundle_command = 'git bundle create %s --all' % fn
+bundle_command = f"git bundle create {fn} --all"
 print(bundle_command)
 os.chdir(new_dir)
-proc = subprocess.Popen(bundle_command, shell=True)
+proc = subprocess.Popen(bundle_command)
 proc.wait()
 os.chdir(old_dir)
 print('done! wrote %s' % fn)
@@ -1955,7 +1882,7 @@ assert core_p and command_p and globals_p
     # 'toString', 'toUnicode', 'trace', 'translateString',
     # 'underline', 'undoHelper', 'unl', 'values', 'visit',
     # 'warn', 'warning', 'word',</t>
-<t tx="ekr.20220823195205.1" _mod_time="4741da71df9ce7fdc62e">"""
+<t tx="ekr.20220823195205.1" _mod_time="4741da7f9b3a5a3e6d2e">"""
 Stand alone GUI free index builder for Leo's full text search system::
 
   python leoftsindex.py &lt;file1&gt; &lt;file2&gt; &lt;file3&gt;...
@@ -2195,14 +2122,15 @@ for z in core_files + external_files + qt_files + importer_files + writer_files:
     if z not in at_file_paths and not is_excluded(z):
         missing.append(z)
 if missing:
+    g.es_print(f"{n} missing file{g.plural(n)}")
     g.printObj(missing, tag='missing @&lt;file&gt; nodes')
 else:
-    print('No missing files!')
+    g.es_print('No missing files!')
 print('done')</t>
 <t tx="ekr.20240107154430.1"></t>
 <t tx="ekr.20240204082420.1"></t>
 <t tx="ekr.20240204082924.1"></t>
-<t tx="ekr.20240206161713.1" _mod_time="4741da71df9d6817102e">@language ini
+<t tx="ekr.20240206161713.1" _mod_time="4741da7f9b3abce1da2e">@language ini
 
 [bdist_wheel]
 
@@ -3330,6 +3258,43 @@ efc.GitDiffController(c).summary_diff_two_revs(
     rev2='6.8.8',     # New
     path='leo/commands',  # Limit diffs to this directory, relative to the nearest git repo.
 )  # fmt: skip
+</t>
+<t tx="ekr.20260503052547.1">from leo.commands import editFileCommands as efc
+
+efc.GitDiffController(c).diff_two_revs(
+    rev1='master',  # Old
+    rev2='devel',  # New
+    # Optional path, relative to the git directory.
+    # path='leo/core',
+)
+</t>
+<t tx="ekr.20260503063616.1"></t>
+<t tx="ekr.20260503063649.1"></t>
+<t tx="ekr.20260503063747.1">from leo.commands import editFileCommands as efc
+
+efc.GitDiffController(c).diff_two_revs(
+    rev1='master',  # Old
+    rev2='6.8.9',  # New
+    # Optional path, relative to the git directory.
+    # path='leo/core',
+)
+</t>
+<t tx="ekr.20260508180923.1">g.cls()
+import os
+import leo.commands.editFileCommands as efc
+
+path = g.finalize_join(g.app.loadDir, '..', '..')
+# print(f"os.chdir({path})")
+os.chdir(path)
+
+# Any revspec is valid as an argument to the "branch1" and "branch2" args.
+# See https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection
+
+efc.GitDiffController(c).diff_two_branches(
+    branch1='6.8.7',  # old branch/rev
+    branch2='devel',  # new branch/rev
+    fn='leo/commands/abbrevCommands.py',  # Don't use back slashes.
+)
 </t>
 </tnodes>
 </leo_file>
