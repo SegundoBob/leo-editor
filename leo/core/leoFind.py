@@ -436,7 +436,7 @@ class LeoFind:
         # Settings...
         self.init_in_headline()
         settings = self.ftm.get_settings()
-        self._remember_settings(settings)
+        self._remember_settings(settings)  # #4685
         self.do_change_then_find(settings)
 
     # @+node:ekr.20210114100105.1: *5* find.do_change_then_find
