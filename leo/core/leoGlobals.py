@@ -7447,12 +7447,15 @@ def exec_file(path: str, d: dict[str, Value], script: str = None) -> None:
 def execute_shell_commands(
     commands: str | list[str],
     *,
-    shell: bool = True,  # Shell=True is a minor security vulnerability.
+    shell: bool = True,  # Must be True in many places in Leo's code!
     trace: bool = False,
 ) -> None:
     """
     Execute each shell command in a separate process.
     Wait for each command to complete, except those starting with '&'
+
+    See https://docs.python.org/3/library/subprocess.html
+    for a discussion of the security considerations of using shell=True.
     """
     if isinstance(commands, str):
         commands = [commands]
