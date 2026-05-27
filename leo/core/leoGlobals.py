@@ -7444,10 +7444,18 @@ def exec_file(path: str, d: dict[str, Value], script: str = None) -> None:
 
 
 # @+node:ekr.20131016032805.16721: *3* g.execute_shell_commands
-def execute_shell_commands(commands: str | list[str], trace: bool = False) -> None:
+def execute_shell_commands(
+    commands: str | list[str],
+    *,
+    shell: bool = True,  # Must be True in many places in Leo's code!
+    trace: bool = False,
+) -> None:
     """
     Execute each shell command in a separate process.
     Wait for each command to complete, except those starting with '&'
+
+    See https://docs.python.org/3/library/subprocess.html
+    for a discussion of the security considerations of using shell=True.
     """
     if isinstance(commands, str):
         commands = [commands]
@@ -7457,7 +7465,7 @@ def execute_shell_commands(commands: str | list[str], trace: bool = False) -> No
             g.trace(command)
         if command.startswith('&'):
             command = command[1:].strip()
-        proc = subprocess.Popen(command)
+        proc = subprocess.Popen(command, shell=shell)
         if wait:
             proc.communicate()
 
