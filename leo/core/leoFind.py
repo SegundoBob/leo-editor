@@ -262,7 +262,6 @@ class LeoFind:
         """
         # @-<< docstring: find.batch_change >>
         try:
-            # self._init_from_dict(settings or {})
             self._init_from_dict(settings or g.Bunch())
             count = 0
             for find, change in replacements:
@@ -437,6 +436,7 @@ class LeoFind:
         # Settings...
         self.init_in_headline()
         settings = self.ftm.get_settings()
+        self._remember_settings(settings)
         self.do_change_then_find(settings)
 
     # @+node:ekr.20210114100105.1: *5* find.do_change_then_find
@@ -891,6 +891,8 @@ class LeoFind:
 
         """
         c, p = self.c, self.c.p
+
+        self._remember_settings(settings)  # #4685
 
         # The gui widget may not exist for headlines.
         w = c.headline_wrapper(p) if self.in_headline else c.frame.body.wrapper
@@ -2148,8 +2150,6 @@ class LeoFind:
         # #1840: headline-only one-shot
         #        Do this first, so the user can override.
         self.ftm.set_body_and_headline_checkbox()
-        settings = self.ftm.get_settings()
-        self._remember_settings(settings)
         if self.minibuffer_mode:
             # Set up the state machine.
             self.ftm.clear_focus()
@@ -2204,7 +2204,6 @@ class LeoFind:
         k.showStateAndMode()
         c.widgetWantsFocusNow(w)
         # Do the command!
-        self._remember_settings(settings)
         self.do_find_next(settings)  # Handles reverse.
 
     # @+node:ekr.20210117143614.1: *5* find._start_search_escape1
@@ -2247,7 +2246,6 @@ class LeoFind:
         k.resetLabel()
         k.showStateAndMode()
         c.widgetWantsFocusNow(w)
-        self._remember_settings(settings)
         self.do_find_next(settings)
 
     # @+node:ekr.20231127044802.1: *4* find.summarize
@@ -2420,6 +2418,7 @@ class LeoFind:
         Return the number of found nodes.
         """
         c, u = self.c, self.c.undoer
+        self._remember_settings(settings)
         if self.pattern_match:
             ok = self.compile_pattern()
             if not ok:
@@ -3531,9 +3530,9 @@ class LeoFind:
     def do_arrow(self, char: str, *, in_minibuffer: bool) -> None:
         """Handle 'Up' and 'Down' arrows in the minibuffer and the 'Find' Tab/Dialog."""
         c = self.c
-        settings = self.ftm.get_settings()
 
-        # Change self.prev_searches_i only if the settings are new.
+        # Remember the existing settings.
+        settings = self.ftm.get_settings()
         self._remember_settings(settings)
 
         # Compute the bunch to show.
