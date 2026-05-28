@@ -1486,33 +1486,6 @@ class JEditColorizer(BaseColorizer):
         default_tag = f"{tag}_font"  # See default_font_dict.
         full_tag = f"{self.language}.{tag}"
         font: QtGui.QFont = None  # Set below. Define here for report().
-
-        def report(color: QtGui.QColor) -> None:
-            """A superb trace. Don't remove it."""
-            i_j_s = f"{i:>3}:{j:<3}"
-            matcher_name = g.caller(3)
-            rule_name = g.caller(4)
-            matcher_s = f"{self.rulesetName}::{rule_name}:{matcher_name}"
-            s2 = s[i:j]  # Show only the colored string.
-            state = self.currentState()
-            state_repr = self.stateNumberToStateString(state)
-            state_s = f"{self.currentState()}={state_repr}"
-            trace_line = (
-                f"{self.recolorCount:5} {self.currentBlockNumber():<4} {state_s:<25}"
-                f"{matcher_s:<55} {colorName:7} {full_tag:<20} {i_j_s} {s2}"
-            )
-            if len(self.last_trace) < 2:
-                # Append a caption.  jedit.recolor adds the first line.
-                self.last_trace.append(
-                    f"count line state {' ':18} matcher {' ':47} color   tag {' ':18} i:j   string"
-                )
-                self.last_trace.append(
-                    f"----- ---- ----- {' ':18} ------- {' ':47} -----   --- {' ':18} ---   -----"
-                )
-            self.last_trace.append(trace_line)
-            if trace:
-                print(trace_line)
-
         self.n_setTag += 1
         if i == j:
             return
@@ -1545,40 +1518,69 @@ class JEditColorizer(BaseColorizer):
                 self.actualColorDict[colorName] = color
             else:
                 # Leo 6.7.2: This should never happen: configure_colors does a pre-check.
-                message = (
-                    "jedit.setTag: can not happen: "
-                    f"full_tag: {full_tag} = {d.get(full_tag)!r} "
-                    f"tag: {tag} = {d.get(tag)!r}"
-                )
-                g.print_unique_message(message)
+                g.print_unique_message(f"jedit.setTag: invalid color: {tag=} {color=}")
                 return
         underline = self.configUnderlineDict.get(tag)
         format = QtGui.QTextCharFormat()
-        for font_name in (full_tag, tag, default_tag):
-            font = self.fonts.get(font_name)
-            if font:
-                format.setFont(font)
-                self.configure_hard_tab_width(font)  # #1919.
-                break
-        if tag in ('blank', 'tab'):
-            if tag == 'tab' or colorName == 'black':
+        try:  # #4694: Make *sure* we never crash.
+            for font_name in (full_tag, tag, default_tag):
+                font = self.fonts.get(font_name)
+                if font:
+                    format.setFont(font)
+                    self.configure_hard_tab_width(font)  # #1919.
+                    break
+            if tag in ('blank', 'tab'):
+                if tag == 'tab' or colorName == 'black':
+                    format.setFontUnderline(True)
+                if colorName != 'black':
+                    format.setBackground(color)
+            elif underline:
+                format.setForeground(color)
+                format.setUnderlineStyle(UnderlineStyle.SingleUnderline)
                 format.setFontUnderline(True)
-            if colorName != 'black':
-                format.setBackground(color)
-        elif underline:
-            format.setForeground(color)
-            format.setUnderlineStyle(UnderlineStyle.SingleUnderline)
-            format.setFontUnderline(True)
-        elif dots or tag == 'trailing_whitespace':
-            format.setForeground(color)
-            format.setUnderlineStyle(UnderlineStyle.DotLine)
-        else:
-            format.setForeground(color)
-            format.setUnderlineStyle(UnderlineStyle.NoUnderline)
+            elif dots or tag == 'trailing_whitespace':
+                format.setForeground(color)
+                format.setUnderlineStyle(UnderlineStyle.DotLine)
+            else:
+                format.setForeground(color)
+                format.setUnderlineStyle(UnderlineStyle.NoUnderline)
+        except Exception:
+            if g.unitTesting:
+                raise
         self.tagCount += 1
         if trace:
             # PR #4618: (Ville Vainio) https://github.com/leo-editor/leo-editor/pull/4618
             # Don't call report by default: It's setup is expensive!
+            # @+<< setTag: define report >>
+            # @+node:ekr.20260528121410.1: *4* << setTag: define report >>
+
+            def report(color: QtGui.QColor) -> None:
+                """A superb trace. Don't remove it."""
+                i_j_s = f"{i:>3}:{j:<3}"
+                matcher_name = g.caller(3)
+                rule_name = g.caller(4)
+                matcher_s = f"{self.rulesetName}::{rule_name}:{matcher_name}"
+                s2 = s[i:j]  # Show only the colored string.
+                state = self.currentState()
+                state_repr = self.stateNumberToStateString(state)
+                state_s = f"{self.currentState()}={state_repr}"
+                trace_line = (
+                    f"{self.recolorCount:5} {self.currentBlockNumber():<4} {state_s:<25}"
+                    f"{matcher_s:<55} {colorName:7} {full_tag:<20} {i_j_s} {s2}"
+                )
+                if len(self.last_trace) < 2:
+                    # Append a caption.  jedit.recolor adds the first line.
+                    self.last_trace.append(
+                        f"count line state {' ':18} matcher {' ':47} color   tag {' ':18} i:j   string"
+                    )
+                    self.last_trace.append(
+                        f"----- ---- ----- {' ':18} ------- {' ':47} -----   --- {' ':18} ---   -----"
+                    )
+                self.last_trace.append(trace_line)
+                if trace:
+                    print(trace_line)
+
+            # @-<< setTag: define report >>
             report(color)
         self.highlighter.setFormat(i, j - i, format)
 
