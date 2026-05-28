@@ -2021,7 +2021,7 @@ class JEditColorizer(BaseColorizer):
         n = self.match_compiled_regexp_helper(s, i, regexp)
         if n > 0:
             j = i + n
-            self.colorRangeWithTag(s, i, j, kind, delegate=delegate)
+            self.setTag(kind, s, i, j)  # #4694: Fix unbounded recursion.
             return n
         return 0
 
