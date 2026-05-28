@@ -772,9 +772,12 @@ class StringFindTabManager:
         Similar to LeoFind.default_settings, but only for find-tab values.
         """
         return g.Bunch(
+            # State...
+            in_headline     = False,
+            reverse         = False,
             # Find/change strings...
-            find_text   = self.find_findbox.text(),
-            change_text = self.find_replacebox.text(),
+            find_text       = self.find_findbox.text(),
+            change_text     = self.find_replacebox.text(),
             # Find options...
             file_only       = self.radio_button_file_only.isChecked(),
             ignore_case     = self.check_box_ignore_case.isChecked(),

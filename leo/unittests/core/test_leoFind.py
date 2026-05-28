@@ -290,7 +290,6 @@ class TestFind(LeoUnitTest):
         # Test 3.
         init()
         settings.search_headline = False
-        settings.p.setVisited()
         x.do_find_all(settings)
         # Test 4.
         init()
@@ -440,8 +439,8 @@ class TestFind(LeoUnitTest):
         x.do_change_then_find(settings)
 
     def test_replace_then_find_in_headline(self):
-        settings, x = self.settings, self.x
-        p = settings.p
+        c, settings, x = self.c, self.settings, self.x
+        p = c.p
         settings.find_text = 'Node 1'
         settings.change_text = 'Node 1a'
         settings.in_headline = True
@@ -887,13 +886,13 @@ class TestFind(LeoUnitTest):
 
     # @+node:ekr.20210110073117.84: *4* TestFind.test_next_node_after_fail
     def test_fnm_next_after_fail(self):
-        settings, x = self.settings, self.x
+        c = self.c
+        settings = self.settings
+        x = self.x
         for reverse in (True, False):
             settings.reverse = reverse
-            for wrapping in (True, False):
-                settings.wrapping = wrapping
-                x.init_ivars_from_settings(settings)
-                x._fnm_next_after_fail(settings.p)
+            x.init_ivars_from_settings(settings)
+            x._fnm_next_after_fail(c.p)
 
     # @+node:ekr.20210829203927.2: *4* TestFind.test_replace_all_plain_search
     def test_replace_all_plain_search(self):
