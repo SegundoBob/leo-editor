@@ -436,7 +436,6 @@ class LeoFind:
         # Settings...
         self.init_in_headline()
         settings = self.ftm.get_settings()
-        self._remember_settings(settings)  # #4685
         self.do_change_then_find(settings)
 
     # @+node:ekr.20210114100105.1: *5* find.do_change_then_find
@@ -892,8 +891,6 @@ class LeoFind:
         """
         c, p = self.c, self.c.p
 
-        self._remember_settings(settings)  # #4685
-
         # The gui widget may not exist for headlines.
         w = c.headline_wrapper(p) if self.in_headline else c.frame.body.wrapper
 
@@ -1005,7 +1002,7 @@ class LeoFind:
         else:
             c.frame.log.selectTab('Find')
 
-    # @+node:ekr.20031218072017.3068: *4* find.replace (replace)
+    # @+node:ekr.20031218072017.3068: *4* find.replace (change)
     @cmd('replace')
     @cmd('change')
     def change(self, event: LeoKeyEvent = None) -> None:  # pragma: no cover (cmd)
@@ -2170,14 +2167,19 @@ class LeoFind:
 
     # @+node:ekr.20260521125623.1: *5* find._remember_settings
     def _remember_settings(self, settings: g.Bunch) -> None:
-        """
-        Add the settings if necessary.
-        """
+        """Add the settings to the search history."""
 
         def equal(b1: g.Bunch, b2: g.Bunch) -> bool:
             """Return True if the two settings bunches are equivalent."""
-            assert sorted(list(b1.keys())) == sorted(list(b2.keys())), (repr(b1), repr(b2))
+            if sorted(list(b1.keys())) != sorted(list(b2.keys())):
+                return True  # Defensive.
             return all(b1.get(z) == b2.get(z) for z in b1.keys())
+
+        # Replace the placeholder text.
+        settings.find_text = settings.find_text.replace('<find pattern here>', '')
+
+        # Ignore the two state entries: they are usually False anyway.
+        settings.in_headline = settings.reverse = False
 
         # Remove any previous match.
         for bunch in self.prev_searches:
@@ -2418,7 +2420,6 @@ class LeoFind:
         Return the number of found nodes.
         """
         c, u = self.c, self.c.undoer
-        self._remember_settings(settings)
         if self.pattern_match:
             ok = self.compile_pattern()
             if not ok:
@@ -3531,9 +3532,8 @@ class LeoFind:
         """Handle 'Up' and 'Down' arrows in the minibuffer and the 'Find' Tab/Dialog."""
         c = self.c
 
-        # Remember the existing settings.
-        settings = self.ftm.get_settings()
-        self._remember_settings(settings)
+        # Remember the existing settings, as a side effect of calling get_settings.
+        self.ftm.get_settings()
 
         # Compute the bunch to show.
         i = self.prev_searches_i

@@ -1257,7 +1257,10 @@ class FindTabManager:
 
         Similar to LeoFind.default_settings, but only for find-tab values.
         """
-        return g.Bunch(
+        c = self.c
+        finder = c.findCommands
+
+        bunch = g.Bunch(
             # State...
             in_headline = False,
             reverse     = False,
@@ -1276,6 +1279,9 @@ class FindTabManager:
             suboutline_only = self.radio_button_suboutline_only.isChecked(),
             whole_word      = self.check_box_whole_word.isChecked(),
         )  # fmt: skip
+
+        finder._remember_settings(bunch)  # #4685
+        return bunch
 
     # @+node:ekr.20131117120458.16789: *3* FindTabManager.init_widgets (creates callbacks)
     def init_widgets(self) -> None:
