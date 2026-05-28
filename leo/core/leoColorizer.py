@@ -1729,9 +1729,7 @@ class JEditColorizer(BaseColorizer):
     # @+node:ekr.20110605121601.18594: *5* jedit.match_at_language
     def match_at_language(self, s: str, i: int) -> int:
         """Match Leo's @language directive."""
-        trace = 'coloring' in g.app.debug and not g.unitTesting
-        # Only matches at start of line.
-        if i != 0:
+        if i != 0:  # Only match at start of line.
             return 0
         if not g.match_word(s, i, '@language'):
             return 0
@@ -1749,9 +1747,6 @@ class JEditColorizer(BaseColorizer):
                 # Solves the recoloring problem!
                 n = self.setInitialStateNumber()
                 self.setState(n)
-        if trace:
-            language_s = '???' if self.language == 'unknown-language' else self.language
-            g.trace(f"{language_s:10} stack: {self.delegate_stack!r:15} {s}")
         return k - i
 
     # @+node:ekr.20110605121601.18595: *5* jedit.match_at_nocolor & restarter
