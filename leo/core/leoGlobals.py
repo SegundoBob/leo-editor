@@ -4804,11 +4804,7 @@ def execGitCommand(command: str, directory: str) -> list[str]:
         os.chdir(directory)
     try:
         proc = subprocess.Popen(
-            shlex.split(command),
-            stdout=subprocess.PIPE,
-            stderr=None,  # Shows error traces.
-            # stderr=subprocess.PIPE,
-            shell=False,
+            shlex.split(command), stdout=subprocess.PIPE, stderr=None, shell=True
         )
         out, err = proc.communicate()
         lines = [g.toUnicode(z) for z in g.splitLines(out or '')]
@@ -7311,7 +7307,7 @@ def os_startfile(fname: str) -> None:
                 ree.close()
             return
         try:
-            subPopen = subprocess.Popen(['xdg-open', fname], stderr=wre, shell=False)
+            subPopen = subprocess.Popen(['xdg-open', fname], stderr=wre, shell=True)
         except Exception:
             g.es_print(f"error opening {fname!r}")
             g.es_exception()

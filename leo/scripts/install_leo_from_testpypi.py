@@ -24,5 +24,5 @@ os.chdir(home_dir)
 python = sys.executable
 command = f"{python} -m pip install -i https://test.pypi.org/simple/ leo==6.8.8"
 print(command)
-subprocess.Popen(command).communicate()
+subprocess.Popen(command, shell=True).communicate()
 # @-leo
