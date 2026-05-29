@@ -5234,7 +5234,7 @@ class Commands:
 
         # Run the command.
         try:
-            subprocess.Popen(command).communicate()  # Wait for results.
+            subprocess.Popen(command, shell=True).communicate()  # Wait for results.
             results = g.readFile(filename)
             if g.isWindows:
                 results = results.replace('\r', '')
