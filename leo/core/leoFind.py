@@ -2186,7 +2186,7 @@ class LeoFind:
             if equal(settings, bunch):
                 return
 
-        # Insert the setting at the current place in the list. 
+        # Insert the setting at the current place in the list.
         self.prev_searches_i += 1
         self.prev_searches.insert(self.prev_searches_i, settings)
 
