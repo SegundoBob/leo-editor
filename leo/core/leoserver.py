@@ -2162,7 +2162,7 @@ class LeoServer:
             char = param.get("char")
             if char is None:  # pragma: no cover
                 raise ServerError(f"{tag}: no char in param")
-            fc.do_arrow(char)
+            fc.do_arrow(char, in_minibuffer=False)
         except Exception as e:
             raise ServerError(f"{tag}: exception running 'do_arrow': {e}")
         return self._make_response()
