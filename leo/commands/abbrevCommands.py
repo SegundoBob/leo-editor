@@ -741,12 +741,12 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
         d = self.abbrevs
         if not d:
             return
-        print('')
+        g.es_print('')
         g.es_print(f"Abbreviations for {self.c.shortFileName()}...")
         for name, s in sorted(d.items()):
             s = s.replace('\n', '\\n')
             tail = s.removesuffix('\\n')
-            print(f"{name:>15} {g.truncate(tail, 90)}")
+            g.es_print(f"{name:>15} {g.truncate(tail, 90)}")
 
     # @+node:ekr.20150514043850.32: *4* abbrev.toggleAbbrevMode
     @cmd('toggle-abbrev-mode')

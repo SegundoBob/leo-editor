@@ -3538,15 +3538,14 @@ class LeoFind:
 
         # Compute the bunch to show.
         i = self.prev_searches_i
+        n = len(self.prev_searches)
         self.prev_searches_i = (
-            i - 1 if (char == 'Up' and i - 1 >= 0) else
-            i + 1 if (char == 'Down' and i + 1 < len(self.prev_searches)) else
-            i
+            i - 1 if (char == 'Up'   and i - 1 >= 0) else
+            i + 1 if (char == 'Down' and i + 1 < n) else
+            max(0, min(i, n - 1))
         )  # fmt: skip
         bunch = self.prev_searches[self.prev_searches_i]
         find_s, change_s = bunch.find_text, bunch.change_text
-
-        # g.trace(f"{char:4} {self.prev_searches_i} of {len(self.prev_searches)} : {bunch!r}")
 
         # Show the options in the status area. Like compute_find_options_in_status_area.
         options = []
