@@ -148,7 +148,7 @@ directives_pat = None  # Set below.
 # @@c
 # @@language python
 
-global_commands_dict = {}
+global_commands_dict: dict[str, Callable] = {}
 
 cmd_instance_dict = {
     # Keys are class names, values are attribute chains.
