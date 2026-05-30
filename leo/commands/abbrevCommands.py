@@ -528,7 +528,6 @@ class AbbrevCommandsClass(BaseEditCommandsClass):
             getBool('scripting-abbreviations')
         )  # fmt: skip
         self.globalDynamicAbbrevs = getBool('globalDynamicAbbrevs')
-        self.next_placeholder = getString("abbreviations-next-placeholder") or ',,'
 
         # Allow @data abbreviations-subst-env *only* in leoSettings.leo or myLeoSettings.leo!
         key = 'abbreviations-subst-env'
