@@ -755,8 +755,9 @@ class HelpCommandsClass(BaseEditCommandsClass):
         When Leo selects the found text you can do the following commands::
 
             find-next:          <find-next>
-            find-pre:           <find-prev>
+            find-prev:           <find-prev>
             replace:            <replace>
+            replace-all:        <replace-all>
             replace-then-find:  <replace-then-find>
             keyboard-quit:      <keyboard-quit>
 
@@ -802,6 +803,7 @@ class HelpCommandsClass(BaseEditCommandsClass):
             'isearch-forward-regex',
             'keyboard-quit',
             'replace',
+            'replace-all',
             'replace-then-find',
             'start-search',
             'toggle-find-ignore-case-option',
