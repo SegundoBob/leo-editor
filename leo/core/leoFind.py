@@ -3547,8 +3547,6 @@ class LeoFind:
         bunch = self.prev_searches[self.prev_searches_i]
         find_s, change_s = bunch.find_text, bunch.change_text
 
-        # g.trace(f"{char:4} {self.prev_searches_i} of {len(self.prev_searches)} : {bunch!r}")
-
         # Show the options in the status area. Like compute_find_options_in_status_area.
         options = []
         d = {
