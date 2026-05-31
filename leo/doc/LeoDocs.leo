@@ -32930,7 +32930,7 @@ Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor
 
 - PR `PR #4576`_: More concrete type annotations.
 - PR `PR #4607`_: Improve formatting of unit tests.
-- PR `PR #4631`_, `PR #4637`_, `PR #4631`_:  Remove the confusion between wrappers and widgets.
+- PR `PR #4631`_, `PR #4637`_, `PR #4639`_:  Remove the confusion between wrappers and widgets.
 - PR `PR #4678`_: Remove unnecessary ``type-ignore`` suppressions.
 </t>
 <t tx="felix.20210825213137.1">Since a WebSocket server can receive events from clients, process them to update the
