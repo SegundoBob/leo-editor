@@ -148,7 +148,7 @@ directives_pat = None  # Set below.
 # @@c
 # @@language python
 
-global_commands_dict = {}
+global_commands_dict: dict[str, Callable] = {}
 
 cmd_instance_dict = {
     # Keys are class names, values are attribute chains.
@@ -5010,7 +5010,7 @@ class GitIssueController:
 # @+node:ekr.20190428173354.1: *3* g.getGitVersion
 def getGitVersion(directory: str = None) -> tuple[str, str, str]:
     """Return a tuple (author, build, date) from the git log, or None."""
-    #
+
     # -n: Get only the last log.
     trace = 'git' in g.app.debug
     try:
@@ -5018,8 +5018,8 @@ def getGitVersion(directory: str = None) -> tuple[str, str, str]:
             'git log -n 1 --date=iso',
             cwd=directory or g.app.loadDir,
             stderr=subprocess.DEVNULL,
+            shell=True,
         )
-    # #1209.
     except subprocess.CalledProcessError as e:
         s = e.output
         if trace:

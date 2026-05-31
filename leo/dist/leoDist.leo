@@ -148,7 +148,7 @@
 <t tx="EKR.20040519090846">@language rest
 @wrap
 </t>
-<t tx="EKR.20040519090846.1" _mod_time="4741da7d4875441f0f2e">MIT License
+<t tx="EKR.20040519090846.1" _mod_time="4741da7f9b3a48e6152e">MIT License
 
 Copyright (c) 1997-2026 by Edward K. Ream.
 
@@ -181,9 +181,9 @@ These parts are are clearly marked in Leo's code as follows:
     Copyright (c) Jupyter Development Team.
     Distributed under the terms of the Modified BSD License.
 </t>
-<t tx="EKR.20040519090846.8" _mod_time="4741da7d4875441f0f2e">Metadata-Version: 1.0
+<t tx="EKR.20040519090846.8" _mod_time="4741da870e2ec02c792e">Metadata-Version: 1.0
 Name: leo
-Version: 6.8.8
+Version: 6.8.9
 Summary: An IDE, PIM and Outliner. See http://leo-editor.github.io/leo-editor/preface.html.
 Description: See users own descriptions of Leo at leo-editor.github.io/leo-editor/testimonials.html.
 Home-page: http://leo-editor.github.io/leo-editor/
@@ -201,27 +201,25 @@ Classifier: Topic :: Software Development
 Classifier: Topic :: Text Processing
 Download-URL: https://github.com/leo-editor/leo-editor/releases
 </t>
-<t tx="EKR.20040519090846.9" _mod_time="4741da7d4875441f0f2e">Leo https://leo-editor.github.io/leo-editor/ 6.8.8 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
+<t tx="EKR.20040519090846.9" _mod_time="4741da870e0d0639c12e">Leo https://leo-editor.github.io/leo-editor/ 6.8.9 is now available on [GitHub](https://github.com/leo-editor/leo-editor/releases) and [pypi](https://pypi.org/project/leo/).
 
 Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor/preface.html).
 
-**The highlights of Leo 6.8.8**
+**The highlights of Leo 6.8.9**
 
-- Replace Leo's legacy beautifier commands by full support for
-  [ruff format](https://docs.astral.sh/ruff/formatter/).
-- Make the ``add-comments`` command compatible with ruff format.
-- Add the ``@bool raise-file-update-dialogs`` setting.
-- Add the ``dump-last-colorizer-trace`` command.
-- Remove support for leoflexx and --gui=browser.
-- Add check_leo.py script.
-- Add gdc.summary_diff_two_revs script helper.
-- Fix several minor bugs.
+- Add Find/Change history. How did we ever live without this?
+- Replace the ``,,`` Easter Egg with Leo's Find commands.
+- Add support for ``@language pug``.
+- Enhanced security for Leo's server.
+- Significant code-level improvements and performance optimizations.
+- Deprecate support for --gui=console.
+- The usual bug fixes.
 
 **Links**
 
 - [Install Leo](https://leo-editor.github.io/leo-editor/installing.html)
-- [6.8.8 Issues](https://github.com/leo-editor/leo-editor/issues?q=is%3Aissue+milestone%3A6.8.8+)
-- [6.8.8 Pull Requests](https://github.com/leo-editor/leo-editor/pulls?q=is%3Apr+milestone%3A6.8.8)
+- [6.8.9 Issues](https://github.com/leo-editor/leo-editor/issues?q=is%3Aissue+milestone%3A6.8.9+)
+- [6.8.9 Pull Requests](https://github.com/leo-editor/leo-editor/pulls?q=is%3Apr+milestone%3A6.8.9)
 - [Documentation](https://leo-editor.github.io/leo-editor/leo_toc.html)
 - [Tutorials](https://leo-editor.github.io/leo-editor/tutorial.html)
 - [Video tutorials](https://leo-editor.github.io/leo-editor/screencasts.html)

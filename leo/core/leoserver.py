@@ -111,7 +111,7 @@ version_tuple = (1, 0, 16)
 # 1.0.13 July 2025: Added support for websockets version 14+.
 # 1.0.14 August 2025: Added support for Python 3.14+.
 # 1.0.15 September 2025: Added support for @leo <path> nodes.
-# 1.0.16 Mai 2026: Added support for password and !auth command for client authentication.
+# 1.0.16 Mai 2026: Added password CLI argument and !auth command. Also added !do_arrow command for find-panel history.
 v1, v2, v3 = version_tuple
 __version__ = f"leoserver.py version {v1}.{v2}.{v3}"
 # @-<< leoserver version >>
@@ -2135,6 +2135,7 @@ class LeoServer:
         # fc.init_in_headline()  # Handled by the 'fromOutline' param
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             p, pos, newpos = fc.do_find_next(settings)
         except Exception as e:
             raise ServerError(f"{tag}: Running interactive_search gave exception: {e}")
@@ -2151,6 +2152,22 @@ class LeoServer:
         }
         return self._make_response(result)
 
+    # @+node:felix.20260529201918.1: *5* server.do_arrow
+    def do_arrow(self, param: Param) -> Response:
+        """Handle 'Up' and 'Down' arrows in the 'Find' Tab/Dialog."""
+        tag = 'do_arrow'
+        c = self._check_c(param)
+        fc = c.findCommands
+        try:
+            pass
+            char = param.get("char")
+            if char is None:  # pragma: no cover
+                raise ServerError(f"{tag}: no char in param")
+            fc.do_arrow(char, in_minibuffer=False)
+        except Exception as e:
+            raise ServerError(f"{tag}: exception running 'do_arrow': {e}")
+        return self._make_response()
+
     # @+node:felix.20210621233316.22: *5* server.find_all
     def find_all(self, param: Param) -> Response:
         """Run Leo's find all command and return results."""
@@ -2159,6 +2176,7 @@ class LeoServer:
         fc = c.findCommands
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             result = fc.do_find_all(settings)
         except Exception as e:
             raise ServerError(f"{tag}: exception running 'find all': {e}")
@@ -2188,6 +2206,7 @@ class LeoServer:
 
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             p, pos, newpos = fc.do_find_next(settings)
         except Exception as e:
             raise ServerError(f"{tag}: Running find operation gave exception: {e}")
@@ -2226,6 +2245,7 @@ class LeoServer:
             c.bodyWantsFocusNow()
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             p, pos, newpos = fc.do_find_prev(settings)
         except Exception as e:
             raise ServerError(f"{tag}: Running find operation gave exception: {e}")
@@ -2265,6 +2285,7 @@ class LeoServer:
         #
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             fc.init_ivars_from_settings(settings)
             fc.change_selection(p)
         except Exception as e:
@@ -2298,6 +2319,7 @@ class LeoServer:
         #
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             fc.init_ivars_from_settings(settings)
             result = False
             if fc.change_selection(p):
@@ -2317,6 +2339,7 @@ class LeoServer:
         fc = c.findCommands
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             result = fc.do_change_all(settings)
         except Exception as e:
             raise ServerError(f"{tag}: Running change operation gave exception: {e}")
@@ -2331,6 +2354,7 @@ class LeoServer:
         fc = c.findCommands
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             result = fc.do_clone_find_all(settings)
         except Exception as e:
             raise ServerError(f"{tag}: Running clone find operation gave exception: {e}")
@@ -2345,6 +2369,7 @@ class LeoServer:
         fc = c.findCommands
         try:
             settings = fc.ftm.get_settings()
+            fc._remember_settings(settings)
             result = fc.do_clone_find_all_flattened(settings)
         except Exception as e:
             raise ServerError(f"{tag}: Running clone find operation gave exception: {e}")
@@ -5173,6 +5198,8 @@ class LeoServer:
         try:
             w = g.app.gui.get_focus()
             focus = g.app.gui.widget_name(w)
+            if not focus and w and hasattr(w, "_name"):
+                focus = w._name
         except Exception as e:
             raise ServerError(f"{tag}: exception trying to get the focused widget: {e}")
         return focus
