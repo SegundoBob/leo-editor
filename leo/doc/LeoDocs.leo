@@ -32910,9 +32910,9 @@ Leo is an [outline-oriented text editor](https://leo-editor.github.io/leo-editor
 **Enhancements**
 
 - `PR #4587`_ and `PR #4611`_: Improve java importer.
-- `PR #4654`_: Add support for `@language pug`.
+- `PR #4654`_: Add support for ``@language pug``.
 - `PR #4660`_: Handle backslashes properly in Find/Change text.
-- `PR #4675`_: Replace the `,,` Easter Egg with Leo's Find command.
+- `PR #4675`_: Replace the ``,,`` Easter Egg with Leo's Find command.
 - `PR #4695`_: Enhance security for Leo's server.
 - `PR #4698`_: Support Find/Change history.
 
