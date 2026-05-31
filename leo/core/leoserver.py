@@ -111,7 +111,7 @@ version_tuple = (1, 0, 16)
 # 1.0.13 July 2025: Added support for websockets version 14+.
 # 1.0.14 August 2025: Added support for Python 3.14+.
 # 1.0.15 September 2025: Added support for @leo <path> nodes.
-# 1.0.16 Mai 2026: Added support for password and !auth command for client authentication.
+# 1.0.16 Mai 2026: Added password CLI argument and !auth command. Also added !do_arrow command for find-panel history.
 v1, v2, v3 = version_tuple
 __version__ = f"leoserver.py version {v1}.{v2}.{v3}"
 # @-<< leoserver version >>
