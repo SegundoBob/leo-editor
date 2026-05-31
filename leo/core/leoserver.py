@@ -5199,7 +5199,7 @@ class LeoServer:
             w = g.app.gui.get_focus()
             focus = g.app.gui.widget_name(w)
             if not focus and w and hasattr(w, "_name"):
-                focus = w._name                
+                focus = w._name
         except Exception as e:
             raise ServerError(f"{tag}: exception trying to get the focused widget: {e}")
         return focus
