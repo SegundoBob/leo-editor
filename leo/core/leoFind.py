@@ -2178,18 +2178,20 @@ class LeoFind:
         # Replace the placeholder text.
         settings.find_text = settings.find_text.replace('<find pattern here>', '')
 
+        # Don't add empty find patterns to the search history.
+        if not settings.find_text.strip():
+            return
+
         # Ignore the two state entries: they are usually False anyway.
         settings.in_headline = settings.reverse = False
 
         # Remove any previous match.
         for bunch in self.prev_searches:
             if equal(settings, bunch):
-                print('Already in search history', flush=True)
                 return
 
         # Insert the setting at the current place in the list.
         self.prev_searches_i += 1
-        print(f"Adding to search history: {settings.find_text}", flush=True)
         self.prev_searches.insert(self.prev_searches_i, settings)
 
     # @+node:ekr.20210117143611.1: *5* find.start_search1
@@ -3541,6 +3543,8 @@ class LeoFind:
         # Compute the bunch to show.
         i = self.prev_searches_i
         n = len(self.prev_searches)
+        if n == 0:
+            return  # Even with the get_Settings() side effect, there may be no previous searches.
         self.prev_searches_i = (
             i - 1 if (char == 'Up'   and i - 1 >= 0) else
             i + 1 if (char == 'Down' and i + 1 < n) else

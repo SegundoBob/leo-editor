@@ -777,13 +777,10 @@ class StringFindTabManager:
 
         Similar to LeoFind.default_settings, but only for find-tab values.
         """
-        c = self.c
-        finder = c.findCommands
-
-        bunch = g.Bunch(
+        return g.Bunch(
             # State...
-            in_headline = False,
-            reverse     = False,
+            in_headline     = False,
+            reverse         = False,
             # Find/change strings...
             find_text       = self.find_findbox.text(),
             change_text     = self.find_replacebox.text(),
@@ -799,9 +796,6 @@ class StringFindTabManager:
             suboutline_only = self.radio_button_suboutline_only.isChecked(),
             whole_word      = self.check_box_whole_word.isChecked(),
         )  # fmt: skip
-
-        finder._remember_settings(bunch)  # #4685
-        return bunch
 
     # @+node:ekr.20210221130549.7: *3* sftm.init_widgets
     def init_widgets(self) -> None:
