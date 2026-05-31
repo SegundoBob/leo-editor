@@ -2158,11 +2158,9 @@ class LeoServer:
         tag = 'do_arrow'
         c = self._check_c(param)
         fc = c.findCommands
-        print('in do_arrow ', flush=True)
         try:
             pass
             char = param.get("char")
-            print(f"char: {char!r}", flush=True)
             if char is None:  # pragma: no cover
                 raise ServerError(f"{tag}: no char in param")
             fc.do_arrow(char, in_minibuffer=False)
